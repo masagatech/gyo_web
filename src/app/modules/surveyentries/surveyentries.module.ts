@@ -14,7 +14,6 @@ export const routes = [
     path: '', children: [
       { path: '', component: SurveyEntriesComp },
       { path: 'details/:id', component: SurveyDetailsComp }
-
     ]
   },
 ];
