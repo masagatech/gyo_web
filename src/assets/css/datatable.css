@@ -4399,7 +4399,7 @@ button.ui-button::-moz-focus-inner {
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    border: 1px solid #d6d6d6;
+    border: none;
     background: #ffffff;
     font-weight: normal;
     color: #555555;
