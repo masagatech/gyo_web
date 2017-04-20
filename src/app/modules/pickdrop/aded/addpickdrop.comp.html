@@ -1,0 +1,125 @@
+<div class="row clearfix">
+    <div class="col-md-6">
+        <h3>Pick Up and Drop</h3>
+    </div>
+    <div class="col-md-6" align="right">
+        <button type="button" class="btn bg-orange waves-effect" (click)="saveStudentInfo()">
+            <i class="material-icons">save</i>
+        </button>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <p-autoComplete validate="" id="ownername" name="ownername" [(ngModel)]="ownername" placeholder="Owner Name" [tabindex]="1"
+                            (onSelect)="selectAutoData($event, 'owner')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'owner')"
+                            field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="schoolcode" class="form-control" (ngModelChange)="fillBatchDropDown();getStudentData($event);" tabindex="2">
+                                    <option [value]="''">Select School</option>
+                                    <option *ngFor="let row of schoolDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="batchcode" class="form-control" tabindex="3">
+                                    <option [value]="''">Select Batch</option>
+                                    <option *ngFor="let row of batchDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="drivercode" class="form-control" tabindex="4">
+                                    <option [value]="''">Select Driver</option>
+                                    <option *ngFor="let row of driverDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="vehiclecode" class="form-control" tabindex="5">
+                                    <option [value]="''">Select Vehicle</option>
+                                    <option *ngFor="let row of vehicleDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <p-autoComplete validate="" id="studentname" name="studentname" [(ngModel)]="studentname" placeholder="Student Name" [tabindex]="6"
+                                    (onSelect)="selectAutoData($event, 'student')" [suggestions]="studentsDT" (completeMethod)="getStudentData($event, 'student')"
+                                    field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <button type="button" class="btn bg-orange waves-effect" (click)="pickupStudents()">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <p-orderList [value]="pickStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Pick Up Schedule">
+                            <template let-student pTemplate="item">
+                                {{student.studentname}}
+                            </template>
+                        </p-orderList>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ui-grid-col-10">
+                            <div class="ui-orderlist-caption ui-widget-header ui-corner-top" align="center" style="padding: 4px 0;">Drop Schedule</div>
+                            <ul class="ui-widget-content ui-orderlist-list ui-corner-bottom" style="height: 250px;">
+                                <li *ngFor="let student of dropStudentsDT" class="ui-orderlist-item" style="list-style-type:none">
+                                    {{student.studentname}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <textarea [(ngModel)]="instrunction" rows="4" class="form-control no-resize auto-growth" placeholder="Instrunction"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

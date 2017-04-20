@@ -1,0 +1,263 @@
+<div class="row clearfix">
+    <div class="col-md-6">
+        <h3>Student</h3>
+    </div>
+    <div class="col-md-6" align="right">
+        <button type="button" class="btn bg-orange waves-effect" (click)="saveStudentInfo()">
+            <i class="material-icons">save</i>
+        </button>
+    </div>
+</div>
+
+<!--<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    FILE UPLOAD - DRAG & DROP OR WITH CLICK & CHOOSE
+                </h2>
+                <ul class="header-dropdown m-r--5">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);">Action</a></li>
+                            <li><a href="javascript:void(0);">Another action</a></li>
+                            <li><a href="javascript:void(0);">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="body">
+                <form action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                    <div class="dz-message">
+                        <div class="drag-icon-cph">
+                            <i class="material-icons">touch_app</i>
+                        </div>
+                        <h3>Drop files here or click to upload.</h3>
+                        <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em>
+                    </div>
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<dropzone [config]="config" [message]="'Click or drag images here to upload'" (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+
+<div class="row clearfix">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" [(ngModel)]="studentname" class="form-control" placeholder="Student Name" />
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="gender" class="form-control">
+                                    <option [value]="''">Select Gender</option>
+                                    <option *ngFor="let row of genderDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="date" [(ngModel)]="dob" class="form-control" placeholder="Date of Birth" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <p-autoComplete validate="" id="ownername" name="ownername" [(ngModel)]="ownername" placeholder="Owner Name" [tabindex]="1"
+                                    (onSelect)="selectAutoOwners($event)" [suggestions]="ownersDT" (completeMethod)="getAutoOwners($event)"
+                                    field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="schoolcode" class="form-control">
+                                    <option [value]="''">Select School</option>
+                                    <option *ngFor="let row of schoolDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select [(ngModel)]="division" class="form-control">
+                                    <option [value]="''">Select Division</option>
+                                    <option *ngFor="let row of divisionDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="number" [(ngModel)]="aadharno" class="form-control" placeholder="Aadhar No" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="mothername" class="form-control" placeholder="Mother Name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="mothermobile" class="form-control" placeholder="Mother Mobile" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="motheremail" class="form-control" placeholder="Mother Email" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="fathername" class="form-control" placeholder="Father Name" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="fathermobile" class="form-control" placeholder="Father Mobile" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="fatheremail" class="form-control" placeholder="Father Email" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <textarea [(ngModel)]="resiaddr" rows="4" class="form-control no-resize auto-growth" placeholder="Residental Address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <textarea [(ngModel)]="pickupaddr" rows="4" class="form-control no-resize auto-growth" placeholder="Pickup Address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <textarea [(ngModel)]="dropaddr" rows="4" class="form-control no-resize auto-growth" placeholder="Drop Address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="resilet" class="form-control" placeholder="Residental Let" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="resilong" class="form-control" placeholder="Residental Long" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="pickuplet" class="form-control" placeholder="Pickup Let" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="pickuplong" class="form-control" placeholder="Pickup Long" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="droplet" class="form-control" placeholder="Drop Let" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="droplong" class="form-control" placeholder="Drop Long" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <textarea [(ngModel)]="otherinfo" rows="4" class="form-control no-resize auto-growth" placeholder="Other Info"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <textarea [(ngModel)]="remark1" rows="4" class="form-control no-resize auto-growth" placeholder="Remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
