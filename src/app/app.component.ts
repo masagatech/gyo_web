@@ -1,28 +1,32 @@
 /*
  * Angular 2 decorators and services
  */
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  AfterViewInit
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
+// import { MessageService } from "./_services/messages/message-service";
+// import { Message } from 'primeng/primeng';
 import { AppState } from './app.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /*
  * App Component
  * Top Level Component
- */
+*/
+
 declare var loader: any;
+
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'app.component.html'
 })
+
 export class AppComponent implements OnInit, AfterViewInit {
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
   public name = 'Angular 2 Webpack Starter';
   public url = 'https://twitter.com/AngularClass';
+  subscription: Subscription;
+  // messagestack: Message[] = [];
+
   private themes: any = [
     { nm: 'red', disp: 'Red' },
     { nm: 'pink', disp: 'pink' },
@@ -46,9 +50,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     { nm: 'black', disp: 'black' }
   ];
 
-  constructor(
-    public appState: AppState
-  ) { }
+  constructor(public appState: AppState) {
+    // this.subscription = _messageServ.notificationReceiver$.subscribe(_messagestack => {
+    //   this.messagestack.push({
+    //     severity: _messagestack.severity, detail: _messagestack.detail, summary: _messagestack.summary
+    //   });
+    // });
+  }
 
   public ngOnInit() {
     console.log('Initial App State', this.appState.state);
@@ -63,7 +71,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   private changeSkin(theme: any) {
     loader.skinChanger(theme);
   }
-
 }
 
 /*

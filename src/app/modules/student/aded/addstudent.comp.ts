@@ -18,7 +18,7 @@ export class AddStudentComponent implements OnInit {
     genderDT: any = [];
 
     ownersDT: any = [];
-    ownercode: string = "";
+    ownerid: number = 0;
     ownername: string = "";
 
     studentname: string = "";
@@ -61,6 +61,18 @@ export class AddStudentComponent implements OnInit {
         this.fillDropDownList();
     }
 
+    public ngOnInit() {
+
+    }
+
+    public onUploadError(event) {
+        console.log('error');
+    }
+
+    public onUploadSuccess(event) {
+        console.log('success');
+    }
+
     fillDropDownList() {
         var that = this;
 
@@ -91,7 +103,7 @@ export class AddStudentComponent implements OnInit {
     // Selected Users
 
     selectAutoOwners(event) {
-        this.ownercode = event.value;
+        this.ownerid = event.value;
         this.ownername = event.label;
     }
 
@@ -118,7 +130,7 @@ export class AddStudentComponent implements OnInit {
             "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
             "pickdowngeoloc": that.droplet + "," + that.droplong,
             "aadharno": that.aadharno,
-            "ownercode": that.ownercode,
+            "ownerid": that.ownerid,
             "uid": "vivek",
             "remark1": that.remark1
         }
@@ -144,17 +156,5 @@ export class AddStudentComponent implements OnInit {
         }, () => {
             // console.log("Complete");
         });
-    }
-
-    public ngOnInit() {
-
-    }
-
-    public onUploadError(event) {
-        console.log('error');
-    }
-
-    public onUploadSuccess(event) {
-        console.log('success');
     }
 }

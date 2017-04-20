@@ -95,7 +95,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <select [(ngModel)]="schoolcode" class="form-control">
-                                    <option [value]="''">Select School</option>
+                                    <option [value]="0">Select School</option>
                                     <option *ngFor="let row of schoolDT" [value]="row.key">	
                                         {{row.val}}
                                     </option>

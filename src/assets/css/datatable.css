@@ -2339,6 +2339,7 @@ button.ui-button::-moz-focus-inner {
     margin: 0;
     outline: medium none;
     padding: 4px;
+    height: 34px;
     font-weight: normal
 }
 
@@ -3402,7 +3403,8 @@ button.ui-button::-moz-focus-inner {
 .ui-picklist>div {
     float: none;
     display: table-cell;
-    vertical-align: top
+    vertical-align: top;
+    padding: 10px;
 }
 
 .ui-picklist .ui-picklist-buttons {

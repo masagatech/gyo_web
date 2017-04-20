@@ -8,7 +8,7 @@ import { AddPickDropComponent } from './aded/addpickdrop.comp';
 
 import { PickDropService } from '../../_services/pickdrop/pickdrop-service';
 
-import { LazyLoadEvent, DataTableModule, OrderListModule, AutoCompleteModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, OrderListModule, PickListModule, AutoCompleteModule } from 'primeng/primeng';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
@@ -31,7 +31,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, OrderListModule, AutoCompleteModule,
+    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, OrderListModule, PickListModule, AutoCompleteModule,
     DropzoneModule.forRoot()
   ],
 
