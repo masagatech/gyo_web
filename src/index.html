@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link href="assets/css/roboto.css" rel="stylesheet" type="text/css">
+
 
     <!-- Bootstrap Core Css -->
     <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -33,7 +33,38 @@
     <title>
         <%= htmlWebpackPlugin.options.title %>
     </title>
+    <!-- Jquery Core Js -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
 
+    <!-- Bootstrap Core Js -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="/assets/js/moment.min.js"></script>
+    <!-- Slimscroll Plugin Js -->
+    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="assets/plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="assets/plugins/jquery-countto/jquery.countTo.js"></script>
+
+    <!-- Morris Plugin Js -->
+    <!--<script src="assets/plugins/raphael/raphael.min.js"></script>
+    <script src="assets/plugins/morrisjs/morris.js"></script>-->
+
+    <!-- Custom Js -->
+    <script src="assets/js/admin.js"></script>
+
+    <!-- Demo Js -->
+    <script src="assets/js/demo.js"></script>
+
+    <script src="assets/js/common.js"></script>
+    
+    <script src="assets/js/fullcalendar.min.js"></script>
+    <link href="assets/css/fullcalendar.min.css" rel="stylesheet">
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
     <% if (webpackConfig.htmlElements.headTags) { %>
@@ -71,40 +102,11 @@
         ga('send', 'pageview');
     </script>-->
 
-    <!-- Jquery Core Js -->
-    <script src="assets/plugins/jquery/jquery.min.js"></script>
 
-    <!-- Bootstrap Core Js -->
-    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
 
-    <!-- Select Plugin Js -->
-    <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-    <!-- Slimscroll Plugin Js -->
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-
-    <!-- Waves Effect Plugin Js -->
-    <script src="assets/plugins/node-waves/waves.js"></script>
-
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="assets/plugins/jquery-countto/jquery.countTo.js"></script>
-
-    <!-- Morris Plugin Js -->
-    <script src="assets/plugins/raphael/raphael.min.js"></script>
-    <script src="assets/plugins/morrisjs/morris.js"></script>
-
-    <!-- Custom Js -->
-    <script src="assets/js/admin.js"></script>
-
-    <!-- Demo Js -->
-    <script src="assets/js/demo.js"></script>
-
-    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
-        <!-- Webpack Dev Server reload -->
+    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true){ %>
         <script src="/webpack-dev-server.js"></script>
         <% } %>
-
-
 </body>
 
 </html>
