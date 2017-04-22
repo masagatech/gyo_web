@@ -26,8 +26,9 @@ export class ChangeScheduleComponent implements OnInit {
     private event: MyEvent;
     private defaultDate: string = "";
 
-    private pickstudentcode: string = "";
+    private p_stdid: number = 0;
     private pickstudentname: string = "";
+    private pickaddr: string = "";
     private pickstudentmothername: string = "";
     private pickstudentfathername: string = "";
     private pickstudentmotheremail: string = "";
@@ -36,8 +37,9 @@ export class ChangeScheduleComponent implements OnInit {
     private pickstudentfathermobile: string = "";
     private pickstudentgeoloc: string = "";
 
-    private dropstudentcode: string = "";
+    private dropstudentid: number = 0;
     private dropstudentname: string = "";
+    private dropaddr: string = "";
     private dropstudentmothername: string = "";
     private dropstudentfathername: string = "";
     private dropstudentmotheremail: string = "";
@@ -168,8 +170,10 @@ export class ChangeScheduleComponent implements OnInit {
             this.fillVehicleDropDown(this.ownerid);
         }
         else {
-            this.pickstudentcode = event.studcd;
+            debugger;
+            this.p_stdid = event.studid;
             this.pickstudentname = event.studnm;
+            this.pickaddr = event.pickupaddr;
             this.pickstudentmothername = event.name.split(';')[0];
             this.pickstudentfathername = event.name.split(';')[1];
             this.pickstudentmotheremail = event.email1;
@@ -178,8 +182,9 @@ export class ChangeScheduleComponent implements OnInit {
             this.pickstudentfathermobile = event.mobileno2;
             this.pickstudentgeoloc = event.pickgeoloc;
 
-            this.dropstudentcode = event.studcd;
+            this.dropstudentid = event.studid;
             this.dropstudentname = event.studnm;
+            this.dropaddr = event.dropaddr;
             this.dropstudentmothername = event.name.split(';')[0];
             this.dropstudentfathername = event.name.split(';')[1];
             this.dropstudentfatheremail = event.email1;
@@ -191,8 +196,9 @@ export class ChangeScheduleComponent implements OnInit {
     }
 
     selectDropStudent(event) {
-        this.dropstudentcode = event.studcd;
+        this.dropstudentid = event.studcd;
         this.dropstudentname = event.studnm;
+        this.dropaddr = event.dropaddr;
         this.dropstudentmothername = event.name.split(';')[0];
         this.dropstudentfathername = event.name.split(';')[1];
         this.dropstudentfatheremail = event.email1;
@@ -284,25 +290,28 @@ export class ChangeScheduleComponent implements OnInit {
 
     pickupStudents() {
         var that = this;
+        var p_latlon = that.pickstudentgeoloc.split(',');
 
         that.pickStudentsDT.push({
             "counter": that.counter++,
-            "studentcode": that.pickstudentcode,
-            "studentname": that.pickstudentname,
-            "mothername": that.pickstudentmothername,
-            "fathername": that.pickstudentfathername,
-            "motheremail": that.pickstudentmotheremail,
-            "fatheremail": that.pickstudentfatheremail,
-            "mothermobile": that.pickstudentmothermobile,
-            "fathermobile": that.pickstudentfathermobile,
-            "pickgeoloc": that.pickstudentgeoloc,
-            "dropgeoloc": that.dropstudentgeoloc
+            "stdid": that.p_stdid,
+            "stdnm": that.pickstudentname,
+            "addr": that.pickaddr,
+            "mthrnm": that.pickstudentmothername,
+            "fthrnm": that.pickstudentfathername,
+            "mthreml": that.pickstudentmotheremail,
+            "fthreml": that.pickstudentfatheremail,
+            "mthrmob": that.pickstudentmothermobile,
+            "fthrmob": that.pickstudentfathermobile,
+            "lat": (p_latlon.length > 0 ? p_latlon[0] : 0),
+            "lon": (p_latlon.length > 0 ? p_latlon[1] : 0)
         });
 
         that.dropStudentsDT = that.reverseArr(that.pickStudentsDT);
 
-        that.pickstudentcode = "";
+        that.p_stdid = 0;
         that.pickstudentname = "";
+        that.pickaddr = "";
         that.pickstudentmothername = "";
         that.pickstudentfathername = "";
         that.pickstudentmotheremail = "";
@@ -311,8 +320,9 @@ export class ChangeScheduleComponent implements OnInit {
         that.pickstudentfathermobile = "";
         that.pickstudentgeoloc = "";
 
-        that.dropstudentcode = "";
+        that.dropstudentid = 0;
         that.dropstudentname = "";
+        that.dropaddr = "";
         that.dropstudentmothername = "";
         that.dropstudentfathername = "";
         that.dropstudentmotheremail = "";
@@ -324,22 +334,26 @@ export class ChangeScheduleComponent implements OnInit {
 
     dropStudents() {
         var that = this;
+        var d_latlon = that.dropstudentgeoloc.split(',');
 
         that.dropStudentsDT.push({
             "counter": that.counter++,
-            "studentcode": that.dropstudentcode,
-            "studentname": that.dropstudentname,
-            "mothername": that.dropstudentcode,
-            "fathername": that.dropstudentname,
-            "motheremail": that.dropstudentcode,
-            "fatheremail": that.dropstudentname,
-            "mothermobile": that.dropstudentcode,
-            "fathermobile": that.dropstudentname,
-            "dropgeoloc": that.dropstudentgeoloc
+            "stdid": that.dropstudentid,
+            "stdnm": that.dropstudentname,
+            "addr": that.dropaddr,
+            "mthrnm": that.dropstudentmothername,
+            "fthrnm": that.dropstudentfathername,
+            "mthreml": that.dropstudentmotheremail,
+            "fthreml": that.dropstudentfatheremail,
+            "mthrmob": that.dropstudentmothermobile,
+            "fthrmob": that.dropstudentfathermobile,
+            "lat": (d_latlon.length > 0 ? d_latlon[0] : 0),
+            "lon": (d_latlon.length > 0 ? d_latlon[1] : 0)
         });
 
-        that.dropstudentcode = "";
+        that.dropstudentid = 0;
         that.dropstudentname = "";
+        that.dropaddr = "";
         that.dropstudentmothername = "";
         that.dropstudentfathername = "";
         that.dropstudentmotheremail = "";
@@ -438,22 +452,34 @@ export class ChangeScheduleComponent implements OnInit {
 
         for (var i = 0; i < that.pickStudentsDT.length; i++) {
             _pickstudDT.push({
-                "studentcode": that.pickStudentsDT[i].studentcode, "studentname": that.pickStudentsDT[i].studentname,
-                "mothername": that.pickStudentsDT[i].mothername, "fathername": that.pickStudentsDT[i].fathername,
-                "motheremail": that.pickStudentsDT[i].motheremail, "fatheremail": that.pickStudentsDT[i].fatheremail,
-                "mothermobile": that.pickStudentsDT[i].mothermobile, "fathermobile": that.pickStudentsDT[i].fathermobile,
-                "pickgeoloc": that.pickStudentsDT[i].pickgeoloc
-            })
+                "stdid": that.pickStudentsDT[i].stdid,
+                "stdnm": that.pickStudentsDT[i].stdnm,
+                "addr": that.pickStudentsDT[i].addr,
+                "mthrnm": that.pickStudentsDT[i].mthrnm,
+                "fthrnm": that.pickStudentsDT[i].fthrnm,
+                "mthreml": that.pickStudentsDT[i].mthreml,
+                "fthreml": that.pickStudentsDT[i].fthreml,
+                "mthrmob": that.pickStudentsDT[i].mthrmob,
+                "fthrmob": that.pickStudentsDT[i].fthrmob,
+                "lat": that.pickStudentsDT[i].lat,
+                "lon": that.pickStudentsDT[i].lon
+            });
         }
 
-        for (var j = 0; j < that.dropStudentsDT.length; j++) {
+        for (var i = 0; i < that.dropStudentsDT.length; i++) {
             _dropstudDT.push({
-                "studentcode": that.dropStudentsDT[j].studentcode, "studentname": that.dropStudentsDT[j].studentname,
-                "mothername": that.dropStudentsDT[j].mothername, "fathername": that.dropStudentsDT[j].fathername,
-                "motheremail": that.dropStudentsDT[j].motheremail, "fatheremail": that.dropStudentsDT[j].fatheremail,
-                "mothermobile": that.dropStudentsDT[j].mothermobile, "fathermobile": that.dropStudentsDT[j].fathermobile,
-                "dropgeoloc": that.dropStudentsDT[j].dropgeoloc
-            })
+                "stdid": that.dropStudentsDT[i].stdid,
+                "stdnm": that.dropStudentsDT[i].stdnm,
+                "addr": that.dropStudentsDT[i].addr,
+                "mthrnm": that.dropStudentsDT[i].mthrnm,
+                "fthrnm": that.dropStudentsDT[i].fthrnm,
+                "mthreml": that.dropStudentsDT[i].mthreml,
+                "fthreml": that.dropStudentsDT[i].fthreml,
+                "mthrmob": that.dropStudentsDT[i].mthrmob,
+                "fthrmob": that.dropStudentsDT[i].fthrmob,
+                "lat": that.dropStudentsDT[i].lat,
+                "lon": that.dropStudentsDT[i].lon
+            });
         }
 
         _pickdrop.push({
@@ -497,7 +523,7 @@ export class ChangeScheduleComponent implements OnInit {
                 if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
                     // that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
                     alert(dataResult[0].funsave_pickdropinfo.msg);
-                    that._router.navigate(['/pickdrop']);
+                    that._router.navigate(['/changeschedule']);
                 }
                 else {
                     alert(dataResult[0].funsave_pickdropinfo.msg);

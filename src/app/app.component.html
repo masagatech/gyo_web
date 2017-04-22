@@ -307,6 +307,18 @@
                     </a>
                 </li>
                 <li>
+                    <a [routerLink]="['./school']" routerLinkActivate="active">
+                        <i class="material-icons">school</i>
+                        <span>School</span>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['./batch']" routerLinkActivate="active">
+                        <i class="material-icons"></i>
+                        <span>Batch</span>
+                    </a>
+                </li>
+                <li>
                     <a [routerLink]="['./student']" routerLinkActivate="active">
                         <i class="material-icons">person_add</i>
                         <span>Student</span>
@@ -413,7 +425,7 @@
     <!-- #END# Right Sidebar -->
 </section>
 
-<section class="content">
+<section class="content maincontent">
     <div class="container-fluid">
         <router-outlet></router-outlet>
     </div>

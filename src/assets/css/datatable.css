@@ -3236,7 +3236,8 @@ button.ui-button::-moz-focus-inner {
 .ui-paginator .ui-paginator-rpp-options {
     margin-left: 1em;
     margin-right: 1em;
-    background-image: none
+    padding: 3px;
+    background-image: none;
 }
 
 .ui-paginator .ui-paginator-jtp-select option,
@@ -4401,7 +4402,7 @@ button.ui-button::-moz-focus-inner {
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    border: none;
+    border: solid 1px #555;
     background: #ffffff;
     font-weight: normal;
     color: #555555;

@@ -3,23 +3,22 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AddStudentComponent } from './aded/addstudent.comp';
-import { ViewStudentComponent } from './view/viewstudent.comp';
+import { AddBatchComponent } from './aded/addbatch.comp';
+import { ViewBatchComponent } from './view/viewbatch.comp';
 
-import { StudentService } from '../../_services/student/student-service';
+import { BatchService } from '../../_services/batch/batch-service';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
-
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewStudentComponent },
-      { path: 'add', component: AddStudentComponent },
-      { path: 'details/:id', component: AddStudentComponent },
-      { path: 'edit/:id', component: AddStudentComponent }
+      { path: '', component: ViewBatchComponent },
+      { path: 'add', component: AddBatchComponent },
+      { path: 'details/:id', component: AddBatchComponent },
+      { path: 'edit/:id', component: AddBatchComponent }
     ]
   },
 ];
@@ -27,8 +26,8 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddStudentComponent,
-    ViewStudentComponent
+    AddBatchComponent,
+    ViewBatchComponent
   ],
 
   imports: [
@@ -36,9 +35,9 @@ export const routes = [
      DropzoneModule.forRoot()
   ],
 
-  providers: [StudentService]
+  providers: [BatchService]
 })
 
-export class StudentModule {
+export class BatchModule {
   public static routes = routes;
 }

@@ -16,17 +16,19 @@ export class ModuleComponent implements OnDestroy {
 
         router.events.forEach((event: NavigationEvent) => {
             if (event instanceof NavigationStart) {
-
+                commonfun.loader();
             }
 
             if (event instanceof NavigationEnd) {
+                commonfun.loaderhide();
             }
 
             if (event instanceof NavigationError) {
+                commonfun.loaderhide();
             }
 
             if (event instanceof NavigationCancel) {
-
+                commonfun.loaderhide();
             }
         });
     }

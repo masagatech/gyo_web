@@ -11853,3 +11853,22 @@ body.waitMe_body .waitMe_container.text>div {
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
+.btn-navigate {
+    padding: 0!important;
+    border: none!important;
+}
+
+    .btn-navigate span {
+        padding: 3px!important;
+        border: none!important;
+        font-size: 20px!important;
+    }
+
+.form-controlAutoComplete {
+    width: 100%;
+}
+
+    .form-controlAutoComplete input {
+        border: none!important;
+    }

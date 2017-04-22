@@ -94,7 +94,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <select [(ngModel)]="schoolcode" class="form-control">
+                                <select [(ngModel)]="schoolid" class="form-control">
                                     <option [value]="0">Select School</option>
                                     <option *ngFor="let row of schoolDT" [value]="row.key">	
                                         {{row.val}}
@@ -200,28 +200,28 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="form-line">
-                                <input type="text" [(ngModel)]="resilet" class="form-control" placeholder="Residental Let" />
+                                <input type="text" [(ngModel)]="resilet" class="form-control" placeholder="Residental Lat" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="form-line">
-                                <input type="text" [(ngModel)]="resilong" class="form-control" placeholder="Residental Long" />
+                                <input type="text" [(ngModel)]="resilong" class="form-control" placeholder="Residental Lon" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="form-line">
-                                <input type="text" [(ngModel)]="pickuplet" class="form-control" placeholder="Pickup Let" />
+                                <input type="text" [(ngModel)]="pickuplet" class="form-control" placeholder="Pickup Lat" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <div class="form-line">
-                                <input type="text" [(ngModel)]="pickuplong" class="form-control" placeholder="Pickup Long" />
+                                <input type="text" [(ngModel)]="pickuplong" class="form-control" placeholder="Pickup Lon" />
                             </div>
                         </div>
                     </div>

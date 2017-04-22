@@ -59,9 +59,7 @@ commonfun.loader = function(name) {
         fontSize: '',
         source: ''
     });
-
 }
-
 
 commonfun.loaderhide = function(name) {
     if (!name) name = '.maincontent';
@@ -73,7 +71,12 @@ commonfun.openurl = function(url, target, options) {
     //"https://www.w3schools.com", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400"
 }
 
-
+commonfun.navistyle = function() {
+    $(".ui-paginator-first").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("first_page");
+    $(".ui-paginator-prev").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("navigate_before");
+    $(".ui-paginator-next").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("navigate_next");
+    $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("last_page");
+}
 
 commonfun.randomColor = function(brightness) {
     function randomChannel(brightness) {

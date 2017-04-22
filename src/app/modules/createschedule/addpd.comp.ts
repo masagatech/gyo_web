@@ -22,7 +22,7 @@ export class CreateScheduleComponent implements OnInit {
     studentsDT: any = [];
     counter: number = 0;
 
-    pickstudentcode: string = "";
+    pickstudentid: number = 0;
     pickstudentname: string = "";
     pickstudentmothername: string = "";
     pickstudentfathername: string = "";
@@ -32,7 +32,7 @@ export class CreateScheduleComponent implements OnInit {
     pickstudentfathermobile: string = "";
     pickstudentgeoloc: string = "";
 
-    dropstudentcode: string = "";
+    dropstudentid: number = 0;
     dropstudentname: string = "";
     dropstudentmothername: string = "";
     dropstudentfathername: string = "";
@@ -143,7 +143,7 @@ export class CreateScheduleComponent implements OnInit {
             this.fillVehicleDropDown(this.ownerid);
         }
         else {
-            this.pickstudentcode = event.studcd;
+            this.pickstudentid = event.studid;
             this.pickstudentname = event.studnm;
             this.pickstudentmothername = event.name.split(';')[0];
             this.pickstudentfathername = event.name.split(';')[1];
@@ -153,7 +153,7 @@ export class CreateScheduleComponent implements OnInit {
             this.pickstudentfathermobile = event.mobileno2;
             this.pickstudentgeoloc = event.pickgeoloc;
 
-            this.dropstudentcode = event.studcd;
+            this.dropstudentid = event.studid;
             this.dropstudentname = event.studnm;
             this.dropstudentmothername = event.name.split(';')[0];
             this.dropstudentfathername = event.name.split(';')[1];
@@ -166,7 +166,7 @@ export class CreateScheduleComponent implements OnInit {
     }
 
     selectDropStudent(event) {
-        this.dropstudentcode = event.studcd;
+        this.dropstudentid = event.studid;
         this.dropstudentname = event.studnm;
         this.dropstudentmothername = event.name.split(';')[0];
         this.dropstudentfathername = event.name.split(';')[1];
@@ -259,24 +259,25 @@ export class CreateScheduleComponent implements OnInit {
 
     pickupStudents() {
         var that = this;
-
+        var p_latlon = that.pickstudentgeoloc.split(',');
+        
         that.pickStudentsDT.push({
             "counter": that.counter++,
-            "studentcode": that.pickstudentcode,
-            "studentname": that.pickstudentname,
-            "mothername": that.pickstudentmothername,
-            "fathername": that.pickstudentfathername,
-            "motheremail": that.pickstudentmotheremail,
-            "fatheremail": that.pickstudentfatheremail,
-            "mothermobile": that.pickstudentmothermobile,
-            "fathermobile": that.pickstudentfathermobile,
-            "pickgeoloc": that.pickstudentgeoloc,
-            "dropgeoloc": that.dropstudentgeoloc
+            "stdid": that.pickstudentid,
+            "stdnm": that.pickstudentname,
+            "mthrnm": that.pickstudentmothername,
+            "fthrnm": that.pickstudentfathername,
+            "mthreml": that.pickstudentmotheremail,
+            "fthreml": that.pickstudentfatheremail,
+            "mthrmob": that.pickstudentmothermobile,
+            "fthrmob": that.pickstudentfathermobile,
+            "late": (p_latlon.length > 0 ? p_latlon[0] : 0),
+            "long": (p_latlon.length > 0 ? p_latlon[1] : 0)
         });
 
         that.dropStudentsDT = that.reverseArr(that.pickStudentsDT);
 
-        that.pickstudentcode = "";
+        that.pickstudentid = 0;
         that.pickstudentname = "";
         that.pickstudentmothername = "";
         that.pickstudentfathername = "";
@@ -286,7 +287,7 @@ export class CreateScheduleComponent implements OnInit {
         that.pickstudentfathermobile = "";
         that.pickstudentgeoloc = "";
 
-        that.dropstudentcode = "";
+        that.dropstudentid = 0;
         that.dropstudentname = "";
         that.dropstudentmothername = "";
         that.dropstudentfathername = "";
@@ -299,21 +300,23 @@ export class CreateScheduleComponent implements OnInit {
 
     dropStudents() {
         var that = this;
+        var d_latlon = that.dropstudentgeoloc.split(',');
 
         that.dropStudentsDT.push({
             "counter": that.counter++,
-            "studentcode": that.dropstudentcode,
-            "studentname": that.dropstudentname,
-            "mothername": that.dropstudentcode,
-            "fathername": that.dropstudentname,
-            "motheremail": that.dropstudentcode,
-            "fatheremail": that.dropstudentname,
-            "mothermobile": that.dropstudentcode,
-            "fathermobile": that.dropstudentname,
-            "dropgeoloc": that.dropstudentgeoloc
+            "stdid": that.dropstudentid,
+            "stdnm": that.dropstudentname,
+            "mthrnm": that.dropstudentmothername,
+            "fthrnm": that.dropstudentfathername,
+            "mthreml": that.dropstudentmotheremail,
+            "fthreml": that.dropstudentfatheremail,
+            "mthrmob": that.dropstudentmothermobile,
+            "fthrmob": that.dropstudentfathermobile,
+            "late": (d_latlon.length > 0 ? d_latlon[0] : 0),
+            "long": (d_latlon.length > 0 ? d_latlon[1] : 0)
         });
 
-        that.dropstudentcode = "";
+        that.dropstudentid = 0;
         that.dropstudentname = "";
         that.dropstudentmothername = "";
         that.dropstudentfathername = "";
@@ -378,22 +381,32 @@ export class CreateScheduleComponent implements OnInit {
 
         for (var i = 0; i < that.pickStudentsDT.length; i++) {
             _pickstudDT.push({
-                "studentcode": that.pickStudentsDT[i].studentcode, "studentname": that.pickStudentsDT[i].studentname,
-                "mothername": that.pickStudentsDT[i].mothername, "fathername": that.pickStudentsDT[i].fathername,
-                "motheremail": that.pickStudentsDT[i].motheremail, "fatheremail": that.pickStudentsDT[i].fatheremail,
-                "mothermobile": that.pickStudentsDT[i].mothermobile, "fathermobile": that.pickStudentsDT[i].fathermobile,
-                "pickgeoloc": that.pickStudentsDT[i].pickgeoloc
-            })
+                "stdid": that.pickStudentsDT[i].stdid,
+                "stdnm": that.pickStudentsDT[i].stdnm,
+                "mthrnm": that.pickStudentsDT[i].mthrnm,
+                "fthrnm": that.pickStudentsDT[i].fthrnm,
+                "mthreml": that.pickStudentsDT[i].mthreml,
+                "fthreml": that.pickStudentsDT[i].fthreml,
+                "mthrmob": that.pickStudentsDT[i].mthrmob,
+                "fthrmob": that.pickStudentsDT[i].fthrmob,
+                "lat": that.pickStudentsDT[i].lat,
+                "lon": that.pickStudentsDT[i].lon
+            });
         }
 
-        for (var j = 0; j < that.dropStudentsDT.length; j++) {
+        for (var i = 0; i < that.dropStudentsDT.length; i++) {
             _dropstudDT.push({
-                "studentcode": that.dropStudentsDT[j].studentcode, "studentname": that.dropStudentsDT[j].studentname,
-                "mothername": that.dropStudentsDT[j].mothername, "fathername": that.dropStudentsDT[j].fathername,
-                "motheremail": that.dropStudentsDT[j].motheremail, "fatheremail": that.dropStudentsDT[j].fatheremail,
-                "mothermobile": that.dropStudentsDT[j].mothermobile, "fathermobile": that.dropStudentsDT[j].fathermobile,
-                "dropgeoloc": that.dropStudentsDT[j].dropgeoloc
-            })
+                "stdid": that.dropStudentsDT[i].stdid,
+                "stdnm": that.dropStudentsDT[i].stdnm,
+                "mthrnm": that.dropStudentsDT[i].mthrnm,
+                "fthrnm": that.dropStudentsDT[i].fthrnm,
+                "mthreml": that.dropStudentsDT[i].mthreml,
+                "fthreml": that.dropStudentsDT[i].fthreml,
+                "mthrmob": that.dropStudentsDT[i].mthrmob,
+                "fthrmob": that.dropStudentsDT[i].fthrmob,
+                "lat": that.dropStudentsDT[i].lat,
+                "lon": that.dropStudentsDT[i].lon
+            });
         }
 
         _pickdrop.push({
@@ -430,14 +443,14 @@ export class CreateScheduleComponent implements OnInit {
 
         savepickdrop = { "pickdropdata": _pickdrop };
 
-        this._pickdropservice.savePickDropInfo(savepickdrop).subscribe(data => {
+        this._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
             try {
                 var dataResult = data.data;
 
                 if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
                     // that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
                     alert(dataResult[0].funsave_pickdropinfo.msg);
-                    that._router.navigate(['/pickdrop']);
+                    that._router.navigate(['/createschedule']);
                 }
                 else {
                     alert(dataResult[0].funsave_pickdropinfo.msg);

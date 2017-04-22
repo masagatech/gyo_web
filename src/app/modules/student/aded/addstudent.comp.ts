@@ -21,10 +21,12 @@ export class AddStudentComponent implements OnInit {
     ownerid: number = 0;
     ownername: string = "";
 
+    studentid: number = 0;
+    studentcode: string = "";
     studentname: string = "";
     gender: string = "";
     dob: any = "";
-    schoolcode: string = "";
+    schoolid: number = 0;
     division: string = "";
     aadharno: any = "";
 
@@ -49,10 +51,12 @@ export class AddStudentComponent implements OnInit {
     remark1: string = "";
     global = new Globals();
 
+    private subscribeParameters: any;
+
     config = {
         // Change this to your upload POST address:
         server: this.global.serviceurl + "uploads",
-        method:"post",
+        method: "post",
         maxFilesize: 50,
         acceptedFiles: 'image/*'
     };
@@ -62,7 +66,10 @@ export class AddStudentComponent implements OnInit {
     }
 
     public ngOnInit() {
-
+        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+            this.studentid = params['id'];
+            this.getStudentDetail(this.studentid);
+        });
     }
 
     public onUploadError(event) {
@@ -116,9 +123,9 @@ export class AddStudentComponent implements OnInit {
         })
 
         var saveStudent = {
-            "studentcode": that.schoolcode,
+            "studentcode": that.schoolid,
             "studentname": that.studentname,
-            "schoolcode": that.schoolcode,
+            "schoolid": that.schoolid,
             "name": that.mothername + ";" + that.fathername,
             "mobileno1": that.mothermobile,
             "mobileno2": that.fathermobile,
@@ -156,5 +163,50 @@ export class AddStudentComponent implements OnInit {
         }, () => {
             // console.log("Complete");
         });
+    }
+
+    // Get student Data
+
+    getStudentDetail(sid) {
+        var that = this;
+        commonfun.loader();
+
+        that._studentervice.getStudentDetail({ "flag": "edit", "id": sid }).subscribe(data => {
+            that.studentid = data.data[0].autoid;
+            that.studentcode = data.data[0].studentcode;
+            that.studentname = data.data[0].studentname;
+            that.gender = data.data[0].studentprofiledata.gender;
+            that.dob = data.data[0].studentprofiledata.dob;
+            that.ownerid = data.data[0].ownerid;
+            that.ownername = data.data[0].ownername;
+            that.schoolid = data.data[0].schoolid;
+            that.division = data.data[0].studentprofiledata.division;
+            that.aadharno = data.data[0].aadharno;
+            that.mothername = data.data[0].name.split(';')[0];
+            that.mothermobile = data.data[0].mobileno1;
+            that.motheremail = data.data[0].email1;
+            that.fathername = data.data[0].name.split(';')[1];
+            that.fathermobile = data.data[0].mobileno2;
+            that.fatheremail = data.data[0].email2;
+            that.resiaddr = data.data[0].address;
+            that.pickupaddr = data.data[0].studentprofiledata.pickupaddr;
+            that.dropaddr = data.data[0].studentprofiledata.dropaddr;
+            that.resilet = data.data[0].resgeoloc.split(',')[0];
+            that.resilong = data.data[0].resgeoloc.split(',')[1];
+            that.pickuplet = data.data[0].pickgeoloc.split(',')[0];
+            that.pickuplong = data.data[0].pickgeoloc.split(',')[1];
+            that.droplet = data.data[0].dropgeoloc.split(',')[0];
+            that.droplong = data.data[0].dropgeoloc.split(',')[1];
+            that.otherinfo = data.data[0].studentprofiledata.otherinfo;
+            that.remark1 = data.data[0].remark1;
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 }
