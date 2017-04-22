@@ -16,7 +16,7 @@ export class DataService {
     post(api: string, params: any) {
         let body = JSON.stringify(params);
         let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers, method: "post" });
+        let options = new RequestOptions({ headers: headers });
         return this._http.post(this.global.serviceurl + api, body, options)
             .map(res => res.json())
             .catch(this.handleError);

@@ -4318,19 +4318,19 @@ button.ui-button::-moz-focus-inner {
 
 /* roboto-regular - latin */
 
-@font-face {
+/* @font-face {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     src: url('fonts/roboto-v15-latin-regular.eot');
-    /* IE9 Compat Modes */
-    src: local('Roboto'), local('Roboto-Regular'), url('fonts/roboto-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('fonts/roboto-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-    url('fonts/roboto-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
-    url('fonts/roboto-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    / IE9 Compat Modes /
+    src: local('Roboto'), local('Roboto-Regular'), url('fonts/roboto-v15-latin-regular.eot?#iefix') format('embedded-opentype'), / IE6-IE8 /
+    url('fonts/roboto-v15-latin-regular.woff2') format('woff2'), / Super Modern Browsers /
+    url('fonts/roboto-v15-latin-regular.woff') format('woff'), / Modern Browsers /
+    url('fonts/roboto-v15-latin-regular.ttf') format('truetype'), / Safari, Android, iOS /
     url('fonts/roboto-v15-latin-regular.svg#Roboto') format('svg');
-    /* Legacy iOS */
-}
+   
+}*/
 
 
 /* Component containers
@@ -5490,7 +5490,7 @@ button.ui-button::-moz-focus-inner {
  */
 
 .ui-button .ui-icon {
-    background-image: url("images/ui-icons_ffffff_256x240.png");
+    /*background-image: url("images/ui-icons_ffffff_256x240.png");*/
 }
 
 
