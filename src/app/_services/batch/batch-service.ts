@@ -14,7 +14,7 @@ export class BatchService {
         return this._dataserver.post("getBatchGrid", req)
     }
 
-    getBatchDetail(req: any) {
-        return this._dataserver.post("getBatchDetail", req)
+    getBatchDetails(req: any) {
+        return this._dataserver.post("getBatchDetails", req)
     }
 }

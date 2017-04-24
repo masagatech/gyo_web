@@ -27,7 +27,7 @@ export class ViewStudentComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._studentervice.getStudentDetail({ "flag": "all" }).subscribe(data => {
+        that._studentervice.getStudentDetails({ "flag": "all" }).subscribe(data => {
             that.studentDT = data.data;
             commonfun.loaderhide();
         }, err => {

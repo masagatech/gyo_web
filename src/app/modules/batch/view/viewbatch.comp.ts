@@ -12,7 +12,7 @@ export class ViewBatchComponent implements OnInit {
     batchDT: any = [];
 
     constructor(private _batchervice: BatchService, private _routeParams: ActivatedRoute, private _router: Router) {
-        this.getBatchDetail();
+        this.getBatchDetails();
     }
 
     public ngOnInit() {
@@ -21,11 +21,11 @@ export class ViewBatchComponent implements OnInit {
         }, 0);
     }
 
-    getBatchDetail() {
+    getBatchDetails() {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetail({ "flag": "all" }).subscribe(data => {
+        that._batchervice.getBatchDetails({ "flag": "all" }).subscribe(data => {
             that.batchDT = data.data;
             commonfun.loaderhide();
         }, err => {

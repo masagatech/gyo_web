@@ -37,8 +37,10 @@ export class AddBatchComponent implements OnInit {
 
     public ngOnInit() {
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
-            this.batchid = params['id'];
-            this.getBatchDetail(this.batchid);
+            if (params['id'] !== undefined) {
+                this.batchid = params['id'];
+                this.getBatchDetail(this.batchid);
+            }
         });
     }
 
@@ -54,7 +56,7 @@ export class AddBatchComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetail({ "flag": "dropdown" }).subscribe(data => {
+        that._batchervice.getBatchDetails({ "flag": "dropdown" }).subscribe(data => {
             var d = data.data;
 
             that.schoolDT = d.filter(a => a.group === "school");
@@ -113,12 +115,12 @@ export class AddBatchComponent implements OnInit {
     }
 
     // Get Batch Data
-    
+
     getBatchDetail(bid) {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetail({ "flag": "edit", "id": bid }).subscribe(data => {
+        that._batchervice.getBatchDetails({ "flag": "edit", "id": bid }).subscribe(data => {
             that.batchid = data.data[0].autoid;
             that.batchcode = data.data[0].batchcode;
             that.batchname = data.data[0].batchname;

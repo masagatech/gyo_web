@@ -72,10 +72,10 @@ commonfun.openurl = function(url, target, options) {
 }
 
 commonfun.navistyle = function() {
-    $(".ui-paginator-first").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("first_page");
-    $(".ui-paginator-prev").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("navigate_before");
-    $(".ui-paginator-next").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("navigate_next");
-    $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-primary btn-sm material-icons').text("last_page");
+    $(".ui-paginator-first").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("first_page");
+    $(".ui-paginator-prev").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_before");
+    $(".ui-paginator-next").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_next");
+    $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("last_page");
 }
 
 commonfun.randomColor = function(brightness) {

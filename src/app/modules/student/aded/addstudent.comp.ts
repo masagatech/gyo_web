@@ -5,8 +5,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../_const/globals';
 import { LazyLoadEvent } from 'primeng/primeng';
 
-declare var $: any;
-declare var Dropzone: any;
 @Component({
     templateUrl: 'addstudent.comp.html',
     providers: [StudentService, CommonService]
@@ -67,8 +65,10 @@ export class AddStudentComponent implements OnInit {
 
     public ngOnInit() {
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
-            this.studentid = params['id'];
-            this.getStudentDetail(this.studentid);
+            if (params['id'] !== undefined) {
+                this.studentid = params['id'];
+                this.getStudentDetails(this.studentid);
+            }
         });
     }
 
@@ -82,14 +82,19 @@ export class AddStudentComponent implements OnInit {
 
     fillDropDownList() {
         var that = this;
+        commonfun.loader();
 
-        that._studentervice.getStudentDetail({ "flag": "dropdown" }).subscribe(data => {
+        that._studentervice.getStudentDetails({ "flag": "dropdown" }).subscribe(data => {
             that.schoolDT = data.data.filter(a => a.group === "school");
             that.divisionDT = data.data.filter(a => a.group === "division");
             that.genderDT = data.data.filter(a => a.group === "gender");
+
+            commonfun.loaderhide();
         }, err => {
             //that._msg.Show(messageType.error, "Error", err);
             console.log(err);
+
+            commonfun.loaderhide();
         }, () => {
 
         })
@@ -116,6 +121,7 @@ export class AddStudentComponent implements OnInit {
 
     saveStudentInfo() {
         var that = this;
+        commonfun.loader();
         var studentprofiledata = [];
 
         studentprofiledata.push({
@@ -158,8 +164,12 @@ export class AddStudentComponent implements OnInit {
                 alert(msg);
                 // this._msg.Show(messageType.error, "Error", msg);
             }
+
+            commonfun.loaderhide();
         }, err => {
             console.log(err);
+
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         });
@@ -167,11 +177,11 @@ export class AddStudentComponent implements OnInit {
 
     // Get student Data
 
-    getStudentDetail(sid) {
+    getStudentDetails(sid) {
         var that = this;
         commonfun.loader();
 
-        that._studentervice.getStudentDetail({ "flag": "edit", "id": sid }).subscribe(data => {
+        that._studentervice.getStudentDetails({ "flag": "edit", "id": sid }).subscribe(data => {
             that.studentid = data.data[0].autoid;
             that.studentcode = data.data[0].studentcode;
             that.studentname = data.data[0].studentname;
@@ -208,5 +218,11 @@ export class AddStudentComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Back For View Data
+
+    backViewData() {
+        this._router.navigate(['/student']);
     }
 }

@@ -18,21 +18,22 @@ export const routes = [
   },
 ];
 
-
 @NgModule({
   declarations: [
-    // Components / Directives/ Pipes
     SurveyEntriesComp,
     SurveyDetailsComp
   ],
+
   imports: [
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
     DataTableModule
   ],
+
   providers: [DriverInfoService]
 })
+
 export class SurveyEntriesModule {
   public static routes = routes;
 }

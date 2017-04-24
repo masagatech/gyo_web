@@ -63,7 +63,6 @@ declare var System: SystemJS;
 declare var $: any;
 declare var commonfun: any;
 
-
 interface SystemJS {
   import: (path?: string) => Promise<any>;
 }

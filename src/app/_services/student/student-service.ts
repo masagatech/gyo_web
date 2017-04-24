@@ -14,7 +14,7 @@ export class StudentService {
         return this._dataserver.post("getStudentGrid", req)
     }
 
-    getStudentDetail(req: any) {
-        return this._dataserver.post("getStudentDetail", req)
+    getStudentDetails(req: any) {
+        return this._dataserver.post("getStudentDetails", req)
     }
 }
