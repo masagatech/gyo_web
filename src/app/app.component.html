@@ -293,7 +293,7 @@
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-                <li class="header">MAIN NAVIGATION</li>
+                <li class="header">Menu</li>
                 <li>
                     <a [routerLink]="['./home']" routerLinkActivate="active">
                         <i class="material-icons">home</i>
@@ -314,13 +314,25 @@
                 </li>
                 <li>
                     <a [routerLink]="['./batch']" routerLinkActivate="active">
-                        <i class="material-icons"></i>
+                        <i class="material-icons">book</i>
                         <span>Batch</span>
                     </a>
                 </li>
                 <li>
+                    <a [routerLink]="['./owner']" routerLinkActivate="active">
+                        <i class="material-icons">person</i>
+                        <span>Owner</span>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['./driver']" routerLinkActivate="active">
+                        <i class="material-icons">person</i>
+                        <span>Driver</span>
+                    </a>
+                </li>
+                <li>
                     <a [routerLink]="['./student']" routerLinkActivate="active">
-                        <i class="material-icons">person_add</i>
+                        <i class="material-icons">child_care</i>
                         <span>Student</span>
                     </a>
                 </li>
@@ -368,7 +380,6 @@
                         <div class="{{item.nm}}"></div>
                         <span>{{item.disp}}</span>
                     </li>
-
                 </ul>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="settings">

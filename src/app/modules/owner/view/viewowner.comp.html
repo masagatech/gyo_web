@@ -1,0 +1,38 @@
+<div class="card">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <h4>Owner</h4>
+            </div>
+            <div class="col-md-6" align="right">
+                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="addOwnerForm()">
+                    <i class="material-icons">add</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="ownerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="ownercode" header="Owner Code" [style]="{'width': '100px', 'align': 'left'}"></p-column>
+                    <p-column field="ownername" header="Owner Name" [style]="{'width': '200px', 'align': 'left'}"></p-column>
+                    <p-column field="aadharno" header="Aadhar No" [style]="{'width': '150px', 'align': 'left'}"></p-column>
+                    <p-column field="email1" header="Email" [style]="{'width': '150px', 'align': 'left'}"></p-column>
+                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '150px', 'align': 'left'}"></p-column>
+                    <p-column field="address" header="Address"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editOwnerForm(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,14 +3,14 @@ import { DataService } from '../dataconnect';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class BatchService {
+export class OwnerService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getBatchDetails(req: any) {
-        return this._dataserver.post("getBatchDetails", req)
+    getOwnerDetails(req: any) {
+        return this._dataserver.post("getOwnerDetails", req)
     }
 
-    saveBatchInfo(req: any) {
-        return this._dataserver.post("saveBatchInfo", req)
+    saveOwnerInfo(req: any) {
+        return this._dataserver.post("saveOwnerInfo", req)
     }
 }

@@ -6,10 +6,6 @@ import { Router } from '@angular/router';
 export class DriverService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getDriverGrid(req: any) {
-        return this._dataserver.post("getDriverGrid", req)
-    }
-
     getDriverDetails(req: any) {
         return this._dataserver.post("getDriverDetails", req)
     }

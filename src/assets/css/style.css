@@ -3126,7 +3126,7 @@ a {
 }
 
 section.content {
-    margin: 100px 15px 0 315px;
+    margin: 70px 15px 0 315px;
     -moz-transition: 0.5s;
     -o-transition: 0.5s;
     -webkit-transition: 0.5s;
@@ -10280,7 +10280,6 @@ fieldset[disabled] .form-control {
     overflow: hidden;
     font-size: 14px;
     max-width: 200px;
-    color: #fff;
 }
 
 .sidebar .user-info .info-container .email {
@@ -10291,7 +10290,6 @@ fieldset[disabled] .form-control {
     overflow: hidden;
     font-size: 12px;
     max-width: 200px;
-    color: #fff;
 }
 
 .sidebar .user-info .info-container .user-helper-dropdown {
@@ -10303,7 +10301,6 @@ fieldset[disabled] .form-control {
     -ms-box-shadow: none;
     box-shadow: none;
     cursor: pointer;
-    color: #fff;
 }
 
 .sidebar .menu {
@@ -10323,7 +10320,6 @@ fieldset[disabled] .form-control {
 
 .sidebar .menu .list .header {
     background: #eee;
-    font-size: 12px;
     font-weight: 600;
     padding: 8px 16px;
 }

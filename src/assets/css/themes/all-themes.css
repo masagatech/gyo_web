@@ -8,6 +8,12 @@
   background-color: #F44336!important;
   color: #fff!important; }
 
+.theme-red .sidebar .menu .list .header {
+  background-color: #F44336!important;
+  color: #fff!important; }
+
+.theme-deep-purple .sidebar .menu .list .header span {
+  color: #fff!important; }
 .theme-red .navbar {
   background-color: #F44336; }
 
@@ -60,6 +66,10 @@
   color: #fff!important; }
 
 .theme-pink button, .theme-pink .btn-navigate {
+  background-color: #E91E63!important;
+  color: #fff!important; }
+
+.theme-pink .sidebar .menu .list .header {
   background-color: #E91E63!important;
   color: #fff!important; }
 
@@ -118,6 +128,10 @@
   background-color: #9C27B0!important;
   color: #fff!important; }
 
+.theme-purple .sidebar .menu .list .header {
+  background-color: #9C27B0!important;
+  color: #fff!important; }
+
 .theme-purple .navbar {
   background-color: #9C27B0; }
 
@@ -172,13 +186,12 @@
 .theme-deep-purple button, .theme-deep-purple .btn-navigate {
   background-color: #673AB7!important;
   color: #fff!important; }
-/*
-.theme-deep-purple .ui-state-default {
-  background-color: #673AB7!important; }
 
-.theme-deep-purple .ui-state-default span {
+.theme-deep-purple .sidebar .menu .list .header {
+  background-color: #673AB7!important;
   color: #fff!important; }
 
+/*
 .theme-deep-purple .ui-state-active {
   background-color: #fff!important; }
 
@@ -239,13 +252,12 @@
 .theme-indigo button, .theme-indigo .btn-navigate {
   background-color: #3F51B5!important;
   color: #fff!important; }
-/*
-.theme-indigo .ui-state-default {
-  background-color: #3F51B5!important; }
 
-.theme-indigo .ui-state-default span {
+.theme-indigo .sidebar .menu .list .header {
+  background-color: #3F51B5!important;
   color: #fff!important; }
 
+/*
 .theme-indigo .ui-state-active {
   background-color: #fff!important; }
 
@@ -306,13 +318,12 @@
 .theme-blue button, .theme-blue .btn-navigate {
   background-color: #2196F3!important;
   color: #fff!important; }
-/*
-.theme-blue .ui-state-default {
-  background-color: #2196F3!important; }
 
-.theme-blue .ui-state-default span {
+.theme-blue .sidebar .menu .list .header {
+  background-color: #2196F3!important;
   color: #fff!important; }
 
+/*
 .theme-blue .ui-state-active {
   background-color: #fff!important; }
 
@@ -373,13 +384,12 @@
 .theme-light-blue button, .theme-light-blue .btn-navigate {
   background-color: #03A9F4!important;
   color: #fff!important; }
-/*
-.theme-light-blue .ui-state-default {
-  background-color: #03A9F4!important; }
 
-.theme-light-blue .ui-state-default span {
+.theme-light-blue .sidebar .menu .list .header {
+  background-color: #03A9F4!important;
   color: #fff!important; }
 
+/*
 .theme-light-blue .ui-state-active {
   background-color: #fff!important; }
 
@@ -440,13 +450,12 @@
 .theme-cyan button, .theme-cyan .btn-navigate {
   background-color: #00BCD4!important;
   color: #fff!important; }
-/*
-.theme-cyan .ui-state-default {
-  background-color: #00BCD4!important; }
 
-.theme-cyan .ui-state-default span {
+.theme-cyan .sidebar .menu .list .header {
+  background-color: #00BCD4!important;
   color: #fff!important; }
 
+/*
 .theme-cyan .ui-state-active {
   background-color: #fff!important; }
 
@@ -507,13 +516,12 @@
 .theme-teal button, .theme-teal .btn-navigate {
   background-color: #009688!important;
   color: #fff!important; }
-/*
-.theme-teal .ui-state-default {
-  background-color: #009688!important; }
 
-.theme-teal .ui-state-default span {
+.theme-teal .sidebar .menu .list .header {
+  background-color: #009688!important;
   color: #fff!important; }
 
+/*
 .theme-teal .ui-state-active {
   background-color: #fff!important; }
 
@@ -574,13 +582,12 @@
 .theme-green button, .theme-green .btn-navigate {
   background-color: #4CAF50!important;
   color: #fff!important; }
-/*
-.theme-green .ui-state-default {
-  background-color: #4CAF50!important; }
 
-.theme-green .ui-state-default span {
+.theme-green .sidebar .menu .list .header {
+  background-color: #4CAF50!important;
   color: #fff!important; }
 
+/*
 .theme-green .ui-state-active {
   background-color: #fff!important; }
 
@@ -641,13 +648,12 @@
 .theme-light-green button, .theme-light-green .btn-navigate {
   background-color: #8BC34A!important;
   color: #fff!important; }
-/*
-.theme-light-green .ui-state-default {
-  background-color: #8BC34A!important; }
 
-.theme-light-green .ui-state-default span {
+.theme-light-green .sidebar .menu .list .header {
+  background-color: #8BC34A!important;
   color: #fff!important; }
 
+/*
 .theme-light-green .ui-state-active {
   background-color: #fff!important; }
 
@@ -708,13 +714,12 @@
 .theme-lime button, .theme-lime .btn-navigate {
   background-color: #CDDC39!important;
   color: #fff!important; }
-/*
-.theme-lime .ui-state-default {
-  background-color: #CDDC39!important; }
 
-.theme-lime .ui-state-default span {
+.theme-lime .sidebar .menu .list .header {
+  background-color: #CDDC39!important;
   color: #fff!important; }
 
+/*
 .theme-lime .ui-state-active {
   background-color: #fff!important; }
 
@@ -775,13 +780,12 @@
 .theme-yellow button, .theme-yellow .btn-navigate {
   background-color: #FFEB3B!important;
   color: #fff!important; }
-/*
-.theme-yellow .ui-state-default {
-  background-color: #FFEB3B!important; }
 
-.theme-yellow .ui-state-default span {
+.theme-yellow .sidebar .menu .list .header {
+  background-color: #FFEB3B!important;
   color: #fff!important; }
 
+/*
 .theme-yellow .ui-state-active {
   background-color: #fff!important; }
 
@@ -842,13 +846,12 @@
 .theme-amber button, .theme-amber .btn-navigate {
   background-color: #FFC107!important;
   color: #fff!important; }
-/*
-.theme-amber .ui-state-default {
-  background-color: #FFC107!important; }
 
-.theme-amber .ui-state-default span {
+.theme-amber .sidebar .menu .list .header {
+  background-color: #FFC107!important;
   color: #fff!important; }
 
+/*
 .theme-amber .ui-state-active {
   background-color: #fff!important; }
 
@@ -909,13 +912,12 @@
 .theme-orange button, .theme-orange .btn-navigate {
   background-color: #FF9800!important;
   color: #fff!important; }
-/*
-.theme-orange .ui-state-default {
-  background-color: #FF9800!important; }
 
-.theme-orange .ui-state-default span {
+.theme-orange .sidebar .menu .list .header {
+  background-color: #FF9800!important;
   color: #fff!important; }
 
+/*
 .theme-orange .ui-state-active {
   background-color: #fff!important; }
 
@@ -976,13 +978,12 @@
 .theme-deep-orange button, .theme-deep-orange .btn-navigate {
   background-color: #FF5722!important;
   color: #fff!important; }
-/*
-.theme-deep-orange .ui-state-default {
-  background-color: #FF5722!important; }
 
-.theme-deep-orange .ui-state-default span {
+.theme-deep-orange .sidebar .menu .list .header {
+  background-color: #FF5722!important;
   color: #fff!important; }
 
+/*
 .theme-deep-orange .ui-state-active {
   background-color: #fff!important; }
 
@@ -1043,13 +1044,12 @@
 .theme-brown button, .theme-brown .btn-navigate {
   background-color: #795548!important;
   color: #fff!important; }
-/*
-.theme-brown .ui-state-default {
-  background-color: #795548!important; }
 
-.theme-brown .ui-state-default span {
+.theme-brown .sidebar .menu .list .header {
+  background-color: #795548!important;
   color: #fff!important; }
 
+/*
 .theme-brown .ui-state-active {
   background-color: #fff!important; }
 
@@ -1110,13 +1110,15 @@
 .theme-grey button, .theme-grey .btn-navigate {
   background-color: #9E9E9E!important;
   color: #fff!important; }
-/*
-.theme-grey .ui-state-default {
-  background-color: #9E9E9E!important; }
 
-.theme-grey .ui-state-default span {
+.theme-grey .sidebar .menu .list .header {
+  background-color: #9E9E9E!important;
   color: #fff!important; }
 
+.theme-grey .sidebar .menu .list .header span {
+  color: #fff!important; }
+
+/*
 .theme-grey .ui-state-active {
   background-color: #fff!important; }
 
@@ -1177,13 +1179,12 @@
 .theme-blue-grey button, .theme-blue-gray .btn-navigate {
   background-color: #607D8B!important;
   color: #fff!important; }
-/*
-.theme-blue-grey .ui-state-default {
-  background-color: #607D8B!important; }
 
-.theme-blue-grey .ui-state-default span {
+.theme-blue-grey .sidebar .menu .list .header {
+  background-color: #607D8B!important;
   color: #fff!important; }
 
+/*
 .theme-blue-grey .ui-state-active {
   background-color: #fff!important; }
 
@@ -1244,13 +1245,12 @@
 .theme-black button, .theme-black .btn-navigate {
   background-color: #000!important;
   color: #fff!important; }
-/*
-.theme-black .ui-state-default {
-  background-color: #000!important; }
 
-.theme-black .ui-state-default span {
+.theme-black .sidebar .menu .list .header {
+  background-color: #000!important;
   color: #fff!important; }
 
+/*
 .theme-black .ui-state-active {
   background-color: #fff!important; }
 
