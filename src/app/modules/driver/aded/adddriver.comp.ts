@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AddDriverComponent implements OnInit {
     driverid: number = 0;
     drivercode: string = "";
+    driverpwd: string = "";
     drivername: string = "";
     ownerid: number = 0;
     aadharno: string = "";
@@ -101,6 +102,7 @@ export class AddDriverComponent implements OnInit {
         var saveDriver = {
             "autoid": that.driverid,
             "drivercode": that.drivercode,
+            "driverpwd": that.driverpwd,
             "drivername": that.drivername,
             "aadharno": that.aadharno,
             "licenseno": that.licenseno,
@@ -158,9 +160,10 @@ export class AddDriverComponent implements OnInit {
                 that._driverservice.getDriverDetails({ "flag": "edit", "id": this.driverid }).subscribe(data => {
                     that.driverid = data.data[0].autoid;
                     that.drivercode = data.data[0].drivercode;
+                    that.driverpwd = data.data[0].driverpwd;
                     that.drivername = data.data[0].drivername;
-                    that.lat = data.data[0].geoloc.split(',')[0];
-                    that.lon = data.data[0].geoloc.split(',')[1];
+                    that.lat = data.data[0].lat;
+                    that.lon = data.data[0].lon;
                     that.aadharno = data.data[0].aadharno;
                     that.licenseno = data.data[0].licenseno;
                     that.email1 = data.data[0].email1;

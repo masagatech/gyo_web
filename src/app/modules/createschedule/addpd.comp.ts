@@ -5,10 +5,6 @@ import { CommonService } from '../../_services/common/common-service'; /* add re
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 
-declare var $: any;
-declare var Dropzone: any;
-declare var commonfun: any;
-
 @Component({
     templateUrl: 'addpd.comp.html',
     providers: [PickDropService, CommonService]
@@ -178,64 +174,52 @@ export class CreateScheduleComponent implements OnInit {
     }
 
     fillSchoolDropDown(_ownerid) {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe(data => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe(data => {
             that.schoolDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
     }
 
     fillBatchDropDown() {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe(data => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe(data => {
             that.batchDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
     }
 
     fillDriverDropDown(_ownerid) {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe(data => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe(data => {
             that.driverDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
     }
 
     fillVehicleDropDown(_ownerid) {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe(data => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe(data => {
             that.vehicleDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
@@ -339,7 +323,7 @@ export class CreateScheduleComponent implements OnInit {
         commonfun.loader();
         var that = this;
 
-        this._pickdropservice.getPickDropDetail({
+        this._pickdropservice.getPickDropDetails({
             "flag": "edit", "ownerid": that.ownerid, "schoolid": that.schoolid, "batchid": that.batchid
         }).subscribe(data => {
             try {

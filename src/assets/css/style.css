@@ -11867,4 +11867,16 @@ body.waitMe_body .waitMe_container.text>div {
 
     .form-controlAutoComplete input {
         border: none!important;
+        width: 100%;
     }
+    
+    .form-controlAutoComplete ul {
+        border: none!important;
+        width: 100%;
+    }
+
+.autoext {
+    padding: 5px;
+    margin: 5px 5px 5px 0;
+    border-radius: 5px;
+}

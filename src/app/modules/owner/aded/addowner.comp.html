@@ -28,15 +28,26 @@
         <div class="card">
             <div class="body">
                 <div class="row clearfix">
-                    <div class="col-md-4">
-                        <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
                             <div class="form-line">
                                 <label>Owner Code</label>
                                 <input type="text" [(ngModel)]="ownercode" class="form-control" placeholder="Owner Code" maxlength="10" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Password</label>
+                                <input type="password" [(ngModel)]="ownerpwd" class="form-control" placeholder="Password" maxlength="10" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label>Owner Name</label>
@@ -44,9 +55,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row clearfix">
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
@@ -63,6 +71,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
@@ -82,6 +93,28 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>School</label>
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                                    [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="schoolList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of schoolList">
+                            {{row.schnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteSchool(row)"><i class="material-icons">remove</i></button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

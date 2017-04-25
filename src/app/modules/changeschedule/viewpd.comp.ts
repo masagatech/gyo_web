@@ -4,10 +4,6 @@ import { CommonService } from '../../_services/common/common-service'; /* add re
 // import { MessageService, messageType } from '../../_services/messages/message-service'; /* add reference for master of master */
 import { Router, ActivatedRoute } from '@angular/router';
 
-declare var $: any;
-declare var Dropzone: any;
-declare var commonfun: any;
-
 @Component({
     templateUrl: 'viewpd.comp.html',
     providers: [PickDropService, CommonService]
@@ -81,29 +77,12 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
 
         setTimeout(function () {
-            // ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only
-            // ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only
-
-            // $(".ui-button-icon-left").find('span').addClass('material-icons').text("save");
-            // ui-button-icon-left ui-c fa fa-fw fa-angle-up
-
-            var arrbtn = $(".ui-button-icon-only");
-            var ids = 0;
-
-            for (var i = 1; i <= $(".ui-button-icon-only").length; i++) {
-                $(".ui-button-icon-only").attr('id', 'btn' + i);
-            }
-
-
-            console.log(".ui-button-icon-only" + $(".ui-button-icon-only").length);
-
-            // $(".ui-button-icon-only").find('span').removeAttr('class').addClass('material-icons').text("keyboard_arrow_down");
             $(".ui-picklist-buttons").hide();
             $(".ui-picklist-source-controls").show();
             $(".ui-picklist-target-controls").show();
 
-            $(".fc-prev-button").find('span').removeAttr('class').addClass('material-icons');
-            $(".fc-next-button").find('span').removeAttr('class').addClass('material-icons');
+            $(".fc-prev-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
+            $(".fc-next-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
         }, 0);
 
         that.header = {
@@ -146,7 +125,6 @@ export class ChangeScheduleComponent implements OnInit {
     }
 
     getStudentData(event) {
-        commonfun.loader();
         let query = event.query;
 
         this._autoservice.getAutoData({
@@ -155,7 +133,6 @@ export class ChangeScheduleComponent implements OnInit {
             "id": this.schoolid
         }).then((data) => {
             this.studentsDT = data;
-            commonfun.loaderhide();
         });
     }
 
@@ -170,7 +147,6 @@ export class ChangeScheduleComponent implements OnInit {
             this.fillVehicleDropDown(this.ownerid);
         }
         else {
-            debugger;
             this.p_stdid = event.studid;
             this.pickstudentname = event.studnm;
             this.pickaddr = event.pickupaddr;
@@ -209,64 +185,52 @@ export class ChangeScheduleComponent implements OnInit {
     }
 
     fillSchoolDropDown(_ownerid) {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe((data) => {
             that.schoolDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
     }
 
     fillBatchDropDown() {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe((data) => {
             that.batchDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
     }
 
     fillDriverDropDown(_ownerid) {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe((data) => {
             that.driverDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
     }
 
     fillVehicleDropDown(_ownerid) {
-        commonfun.loader();
         var that = this;
 
-        that._pickdropservice.getPickDropDetail({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe((data) => {
             that.vehicleDT = data.data;
-            commonfun.loaderhide();
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })
@@ -384,7 +348,7 @@ export class ChangeScheduleComponent implements OnInit {
         commonfun.loader();
         var that = this;
 
-        this._pickdropservice.getPickDropDetail({
+        this._pickdropservice.getPickDropDetails({
             "flag": "edit", "ownerid": that.ownerid, "schoolid": that.schoolid, "batchid": that.batchid,
             "frmdt": event.date, "todt": event.date
         }).subscribe((data) => {

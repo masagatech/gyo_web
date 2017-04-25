@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
+import { LoginComponent } from './login/login.comp';
 import { NoContentComponent } from './no-content';
 
 // Application wide providers
@@ -41,6 +42,7 @@ type StoreType = {
   declarations: [
     AppComponent,
     HomeComponent,
+    LoginComponent,
     NoContentComponent,
   ],
   imports: [ // import Angular's modules

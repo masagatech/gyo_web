@@ -18,12 +18,16 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="ownerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="ownercode" header="Owner Code" [style]="{'width': '100px', 'align': 'left'}"></p-column>
-                    <p-column field="ownername" header="Owner Name" [style]="{'width': '200px', 'align': 'left'}"></p-column>
-                    <p-column field="aadharno" header="Aadhar No" [style]="{'width': '150px', 'align': 'left'}"></p-column>
-                    <p-column field="email1" header="Email" [style]="{'width': '150px', 'align': 'left'}"></p-column>
-                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '150px', 'align': 'left'}"></p-column>
-                    <p-column field="address" header="Address"></p-column>
+                    <p-column header="" [style]="{'width':'60px','text-align':'center'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <img alt="{{row.ownername}}" src="uploads/owner/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                        </template>
+                    </p-column>
+                    <p-column field="ownercode" header="Owner Code" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="ownername" header="Owner Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
+                    <p-column field="aadharno" header="Aadhar No" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
+                    <p-column field="email1" header="Email" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
+                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editOwnerForm(row)">

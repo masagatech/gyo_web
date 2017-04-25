@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { OwnerService } from '../../../_services/owner/owner-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     templateUrl: 'addowner.comp.html',
-    providers: [OwnerService]
+    providers: [OwnerService, CommonService]
 })
 
 export class AddOwnerComponent implements OnInit {
     ownerid: number = 0;
     ownercode: string = "";
+    ownerpwd: string = "";
     ownername: string = "";
     aadharno: string = "";
     lat: string = "";
@@ -25,12 +27,17 @@ export class AddOwnerComponent implements OnInit {
     pincode: string = "";
     remark1: string = "";
 
+    schoolDT: any = [];
+    schoolList: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
+
     mode: string = "";
     isactive: boolean = true;
 
     private subscribeParameters: any;
 
-    constructor(private _ownerervice: OwnerService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _ownerervice: OwnerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, private _router: Router) {
 
     }
 
@@ -38,9 +45,49 @@ export class AddOwnerComponent implements OnInit {
         this.getOwnerDetails();
     }
 
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "type": "school",
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event, type) {
+        this.schoolid = event.value;
+        this.schoolname = event.label;
+
+        this.addSchoolList();
+        $(".schoolname input").focus();
+    }
+
+    // Read Get School
+
+    addSchoolList() {
+        var that = this;
+
+        that.schoolList.push({
+            "schid": that.schoolid, "schnm": that.schoolname
+        });
+
+        that.schoolid = 0;
+        that.schoolname = "";
+    }
+
+    deleteSchool(row) {
+        this.schoolList.splice(this.schoolList.indexOf(row), 1);
+    }
+
     // Active / Deactive Data
 
-    active_deactiveOwnerInfo(){
+    active_deactiveOwnerInfo() {
         var that = this;
 
         var act_deactOwner = {
@@ -76,12 +123,19 @@ export class AddOwnerComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
+        var _schlist: string[] = [];
+
+        _schlist = Object.keys(that.schoolList).map(function (k) { return that.schoolList[k].schid });
+        console.log(_schlist);
+
         var saveowner = {
             "autoid": that.ownerid,
             "ownercode": that.ownercode,
+            "ownerpwd": that.ownerpwd,
             "ownername": that.ownername,
             "aadharno": that.aadharno,
             "geoloc": that.lat + "," + that.lon,
+            "school": _schlist,
             "mobileno1": that.mobileno1,
             "mobileno2": that.mobileno2,
             "email1": that.email1,
@@ -134,9 +188,11 @@ export class AddOwnerComponent implements OnInit {
                 that._ownerervice.getOwnerDetails({ "flag": "edit", "id": this.ownerid }).subscribe(data => {
                     that.ownerid = data.data[0].autoid;
                     that.ownercode = data.data[0].ownercode;
+                    that.ownerpwd = data.data[0].ownerpwd;
                     that.ownername = data.data[0].ownername;
-                    that.lat = data.data[0].geoloc.split(',')[0];
-                    that.lon = data.data[0].geoloc.split(',')[1];
+                    that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
+                    that.lat = data.data[0].lat;
+                    that.lon = data.data[0].lon;
                     that.aadharno = data.data[0].aadharno;
                     that.email1 = data.data[0].email1;
                     that.email2 = data.data[0].email2;
@@ -148,6 +204,7 @@ export class AddOwnerComponent implements OnInit {
                     that.city = data.data[0].city;
                     that.pincode = data.data[0].pincode;
                     that.remark1 = data.data[0].remark1;
+                    that.schoolname = data.data[0].schoolname;
                     that.isactive = data.data[0].isactive;
                     that.mode = data.data[0].mode;
 

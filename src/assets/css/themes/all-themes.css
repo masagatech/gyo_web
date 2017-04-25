@@ -1,21 +1,19 @@
 ﻿/* Red */
 
 .theme-red th {
-  background-color: #F44336!important;
+  background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
   color: #fff!important; }
 
 .theme-red button, .theme-red .btn-navigate {
-  background-color: #F44336!important;
+  background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
   color: #fff!important; }
 
 .theme-red .sidebar .menu .list .header {
-  background-color: #F44336!important;
+  background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
   color: #fff!important; }
 
-.theme-deep-purple .sidebar .menu .list .header span {
-  color: #fff!important; }
 .theme-red .navbar {
-  background-color: #F44336; }
+  background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important; }
 
 .theme-red .navbar-brand {
   color: #fff; }

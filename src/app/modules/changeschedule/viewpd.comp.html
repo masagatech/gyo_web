@@ -1,11 +1,15 @@
-<div class="row clearfix">
-    <div class="col-md-6">
-        <h3>View Pick Up and Drop</h3>
-    </div>
-    <div class="col-md-6" align="right">
-        <button type="button" class="btn bg-orange waves-effect btn-sm" (click)="savePickDropInfo()">
-            <i class="material-icons">save</i>
-        </button>
+<div class="card">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <h4>View Pick Up and Drop</h4>
+            </div>
+            <div class="col-md-6" align="right">
+                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="savePickDropInfo()">
+                    <i class="material-icons">save</i>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -26,8 +30,8 @@
                             <div class="form-line">
                                 <select [(ngModel)]="schoolid" class="form-control" (ngModelChange)="fillBatchDropDown();getStudentData($event);" tabindex="2">
                                     <option [value]="0">Select School</option>
-                                    <option *ngFor="let row of schoolDT" [value]="row.key">	
-                                        {{row.val}}
+                                    <option *ngFor="let row of schoolDT" [value]="row.schid">	
+                                        {{row.schnm}}
                                     </option>
                                 </select>
                             </div>
@@ -189,11 +193,10 @@
                         <p-autoComplete id="dropstudentname" name="dropstudentname" [(ngModel)]="dropstudentname" placeholder="Drop Student Name"
                             [tabindex]="12" (onSelect)="selectDropStudent($event)" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)"
                             field="studnm" [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
-                        <div class="pull-right">
-                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="pickupStudents()">
-                                <i class="material-icons">add</i>
-                            </button>
-                        </div>
+
+                        <button type="button" class="btn bg-orange waves-effect btn-xs pull-right" (click)="pickupStudents()">
+                            <i class="material-icons">add</i>
+                        </button>
                     </div>
                 </div>
 

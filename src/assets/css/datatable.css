@@ -222,7 +222,7 @@
 }
 
 .ui-autocomplete {
-    width: auto;
+    width: 100%;
     zoom: 1;
     cursor: pointer;
     -moz-box-shadow: none;
@@ -307,7 +307,7 @@
 
 .ui-autocomplete-token-label {
     display: block;
-    padding: 0 2.1em 0 .5em
+    padding: 4px 2.1em 4px .5em;
 }
 
 .ui-autocomplete-token-icon {
@@ -326,8 +326,8 @@
 }
 
 .ui-autocomplete-input-token .ui-inputtext {
-    border: 0 none;
-    width: 140px;
+    border: none;
+    width: 100%;
     outline: medium none;
     background-color: transparent;
     margin: 0;

@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 export class PickDropService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getPickDropDetail(req: any) {
-        return this._dataserver.post("getPickDropDetail", req)
+    getPickDropDetails(req: any) {
+        return this._dataserver.post("getPickDropDetails", req)
     }
 
     savePickDropInfo(req: any) {

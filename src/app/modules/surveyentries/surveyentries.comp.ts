@@ -20,7 +20,9 @@ export class SurveyEntriesComp implements OnInit {
     }
 
     public ngOnInit() {
-
+        setTimeout(function () {
+            commonfun.navistyle();
+        }, 0);
     }
 
     getGridData(from: number, to: number) {
