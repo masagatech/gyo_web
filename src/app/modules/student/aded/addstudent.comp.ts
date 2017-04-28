@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../_services/student/student-service';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../_const/globals';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -59,17 +60,13 @@ export class AddStudentComponent implements OnInit {
         acceptedFiles: 'image/*'
     };
 
-    constructor(private _studentervice: StudentService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _studentervice: StudentService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService) {
         this.fillDropDownList();
     }
 
     public ngOnInit() {
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                this.studentid = params['id'];
-                this.getStudentDetails(this.studentid);
-            }
-        });
+        this.getStudentDetails();
     }
 
     public onUploadError(event) {
@@ -85,13 +82,18 @@ export class AddStudentComponent implements OnInit {
         commonfun.loader();
 
         that._studentervice.getStudentDetails({ "flag": "dropdown" }).subscribe(data => {
-            that.schoolDT = data.data.filter(a => a.group === "school");
-            that.divisionDT = data.data.filter(a => a.group === "division");
-            that.genderDT = data.data.filter(a => a.group === "gender");
+            try {
+                that.schoolDT = data.data.filter(a => a.group === "school");
+                that.divisionDT = data.data.filter(a => a.group === "division");
+                that.genderDT = data.data.filter(a => a.group === "gender");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
             commonfun.loaderhide();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
 
             commonfun.loaderhide();
@@ -122,13 +124,15 @@ export class AddStudentComponent implements OnInit {
     saveStudentInfo() {
         var that = this;
         commonfun.loader();
-        var studentprofiledata = [];
+        var studentprofiledata = {};
 
-        studentprofiledata.push({
-            "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "division": that.division, "gender": that.gender, "otherinfo": that.otherinfo
-        })
+        studentprofiledata = {
+            "gender": that.gender, "dob": that.dob, "division": that.division,
+            "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
+        }
 
         var saveStudent = {
+            "autoid": that.studentid,
             "studentcode": that.schoolid,
             "studentname": that.studentname,
             "schoolid": that.schoolid,
@@ -148,26 +152,26 @@ export class AddStudentComponent implements OnInit {
             "remark1": that.remark1
         }
 
-        this._studentervice.saveStudentInfo(saveStudent).subscribe(data => {
-            var dataResult = data.data;
+        that._studentervice.saveStudentInfo(saveStudent).subscribe(data => {
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_studentinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_studentinfo.msg;
-                var parentid = dataResult[0].funsave_employee.keyid;
-
-                alert(msg);
-                // this._msg.Show(messageType.success, "Success", msg);
-                this._router.navigate(['/employee/view']);
+                if (dataResult[0].funsave_studentinfo.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_studentinfo.msg);
+                    that._router.navigate(['/student']);
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_studentinfo.msg);
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_studentinfo.msg;
-                alert(msg);
-                // this._msg.Show(messageType.error, "Error", msg);
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
 
             commonfun.loaderhide();
         }, err => {
             console.log(err);
+            that._msg.Show(messageType.error, "Error", err);
 
             commonfun.loaderhide();
         }, () => {
@@ -177,47 +181,64 @@ export class AddStudentComponent implements OnInit {
 
     // Get student Data
 
-    getStudentDetails(sid) {
+    getStudentDetails() {
         var that = this;
         commonfun.loader();
 
-        that._studentervice.getStudentDetails({ "flag": "edit", "id": sid }).subscribe(data => {
-            that.studentid = data.data[0].autoid;
-            that.studentcode = data.data[0].studentcode;
-            that.studentname = data.data[0].studentname;
-            that.gender = data.data[0].studentprofiledata.gender;
-            that.dob = data.data[0].studentprofiledata.dob;
-            that.ownerid = data.data[0].ownerid;
-            that.ownername = data.data[0].ownername;
-            that.schoolid = data.data[0].schoolid;
-            that.division = data.data[0].studentprofiledata.division;
-            that.aadharno = data.data[0].aadharno;
-            that.mothername = data.data[0].name.split(';')[0];
-            that.mothermobile = data.data[0].mobileno1;
-            that.motheremail = data.data[0].email1;
-            that.fathername = data.data[0].name.split(';')[1];
-            that.fathermobile = data.data[0].mobileno2;
-            that.fatheremail = data.data[0].email2;
-            that.resiaddr = data.data[0].address;
-            that.pickupaddr = data.data[0].studentprofiledata.pickupaddr;
-            that.dropaddr = data.data[0].studentprofiledata.dropaddr;
-            that.resilet = data.data[0].resgeoloc.split(',')[0];
-            that.resilong = data.data[0].resgeoloc.split(',')[1];
-            that.pickuplet = data.data[0].pickgeoloc.split(',')[0];
-            that.pickuplong = data.data[0].pickgeoloc.split(',')[1];
-            that.droplet = data.data[0].dropgeoloc.split(',')[0];
-            that.droplong = data.data[0].dropgeoloc.split(',')[1];
-            that.otherinfo = data.data[0].studentprofiledata.otherinfo;
-            that.remark1 = data.data[0].remark1;
+        that.subscribeParameters = this._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.studentid = params['id'];
 
-            commonfun.loaderhide();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+                that._studentervice.getStudentDetails({ "flag": "edit", "id": that.studentid }).subscribe(data => {
+                    try {
+                        that.studentid = data.data[0].autoid;
+                        that.studentcode = data.data[0].studentcode;
+                        that.studentname = data.data[0].studentname;
 
-        })
+                        that.ownerid = data.data[0].ownerid;
+                        that.ownername = data.data[0].ownername;
+                        that.schoolid = data.data[0].schoolid;
+                        that.aadharno = data.data[0].aadharno;
+                        that.mothername = data.data[0].name.split(';')[0];
+                        that.mothermobile = data.data[0].mobileno1;
+                        that.motheremail = data.data[0].email1;
+                        that.fathername = data.data[0].name.split(';')[1];
+                        that.fathermobile = data.data[0].mobileno2;
+                        that.fatheremail = data.data[0].email2;
+                        that.resiaddr = data.data[0].address;
+                        that.resilet = data.data[0].resilat;
+                        that.resilong = data.data[0].resilon;
+                        that.pickuplet = data.data[0].pickuplat;
+                        that.pickuplong = data.data[0].pickuplon;
+                        that.droplet = data.data[0].droplat;
+                        that.droplong = data.data[0].droplon;
+                        that.remark1 = data.data[0].remark1;
+
+                        var studentprofiledata = data.data[0].studentprofiledata;
+
+                        if (studentprofiledata !== null) {
+                            that.gender = data.data[0].gender;
+                            that.dob = data.data[0].dob;
+                            that.division = data.data[0].division;
+                            that.pickupaddr = data.data[0].pickupaddr;
+                            that.dropaddr = data.data[0].dropaddr;
+                            that.otherinfo = data.data[0].otherinfo;
+                        }
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+        });
     }
 
     // Back For View Data

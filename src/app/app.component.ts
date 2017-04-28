@@ -2,10 +2,12 @@
  * Angular 2 decorators and services
  */
 import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
-// import { MessageService } from "./_services/messages/message-service";
-// import { Message } from 'primeng/primeng';
+import { MenuService } from './_services/menus/menu-service';
+import { MessageService } from "./_services/messages/message-service";
+import { Message } from 'primeng/primeng';
 import { AppState } from './app.service';
 import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /*
  * App Component
@@ -17,7 +19,8 @@ declare var loader: any;
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  providers: [MenuService]
 })
 
 export class AppComponent implements OnInit, AfterViewInit {
@@ -25,37 +28,47 @@ export class AppComponent implements OnInit, AfterViewInit {
   public name = 'GOYO School';
   public url = 'https://twitter.com/AngularClass';
   subscription: Subscription;
-  // messagestack: Message[] = [];
+  messagestack: Message[] = [];
 
   private themes: any = [
     { nm: 'red', disp: 'Red' },
-    { nm: 'pink', disp: 'pink' },
-    { nm: 'purple', disp: 'purple' },
+    { nm: 'pink', disp: 'Pink' },
+    { nm: 'purple', disp: 'Purple' },
     { nm: 'deep-purple', disp: 'Deep Purple' },
-    { nm: 'indigo', disp: 'indigo' },
-    { nm: 'blue', disp: 'blue' },
+    { nm: 'indigo', disp: 'Indigo' },
+    { nm: 'blue', disp: 'Blue' },
     { nm: 'light-blue', disp: 'Light Blue' },
-    { nm: 'cyan', disp: 'cyan' },
-    { nm: 'teal', disp: 'teal' },
-    { nm: 'green', disp: 'green' },
+    { nm: 'cyan', disp: 'Cyan' },
+    { nm: 'teal', disp: 'Teal' },
+    { nm: 'green', disp: 'Green' },
     { nm: 'light-green', disp: 'Light Green' },
-    { nm: 'lime', disp: 'lime' },
-    { nm: 'yellow', disp: 'yellow' },
-    { nm: 'amber', disp: 'amber' },
-    { nm: 'orange', disp: 'orange' },
-    { nm: 'deep-orange', disp: 'deep-orange' },
-    { nm: 'brown', disp: 'brown' },
-    { nm: 'grey', disp: 'grey' },
-    { nm: 'blue-grey', disp: 'blue-grey' },
-    { nm: 'black', disp: 'black' }
+    { nm: 'lime', disp: 'Lime' },
+    { nm: 'yellow', disp: 'Yellow' },
+    { nm: 'amber', disp: 'Amber' },
+    { nm: 'orange', disp: 'Orange' },
+    { nm: 'deep-orange', disp: 'Deep Orange' },
+    { nm: 'brown', disp: 'Brown' },
+    { nm: 'grey', disp: 'Grey' },
+    { nm: 'blue-grey', disp: 'Blue-Grey' },
+    { nm: 'black', disp: 'Black' }
   ];
 
-  constructor(public appState: AppState) {
-    // this.subscription = _messageServ.notificationReceiver$.subscribe(_messagestack => {
-    //   this.messagestack.push({
-    //     severity: _messagestack.severity, detail: _messagestack.detail, summary: _messagestack.summary
-    //   });
-    // });
+  mainMenuDT: any = [];
+  parentMenuDT: any = [];
+  subMenuDT: any = [];
+
+  constructor(public appState: AppState, _messageServ: MessageService,
+    public _menuservice: MenuService, private _routeParams: ActivatedRoute, private _router: Router) {
+
+    this.subscription = _messageServ.notificationReceiver$.subscribe(_messagestack => {
+      this.messagestack.push({
+        severity: _messagestack.severity, detail: _messagestack.detail, summary: _messagestack.summary
+      });
+    });
+
+    this.getMainMenuList();
+    // this.getParentMenuList();
+    // this.getSubMenuList();
   }
 
   public ngOnInit() {
@@ -70,6 +83,48 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   private changeSkin(theme: any) {
     loader.skinChanger(theme);
+  }
+
+  public getMainMenuList() {
+    var that = this;
+
+    that._menuservice.getMenuDetails({ "flag": "main" }).subscribe(data => {
+      that.mainMenuDT = data.data;
+    }, err => {
+      //that._msg.Show(messageType.error, "Error", err);
+    }, () => {
+
+    })
+  }
+
+  public getParentMenuList() {
+    var that = this;
+
+    that._menuservice.getMenuDetails({ "flag": "parent" }).subscribe(data => {
+      that.parentMenuDT = data.data;
+    }, err => {
+      //that._msg.Show(messageType.error, "Error", err);
+    }, () => {
+
+    })
+  }
+
+  public getSubMenuList() {
+    var that = this;
+
+    that._menuservice.getMenuDetails({ "flag": "sub", "pid": "8" }).subscribe(data => {
+      that.subMenuDT = data.data;
+    }, err => {
+      //that._msg.Show(messageType.error, "Error", err);
+    }, () => {
+
+    })
+  }
+
+  openMenuForm(row) {
+    if (row.mlink !== null) {
+      this._router.navigate(['/' + row.mlink]);
+    }
   }
 }
 

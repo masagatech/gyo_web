@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PickDropService } from '../../_services/pickdrop/pickdrop-service';
 import { CommonService } from '../../_services/common/common-service'; /* add reference for master of master */
-// import { MessageService, messageType } from '../../_services/messages/message-service'; /* add reference for master of master */
+import { MessageService, messageType } from '../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -69,7 +69,8 @@ export class ChangeScheduleComponent implements OnInit {
     private dropfromdate: any = "";
     private droptodate: any = "";
 
-    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService) {
         this.getDefaultDate();
     }
 
@@ -81,8 +82,7 @@ export class ChangeScheduleComponent implements OnInit {
             $(".ui-picklist-source-controls").show();
             $(".ui-picklist-target-controls").show();
 
-            $(".fc-prev-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
-            $(".fc-next-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
+            commonfun.chevronstyle();
         }, 0);
 
         that.header = {
@@ -188,9 +188,14 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
 
         that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe((data) => {
-            that.schoolDT = data.data;
+            try {
+                that.schoolDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -201,9 +206,14 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
 
         that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe((data) => {
-            that.batchDT = data.data;
+            try {
+                that.batchDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -214,7 +224,12 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
 
         that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe((data) => {
-            that.driverDT = data.data;
+            try {
+                that.driverDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
@@ -227,7 +242,12 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
 
         that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe((data) => {
-            that.vehicleDT = data.data;
+            try {
+                that.vehicleDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
@@ -377,15 +397,13 @@ export class ChangeScheduleComponent implements OnInit {
                 }
                 else {
                     that.pickautoid = 0;
-                    that.dropautoid = 0;
-
                     that.pickdriverid = 0;
-                    that.dropdriverid = 0;
-
                     that.pickvehicleno = "";
-                    that.dropvehicleno = "";
-
                     that.pickStudentsDT = [];
+
+                    that.dropautoid = 0;
+                    that.dropdriverid = 0;
+                    that.dropvehicleno = "";
                     that.dropStudentsDT = [];
 
                     that.getPDDate(event);
@@ -393,12 +411,11 @@ export class ChangeScheduleComponent implements OnInit {
                 }
             }
             catch (e) {
-                alert(e);
+                that._msg.Show(messageType.error, "Error", e);
                 commonfun.loaderhide();
             }
         }, err => {
-            alert(err);
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
@@ -485,23 +502,21 @@ export class ChangeScheduleComponent implements OnInit {
                 var dataResult = data.data;
 
                 if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
-                    // that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
-                    alert(dataResult[0].funsave_pickdropinfo.msg);
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
                     that._router.navigate(['/changeschedule']);
                 }
                 else {
-                    alert(dataResult[0].funsave_pickdropinfo.msg);
-                    // that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
                 }
+
                 commonfun.loaderhide();
             }
             catch (e) {
-                alert(e);
+                that._msg.Show(messageType.error, "Error", e);
                 commonfun.loaderhide();
             }
         }, err => {
-            alert(err);
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
             // console.log("Complete");

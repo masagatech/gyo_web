@@ -19,10 +19,12 @@ export const routes = [
             { path: '', loadChildren: './surveyentries#SurveyEntriesModule' },
             { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
             { path: 'school', loadChildren: './school#SchoolModule' },
+            { path: 'holiday', loadChildren: './holiday#HolidayModule' },
             { path: 'batch', loadChildren: './batch#BatchModule' },
             { path: 'owner', loadChildren: './owner#OwnerModule' },
             { path: 'driver', loadChildren: './driver#DriverModule' },
             { path: 'student', loadChildren: './student#StudentModule' },
+            { path: 'user', loadChildren: './users#UserModule' },
             { path: 'createschedule', loadChildren: './createschedule#CreateScheduleModule' },
             { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' },
         ]

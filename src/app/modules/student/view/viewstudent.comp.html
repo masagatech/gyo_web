@@ -23,9 +23,8 @@
                             <img alt="{{row.studentname}}" src="uploads/student/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </template>
                     </p-column>
-                    <p-column field="studentcode" header="Student Code" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="studentname" header="Student Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
-                    <p-column field="schoolname" header="School Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
+                    <p-column field="studentname" header="Student Name" [style]="{'text-align': 'left'}"></p-column>
+                    <p-column field="schoolname" header="School Name" [style]="{'width': '300px', 'text-align': 'left'}"></p-column>
                     <p-column field="ownername" header="Owner Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '60px', 'align': 'left'}">
                         <template let-row="rowData" pTemplate type="body">

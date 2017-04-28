@@ -1,0 +1,95 @@
+<div class="card">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <h4>Batch</h4>
+            </div>
+            <div class="col-md-6" align="right">
+                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="saveHolidayInfo()">
+                    <i class="material-icons">save</i>
+                </button>
+
+                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-5">
+        
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="body">
+                <div class="demo-masked-input">
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>From Date</label>
+                                    <input type="date" [(ngModel)]="frmdt" class="form-control date" (ngModelChange)="todt = frmdt" placeholder="Ex: 30/07/2016"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>To Date</label>
+                                    <input type="date" [(ngModel)]="todt" class="form-control date" placeholder="Ex: 30/07/2016" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Holiday Title</label>
+                                <input type="text" [(ngModel)]="hldnm" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Description</label>
+                                <textarea [(ngModel)]="hlddesc" rows="4" class="form-control no-resize auto-growth"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>School</label>
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                                    [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="schoolList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of schoolList">
+                            {{row.schnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteSchool(row)"><i class="material-icons">remove</i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

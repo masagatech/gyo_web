@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SchoolService } from '../../../_services/school/school-service';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -10,12 +11,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ViewSchoolComponent implements OnInit {
     schoolDT: any = [];
 
-    constructor(private _schoolservice: SchoolService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _schoolservice: SchoolService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.getSchoolDetails();
     }
 
     public ngOnInit() {
-        setTimeout(function() {
+        setTimeout(function () {
             commonfun.navistyle();
         }, 0);
     }
@@ -25,10 +26,15 @@ export class ViewSchoolComponent implements OnInit {
         commonfun.loader();
 
         that._schoolservice.getSchoolDetails({ "flag": "all" }).subscribe(data => {
-            that.schoolDT = data.data;
+            try {
+                that.schoolDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
             commonfun.loaderhide();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {

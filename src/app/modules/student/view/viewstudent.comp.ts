@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../_services/student/student-service';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 
@@ -13,7 +14,7 @@ declare var $: any;
 export class ViewStudentComponent implements OnInit {
     studentDT: any = [];
 
-    constructor(private _studentervice: StudentService, private _router: Router) {
+    constructor(private _studentervice: StudentService, private _router: Router, private _msg: MessageService) {
         this.getStudentDetail();
     }
 
@@ -28,10 +29,16 @@ export class ViewStudentComponent implements OnInit {
         commonfun.loader();
 
         that._studentervice.getStudentDetails({ "flag": "all" }).subscribe(data => {
-            that.studentDT = data.data;
+            try {
+                that.studentDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
             commonfun.loaderhide();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {

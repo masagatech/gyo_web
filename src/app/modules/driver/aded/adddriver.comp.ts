@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DriverService } from '../../../_services/driver/driver-service';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -35,7 +36,7 @@ export class AddDriverComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.fillDropDownList();
     }
 
@@ -50,7 +51,13 @@ export class AddDriverComponent implements OnInit {
         commonfun.loader();
 
         that._driverservice.getDriverDetails({ "flag": "dropdown" }).subscribe(data => {
-            that.ownerDT = data.data;
+            try {
+                that.ownerDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
             commonfun.loaderhide();
         }, err => {
             //that._msg.Show(messageType.error, "Error", err);
@@ -63,7 +70,7 @@ export class AddDriverComponent implements OnInit {
 
     // Active / Deactive Data
 
-    active_deactiveDriverInfo(){
+    active_deactiveDriverInfo() {
         var that = this;
 
         var act_deactDriver = {
@@ -73,18 +80,19 @@ export class AddDriverComponent implements OnInit {
         }
 
         this._driverservice.saveDriverInfo(act_deactDriver).subscribe(data => {
-            var dataResult = data.data;
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_driverinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_driverinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.success, "Success", msg);
-                that.getDriverDetails();
+                if (dataResult[0].funsave_driverinfo.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_driverinfo.msg);
+                    that.getDriverDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_driverinfo.msg);
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_driverinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.error, "Error", msg);
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             console.log(err);
@@ -124,22 +132,24 @@ export class AddDriverComponent implements OnInit {
         }
 
         this._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
-            var dataResult = data.data;
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_driverinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_driverinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.success, "Success", msg);
-                that.getDriverDetails();
-                commonfun.loaderhide();
+                if (dataResult[0].funsave_driverinfo.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_driverinfo.msg);
+                    that.getDriverDetails();
+                    commonfun.loaderhide();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_driverinfo.msg);
+                    commonfun.loaderhide();
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_driverinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.error, "Error", msg);
-                commonfun.loaderhide();
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {
@@ -153,36 +163,41 @@ export class AddDriverComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.driverid = params['id'];
+                that.driverid = params['id'];
 
-                that._driverservice.getDriverDetails({ "flag": "edit", "id": this.driverid }).subscribe(data => {
-                    that.driverid = data.data[0].autoid;
-                    that.drivercode = data.data[0].drivercode;
-                    that.driverpwd = data.data[0].driverpwd;
-                    that.drivername = data.data[0].drivername;
-                    that.lat = data.data[0].lat;
-                    that.lon = data.data[0].lon;
-                    that.aadharno = data.data[0].aadharno;
-                    that.licenseno = data.data[0].licenseno;
-                    that.email1 = data.data[0].email1;
-                    that.email2 = data.data[0].email2;
-                    that.mobileno1 = data.data[0].mobileno1;
-                    that.mobileno2 = data.data[0].mobileno2;
-                    that.address = data.data[0].address;
-                    that.country = data.data[0].country;
-                    that.state = data.data[0].state;
-                    that.city = data.data[0].city;
-                    that.pincode = data.data[0].pincode;
-                    that.ownerid = data.data[0].ownerid;
-                    that.remark1 = data.data[0].remark1;
-                    that.isactive = data.data[0].isactive;
-                    that.mode = data.data[0].mode;
+                that._driverservice.getDriverDetails({ "flag": "edit", "id": that.driverid }).subscribe(data => {
+                    try {
+                        that.driverid = data.data[0].autoid;
+                        that.drivercode = data.data[0].drivercode;
+                        that.driverpwd = data.data[0].driverpwd;
+                        that.drivername = data.data[0].drivername;
+                        that.lat = data.data[0].lat;
+                        that.lon = data.data[0].lon;
+                        that.aadharno = data.data[0].aadharno;
+                        that.licenseno = data.data[0].licenseno;
+                        that.email1 = data.data[0].email1;
+                        that.email2 = data.data[0].email2;
+                        that.mobileno1 = data.data[0].mobileno1;
+                        that.mobileno2 = data.data[0].mobileno2;
+                        that.address = data.data[0].address;
+                        that.country = data.data[0].country;
+                        that.state = data.data[0].state;
+                        that.city = data.data[0].city;
+                        that.pincode = data.data[0].pincode;
+                        that.ownerid = data.data[0].ownerid;
+                        that.remark1 = data.data[0].remark1;
+                        that.isactive = data.data[0].isactive;
+                        that.mode = data.data[0].mode;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
 
                     commonfun.loaderhide();
                 }, err => {
-                    //that._msg.Show(messageType.error, "Error", err);
+                    that._msg.Show(messageType.error, "Error", err);
                     console.log(err);
                     commonfun.loaderhide();
                 }, () => {

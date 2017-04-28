@@ -31,7 +31,6 @@
     </div>
 </footer>-->
 <!-- Page Loader -->
-<!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="preloader">
@@ -289,9 +288,51 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Menu -->
         <div class="menu">
+            <ul class="list">
+                <li class="header">Menu</li>
+                <li *ngFor="let row of mainMenuDT">
+                    <a [routerLink]="row.mlink" routerLinkActivate="active">
+                        <i class="material-icons">{{row.micon}}</i>
+                        <span>{{row.mname}}</span>
+                    </a>
+                </li>
+                <li *ngFor="let row of parentMenuDT">
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">{{row.micon}}</i>
+                        <span>{{row.mname}}</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li *ngFor="let mrow of subMenuDT">
+                            <a [routerLink]="mrow.mlink" routerLinkActivate="active">
+                                <i class="material-icons">{{mrow.micon}}</i>
+                                <span>{{mrow.mname}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!--<li>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">swap_calls</i>
+                        <span>User Interface (UI)</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a href="../../pages/ui/alerts.html">Alerts</a>
+                        </li>
+                        <li>
+                            <a href="../../pages/ui/animations.html">Animations</a>
+                        </li>
+                        <li>
+                            <a href="../../pages/ui/badges.html">Badges</a>
+                        </li>
+                    </ul>
+                </li>-->
+            </ul>
+        </div>
+        <!--<div class="menu">
             <ul class="list">
                 <li class="header">Menu</li>
                 <li>
@@ -351,7 +392,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </div>-->
         <!-- #Menu -->
 
         <!-- Footer -->
@@ -366,7 +407,7 @@
         <!-- #Footer -->
     </aside>
     <!-- #END# Left Sidebar -->
-    
+
     <!-- Right Sidebar -->
     <aside id="rightsidebar" class="right-sidebar">
         <ul class="nav nav-tabs tab-nav-right" role="tablist">
@@ -441,3 +482,46 @@
         <router-outlet></router-outlet>
     </div>
 </section>
+
+<p-growl [class]="'zin2000'" [value]="messagestack"></p-growl>
+<p-confirmDialog width="425"></p-confirmDialog>
+
+<!--<div aria-live="polite" class="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow ui-growl-message-success"
+    ng-reflect-klass="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow" ng-reflect-ng-class="[object Object]">
+    <div class="ui-growl-item">
+        <div class="ui-growl-icon-close fa fa-close"></div>
+        <span class="ui-growl-image fa fa-2x fa-check" ng-reflect-klass="ui-growl-image fa fa-2x" ng-reflect-ng-class="[object Object]"></span>
+        <div class="ui-growl-message">
+            <span class="ui-growl-title">Success</span>
+            <p ng-reflect-inner-h-t-m-l="Updated Successfully">Updated Successfully</p>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<div aria-live="polite" class="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow ui-growl-message-error"
+    ng-reflect-klass="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow" ng-reflect-ng-class="[object Object]">
+    <div class="ui-growl-item">
+        <div class="ui-growl-icon-close fa fa-close"></div>
+        <span class="ui-growl-image fa fa-2x fa-close" ng-reflect-klass="ui-growl-image fa fa-2x" ng-reflect-ng-class="[object Object]"></span>
+        <div class="ui-growl-message">
+            <span class="ui-growl-title">Error</span>
+            <p ng-reflect-inner-h-t-m-l=" error"> error</p>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+
+<div aria-live="polite" class="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow ui-growl-message-error" ng-reflect-klass="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow" ng-reflect-ng-class="[object Object]">
+    <div class="ui-growl-item">
+            <div class="ui-growl-icon-close fa fa-close"></div>
+            <span class="ui-growl-image fa fa-2x fa-close" ng-reflect-klass="ui-growl-image fa fa-2x" ng-reflect-ng-class="[object Object]"></span>
+            <div class="ui-growl-message">
+            <span class="ui-growl-title">Error</span>
+            <p ng-reflect-inner-h-t-m-l=" error"> error</p>
+            </div>
+            <div style="clear: both;"></div>
+    </div>
+</div>
+
+-->

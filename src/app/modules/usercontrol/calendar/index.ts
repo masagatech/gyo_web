@@ -1,6 +1,6 @@
 import { NgModule, Component, OnInit, Input, ViewChild } from '@angular/core';
 import { InputMaskModule, InputMask } from 'primeng/primeng';
-//import { MessageService, messageType } from '../../_service/messages/message-service';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 
 declare var $: any;
 declare var moment: any;
@@ -21,7 +21,7 @@ export class CalendarComp implements OnInit {
 
     loginUser: any = {};
 
-    constructor() {
+    constructor(private _msg: MessageService) {
 
     }
 
@@ -84,8 +84,7 @@ export class CalendarComp implements OnInit {
                 onClose: function () {
                     if (!that.isValid()) {
                         $(this).val("").focus();
-                        // that._msg.Show(messageType.error, "error", "Invalid Date");
-                        alert("Invalid Date");
+                        that._msg.Show(messageType.error, "error", "Invalid Date");
                     }
                 }
             });

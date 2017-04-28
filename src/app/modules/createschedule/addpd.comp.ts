@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PickDropService } from '../../_services/pickdrop/pickdrop-service';
 import { CommonService } from '../../_services/common/common-service'; /* add reference for master of master */
-// import { MessageService, messageType } from '../../_services/messages/message-service'; /* add reference for master of master */
+import { MessageService, messageType } from '../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 
@@ -63,8 +63,8 @@ export class CreateScheduleComponent implements OnInit {
     private dropfromdate: any = "";
     private droptodate: any = "";
 
-    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService,
-        private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService) {
 
     }
 
@@ -176,10 +176,15 @@ export class CreateScheduleComponent implements OnInit {
     fillSchoolDropDown(_ownerid) {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe(data => {
-            that.schoolDT = data.data;
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "school", "id": _ownerid }).subscribe((data) => {
+            try {
+                that.schoolDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -189,10 +194,15 @@ export class CreateScheduleComponent implements OnInit {
     fillBatchDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe(data => {
-            that.batchDT = data.data;
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.schoolid }).subscribe((data) => {
+            try {
+                that.batchDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -202,8 +212,13 @@ export class CreateScheduleComponent implements OnInit {
     fillDriverDropDown(_ownerid) {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe(data => {
-            that.driverDT = data.data;
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe((data) => {
+            try {
+                that.driverDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
@@ -215,8 +230,13 @@ export class CreateScheduleComponent implements OnInit {
     fillVehicleDropDown(_ownerid) {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe(data => {
-            that.vehicleDT = data.data;
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe((data) => {
+            try {
+                that.vehicleDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
             console.log(err);
@@ -244,7 +264,7 @@ export class CreateScheduleComponent implements OnInit {
     pickupStudents() {
         var that = this;
         var p_latlon = that.pickstudentgeoloc.split(',');
-        
+
         that.pickStudentsDT.push({
             "counter": that.counter++,
             "stdid": that.pickstudentid,
@@ -329,25 +349,40 @@ export class CreateScheduleComponent implements OnInit {
             try {
                 var d = data.data;
 
-                that.pickautoid = d.filter(a => a.typ === "p")[0].autoid;
-                that.dropautoid = d.filter(a => a.typ === "d")[0].autoid;
+                if (d.length !== 0) {
+                    var pickdata = d.filter(a => a.typ === "p")[0];
+                    var dropdata = d.filter(a => a.typ === "d")[0];
 
-                that.pickdriverid = d.filter(a => a.typ === "p")[0].driverid;
-                that.dropdriverid = d.filter(a => a.typ === "d")[0].driverid;
-                that.pickvehicleno = d.filter(a => a.typ === "p")[0].vehicleno;
-                that.dropvehicleno = d.filter(a => a.typ === "d")[0].vehicleno;
+                    that.pickautoid = pickdata.autoid;
+                    that.pickdriverid = pickdata.driverid;
+                    that.pickvehicleno = pickdata.vehicleno;
+                    that.pickStudentsDT = pickdata.studentdata;
 
-                that.pickStudentsDT = d.filter(a => a.typ === "p")[0].studentdata;
-                that.dropStudentsDT = d.filter(a => a.typ === "d")[0].studentdata;
+                    that.dropautoid = dropdata.autoid;
+                    that.dropdriverid = dropdata.driverid;
+                    that.dropvehicleno = dropdata.vehicleno;
+                    that.dropStudentsDT = dropdata.studentdata;
+                }
+                else {
+                    that.pickautoid = 0;
+                    that.pickdriverid = 0;
+                    that.pickvehicleno = "";
+                    that.pickStudentsDT = [];
+
+                    that.dropautoid = 0;
+                    that.dropdriverid = 0;
+                    that.dropvehicleno = "";
+                    that.dropStudentsDT = [];
+                }
+
                 commonfun.loaderhide();
             }
             catch (e) {
-                alert(e);
+                that._msg.Show(messageType.error, "Error", e);
                 commonfun.loaderhide();
             }
         }, err => {
-            alert(err);
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
@@ -360,6 +395,9 @@ export class CreateScheduleComponent implements OnInit {
         var _pickdrop = [];
         var _pickstudDT = [];
         var _dropstudDT = [];
+
+        var _pickstudsid: string[] = [];
+        var _dropstudsid: string[] = [];
 
         var savepickdrop = {};
 
@@ -393,6 +431,9 @@ export class CreateScheduleComponent implements OnInit {
             });
         }
 
+        _pickstudsid = Object.keys(_pickstudDT).map(function (k) { return _pickstudDT[k].stdid });
+        _dropstudsid = Object.keys(_dropstudDT).map(function (k) { return _dropstudDT[k].stdid });
+
         _pickdrop.push({
             "autoid": that.pickautoid,
             "ownid": that.ownerid,
@@ -402,6 +443,7 @@ export class CreateScheduleComponent implements OnInit {
             "drvid": that.pickdriverid,
             "vhclno": that.pickvehicleno,
             "studdt": _pickstudDT,
+            "studsid": _pickstudsid,
             "uid": "vivek",
             "inst": that.instrunction,
             "frmdt": that.pickfromdate,
@@ -418,6 +460,7 @@ export class CreateScheduleComponent implements OnInit {
             "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
             "vhclno": that.dropvehicleno,
             "studdt": _dropstudDT,
+            "studsid": _dropstudsid,
             "uid": "vivek",
             "inst": that.instrunction,
             "frmdt": that.dropfromdate,
@@ -432,23 +475,20 @@ export class CreateScheduleComponent implements OnInit {
                 var dataResult = data.data;
 
                 if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
-                    // that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
-                    alert(dataResult[0].funsave_pickdropinfo.msg);
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
                     that._router.navigate(['/createschedule']);
                 }
                 else {
-                    alert(dataResult[0].funsave_pickdropinfo.msg);
-                    // that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
                 }
                 commonfun.loaderhide();
             }
             catch (e) {
-                alert(e);
+                that._msg.Show(messageType.error, "Error", e);
                 commonfun.loaderhide();
             }
         }, err => {
-            alert(err);
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
             // console.log("Complete");

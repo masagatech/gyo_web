@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BatchService } from '../../../_services/batch/batch-service';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../_const/globals';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -31,17 +32,13 @@ export class AddBatchComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _batchervice: BatchService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _batchervice: BatchService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService) {
         this.fillDropDownList();
     }
 
     public ngOnInit() {
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                this.batchid = params['id'];
-                this.getBatchDetail(this.batchid);
-            }
-        });
+        this.getBatchDetail();
     }
 
     public onUploadError(event) {
@@ -57,10 +54,15 @@ export class AddBatchComponent implements OnInit {
         commonfun.loader();
 
         that._batchervice.getBatchDetails({ "flag": "dropdown" }).subscribe(data => {
-            var d = data.data;
+            try {
+                var d = data.data;
 
-            that.schoolDT = d.filter(a => a.group === "school");
-            that.weekDT = d.filter(a => a.group === "week");
+                that.schoolDT = d.filter(a => a.group === "school");
+                that.weekDT = d.filter(a => a.group === "week");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
             commonfun.loaderhide();
         }, err => {
             //that._msg.Show(messageType.error, "Error", err);
@@ -91,20 +93,20 @@ export class AddBatchComponent implements OnInit {
         this._batchervice.saveBatchInfo(savebatch).subscribe(data => {
             var dataResult = data.data;
 
-            if (dataResult[0].funsave_batchinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_batchinfo.msg;
-
-                alert(msg);
-                commonfun.loader();
-                commonfun.loaderhide();
-                // this._msg.Show(messageType.success, "Success", msg);
-                this._router.navigate(['/batch']);
+            try {
+                if (dataResult[0].funsave_batchinfo.msgid != "-1") {
+                    var msg = dataResult[0].funsave_batchinfo.msg;
+                    that._msg.Show(messageType.success, "Success", msg);
+                    commonfun.loaderhide();
+                }
+                else {
+                    var msg = dataResult[0].funsave_batchinfo.msg;
+                    that._msg.Show(messageType.error, "Error", msg);
+                    commonfun.loaderhide();
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_batchinfo.msg;
-                alert(msg);
-                commonfun.loaderhide();
-                // this._msg.Show(messageType.error, "Error", msg);
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             console.log(err);
@@ -116,27 +118,38 @@ export class AddBatchComponent implements OnInit {
 
     // Get Batch Data
 
-    getBatchDetail(bid) {
+    getBatchDetail() {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetails({ "flag": "edit", "id": bid }).subscribe(data => {
-            that.batchid = data.data[0].autoid;
-            that.batchcode = data.data[0].batchcode;
-            that.batchname = data.data[0].batchname;
-            that.schoolid = data.data[0].schoolid;
-            that.fromtime = data.data[0].fromtime;
-            that.totime = data.data[0].totime;
-            that.instruction = data.data[0].instruction;
-            that.selectedWeek = data.data[0].weekallow !== null ? data.data[0].weekallow : [];
-            commonfun.loaderhide();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                this.batchid = params['id'];
 
-        })
+                that._batchervice.getBatchDetails({ "flag": "edit", "id": this.batchid }).subscribe(data => {
+                    try {
+                        that.batchid = data.data[0].autoid;
+                        that.batchcode = data.data[0].batchcode;
+                        that.batchname = data.data[0].batchname;
+                        that.schoolid = data.data[0].schoolid;
+                        that.fromtime = data.data[0].fromtime;
+                        that.totime = data.data[0].totime;
+                        that.instruction = data.data[0].instruction;
+                        that.selectedWeek = data.data[0].weekallow !== null ? data.data[0].weekallow : [];
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+        });
     }
 
     // Back For View Data

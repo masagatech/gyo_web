@@ -4,11 +4,19 @@
   background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
   color: #fff!important; }
 
-.theme-red button, .theme-red .btn-navigate {
+.theme-red button, .theme-red .btn-theme, .theme-red .btn-navigate {
   background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
   color: #fff!important; }
 
 .theme-red .sidebar .menu .list .header {
+  background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
+  color: #fff!important; }
+
+.theme-red .ui-state-active {
+  background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
+  color: #fff!important; }
+
+.theme-red .ui-state-active {
   background: linear-gradient(to bottom, #F44336 0%, #E91E63 100%)!important;
   color: #fff!important; }
 
@@ -63,7 +71,7 @@
   background-color: #E91E63!important;
   color: #fff!important; }
 
-.theme-pink button, .theme-pink .btn-navigate {
+.theme-pink button, .theme-pink .btn-theme, .theme-pink .btn-navigate {
   background-color: #E91E63!important;
   color: #fff!important; }
 
@@ -122,7 +130,7 @@
   background-color: #9C27B0!important;
   color: #fff!important; }
 
-.theme-purple button, .theme-purple .btn-navigate {
+.theme-purple button, .theme-purple .btn-theme, .theme-purple .btn-navigate {
   background-color: #9C27B0!important;
   color: #fff!important; }
 
@@ -181,7 +189,7 @@
   background-color: #673AB7!important;
   color: #fff!important; }
 
-.theme-deep-purple button, .theme-deep-purple .btn-navigate {
+.theme-deep-purple button, .theme-deep-purple .btn-theme, .theme-deep-purple .btn-navigate {
   background-color: #673AB7!important;
   color: #fff!important; }
 
@@ -247,7 +255,7 @@
   background-color: #3F51B5!important;
   color: #fff!important; }
 
-.theme-indigo button, .theme-indigo .btn-navigate {
+.theme-indigo button, .theme-indigo .btn-theme, .theme-indigo .btn-navigate {
   background-color: #3F51B5!important;
   color: #fff!important; }
 
@@ -313,7 +321,7 @@
   background-color: #2196F3!important;
   color: #fff!important; }
 
-.theme-blue button, .theme-blue .btn-navigate {
+.theme-blue button, .theme-blue .btn-theme, .theme-blue .btn-navigate {
   background-color: #2196F3!important;
   color: #fff!important; }
 
@@ -379,7 +387,7 @@
   background-color: #03A9F4!important;
   color: #fff!important; }
 
-.theme-light-blue button, .theme-light-blue .btn-navigate {
+.theme-light-blue button, .theme-light-blue .btn-theme, .theme-light-blue .btn-navigate {
   background-color: #03A9F4!important;
   color: #fff!important; }
 
@@ -445,7 +453,7 @@
   background-color: #00BCD4!important;
   color: #fff!important; }
 
-.theme-cyan button, .theme-cyan .btn-navigate {
+.theme-cyan button, .theme-cyan .btn-theme, .theme-cyan .btn-navigate {
   background-color: #00BCD4!important;
   color: #fff!important; }
 
@@ -511,7 +519,7 @@
   background-color: #009688!important;
   color: #fff!important; }
 
-.theme-teal button, .theme-teal .btn-navigate {
+.theme-teal button, .theme-teal .btn-theme, .theme-teal .btn-navigate {
   background-color: #009688!important;
   color: #fff!important; }
 
@@ -577,7 +585,7 @@
   background-color: #4CAF50!important;
   color: #fff!important; }
 
-.theme-green button, .theme-green .btn-navigate {
+.theme-green button, .theme-green .btn-theme, .theme-green .btn-navigate {
   background-color: #4CAF50!important;
   color: #fff!important; }
 
@@ -643,7 +651,7 @@
   background-color: #8BC34A!important;
   color: #fff!important; }
 
-.theme-light-green button, .theme-light-green .btn-navigate {
+.theme-light-green button, .theme-light-green .btn-theme, .theme-light-green .btn-navigate {
   background-color: #8BC34A!important;
   color: #fff!important; }
 
@@ -709,7 +717,7 @@
   background-color: #CDDC39!important;
   color: #fff!important; }
 
-.theme-lime button, .theme-lime .btn-navigate {
+.theme-lime button, .theme-lime .btn-theme, .theme-lime .btn-navigate {
   background-color: #CDDC39!important;
   color: #fff!important; }
 
@@ -775,7 +783,7 @@
   background-color: #FFEB3B!important;
   color: #fff!important; }
 
-.theme-yellow button, .theme-yellow .btn-navigate {
+.theme-yellow button, .theme-yellow .btn-theme, .theme-yellow .btn-navigate {
   background-color: #FFEB3B!important;
   color: #fff!important; }
 
@@ -841,7 +849,7 @@
   background-color: #FFC107!important;
   color: #fff!important; }
 
-.theme-amber button, .theme-amber .btn-navigate {
+.theme-amber button, .theme-amber .btn-theme, .theme-amber .btn-navigate {
   background-color: #FFC107!important;
   color: #fff!important; }
 
@@ -907,7 +915,7 @@
   background-color: #FF9800!important;
   color: #fff!important; }
 
-.theme-orange button, .theme-orange .btn-navigate {
+.theme-orange button, .theme-orange .btn-theme, .theme-orange .btn-navigate {
   background-color: #FF9800!important;
   color: #fff!important; }
 
@@ -973,7 +981,7 @@
   background-color: #FF5722!important;
   color: #fff!important; }
 
-.theme-deep-orange button, .theme-deep-orange .btn-navigate {
+.theme-deep-orange button, .theme-deep-orange .btn-theme, .theme-deep-orange .btn-navigate {
   background-color: #FF5722!important;
   color: #fff!important; }
 
@@ -1039,7 +1047,7 @@
   background-color: #795548!important;
   color: #fff!important; }
 
-.theme-brown button, .theme-brown .btn-navigate {
+.theme-brown button, .theme-brown .btn-theme, .theme-brown .btn-navigate {
   background-color: #795548!important;
   color: #fff!important; }
 
@@ -1105,7 +1113,7 @@
   background-color: #9E9E9E!important;
   color: #fff!important; }
 
-.theme-grey button, .theme-grey .btn-navigate {
+.theme-grey button, .theme-grey .btn-theme, .theme-grey .btn-navigate {
   background-color: #9E9E9E!important;
   color: #fff!important; }
 
@@ -1174,7 +1182,7 @@
   background-color: #607D8B!important;
   color: #fff!important; }
 
-.theme-blue-grey button, .theme-blue-gray .btn-navigate {
+.theme-blue-grey button, .theme-blue-gray .btn-theme, .theme-blue-gray .btn-navigate {
   background-color: #607D8B!important;
   color: #fff!important; }
 
@@ -1240,7 +1248,7 @@
   background-color: #000!important;
   color: #fff!important; }
 
-.theme-black button, .theme-black .btn-navigate {
+.theme-black button, .theme-black .btn-theme, .theme-black .btn-navigate {
   background-color: #000!important;
   color: #fff!important; }
 

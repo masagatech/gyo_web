@@ -29,11 +29,11 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select [(ngModel)]="schoolid" class="form-control" (ngModelChange)="fillBatchDropDown();getStudentData($event);" tabindex="2">
-                                <option [value]="0">Select School</option>
-                                <option *ngFor="let row of schoolDT" [value]="row.schid">	
-                                    {{row.schnm}}
-                                </option>
-                            </select>
+                            <option [value]="0">Select School</option>
+                            <option *ngFor="let row of schoolDT" [value]="row.schid">	
+                                {{row.schnm}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -41,11 +41,11 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select [(ngModel)]="batchid" class="form-control" tabindex="3" (ngModelChange)="getPickDropInfo()">
-                                <option [value]="0">Select Batch</option>
-                                <option *ngFor="let row of batchDT" [value]="row.key">	
-                                    {{row.val}}
-                                </option>
-                            </select>
+                            <option [value]="0">Select Batch</option>
+                            <option *ngFor="let row of batchDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

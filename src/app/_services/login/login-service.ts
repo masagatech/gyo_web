@@ -5,17 +5,10 @@ import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Injectable()
-export class UserService {
+export class LoginService {
     private loginUser: LoginUserModel;
+    
     constructor(private _dataserver: DataService, private _router: Router) { }
-
-    getMenuHead(req: any) {
-        return this._dataserver.post("getMenuHead", req)
-    }
-
-    getMenuDetails(req: any) {
-        return this._dataserver.post("getMenuDetails", req);
-    }
 
     getUser() {
         if (this.loginUser === undefined) {

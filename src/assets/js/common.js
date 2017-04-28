@@ -19,7 +19,7 @@ function findJSON(obj, key, val, brek) {
 }
 
 commonfun.addrequire = function addrequire() {
-    $("[validate]").each(function() {
+    $("[validate]").each(function () {
         $(this).siblings("label").remove("span").append("&nbsp;<span class='require'>*</span>");
     });
 }
@@ -28,7 +28,7 @@ commonfun.validate = function validate() {
     var valisValid = true;
     var result = [];
     var msglist = "";
-    $("[validate]").each(function() {
+    $("[validate]").each(function () {
         if ($(this).is("input") || $(this).is("textarea")) {
             if ($(this).val().trim() === "") {
                 valisValid = false;
@@ -47,7 +47,7 @@ commonfun.validate = function validate() {
     return { "status": valisValid, "data": result, "msglist": msglist };
 }
 
-commonfun.loader = function(name) {
+commonfun.loader = function (name) {
     if (!name) name = '.maincontent';
     $(name).waitMe({
         effect: 'bounce',
@@ -61,24 +61,34 @@ commonfun.loader = function(name) {
     });
 }
 
-commonfun.loaderhide = function(name) {
+commonfun.loaderhide = function (name) {
     if (!name) name = '.maincontent';
     $(name).waitMe('hide');
 }
 
-commonfun.openurl = function(url, target, options) {
+commonfun.openurl = function (url, target, options) {
     window.open(url, target, options);
     //"https://www.w3schools.com", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400"
 }
 
-commonfun.navistyle = function() {
-    $(".ui-paginator-first").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("first_page");
-    $(".ui-paginator-prev").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_before");
-    $(".ui-paginator-next").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_next");
-    $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("last_page");
+commonfun.navistyle = function () {
+    $(".ui-paginator-first").addClass('btn-theme');
+    $(".ui-paginator-prev").addClass('btn-theme');
+    $(".ui-paginator-next").addClass('btn-theme');
+    $(".ui-paginator-last").addClass('btn-theme');
+    
+    // $(".ui-paginator-first").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("first_page");
+    // $(".ui-paginator-prev").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_before");
+    // $(".ui-paginator-next").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_next");
+    // $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("last_page");
 }
 
-commonfun.randomColor = function(brightness) {
+commonfun.chevronstyle = function () {
+    $(".fc-prev-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
+    $(".fc-next-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
+}
+
+commonfun.randomColor = function (brightness) {
     function randomChannel(brightness) {
         var r = 255 - brightness;
         var n = 0 | ((Math.random() * r) + brightness);
@@ -89,6 +99,6 @@ commonfun.randomColor = function(brightness) {
 }
 
 var browserConf = {};
-browserConf.setTitle = function(title) {
+browserConf.setTitle = function (title) {
     document.title = title;
 }

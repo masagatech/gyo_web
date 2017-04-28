@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SchoolService } from '../../../_services/school/school-service';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -39,7 +40,7 @@ export class AddSchoolComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _schoolservice: SchoolService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _schoolservice: SchoolService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
 
     }
 
@@ -53,8 +54,7 @@ export class AddSchoolComponent implements OnInit {
             var field = this.contactDT[i];
 
             if ((field.cpname == this.cpname) && (field.contactno == this.cpmobile) && (field.email == this.cpemail)) {
-                // this._msg.Show(messageType.error, "Error", "Duplicate Contact not Allowed");
-                alert("Duplicate Contact not Allowed");
+                this._msg.Show(messageType.error, "Error", "Duplicate Contact not Allowed");
                 return true;
             }
         }
@@ -68,22 +68,19 @@ export class AddSchoolComponent implements OnInit {
         // Validation
 
         if (that.cpname == "") {
-            // that._msg.Show(messageType.error, "Error", "Please Enter Name");
-            alert("Please Enter Name");
+            that._msg.Show(messageType.error, "Error", "Please Enter Name");
             $(".cpname").focus();
             return;
         }
 
         if (that.cpmobile == "") {
-            // that._msg.Show(messageType.error, "Error", "Please Enter Contact No");
-            alert("Please Enter Contact No");
+            that._msg.Show(messageType.error, "Error", "Please Enter Contact No");
             $(".cpmobile").focus();
             return;
         }
 
         if (that.cpemail == "") {
-            // that._msg.Show(messageType.error, "Error", "Please Enter Email");
-            alert("Please Enter Email");
+            that._msg.Show(messageType.error, "Error", "Please Enter Email");
             $(".cpemail").focus();
             return;
         }
@@ -124,18 +121,19 @@ export class AddSchoolComponent implements OnInit {
         }
 
         this._schoolservice.saveSchoolInfo(act_deactSchool).subscribe(data => {
-            var dataResult = data.data;
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_schoolinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_schoolinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.success, "Success", msg);
-                that.getSchoolDetails();
+                if (dataResult[0].funsave_schoolinfo.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_schoolinfo.msg);
+                    that.getSchoolDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_schoolinfo.msg);
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_schoolinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.error, "Error", msg);
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             console.log(err);
@@ -173,21 +171,21 @@ export class AddSchoolComponent implements OnInit {
         }
 
         this._schoolservice.saveSchoolInfo(saveSchool).subscribe(data => {
-            var dataResult = data.data;
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_schoolinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_schoolinfo.msg;
+                if (dataResult[0].funsave_schoolinfo.msgid != "-1") {
+                    this._msg.Show(messageType.success, "Success", dataResult[0].funsave_schoolinfo.msg);
+                }
+                else {
+                    this._msg.Show(messageType.error, "Error", dataResult[0].funsave_schoolinfo.msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                alert(msg);
-                commonfun.loaderhide();
-                // this._msg.Show(messageType.success, "Success", msg);
-            }
-            else {
-                var msg = dataResult[0].funsave_schoolinfo.msg;
-                alert(msg);
-                commonfun.loaderhide();
-                // this._msg.Show(messageType.error, "Error", msg);
-            }
+            commonfun.loaderhide();
         }, err => {
             console.log(err);
             commonfun.loaderhide();
@@ -207,31 +205,36 @@ export class AddSchoolComponent implements OnInit {
                 this.schid = params['id'];
 
                 that._schoolservice.getSchoolDetails({ "flag": "edit", "id": this.schid }).subscribe(data => {
-                    that.schid = data.data[0].autoid;
-                    that.schcd = data.data[0].schoolcode;
-                    that.schnm = data.data[0].schoolname;
-                    that.lat = data.data[0].geoloc.split(',')[0];
-                    that.lon = data.data[0].geoloc.split(',')[1];
-                    that.schvehs = data.data[0].ownbuses;
-                    that.oprvehs = data.data[0].vanoperator;
-                    that.address = data.data[0].address;
-                    that.country = data.data[0].country;
-                    that.state = data.data[0].state;
-                    that.city = data.data[0].city;
-                    that.pincode = data.data[0].pincode;
+                    try {
+                        that.schid = data.data[0].autoid;
+                        that.schcd = data.data[0].schoolcode;
+                        that.schnm = data.data[0].schoolname;
+                        that.lat = data.data[0].geoloc.split(',')[0];
+                        that.lon = data.data[0].geoloc.split(',')[1];
+                        that.schvehs = data.data[0].ownbuses;
+                        that.oprvehs = data.data[0].vanoperator;
+                        that.address = data.data[0].address;
+                        that.country = data.data[0].country;
+                        that.state = data.data[0].state;
+                        that.city = data.data[0].city;
+                        that.pincode = data.data[0].pincode;
 
-                    that.name = data.data[0].name;
-                    that.email = data.data[0].email1;
-                    that.mobile = data.data[0].mobileno1;
-                    that.contactDT = data.data[0].contact;
+                        that.name = data.data[0].name;
+                        that.email = data.data[0].email1;
+                        that.mobile = data.data[0].mobileno1;
+                        that.contactDT = data.data[0].contact;
 
-                    that.remark1 = data.data[0].remark1;
-                    that.isactive = data.data[0].isactive;
-                    that.mode = data.data[0].mode;
+                        that.remark1 = data.data[0].remark1;
+                        that.isactive = data.data[0].isactive;
+                        that.mode = data.data[0].mode;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
 
                     commonfun.loaderhide();
                 }, err => {
-                    //that._msg.Show(messageType.error, "Error", err);
+                    that._msg.Show(messageType.error, "Error", err);
                     console.log(err);
                     commonfun.loaderhide();
                 }, () => {

@@ -11,3 +11,17 @@ export class SharedModule {
     }
 }
 
+
+import { MessageService } from "../_services/messages/message-service";
+import { ConfirmationService } from 'primeng/primeng';
+
+@NgModule({})
+
+export class GlobalShared {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: GlobalShared,
+            providers: [MessageService, ConfirmationService]
+        };
+    }
+}

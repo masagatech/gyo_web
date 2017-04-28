@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserReq, LoginUserModel } from '../_model/user_model';
 import { DataService } from './dataconnect';
-import { UserService } from './user/user-service';
+import { LoginService } from '../_services/login/login-service'
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var swfobject: any;
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private _router: Router, private _dataserver: DataService, private _userservice: UserService) { }
+  constructor(private _router: Router, private _dataserver: DataService, private _loginservice: LoginService) { }
 
   logout(callback?: any, error?: any) {
-    var usr: LoginUserModel = this._userservice.getUser();
+    var usr: LoginUserModel = this._loginservice.getUser();
 
     this._dataserver.post("getLogout", { "sessionid": usr._sessiondetails.sessionid }).subscribe(r => {
       Cookie.delete('_session_');
-      this._userservice.setUsers(null);
+      this._loginservice.setUsers(null);
 
       if (callback) {
         callback(r);
@@ -62,7 +62,7 @@ export class AuthenticationService {
           let userDetails = usrobj[0];
 
           if (userDetails.status) {
-            this._userservice.setUsers(userDetails);
+            this._loginservice.setUsers(userDetails);
             if (userDetails.cmpid != 0 && userDetails.fy != 0) {
               // propr user
             } else if (userDetails.errcode === "chpwd") {
@@ -290,7 +290,7 @@ export class AuthenticationService {
 
   public checkCredentials(): any {
     var sessionid = Cookie.get('_session_');
-    var usr: LoginUserModel = this._userservice.getUser();
+    var usr: LoginUserModel = this._loginservice.getUser();
 
     if (usr !== null) { //check user is locally present in memory
       return { "status": true };

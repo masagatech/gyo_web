@@ -1,0 +1,200 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-xs-4">
+                <h4>User</h4>
+            </div>
+            <div class="col-md-6 col-xs-8">
+                <div class="pull-right">
+                    <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="saveUserInfo()">
+                        <i class="material-icons">save</i>
+                    </button>
+                    <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="backViewData()">
+                        <i class="material-icons">arrow_back</i>
+                    </button>
+                </div>
+                <div class="pull-right">
+                    <div class="switch">
+                        <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveUserInfo()"><span class="lever"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="control-label">User Code</label>
+                                <input type="text" [(ngModel)]="ucode" class="form-control" maxlength="10" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="control-label">Password</label>
+                                <input type="password" [(ngModel)]="upwd" class="form-control" maxlength="15" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">First Name</label>
+                                <input type="text" [(ngModel)]="fname" class="form-control" maxlength="50" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Last Name</label>
+                                <input type="text" [(ngModel)]="lname" class="form-control" maxlength="50" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Gender</label>
+                                <select [(ngModel)]="gender" class="form-control">
+                                    <option [value]="''">Select Gender</option>
+                                    <option *ngFor="let row of genderDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">User Type</label>
+                                <select [(ngModel)]="utype" class="form-control">
+                                    <option [value]="''">Select Type</option>
+                                    <option [value]="'school'">School</option>
+                                    <option [value]="'internal'">Internal</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Remark</label>
+                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Mobile</label>
+                                <input type="text" [(ngModel)]="mobileno1" class="form-control" maxlength="10" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Alternate Mobile</label>
+                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Email</label>
+                                <input type="text" [(ngModel)]="email1" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Alternate Email</label>
+                                <input type="text" [(ngModel)]="email2" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Address</label>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Country</label>
+                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">State</label>
+                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">City</label>
+                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Pin Code</label>
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

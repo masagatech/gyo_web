@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../_services/auth-service'
-import { UserService } from '../_services/user/user-service'
+import { LoginService } from '../_services/login/login-service'
 import { UserReq, LoginUserModel } from '../_model/user_model';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
     public btnLoginText = 'Login';
     _user = new UserReq("", "");
 
-    constructor(private _router: Router, private _service: AuthenticationService, private _loginModel: UserService) {
+    constructor(private _router: Router, private _service: AuthenticationService, private _loginservice: LoginService) {
         // var that = this;
         // var checks = this._service.checkCredentials();
 
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
                     let userDetails: LoginUserModel = usrobj[0];
 
                     if (userDetails.status) {
-                        this._loginModel.setUsers(userDetails);
+                        this._loginservice.setUsers(userDetails);
                         this._router.navigate(['/']);
                     } else {
                         this.btnLoginText = "Login";

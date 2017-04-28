@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { OwnerService } from '../../../_services/owner/owner-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -37,7 +38,8 @@ export class AddOwnerComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _ownerervice: OwnerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, private _router: Router) {
+    constructor(private _ownerervice: OwnerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService) {
 
     }
 
@@ -97,18 +99,19 @@ export class AddOwnerComponent implements OnInit {
         }
 
         this._ownerervice.saveOwnerInfo(act_deactOwner).subscribe(data => {
-            var dataResult = data.data;
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_ownerinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_ownerinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.success, "Success", msg);
-                that.getOwnerDetails();
+                if (dataResult[0].funsave_ownerinfo.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_ownerinfo.msg);
+                    that.getOwnerDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_ownerinfo.msg);
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_ownerinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.error, "Error", msg);
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             console.log(err);
@@ -124,9 +127,7 @@ export class AddOwnerComponent implements OnInit {
         commonfun.loader();
 
         var _schlist: string[] = [];
-
         _schlist = Object.keys(that.schoolList).map(function (k) { return that.schoolList[k].schid });
-        console.log(_schlist);
 
         var saveowner = {
             "autoid": that.ownerid,
@@ -152,20 +153,22 @@ export class AddOwnerComponent implements OnInit {
         }
 
         this._ownerervice.saveOwnerInfo(saveowner).subscribe(data => {
-            var dataResult = data.data;
+            try {
+                var dataResult = data.data;
 
-            if (dataResult[0].funsave_ownerinfo.msgid != "-1") {
-                var msg = dataResult[0].funsave_ownerinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.success, "Success", msg);
-                that.getOwnerDetails();
-                commonfun.loaderhide();
+                if (dataResult[0].funsave_ownerinfo.msgid != "-1") {
+                    var msg = dataResult[0].funsave_ownerinfo.msg;
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_ownerinfo.msg);
+                    that.getOwnerDetails();
+                    commonfun.loaderhide();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_ownerinfo.msg);
+                    commonfun.loaderhide();
+                }
             }
-            else {
-                var msg = dataResult[0].funsave_ownerinfo.msg;
-                alert(msg);
-                // that._msg.Show(messageType.error, "Error", msg);
-                commonfun.loaderhide();
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             console.log(err);
@@ -186,31 +189,36 @@ export class AddOwnerComponent implements OnInit {
                 this.ownerid = params['id'];
 
                 that._ownerervice.getOwnerDetails({ "flag": "edit", "id": this.ownerid }).subscribe(data => {
-                    that.ownerid = data.data[0].autoid;
-                    that.ownercode = data.data[0].ownercode;
-                    that.ownerpwd = data.data[0].ownerpwd;
-                    that.ownername = data.data[0].ownername;
-                    that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
-                    that.lat = data.data[0].lat;
-                    that.lon = data.data[0].lon;
-                    that.aadharno = data.data[0].aadharno;
-                    that.email1 = data.data[0].email1;
-                    that.email2 = data.data[0].email2;
-                    that.mobileno1 = data.data[0].mobileno1;
-                    that.mobileno2 = data.data[0].mobileno2;
-                    that.address = data.data[0].address;
-                    that.country = data.data[0].country;
-                    that.state = data.data[0].state;
-                    that.city = data.data[0].city;
-                    that.pincode = data.data[0].pincode;
-                    that.remark1 = data.data[0].remark1;
-                    that.schoolname = data.data[0].schoolname;
-                    that.isactive = data.data[0].isactive;
-                    that.mode = data.data[0].mode;
+                    try {
+                        that.ownerid = data.data[0].autoid;
+                        that.ownercode = data.data[0].ownercode;
+                        that.ownerpwd = data.data[0].ownerpwd;
+                        that.ownername = data.data[0].ownername;
+                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.lat = data.data[0].lat;
+                        that.lon = data.data[0].lon;
+                        that.aadharno = data.data[0].aadharno;
+                        that.email1 = data.data[0].email1;
+                        that.email2 = data.data[0].email2;
+                        that.mobileno1 = data.data[0].mobileno1;
+                        that.mobileno2 = data.data[0].mobileno2;
+                        that.address = data.data[0].address;
+                        that.country = data.data[0].country;
+                        that.state = data.data[0].state;
+                        that.city = data.data[0].city;
+                        that.pincode = data.data[0].pincode;
+                        that.remark1 = data.data[0].remark1;
+                        that.schoolname = data.data[0].schoolname;
+                        that.isactive = data.data[0].isactive;
+                        that.mode = data.data[0].mode;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
 
                     commonfun.loaderhide();
                 }, err => {
-                    //that._msg.Show(messageType.error, "Error", err);
+                    that._msg.Show(messageType.error, "Error", err);
                     console.log(err);
                     commonfun.loaderhide();
                 }, () => {

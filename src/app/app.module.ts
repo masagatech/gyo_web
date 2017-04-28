@@ -2,10 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from './_shared/shared.module';
+import { SharedModule, GlobalShared } from './_shared/shared.module';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -51,7 +52,10 @@ type StoreType = {
     HttpModule,
     CommonModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    GlobalShared.forRoot(),
+    GrowlModule,
+    ConfirmDialogModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

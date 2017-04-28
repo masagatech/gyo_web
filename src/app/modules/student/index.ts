@@ -12,7 +12,6 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } fr
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
-
 export const routes = [
   {
     path: '', children: [
