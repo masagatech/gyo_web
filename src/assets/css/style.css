@@ -3811,7 +3811,8 @@ section.content {
 
 .card .header .header-dropdown {
     position: absolute;
-    top: 20px;
+    /*top: 20px;*/
+    top: 12px;
     right: 15px;
     list-style: none;
 }
@@ -10535,7 +10536,7 @@ fieldset[disabled] .form-control {
     padding-left: 0;
     max-width: 360px;
     margin: 5% auto;
-    overflow-x: hidden;
+    /*overflow-x: hidden;*/
 }
 
 .login-page .login-box .msg {
@@ -10551,7 +10552,8 @@ fieldset[disabled] .form-control {
 }
 
 .login-page .login-box .logo {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
+    margin: 0;
 }
 
 .login-page .login-box .logo a {
@@ -11849,17 +11851,6 @@ body.waitMe_body .waitMe_container.text>div {
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
-
-.btn-navigate {
-    padding: 0!important;
-    border: none!important;
-}
-
-    .btn-navigate span {
-        padding: 3px!important;
-        border: none!important;
-        font-size: 20px!important;
-    }
 
 .form-controlAutoComplete {
     width: 100%;

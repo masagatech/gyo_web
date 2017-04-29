@@ -429,6 +429,9 @@ export class ChangeScheduleComponent implements OnInit {
         var _pickstudDT = [];
         var _dropstudDT = [];
 
+        var _pickstudsid: string[] = [];
+        var _dropstudsid: string[] = [];
+
         var savepickdrop = {};
 
         for (var i = 0; i < that.pickStudentsDT.length; i++) {
@@ -463,6 +466,9 @@ export class ChangeScheduleComponent implements OnInit {
             });
         }
 
+        _pickstudsid = Object.keys(_pickstudDT).map(function (k) { return _pickstudDT[k].stdid });
+        _dropstudsid = Object.keys(_dropstudDT).map(function (k) { return _dropstudDT[k].stdid });
+
         _pickdrop.push({
             "autoid": that.pickautoid,
             "ownid": that.ownerid,
@@ -472,6 +478,7 @@ export class ChangeScheduleComponent implements OnInit {
             "drvid": that.pickdriverid,
             "vhclno": that.pickvehicleno,
             "studdt": _pickstudDT,
+            "studsid": _pickstudsid,
             "uid": "vivek",
             "inst": that.instrunction,
             "frmdt": that.pickfromdate,
@@ -488,6 +495,7 @@ export class ChangeScheduleComponent implements OnInit {
             "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
             "vhclno": that.dropvehicleno,
             "studdt": _dropstudDT,
+            "studsid": _dropstudsid,
             "uid": "vivek",
             "inst": that.instrunction,
             "frmdt": that.dropfromdate,

@@ -90,7 +90,7 @@
                     <label>Select Week</label>
                     <div *ngFor="let week of weekDT">
                         <div class="form-line">
-                            <p-checkbox name="week" value="{{week.key}}" label="{{week.val}}" [(ngModel)]="selectedWeek"></p-checkbox>
+                            <p-checkbox name="{{week.key}}" value="{{week.key}}" label="{{week.val}}" [(ngModel)]="selectedWeek"></p-checkbox>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,8 @@ import { Pipe } from "@angular/core";
 @Pipe({
   name: "_currency"
 })
-export class _currencyPipe {
+
+export class CurrencyPipe {
   transform(money: any, args: any): any {
 
     var decimalSep = args.decsep || '.';

@@ -14,7 +14,7 @@ export class AuthenticationService {
   logout(callback?: any, error?: any) {
     var usr: LoginUserModel = this._loginservice.getUser();
 
-    this._dataserver.post("getLogout", { "sessionid": usr._sessiondetails.sessionid }).subscribe(r => {
+    this._dataserver.post("getLogout", { "sessionid": usr.sessiondetails.sessionid }).subscribe(r => {
       Cookie.delete('_session_');
       this._loginservice.setUsers(null);
 
@@ -63,13 +63,6 @@ export class AuthenticationService {
 
           if (userDetails.status) {
             this._loginservice.setUsers(userDetails);
-            if (userDetails.cmpid != 0 && userDetails.fy != 0) {
-              // propr user
-            } else if (userDetails.errcode === "chpwd") {
-              this._router.navigate(['/changepwd']);
-            } else {
-              this._router.navigate(['/usersettings/defaultcompandfy']);
-            }
           } else {
             this._router.navigate(['login']);
             console.log("user status false");

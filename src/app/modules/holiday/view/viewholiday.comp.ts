@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HolidayService } from '../../../_services/holiday/holiday-service';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'viewholiday.comp.html',
-    providers: [HolidayService]
+    providers: [HolidayService, CommonService]
 })
 
 export class ViewHolidayComponent implements OnInit {
     holidayDT: any = [];
+    schoolDT: any = [];
+    schid: number = 0;
+    schoolname: string = "";
 
     private events: any[];
     private header: any;
@@ -20,7 +24,8 @@ export class ViewHolidayComponent implements OnInit {
     isShowGrid: any = true;
     isShowCalendar: any = false;
 
-    constructor(private _holidayervice: HolidayService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
+    constructor(private _holidayervice: HolidayService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService) {
         this.getDefaultDate();
         this.getHolidayGrid();
     }
@@ -35,6 +40,27 @@ export class ViewHolidayComponent implements OnInit {
             // right: 'month,agendaWeek,agendaDay,today'
             right: 'next'
         };
+    }
+
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "type": "school",
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event) {
+        this.schid = event.value;
+        this.schoolname = event.label;
+        this.searchHolidayGrid();
     }
 
     refreshButtons() {
@@ -60,6 +86,28 @@ export class ViewHolidayComponent implements OnInit {
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         this.defaultDate = this.formatDate(today);
+    }
+
+    searchHolidayGrid() {
+        var that = this;
+        commonfun.loader();
+
+        that._holidayervice.getHoliday({ "flag": "search", "schid": that.schid }).subscribe(data => {
+            try {
+                that.holidayDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     getHolidayGrid() {

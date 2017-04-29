@@ -15,24 +15,36 @@
 
 <div class="card">
     <div class="header">
-        <h4>Holiday</h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshHoliday('grid')">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <h4>Holiday</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>School</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                            [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete schoolname"></p-autoComplete>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="isshHoliday('grid')">
                     <span class="material-icons">apps</span>
-                </a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshHoliday('calendar')">
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="isshHoliday('calendar')">
                     <span class="material-icons">date_range</span>
-                </a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addHolidayForm()">
+                </button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addHolidayForm()">
                     <span class="material-icons">add</span>
-                </a>
-            </li>
-        </ul>
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="body" *ngIf="isShowGrid">

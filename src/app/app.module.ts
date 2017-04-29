@@ -1,27 +1,20 @@
+import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
-import { SharedModule, GlobalShared } from './_shared/shared.module';
-import { NgModule, ApplicationRef } from '@angular/core';
-import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { RouterModule, PreloadAllModules } from '@angular/router';
-import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
-
-/*
- * Platform and Environment providers/directives/pipes
- */
-
+import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
-
-// App is our top level component
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login/login.comp';
 import { NoContentComponent } from './no-content';
+import { SharedModule, GlobalShared } from './_shared/shared.module';
+import { LoginComponent } from './login/login.comp';
+import { HomeComponent } from './home';
+import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -64,10 +57,7 @@ type StoreType = {
 })
 
 export class AppModule {
-  constructor(
-    public appRef: ApplicationRef,
-    public appState: AppState
-  ) { }
+  constructor(public appRef: ApplicationRef, public appState: AppState) { }
 
   public hmrOnInit(store: StoreType) {
     if (!store || !store.state) {

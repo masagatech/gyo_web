@@ -11,14 +11,15 @@ export class LoginUser {
 export interface LoginUserModel {
   uid: number;
   ucode: string;
+  utype: string;
   email: string;
   fullname: string;
   login: string,
   status: boolean,
   errcode: string,
   errmsg: string,
-  _sessiondetails: any;
-  _globsettings: GlobalSettings;
+  sessiondetails: any;
+  globsettings: GlobalSettings;
 }
 
 export interface GlobalSettings {

@@ -35,7 +35,7 @@ export class LoginService {
         if (userDetails != null) {
             this.loginUser.login = this.loginUser.uid.toString() + ":" + this.loginUser.ucode;
             Cookie.delete('_session_');
-            Cookie.set("_session_", this.loginUser._sessiondetails.sessionid.toString());
+            Cookie.set("_session_", this.loginUser.sessiondetails.sessionid.toString());
         }
         return this.loginUser;
     }
@@ -46,13 +46,5 @@ export class LoginService {
 
     saveUser(req: any) {
         return this._dataserver.post("saveUserInfo", req)
-    }
-
-    getUserRights(req: any) {
-        return this._dataserver.post("getUserRights", req)
-    }
-
-    saveUserRights(req: any) {
-        return this._dataserver.post("SaveUserRights", req)
     }
 }

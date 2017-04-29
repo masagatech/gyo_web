@@ -1,46 +1,37 @@
 <div class="card">
+    <div class="header">
+        <h4>Holiday</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveHolidayInfo()">
+                    <span class="material-icons">save</span>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <span class="material-icons">arrow_back</span>
+                </a>
+            </li>
+        </ul>
+    </div>
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-6">
-                <h4>Batch</h4>
-            </div>
-            <div class="col-md-6" align="right">
-                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="saveHolidayInfo()">
-                    <i class="material-icons">save</i>
-                </button>
-
-                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row clearfix">
-    <div class="col-md-5">
-        
-    </div>
-    <div class="col-md-7">
-        <div class="card">
-            <div class="body">
-                <div class="demo-masked-input">
-                    <div class="row clearfix">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>From Date</label>
-                                    <input type="date" [(ngModel)]="frmdt" class="form-control date" (ngModelChange)="todt = frmdt" placeholder="Ex: 30/07/2016"
-                                    />
-                                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>From Date</label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date" (ngModelChange)="todt = frmdt" placeholder="Ex: 30/07/2016"
+                                />
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <label>To Date</label>
-                                    <input type="date" [(ngModel)]="todt" class="form-control date" placeholder="Ex: 30/07/2016" />
-                                </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>To Date</label>
+                                <input type="date" [(ngModel)]="todt" class="form-control date" placeholder="Ex: 30/07/2016" />
                             </div>
                         </div>
                     </div>
@@ -67,7 +58,8 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="col-md-6">
                 <div class="row clearfix">
                     <div class="col-md-12">
                         <div class="form-group">

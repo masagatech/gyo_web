@@ -160,6 +160,9 @@ export class AddHolidayComponent implements OnInit {
 
                 })
             }
+            else {
+                commonfun.loaderhide();
+            }
         });
     }
 

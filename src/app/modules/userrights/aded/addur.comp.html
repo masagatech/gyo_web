@@ -1,0 +1,89 @@
+<div class="card">
+	<div class="header">
+		<h4>User Rights</h4>
+		<ul class="header-dropdown m-r--5">
+			<li>
+				<a role="button" class="btn btn-theme btn-xs" (click)="saveUserRights()">
+					<span class="material-icons">save</span>
+				</a>
+			</li>
+			<li>
+				<a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+					<span class="material-icons">arrow_back</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="body">
+		<div class="row clearfix">
+			<div class="col-md-6">
+				<div class="form-group">
+					<div class="form-line">
+						<label>User Name</label>
+						<p-autoComplete id="uname" name="uname" [(ngModel)]="uname" placeholder="User Name" [tabindex]="1" (onSelect)="selectAutoUsers($event, 1)"
+							[suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<div class="form-line">
+						<label>Reference User Name</label>
+						<p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuname" placeholder="Reference User Name" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)"
+							[suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row clearfix">
+			<div class="col-md-12">
+				<!--<div class="form-group">
+					<div class="form-line">
+						<p-checkbox id="selectall" name="selectall" value="selectall" label="Select All" [(ngModel)]="selectedrights" binary="true"></p-checkbox>
+					</div>
+				</div>-->
+				<div class="form-group">
+					<div class="form-line">
+						<input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+						<label for="selectall">Select All</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row clearfix allcheckboxes" *ngFor="let row of menudetails; let i = index;">
+			<div class="col-md-3">
+				<input id="{{row.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{row.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(row)"
+					class="filled-in" />
+				<label for="{{row.mid}}">{{row.mname}}</label>
+			</div>
+			<div class="col-md-9" id="M{{row.mid}}">
+				<span style="margin-right:5px;" *ngFor="let item of getMenuRights(row.maction) let i = index">
+					<input id="{{row.mid}}{{item}}" name="menuitem{{i + 1}}" data-menuid="row.mid" data-right="item" type="checkbox" value="{{item}}" class="actrights filled-in" />
+					<label for="{{row.mid}}{{item}}">{{item}}</label>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--<p-checkbox id="{{row.mid}}" name="menu{{i + 1}}" value="{{row.mid}}" label="{{row.mname}}" [(ngModel)]="row.selectedrights"
+	binary="true"></p-checkbox>-->
+
+<!--<p-checkbox input-id="{{row.mid}}{{item}}" name="item{{i + 1}}" value="{{item}}" label="{{item}}" binary="true"></p-checkbox>-->
+
+<!--<input id="{{row.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{row.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(row)"/>&nbsp;{{row.mname}}
+
+<div class="row">
+	<div class="col-md-4">
+		<input id="{{drow.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{drow.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(drow)"
+		/>&nbsp;{{drow.mname}}
+	</div>
+	<div class="col-md-8" id="M{{drow.mid}}">
+		<span style="margin-right:5px;" *ngFor="let item of getMenuRights(drow.mrights) let i = index">
+			<input id="{{drow.mid}}{{item}}" name="menuitem{{i + 1}}" data-menuid="drow.mid" data-right="item" type="checkbox" value="{{item}}" class="actrights" />&nbsp;{{item}}
+		</span>
+		<span *ngIf="drow.ismore">
+			<a role="button" (click)="openMoreRights(drow)">More</a>
+		</span>
+	</div>
+</div>-->
