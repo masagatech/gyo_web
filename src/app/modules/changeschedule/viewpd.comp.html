@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" placeholder="Owner Name" [tabindex]="1" (onSelect)="selectAutoData($event, 'owner')"
-                            [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'owner')" field="label" [minLength]="1"
+                            [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Co-ordinator')" field="label" [minLength]="1"
                             [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>From Date</label>
-                                <input type="date" [(ngModel)]="pickfromdate" class="form-control" tabindex="5">
+                                <input type="date" [(ngModel)]="pickfromdate" class="form-control" tabindex="5" (ngModelChange)="dropfromdate=pickfromdate">
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>To Date</label>
-                                <input type="date" [(ngModel)]="picktodate" class="form-control" tabindex="6">
+                                <input type="date" [(ngModel)]="picktodate" class="form-control" tabindex="6" (ngModelChange)="droptodate=picktodate">
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select [(ngModel)]="pickdriverid" class="form-control" tabindex="7" (ngModelChange)="setDropDriver()">
-                            <option [value]="0">Select Pick Up Driver</option>
+                            <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -109,7 +109,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select [(ngModel)]="pickvehicleno" class="form-control" tabindex="8" (ngModelChange)="setDropVehicle()">
-                            <option [value]="''">Select Pick Up Vehicle</option>
+                            <option [value]="''">Select Vehicle</option>
                             <option *ngFor="let row of vehicleDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -118,13 +118,13 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="pickstudentname" name="pickstudentname" [(ngModel)]="pickstudentname" placeholder="Pick Up Student Name"
+                        <p-autoComplete id="pickstudentname" name="pickstudentname" [(ngModel)]="pickstudentname" placeholder="Student Name"
                             [tabindex]="9" (onSelect)="selectAutoData($event, 'student')" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)"
                             field="studnm" [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
                     </div>
                 </div>
 
-                <p-orderList [value]="pickStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Pick - Up Schedule">
+                <p-orderList [value]="pickStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Student">
                     <template let-student pTemplate="editor">
                         <div class="row">
                             <div class="col-md-10">
@@ -155,7 +155,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>From Date</label>
-                                <input type="date" [(ngModel)]="dropfromdate" class="form-control" tabindex="5">
+                                <input type="date" [(ngModel)]="dropfromdate" class="form-control" tabindex="5" disabled>
                             </div>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label>To Date</label>
-                                <input type="date" [(ngModel)]="droptodate" class="form-control" tabindex="6">
+                                <input type="date" [(ngModel)]="droptodate" class="form-control" tabindex="6" disabled>
                             </div>
                         </div>
                     </div>
@@ -171,7 +171,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select [(ngModel)]="dropdriverid" class="form-control" tabindex="10">
-                            <option [value]="0">Select Drop Driver</option>
+                            <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -181,7 +181,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select [(ngModel)]="dropvehicleno" class="form-control" tabindex="11">
-                            <option [value]="''">Select Drop Vehicle</option>
+                            <option [value]="''">Select Vehicle</option>
                             <option *ngFor="let row of vehicleDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -190,17 +190,13 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="dropstudentname" name="dropstudentname" [(ngModel)]="dropstudentname" placeholder="Drop Student Name"
+                        <p-autoComplete id="dropstudentname" name="dropstudentname" [(ngModel)]="dropstudentname" placeholder="Student Name"
                             [tabindex]="12" (onSelect)="selectDropStudent($event)" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)"
                             field="studnm" [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
-
-                        <button type="button" class="btn bg-orange waves-effect btn-xs pull-right" (click)="pickupStudents()">
-                            <i class="material-icons">add</i>
-                        </button>
                     </div>
                 </div>
 
-                <p-orderList [value]="dropStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Drop Schedule">
+                <p-orderList [value]="dropStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Student">
                     <template let-student pTemplate="item">
                         <div class="row">
                             <div class="col-md-10">
@@ -216,6 +212,53 @@
                         </div>
                     </template>
                 </p-orderList>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" placeholder="Pickup Attendent Name" [tabindex]="9"
+                            (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')"
+                            field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete pickattname"></p-autoComplete>
+                    </div>
+                </div>
+
+                <div *ngIf="pickAttList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of pickAttList">
+                            {{row.attnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deletePickAtt(row)"><i class="material-icons">remove</i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" placeholder="Drop Attendent Name" [tabindex]="10"
+                            (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')"
+                            field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete dropattname"></p-autoComplete>
+                    </div>
+                </div>
+
+                <div *ngIf="dropAttList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of dropAttList">
+                            {{row.attnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">remove</i></button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

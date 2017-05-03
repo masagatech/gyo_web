@@ -3865,6 +3865,14 @@ section.content {
     padding: 10px;
 }
 
+.card .no-padding {
+    padding: 0;
+}
+
+.card .border {
+    border-right: 1px solid rgba(204, 204, 204, 0.35);
+}
+
 /*
 .card .body .col-xs-1,
 .card .body .col-sm-1,
@@ -6966,6 +6974,10 @@ section.content {
     -o-transition: 0.2s;
     -webkit-transition: 0.2s;
     transition: 0.2s;
+}
+
+.form-group .form-line .control-label {
+    font-weight: bold;
 }
 
 .form-group .form-line.error:after {

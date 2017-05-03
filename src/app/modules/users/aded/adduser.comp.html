@@ -21,12 +21,9 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="row clearfix">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="body">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group form-float">
@@ -45,6 +42,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -84,8 +82,8 @@
                                 <label class="control-label">User Type</label>
                                 <select [(ngModel)]="utype" class="form-control">
                                     <option [value]="''">Select Type</option>
-                                    <option [value]="'school'">School</option>
-                                    <option [value]="'internal'">Internal</option>
+                                    <option [value]="'School'">School</option>
+                                    <option [value]="'Internal'">Internal</option>
                                 </select>
                             </div>
                         </div>
@@ -102,12 +100,30 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">School</label>
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                                    [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="schoolList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of schoolList">
+                            {{row.schnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteSchool(row)"><i class="material-icons">remove</i></button>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="body">
+            <div class="col-md-6">
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">

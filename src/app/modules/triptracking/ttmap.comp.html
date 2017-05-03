@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="header">
+        <h4>Trip Tracking</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="clear()"><span class="fa fa-close"></span> Clear</a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="initOverlays()"><span class="fa fa-map-marker"></span> Reset</a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="zoomIn(gmap.getMap())"><span class="fa fa-search-plus"></span> Zoom In</a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="zoomOut(gmap.getMap())"><span class="fa fa-search-minus"></span> Zoom Out</a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-gmap #gmap [style]="{'width':'100%','height':'320px'}" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)"
+                    (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)"></p-gmap>
+            </div>
+        </div>
+    </div>
+</div>

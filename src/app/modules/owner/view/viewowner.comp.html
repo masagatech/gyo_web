@@ -1,20 +1,15 @@
 <div class="card">
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <h4>Owner</h4>
-            </div>
-            <div class="col-md-6" align="right">
-                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="addOwnerForm()">
-                    <i class="material-icons">add</i>
-                </button>
-            </div>
-        </div>
+    <div class="header">
+        <h4>Co-ordinator / Attendent</h4>
+        <ul class="header-dropdown m-r--5">
+            <li *ngIf="actaddrights === 'add'">
+                <a role="button" class="btn btn-theme btn-xs" (click)="addOwnerForm()">
+                    <span class="material-icons">add</span></a>
+            </li>
+        </ul>
     </div>
-</div>
 
-<div class="card">
-    <div class="body">
+    <div class="body no-padding">
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="ownerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
@@ -23,12 +18,12 @@
                             <img alt="{{row.ownername}}" src="uploads/owner/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </template>
                     </p-column>
-                    <p-column field="ownercode" header="Owner Code" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="ownername" header="Owner Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
+                    <p-column field="ownercode" header="Code" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="ownername" header="Co-ordinator Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
                     <p-column field="aadharno" header="Aadhar No" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
                     <p-column field="email1" header="Email" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
                     <p-column field="mobileno1" header="Mobile" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left'}">
+                    <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editOwnerForm(row)">
                                 <i class="material-icons">edit</i>

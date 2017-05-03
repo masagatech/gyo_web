@@ -8,9 +8,7 @@ import { ViewOwnerComponent } from './view/viewowner.comp';
 
 import { OwnerService } from '../../_services/owner/owner-service';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
-import { DropzoneModule } from 'ngx-dropzone-wrapper';
-import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { LazyLoadEvent, DataTableModule, RadioButtonModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -30,8 +28,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule,
-     DropzoneModule.forRoot()
+    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, RadioButtonModule, AutoCompleteModule
   ],
 
   providers: [OwnerService]

@@ -48,7 +48,7 @@ export class ViewHolidayComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "type": "school",
+            "flag": "school",
             "search": query
         }).then((data) => {
             this.schoolDT = data;

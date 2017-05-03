@@ -1,26 +1,22 @@
 <div class="card">
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <h4>Student</h4>
-            </div>
-            <div class="col-md-6" align="right">
-                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="addStudentForm()">
-                    <i class="material-icons">add</i>
-                </button>
-            </div>
-        </div>
+    <div class="header">
+        <h4>Student</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addStudentForm()">
+                    <span class="material-icons">add</span></a>
+            </li>
+        </ul>
     </div>
-</div>
 
-<div class="card">
-    <div class="body">
+    <div class="body no-padding">
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="studentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center'}">
                         <template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.studentname}}" src="uploads/student/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                            <img alt="{{row.studentname}}" src="uploads/student/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px"
+                                width="40px">
                         </template>
                     </p-column>
                     <p-column field="studentname" header="Student Name" [style]="{'text-align': 'left'}"></p-column>

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
-import { OwnerService } from '../../../_services/owner/owner-service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { OwnerService } from '../../../_services/owner/owner-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
 
 @Component({
     templateUrl: 'addowner.comp.html',
@@ -10,10 +12,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class AddOwnerComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     ownerid: number = 0;
     ownercode: string = "";
+    oldcode: string = "";
     ownerpwd: string = "";
     ownername: string = "";
+    typ: string = "Co-ordinator";
+    isthirdparty: string = "N";
     aadharno: string = "";
     lat: string = "";
     lon: string = "";
@@ -36,15 +43,27 @@ export class AddOwnerComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
+    ownerTypeDT: any = [];
+
     private subscribeParameters: any;
 
     constructor(private _ownerervice: OwnerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
-
+        private _router: Router, private _msg: MessageService, private _loginservice: LoginService) {
+        this.loginUser = this._loginservice.getUser();
+        this.getOwnerType();
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            commonfun.rdbtnstyle();
+        }, 0);
+
         this.getOwnerDetails();
+    }
+
+    getOwnerType() {
+        this.ownerTypeDT.push({ "code": "cod", "name": "Co-ordinator" });
+        this.ownerTypeDT.push({ "code": "att", "name": "Attendent" });
     }
 
     // Auto Completed School
@@ -53,7 +72,7 @@ export class AddOwnerComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "type": "school",
+            "flag": "school",
             "search": query
         }).then((data) => {
             this.schoolDT = data;
@@ -132,6 +151,7 @@ export class AddOwnerComponent implements OnInit {
         var saveowner = {
             "autoid": that.ownerid,
             "ownercode": that.ownercode,
+            "oldcode": that.oldcode,
             "ownerpwd": that.ownerpwd,
             "ownername": that.ownername,
             "aadharno": that.aadharno,
@@ -147,7 +167,9 @@ export class AddOwnerComponent implements OnInit {
             "city": that.city,
             "pincode": that.pincode,
             "remark1": that.remark1,
-            "uid": "vivek",
+            "typ": that.typ,
+            "isthirdparty": that.isthirdparty,
+            "uid": that.loginUser.ucode,
             "isactive": that.isactive,
             "mode": ""
         }
@@ -191,13 +213,16 @@ export class AddOwnerComponent implements OnInit {
                 that._ownerervice.getOwnerDetails({ "flag": "edit", "id": this.ownerid }).subscribe(data => {
                     try {
                         that.ownerid = data.data[0].autoid;
+                        that.oldcode = data.data[0].ownercode;
                         that.ownercode = data.data[0].ownercode;
                         that.ownerpwd = data.data[0].ownerpwd;
                         that.ownername = data.data[0].ownername;
-                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
                         that.lat = data.data[0].lat;
                         that.lon = data.data[0].lon;
                         that.aadharno = data.data[0].aadharno;
+                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.typ = data.data[0].typ;
+                        that.isthirdparty = data.data[0].isthirdparty;
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;

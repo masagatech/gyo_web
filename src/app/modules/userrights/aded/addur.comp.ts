@@ -57,7 +57,7 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "type": "users",
+            "flag": "users",
             "search": query
         }).then(data => {
             this.usersDT = data;
@@ -93,7 +93,7 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
     getMenuDetails() {
         var that = this;
 
-        this._menuservice.getMenuDetails({ "flag": "main" }).subscribe(data => {
+        this._menuservice.getMenuDetails({ "flag": "all" }).subscribe(data => {
             this.menudetails = data.data;
             $("#menus").prop('checked', false);
         }, err => {

@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AddDriverComponent implements OnInit {
     driverid: number = 0;
     drivercode: string = "";
+    oldcode: string = "";
     driverpwd: string = "";
     drivername: string = "";
     ownerid: number = 0;
@@ -110,6 +111,7 @@ export class AddDriverComponent implements OnInit {
         var saveDriver = {
             "autoid": that.driverid,
             "drivercode": that.drivercode,
+            "oldcode": that.oldcode,
             "driverpwd": that.driverpwd,
             "drivername": that.drivername,
             "aadharno": that.aadharno,
@@ -171,6 +173,7 @@ export class AddDriverComponent implements OnInit {
                     try {
                         that.driverid = data.data[0].autoid;
                         that.drivercode = data.data[0].drivercode;
+                        that.oldcode = data.data[0].drivercode;
                         that.driverpwd = data.data[0].driverpwd;
                         that.drivername = data.data[0].drivername;
                         that.lat = data.data[0].lat;

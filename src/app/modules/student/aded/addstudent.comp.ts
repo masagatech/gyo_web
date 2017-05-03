@@ -46,6 +46,9 @@ export class AddStudentComponent implements OnInit {
     droplet: any = "";
     droplong: any = "";
 
+    isCopyPickupAddr: boolean = false;
+    isCopyDropAddr: boolean = false;
+
     otherinfo: string = "";
     remark1: string = "";
     global = new Globals();
@@ -66,6 +69,7 @@ export class AddStudentComponent implements OnInit {
     }
 
     public ngOnInit() {
+        $(".ownername input").focus();
         this.getStudentDetails();
     }
 
@@ -76,6 +80,28 @@ export class AddStudentComponent implements OnInit {
     public onUploadSuccess(event) {
         console.log('success');
     }
+
+    // AutoCompleted Users
+
+    getAutoOwners(event) {
+        let query = event.query;
+        this._autoservice.getAutoData({
+            "flag": "owner",
+            "typ": "Co-ordinator",
+            "search": query
+        }).then(data => {
+            this.ownersDT = data;
+        });
+    }
+
+    // Selected Users
+
+    selectAutoOwners(event) {
+        this.ownerid = event.value;
+        this.ownername = event.label;
+    }
+
+    // Fill School, Division, Gender DropDown
 
     fillDropDownList() {
         var that = this;
@@ -102,81 +128,114 @@ export class AddStudentComponent implements OnInit {
         })
     }
 
-    // AutoCompleted Users
+    // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
 
-    getAutoOwners(event) {
-        let query = event.query;
-        this._autoservice.getAutoData({
-            "type": "owner",
-            "search": query
-        }).then(data => {
-            this.ownersDT = data;
-        });
-    }
+    copyPDAddrAndLatLong() {
+        if (this.isCopyPickupAddr) {
+            this.pickupaddr = this.resiaddr;
+            this.pickuplet = this.resilet;
+            this.pickuplong = this.resilong;
+        }
+        else {
+            this.pickupaddr = "";
+            this.pickuplet = "";
+            this.pickuplong = "";
+        }
 
-    // Selected Users
-
-    selectAutoOwners(event) {
-        this.ownerid = event.value;
-        this.ownername = event.label;
+        if (this.isCopyDropAddr) {
+            this.dropaddr = this.resiaddr;
+            this.droplet = this.resilet;
+            this.droplong = this.resilong;
+        }
+        else {
+            this.dropaddr = "";
+            this.droplet = "";
+            this.droplong = "";
+        }
     }
 
     saveStudentInfo() {
         var that = this;
-        commonfun.loader();
-        var studentprofiledata = {};
 
-        studentprofiledata = {
-            "gender": that.gender, "dob": that.dob, "division": that.division,
-            "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
+        if (that.ownerid === 0) {
+            that._msg.Show(messageType.error, "Error", "Please Enter Owner Name");
+            $(".ownername input").focus();
         }
-
-        var saveStudent = {
-            "autoid": that.studentid,
-            "studentcode": that.schoolid,
-            "studentname": that.studentname,
-            "schoolid": that.schoolid,
-            "name": that.mothername + ";" + that.fathername,
-            "mobileno1": that.mothermobile,
-            "mobileno2": that.fathermobile,
-            "email1": that.motheremail,
-            "email2": that.fatheremail,
-            "address": that.resiaddr,
-            "studentprofiledata": studentprofiledata,
-            "resgeoloc": that.resilet + "," + that.resilong,
-            "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
-            "pickdowngeoloc": that.droplet + "," + that.droplong,
-            "aadharno": that.aadharno,
-            "ownerid": that.ownerid,
-            "uid": "vivek",
-            "remark1": that.remark1
+        else if (that.schoolid === 0) {
+            that._msg.Show(messageType.error, "Error", "Please Select School Name");
         }
+        else if (that.studentname === "") {
+            that._msg.Show(messageType.error, "Error", "Please Enter Student Name");
+        }
+        else if (that.division === "") {
+            that._msg.Show(messageType.error, "Error", "Please Enter Division");
+        }
+        else if (that.gender === "") {
+            that._msg.Show(messageType.error, "Error", "Please Enter Gender");
+        }
+        else if (that.dob === "") {
+            that._msg.Show(messageType.error, "Error", "Please Enter Date Of Birth");
+        }
+        else if (that.aadharno === "") {
+            that._msg.Show(messageType.error, "Error", "Please Enter Aadhar No");
+        }
+        else {
+            commonfun.loader();
 
-        that._studentervice.saveStudentInfo(saveStudent).subscribe(data => {
-            try {
-                var dataResult = data.data;
+            var studentprofiledata = {};
 
-                if (dataResult[0].funsave_studentinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_studentinfo.msg);
-                    that._router.navigate(['/student']);
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_studentinfo.msg);
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
+            studentprofiledata = {
+                "gender": that.gender, "dob": that.dob, "division": that.division,
+                "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
             }
 
-            commonfun.loaderhide();
-        }, err => {
-            console.log(err);
-            that._msg.Show(messageType.error, "Error", err);
+            var saveStudent = {
+                "autoid": that.studentid,
+                "studentcode": that.schoolid,
+                "studentname": that.studentname,
+                "schoolid": that.schoolid,
+                "name": that.mothername + ";" + that.fathername,
+                "mobileno1": that.mothermobile,
+                "mobileno2": that.fathermobile,
+                "email1": that.motheremail,
+                "email2": that.fatheremail,
+                "address": that.resiaddr,
+                "studentprofiledata": studentprofiledata,
+                "resgeoloc": that.resilet + "," + that.resilong,
+                "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
+                "pickdowngeoloc": that.droplet + "," + that.droplong,
+                "aadharno": that.aadharno,
+                "ownerid": that.ownerid,
+                "uid": "vivek",
+                "remark1": that.remark1
+            }
 
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            that._studentervice.saveStudentInfo(saveStudent).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+
+                    if (dataResult[0].funsave_studentinfo.msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", dataResult[0].funsave_studentinfo.msg);
+                        that._router.navigate(['/student']);
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_studentinfo.msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                console.log(err);
+                that._msg.Show(messageType.error, "Error", err);
+
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get student Data

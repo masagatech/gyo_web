@@ -1,3 +1,7 @@
+$(function () {
+    $(".ui-radiobutton-box").find('span').hide();
+});
+
 var commonfun = {};
 
 function findJSON(obj, key, val, brek) {
@@ -86,6 +90,10 @@ commonfun.navistyle = function () {
 commonfun.chevronstyle = function () {
     $(".fc-prev-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
     $(".fc-next-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
+}
+
+commonfun.rdbtnstyle = function () {
+    $(".ui-radiobutton-box").find('span').removeAttr('class');
 }
 
 commonfun.randomColor = function (brightness) {

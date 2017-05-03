@@ -1,10 +1,10 @@
 <div class="card">
-    <div class="body">
+    <div class="header">
         <div class="row clearfix">
-            <div class="col-md-6 col-xs-4">
-                <h4>Owner</h4>
+            <div class="col-md-10 col-xs-4">
+                <h4>Co-ordinator / Attendent</h4>
             </div>
-            <div class="col-md-6 col-xs-8">
+            <div class="col-md-2 col-xs-8">
                 <div class="pull-right">
                     <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="saveOwnerInfo()">
                         <i class="material-icons">save</i>
@@ -21,18 +21,29 @@
             </div>
         </div>
     </div>
-</div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group form-float">
+                    <div class="demo-radio-button">
+                        <p-radioButton name="typ" value="Co-ordinator" label="Co-ordinator" [(ngModel)]="typ"></p-radioButton>
+                        <p-radioButton name="typ" value="Attendent" label="Attendent" [(ngModel)]="typ"></p-radioButton>
+                    </div>
+                </div>
 
-<div class="row clearfix">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="body">
+                <div class="form-group form-float">
+                    <div class="demo-radio-button">
+                        <p-radioButton name="ownership" value="N" label="School Owned" [(ngModel)]="isthirdparty"></p-radioButton>
+                        <p-radioButton name="ownership" value="Y" label="3rd Party" [(ngModel)]="isthirdparty"></p-radioButton>
+                    </div>
+                </div>
+
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Owner Code</label>
-                                <input type="text" [(ngModel)]="ownercode" class="form-control" placeholder="Owner Code" maxlength="10" />
+                                <label class="control-label">{{typ}} Code</label>
+                                <input type="text" [(ngModel)]="ownercode" class="form-control" placeholder="{{typ}} Code" maxlength="10" />
                             </div>
                         </div>
                     </div>
@@ -50,8 +61,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Owner Name</label>
-                                <input type="text" [(ngModel)]="ownername" class="form-control" placeholder="Owner Name" maxlength="20" />
+                                <label class="control-label">{{typ}} Name</label>
+                                <input type="text" [(ngModel)]="ownername" class="form-control" placeholder="{{typ}} Name" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -117,11 +128,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="body">
+            <div class="col-md-6">
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">

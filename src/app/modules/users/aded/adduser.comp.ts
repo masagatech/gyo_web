@@ -10,12 +10,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class AddUserComponent implements OnInit {
-    schoolDT: any = [];
-    divisionDT: any = [];
-    genderDT: any = [];
-
     uid: number = 0;
     ucode: string = "";
+    oldcode: string = "";
     upwd: string = "";
     fname: string = "";
     lname: string = "";
@@ -33,6 +30,13 @@ export class AddUserComponent implements OnInit {
     remark1: string = "";
     utype: string = "";
 
+    genderDT: any = [];
+
+    schoolDT: any = [];
+    schoolList: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
+
     private subscribeParameters: any;
 
     constructor(private _userservice: UserService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
@@ -42,6 +46,46 @@ export class AddUserComponent implements OnInit {
 
     public ngOnInit() {
         this.getUserDetails();
+    }
+
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "school",
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event, type) {
+        this.schoolid = event.value;
+        this.schoolname = event.label;
+
+        this.addSchoolList();
+        $(".schoolname input").focus();
+    }
+
+    // Read Get School
+
+    addSchoolList() {
+        var that = this;
+
+        that.schoolList.push({
+            "schid": that.schoolid, "schnm": that.schoolname
+        });
+
+        that.schoolid = 0;
+        that.schoolname = "";
+    }
+
+    deleteSchool(row) {
+        this.schoolList.splice(this.schoolList.indexOf(row), 1);
     }
 
     fillDropDownList() {
@@ -102,12 +146,17 @@ export class AddUserComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
+        var _schlist: string[] = [];
+        _schlist = Object.keys(that.schoolList).map(function (k) { return that.schoolList[k].schid });
+
         var saveuser = {
             "uid": that.uid,
+            "oldcode": that.oldcode,
             "ucode": that.ucode,
             "upwd": that.upwd,
             "fname": that.fname,
             "lname": that.lname,
+            "school": _schlist,
             "mobileno1": that.mobileno1,
             "mobileno2": that.mobileno2,
             "email1": that.email1,
@@ -127,10 +176,18 @@ export class AddUserComponent implements OnInit {
         this._userservice.saveUserInfo(saveuser).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msgid = dataResult[0].funsave_userinfo.msgid;
 
-                if (dataResult[0].funsave_userinfo.msgid != "-1") {
+                if (msgid !== "-1") {
                     that._msg.Show(messageType.success, "Success", dataResult[0].funsave_userinfo.msg);
-                    that.getUserDetails();
+
+                    if (msgid === "2") {
+                        that.resetFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
+
                     commonfun.loaderhide();
                 }
                 else {
@@ -163,10 +220,12 @@ export class AddUserComponent implements OnInit {
                 that._userservice.getUserDetails({ "flag": "edit", "id": this.uid }).subscribe(data => {
                     try {
                         that.uid = data.data[0].uid;
+                        that.oldcode = data.data[0].ucode;
                         that.ucode = data.data[0].ucode;
                         that.upwd = data.data[0].upwd;
                         that.fname = data.data[0].fname;
                         that.lname = data.data[0].lname;
+                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;
@@ -180,12 +239,12 @@ export class AddUserComponent implements OnInit {
                         that.isactive = data.data[0].isactive;
                         that.utype = data.data[0].utype;
                         that.mode = data.data[0].mode;
-
-                        commonfun.loaderhide();
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
                     }
+
+                    commonfun.loaderhide();
                 }, err => {
                     that._msg.Show(messageType.error, "Error", err);
                     console.log(err);
@@ -198,6 +257,16 @@ export class AddUserComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
+    }
+
+    // Clear Fields
+
+    resetFields() {
+        var that = this;
+
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
     }
 
     // Back For View Data

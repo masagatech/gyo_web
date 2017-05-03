@@ -25,7 +25,7 @@ export const routes = [
                 path: '',
                 children: [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
-                    { path: 'marketing', loadChildren: './surveyentries#SurveyEntriesModule' },
+                    { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
                     { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
                     { path: 'school', loadChildren: './school#SchoolModule' },
                     { path: 'holiday', loadChildren: './holiday#HolidayModule' },
