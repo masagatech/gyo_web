@@ -16,6 +16,8 @@ declare var loader: any;
 
 export class ModuleComponent implements OnDestroy {
     userfullname: string = "";
+    userphoto: string = "";
+    useremail: string = "";
     loginUser: LoginUserModel;
 
     private themes: any = [
@@ -50,6 +52,8 @@ export class ModuleComponent implements OnDestroy {
 
         this.loginUser = this._loginservice.getUser();
         this.userfullname = this.loginUser.fullname;
+        this.userphoto = this.loginUser.uphoto;
+        this.useremail = this.loginUser.email;
 
         _router.events.forEach((event: NavigationEvent) => {
             if (event instanceof NavigationStart) {

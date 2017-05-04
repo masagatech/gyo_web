@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../_services/student/student-service';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../_const/globals';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'addstudent.comp.html',
@@ -12,6 +13,8 @@ import { LazyLoadEvent } from 'primeng/primeng';
 })
 
 export class AddStudentComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     schoolDT: any = [];
     divisionDT: any = [];
     genderDT: any = [];
@@ -64,7 +67,8 @@ export class AddStudentComponent implements OnInit {
     };
 
     constructor(private _studentervice: StudentService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+        this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
     }
 
@@ -85,8 +89,10 @@ export class AddStudentComponent implements OnInit {
 
     getAutoOwners(event) {
         let query = event.query;
+
         this._autoservice.getAutoData({
             "flag": "owner",
+            "uid": this.loginUser.uid,
             "typ": "Co-ordinator",
             "search": query
         }).then(data => {

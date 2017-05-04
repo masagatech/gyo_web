@@ -9,11 +9,13 @@ export class LoginUser {
 }
 
 export interface LoginUserModel {
+  sessionid: number;
   uid: number;
   ucode: string;
   utype: string;
   email: string;
   fullname: string;
+  uphoto: string;
   login: string,
   status: boolean,
   errcode: string,

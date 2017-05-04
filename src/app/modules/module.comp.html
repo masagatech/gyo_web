@@ -237,15 +237,9 @@
                         <li class="header">{{userfullname}}</li>
                         <li class="body">
                             <ul class="menu tasks">
-                                <li>
-                                    <a role="button"><i class="fa fa-user"></i> My Profile</a>
-                                </li>
-                                <li>
-                                    <a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a>
-                                </li>
-                                <li>
-                                    <a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a>
-                                </li>
+                                <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
+                                <li><a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a></li>
+                                <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -262,18 +256,16 @@
     <aside id="leftsidebar" class="sidebar">
         <div class="user-info">
             <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                <div class="email">john.doe@example.com</div>
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img alt="{{userfullname}}" src="uploads/{{uphoto}}" onerror="this.src='assets/img/default.gif';" height="30px" width="30px">                    {{userfullname}}
+                </div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                        <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
                         <li role="seperator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                        <li role="seperator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+                        <li><a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a></li>
+                        <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -283,12 +275,6 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">Menu</li>
-                <li>
-                    <a [routerLink]="['/']" routerLinkActivate="active">
-                        <i class="material-icons">home</i>
-                        <span>Home</span>
-                    </a>
-                </li>
                 <li *ngFor="let row of mainMenuDT">
                     <a [routerLink]="row.mlink" routerLinkActivate="active">
                         <i class="material-icons">{{row.micon}}</i>

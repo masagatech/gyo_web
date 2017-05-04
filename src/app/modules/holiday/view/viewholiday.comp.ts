@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { HolidayService } from '../../../_services/holiday/holiday-service';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { MenuService } from '../../../_services/menus/menu-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
+import { HolidayService } from '../../../_services/holiday/holiday-service';
 
 @Component({
     templateUrl: 'viewholiday.comp.html',
-    providers: [HolidayService, CommonService]
+    providers: [MenuService, HolidayService, CommonService]
 })
 
 export class ViewHolidayComponent implements OnInit {
@@ -15,6 +17,12 @@ export class ViewHolidayComponent implements OnInit {
     schoolDT: any = [];
     schid: number = 0;
     schoolname: string = "";
+
+    loginUser: LoginUserModel;
+
+    actaddrights: string = "";
+    acteditrights: string = "";
+    actviewrights: string = "";
 
     private events: any[];
     private header: any;
@@ -24,10 +32,11 @@ export class ViewHolidayComponent implements OnInit {
     isShowGrid: any = true;
     isShowCalendar: any = false;
 
-    constructor(private _holidayervice: HolidayService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        public _menuservice: MenuService, private _loginservice: LoginService, private _holidayervice: HolidayService,
+        private _autoservice: CommonService) {
+        this.loginUser = this._loginservice.getUser();
         this.getDefaultDate();
-        this.getHolidayGrid();
     }
 
     public ngOnInit() {
@@ -60,11 +69,11 @@ export class ViewHolidayComponent implements OnInit {
     selectSchoolData(event) {
         this.schid = event.value;
         this.schoolname = event.label;
-        this.searchHolidayGrid();
+        this.viewOwnerDataRights();
     }
 
     refreshButtons() {
-        setTimeout(function () {
+        setTimeout(function() {
             commonfun.navistyle();
             commonfun.chevronstyle();
         }, 0);
@@ -88,23 +97,24 @@ export class ViewHolidayComponent implements OnInit {
         this.defaultDate = this.formatDate(today);
     }
 
-    searchHolidayGrid() {
+    public viewOwnerDataRights() {
         var that = this;
-        commonfun.loader();
+        var addRights = [];
+        var editRights = [];
+        var viewRights = [];
 
-        that._holidayervice.getHoliday({ "flag": "search", "schid": that.schid }).subscribe(data => {
-            try {
-                that.holidayDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        that._menuservice.getMenuDetails({ "flag": "actrights", "uid": that.loginUser.uid, "mid": "9", "utype": that.loginUser.utype }).subscribe(data => {
+            addRights = data.data.filter(a => a.mrights === "add");
+            editRights = data.data.filter(a => a.mrights === "edit");
+            viewRights = data.data.filter(a => a.mrights === "view");
 
-            commonfun.loaderhide();
+            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
+            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+
+            that.getHolidayGrid();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -112,24 +122,27 @@ export class ViewHolidayComponent implements OnInit {
 
     getHolidayGrid() {
         var that = this;
-        commonfun.loader();
 
-        that._holidayervice.getHoliday({ "flag": "grid" }).subscribe(data => {
-            try {
-                that.holidayDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        if (that.actviewrights === "view") {
+            commonfun.loader();
 
-            commonfun.loaderhide();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+            that._holidayervice.getHoliday({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schid }).subscribe(data => {
+                try {
+                    that.holidayDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-        })
+                commonfun.loaderhide();
+            }, err => {
+                //that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
     }
 
     getHolidayCalendar(row) {

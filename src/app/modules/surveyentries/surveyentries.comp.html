@@ -1,11 +1,9 @@
 <div class="card">
-    <div class="body">
+    <div class="header">
         <h4>Driver Data</h4>
     </div>
-</div>
-
-<div class="card">
-    <div class="body">
+    
+    <div class="body no-padding">
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable #dt [value]="datatable_datasource" [lazy]="true" [rows]="15" [paginator]="true" [totalRecords]="datatable_totalRecords"

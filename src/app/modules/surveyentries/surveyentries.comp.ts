@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { DriverInfoService } from '../../_services/driverinfo/driverinfo-service'
-import { LazyLoadEvent } from 'primeng/primeng'
-
-import { Router } from '@angular/router'
+import { MessageService, messageType } from '../../_services/messages/message-service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MenuService } from '../../_services/menus/menu-service';
+import { LoginService } from '../../_services/login/login-service';
+import { LoginUserModel } from '../../_model/user_model';
+import { DriverInfoService } from '../../_services/driverinfo/driverinfo-service';
+import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 
@@ -12,17 +15,46 @@ declare var $: any;
 })
 
 export class SurveyEntriesComp implements OnInit {
+    loginUser: LoginUserModel;
+
+    actaddrights: string = "";
+    acteditrights: string = "";
+    actviewrights: string = "";
+
     datatable_datasource: any = [];
     datatable_totalRecords: number = 0;
 
-    constructor(private _driverinfoservice: DriverInfoService, private _route: Router) {
-
+    constructor(private _route: Router, private _msg: MessageService, public _menuservice: MenuService, private _loginservice: LoginService,
+        private _driverinfoservice: DriverInfoService) {
+        this.loginUser = this._loginservice.getUser();
     }
 
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
         }, 0);
+    }
+
+    public viewSurveyDataRights() {
+        var that = this;
+        var addRights = [];
+        var editRights = [];
+        var viewRights = [];
+
+        that._menuservice.getMenuDetails({ "flag": "actrights", "uid": that.loginUser.uid, "mid": "2", "utype": that.loginUser.utype }).subscribe(data => {
+            addRights = data.data.filter(a => a.mrights === "add");
+            editRights = data.data.filter(a => a.mrights === "edit");
+            viewRights = data.data.filter(a => a.mrights === "view");
+
+            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
+            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
+
+        })
     }
 
     getGridData(from: number, to: number) {
@@ -39,10 +71,9 @@ export class SurveyEntriesComp implements OnInit {
             that.datatable_totalRecords = _d.data[1][0].recordstotal;
             that.datatable_datasource = _d.data[0];
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
-            // console.log("Complete");
             $(".datagrid").waitMe('hide');
         })
     }

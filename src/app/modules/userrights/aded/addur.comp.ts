@@ -77,7 +77,7 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         that.refuname = event.uname;
         that.refutype = event.utype;
 
-        that.getUserRightsById(that.refuid);
+        that.getUserRightsById(that.refuid, that.refutype);
     }
 
     // Selected Reference User
@@ -200,11 +200,11 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
     }
 
-    getUserRightsById(_uid) {
+    getUserRightsById(_uid, _utype) {
         var that = this;
         this.clearcheckboxes();
 
-        that._userservice.getUserRights({ "flag": "details", "uid": _uid }).subscribe(data => {
+        that._userservice.getUserRights({ "flag": "details", "uid": _uid, "utype": _utype }).subscribe(data => {
             try {
                 var viewUR = data.data;
 

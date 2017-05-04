@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PickDropService } from '../../_services/pickdrop/pickdrop-service';
 import { CommonService } from '../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../_services/messages/message-service';
+import { LoginService } from '../../_services/login/login-service';
+import { LoginUserModel } from '../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,6 +12,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class ChangeScheduleComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     events: any[];
     header: any;
     event: MyEvent;
@@ -62,7 +66,8 @@ export class ChangeScheduleComponent implements OnInit {
     droptodate: any = "";
 
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+        this.loginUser = this._loginservice.getUser();
         this.getDefaultDate();
     }
 
@@ -120,6 +125,7 @@ export class ChangeScheduleComponent implements OnInit {
 
         this._autoservice.getAutoData({
             "flag": "owner",
+            "uid": this.loginUser.uid,
             "typ": typ,
             "search": query
         }).then(data => {

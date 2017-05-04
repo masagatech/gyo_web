@@ -22,7 +22,7 @@ export class ViewOwnerComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _ownerservice: OwnerService) {
         this.loginUser = this._loginservice.getUser();
-        this.getMenuAction();
+        this.viewOwnerDataRights();
     }
 
     public ngOnInit() {
@@ -31,7 +31,7 @@ export class ViewOwnerComponent implements OnInit {
         }, 0);
     }
 
-    public getMenuAction() {
+    public viewOwnerDataRights() {
         var that = this;
         var addRights = [];
         var editRights = [];
@@ -48,7 +48,7 @@ export class ViewOwnerComponent implements OnInit {
 
             that.getOwnerDetails();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -60,7 +60,7 @@ export class ViewOwnerComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._ownerservice.getOwnerDetails({ "flag": "all", "code": that.loginUser.ucode }).subscribe(data => {
+            that._ownerservice.getOwnerDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
                 try {
                     that.ownerDT = data.data;
                 }
