@@ -11894,3 +11894,21 @@ body.waitMe_body .waitMe_container.text>div {
     margin: 5px 5px 5px 0;
     border-radius: 5px;
 }
+
+.H {
+    background-color: #03A9F4;
+    padding: 10px;
+    margin-left: -10px;
+}
+
+.P, .D, .PD {
+    background-color: #8BC34A;
+    padding: 10px;
+    margin-left: -10px;
+}
+
+.A {
+    background-color: #E91E63;
+    padding: 10px;
+    margin-left: -10px;
+}

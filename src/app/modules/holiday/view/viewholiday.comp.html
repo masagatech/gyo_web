@@ -4,10 +4,10 @@
             <div class="col-md-2">
                 <h4>Holiday</h4>
             </div>
-            <div class="col-md-1" *ngIf="actaddrights === 'add'">
+            <div class="col-md-1" *ngIf="actviewrights === 'view'">
                 <h4>School</h4>
             </div>
-            <div class="col-md-6" *ngIf="actaddrights === 'add'">
+            <div class="col-md-6" *ngIf="actviewrights === 'view'">
                 <div class="form-group">
                     <div class="form-line">
                         <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"

@@ -4,6 +4,8 @@ import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 
 import { DashboardModule } from './dashboard';
+import { AttendanceReportsModule } from './reports/attendance';
+import { DailyAttendanceReportsModule } from './reports/dailyattendance';
 import { SurveyEntriesModule } from './surveyentries';
 import { OwnerModule } from './owner';
 import { DriverModule } from './driver';
@@ -25,8 +27,16 @@ export const routes = [
                 path: '',
                 children: [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
+
+                    // Reports
+                    { path: 'attendance', loadChildren: './reports/attendance#AttendanceReportsModule' },
+                    { path: 'dailyattendance', loadChildren: './reports/dailyattendance#DailyAttendanceReportsModule' },
+
+                    // Trip Tracking
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
                     { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
+
+                    // Masters
                     { path: 'school', loadChildren: './school#SchoolModule' },
                     { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'batch', loadChildren: './batch#BatchModule' },
@@ -34,8 +44,12 @@ export const routes = [
                     { path: 'driver', loadChildren: './driver#DriverModule' },
                     { path: 'student', loadChildren: './student#StudentModule' },
                     { path: 'user', loadChildren: './users#UserModule' },
+
+                    // setting
                     { path: 'setting', loadChildren: './userrights#UserRightsModule' },
                     { path: 'userrights', loadChildren: './userrights#UserRightsModule' },
+
+                    // schedule
                     { path: 'createschedule', loadChildren: './createschedule#CreateScheduleModule' },
                     { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' },
                 ]

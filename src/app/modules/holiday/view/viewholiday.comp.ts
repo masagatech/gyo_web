@@ -37,6 +37,7 @@ export class ViewHolidayComponent implements OnInit {
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this.getDefaultDate();
+        this.viewHolidayDataRights();
     }
 
     public ngOnInit() {
@@ -58,6 +59,8 @@ export class ViewHolidayComponent implements OnInit {
 
         this._autoservice.getAutoData({
             "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
             this.schoolDT = data;
@@ -69,7 +72,7 @@ export class ViewHolidayComponent implements OnInit {
     selectSchoolData(event) {
         this.schid = event.value;
         this.schoolname = event.label;
-        this.viewOwnerDataRights();
+        this.getHolidayGrid();
     }
 
     refreshButtons() {
@@ -97,7 +100,7 @@ export class ViewHolidayComponent implements OnInit {
         this.defaultDate = this.formatDate(today);
     }
 
-    public viewOwnerDataRights() {
+    public viewHolidayDataRights() {
         var that = this;
         var addRights = [];
         var editRights = [];
@@ -108,11 +111,11 @@ export class ViewHolidayComponent implements OnInit {
             editRights = data.data.filter(a => a.mrights === "edit");
             viewRights = data.data.filter(a => a.mrights === "view");
 
+            console.log("addRights : " + addRights);
+
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getHolidayGrid();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
