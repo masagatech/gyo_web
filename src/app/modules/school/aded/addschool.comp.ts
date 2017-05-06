@@ -44,7 +44,11 @@ export class AddSchoolComponent implements OnInit {
 
     }
 
+    public ngAfterViewInit() {
+    }
+
     public ngOnInit() {
+        $.AdminBSB.input.activate();
         $(".schcd").focus();
         this.getSchoolDetails();
     }

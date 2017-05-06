@@ -1,6 +1,3 @@
-/*
- * Angular 2 decorators and services
- */
 import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { MenuService } from './_services/menus/menu-service';
 import { MessageService } from "./_services/messages/message-service";
@@ -8,11 +5,6 @@ import { Message } from 'primeng/primeng';
 import { AppState } from './app.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
-
-/*
- * App Component
- * Top Level Component
-*/
 
 declare var loader: any;
 
@@ -57,8 +49,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   parentMenuDT: any = [];
   subMenuDT: any = [];
 
-  constructor(public appState: AppState, _messageServ: MessageService,
-    public _menuservice: MenuService, private _routeParams: ActivatedRoute, private _router: Router) {
+  constructor(public appState: AppState, _messageServ: MessageService, public _menuservice: MenuService,
+    private _routeParams: ActivatedRoute, private _router: Router) {
 
     this.subscription = _messageServ.notificationReceiver$.subscribe(_messagestack => {
       this.messagestack.push({

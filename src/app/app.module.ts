@@ -11,10 +11,10 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { NoContentComponent } from './no-content';
-import { SharedModule, GlobalShared } from './_shared/shared.module';
-import { LoginComponent } from './login/login.comp';
 import { HomeComponent } from './home';
+import { SharedModule, GlobalShared } from './_shared/shared.module';
 import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
+import { LoginComponent } from './login/login.comp';
 
 // Application wide providers
 const APP_PROVIDERS = [

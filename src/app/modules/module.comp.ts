@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { MessageService, messageType } from '../_services/messages/message-service';
 import { AuthenticationService } from '../_services/auth-service'
 import { MenuService } from '../_services/menus/menu-service';
 import { LoginService } from '../_services/login/login-service';
@@ -45,10 +46,10 @@ export class ModuleComponent implements OnDestroy {
 
     mainMenuDT: any = [];
     parentMenuDT: any = [];
-    subMenuDT: any = [];
+    toggleClass: string = "";
 
     constructor(private _authservice: AuthenticationService, public _menuservice: MenuService, private _loginservice: LoginService,
-        private _routeParams: ActivatedRoute, private _router: Router) {
+        private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
 
         this.loginUser = this._loginservice.getUser();
         this.userfullname = this.loginUser.fullname;
@@ -75,12 +76,12 @@ export class ModuleComponent implements OnDestroy {
 
         this.getMainMenuList();
 
-        // this.getParentMenuList();
+        this.getParentMenuList();
         // this.getSubMenuList();
     }
 
     public ngOnInit() {
-
+        
     }
 
     public ngAfterViewInit() {
@@ -95,10 +96,10 @@ export class ModuleComponent implements OnDestroy {
     public getMainMenuList() {
         var that = this;
 
-        that._menuservice.getMenuDetails({ "flag": "main", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+        that._menuservice.getMenuDetails({ "flag": "main" }).subscribe(data => {
             that.mainMenuDT = data.data;
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -107,30 +108,23 @@ export class ModuleComponent implements OnDestroy {
     public getParentMenuList() {
         var that = this;
 
-        that._menuservice.getMenuDetails({ "flag": "parent" }).subscribe(data => {
+        that._menuservice.getMenuDetails({ "flag": "parent", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
             that.parentMenuDT = data.data;
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
-
+            $.AdminBSB.leftSideBar.activate();
         })
     }
 
-    public getSubMenuList() {
+    openMainMenu(row) {
         var that = this;
 
-        that._menuservice.getMenuDetails({ "flag": "sub", "pid": "8" }).subscribe(data => {
-            that.subMenuDT = data.data;
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
-    }
-
-    openMenuForm(row) {
         if (row.mlink !== null) {
-            this._router.navigate(['/' + row.mlink]);
+            that._router.navigate(['/' + row.mlink]);
+        }
+        else {
+            row.pMenuDT = that.parentMenuDT.filter(a => a.pid === row.mid);
         }
     }
 
@@ -139,6 +133,6 @@ export class ModuleComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
-        //this.subscription.unsubscribe();
+
     }
 }

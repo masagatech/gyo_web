@@ -7,6 +7,9 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../_const/globals';
 
+declare var loader: any;
+declare var adminloader: any;
+
 @Component({
     templateUrl: 'addstudent.comp.html',
     providers: [StudentService, CommonService]
@@ -75,6 +78,15 @@ export class AddStudentComponent implements OnInit {
     public ngOnInit() {
         $(".ownername input").focus();
         this.getStudentDetails();
+    }
+
+    public ngAfterViewInit() {
+        // setTimeout(function () {
+        //     //$.AdminBSB.input.activate();
+        //     commonfun.setAdvanceControl();
+        // }, 100);
+
+        commonfun.setAdvanceControl();
     }
 
     public onUploadError(event) {

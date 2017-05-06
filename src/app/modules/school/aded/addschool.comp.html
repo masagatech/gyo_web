@@ -22,7 +22,6 @@
             </div>
         </div>
     </div>
-
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-6">
@@ -30,54 +29,54 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>School Code</label>
-                                <input type="text" [(ngModel)]="schcd" class="form-control schcd" placeholder="School Code" maxlength="10" />
+                                <label class="form-label">School Code</label>
+                                <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>School Name</label>
-                                <input type="text" [(ngModel)]="schnm" class="form-control" placeholder="School Name" maxlength="200" />
+                                <label class="form-label">School Name</label>
+                                <input type="text" [(ngModel)]="schnm" class="form-control" maxlength="200" />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Lat</label>
-                                <input type="text" [(ngModel)]="lat" class="form-control" placeholder="Lat" maxlength="5" />
+                                <label class="form-label">Lat</label>
+                                <input type="text" [(ngModel)]="lat" class="form-control" maxlength="5" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Lon</label>
-                                <input type="text" [(ngModel)]="lon" class="form-control" placeholder="Lon" maxlength="5" />
+                                <label class="form-label">Lon</label>
+                                <input type="text" [(ngModel)]="lon" class="form-control" maxlength="5" />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>School Vehicles</label>
-                                <input type="text" [(ngModel)]="schvehs" class="form-control" placeholder="How Many" maxlength="5" />
+                                <label class="form-label">School Vehicles (How Many)</label>
+                                <input type="text" [(ngModel)]="schvehs" class="form-control" maxlength="5" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Operator Vehicles</label>
-                                <input type="text" [(ngModel)]="oprvehs" class="form-control" placeholder="How Many" maxlength="5" />
+                                <label class="form-label">Operator Vehicles (How Many)</label>
+                                <input type="text" [(ngModel)]="oprvehs" class="form-control" maxlength="5" />
                             </div>
                         </div>
                     </div>
@@ -87,8 +86,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Remark</label>
-                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" placeholder="Remark" maxlength="500"></textarea>
+                                <label class="form-label">Remark</label>
+                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
                             </div>
                         </div>
                     </div>
@@ -99,8 +98,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" placeholder="Address" maxlength="500"></textarea>
+                                <label class="form-label">Address</label>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
                             </div>
                         </div>
                     </div>
@@ -110,16 +109,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Country</label>
-                                <input type="text" [(ngModel)]="country" class="form-control" placeholder="Country" maxlength="20" />
+                                <label class="form-label">Country</label>
+                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>State</label>
-                                <input type="text" [(ngModel)]="state" class="form-control" placeholder="State" maxlength="20" />
+                                <label class="form-label">State</label>
+                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -129,16 +128,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>City</label>
-                                <input type="text" [(ngModel)]="city" class="form-control" placeholder="City" maxlength="20" />
+                                <label class="form-label">City</label>
+                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" placeholder="Pin Code" maxlength="20" />
+                                <label class="form-label">Pin Code</label>
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -146,7 +145,9 @@
             </div>
         </div>
     </div>
-    
+</div>
+
+<div class="card">
     <div class="header">
         <h4>Primary</h4>
     </div>
@@ -155,30 +156,32 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <div class="form-line">
-                        <label>Name</label>
-                        <input type="text" [(ngModel)]="name" class="form-control" placeholder="Name" maxlength="20" />
+                        <label class="form-label">Name</label>
+                        <input type="text" [(ngModel)]="name" class="form-control" maxlength="20" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label>Contact No</label>
-                        <input type="text" [(ngModel)]="mobile" class="form-control" placeholder="Contact No" maxlength="10" />
+                        <label class="form-label">Contact No</label>
+                        <input type="text" [(ngModel)]="mobile" class="form-control" maxlength="10" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label>Email</label>
-                        <input type="text" [(ngModel)]="email" class="form-control" placeholder="Email" maxlength="20" />
+                        <label class="form-label">Email</label>
+                        <input type="text" [(ngModel)]="email" class="form-control" maxlength="20" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+</div>
+
+<div class="card">
     <div class="header">
         <h4>Secondary</h4>
     </div>
@@ -187,24 +190,24 @@
             <div class="col-md-5">
                 <div class="form-group">
                     <div class="form-line">
-                        <label>Name</label>
-                        <input type="text" [(ngModel)]="cpname" class="form-control cpname" placeholder="Name" maxlength="20" />
+                        <label class="form-label">Name</label>
+                        <input type="text" [(ngModel)]="cpname" class="form-control cpname" maxlength="20" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label>Contact No</label>
-                        <input type="text" [(ngModel)]="cpmobile" class="form-control cpmobile" placeholder="Contact No" maxlength="10" />
+                        <label class="form-label">Contact No</label>
+                        <input type="text" [(ngModel)]="cpmobile" class="form-control cpmobile" maxlength="10" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label>Email</label>
-                        <input type="text" [(ngModel)]="cpemail" class="form-control cpemail" placeholder="Email" maxlength="20" />
+                        <label class="form-label">Email</label>
+                        <input type="text" [(ngModel)]="cpemail" class="form-control cpemail" maxlength="20" />
                     </div>
                 </div>
             </div>

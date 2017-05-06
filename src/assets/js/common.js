@@ -80,7 +80,7 @@ commonfun.navistyle = function () {
     $(".ui-paginator-prev").addClass('btn-theme');
     $(".ui-paginator-next").addClass('btn-theme');
     $(".ui-paginator-last").addClass('btn-theme');
-    
+
     // $(".ui-paginator-first").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("first_page");
     // $(".ui-paginator-prev").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_before");
     // $(".ui-paginator-next").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("navigate_next");
@@ -94,6 +94,15 @@ commonfun.chevronstyle = function () {
 
 commonfun.rdbtnstyle = function () {
     $(".ui-radiobutton-box").find('span').removeAttr('class');
+}
+
+commonfun.setAdvanceControl = function () {
+    var $demoMaskedInput = $('.demo-masked-input');
+    
+    $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy', { placeholder: '__/__/____' });
+    $demoMaskedInput.find('.time12').inputmask('hh:mm t', { placeholder: '__:__ _m', alias: 'time12', hourFormat: '12' });
+    $demoMaskedInput.find('.email').inputmask({ alias: "email" });
+    $demoMaskedInput.find('.mobile-number').inputmask('+99 (999) 999-99-99', { placeholder: '+__ (___) ___-__-__' });
 }
 
 commonfun.randomColor = function (brightness) {

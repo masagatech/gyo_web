@@ -239,6 +239,10 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
                             }
                         }
                     }
+                    else {
+                        $(".allcheckboxes").find("#" + _menuitem.mid).prop('checked', false);
+                        $("#menus").prop('checked', false);
+                    }
                 }
             }
             catch (e) {

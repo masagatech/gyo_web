@@ -8,66 +8,42 @@
 
     <!-- Google Fonts -->
     <link href="assets/css/roboto.css" rel="stylesheet" type="text/css">
-
-
-    <!-- Bootstrap Core Css -->
     <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-
-    <!-- Waves Effect Css -->
+    <link href="assets/plugins/multi-select/css/multi-select.css" rel="stylesheet">
     <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
-
-    <!-- Animation Css -->
     <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
-
-    <!-- Morris Chart Css-->
     <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
-
     <link href="assets/css/datatable.css" rel="stylesheet" />
-    <!-- Custom Css -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
 
     <title>
-        <%= htmlWebpackPlugin.options.title %>
+        GOYO Admin
     </title>
-    <!-- Jquery Core Js -->
+
     <script src="assets/plugins/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core Js -->
     <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
-
-    <!-- Select Plugin Js -->
     <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-    <script src="/assets/js/moment.min.js"></script>
-    <!-- Slimscroll Plugin Js -->
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+    <script src="assets/plugins/dropzone/dropzone.js"></script>
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-    
-    <!-- Input Mask Plugin Js -->
+    <script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
+
     <script src="assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-
-    <!-- Waves Effect Plugin Js -->
     <script src="assets/plugins/node-waves/waves.js"></script>
-
-    <!-- Jquery CountTo Plugin Js -->
     <script src="assets/plugins/jquery-countto/jquery.countTo.js"></script>
-
-    <!-- Custom Js -->
     <script src="assets/js/gmap.js"></script>
-
-    <!-- Custom Js -->
     <script src="assets/js/admin.js"></script>
+    <script src="assets/js/pages/forms/form-validation.js"></script>
     <script src="assets/js/pages/forms/advanced-form-elements.js"></script>
-
-    <!-- Demo Js -->
     <script src="assets/js/demo.js"></script>
-
     <script src="assets/js/common.js"></script>
-    
+
     <script src="assets/js/fullcalendar.min.js"></script>
     <link href="assets/css/fullcalendar.min.css" rel="stylesheet">
+
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
     <% if (webpackConfig.htmlElements.headTags) { %>
@@ -75,37 +51,13 @@
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
 
-                <!-- base url -->
                 <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
-
-
 </head>
 
 <body class="theme-red">
-
     <app>
         Loading...
     </app>
-
-    <!-- Google Analytics: change UA-71073175-1 to be your site's ID -->
-    <!--<script>
-        (function(A, n, g, u, l, a, r) {
-            A.GoogleAnalyticsObject = r;
-            A[l] = A[l] || function() {
-                (A[l].q = A[l].q || []).push(arguments)
-            }, A[l].l = 1 * new Date();
-            a = n.createElement(g),
-                r = n.getElementsByTagName(g)[0];
-            a.async = 1;
-            a.src = u;
-            r.parentNode.insertBefore(a, r)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-71073175-1', 'auto');
-        ga('send', 'pageview');
-    </script>-->
-
-
 
     <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true){ %>
         <script src="/webpack-dev-server.js"></script>

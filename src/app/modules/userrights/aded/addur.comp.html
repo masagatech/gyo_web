@@ -28,9 +28,20 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<div class="form-line">
-						<label>Reference User Name</label>
-						<p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuname" placeholder="Reference User Name" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)"
-							[suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+						<div class="row clearfix">
+							<div class="col-md-12">
+								<div class="pull-left">
+									<label>Reference User Name</label>
+									<p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuname" placeholder="Reference User Name" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)"
+										[suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+								</div>
+								<div class="pull-right">
+									<button type="button" class="btn btn-theme btn-xs" (click)="getUserRightsById(refuid, refutype)">
+										<span class="material-icons">restore</span>
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -45,17 +56,23 @@
 				</div>
 			</div>
 		</div>
-		<div class="row clearfix allcheckboxes" *ngFor="let row of menudetails; let i = index;">
-			<div class="col-md-3">
-				<input id="{{row.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{row.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(row)"
-					class="filled-in" />
-				<label for="{{row.mid}}">{{row.mname}}</label>
+		<div *ngFor="let mrow of menudetails | groupBy:'pname'; let i = index;">
+			<div class="block-header">
+				<h4>{{mrow.key}}</h4>
 			</div>
-			<div class="col-md-9" id="M{{row.mid}}">
-				<span style="margin-right:5px;" *ngFor="let item of getMenuRights(row.maction) let i = index">
-					<input id="{{row.mid}}{{item}}" name="menuitem{{i + 1}}" data-menuid="row.mid" data-right="item" type="checkbox" value="{{item}}" class="actrights filled-in" />
-					<label for="{{row.mid}}{{item}}">{{item}}</label>
+			<div class="row clearfix allcheckboxes" *ngFor="let actrow of mrow.value">
+				<div class="col-md-3">
+					<input id="{{actrow.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{actrow.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(actrow)"
+						class="filled-in" />
+					<label for="{{actrow.mid}}">{{actrow.mname}}</label>
+				</div>
+				<div class="col-md-9" id="M{{actrow.mid}}">
+					<span style="margin-right:5px;" *ngFor="let item of getMenuRights(actrow.maction) let i = index">
+					<input type="checkbox" id="{{actrow.mid}}{{item}}" value="{{item}}" name="menuitem{{i + 1}}" data-menuid="actrow.mid" data-right="item"
+						class="actrights filled-in" />
+					<label for="{{actrow.mid}}{{item}}">{{item}}</label>
 				</span>
+				</div>
 			</div>
 		</div>
 	</div>

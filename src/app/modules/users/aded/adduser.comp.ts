@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../_services/users/user-service';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
+
+declare var adminloader: any;
 
 @Component({
     templateUrl: 'adduser.comp.html',
@@ -10,6 +14,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class AddUserComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     uid: number = 0;
     ucode: string = "";
     oldcode: string = "";
@@ -39,13 +45,18 @@ export class AddUserComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _userservice: UserService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+    constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService) {
+        this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
     }
 
     public ngOnInit() {
         this.getUserDetails();
+    }
+
+    public ngAfterViewInit() {
+        $.AdminBSB.input.activate();
     }
 
     // Auto Completed School
@@ -55,6 +66,8 @@ export class AddUserComponent implements OnInit {
 
         this._autoservice.getAutoData({
             "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
             this.schoolDT = data;

@@ -1,5 +1,3 @@
-<!--<dropzone [config]="config" [message]="'Click or drag images here to upload'" (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>-->
-
 <div class="card">
     <div class="header">
         <h4>Student</h4>
@@ -18,20 +16,29 @@
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Co-ordinator Name</label>
-                        <p-autoComplete validate="" id="ownername" name="ownername" [(ngModel)]="ownername" [tabindex]="1" (onSelect)="selectAutoOwners($event)"
-                            [suggestions]="ownersDT" (completeMethod)="getAutoOwners($event)" field="label" [minLength]="1" [size]="30"
-                            class="form-controlAutoComplete ownername"></p-autoComplete>
+                        <div class="row clearfix">
+                            <div class="col-md-12">
+                                <div class="pull-left">
+                                    <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" [tabindex]="1" (onSelect)="selectAutoOwners($event)"
+                                        [suggestions]="ownersDT" (completeMethod)="getAutoOwners($event)" field="label" [minLength]="1"
+                                        [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
+                                </div>
+                                <div class="pull-right form-group-addon">
+                                    <span class="material-icons">search</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">School Name</label>
-                        <select [(ngModel)]="schoolid" class="form-control">
+                        <select [(ngModel)]="schoolid" name="schoolid" class="form-control">
                             <option [value]="0">Select School</option>
                             <option *ngFor="let row of schoolDT" [value]="row.key">	
                                 {{row.val}}
@@ -40,22 +47,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Student Name</label>
-                        <input type="text" [(ngModel)]="studentname" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Division</label>
-                        <select [(ngModel)]="division" class="form-control">
+                        <select name="division" [(ngModel)]="division" class="form-control">
                             <option [value]="''">Select Division</option>
                             <option *ngFor="let row of divisionDT" [value]="row.key">	
                                 {{row.val}}
@@ -68,10 +64,44 @@
 
         <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
+                        <label class="control-label">Student Name</label>
+                        <input type="text" name="studentname" [(ngModel)]="studentname" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="demo-masked-input">
+                    <div class="form-group form-float">
+                        <label class="control-label">Date of Birth</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">date_range</i>
+                            </span>
+                            <div class="form-line">
+                                <input type="text" name="date" [(ngModel)]="dob" class="form-control date" placeholder="Ex: 30/07/2016" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
+                        <label class="control-label">Aadhar No</label>
+                        <input type="number" name="aadharno" [(ngModel)]="aadharno" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Gender</label>
-                        <select [(ngModel)]="gender" class="form-control">
+                        <select name="gender" [(ngModel)]="gender" class="form-control">
                             <option [value]="''">Select Gender</option>
                             <option *ngFor="let row of genderDT" [value]="row.key">
                                 {{row.val}}
@@ -80,46 +110,44 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Date Of Birth</label>
-                        <input type="date" [(ngModel)]="dob" class="form-control" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Aadhar No</label>
-                        <input type="number" [(ngModel)]="aadharno" class="form-control" />
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Mother Name</label>
-                        <input type="text" [(ngModel)]="mothername" class="form-control" />
+                        <input type="text" name="mothername" [(ngModel)]="mothername" class="form-control" />
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="demo-masked-input">
+                    <div class="form-group form-float">
                         <label class="control-label">Mother Email</label>
-                        <input type="text" [(ngModel)]="motheremail" class="form-control" />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">email</i>
+                            </span>
+                            <div class="form-line">
+                                <input type="text" name="email" [(ngModel)]="motheremail" class="form-control email" placeholder="Ex: example@example.com">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="demo-masked-input">
+                    <div class="form-group form-float">
                         <label class="control-label">Mother Mobile</label>
-                        <input type="text" [(ngModel)]="mothermobile" class="form-control" />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">phone_iphone</i>
+                            </span>
+                            <div class="form-line">
+                                <input type="text" name="mothermobile" [(ngModel)]="mothermobile" class="form-control mobile-number" placeholder="Ex: +00 (000) 000-00-00">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,26 +155,40 @@
 
         <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Father Name</label>
-                        <input type="text" [(ngModel)]="fathername" class="form-control" />
+                        <input type="text" name="fathername" [(ngModel)]="fathername" class="form-control" />
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="demo-masked-input">
+                    <div class="form-group form-float">
                         <label class="control-label">Father Email</label>
-                        <input type="text" [(ngModel)]="fatheremail" class="form-control" />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">email</i>
+                            </span>
+                            <div class="form-line">
+                                <input type="text" name="fatheremail" [(ngModel)]="fatheremail" class="form-control email" placeholder="Ex: example@example.com">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="demo-masked-input">
+                    <div class="form-group form-float">
                         <label class="control-label">Father Mobile</label>
-                        <input type="text" [(ngModel)]="fathermobile" class="form-control" />
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">phone_iphone</i>
+                            </span>
+                            <div class="form-line">
+                                <input type="text" name="fathermobile" [(ngModel)]="fathermobile" class="form-control mobile-number" placeholder="Ex: +00 (000) 000-00-00">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -154,28 +196,29 @@
 
         <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Residental Address</label>
-                        <textarea [(ngModel)]="resiaddr" rows="4" class="form-control no-resize auto-growth"></textarea>
+                        <textarea name="resiaddr" [(ngModel)]="resiaddr" rows="4" class="form-control no-resize auto-growth"></textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <input id="pickupaddr" name="pickupaddr" type="checkbox" [(ngModel)]="isCopyPickupAddr" (change)="copyPDAddrAndLatLong()" class="filled-in">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
+                        <input id="pickupaddr" name="chkpickupaddr" type="checkbox" [(ngModel)]="isCopyPickupAddr" (change)="copyPDAddrAndLatLong()"
+                            class="filled-in">
                         <label for="pickupaddr" class="control-label">Pick Up Address</label>
-                        <textarea [(ngModel)]="pickupaddr" rows="4" class="form-control no-resize auto-growth"></textarea>
+                        <textarea name="pickupaddr" [(ngModel)]="pickupaddr" rows="4" class="form-control no-resize auto-growth"></textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <input id="dropaddr" name="dropaddr" type="checkbox" [(ngModel)]="isCopyDropAddr" (change)="copyPDAddrAndLatLong()" class="filled-in">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
+                        <input id="dropaddr" name="chkdropaddr" type="checkbox" [(ngModel)]="isCopyDropAddr" (change)="copyPDAddrAndLatLong()" class="filled-in">
                         <label for="dropaddr" class="control-label">Drop Address</label>
-                        <textarea [(ngModel)]="dropaddr" rows="4" class="form-control no-resize auto-growth"></textarea>
+                        <textarea name="dropaddr" [(ngModel)]="dropaddr" rows="4" class="form-control no-resize auto-growth"></textarea>
                     </div>
                 </div>
             </div>
@@ -183,50 +226,50 @@
 
         <div class="row clearfix">
             <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Residental Lat</label>
-                        <input type="text" [(ngModel)]="resilet" class="form-control" (keyup)="copyPDAddrAndLatLong()" />
+                        <input type="text" name="resilet" [(ngModel)]="resilet" class="form-control" (keyup)="copyPDAddrAndLatLong()" />
                     </div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Residental Long</label>
-                        <input type="text" [(ngModel)]="resilong" class="form-control" (keyup)="copyPDAddrAndLatLong()" />
+                        <input type="text" name="resilong" [(ngModel)]="resilong" class="form-control" (keyup)="copyPDAddrAndLatLong()" />
                     </div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Pickup Lat</label>
-                        <input type="text" [(ngModel)]="pickuplet" class="form-control" />
+                        <input type="text" name="pickuplet" [(ngModel)]="pickuplet" class="form-control" />
                     </div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Pickup Long</label>
-                        <input type="text" [(ngModel)]="pickuplong" class="form-control" />
+                        <input type="text" name="pickuplong" [(ngModel)]="pickuplong" class="form-control" />
                     </div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Drop Lat</label>
-                        <input type="text" [(ngModel)]="droplet" class="form-control" />
+                        <input type="text" name="droplet" [(ngModel)]="droplet" class="form-control" />
                     </div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Drop Long</label>
-                        <input type="text" [(ngModel)]="droplong" class="form-control" />
+                        <input type="text" name="droplong" [(ngModel)]="droplong" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -234,18 +277,18 @@
 
         <div class="row clearfix">
             <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Other Info</label>
-                        <textarea [(ngModel)]="otherinfo" rows="4" class="form-control no-resize auto-growth"></textarea>
+                        <textarea name="otherinfo" [(ngModel)]="otherinfo" rows="4" class="form-control no-resize auto-growth"></textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-line">
+                <div class="form-group form-float">
+                    <div class="form-line focused">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark1" rows="4" class="form-control no-resize auto-growth"></textarea>
+                        <textarea name="remark1" [(ngModel)]="remark1" rows="4" class="form-control no-resize auto-growth"></textarea>
                     </div>
                 </div>
             </div>
