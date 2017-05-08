@@ -38,10 +38,12 @@ export class AddSchoolComponent implements OnInit {
     contactDT: any = [];
     duplicateContact: boolean = true;
 
+    weekDT: any = [];
+
     private subscribeParameters: any;
 
     constructor(private _schoolservice: SchoolService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
-
+        this.fillWeekDetails();
     }
 
     public ngAfterViewInit() {
@@ -113,6 +115,27 @@ export class AddSchoolComponent implements OnInit {
         this.contactDT.splice(this.contactDT.indexOf(row), 1);
     }
 
+    fillWeekDetails() {
+        var that = this;
+        commonfun.loader();
+
+        that._schoolservice.getSchoolDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.weekDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Active / Deactive Data
 
     active_deactiveSchoolInfo() {
@@ -152,6 +175,24 @@ export class AddSchoolComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
+        var mweek = null;
+        var weeklyoff = "";
+
+        for (var i = 0; i <= that.weekDT.length - 1; i++) {
+            mweek = null;
+            mweek = that.weekDT[i];
+
+            if (mweek !== null) {
+                var wkrights = "";
+
+                $("#week").find("input[type=checkbox]").each(function () {
+                    wkrights += (this.checked ? $(this).val() + "," : "");
+                });
+            }
+        }
+
+        weeklyoff = "{" + wkrights.slice(0, -1) + "}";
+
         var saveSchool = {
             "autoid": that.schid,
             "schcd": that.schcd,
@@ -159,6 +200,7 @@ export class AddSchoolComponent implements OnInit {
             "schgeoloc": that.lat + "," + that.lon,
             "schvehs": that.schvehs,
             "oprvehs": that.oprvehs,
+            "weeklyoff": weeklyoff,
             "address": that.address,
             "country": that.country,
             "state": that.state,
@@ -213,10 +255,24 @@ export class AddSchoolComponent implements OnInit {
                         that.schid = data.data[0].autoid;
                         that.schcd = data.data[0].schoolcode;
                         that.schnm = data.data[0].schoolname;
-                        that.lat = data.data[0].geoloc.split(',')[0];
-                        that.lon = data.data[0].geoloc.split(',')[1];
+                        that.lat = data.data[0].lat;
+                        that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;
                         that.oprvehs = data.data[0].vanoperator;
+
+                        var wkkey = data.data[0].wkkey;
+                        // var wkrights = weeklyoff.split(',');
+
+                        console.log("start weeklyoff");
+                        console.log(wkkey);
+                        console.log("weeklyoff end");
+
+                        if (wkkey != null) {
+                            for (var i = 0; i < wkkey.length; i++) {
+                                $("#week").find("#" + wkkey[i]).prop('checked', true);
+                            }
+                        }
+
                         that.address = data.data[0].address;
                         that.country = data.data[0].country;
                         that.state = data.data[0].state;

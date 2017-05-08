@@ -9,7 +9,7 @@ export class LoginUser {
 }
 
 export interface LoginUserModel {
-  sessionid: number;
+  loginid: number;
   uid: number;
   ucode: string;
   utype: string;

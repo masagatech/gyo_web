@@ -40,6 +40,7 @@ export class AuthenticationService {
     let loginRes: any = this._dataserver.post("getLogin", {
       "email": user.email,
       "pwd": user.pwd,
+      "src": "w",
       "otherdetails": otherdetails
     })
 

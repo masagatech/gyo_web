@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
@@ -8,12 +9,18 @@ import { ReportsService } from '../../../_services/reports/rpt-service';
 
 @Component({
     templateUrl: 'attrpt.comp.html',
-    providers: [MenuService, ReportsService]
+    providers: [CommonService, MenuService, ReportsService]
 })
 
 export class AttendanceReportsComponent implements OnInit {
+    monthDT: any = [];
+
     attColumn: any = [];
     attData: any = [];
+    schoolDT: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
+    monthname: string = "";
 
     loginUser: LoginUserModel;
 
@@ -22,9 +29,10 @@ export class AttendanceReportsComponent implements OnInit {
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService) {
+        public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
+        private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewAttendanceReportsRights();
+        this.fillDropDownList();
     }
 
     public ngOnInit() {
@@ -32,6 +40,55 @@ export class AttendanceReportsComponent implements OnInit {
             commonfun.navistyle();
         }, 0);
     }
+
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event) {
+        this.schoolid = event.value;
+        this.schoolname = event.label;
+    }
+
+    // Fill School, Division, Gender DropDown
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._rptservice.getAttendanceReports({ "flag": "dropdown", "date": "1/Mar/2017", "month": "6" }).subscribe(data => {
+            try {
+                that.monthDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Attendent Data
 
     public viewAttendanceReportsRights() {
         var that = this;
@@ -62,8 +119,10 @@ export class AttendanceReportsComponent implements OnInit {
     getAttendanceColumn() {
         var that = this;
 
-        that._rptservice.getAttendanceReports({ "flag": "column", "month": "5", "year":"2017" }).subscribe(data => {
-            that.attColumn = data.data;
+        that._rptservice.getAttendanceReports({ "flag": "column", "monthname": that.monthname, "schoolid": that.schoolid }).subscribe(data => {
+            if (data.data.length !== 0) {
+                that.attColumn = data.data;
+            }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -77,9 +136,11 @@ export class AttendanceReportsComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._rptservice.getAttendanceReports({ "flag": "data", "month": "5", "year":"2017" }).subscribe(data => {
+            that._rptservice.getAttendanceReports({ "flag": "data", "monthname": that.monthname, "schoolid": that.schoolid }).subscribe(data => {
                 try {
-                    that.attData = data.data;
+                    if (data.data.length !== 0) {
+                        that.attData = data.data;
+                    }
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);

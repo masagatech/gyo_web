@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
 
     login(e) {
         this.btnLoginText = "Loging..";
+        this._user.email
 
         this._service.login(this._user).subscribe(d => {
             try {

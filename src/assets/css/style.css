@@ -11912,3 +11912,17 @@ body.waitMe_body .waitMe_container.text>div {
     padding: 10px;
     margin-left: -10px;
 }
+
+.red {
+    background-color: #F44336;
+    color: #ffffff;
+    padding: 7px 0 9px 5px;
+    margin: -10px;
+}
+
+.green {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding: 7px 0 9px 5px;
+    margin: -10px;
+}
