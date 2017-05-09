@@ -5,11 +5,8 @@ import { ConfirmationService } from 'primeng/primeng';
 
 @Injectable()
 export class MessageService {
-
     constructor(private _confirm: ConfirmationService) { }
 
-
-    //
     private notificationSource = new Subject<NotificationsStack>();
     public notificationReceiver$ = this.notificationSource.asObservable();
     private ShowMsg(notification: NotificationsStack) {
@@ -35,9 +32,9 @@ export class MessageService {
                 msgtyp = "info";
                 break
         }
+
         this.ShowMsg(new NotificationsStack(msgtyp, title, msg));
     }
-
 
     public confirm(msg: string, callback) {
         this._confirm.confirm({
@@ -49,7 +46,6 @@ export class MessageService {
             }
         })
     }
-
 }
 
 export enum messageType {
@@ -60,12 +56,10 @@ export enum messageType {
 }
 
 export class NotificationsStack {
-
     constructor(public severity: string,
         public summary: string,
         public detail: string
     ) {
 
     }
-
 }

@@ -8,11 +8,11 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { ReportsService } from '../../../_services/reports/rpt-service';
 
 @Component({
-    templateUrl: 'attrpt.comp.html',
+    templateUrl: 'rptstudsatt.comp.html',
     providers: [CommonService, MenuService, ReportsService]
 })
 
-export class AttendanceReportsComponent implements OnInit {
+export class StudentAttendanceReportsComponent implements OnInit {
     monthDT: any = [];
 
     attColumn: any = [];
@@ -69,7 +69,9 @@ export class AttendanceReportsComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._rptservice.getAttendanceReports({ "flag": "dropdown", "date": "1/Mar/2017", "month": "6" }).subscribe(data => {
+        that._rptservice.getAttendanceReports({
+            "flag": "dropdown", "date": "1/Mar/2017", "month": "6"
+        }).subscribe(data => {
             try {
                 that.monthDT = data.data;
             }
@@ -92,34 +94,45 @@ export class AttendanceReportsComponent implements OnInit {
 
     public viewAttendanceReportsRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rptatt", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
+        if (that.schoolname === "") {
+            that._msg.Show(messageType.warn, "Warning", "Search School");
+        }
+        else if (that.monthname === "") {
+            that._msg.Show(messageType.warn, "Warning", "Select Month");
+        }
+        else {
+            var addRights = [];
+            var editRights = [];
+            var viewRights = [];
 
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+            that._menuservice.getMenuDetails({
+                "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rptstudsatt", "utype": that.loginUser.utype
+            }).subscribe(data => {
+                addRights = data.data.filter(a => a.mrights === "add");
+                editRights = data.data.filter(a => a.mrights === "edit");
+                viewRights = data.data.filter(a => a.mrights === "view");
 
-            that.getAttendanceColumn();
-            that.getAttendanceReports();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-        }, () => {
+                that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
+                that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+                that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-        })
+                that.getAttendanceColumn();
+                that.getAttendanceReports();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+            }, () => {
+
+            })
+        }
     }
 
     getAttendanceColumn() {
         var that = this;
 
-        that._rptservice.getAttendanceReports({ "flag": "column", "monthname": that.monthname, "schoolid": that.schoolid }).subscribe(data => {
+        that._rptservice.getAttendanceReports({
+            "flag": "column", "monthname": that.monthname, "schoolid": that.schoolid
+        }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
             }
@@ -136,10 +149,17 @@ export class AttendanceReportsComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._rptservice.getAttendanceReports({ "flag": "data", "monthname": that.monthname, "schoolid": that.schoolid }).subscribe(data => {
+            that._rptservice.getAttendanceReports({
+                "flag": "student", "monthname": that.monthname, "schoolid": that.schoolid
+            }).subscribe(data => {
                 try {
+                    console.log(data.data);
+
                     if (data.data.length !== 0) {
                         that.attData = data.data;
+                    }
+                    else {
+                        that.attData = [];
                     }
                 }
                 catch (e) {

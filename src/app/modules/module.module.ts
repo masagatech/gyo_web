@@ -4,8 +4,12 @@ import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 
 import { DashboardModule } from './dashboard';
-import { AttendanceReportsModule } from './reports/attendance';
+
+import { StudentAttendanceReportsModule } from './reports/studentattendance';
 import { DailyAttendanceReportsModule } from './reports/dailyattendance';
+import { DriverAttendanceReportsModule } from './reports/driverattendance';
+import { AttendentAttendanceReportsModule } from './reports/attendentattendance';
+
 import { SurveyEntriesModule } from './surveyentries';
 import { OwnerModule } from './owner';
 import { DriverModule } from './driver';
@@ -29,8 +33,10 @@ export const routes = [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
 
                     // Reports
-                    { path: 'attendance', loadChildren: './reports/attendance#AttendanceReportsModule' },
+                    { path: 'studentattendance', loadChildren: './reports/studentattendance#StudentAttendanceReportsModule' },
                     { path: 'dailyattendance', loadChildren: './reports/dailyattendance#DailyAttendanceReportsModule' },
+                    { path: 'driverattendance', loadChildren: './reports/driverattendance#DriverAttendanceReportsModule' },
+                    { path: 'attendantattendance', loadChildren: './reports/attendentattendance#AttendentAttendanceReportsModule' },
 
                     // Trip Tracking
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },

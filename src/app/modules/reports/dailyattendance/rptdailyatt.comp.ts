@@ -7,7 +7,7 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { ReportsService } from '../../../_services/reports/rpt-service';
 
 @Component({
-    templateUrl: 'attrpt.comp.html',
+    templateUrl: 'rptdailyatt.comp.html',
     providers: [MenuService, ReportsService]
 })
 
