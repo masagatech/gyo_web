@@ -74,11 +74,11 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
 
       var params = {
         "uid": userdetails.uid,
+        "ucode": userdetails.ucode,
+        "utype": userdetails.utype,
         "ptype": module1,
-        "smtype": submodule,
         "actcd": rights,
         "sessionid": userdetails.sessiondetails.sessionid,
-        "ucode": userdetails.ucode,
         "url": segments
       };
       this.authser.checkmenuaccess(params).subscribe(d => {

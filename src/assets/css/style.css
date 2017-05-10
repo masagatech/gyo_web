@@ -11919,14 +11919,14 @@ body.waitMe_body .waitMe_container.text>div {
     margin-left: -10px;
 }
 
-.red {
+.act-red {
     background-color: #F44336;
     color: #FFFFFF;
     padding: 7px 0 9px 5px;
     margin: -10px;
 }
 
-.green {
+.act-green {
     background-color: #4CAF50;
     color: #FFFFFF;
     padding: 7px 0 9px 5px;
@@ -11934,18 +11934,6 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .ui-datatable-tablewrapper {
-    width: 1006px;
+    width: 100%;
     overflow-x: auto;
-}
-
-@media (max-width: 767px) {
-    .container-fluid {
-        padding: 0;
-        margin: 0;
-    }
-
-    .ui-datatable-tablewrapper {
-        width: 300px;
-        overflow-x: auto;
-    }
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BatchService } from '../../../_services/batch/batch-service';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Globals } from '../../../_const/globals';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { BatchService } from '../../../_services/batch/batch-service';
 
 declare var $: any;
 declare var commonfun: any;
@@ -15,6 +15,8 @@ declare var commonfun: any;
 })
 
 export class AddBatchComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     batchid: number = 0;
     batchcode: string = "";
     batchname: string = "";
@@ -32,8 +34,9 @@ export class AddBatchComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _batchervice: BatchService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
+        private _loginservice: LoginService, private _batchervice: BatchService) {
+        this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
     }
 
@@ -53,7 +56,7 @@ export class AddBatchComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._batchervice.getBatchDetails({ "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
             try {
                 var d = data.data;
 
@@ -85,7 +88,7 @@ export class AddBatchComponent implements OnInit {
             "schoolid": that.schoolid,
             "fromtime": that.fromtime,
             "totime": that.totime,
-            "uid": "vivek",
+            "uid": that.loginUser.ucode,
             "instruction": that.instruction,
             "weekallow": that.selectedWeek
         }

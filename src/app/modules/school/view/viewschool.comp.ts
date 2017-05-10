@@ -37,7 +37,9 @@ export class ViewSchoolComponent implements OnInit {
         var editRights = [];
         var viewRights = [];
 
-        that._menuservice.getMenuDetails({ "flag": "actrights", "uid": that.loginUser.uid, "mcode": "sch", "utype": that.loginUser.utype }).subscribe(data => {
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "mcode": "sch"
+        }).subscribe(data => {
             addRights = data.data.filter(a => a.mrights === "add");
             editRights = data.data.filter(a => a.mrights === "edit");
             viewRights = data.data.filter(a => a.mrights === "view");

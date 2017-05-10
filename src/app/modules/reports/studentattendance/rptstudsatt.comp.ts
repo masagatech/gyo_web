@@ -107,7 +107,7 @@ export class StudentAttendanceReportsComponent implements OnInit {
             var viewRights = [];
 
             that._menuservice.getMenuDetails({
-                "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rptstudsatt", "utype": that.loginUser.utype
+                "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptstudsatt", "utype": that.loginUser.utype
             }).subscribe(data => {
                 addRights = data.data.filter(a => a.mrights === "add");
                 editRights = data.data.filter(a => a.mrights === "edit");

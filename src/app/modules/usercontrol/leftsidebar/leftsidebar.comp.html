@@ -1,0 +1,53 @@
+<section>
+    <aside id="leftsidebar" class="sidebar">
+        <div class="user-info">
+            <div class="info-container">
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img alt="{{userfullname}}" src="uploads/{{uphoto}}" onerror="this.src='assets/img/default.gif';" height="30px" width="30px">                    {{userfullname}}
+                </div>
+                <div class="btn-group user-helper-dropdown">
+                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
+                        <li role="seperator" class="divider"></li>
+                        <li *ngIf="loginUser.ucode === 'admin'"><a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a></li>
+                        <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li class="header">Menu</li>
+                <li *ngFor="let row of mainMenuDT">
+                    <a href="javascript:void(0);" class="{{row.mclass}}" (click)="openMainMenu(row)">
+                        <i class="material-icons">{{row.micon}}</i>
+                        <span>{{row.mname}}</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li *ngFor="let mrow of row.pMenuDT">
+                            <a [routerLink]="mrow.mlink" routerLinkActivate="active">
+                                <i class="material-icons">{{mrow.micon}}</i>
+                                <span>{{mrow.mname}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- #Menu -->
+
+        <!-- Footer -->
+        <div class="legal">
+            <div class="copyright">
+                &copy; 2016 <a href="javascript:void(0);">Masagatech</a>.
+            </div>
+            <div class="version">
+                <b>Version: </b> 1.0.0
+            </div>
+        </div>
+        <!-- #Footer -->
+    </aside>
+</section>

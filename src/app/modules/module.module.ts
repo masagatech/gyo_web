@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 
+import { HeaderComponent } from './usercontrol/header/header.comp'
+import { LeftSideBarComponent } from './usercontrol/leftsidebar/leftsidebar.comp'
 import { DashboardModule } from './dashboard';
 
 import { StudentAttendanceReportsModule } from './reports/studentattendance';
@@ -70,7 +72,9 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        ModuleComponent
+        ModuleComponent,
+        HeaderComponent,
+        LeftSideBarComponent
     ],
     providers: [AuthGuard]
 })

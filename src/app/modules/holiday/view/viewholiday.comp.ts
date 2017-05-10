@@ -76,7 +76,7 @@ export class ViewHolidayComponent implements OnInit {
     }
 
     refreshButtons() {
-        setTimeout(function() {
+        setTimeout(function () {
             commonfun.navistyle();
             commonfun.chevronstyle();
         }, 0);
@@ -106,7 +106,9 @@ export class ViewHolidayComponent implements OnInit {
         var editRights = [];
         var viewRights = [];
 
-        that._menuservice.getMenuDetails({ "flag": "actrights", "uid": that.loginUser.uid, "mcode": "hld", "utype": that.loginUser.utype }).subscribe(data => {
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "hld", "utype": that.loginUser.utype
+        }).subscribe(data => {
             addRights = data.data.filter(a => a.mrights === "add");
             editRights = data.data.filter(a => a.mrights === "edit");
             viewRights = data.data.filter(a => a.mrights === "view");
