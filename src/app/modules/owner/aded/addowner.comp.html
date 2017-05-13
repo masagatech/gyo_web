@@ -1,25 +1,21 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-10 col-xs-4">
-                <h4>Co-ordinator / Attendent</h4>
-            </div>
-            <div class="col-md-2 col-xs-8">
-                <div class="pull-right">
-                    <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="saveOwnerInfo()">
-                        <i class="material-icons">save</i>
-                    </button>
-                    <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="backViewData()">
-                        <i class="material-icons">arrow_back</i>
-                    </button>
-                </div>
-                <div class="pull-right">
-                    <div class="switch">
-                        <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveOwnerInfo()"><span class="lever"></span></label>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h4>Co-ordinator / Attendent</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <span class="switch">
+                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveOwnerInfo()"><span class="lever"></span></label>
+                </span>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveOwnerInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
     </div>
     <div class="body">
         <div class="row clearfix">

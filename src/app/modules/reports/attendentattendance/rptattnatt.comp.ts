@@ -63,7 +63,7 @@ export class AttendentAttendanceReportsComponent implements OnInit {
         this.schoolname = event.label;
     }
 
-    // Fill School, Division, Gender DropDown
+    // Fill Month DropDown
 
     fillDropDownList() {
         var that = this;

@@ -1,0 +1,30 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-9">
+                <h4>Dashboard</h4>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Month</label>
+                        <select name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getPieChart();getBarChart();">
+                            <option [value]="''">Select Month</option>
+                            <option *ngFor="let row of monthDT" [value]="row.month">
+                                {{row.month}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <p-chart type="bar" #barchart [data]="dbChartDT" height="100px"></p-chart>
+    </div>
+
+    <div class="body no-padding">
+        <p-chart type="pie" #piechart [data]="dashboardDT" height="100px"></p-chart>
+    </div>
+</div>

@@ -6,48 +6,48 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Google Fonts -->
+    <title>GOYO Admin</title>
+
+    <!-- CSS -->
+
     <link href="assets/css/roboto.css" rel="stylesheet" type="text/css">
-    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/plugins/multi-select/css/multi-select.css" rel="stylesheet">
-    <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
-    <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
-    <link href="assets/plugins/morrisjs/morris.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/multi-select.css" rel="stylesheet">
+    <link href="assets/css/waves.css" rel="stylesheet" />
+    <link href="assets/css/animate.css" rel="stylesheet" />
+    <link href="assets/css/morris.css" rel="stylesheet" />
     <link href="assets/css/datatable.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="assets/css/fullcalendar.min.css" rel="stylesheet">
+    <link href="assets/css/dropzone.min.css" rel="stylesheet">
+    <link href="assets/css/all-themes.css" rel="stylesheet" />
 
-    <title>
-        GOYO Admin
-    </title>
+    <!-- JS -->
 
-    <script src="assets/plugins/jquery/jquery.min.js"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
-    <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap-select.js"></script>
     <script src="assets/js/moment.min.js"></script>
-    <script src="assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-    <script src="assets/plugins/dropzone/dropzone.js"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
-
-    <script src="assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
-    <script src="assets/plugins/node-waves/waves.js"></script>
-    <script src="assets/plugins/jquery-countto/jquery.countTo.js"></script>
+    <script src="assets/js/bootstrap-colorpicker.js"></script>
+    <script src="assets/js/jquery.slimscroll.js"></script>
+    <script src="assets/js/jquery.validate.js"></script>
+    <script src="assets/js/jquery.inputmask.bundle.js"></script>
+    <script src="assets/js/waves.js"></script>
+    <script src="assets/js/jquery.countTo.js"></script>
     <script src="assets/js/gmap.js"></script>
     <script src="assets/js/admin.js"></script>
-    <script src="assets/js/pages/forms/form-validation.js"></script>
-    <script src="assets/js/pages/forms/advanced-form-elements.js"></script>
+    <script src="assets/js/form-validation.js"></script>
+    <script src="assets/js/advanced-form-elements.js"></script>
     <script src="assets/js/demo.js"></script>
     <script src="assets/js/common.js"></script>
-
+    <script src="assets/js/chart.js"></script>
     <script src="assets/js/fullcalendar.min.js"></script>
-    <link href="assets/css/fullcalendar.min.css" rel="stylesheet">
+    <script src="assets/js/dropzone.min.js"></script>
 
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
     <% if (webpackConfig.htmlElements.headTags) { %>
-        <!-- Configured Head Tags  -->
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
 
@@ -55,9 +55,7 @@
 </head>
 
 <body class="theme-red">
-    <app>
-        Loading...
-    </app>
+    <app>Loading...</app>
 
     <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true){ %>
         <script src="/webpack-dev-server.js"></script>

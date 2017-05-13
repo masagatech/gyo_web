@@ -68,7 +68,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
     var segments = state.url;
     var maindata = route.data;
     if (maindata.hasOwnProperty("submodule")) {
-      var module1 = maindata["module"];
+      var module = maindata["module"];
       var rights = maindata["rights"];
       var submodule = maindata["submodule"];
 
@@ -76,7 +76,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
         "uid": userdetails.uid,
         "ucode": userdetails.ucode,
         "utype": userdetails.utype,
-        "ptype": module1,
+        "ptype": module,
         "actcd": rights,
         "sessionid": userdetails.sessiondetails.sessionid,
         "url": segments

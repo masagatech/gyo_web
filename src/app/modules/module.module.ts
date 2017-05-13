@@ -3,9 +3,12 @@ import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 
-import { HeaderComponent } from './usercontrol/header/header.comp'
-import { LeftSideBarComponent } from './usercontrol/leftsidebar/leftsidebar.comp'
+import { HeaderComponent } from './usercontrol/header/header.comp';
+import { LeftSideBarComponent } from './usercontrol/leftsidebar/leftsidebar.comp';
 import { DashboardModule } from './dashboard';
+
+import { MarketingDashboardModule } from './marketing/dashboard';
+import { ReportsModule } from './marketing/reports';
 
 import { StudentAttendanceReportsModule } from './reports/studentattendance';
 import { DailyAttendanceReportsModule } from './reports/dailyattendance';
@@ -33,6 +36,9 @@ export const routes = [
                 path: '',
                 children: [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
+                    { path: 'marketing', loadChildren: './marketing/dashboard#MarketingDashboardModule' },
+                    { path: 'reports', loadChildren: './marketing/reports#ReportsModule' },
+                    { path: 'market_user', loadChildren: './marketing/users#MarketingUserModule' },
 
                     // Reports
                     { path: 'studentattendance', loadChildren: './reports/studentattendance#StudentAttendanceReportsModule' },

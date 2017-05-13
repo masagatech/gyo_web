@@ -3252,7 +3252,6 @@ section.content {
 .btn:not(.btn-link):not(.btn-circle) i {
     font-size: 20px;
     position: relative;
-    top: 3px;
 }
 
 .btn-warning,
@@ -3826,15 +3825,10 @@ section.content {
 
 .card .header .header-dropdown i {
     font-size: 20px;
-    color: #999;
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     -webkit-transition: all 0.5s;
     transition: all 0.5s;
-}
-
-.card .header .header-dropdown i:hover {
-    color: #000;
 }
 
 .card .header h2 {
@@ -11937,3 +11931,8 @@ body.waitMe_body .waitMe_container.text>div {
     width: 100%;
     overflow-x: auto;
 }
+
+    .ui-datatable-tablewrapper .strong {
+        background: #ebedf0;
+        border-color: #d9d9d9;
+    }
