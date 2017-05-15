@@ -4,24 +4,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { BatchService } from '../../../_services/batch/batch-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'viewbatch.comp.html',
-    providers: [BatchService]
+    providers: [CommonService, MenuService, BatchService]
 })
 
 export class ViewBatchComponent implements OnInit {
     batchDT: any = [];
     loginUser: LoginUserModel;
 
+    schoolDT: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
+
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _batchervice: BatchService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _batchervice: BatchService) {
         this.loginUser = this._loginservice.getUser();
         this.viewBatchDataRights();
     }
@@ -30,6 +35,30 @@ export class ViewBatchComponent implements OnInit {
         setTimeout(function () {
             commonfun.navistyle();
         }, 0);
+    }
+
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event) {
+        this.schoolid = event.value;
+        this.schoolname = event.label;
+
+        this.getBatchDetails();
     }
 
     public viewBatchDataRights() {
@@ -48,8 +77,6 @@ export class ViewBatchComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getBatchDetails();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -63,7 +90,9 @@ export class ViewBatchComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._batchervice.getBatchDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+            that._batchervice.getBatchDetails({
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schoolid
+            }).subscribe(data => {
                 try {
                     that.batchDT = data.data;
                 }

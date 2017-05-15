@@ -41,7 +41,7 @@ export class AddBatchComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.getBatchDetail();
+        this.getBatchDetails();
     }
 
     public onUploadError(event) {
@@ -76,6 +76,14 @@ export class AddBatchComponent implements OnInit {
         })
     }
 
+    // Clear Fields
+
+    resetBatchFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+    }
+
     // Save Data
 
     saveBatchInfo() {
@@ -94,19 +102,27 @@ export class AddBatchComponent implements OnInit {
         }
 
         this._batchervice.saveBatchInfo(savebatch).subscribe(data => {
-            var dataResult = data.data;
-
             try {
-                if (dataResult[0].funsave_batchinfo.msgid != "-1") {
-                    var msg = dataResult[0].funsave_batchinfo.msg;
+                var dataResult = data.data;
+                var msg = dataResult[0].funsave_batchinfo.msg;
+                var msgid = dataResult[0].funsave_batchinfo.msgid;
+
+                if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
-                    commonfun.loaderhide();
+
+                    if (msgid === "1") {
+                        that.resetBatchFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
                 }
                 else {
                     var msg = dataResult[0].funsave_batchinfo.msg;
                     that._msg.Show(messageType.error, "Error", msg);
-                    commonfun.loaderhide();
                 }
+
+                commonfun.loaderhide();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -121,7 +137,7 @@ export class AddBatchComponent implements OnInit {
 
     // Get Batch Data
 
-    getBatchDetail() {
+    getBatchDetails() {
         var that = this;
         commonfun.loader();
 

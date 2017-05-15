@@ -39,7 +39,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">{{typ}} Code</label>
-                                <input type="text" [(ngModel)]="ownercode" class="form-control" placeholder="{{typ}} Code" maxlength="10" />
+                                <input type="text" [(ngModel)]="ownercode" class="form-control" maxlength="10" />
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Password</label>
-                                <input type="password" [(ngModel)]="ownerpwd" class="form-control" placeholder="Password" maxlength="10" />
+                                <input type="password" [(ngModel)]="ownerpwd" class="form-control" maxlength="10" />
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">{{typ}} Name</label>
-                                <input type="text" [(ngModel)]="ownername" class="form-control" placeholder="{{typ}} Name" maxlength="20" />
+                                <input type="text" [(ngModel)]="ownername" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Lat</label>
-                                <input type="text" [(ngModel)]="lat" class="form-control" placeholder="Lat" maxlength="5" />
+                                <input type="text" [(ngModel)]="lat" class="form-control" maxlength="5" />
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Lon</label>
-                                <input type="text" [(ngModel)]="lon" class="form-control" placeholder="Lon" maxlength="5" />
+                                <input type="text" [(ngModel)]="lon" class="form-control" maxlength="5" />
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Aadhar No</label>
-                                <input type="text" [(ngModel)]="aadharno" class="form-control" placeholder="Aadhar No" maxlength="15" />
+                                <input type="text" [(ngModel)]="aadharno" class="form-control" maxlength="15" />
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Remark</label>
-                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" placeholder="Remark" maxlength="500"></textarea>
+                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
                             </div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">School</label>
-                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)"
                                     [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
                                     [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
                             </div>
@@ -130,7 +130,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno1" class="form-control" placeholder="Mobile" maxlength="10" />
+                                <input type="text" [(ngModel)]="mobileno1" class="form-control" maxlength="10" />
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Alternate Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno2" class="form-control" placeholder="Alternate Mobile" maxlength="10" />
+                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" />
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Email</label>
-                                <input type="text" [(ngModel)]="email1" class="form-control" placeholder="Email" />
+                                <input type="text" [(ngModel)]="email1" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Alternate Email</label>
-                                <input type="text" [(ngModel)]="email2" class="form-control" placeholder="Alternate Email" />
+                                <input type="text" [(ngModel)]="email2" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" placeholder="Address" maxlength="500"></textarea>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
                             </div>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country</label>
-                                <input type="text" [(ngModel)]="country" class="form-control" placeholder="Country" maxlength="20" />
+                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State</label>
-                                <input type="text" [(ngModel)]="state" class="form-control" placeholder="State" maxlength="20" />
+                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -198,7 +198,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City</label>
-                                <input type="text" [(ngModel)]="city" class="form-control" placeholder="City" maxlength="20" />
+                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" placeholder="Pin Code" maxlength="20" />
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
                             </div>
                         </div>
                     </div>

@@ -1,12 +1,33 @@
 <div class="card">
     <div class="header">
-        <h4>Driver</h4>
-        <ul class="header-dropdown m-r--5">
-            <li *ngIf="actaddrights === 'add'">
-                <a role="button" class="btn btn-theme btn-xs" (click)="addDriverForm()">
-                    <i class="material-icons">add</i></a>
-            </li>
-        </ul>
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <h4>Driver</h4>
+            </div>
+            <div class="col-md-9 col-xs-9" *ngIf="actviewrights === 'view'">
+                <div class="form-group">
+                    <div class="form-line">
+                        <div class="row clearfix">
+                            <div class="col-md-2">
+                                <label class="same-label">School : </label>
+                            </div>
+                            <div class="col-md-9">
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                                    [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-1" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-1" align="right" *ngIf="actaddrights === 'add'">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addDriverForm()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
     </div>
     
     <div class="body no-padding">

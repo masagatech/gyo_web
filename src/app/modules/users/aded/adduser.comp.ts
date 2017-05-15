@@ -153,6 +153,16 @@ export class AddUserComponent implements OnInit {
         });
     }
 
+    // Clear Fields
+
+    resetUserFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+
+        this.schoolList = [];
+    }
+
     // Save Data
 
     saveUserInfo() {
@@ -189,24 +199,24 @@ export class AddUserComponent implements OnInit {
         this._userservice.saveUserInfo(saveuser).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msg = dataResult[0].funsave_userinfo.msg;
                 var msgid = dataResult[0].funsave_userinfo.msgid;
 
                 if (msgid !== "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_userinfo.msg);
+                    that._msg.Show(messageType.success, "Success", msg);
 
-                    if (msgid === "2") {
-                        that.resetFields();
+                    if (msgid === "1") {
+                        that.resetUserFields();
                     }
                     else {
                         that.backViewData();
                     }
-
-                    commonfun.loaderhide();
                 }
                 else {
                     that._msg.Show(messageType.error, "Error", dataResult[0].funsave_userinfo.msg);
-                    commonfun.loaderhide();
                 }
+
+                commonfun.loaderhide();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -270,16 +280,6 @@ export class AddUserComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
-    }
-
-    // Clear Fields
-
-    resetFields() {
-        var that = this;
-
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
     }
 
     // Back For View Data

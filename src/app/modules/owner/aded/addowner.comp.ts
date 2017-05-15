@@ -73,6 +73,8 @@ export class AddOwnerComponent implements OnInit {
 
         this._autoservice.getAutoData({
             "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
             this.schoolDT = data;
@@ -139,6 +141,16 @@ export class AddOwnerComponent implements OnInit {
         });
     }
 
+    // Clear Fields
+
+    resetOwnerFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+        
+        this.schoolList = [];
+    }
+
     // Save Data
 
     saveOwnerInfo() {
@@ -177,15 +189,23 @@ export class AddOwnerComponent implements OnInit {
         this._ownerervice.saveOwnerInfo(saveowner).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msg = dataResult[0].funsave_ownerinfo.msg;
+                var msgid = dataResult[0].funsave_ownerinfo.msgid;
 
-                if (dataResult[0].funsave_ownerinfo.msgid != "-1") {
-                    var msg = dataResult[0].funsave_ownerinfo.msg;
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_ownerinfo.msg);
-                    that.getOwnerDetails();
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+
+                    if (msgid == "1") {
+                        that.resetOwnerFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
+
                     commonfun.loaderhide();
                 }
                 else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_ownerinfo.msg);
+                    that._msg.Show(messageType.error, "Error", msg);
                     commonfun.loaderhide();
                 }
             }

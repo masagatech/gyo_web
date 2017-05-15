@@ -4,25 +4,31 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { StudentService } from '../../../_services/student/student-service';
+import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 
 @Component({
     templateUrl: 'viewstudent.comp.html',
-    providers: [MenuService, StudentService]
+    providers: [MenuService, CommonService, StudentService]
 })
 
 export class ViewStudentComponent implements OnInit {
     studentDT: any = [];
     loginUser: LoginUserModel;
 
+    schoolDT: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
+
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _studentervice: StudentService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _studentervice: StudentService) {
         this.loginUser = this._loginservice.getUser();
         this.viewStudentDataRights();
     }
@@ -31,6 +37,30 @@ export class ViewStudentComponent implements OnInit {
         setTimeout(function () {
             commonfun.navistyle();
         }, 0);
+    }
+
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event) {
+        this.schoolid = event.value;
+        this.schoolname = event.label;
+
+        this.getStudentDetails();
     }
 
     public viewStudentDataRights() {
@@ -49,8 +79,6 @@ export class ViewStudentComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getStudentDetails();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -64,7 +92,9 @@ export class ViewStudentComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._studentervice.getStudentDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+            that._studentervice.getStudentDetails({
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schoolid
+            }).subscribe(data => {
                 try {
                     that.studentDT = data.data;
                 }

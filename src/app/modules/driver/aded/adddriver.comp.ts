@@ -102,6 +102,14 @@ export class AddDriverComponent implements OnInit {
         });
     }
 
+    // Clear Fields
+
+    resetDriverFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+    }
+
     // Save Data
 
     saveDriverInfo() {
@@ -136,16 +144,24 @@ export class AddDriverComponent implements OnInit {
         this._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msg = dataResult[0].funsave_driverinfo.msg;
+                var msgid = dataResult[0].funsave_driverinfo.msgid;
 
-                if (dataResult[0].funsave_driverinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_driverinfo.msg);
-                    that.getDriverDetails();
-                    commonfun.loaderhide();
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+
+                    if (msgid === "1") {
+                        that.resetDriverFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
                 }
                 else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_driverinfo.msg);
-                    commonfun.loaderhide();
+                    that._msg.Show(messageType.error, "Error", msg);
                 }
+
+                commonfun.loaderhide();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

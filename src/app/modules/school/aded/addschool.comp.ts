@@ -136,6 +136,14 @@ export class AddSchoolComponent implements OnInit {
         })
     }
 
+    // Clear Fields
+
+    resetSchoolFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+    }
+
     // Active / Deactive Data
 
     active_deactiveSchoolInfo() {
@@ -219,13 +227,24 @@ export class AddSchoolComponent implements OnInit {
         this._schoolservice.saveSchoolInfo(saveSchool).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msg = dataResult[0].funsave_schoolinfo.msg;
+                var msgid = dataResult[0].funsave_schoolinfo.msgid;
 
-                if (dataResult[0].funsave_schoolinfo.msgid != "-1") {
-                    this._msg.Show(messageType.success, "Success", dataResult[0].funsave_schoolinfo.msg);
+                if (msgid != "-1") {
+                    this._msg.Show(messageType.success, "Success", msg);
+
+                    if (msgid === "1") {
+                        that.resetSchoolFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
                 }
                 else {
-                    this._msg.Show(messageType.error, "Error", dataResult[0].funsave_schoolinfo.msg);
+                    this._msg.Show(messageType.error, "Error", msg);
                 }
+
+                commonfun.loaderhide();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

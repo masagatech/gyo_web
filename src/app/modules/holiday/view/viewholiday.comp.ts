@@ -13,12 +13,12 @@ import { HolidayService } from '../../../_services/holiday/holiday-service';
 })
 
 export class ViewHolidayComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     holidayDT: any = [];
     schoolDT: any = [];
     schid: number = 0;
     schoolname: string = "";
-
-    loginUser: LoginUserModel;
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -32,9 +32,8 @@ export class ViewHolidayComponent implements OnInit {
     isShowGrid: any = true;
     isShowCalendar: any = false;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _holidayervice: HolidayService,
-        private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _holidayervice: HolidayService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this.getDefaultDate();
         this.viewHolidayDataRights();
@@ -72,6 +71,7 @@ export class ViewHolidayComponent implements OnInit {
     selectSchoolData(event) {
         this.schid = event.value;
         this.schoolname = event.label;
+
         this.getHolidayGrid();
     }
 

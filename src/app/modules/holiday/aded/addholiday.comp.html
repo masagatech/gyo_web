@@ -21,17 +21,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>From Date</label>
-                                <input type="date" [(ngModel)]="frmdt" class="form-control date" (ngModelChange)="todt = frmdt" placeholder="Ex: 30/07/2016"
-                                />
+                                <label class="control-label">From Date</label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date" (ngModelChange)="todt = frmdt" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>To Date</label>
-                                <input type="date" [(ngModel)]="todt" class="form-control date" placeholder="Ex: 30/07/2016" />
+                                <label class="control-label">To Date</label>
+                                <input type="date" [(ngModel)]="todt" class="form-control date" />
                             </div>
                         </div>
                     </div>
@@ -41,7 +40,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Holiday Title</label>
+                                <label class="control-label">Holiday Title</label>
                                 <input type="text" [(ngModel)]="hldnm" class="form-control" />
                             </div>
                         </div>
@@ -52,7 +51,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Description</label>
+                                <label class="control-label">Description</label>
                                 <textarea [(ngModel)]="hlddesc" rows="4" class="form-control no-resize auto-growth"></textarea>
                             </div>
                         </div>
@@ -64,8 +63,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>School</label>
-                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
+                                <label class="control-label">School</label>
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)"
                                     [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
                                     [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
                             </div>

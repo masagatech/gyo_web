@@ -4,31 +4,61 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { OwnerService } from '../../../_services/owner/owner-service';
+import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'viewowner.comp.html',
-    providers: [MenuService, OwnerService]
+    providers: [CommonService, MenuService, OwnerService]
 })
 
 export class ViewOwnerComponent implements OnInit {
     ownerDT: any = [];
     loginUser: LoginUserModel;
 
+    schoolDT: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
+
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _ownerservice: OwnerService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _ownerservice: OwnerService) {
         this.loginUser = this._loginservice.getUser();
         this.viewOwnerDataRights();
     }
 
     public ngOnInit() {
-        setTimeout(function () {
+        setTimeout(function() {
             commonfun.navistyle();
         }, 0);
+    }
+
+    // Auto Completed School
+
+    getSchoolData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).then((data) => {
+            this.schoolDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectSchoolData(event) {
+        this.schoolid = event.value;
+        this.schoolname = event.label;
+
+        this.getOwnerDetails();
     }
 
     public viewOwnerDataRights() {
@@ -47,8 +77,6 @@ export class ViewOwnerComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getOwnerDetails();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -62,7 +90,9 @@ export class ViewOwnerComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._ownerservice.getOwnerDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+            that._ownerservice.getOwnerDetails({
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schoolid
+            }).subscribe(data => {
                 try {
                     that.ownerDT = data.data;
                 }

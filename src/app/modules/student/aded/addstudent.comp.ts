@@ -59,6 +59,9 @@ export class AddStudentComponent implements OnInit {
     remark1: string = "";
     global = new Globals();
 
+    mode: string = "";
+    isactive: boolean = true;
+
     private subscribeParameters: any;
 
     config = {
@@ -81,12 +84,7 @@ export class AddStudentComponent implements OnInit {
     }
 
     public ngAfterViewInit() {
-        // setTimeout(function () {
-        //     //$.AdminBSB.input.activate();
-        //     commonfun.setAdvanceControl();
-        // }, 100);
 
-        commonfun.setAdvanceControl();
     }
 
     public onUploadError(event) {
@@ -172,6 +170,51 @@ export class AddStudentComponent implements OnInit {
         }
     }
 
+    // Clear Fields
+
+    resetStudentFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+    }
+
+    // Active / Deactive Data
+
+    active_deactiveStudentInfo() {
+        var that = this;
+
+        var act_deactHoliday = {
+            "autoid": that.ownerid,
+            "isactive": that.isactive,
+            "mode": that.mode
+        }
+
+        that._studentervice.saveStudentInfo(act_deactHoliday).subscribe(data => {
+            try {
+                var dataResult = data.data;
+                var msg = dataResult[0].funsave_studentinfo.msg;
+                var msgid = dataResult[0].funsave_studentinfo.msgid;
+
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+                    that.getStudentDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
+    // Save Data
+
     saveStudentInfo() {
         var that = this;
 
@@ -231,13 +274,21 @@ export class AddStudentComponent implements OnInit {
             that._studentervice.saveStudentInfo(saveStudent).subscribe(data => {
                 try {
                     var dataResult = data.data;
+                    var msg = dataResult[0].funsave_studentinfo.msg;
+                    var msgid = dataResult[0].funsave_studentinfo.msgid;
 
-                    if (dataResult[0].funsave_studentinfo.msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", dataResult[0].funsave_studentinfo.msg);
-                        that._router.navigate(['/student']);
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid === "1") {
+                            that.resetStudentFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_studentinfo.msg);
+                        that._msg.Show(messageType.error, "Error", msg);
                     }
                 }
                 catch (e) {

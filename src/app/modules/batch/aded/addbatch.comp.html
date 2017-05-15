@@ -20,16 +20,16 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Batch Code</label>
-                                <input type="text" [(ngModel)]="batchcode" class="form-control" placeholder="Batch Code" />
+                                <label class="control-label">Batch Code</label>
+                                <input type="text" [(ngModel)]="batchcode" class="form-control" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>Batch Name</label>
-                                <input type="text" [(ngModel)]="batchname" class="form-control" placeholder="Batch Name" />
+                                <label class="control-label">Batch Name</label>
+                                <input type="text" [(ngModel)]="batchname" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>School Name</label>
+                                <label class="control-label">School Name</label>
                                 <select [(ngModel)]="schoolid" class="form-control">
                                     <option [value]="0">Select School</option>
                                     <option *ngFor="let row of schoolDT" [value]="row.key">	
@@ -52,16 +52,16 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>From Time</label>
-                                <input type="time" [(ngModel)]="fromtime" class="form-control" placeholder="From Time" />
+                                <label class="control-label">From Time</label>
+                                <input type="time" [(ngModel)]="fromtime" class="form-control" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>To Time</label>
-                                <input type="time" [(ngModel)]="totime" class="form-control" placeholder="To Time" />
+                                <label class="control-label">To Time</label>
+                                <input type="time" [(ngModel)]="totime" class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <textarea [(ngModel)]="instruction" rows="4" class="form-control no-resize auto-growth" placeholder="Remark"></textarea>
+                                <label class="control-label">Remark</label>
+                                <textarea [(ngModel)]="instruction" rows="4" class="form-control no-resize auto-growth"></textarea>
                             </div>
                         </div>
                     </div>
@@ -79,7 +80,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label>Select Week</label>
+                    <label class="control-label">Select Week</label>
                     <div *ngFor="let week of weekDT">
                         <div class="form-line">
                             <p-checkbox name="{{week.key}}" value="{{week.key}}" label="{{week.val}}" [(ngModel)]="selectedWeek"></p-checkbox>

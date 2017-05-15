@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HolidayService } from '../../../_services/holiday/holiday-service';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
+import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
+import { HolidayService } from '../../../_services/holiday/holiday-service';
 import { Globals } from '../../../_const/globals';
 import { LazyLoadEvent } from 'primeng/primeng';
 
@@ -15,6 +17,8 @@ declare var commonfun: any;
 })
 
 export class AddHolidayComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     hldid: number = 0;
     frmdt: any = "";
     todt: any = "";
@@ -30,9 +34,9 @@ export class AddHolidayComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _holidayervice: HolidayService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
-
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+        private _holidayervice: HolidayService, private _autoservice: CommonService) {
+        this.loginUser = this._loginservice.getUser();
     }
 
     public ngOnInit() {
@@ -47,6 +51,8 @@ export class AddHolidayComponent implements OnInit {
 
         this._autoservice.getAutoData({
             "flag": "school",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
             this.schoolDT = data;
@@ -80,6 +86,16 @@ export class AddHolidayComponent implements OnInit {
         this.schoolList.splice(this.schoolList.indexOf(row), 1);
     }
 
+    // Clear Fields
+
+    resetHolidayFields() {
+        $("input").val("");
+        $("textarea").val("");
+        $("select").val("");
+
+        this.schoolList = [];
+    }
+
     // Save Data
 
     saveHolidayInfo() {
@@ -101,17 +117,26 @@ export class AddHolidayComponent implements OnInit {
             "uid": "vivek"
         }
 
-        this._holidayervice.saveHoliday(saveholiday).subscribe(data => {
+        that._holidayervice.saveHoliday(saveholiday).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msg = dataResult[0].funsave_holiday.msg;
+                var msgid = dataResult[0].funsave_holiday.msgid;
 
-                if (dataResult[0].funsave_holiday.msgid != "-1") {
-                    this._msg.Show(messageType.success, "Success", dataResult[0].funsave_holiday.msg);
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+
+                    if (msgid == "1") {
+                        that.resetHolidayFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
+
                     commonfun.loaderhide();
                 }
                 else {
-                    var msg = dataResult[0].funsave_holiday.msg;
-                    this._msg.Show(messageType.error, "Error", dataResult[0].funsave_holiday.msg);
+                    that._msg.Show(messageType.error, "Error", msg);
                     commonfun.loaderhide();
                 }
             }
