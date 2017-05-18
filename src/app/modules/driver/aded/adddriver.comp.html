@@ -202,5 +202,32 @@
                 </div>
             </div>
         </div>
+
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <p-fileUpload name="fileUploaded" url="{{uploadconfig.server}}" (onUpload)="onUpload($event)" multiple="multiple" accept="{{uploadconfig.acceptedFiles}}"
+                    maxFileSize="{{uploadconfig.maxFilesize}}" auto="auto">
+                    <template pTemplate type="content">
+                        <div *ngIf="attachDocsDT.length">
+                            <div *ngFor="let file of attachDocsDT" class="box">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img src="http://localhost:8082/images/{{file.athurl}}" height="80px" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <b>Size : </b> {{formatSizeUnits(file.athsize)}}
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a role="button" (click)="removeFileUpload()"><i class="fa fa-remove"></i></a>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                        <span>Drag File Here....</span>
+                    </template>
+                </p-fileUpload>
+            </div>
+        </div>
     </div>
 </div>

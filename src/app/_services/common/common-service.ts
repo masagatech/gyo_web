@@ -6,6 +6,10 @@ import { Router } from '@angular/router';
 export class CommonService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
+    getFilePath(req: any) {
+        return this._dataserver.get("getFilePath", req)
+    }
+
     getAutoData(req: any) {
         return this._dataserver.get("getAutoData", req)
     }
