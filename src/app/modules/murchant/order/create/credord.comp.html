@@ -1,0 +1,163 @@
+<div class="card">
+    <div class="header">
+        <h4>Create Order</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveOrderInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="header">
+        <h4>Order Summary</h4>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Outlate Name</label>
+                        <select [(ngModel)]="olid" class="form-control">
+                            <option [value]="0">Select Outlate</option>
+                            <option *ngFor="let row of outlateDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Delivery Date</label>
+                        <input type="date" [(ngModel)]="deldate" class="form-control" maxlength="20" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Pick Up Time</label>
+                        <input type="time" [(ngModel)]="picktime" class="form-control" maxlength="5" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <h4>Order Details</h4>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Order No</label>
+                        <input type="text" [(ngModel)]="ordno" class="form-control" maxlength="10" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Address</label>
+                        <textarea type="text" [(ngModel)]="custaddr" class="form-control no-resize auto-growth" rows="5" cols="10" maxlength="500"></textarea>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-theme" (click)="getLatAndLong()">Get Lat and Long</button>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Latitude</label>
+                                <input type="text" [(ngModel)]="lat" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Longitude</label>
+                                <input type="text" [(ngModel)]="lng" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Customer Name</label>
+                        <input type="text" [(ngModel)]="custname" class="form-control" maxlength="100" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Mobile No</label>
+                        <input type="text" [(ngModel)]="custmobile" class="form-control" maxlength="10" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Amount to be Collected</label>
+                        <input type="number" [(ngModel)]="amtcollect" class="form-control" maxlength="20" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addOrderDetails()">
+                    <span class="material-icons">add</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="orderDetailsDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="ordno" header="Order No" [style]="{'width': '50px', 'text-align': 'left'}"></p-column>
+                    <p-column field="custname" header="Customer Name" [style]="{'text-align': 'left'}"></p-column>
+                    <p-column field="custmobile" header="Mobile No" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="lat" header="Latitude" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
+                    <p-column field="lng" header="Longitude" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
+                    <p-column field="amtcollect" header="Amount To Be Collected" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="deltime" header="Delivery Time" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="pickdate" header="Pick up Date" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editUserForm(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

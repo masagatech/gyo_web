@@ -9,8 +9,6 @@ import { ViewStudentComponent } from './view/viewstudent.comp';
 import { StudentService } from '../../_services/student/student-service';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
-import { DropzoneModule } from 'ngx-dropzone-wrapper';
-import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
 export const routes = [
   {
@@ -31,8 +29,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule,
-     DropzoneModule.forRoot()
+    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
   ],
 
   providers: [StudentService]

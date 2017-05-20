@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <h4>Driver</h4>
+            </div>
+            <div class="col-md-9 col-xs-9" *ngIf="actviewrights === 'view'">
+                <div class="form-group">
+                    <div class="form-line">
+                        <div class="row clearfix">
+                            <div class="col-md-2">
+                                <label class="same-label">School : </label>
+                            </div>
+                            <div class="col-md-9">
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)" [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-1" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-1" align="right" *ngIf="actaddrights === 'add'">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addDriverForm()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="driverDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column header="" [style]="{'width':'60px','text-align':'center'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <img alt="{{row.drivername}}" src="uploads/driver/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                        </template>
+                    </p-column>
+                    <p-column field="drivercode" header="Driver Code" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column field="drivername" header="Driver Name" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="aadharno" header="Aadhar No" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="email1" header="Email" [style]="{'width':'150px','text-align': 'left'}"></p-column>
+                    <p-column field="mobileno1" header="Mobile" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editDriverForm(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>
