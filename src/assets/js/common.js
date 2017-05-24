@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     $(".ui-radiobutton-box").find('span').hide();
 });
 
@@ -23,7 +23,7 @@ function findJSON(obj, key, val, brek) {
 }
 
 commonfun.addrequire = function addrequire() {
-    $("[validate]").each(function () {
+    $("[validate]").each(function() {
         $(this).siblings("label").remove("span").append("&nbsp;<span class='require'>*</span>");
     });
 }
@@ -32,7 +32,7 @@ commonfun.validate = function validate() {
     var valisValid = true;
     var result = [];
     var msglist = "";
-    $("[validate]").each(function () {
+    $("[validate]").each(function() {
         if ($(this).is("input") || $(this).is("textarea")) {
             if ($(this).val().trim() === "") {
                 valisValid = false;
@@ -51,7 +51,7 @@ commonfun.validate = function validate() {
     return { "status": valisValid, "data": result, "msglist": msglist };
 }
 
-commonfun.loader = function (name) {
+commonfun.loader = function(name) {
     if (!name) name = '.maincontent';
     $(name).waitMe({
         effect: 'bounce',
@@ -65,17 +65,17 @@ commonfun.loader = function (name) {
     });
 }
 
-commonfun.loaderhide = function (name) {
+commonfun.loaderhide = function(name) {
     if (!name) name = '.maincontent';
     $(name).waitMe('hide');
 }
 
-commonfun.openurl = function (url, target, options) {
+commonfun.openurl = function(url, target, options) {
     window.open(url, target, options);
     //"https://www.w3schools.com", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400"
 }
 
-commonfun.navistyle = function () {
+commonfun.navistyle = function() {
     $(".ui-paginator-first").addClass('btn-theme');
     $(".ui-paginator-prev").addClass('btn-theme');
     $(".ui-paginator-next").addClass('btn-theme');
@@ -87,25 +87,25 @@ commonfun.navistyle = function () {
     // $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("last_page");
 }
 
-commonfun.chevronstyle = function () {
-    $(".fc-prev-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
-    $(".fc-next-button").find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
+commonfun.chevronstyle = function() {
+    $(".fc-prev-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
+    $(".fc-next-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
 }
 
-commonfun.rdbtnstyle = function () {
+commonfun.rdbtnstyle = function() {
     $(".ui-radiobutton-box").find('span').removeAttr('class');
 }
 
-commonfun.setAdvanceControl = function () {
+commonfun.setAdvanceControl = function() {
     var $demoMaskedInput = $('.demo-masked-input');
-    
+
     $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy', { placeholder: '__/__/____' });
     $demoMaskedInput.find('.time12').inputmask('hh:mm t', { placeholder: '__:__ _m', alias: 'time12', hourFormat: '12' });
     $demoMaskedInput.find('.email').inputmask({ alias: "email" });
     $demoMaskedInput.find('.mobile-number').inputmask('+99 (999) 999-99-99', { placeholder: '+__ (___) ___-__-__' });
 }
 
-commonfun.randomColor = function (brightness) {
+commonfun.randomColor = function(brightness) {
     function randomChannel(brightness) {
         var r = 255 - brightness;
         var n = 0 | ((Math.random() * r) + brightness);
@@ -115,7 +115,12 @@ commonfun.randomColor = function (brightness) {
     return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
 }
 
+function onSelection(me) {
+    $(".def-box").removeClass("selection");
+    $(me).addClass("selection");
+}
+
 var browserConf = {};
-browserConf.setTitle = function (title) {
+browserConf.setTitle = function(title) {
     document.title = title;
 }

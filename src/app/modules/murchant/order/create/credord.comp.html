@@ -22,10 +22,10 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Outlate Name</label>
+                        <label class="control-label">Outlet Name</label>
                         <select [(ngModel)]="olid" class="form-control">
-                            <option [value]="0">Select Outlate</option>
-                            <option *ngFor="let row of outlateDT" [value]="row.key">
+                            <option [value]="0">Select Outlet</option>
+                            <option *ngFor="let row of outletDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -98,6 +98,7 @@
                 </div>
             </div>
             <div class="col-md-6">
+                <p-gmap #gmap [style]="{'width':'100%','height':'320px'}" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)"></p-gmap>
             </div>
         </div>
 
@@ -110,7 +111,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Mobile No</label>
@@ -118,13 +119,34 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Amount to be Collected</label>
                         <input type="number" [(ngModel)]="amtcollect" class="form-control" maxlength="20" />
                     </div>
                 </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Delivery Time</label>
+                        <input type="time" [(ngModel)]="deltime" class="form-control" maxlength="20" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea cols="10" rows="5" [(ngModel)]="remark" class="form-control no-resize"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
             </div>
         </div>
 
@@ -141,14 +163,13 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="orderDetailsDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="ordno" header="Order No" [style]="{'width': '50px', 'text-align': 'left'}"></p-column>
+                    <p-column field="ordno" header="Order No" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="custname" header="Customer Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="custmobile" header="Mobile No" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="lat" header="Latitude" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
-                    <p-column field="lng" header="Longitude" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
-                    <p-column field="amtcollect" header="Amount To Be Collected" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="lat" header="Latitude" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="lng" header="Longitude" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="amtcollect" header="Amount To Be Collected" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
                     <p-column field="deltime" header="Delivery Time" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="pickdate" header="Pick up Date" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editUserForm(row)">

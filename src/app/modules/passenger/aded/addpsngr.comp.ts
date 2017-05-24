@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StudentService } from '../../../_services/student/student-service';
+import { PassengerService } from '../../../_services/passenger/psngr-service';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { LoginService } from '../../../_services/login/login-service';
@@ -11,11 +11,11 @@ declare var loader: any;
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'addstudent.comp.html',
-    providers: [StudentService, CommonService]
+    templateUrl: 'addpsngr.comp.html',
+    providers: [PassengerService, CommonService]
 })
 
-export class AddStudentComponent implements OnInit {
+export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
 
     schoolDT: any = [];
@@ -26,21 +26,21 @@ export class AddStudentComponent implements OnInit {
     ownerid: number = 0;
     ownername: string = "";
 
-    studentid: number = 0;
-    studentcode: string = "";
-    studentname: string = "";
+    psngrid: number = 0;
+    psngrcode: string = "";
+    psngrname: string = "";
     gender: string = "";
     dob: any = "";
-    schoolid: number = 0;
+    enttid: number = 0;
     division: string = "";
     aadharno: any = "";
 
     mothername: string = "";
-    mothermobile: string = "";
-    motheremail: string = "";
+    secondarymobile: string = "";
+    secondaryemail: string = "";
     fathername: string = "";
-    fathermobile: string = "";
-    fatheremail: string = "";
+    primarymobile: string = "";
+    primaryemail: string = "";
 
     resiaddr: string = "";
     pickupaddr: string = "";
@@ -72,7 +72,7 @@ export class AddStudentComponent implements OnInit {
         acceptedFiles: 'image/*'
     };
 
-    constructor(private _studentervice: StudentService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+    constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
@@ -80,7 +80,7 @@ export class AddStudentComponent implements OnInit {
 
     public ngOnInit() {
         $(".ownername input").focus();
-        this.getStudentDetails();
+        this.getPassengerDetails();
     }
 
     public ngAfterViewInit() {
@@ -123,7 +123,7 @@ export class AddStudentComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._studentervice.getStudentDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.schoolDT = data.data.filter(a => a.group === "school");
                 that.divisionDT = data.data.filter(a => a.group === "division");
@@ -172,7 +172,7 @@ export class AddStudentComponent implements OnInit {
 
     // Clear Fields
 
-    resetStudentFields() {
+    resetPassengerFields() {
         $("input").val("");
         $("textarea").val("");
         $("select").val("");
@@ -180,7 +180,7 @@ export class AddStudentComponent implements OnInit {
 
     // Active / Deactive Data
 
-    active_deactiveStudentInfo() {
+    active_deactivePassengerInfo() {
         var that = this;
 
         var act_deactHoliday = {
@@ -189,15 +189,15 @@ export class AddStudentComponent implements OnInit {
             "mode": that.mode
         }
 
-        that._studentervice.saveStudentInfo(act_deactHoliday).subscribe(data => {
+        that._psngrservice.savePassengerInfo(act_deactHoliday).subscribe(data => {
             try {
                 var dataResult = data.data;
-                var msg = dataResult[0].funsave_studentinfo.msg;
-                var msgid = dataResult[0].funsave_studentinfo.msgid;
+                var msg = dataResult[0].funsave_Passengerinfo.msg;
+                var msgid = dataResult[0].funsave_Passengerinfo.msgid;
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
-                    that.getStudentDetails();
+                    that.getPassengerDetails();
                 }
                 else {
                     that._msg.Show(messageType.error, "Error", msg);
@@ -215,30 +215,54 @@ export class AddStudentComponent implements OnInit {
 
     // Save Data
 
-    saveStudentInfo() {
+    savePassengerInfo() {
         var that = this;
 
         if (that.ownerid === 0) {
-            that._msg.Show(messageType.error, "Error", "Please Enter Owner Name");
+            that._msg.Show(messageType.error, "Error", "Enter Owner Name");
             $(".ownername input").focus();
         }
-        else if (that.schoolid === 0) {
-            that._msg.Show(messageType.error, "Error", "Please Select School Name");
+        else if (that.enttid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select School Name");
         }
-        else if (that.studentname === "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Student Name");
+        else if (that.psngrname === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
         }
         else if (that.division === "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Division");
+            that._msg.Show(messageType.error, "Error", "Enter Division");
         }
-        else if (that.gender === "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Gender");
+        else if (that.primaryemail === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Primary Email");
         }
-        else if (that.dob === "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Date Of Birth");
+        else if (that.primarymobile === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Primary Mobile");
         }
-        else if (that.aadharno === "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Aadhar No");
+        else if (that.resiaddr === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Gender");
+        }
+        else if (that.resilet === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Gender");
+        }
+        else if (that.resilong === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Gender");
+        }
+        else if (that.pickupaddr === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
+        }
+        else if (that.pickuplet === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Pick Up Lat");
+        }
+        else if (that.pickuplong === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Pick Up Long");
+        }
+        else if (that.dropaddr === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Drop Address");
+        }
+        else if (that.droplet === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Drop Lat");
+        }
+        else if (that.droplong === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Drop Long");
         }
         else {
             commonfun.loader();
@@ -250,16 +274,16 @@ export class AddStudentComponent implements OnInit {
                 "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
             }
 
-            var saveStudent = {
-                "autoid": that.studentid,
-                "studentcode": that.schoolid,
-                "studentname": that.studentname,
-                "schoolid": that.schoolid,
+            var savePassenger = {
+                "autoid": that.psngrid,
+                "studentcode": that.psngrid,
+                "studentname": that.psngrname,
+                "enttid": that.enttid,
                 "name": that.mothername + ";" + that.fathername,
-                "mobileno1": that.mothermobile,
-                "mobileno2": that.fathermobile,
-                "email1": that.motheremail,
-                "email2": that.fatheremail,
+                "mobileno1": that.primarymobile,
+                "mobileno2": that.secondarymobile,
+                "email1": that.primaryemail,
+                "email2": that.secondaryemail,
                 "address": that.resiaddr,
                 "studentprofiledata": studentprofiledata,
                 "resgeoloc": that.resilet + "," + that.resilong,
@@ -271,17 +295,17 @@ export class AddStudentComponent implements OnInit {
                 "remark1": that.remark1
             }
 
-            that._studentervice.saveStudentInfo(saveStudent).subscribe(data => {
+            that._psngrservice.savePassengerInfo(savePassenger).subscribe(data => {
                 try {
                     var dataResult = data.data;
-                    var msg = dataResult[0].funsave_studentinfo.msg;
-                    var msgid = dataResult[0].funsave_studentinfo.msgid;
+                    var msg = dataResult[0].funsave_Passengerinfo.msg;
+                    var msgid = dataResult[0].funsave_Passengerinfo.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.resetStudentFields();
+                            that.resetPassengerFields();
                         }
                         else {
                             that.backViewData();
@@ -307,32 +331,32 @@ export class AddStudentComponent implements OnInit {
         }
     }
 
-    // Get student Data
+    // Get Passenger Data
 
-    getStudentDetails() {
+    getPassengerDetails() {
         var that = this;
         commonfun.loader();
 
         that.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.studentid = params['id'];
+                that.psngrid = params['id'];
 
-                that._studentervice.getStudentDetails({ "flag": "edit", "id": that.studentid }).subscribe(data => {
+                that._psngrservice.getPassengerDetails({ "flag": "edit", "id": that.psngrid }).subscribe(data => {
                     try {
-                        that.studentid = data.data[0].autoid;
-                        that.studentcode = data.data[0].studentcode;
-                        that.studentname = data.data[0].studentname;
+                        that.psngrid = data.data[0].autoid;
+                        that.psngrcode = data.data[0].studentcode;
+                        that.psngrname = data.data[0].studentname;
 
                         that.ownerid = data.data[0].ownerid;
                         that.ownername = data.data[0].ownername;
-                        that.schoolid = data.data[0].schoolid;
+                        that.enttid = data.data[0].enttid;
                         that.aadharno = data.data[0].aadharno;
                         that.mothername = data.data[0].name.split(';')[0];
-                        that.mothermobile = data.data[0].mobileno1;
-                        that.motheremail = data.data[0].email1;
+                        that.secondarymobile = data.data[0].mobileno1;
+                        that.secondaryemail = data.data[0].email1;
                         that.fathername = data.data[0].name.split(';')[1];
-                        that.fathermobile = data.data[0].mobileno2;
-                        that.fatheremail = data.data[0].email2;
+                        that.primarymobile = data.data[0].mobileno2;
+                        that.primaryemail = data.data[0].email2;
                         that.resiaddr = data.data[0].address;
                         that.resilet = data.data[0].resilat;
                         that.resilong = data.data[0].resilon;
@@ -342,9 +366,9 @@ export class AddStudentComponent implements OnInit {
                         that.droplong = data.data[0].droplon;
                         that.remark1 = data.data[0].remark1;
 
-                        var studentprofiledata = data.data[0].studentprofiledata;
+                        var Passengerprofiledata = data.data[0].Passengerprofiledata;
 
-                        if (studentprofiledata !== null) {
+                        if (Passengerprofiledata !== null) {
                             that.gender = data.data[0].gender;
                             that.dob = data.data[0].dob;
                             that.division = data.data[0].division;
@@ -372,6 +396,6 @@ export class AddStudentComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/student']);
+        this._router.navigate(['/Passenger']);
     }
 }

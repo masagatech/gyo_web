@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { SchoolService } from '../../../_services/school/school-service';
+import { EntityService } from '../../../_services/entity/entity-service';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-    templateUrl: 'addschool.comp.html',
-    providers: [SchoolService]
+    templateUrl: 'addentity.comp.html',
+    providers: [EntityService]
 })
 
-export class AddSchoolComponent implements OnInit {
+export class AddEntityComponent implements OnInit {
     schid: number = 0;
     schcd: string = "";
     schnm: string = "";
@@ -21,6 +21,7 @@ export class AddSchoolComponent implements OnInit {
     state: string = "";
     city: string = "";
     pincode: string = "";
+    entttype: string = "";
     remark1: string = "";
 
     name: string = "";
@@ -39,11 +40,12 @@ export class AddSchoolComponent implements OnInit {
     duplicateContact: boolean = true;
 
     weekDT: any = [];
+    entttypeDT: any = [];
 
     private subscribeParameters: any;
 
-    constructor(private _schoolservice: SchoolService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
-        this.fillWeekDetails();
+    constructor(private _entityservice: EntityService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
+        this.fillDropDownList();
     }
 
     public ngAfterViewInit() {
@@ -52,7 +54,32 @@ export class AddSchoolComponent implements OnInit {
     public ngOnInit() {
         $.AdminBSB.input.activate();
         $(".schcd").focus();
-        this.getSchoolDetails();
+        this.getEntityDetails();
+    }
+
+    // Entity Type DropDown
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._entityservice.getEntityDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.weekDT = data.data.filter(a => a.group === "week");
+                that.entttypeDT = data.data.filter(a => a.group === "entttype");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     isDuplicateContact() {
@@ -115,30 +142,9 @@ export class AddSchoolComponent implements OnInit {
         this.contactDT.splice(this.contactDT.indexOf(row), 1);
     }
 
-    fillWeekDetails() {
-        var that = this;
-        commonfun.loader();
-
-        that._schoolservice.getSchoolDetails({ "flag": "dropdown" }).subscribe(data => {
-            try {
-                that.weekDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-            commonfun.loaderhide();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     // Clear Fields
 
-    resetSchoolFields() {
+    resetentityFields() {
         $("input").val("");
         $("textarea").val("");
         $("select").val("");
@@ -146,25 +152,27 @@ export class AddSchoolComponent implements OnInit {
 
     // Active / Deactive Data
 
-    active_deactiveSchoolInfo() {
+    active_deactiveEntityInfo() {
         var that = this;
 
-        var act_deactSchool = {
+        var act_deactentity = {
             "autoid": that.schid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        this._schoolservice.saveSchoolInfo(act_deactSchool).subscribe(data => {
+        this._entityservice.saveEntityInfo(act_deactentity).subscribe(data => {
             try {
                 var dataResult = data.data;
+                var msg = dataResult[0].funsave_schoolinfo.msg;
+                var msgid = dataResult[0].funsave_schoolinfo.msgid;
 
-                if (dataResult[0].funsave_schoolinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_schoolinfo.msg);
-                    that.getSchoolDetails();
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+                    that.getEntityDetails();
                 }
                 else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_schoolinfo.msg);
+                    that._msg.Show(messageType.error, "Error", msg);
                 }
             }
             catch (e) {
@@ -177,9 +185,9 @@ export class AddSchoolComponent implements OnInit {
         });
     }
 
-    // Save School Data
+    // Save entity Data
 
-    saveSchoolInfo() {
+    saveEntityInfo() {
         var that = this;
         commonfun.loader();
 
@@ -201,8 +209,9 @@ export class AddSchoolComponent implements OnInit {
 
         weeklyoff = "{" + wkrights.slice(0, -1) + "}";
 
-        var saveSchool = {
+        var saveentity = {
             "autoid": that.schid,
+            "entttype": that.entttype,
             "schcd": that.schcd,
             "schnm": that.schnm,
             "schgeoloc": that.lat + "," + that.lon,
@@ -224,7 +233,7 @@ export class AddSchoolComponent implements OnInit {
             "uid": "vivek"
         }
 
-        this._schoolservice.saveSchoolInfo(saveSchool).subscribe(data => {
+        this._entityservice.saveEntityInfo(saveentity).subscribe(data => {
             try {
                 var dataResult = data.data;
                 var msg = dataResult[0].funsave_schoolinfo.msg;
@@ -234,7 +243,7 @@ export class AddSchoolComponent implements OnInit {
                     this._msg.Show(messageType.success, "Success", msg);
 
                     if (msgid === "1") {
-                        that.resetSchoolFields();
+                        that.resetentityFields();
                     }
                     else {
                         that.backViewData();
@@ -259,9 +268,9 @@ export class AddSchoolComponent implements OnInit {
         });
     }
 
-    // Get School Data
+    // Get entity Data
 
-    getSchoolDetails() {
+    getEntityDetails() {
         var that = this;
         commonfun.loader();
 
@@ -269,9 +278,10 @@ export class AddSchoolComponent implements OnInit {
             if (params['id'] !== undefined) {
                 this.schid = params['id'];
 
-                that._schoolservice.getSchoolDetails({ "flag": "edit", "id": this.schid }).subscribe(data => {
+                that._entityservice.getEntityDetails({ "flag": "edit", "id": this.schid }).subscribe(data => {
                     try {
                         that.schid = data.data[0].autoid;
+                        that.entttype = data.data[0].entttype;
                         that.schcd = data.data[0].schoolcode;
                         that.schnm = data.data[0].schoolname;
                         that.lat = data.data[0].lat;
@@ -279,16 +289,11 @@ export class AddSchoolComponent implements OnInit {
                         that.schvehs = data.data[0].ownbuses;
                         that.oprvehs = data.data[0].vanoperator;
 
-                        var wkkey = data.data[0].wkkey;
-                        // var wkrights = weeklyoff.split(',');
+                        var weeklyoff = data.data[0].weeklyoff;
 
-                        console.log("start weeklyoff");
-                        console.log(wkkey);
-                        console.log("weeklyoff end");
-
-                        if (wkkey != null) {
-                            for (var i = 0; i < wkkey.length; i++) {
-                                $("#week").find("#" + wkkey[i]).prop('checked', true);
+                        if (weeklyoff != null) {
+                            for (var i = 0; i < weeklyoff.length; i++) {
+                                $("#week").find("#" + weeklyoff[i]).prop('checked', true);
                             }
                         }
 
@@ -329,6 +334,6 @@ export class AddSchoolComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/school']);
+        this._router.navigate(['/entity']);
     }
 }

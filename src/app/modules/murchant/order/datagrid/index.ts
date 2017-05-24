@@ -1,42 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { NgModule, Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SharedComponentModule } from '../../../../_shared/sharedcomp.module';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { MenuService } from '../../../../_services/menus/menu-service';
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
 import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
 import { OrderService } from '../../../../_services/order/ord-service';
-import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'vieword.comp.html',
+    selector: '<datagrid></datagrid>',
+    templateUrl: 'datagrid.comp.html',
     providers: [CommonService, MenuService, OrderService]
 })
 
-export class ViewOrderComponent implements OnInit {
-    selectedOrderType: string = "all";
-    ordtype: SelectItem[];
-
-    orderDT: any = [];
+export class DataGridComponent implements OnInit {
     loginUser: LoginUserModel;
+
+    bindData: any = [];
+    @Input() status: string = "pending";
+
+    schoolDT: any = [];
+    schoolid: number = 0;
+    schoolname: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
 
-    status: string = "";
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService) {
         this.loginUser = this._loginservice.getUser();
-        this.status = "pending";
-        this.getOrderType();
+        this.getOrderDetails();
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            commonfun.navistyle();
-        }, 0);
+        
     }
 
     public viewOrderDataRights() {
@@ -55,8 +58,6 @@ export class ViewOrderComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getOrderDetails();
         }, err => {
             //that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -64,23 +65,18 @@ export class ViewOrderComponent implements OnInit {
         })
     }
 
-    getOrderType() {
-        this.ordtype = [];
-        this.ordtype.push({ label: 'Pending', value: 'pending' });
-        this.ordtype.push({ label: 'Accepted', value: 'accepted' });
-    }
-
-    getOrderDetails() {
+    public getOrderDetails() {
         var that = this;
+        that.bindData = [];
 
         // if (that.actviewrights === "view") {
         commonfun.loader();
 
         that._ordservice.getOrderDetails({
-            "flag": "summary", "status": that.selectedOrderType
+            "flag": "summary", "status": that.status
         }).subscribe(data => {
             try {
-                that.orderDT = data.data;
+                that.bindData = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -104,4 +100,16 @@ export class ViewOrderComponent implements OnInit {
     public editOrderForm(row) {
         this._router.navigate(['/editorder', row.autoid]);
     }
+}
+
+@NgModule({
+    imports: [CommonModule, FormsModule, SharedComponentModule, DataTableModule],
+    declarations: [
+        DataGridComponent
+    ],
+    exports: [DataGridComponent]
+})
+
+export class DataGridModule {
+
 }

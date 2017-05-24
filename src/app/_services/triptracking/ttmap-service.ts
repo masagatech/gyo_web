@@ -7,7 +7,7 @@ export class TTMapService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     getTripTracking(req: any) {
-        return this._dataserver.post("getTripTracking", req)
+        return this._dataserver.post("tripapi", req)
     }
 
     getTripTrackingData(req: any) {

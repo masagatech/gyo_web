@@ -1,14 +1,14 @@
 <div class="card">
     <div class="header">
-        <h4>School</h4>
+        <h4>Entity</h4>
         <ul class="header-dropdown m-r--5">
             <li>
                 <span class="switch">
-                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveSchoolInfo()"><span class="lever"></span></label>
+                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveEntityInfo()"><span class="lever"></span></label>
                 </span>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveSchoolInfo()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveEntityInfo()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
@@ -24,7 +24,23 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School Code</label>
+                                <label class="control-label">Entity Type</label>
+                                <select [(ngModel)]="entttype" class="form-control">
+                                    <option [value]="">Select Entity Type</option>
+                                    <option *ngFor="let row of entttypeDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Entity Code</label>
                                 <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" />
                             </div>
                         </div>
@@ -32,7 +48,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School Name</label>
+                                <label class="control-label">Entity Name</label>
                                 <input type="text" [(ngModel)]="schnm" class="form-control" maxlength="200" />
                             </div>
                         </div>
@@ -62,7 +78,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School Vehicles (How Many)</label>
+                                <label class="control-label">Entity Vehicles (How Many)</label>
                                 <input type="text" [(ngModel)]="schvehs" class="form-control" maxlength="5" />
                             </div>
                         </div>
@@ -230,14 +246,14 @@
     </div>
 
     <div class="header">
-        <h4>Weekly Off</h4>
+        <h4>Week Days</h4>
     </div>
     <div class="body">
         <div id="week">
             <span style="margin-right:5px;" *ngFor="let week of weekDT; let i = index;">
                 <input type="checkbox" id="{{week.key}}" value="{{week.key}}" name="week{{i + 1}}" data-menuid="week.key" data-right="item"
                     class="actrights filled-in" />
-                <label for="week{{i + 1}}">{{week.val}}</label>
+                <label for="{{week.key}}">{{week.val}}</label>
             </span>
         </div>
     </div>

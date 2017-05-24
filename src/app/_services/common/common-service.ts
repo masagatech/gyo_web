@@ -14,6 +14,10 @@ export class CommonService {
         return this._dataserver.get("getAutoData", req)
     }
 
+    getDropDownData(req: any) {
+        return this._dataserver.post("getDropDownData", req)
+    }
+
     getDashboard(req: any) {
         return this._dataserver.post("getDashboard", req)
     }

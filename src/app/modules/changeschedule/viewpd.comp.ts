@@ -120,13 +120,14 @@ export class ChangeScheduleComponent implements OnInit {
 
     // Auto Completed Co-ordinator / Attendent
 
-    getOwnerData(event, typ) {
+    getOwnerData(event, otype) {
         let query = event.query;
 
         this._autoservice.getAutoData({
             "flag": "owner",
             "uid": this.loginUser.uid,
-            "typ": typ,
+            "typ": this.loginUser.utype,
+            "otype": otype,
             "search": query
         }).then(data => {
             this.ownersDT = data;
@@ -451,101 +452,149 @@ export class ChangeScheduleComponent implements OnInit {
     // Save
 
     savePickDropInfo() {
-        commonfun.loader();
         var that = this;
-        var _pickdrop = [];
 
-        var _pickstudDT = [];
-        var _dropstudDT = [];
-
-        var _pickattsid: string[] = [];
-        var _dropattsid: string[] = [];
-        var _pickstudsid: string[] = [];
-        var _dropstudsid: string[] = [];
-
-        var savepickdrop = {};
-
-        for (var i = 0; i < that.pickStudentsDT.length; i++) {
-            _pickstudDT.push({
-                "stdid": that.pickStudentsDT[i].stdid,
-                "stdnm": that.pickStudentsDT[i].stdnm
-            });
+        if (that.ownername === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Owner Name");
+            $(".ownername input").focus();
         }
-
-        for (var i = 0; i < that.dropStudentsDT.length; i++) {
-            _dropstudDT.push({
-                "stdid": that.dropStudentsDT[i].stdid,
-                "stdnm": that.dropStudentsDT[i].stdnm
-            });
+        else if (that.schoolid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Entity");
+            $(".entity").focus();
         }
-
-        if (that.pickStudentsDT.length !== 0) {
-            _pickstudsid = Object.keys(_pickstudDT).map(function (k) { return _pickstudDT[k].stdid });
-            _dropstudsid = Object.keys(_dropstudDT).map(function (k) { return _dropstudDT[k].stdid });
-
-            _pickdrop.push({
-                "autoid": that.pickautoid,
-                "ownid": that.ownerid,
-                "schid": that.schoolid,
-                "schnm": that.schoolid,
-                "btchid": that.batchid,
-                "drvid": that.pickdriverid,
-                "vhclno": that.pickvehicleno,
-                "studdt": _pickstudDT,
-                "studsid": _pickstudsid,
-                "uid": "vivek",
-                "inst": that.instrunction,
-                "frmdt": that.pickfromdate,
-                "todt": that.picktodate,
-                "typ": "p"
-            });
+        else if (that.batchid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Batch");
+            $(".batch").focus();
         }
-
-        if (that.dropStudentsDT.length !== 0) {
-            _pickdrop.push({
-                "autoid": that.dropautoid,
-                "ownid": that.ownerid,
-                "schid": that.schoolid,
-                "schnm": that.schoolid,
-                "btchid": that.batchid,
-                "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
-                "vhclno": that.dropvehicleno,
-                "studdt": _dropstudDT,
-                "studsid": _dropstudsid,
-                "uid": "vivek",
-                "inst": that.instrunction,
-                "frmdt": that.dropfromdate,
-                "todt": that.droptodate,
-                "typ": "d"
-            });
+        else if (that.pickdriverid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
+            $(".pdrv").focus();
         }
+        else if (that.dropdriverid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Drop Driver");
+            $(".ddrv").focus();
+        }
+        else if (that.pickvehicleno === "") {
+            that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle No");
+            $(".pveh").focus();
+        }
+        else if (that.dropvehicleno === "") {
+            that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
+            $(".dveh").focus();
+        }
+        else if (that.pickStudentsDT.length === 0) {
+            that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up Passenger");
+            $(".pickstudentname").focus();
+        }
+        else if (that.dropStudentsDT.length === 0) {
+            that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop Passenger");
+            $(".dropstudentname").focus();
+        }
+        else if (that.pickattname === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Pick Up Attendent Name");
+            $(".pickattname").focus();
+        }
+        else if (that.dropattname === "") {
+            that._msg.Show(messageType.error, "Error", "Select Drop Attendent Name");
+            $(".dropattname").focus();
+        }
+        else {
+            commonfun.loader();
 
-        savepickdrop = { "pickdropdata": _pickdrop };
+            var _pickdrop = [];
 
-        that._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
-            try {
-                var dataResult = data.data;
+            var _pickstudDT = [];
+            var _dropstudDT = [];
 
-                if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
-                    that._router.navigate(['/changeschedule']);
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
-                }
+            var _pickattsid: string[] = [];
+            var _dropattsid: string[] = [];
+            var _pickstudsid: string[] = [];
+            var _dropstudsid: string[] = [];
 
-                commonfun.loaderhide();
+            var savepickdrop = {};
+
+            for (var i = 0; i < that.pickStudentsDT.length; i++) {
+                _pickstudDT.push({
+                    "stdid": that.pickStudentsDT[i].stdid,
+                    "stdnm": that.pickStudentsDT[i].stdnm
+                });
             }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-                commonfun.loaderhide();
+
+            for (var i = 0; i < that.dropStudentsDT.length; i++) {
+                _dropstudDT.push({
+                    "stdid": that.dropStudentsDT[i].stdid,
+                    "stdnm": that.dropStudentsDT[i].stdnm
+                });
             }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+
+            if (that.pickStudentsDT.length !== 0) {
+                _pickstudsid = Object.keys(_pickstudDT).map(function (k) { return _pickstudDT[k].stdid });
+                _dropstudsid = Object.keys(_dropstudDT).map(function (k) { return _dropstudDT[k].stdid });
+
+                _pickdrop.push({
+                    "autoid": that.pickautoid,
+                    "ownid": that.ownerid,
+                    "schid": that.schoolid,
+                    "schnm": that.schoolid,
+                    "btchid": that.batchid,
+                    "drvid": that.pickdriverid,
+                    "vhclno": that.pickvehicleno,
+                    "studdt": _pickstudDT,
+                    "studsid": _pickstudsid,
+                    "uid": "vivek",
+                    "inst": that.instrunction,
+                    "frmdt": that.pickfromdate,
+                    "todt": that.picktodate,
+                    "typ": "p"
+                });
+            }
+
+            if (that.dropStudentsDT.length !== 0) {
+                _pickdrop.push({
+                    "autoid": that.dropautoid,
+                    "ownid": that.ownerid,
+                    "schid": that.schoolid,
+                    "schnm": that.schoolid,
+                    "btchid": that.batchid,
+                    "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
+                    "vhclno": that.dropvehicleno,
+                    "studdt": _dropstudDT,
+                    "studsid": _dropstudsid,
+                    "uid": "vivek",
+                    "inst": that.instrunction,
+                    "frmdt": that.dropfromdate,
+                    "todt": that.droptodate,
+                    "typ": "d"
+                });
+            }
+
+            savepickdrop = { "pickdropdata": _pickdrop };
+
+            that._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
+                try {
+                    var dataResult = data.data;
+
+                    if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
+                        that._router.navigate(['/changeschedule']);
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
+                    }
+
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                    commonfun.loaderhide();
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     public onUploadError(event) {

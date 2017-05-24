@@ -1,53 +1,105 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonService } from '../../_services/common/common-service'; /* add reference for master of master */
 import { TTMapService } from '../../_services/triptracking/ttmap-service';
 import { MessageService, messageType } from '../../_services/messages/message-service';
+import { LoginService } from '../../_services/login/login-service';
+import { LoginUserModel } from '../../_model/user_model';
 
 declare var google: any;
 
 @Component({
     templateUrl: 'ttmap.comp.html',
-    providers: [TTMapService]
+    providers: [TTMapService, CommonService]
 })
 
 export class TripTrackingComponent implements OnInit, OnDestroy {
+    loginUser: LoginUserModel;
+
+    coordDT: any = [];
+    driverDT: any = [];
+
+    coordid: number = 0;
+    coordname: string = "";
+    driverid: number = 0;
+
+    tripDT: any = [];
+
     options: any = [];
     overlays: any = [];
 
-    dialogVisible: boolean = false;
-
     markerTitle: string = "";
-
     selectedPosition: any = [];
 
     infoWindow: any = [];
 
     draggable: boolean = false;
 
-    constructor(public _ttmapservice: TTMapService, private _msg: MessageService) { }
+    constructor(public _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService, private _loginservice: LoginService) {
+        this.loginUser = this._loginservice.getUser();
+    }
 
     ngOnInit() {
-        // this.options = {
-        //     center: { lat: 36.890257, lng: 30.707417 },
-        //     zoom: 12
-        // };
+        this.coordid = 2;
+        this.coordname = "Mahesh Tiwari";
+        this.fillDriverDropDown();
+        this.driverid = 1;
 
+        this.getTripData();
         this.getTTMap();
-
         this.initOverlays();
-
         this.infoWindow = new google.maps.InfoWindow();
     }
 
-    getTTMapOld() {
+    // Auto Completed Co-ordinator / Attendent
+
+    getCoordinatorData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "owner",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "otype": "coord",
+            "search": query
+        }).then(data => {
+            this.coordDT = data;
+        });
+    }
+
+    // Get Selected Auto Completed Data
+
+    selectCoordinatorData(event) {
+        this.coordid = event.value;
+        this.coordname = event.label;
+        this.fillDriverDropDown();
+    }
+
+    // Driver DropDown
+
+    fillDriverDropDown() {
         var that = this;
 
-        this._ttmapservice.getTripTrackingData({ "tripid": 15 }).subscribe(data => {
-            var geoloc = data.data[0].loc;
+        that._autoservice.getDropDownData({ "flag": "driver", "id": that.coordid }).subscribe((data) => {
+            try {
+                that.driverDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            // that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
 
-            this.options = {
-                center: { lat: geoloc[0], lng: geoloc[1] },
-                zoom: 12
-            };
+        })
+    }
+
+    getTripData() {
+        var that = this;
+
+        this._ttmapservice.getTripTracking({ "driverid": that.driverid }).subscribe(data => {
+            that.tripDT = data.data;
+            console.log(JSON.stringify(that.tripDT));
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -89,7 +141,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     }
 
     handleMapClick(event) {
-        this.dialogVisible = true;
         this.selectedPosition = event.latLng;
     }
 
@@ -112,7 +163,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     addMarker() {
         this.overlays.push(new google.maps.Marker({ position: { lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng() }, title: this.markerTitle, draggable: this.draggable }));
         this.markerTitle = null;
-        this.dialogVisible = false;
     }
 
     handleDragEnd(event) {

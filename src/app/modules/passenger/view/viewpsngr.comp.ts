@@ -5,18 +5,18 @@ import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { StudentService } from '../../../_services/student/student-service';
+import { PassengerService } from '../../../_services/passenger/psngr-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 
 @Component({
-    templateUrl: 'viewstudent.comp.html',
-    providers: [MenuService, CommonService, StudentService]
+    templateUrl: 'viewpsngr.comp.html',
+    providers: [MenuService, CommonService, PassengerService]
 })
 
-export class ViewStudentComponent implements OnInit {
-    studentDT: any = [];
+export class ViewPassengerComponent implements OnInit {
+    passengerDT: any = [];
     loginUser: LoginUserModel;
 
     schoolDT: any = [];
@@ -28,9 +28,9 @@ export class ViewStudentComponent implements OnInit {
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _studentervice: StudentService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewStudentDataRights();
+        this.viewPassengerDataRights();
     }
 
     public ngOnInit() {
@@ -60,17 +60,17 @@ export class ViewStudentComponent implements OnInit {
         this.schoolid = event.value;
         this.schoolname = event.label;
 
-        this.getStudentDetails();
+        this.getPassengerDetails();
     }
 
-    public viewStudentDataRights() {
+    public viewPassengerDataRights() {
         var that = this;
         var addRights = [];
         var editRights = [];
         var viewRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "studs", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "psngr", "utype": that.loginUser.utype
         }).subscribe(data => {
             addRights = data.data.filter(a => a.mrights === "add");
             editRights = data.data.filter(a => a.mrights === "edit");
@@ -86,17 +86,17 @@ export class ViewStudentComponent implements OnInit {
         })
     }
 
-    getStudentDetails() {
+    getPassengerDetails() {
         var that = this;
 
-        if (that.actviewrights === "view") {
+        //if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._studentervice.getStudentDetails({
+            that._psngrservice.getPassengerDetails({
                 "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schoolid
             }).subscribe(data => {
                 try {
-                    that.studentDT = data.data;
+                    that.passengerDT = data.data;
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
@@ -110,14 +110,14 @@ export class ViewStudentComponent implements OnInit {
             }, () => {
 
             })
-        }
+        //}
     }
 
-    public addStudentForm() {
-        this._router.navigate(['/student/add']);
+    public addPassengerForm() {
+        this._router.navigate(['/passenger/add']);
     }
 
-    public editStudentForm(row) {
-        this._router.navigate(['/student/edit', row.autoid]);
+    public editPassengerForm(row) {
+        this._router.navigate(['/passenger/edit', row.autoid]);
     }
 }

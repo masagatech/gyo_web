@@ -19,17 +19,18 @@
             <div class="body">
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" placeholder="Owner Name" [tabindex]="1" (onSelect)="selectAutoData($event, 'owner')"
-                            [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Co-ordinator')" field="label" [minLength]="1"
-                            [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
+                        <label class="control-label">Co-ordinator Name</label>
+                        <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" placeholder="Co-ordinator Name" (onSelect)="selectAutoData($event, 'owner')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'coord')" field="label" [minLength]="1"
+                            [size]="30" class="form-controlAutoComplete ownername" [tabindex]="1"></p-autoComplete>
                     </div>
                 </div>
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
+                                <label class="control-label">Entity Name</label>
                                 <select [(ngModel)]="schoolid" class="form-control" (ngModelChange)="fillBatchDropDown();getStudentData($event);" tabindex="2">
-                                    <option [value]="0">Select School</option>
+                                    <option [value]="0">Select Entity</option>
                                     <option *ngFor="let row of schoolDT" [value]="row.schid">	
                                         {{row.schnm}}
                                     </option>
@@ -40,6 +41,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
+                                <label class="control-label">Batch Name</label>
                                 <select [(ngModel)]="batchid" class="form-control" tabindex="3">
                                     <option [value]="0">Select Batch</option>
                                     <option *ngFor="let row of batchDT" [value]="row.key">
@@ -56,7 +58,8 @@
             <div class="body">
                 <div class="form-group">
                     <div class="form-line">
-                        <textarea [(ngModel)]="instrunction" rows="6" class="form-control no-resize auto-growth" placeholder="Instrunction" tabindex="4"></textarea>
+                        <label class="control-label">Instrunction</label>
+                        <textarea [(ngModel)]="instrunction" rows="6" class="form-control no-resize auto-growth" tabindex="4"></textarea>
                     </div>
                 </div>
             </div>
@@ -82,7 +85,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>From Date</label>
+                                <label class="control-label">From Date</label>
                                 <input type="date" [(ngModel)]="pickfromdate" class="form-control" tabindex="5" (ngModelChange)="dropfromdate=pickfromdate">
                             </div>
                         </div>
@@ -90,7 +93,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>To Date</label>
+                                <label class="control-label">To Date</label>
                                 <input type="date" [(ngModel)]="picktodate" class="form-control" tabindex="6" (ngModelChange)="droptodate=picktodate">
                             </div>
                         </div>
@@ -118,9 +121,8 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="pickstudentname" name="pickstudentname" [(ngModel)]="pickstudentname" placeholder="Student Name"
-                            [tabindex]="9" (onSelect)="selectAutoData($event, 'student')" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)"
-                            field="studnm" [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
+                        <p-autoComplete id="pickstudentname" name="pickstudentname" [(ngModel)]="pickstudentname" placeholder="Student Name" [tabindex]="9" (onSelect)="selectAutoData($event, 'student')" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)" field="studnm"
+                            [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
                     </div>
                 </div>
 
@@ -154,7 +156,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>From Date</label>
+                                <label class="control-label">From Date</label>
                                 <input type="date" [(ngModel)]="dropfromdate" class="form-control" tabindex="5" disabled>
                             </div>
                         </div>
@@ -162,7 +164,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label>To Date</label>
+                                <label class="control-label">To Date</label>
                                 <input type="date" [(ngModel)]="droptodate" class="form-control" tabindex="6" disabled>
                             </div>
                         </div>
@@ -190,9 +192,8 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="dropstudentname" name="dropstudentname" [(ngModel)]="dropstudentname" placeholder="Student Name"
-                            [tabindex]="12" (onSelect)="selectDropStudent($event)" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)"
-                            field="studnm" [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
+                        <p-autoComplete id="dropstudentname" name="dropstudentname" [(ngModel)]="dropstudentname" placeholder="Student Name" [tabindex]="12" (onSelect)="selectDropStudent($event)" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)" field="studnm"
+                            [minLength]="1" [size]="30" class="form-controlAutoComplete studentname"></p-autoComplete>
                     </div>
                 </div>
 
@@ -223,9 +224,16 @@
             <div class="body">
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" placeholder="Pickup Attendent Name" [tabindex]="9"
-                            (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')"
-                            field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete pickattname"></p-autoComplete>
+                        <label class="control-label">Pickup Attendent Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="9" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'attendent')" field="label" [minLength]="1" [size]="30"
+                                    class="form-controlAutoComplete pickattname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -245,9 +253,16 @@
             <div class="body">
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" placeholder="Drop Attendent Name" [tabindex]="10"
-                            (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')"
-                            field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete dropattname"></p-autoComplete>
+                        <label class="control-label">Drop Attendent Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="10" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')" field="label" [minLength]="1" [size]="30"
+                                    class="form-controlAutoComplete dropattname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

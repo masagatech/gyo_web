@@ -18,10 +18,80 @@
     </div>
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-12">
-                <p-gmap #gmap [style]="{'width':'100%','height':'320px'}" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)"
-                    (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)"></p-gmap>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Co-ordinator Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="coordname" name="coordname" [(ngModel)]="coordname" [tabindex]="1" (onSelect)="selectCoordinatorData($event)" [suggestions]="coordDT" (completeMethod)="getCoordinatorData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete coordname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Driver Name</label>
+                        <select [(ngModel)]="driverid" (ngModelChange)="getTripData()" class="form-control" tabindex="2">
+                            <option [value]="0">Select Driver</option>
+                            <option *ngFor="let row of driverDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-5">
+                <div class="header">
+                    <h4>Today's Trip</h4>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div *ngFor="let row of tripDT" class="def-box" onclick="onSelection(this)">
+                            <div class="form-group">
+                                <b>{{row.nm}}</b>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-9">
+                                    <b>Batch : </b>{{row.btch}}
+                                </div>
+                                <div class="col-md-3" align="right">
+                                    <span class="material-icons {{row.sts}}">
+                                    {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                                </span>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-3">
+                                    <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
+                                    {{row.pd == "p" ? "Pickup" : "Drop"}}
+                                </span>
+                                </div>
+                                <div class="col-md-6">
+                                    {{row.date}} - {{row.time}}
+                                </div>
+                                <div class="col-md-3" align="right">
+                                    {{row.sts}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <p-gmap #gmap [style]="{'width':'100%','height':'320px'}" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)" (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)"></p-gmap>
             </div>
         </div>
     </div>
 </div>
+
+<!--[{"id":"2","nm":"Dhirubhai ambani and kantaben polytechnic degree college","pd":"p","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch 1","time":"07:00 AM","trpid":"0"}, {"id":"9","nm":"Saket School","pd":"d","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch
+3","time":"03:59 PM","trpid":"0"},{"id":"10","nm":"Saket School","pd":"p","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch 3","time":"01:00 PM","trpid":"0"},{"id":"11","nm":"Saket School","pd":"d","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch
+3","time":"03:59 PM","trpid":"0"}]-->

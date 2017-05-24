@@ -1,9 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OrderService } from '../../../../_services/order/ord-service';
-import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
 import { MessageService, messageType } from '../../../../_services/messages/message-service';
+import { LoginService } from '../../../../_services/login/login-service';
+import { LoginUserModel } from '../../../../_model/user_model';
+import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
+import { OrderService } from '../../../../_services/order/ord-service';
 import { Globals } from '../../../_const/globals';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
+
+import { GMap } from 'primeng/primeng';
 
 declare var google: any;
 
@@ -13,6 +19,8 @@ declare var google: any;
 })
 
 export class CreateOrderComponent implements OnInit {
+    loginUser: LoginUserModel;
+
     ordid: number = 0;
     olid: number = 0;
     deldate: any = "";
@@ -25,26 +33,41 @@ export class CreateOrderComponent implements OnInit {
     lat: string = "";
     lng: string = "";
     deltime: any = "";
-    pickdate: any = "";
     amtcollect: any = "";
+    remark: string = "";
 
     mode: string = "";
     isactive: boolean = true;
 
-    outlateDT: any = [];
+    outletDT: any = [];
     riderDT: any = [];
 
     orderDetailsDT: any = [];
 
+    selectedPosition: any = [];
+
+    options: any = {};
+    overlays: any = [];
+
+    @ViewChild('gmap')
+    gmap: GMap;
+
+    markerTitle: string = "";
+    private mapdata = new Subject<any>();
     private subscribeParameters: any;
 
-    constructor(private _ordservice: OrderService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _msg: MessageService, private _commonservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService) {
         this.fillDropDownList();
         // this.getLatAndLong();
     }
 
     public ngOnInit() {
+        // this.options = {
+        //     center: { lat: 19.2244074, lng: 73.12671980000005 },
+        //     zoom: 12
+        // };
+
         this.getOrderDetails();
     }
 
@@ -55,20 +78,60 @@ export class CreateOrderComponent implements OnInit {
         commonfun.loader();
 
         var geocoder = new google.maps.Geocoder();
-        //var address = "Chakkinaka, Kalyan (E)";
+        // var address = "Chakkinaka, Kalyan (E)";
 
         geocoder.geocode({ 'address': that.custaddr }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
+                that.lat = results[0].geometry.location.lat();
+                that.lng = results[0].geometry.location.lng();
+
                 setTimeout(function () {
-                    that.lat = results[0].geometry.location.lat();
-                    that.lng = results[0].geometry.location.lng();
-
-                    console.log(that.lat + ", " + that.lng);
-                    commonfun.loaderhide();
+                    that.options = {
+                        center: { lat: 19.2244074, lng: 73.12671980000005 },
+                        zoom: 12
+                    };
                 }, 100);
-            }
 
+                console.log(that.lat + ", " + that.lng);
+                commonfun.loaderhide();
+            }
         });
+
+        // return Observable.create(observer => {
+        //     geocoder.geocode({ 'address': address }, function (results, status) {
+        //         if (status == google.maps.GeocoderStatus.OK) {
+        //             observer.next(results[0].geometry.location);
+        //             observer.complete();
+        //         } else {
+        //             console.log('Error - ', results, ' & Status - ', status);
+        //             observer.next({});
+        //             observer.complete();
+        //         }
+        //     });
+        // })
+
+        // geocoder.geocode({ 'address': address }, function (results, status) {
+        //     if (status == google.maps.GeocoderStatus.OK) {
+        //         that.lat = results[0].geometry.location.lat();
+        //         that.lng = results[0].geometry.location.lng();
+
+        //         that.mapdata.next({
+        //             data: {
+        //                 center: { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() },
+        //                 zoom: 12
+        //             }
+        //         });
+        //     }
+        // });
+
+        commonfun.loaderhide();
+    }
+
+    handleMapClick(event) {
+        this.selectedPosition = event.latLng;
+
+        this.lat = this.selectedPosition.lat();
+        this.lng = this.selectedPosition.lng();
     }
 
     // Fill Owner Drop Down
@@ -79,7 +142,7 @@ export class CreateOrderComponent implements OnInit {
 
         that._ordservice.getOrderDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.outlateDT = data.data; //.filter(a => a.typ === "outlate");
+                that.outletDT = data.data; //.filter(a => a.typ === "outlet");
                 //that.riderDT = data.data.filter(a => a.typ === "rider");
             }
             catch (e) {
@@ -131,10 +194,11 @@ export class CreateOrderComponent implements OnInit {
 
     // Clear Fields
 
-    resetordFields() {
+    resetOrderFields() {
         $("input").val("");
         $("textarea").val("");
-        $("select").val("");
+        $("select").val("0");
+        this.orderDetailsDT = [];
     }
 
     // Add Order getOrderDetails
@@ -152,8 +216,8 @@ export class CreateOrderComponent implements OnInit {
             "lng": that.lng,
             "addrloc": that.lat + "," + that.lng,
             "amtcollect": that.amtcollect,
-            "deltime": "03:00 AM",
-            "pickdate": "15-May-2017"
+            "deltime": that.deltime,
+            "remark": that.remark
         })
 
         that.ordno = "";
@@ -164,7 +228,6 @@ export class CreateOrderComponent implements OnInit {
         that.lng = "";
         that.amtcollect = "";
         that.deltime = "";
-        that.pickdate = "";
     }
 
     // Save Data
@@ -172,6 +235,10 @@ export class CreateOrderComponent implements OnInit {
     saveOrderInfo() {
         var that = this;
         commonfun.loader();
+
+        if (that.olid === 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Outlet");
+        }
 
         var saveord = {
             "ordid": that.ordid,
@@ -194,7 +261,7 @@ export class CreateOrderComponent implements OnInit {
                     that._msg.Show(messageType.success, "Success", msg);
 
                     if (msgid === "1") {
-                        that.resetordFields();
+                        that.resetOrderFields();
                     }
                     else {
                         that.backViewData();
@@ -237,7 +304,6 @@ export class CreateOrderComponent implements OnInit {
                         that.ordno = _orddata[0].ordno;
                         that.deldate = _orddata[0].deldate;
                         that.deltime = _orddata[0].deltime;
-                        that.pickdate = _orddata[0].pickdate;
                         that.picktime = _orddata[0].picktime;
                         that.amtcollect = _orddata[0].amtcollect;
                         that.isactive = _orddata[0].isactive;
@@ -257,7 +323,7 @@ export class CreateOrderComponent implements OnInit {
                 })
             }
             else {
-                that.resetordFields();
+                that.resetOrderFields();
                 commonfun.loaderhide();
             }
         });

@@ -3,20 +3,20 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AddStudentComponent } from './aded/addstudent.comp';
-import { ViewStudentComponent } from './view/viewstudent.comp';
+import { AddPassengerComponent } from './aded/addpsngr.comp';
+import { ViewPassengerComponent } from './view/viewpsngr.comp';
 
-import { StudentService } from '../../_services/student/student-service';
+import { PassengerService } from '../../_services/passenger/psngr-service';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewStudentComponent },
-      { path: 'add', component: AddStudentComponent },
-      { path: 'details/:id', component: AddStudentComponent },
-      { path: 'edit/:id', component: AddStudentComponent }
+      { path: '', component: ViewPassengerComponent },
+      { path: 'add', component: AddPassengerComponent },
+      { path: 'details/:id', component: AddPassengerComponent },
+      { path: 'edit/:id', component: AddPassengerComponent }
     ]
   },
 ];
@@ -24,17 +24,17 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddStudentComponent,
-    ViewStudentComponent
+    AddPassengerComponent,
+    ViewPassengerComponent
   ],
 
   imports: [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
   ],
 
-  providers: [StudentService]
+  providers: [PassengerService]
 })
 
-export class StudentModule {
+export class PassengerModule {
   public static routes = routes;
 }

@@ -3854,8 +3854,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-tabview {
-    padding: .2em;
-    zoom: 1
+    zoom: 1;
 }
 
 .ui-tabview .ui-tabview-nav {
@@ -3866,9 +3865,10 @@ button.ui-button::-moz-focus-inner {
     list-style: none;
     float: left;
     position: relative;
-    margin: 0 .2em 1px 0;
+    margin: 0 .8em 0 0;
     padding: 0;
-    white-space: nowrap
+    white-space: nowrap;
+    border: 1px solid rgba(204, 204, 204, 0.35);
 }
 
 .ui-tabview .ui-tabview-nav li a {
@@ -3891,7 +3891,8 @@ button.ui-button::-moz-focus-inner {
 .ui-tabview .ui-tabview-panel {
     border-width: 0;
     padding: 1em 1.4em;
-    background: 0
+    background: 0;
+    border: 1px solid rgba(204, 204, 204, 0.35);
 }
 
 .ui-tabview .ui-tabview-nav li {
@@ -3910,15 +3911,16 @@ button.ui-button::-moz-focus-inner {
 
 .ui-tabview.ui-tabview-top>.ui-tabview-nav li {
     border-bottom: 0;
-    top: 1px
 }
 
 .ui-tabview.ui-tabview-top>.ui-tabview-nav {
-    padding: .2em .2em 0
+    /*padding: .2em .2em 0*/
+    padding: 0
 }
 
 .ui-tabview.ui-tabview-bottom>.ui-tabview-nav {
-    padding: 0 .2em .2em
+    /*padding: 0 .2em .2em*/
+    padding: 0
 }
 
 .ui-tabview.ui-tabview-bottom>.ui-tabview-nav li {
@@ -4319,6 +4321,7 @@ button.ui-button::-moz-focus-inner {
 
 /* roboto-regular - latin */
 
+
 /* @font-face {
     font-family: 'Roboto';
     font-style: normal;
@@ -4366,14 +4369,13 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-widget-header {
-    border: 1px solid #D5D5D5;
+    /*border: 1px solid #D5D5D5;*/
     background: #cccccc;
     color: #222222;
     font-weight: bold;
 }
 
 .ui-widget-header {
-    border: 1px solid #d9d9d9;
     color: #1b1d1f;
     background: #f6f7f9 0 0 repeat-x;
     /* Old browsers */
@@ -4402,7 +4404,6 @@ button.ui-button::-moz-focus-inner {
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    border: solid 1px #555;
     background: #ffffff;
     font-weight: normal;
     color: #555555;
@@ -4411,7 +4412,7 @@ button.ui-button::-moz-focus-inner {
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
-    color: #555555;
+    color: #000000;
     text-decoration: none;
 }
 
@@ -4436,7 +4437,7 @@ button.ui-button::-moz-focus-inner {
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-    border: 1px solid #bebebe;
+    border: 1px solid rgba(204, 204, 204, 0.35);
     background: #d6d6d6;
     font-weight: normal;
     color: #212121;

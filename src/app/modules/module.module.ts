@@ -51,12 +51,12 @@ export const routes = [
                     { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
 
                     // Masters
-                    { path: 'school', loadChildren: './school#SchoolModule' },
+                    { path: 'entity', loadChildren: './entity#EntityModule' },
                     { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'batch', loadChildren: './batch#BatchModule' },
                     { path: 'owner', loadChildren: './owner#OwnerModule' },
                     { path: 'driver', loadChildren: './driver#DriverModule' },
-                    { path: 'student', loadChildren: './student#StudentModule' },
+                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'user', loadChildren: './users#UserModule' },
 
                     // setting

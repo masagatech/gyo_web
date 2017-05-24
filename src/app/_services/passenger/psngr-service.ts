@@ -3,14 +3,14 @@ import { DataService } from '../dataconnect';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class StudentService {
+export class PassengerService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getStudentDetails(req: any) {
+    getPassengerDetails(req: any) {
         return this._dataserver.post("getStudentDetails", req)
     }
 
-    saveStudentInfo(req: any) {
+    savePassengerInfo(req: any) {
         return this._dataserver.post("saveStudentInfo", req)
     }
 }
