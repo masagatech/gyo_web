@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="driverid" (ngModelChange)="getTripData()" class="form-control" tabindex="2">
+                        <select [(ngModel)]="driverid" class="form-control" tabindex="2">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
@@ -31,6 +31,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" (click)="getTripData()" class="btn btn-theme btn-xs">
+                    <span class="material-icons">subdirectory_arrow_right</span>
+                </button>
             </div>
         </div>
     </div>
@@ -45,10 +50,10 @@
                 <a *ngIf="isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-pause"></span></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="zoomIn()"><span class="fa fa-search-plus"></span> Zoom In</a>
+                <a role="button" class="btn btn-theme btn-xs" (click)="zoomIn(gmap.getMap())"><span class="fa fa-search-plus"></span> Zoom In</a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="zoomOut()"><span class="fa fa-search-minus"></span> Zoom Out</a>
+                <a role="button" class="btn btn-theme btn-xs" (click)="zoomOut(gmap.getMap())"><span class="fa fa-search-minus"></span> Zoom Out</a>
             </li>
         </ul>
     </div>

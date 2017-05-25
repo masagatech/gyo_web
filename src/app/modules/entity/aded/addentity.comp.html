@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Entity Type</label>
-                                <select [(ngModel)]="entttype" class="form-control">
+                                <select [(ngModel)]="entttype" class="form-control entttype">
                                     <option [value]="">Select Entity Type</option>
                                     <option *ngFor="let row of entttypeDT" [value]="row.key">	
                                         {{row.val}}
@@ -40,7 +40,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Code</label>
+                                <label class="control-label">Entity Code <strong *ngIf="schcd == ''">*</strong></label>
                                 <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" />
                             </div>
                         </div>
@@ -48,8 +48,8 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Name</label>
-                                <input type="text" [(ngModel)]="schnm" class="form-control" maxlength="200" />
+                                <label class="control-label">Entity Name <strong *ngIf="schnm == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="schnm" class="form-control schnm" maxlength="200" />
                             </div>
                         </div>
                     </div>
@@ -59,35 +59,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Lat</label>
-                                <input type="text" [(ngModel)]="lat" class="form-control" maxlength="5" />
+                                <label class="control-label">Entity Vehicles (How Many) <strong *ngIf="schvehs == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="schvehs" class="form-control schvehs" maxlength="5" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Lon</label>
-                                <input type="text" [(ngModel)]="lon" class="form-control" maxlength="5" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Entity Vehicles (How Many)</label>
-                                <input type="text" [(ngModel)]="schvehs" class="form-control" maxlength="5" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Operator Vehicles (How Many)</label>
-                                <input type="text" [(ngModel)]="oprvehs" class="form-control" maxlength="5" />
+                                <label class="control-label">Operator Vehicles (How Many) <strong *ngIf="oprvehs == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="oprvehs" class="form-control oprvehs" maxlength="5" />
                             </div>
                         </div>
                     </div>
@@ -109,8 +90,27 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                                <label class="control-label">Address <strong *ngIf="address == ''">*</strong></label>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Lat</label>
+                                <input type="text" [(ngModel)]="lat" class="form-control lat" maxlength="5" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Lon</label>
+                                <input type="text" [(ngModel)]="lon" class="form-control lon" maxlength="5" />
                             </div>
                         </div>
                     </div>

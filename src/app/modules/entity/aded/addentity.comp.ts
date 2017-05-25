@@ -101,19 +101,19 @@ export class AddEntityComponent implements OnInit {
         // Validation
 
         if (that.cpname == "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Name");
+            that._msg.Show(messageType.error, "Error", "Enter Name");
             $(".cpname").focus();
             return;
         }
 
         if (that.cpmobile == "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Contact No");
+            that._msg.Show(messageType.error, "Error", "Enter Contact No");
             $(".cpmobile").focus();
             return;
         }
 
         if (that.cpemail == "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Email");
+            that._msg.Show(messageType.error, "Error", "Enter Email");
             $(".cpemail").focus();
             return;
         }
@@ -194,6 +194,39 @@ export class AddEntityComponent implements OnInit {
         var mweek = null;
         var weeklyoff = "";
 
+        if (that.entttype == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Entity Type");
+            $(".entttype").focus();
+        }
+        else if (that.schcd == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Entity Code");
+            $(".schcd").focus();
+        }
+        else if (that.schnm == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
+            $(".schnm").focus();
+        }
+        else if (that.schvehs == "") {
+            that._msg.Show(messageType.error, "Error", "Enter How Many Entity Vehicles");
+            $(".schvehs").focus();
+        }
+        else if (that.oprvehs == "") {
+            that._msg.Show(messageType.error, "Error", "Enter How Many Operator Vehicles");
+            $(".oprvehs").focus();
+        }
+        else if (that.address == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Address");
+            $(".address").focus();
+        }
+        else if (that.lat == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Late");
+            $(".lat").focus();
+        }
+        else if (that.lon == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Lon");
+            $(".lon").focus();
+        }
+
         for (var i = 0; i <= that.weekDT.length - 1; i++) {
             mweek = null;
             mweek = that.weekDT[i];
@@ -208,6 +241,10 @@ export class AddEntityComponent implements OnInit {
         }
 
         weeklyoff = "{" + wkrights.slice(0, -1) + "}";
+
+        if (weeklyoff == "") {
+            this._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
+        }
 
         var saveentity = {
             "autoid": that.schid,

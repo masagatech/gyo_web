@@ -248,6 +248,8 @@ export class AddUserComponent implements OnInit {
                         that.upwd = data.data[0].upwd;
                         that.fname = data.data[0].fname;
                         that.lname = data.data[0].lname;
+                        that.utype = data.data[0].utype;
+                        that.utype = data.data[0].utype;
                         that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
@@ -260,7 +262,6 @@ export class AddUserComponent implements OnInit {
                         that.pincode = data.data[0].pincode;
                         that.remark1 = data.data[0].remark1;
                         that.isactive = data.data[0].isactive;
-                        that.utype = data.data[0].utype;
                         that.mode = data.data[0].mode;
                     }
                     catch (e) {

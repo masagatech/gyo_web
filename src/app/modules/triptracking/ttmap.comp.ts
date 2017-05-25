@@ -61,12 +61,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         this.map = this._gmap.getMap();
         this.getDefaultMap();
 
-        this.coordid = 2;
-        this.coordname = "Mahesh Tiwari";
-        // this.fillDriverDropDown();
-        this.driverid = 1;
+        // this.coordid = 2;
+        // this.coordname = "Mahesh Tiwari";
+        this.fillDriverDropDown();
+        // this.driverid = 1;
 
-        this.getTripData();
+        // this.getTripData();
     }
 
     getDefaultMap() {
@@ -272,12 +272,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
     // Zoon In, Out, Clear and Reset
 
-    zoomIn() {
-        this.map.setZoom(this.map.getZoom() + 1);
+    zoomIn(map) {
+        map.setZoom(map.getZoom()+1);
     }
-
-    zoomOut() {
-        this.map.setZoom(this.map.getZoom() - 1);
+    
+    zoomOut(map) {
+        map.setZoom(map.getZoom()-1);
     }
 
     clear() {

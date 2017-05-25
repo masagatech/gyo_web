@@ -6980,6 +6980,10 @@ section.content {
     color: #1A8AFE;
 }
 
+.form-group .control-label strong {
+    color: #F44336!important;
+}
+
 .form-group .form-line .same-label {
     margin: 7px 0;
     float: left;

@@ -490,14 +490,6 @@ export class ChangeScheduleComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop Passenger");
             $(".dropstudentname").focus();
         }
-        else if (that.pickattname === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Pick Up Attendent Name");
-            $(".pickattname").focus();
-        }
-        else if (that.dropattname === "") {
-            that._msg.Show(messageType.error, "Error", "Select Drop Attendent Name");
-            $(".dropattname").focus();
-        }
         else {
             commonfun.loader();
 

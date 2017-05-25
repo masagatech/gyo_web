@@ -37,7 +37,7 @@
                                 <label class="control-label">Entity Name</label>
                                 <select [(ngModel)]="enttid" name="enttid" class="form-control">
                                     <option [value]="0">Select Entity</option>
-                                    <option *ngFor="let row of entityDT" [value]="row.key">	
+                                    <option *ngFor="let row of schoolDT" [value]="row.key">	
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -48,7 +48,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Passenger Name</label>
-                                <input type="text" name="Passengername" [(ngModel)]="Passengername" class="form-control" />
+                                <input type="text" name="psngrname" [(ngModel)]="psngrname" class="form-control" />
                             </div>
                         </div>
                     </div>

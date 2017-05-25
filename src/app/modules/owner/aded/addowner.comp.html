@@ -22,8 +22,8 @@
             <div class="col-md-6 border">
                 <div class="form-group form-float">
                     <div class="demo-radio-button">
-                        <p-radioButton name="typ" value="Co-ordinator" label="Co-ordinator" [(ngModel)]="typ"></p-radioButton>
-                        <p-radioButton name="typ" value="Attendent" label="Attendent" [(ngModel)]="typ"></p-radioButton>
+                        <p-radioButton name="typ" value="coord" label="Co-ordinator" [(ngModel)]="typ"></p-radioButton>
+                        <p-radioButton name="typ" value="attendent" label="Attendent" [(ngModel)]="typ"></p-radioButton>
                     </div>
                 </div>
 
@@ -107,9 +107,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">School</label>
-                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)"
-                                    [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
-                                    [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)" [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
                             </div>
                         </div>
                     </div>
