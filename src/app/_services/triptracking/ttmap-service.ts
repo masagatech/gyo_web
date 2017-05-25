@@ -6,11 +6,19 @@ import { Router } from '@angular/router';
 export class TTMapService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getTripTracking(req: any) {
+    getTripData(req: any) {
         return this._dataserver.post("tripapi", req)
     }
 
+    showPassengerList(req: any) {
+        return this._dataserver.post("tripapi/crews", req)
+    }
+
+    getLastLocation(req: any) {
+        return this._dataserver.post("tripapi/getdelta", req)
+    }
+
     getTripTrackingData(req: any) {
-        return this._dataserver.otherpost("getdelta", req)
+        return this._dataserver.otherpost("tripapi/getdelta", req)
     }
 }

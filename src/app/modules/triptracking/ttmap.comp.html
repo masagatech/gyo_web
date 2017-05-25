@@ -1,20 +1,6 @@
 <div class="card">
     <div class="header">
         <h4>Trip Tracking</h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="clear()"><span class="fa fa-close"></span> Clear</a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="initOverlays()"><span class="fa fa-map-marker"></span> Reset</a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="zoomIn(gmap.getMap())"><span class="fa fa-search-plus"></span> Zoom In</a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="zoomOut(gmap.getMap())"><span class="fa fa-search-minus"></span> Zoom Out</a>
-            </li>
-        </ul>
     </div>
     <div class="body">
         <div class="row clearfix">
@@ -47,51 +33,91 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="header">
+        <h4>Today's Trip</h4>
+        <p-selectButton [options]="triptype" [(ngModel)]="selectedTripType"></p-selectButton>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a *ngIf="!isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-play"></span></a>
+                <a *ngIf="isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-pause"></span></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="zoomIn()"><span class="fa fa-search-plus"></span> Zoom In</a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="zoomOut()"><span class="fa fa-search-minus"></span> Zoom Out</a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
         <div class="row clearfix">
-            <div class="col-md-5">
-                <div class="header">
-                    <h4>Today's Trip</h4>
-                </div>
-                <div class="body">
+            <div class="col-md-6">
+                <div *ngFor="let row of tripDT | filterBy: {'stsi': selectedTripType}" class="def-box" onclick="onSelection(this);" (click)="getTTMap(row)">
                     <div class="row clearfix">
-                        <div *ngFor="let row of tripDT" class="def-box" onclick="onSelection(this)">
-                            <div class="form-group">
-                                <b>{{row.nm}}</b>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-9">
-                                    <b>Batch : </b>{{row.btch}}
-                                </div>
-                                <div class="col-md-3" align="right">
-                                    <span class="material-icons {{row.sts}}">
-                                    {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
-                                </span>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-3">
-                                    <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
-                                    {{row.pd == "p" ? "Pickup" : "Drop"}}
-                                </span>
-                                </div>
-                                <div class="col-md-6">
-                                    {{row.date}} - {{row.time}}
-                                </div>
-                                <div class="col-md-3" align="right">
-                                    {{row.sts}}
-                                </div>
-                            </div>
+                        <div class="col-md-11">
+                            <b>{{row.nm}}</b>
+                            <br />
+                            <b>Batch : </b>{{row.btch}}
+                        </div>
+                        <div class="col-md-1" align="right">
+                            <span class="material-icons {{row.sts}}">
+                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-3">
+                            <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
+                                {{row.pd == "p" ? "Pickup" : "Drop"}}
+                            </span>
+                        </div>
+                        <div class="col-md-9">
+                            {{row.date}} - {{row.time}}
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-7">
-                <p-gmap #gmap [style]="{'width':'100%','height':'320px'}" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)" (onOverlayClick)="handleOverlayClick($event)" (onOverlayDragEnd)="handleDragEnd($event)"></p-gmap>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <p-gmap #gmap [style]="{'width':'100%','height':'320px'}" [options]="options" [overlays]="overlays"></p-gmap>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-7">
+                        <p class="font-bold col-teal"> {{connectmsg}}</p>
+                    </div>
+                    <div class="col-md-2" align="right">
+                        <button type="button" (click)="sendMessage()" class="btn btn-theme btn-xs">Track</button>
+                    </div>
+                    <div class="col-md-3" align="right">
+                        <button type="button" (click)="showPassengerList()" class="btn btn-theme btn-xs">Show Passenger</button>
+                    </div>
+                </div>
+                <div *ngFor="let row of psngrDT" class="def-box" onclick="onSelection(this);" (click)="getTTMap(row)">
+                    <div class="row clearfix">
+                        <div class="col-md-11">
+                            <b>{{row.stdnm}}</b>
+                        </div>
+                        <div class="col-md-1" align="right">
+                            <span class="material-icons {{row.stsi == '0' ? 'pending' : row.stsi == '1' ? 'started' : 'stopped'}}">
+                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            {{row.addr}}
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <b>Mobile : </b>{{row.fthrmob}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!--[{"id":"2","nm":"Dhirubhai ambani and kantaben polytechnic degree college","pd":"p","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch 1","time":"07:00 AM","trpid":"0"}, {"id":"9","nm":"Saket School","pd":"d","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch
-3","time":"03:59 PM","trpid":"0"},{"id":"10","nm":"Saket School","pd":"p","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch 3","time":"01:00 PM","trpid":"0"},{"id":"11","nm":"Saket School","pd":"d","date":"24-May-17","sts":"pending","stsi":0,"btch":"Batch
-3","time":"03:59 PM","trpid":"0"}]-->

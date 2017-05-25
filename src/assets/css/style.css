@@ -7057,23 +7057,6 @@ fieldset[disabled] .form-control {
 }
 
 
-/* Dropzone ==================================== */
-
-.dropzone {
-    border: 2px solid transparent !important;
-    background-color: #eee !important;
-}
-
-.dropzone .dz-message .drag-icon-cph .material-icons {
-    font-size: 80px;
-    color: #777;
-}
-
-.dz-drag-hover {
-    border: 2px dashed #888 !important;
-}
-
-
 /* Breadcrumbs ================================= */
 
 .breadcrumb {
@@ -10449,7 +10432,7 @@ fieldset[disabled] .form-control {
 }
 
 .sidebar .menu .list .ml-menu li a {
-    padding-left: 55px;
+    padding-left: 25px;
     padding-top: 7px;
     padding-bottom: 7px;
 }
