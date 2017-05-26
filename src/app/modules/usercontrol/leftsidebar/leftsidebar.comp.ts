@@ -32,13 +32,15 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         this.usertype = this.loginUser.utype;
         this.userphoto = this.loginUser.uphoto;
         this.useremail = this.loginUser.email;
-        
+
         this.getMainMenuList();
         this.getParentMenuList();
     }
 
     ngOnInit() {
-        
+        setTimeout(function () {
+            $.AdminBSB.leftSideBar.activate();
+        }, 100);
     }
 
     public getMainMenuList() {
@@ -65,7 +67,6 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
-            $.AdminBSB.leftSideBar.activate();
         })
     }
 
@@ -85,6 +86,6 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        
+
     }
 }

@@ -22,15 +22,15 @@
             <div class="col-md-6 border">
                 <div class="form-group form-float">
                     <div class="demo-radio-button">
-                        <p-radioButton name="typ" value="coord" label="Co-ordinator" [(ngModel)]="typ"></p-radioButton>
-                        <p-radioButton name="typ" value="attendent" label="Attendent" [(ngModel)]="typ"></p-radioButton>
+                        <p-radioButton name="typ" value="coord" label="Co-ordinator" [(ngModel)]="typ" tabindex="1"></p-radioButton>
+                        <p-radioButton name="typ" value="attendent" label="Attendent" [(ngModel)]="typ" tabindex="2"></p-radioButton>
                     </div>
                 </div>
 
                 <div class="form-group form-float">
                     <div class="demo-radio-button">
-                        <p-radioButton name="ownership" value="N" label="School Owned" [(ngModel)]="isthirdparty"></p-radioButton>
-                        <p-radioButton name="ownership" value="Y" label="3rd Party" [(ngModel)]="isthirdparty"></p-radioButton>
+                        <p-radioButton name="ownership" value="N" label="Entity Owned" [(ngModel)]="isthirdparty" tabindex="3"></p-radioButton>
+                        <p-radioButton name="ownership" value="Y" label="3rd Party" [(ngModel)]="isthirdparty" tabindex="4"></p-radioButton>
                     </div>
                 </div>
 
@@ -38,16 +38,16 @@
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">{{typ}} Code</label>
-                                <input type="text" [(ngModel)]="ownercode" class="form-control" maxlength="10" />
+                                <label class="control-label">{{typ == 'coord' ? 'Co-ordinator' : 'Attendent'}} Code <strong *ngIf="ownercode == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="ownercode" class="form-control ownercode" maxlength="15" tabindex="5" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Password</label>
-                                <input type="password" [(ngModel)]="ownerpwd" class="form-control" maxlength="10" />
+                                <label class="control-label">Password <strong *ngIf="ownerpwd == ''">*</strong></label>
+                                <input type="password" [(ngModel)]="ownerpwd" class="form-control ownerpwd" maxlength="15" tabindex="6" />
                             </div>
                         </div>
                     </div>
@@ -57,35 +57,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">{{typ}} Name</label>
-                                <input type="text" [(ngModel)]="ownername" class="form-control" maxlength="20" />
+                                <label class="control-label">{{typ == 'coord' ? 'Co-ordinator' : 'Attendent'}} Name <strong *ngIf="ownername == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="ownername" class="form-control ownername" maxlength="50" tabindex="7" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Lat</label>
-                                <input type="text" [(ngModel)]="lat" class="form-control" maxlength="5" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Lon</label>
-                                <input type="text" [(ngModel)]="lon" class="form-control" maxlength="5" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Aadhar No</label>
-                                <input type="text" [(ngModel)]="aadharno" class="form-control" maxlength="15" />
+                                <input type="text" [(ngModel)]="aadharno" class="form-control" maxlength="20" tabindex="8" />
                             </div>
                         </div>
                     </div>
@@ -96,7 +77,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Remark</label>
-                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="9"></textarea>
                             </div>
                         </div>
                     </div>
@@ -106,18 +87,26 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School</label>
-                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)" [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                                <label class="control-label">Entity Name <strong *ngIf="!entityList.length">*</strong></label>
+                                <div class="row clearfix">
+                                    <div class="col-md-10">
+                                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"
+                                            tabindex="10"></p-autoComplete>
+                                    </div>
+                                    <div class="col-md-2" align="right">
+                                        <span class="material-icons">search</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div *ngIf="schoolList.length">
+                <div *ngIf="entityList.length">
                     <ul class="list-group">
-                        <li class="list-group-item" *ngFor="let row of schoolList">
+                        <li class="list-group-item" *ngFor="let row of entityList">
                             {{row.schnm}}
-                            <button type="button" class="btn btn-xs pull-right" (click)="deleteSchool(row)"><i class="material-icons">remove</i></button>
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">remove</i></button>
                         </li>
                     </ul>
                 </div>
@@ -127,8 +116,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno1" class="form-control" maxlength="10" />
+                                <label class="control-label">Mobile (Login No) <strong *ngIf="mobileno1 == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="11" />
                             </div>
                         </div>
                     </div>
@@ -136,7 +125,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Alternate Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" />
+                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="12" />
                             </div>
                         </div>
                     </div>
@@ -146,8 +135,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Email</label>
-                                <input type="text" [(ngModel)]="email1" class="form-control" />
+                                <label class="control-label">Email <strong *ngIf="email1 == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="13" />
                             </div>
                         </div>
                     </div>
@@ -155,7 +144,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Alternate Email</label>
-                                <input type="text" [(ngModel)]="email2" class="form-control" />
+                                <input type="text" [(ngModel)]="email2" class="form-control" tabindex="14" />
                             </div>
                         </div>
                     </div>
@@ -165,8 +154,27 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                                <label class="control-label">Address <strong *ngIf="address == ''">*</strong></label>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="15" (keydown.tab)="getLatAndLong()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Lat</label>
+                                <input type="text" [(ngModel)]="lat" class="form-control" maxlength="50" tabindex="16" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Lon</label>
+                                <input type="text" [(ngModel)]="lon" class="form-control" maxlength="50" tabindex="17" />
                             </div>
                         </div>
                     </div>
@@ -177,7 +185,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country</label>
-                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" />
+                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" tabindex="18" />
                             </div>
                         </div>
                     </div>
@@ -185,7 +193,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State</label>
-                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" />
+                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" tabindex="19" />
                             </div>
                         </div>
                     </div>
@@ -196,7 +204,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City</label>
-                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" />
+                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" tabindex="20" />
                             </div>
                         </div>
                     </div>
@@ -204,7 +212,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="21" />
                             </div>
                         </div>
                     </div>

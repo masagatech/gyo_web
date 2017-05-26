@@ -3,6 +3,8 @@ import { EntityService } from '../../../_services/entity/entity-service';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+declare var google: any;
+
 @Component({
     templateUrl: 'addentity.comp.html',
     providers: [EntityService]
@@ -12,15 +14,15 @@ export class AddEntityComponent implements OnInit {
     schid: number = 0;
     schcd: string = "";
     schnm: string = "";
-    lat: string = "";
-    lon: string = "";
+    lat: string = "0.00";
+    lon: string = "0.00";
     schvehs: any = "";
     oprvehs: any = "";
     address: string = "";
     country: string = "";
     state: string = "";
     city: string = "";
-    pincode: string = "";
+    pincode: number = 0;
     entttype: string = "";
     remark1: string = "";
 
@@ -55,6 +57,25 @@ export class AddEntityComponent implements OnInit {
         $.AdminBSB.input.activate();
         $(".schcd").focus();
         this.getEntityDetails();
+    }
+
+    // get lat and long by address form google map
+
+    getLatAndLong() {
+        var that = this;
+        commonfun.loader();
+
+        var geocoder = new google.maps.Geocoder();
+        // var address = "Chakkinaka, Kalyan (E)";
+
+        geocoder.geocode({ 'address': that.address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                that.lat = results[0].geometry.location.lat();
+                that.lon = results[0].geometry.location.lng();
+
+                commonfun.loaderhide();
+            }
+        });
     }
 
     // Entity Type DropDown
@@ -189,8 +210,6 @@ export class AddEntityComponent implements OnInit {
 
     saveEntityInfo() {
         var that = this;
-        commonfun.loader();
-
         var mweek = null;
         var weeklyoff = "";
 
@@ -226,83 +245,87 @@ export class AddEntityComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Lon");
             $(".lon").focus();
         }
+        else {
+            for (var i = 0; i <= that.weekDT.length - 1; i++) {
+                mweek = null;
+                mweek = that.weekDT[i];
 
-        for (var i = 0; i <= that.weekDT.length - 1; i++) {
-            mweek = null;
-            mweek = that.weekDT[i];
+                if (mweek !== null) {
+                    var wkrights = "";
 
-            if (mweek !== null) {
-                var wkrights = "";
+                    $("#week").find("input[type=checkbox]").each(function () {
+                        wkrights += (this.checked ? $(this).val() + "," : "");
+                    });
+                }
+            }
 
-                $("#week").find("input[type=checkbox]").each(function () {
-                    wkrights += (this.checked ? $(this).val() + "," : "");
+            weeklyoff = "{" + wkrights.slice(0, -1) + "}";
+
+            if (weeklyoff == "") {
+                this._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
+            }
+            else {
+                commonfun.loader();
+
+                var saveentity = {
+                    "autoid": that.schid,
+                    "entttype": that.entttype,
+                    "schcd": that.schcd,
+                    "schnm": that.schnm,
+                    "schgeoloc": that.lat + "," + that.lon,
+                    "schvehs": that.schvehs,
+                    "oprvehs": that.oprvehs,
+                    "weeklyoff": weeklyoff,
+                    "address": that.address,
+                    "country": that.country,
+                    "state": that.state,
+                    "city": that.city,
+                    "pincode": that.pincode,
+                    "name": that.name,
+                    "mob1": that.mobile,
+                    "mob2": that.mobile,
+                    "email1": that.email,
+                    "email2": that.email,
+                    "contact": that.contactDT,
+                    "remark1": that.remark1,
+                    "uid": "vivek"
+                }
+
+                this._entityservice.saveEntityInfo(saveentity).subscribe(data => {
+                    try {
+                        var dataResult = data.data;
+                        var msg = dataResult[0].funsave_schoolinfo.msg;
+                        var msgid = dataResult[0].funsave_schoolinfo.msgid;
+
+                        if (msgid != "-1") {
+                            this._msg.Show(messageType.success, "Success", msg);
+
+                            if (msgid === "1") {
+                                that.resetentityFields();
+                            }
+                            else {
+                                that.backViewData();
+                            }
+                        }
+                        else {
+                            this._msg.Show(messageType.error, "Error", msg);
+                        }
+
+                        commonfun.loaderhide();
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+                    // console.log("Complete");
                 });
             }
         }
-
-        weeklyoff = "{" + wkrights.slice(0, -1) + "}";
-
-        if (weeklyoff == "") {
-            this._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
-        }
-
-        var saveentity = {
-            "autoid": that.schid,
-            "entttype": that.entttype,
-            "schcd": that.schcd,
-            "schnm": that.schnm,
-            "schgeoloc": that.lat + "," + that.lon,
-            "schvehs": that.schvehs,
-            "oprvehs": that.oprvehs,
-            "weeklyoff": weeklyoff,
-            "address": that.address,
-            "country": that.country,
-            "state": that.state,
-            "city": that.city,
-            "pincode": that.pincode,
-            "name": that.name,
-            "mob1": that.mobile,
-            "mob2": that.mobile,
-            "email1": that.email,
-            "email2": that.email,
-            "contact": that.contactDT,
-            "remark1": that.remark1,
-            "uid": "vivek"
-        }
-
-        this._entityservice.saveEntityInfo(saveentity).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_schoolinfo.msg;
-                var msgid = dataResult[0].funsave_schoolinfo.msgid;
-
-                if (msgid != "-1") {
-                    this._msg.Show(messageType.success, "Success", msg);
-
-                    if (msgid === "1") {
-                        that.resetentityFields();
-                    }
-                    else {
-                        that.backViewData();
-                    }
-                }
-                else {
-                    this._msg.Show(messageType.error, "Error", msg);
-                }
-
-                commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
     }
 
     // Get entity Data

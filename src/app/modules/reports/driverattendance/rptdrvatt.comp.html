@@ -5,10 +5,9 @@
             <div class="col-md-7">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">School</label>
-                        <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" placeholder="School Name" [tabindex]="9" (onSelect)="selectSchoolData($event)"
-                            [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1" [size]="30"
-                            class="form-controlAutoComplete schoolname"></p-autoComplete>
+                        <label class="control-label">Entity</label>
+                        <p-autoComplete id="entityname" name="schooentityname" [(ngModel)]="entityname" placeholder="Entity Name" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1"
+                            [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
                     </div>
                 </div>
             </div>

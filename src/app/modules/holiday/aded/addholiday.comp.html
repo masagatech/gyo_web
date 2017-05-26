@@ -21,16 +21,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">From Date</label>
-                                <input type="date" [(ngModel)]="frmdt" class="form-control date" (ngModelChange)="todt = frmdt" />
+                                <label class="control-label">From Date <strong *ngIf="frmdt == ''">*</strong></label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" (ngModelChange)="todt = frmdt" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">To Date</label>
-                                <input type="date" [(ngModel)]="todt" class="form-control date" />
+                                <label class="control-label">To Date <strong *ngIf="todt == ''">*</strong></label>
+                                <input type="date" [(ngModel)]="todt" class="form-control date todt" />
                             </div>
                         </div>
                     </div>
@@ -40,8 +40,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Holiday Title</label>
-                                <input type="text" [(ngModel)]="hldnm" class="form-control" />
+                                <label class="control-label">Holiday Title <strong *ngIf="hldnm == ''">*</strong></label>
+                                <input type="text" [(ngModel)]="hldnm" class="form-control hldnm" />
                             </div>
                         </div>
                     </div>
@@ -63,20 +63,25 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School</label>
-                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)"
-                                    [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1"
-                                    [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                                <label class="control-label">Entity <strong *ngIf="!entityList.length">*</strong></label>
+                                <div class="row clearfix">
+                                    <div class="col-md-10">
+                                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                                    </div>
+                                    <div class="col-md-2" align="right">
+                                        <span class="material-icons">search</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div *ngIf="schoolList.length">
+                <div *ngIf="entityList.length">
                     <ul class="list-group">
-                        <li class="list-group-item" *ngFor="let row of schoolList">
+                        <li class="list-group-item" *ngFor="let row of entityList">
                             {{row.schnm}}
-                            <button type="button" class="btn btn-xs pull-right" (click)="deleteSchool(row)"><i class="material-icons">remove</i></button>
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">remove</i></button>
                         </li>
                     </ul>
                 </div>

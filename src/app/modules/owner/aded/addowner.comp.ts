@@ -6,6 +6,8 @@ import { OwnerService } from '../../../_services/owner/owner-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 
+declare var google: any;
+
 @Component({
     templateUrl: 'addowner.comp.html',
     providers: [OwnerService, CommonService]
@@ -19,11 +21,11 @@ export class AddOwnerComponent implements OnInit {
     oldcode: string = "";
     ownerpwd: string = "";
     ownername: string = "";
-    typ: string = "Co-ordinator";
+    typ: string = "coord";
     isthirdparty: string = "N";
     aadharno: string = "";
-    lat: string = "";
-    lon: string = "";
+    lat: string = "0.00";
+    lon: string = "0.00";
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -32,25 +34,22 @@ export class AddOwnerComponent implements OnInit {
     country: string = "";
     state: string = "";
     city: string = "";
-    pincode: string = "";
+    pincode: number = 0;
     remark1: string = "";
 
-    schoolDT: any = [];
-    schoolList: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityList: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     mode: string = "";
     isactive: boolean = true;
-
-    ownerTypeDT: any = [];
 
     private subscribeParameters: any;
 
     constructor(private _ownerervice: OwnerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
-        this.getOwnerType();
     }
 
     public ngOnInit() {
@@ -61,51 +60,85 @@ export class AddOwnerComponent implements OnInit {
         this.getOwnerDetails();
     }
 
-    getOwnerType() {
-        this.ownerTypeDT.push({ "code": "cod", "name": "Co-ordinator" });
-        this.ownerTypeDT.push({ "code": "att", "name": "Attendent" });
+    // get lat and long by address form google map
+
+    getLatAndLong() {
+        var that = this;
+        commonfun.loader();
+
+        var geocoder = new google.maps.Geocoder();
+        // var address = "Chakkinaka, Kalyan (E)";
+
+        geocoder.geocode({ 'address': that.address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                that.lat = results[0].geometry.location.lat();
+                that.lon = results[0].geometry.location.lng();
+
+                commonfun.loaderhide();
+            }
+        });
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event, type) {
-        this.schoolid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event, type) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
-        this.addSchoolList();
-        $(".schoolname input").focus();
+        this.addEntityList();
+        $(".entityname input").focus();
     }
 
-    // Read Get School
+    // Check Duplicate Entity
 
-    addSchoolList() {
+    isDuplicateEntity() {
         var that = this;
 
-        that.schoolList.push({
-            "schid": that.schoolid, "schnm": that.schoolname
-        });
+        for (var i = 0; i < that.entityList.length; i++) {
+            var field = that.entityList[i];
 
-        that.schoolid = 0;
-        that.schoolname = "";
+            if (field.schid == this.entityid) {
+                this._msg.Show(messageType.error, "Error", "Duplicate Entity not Allowed");
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    deleteSchool(row) {
-        this.schoolList.splice(this.schoolList.indexOf(row), 1);
+    // Read Get Entity
+
+    addEntityList() {
+        var that = this;
+        var duplicateEntity = that.isDuplicateEntity();
+
+        if (!duplicateEntity) {
+            that.entityList.push({
+                "schid": that.entityid, "schnm": that.entityname
+            });
+        }
+
+        that.entityid = 0;
+        that.entityname = "";
+    }
+
+    deleteEntity(row) {
+        this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
     // Active / Deactive Data
@@ -147,77 +180,112 @@ export class AddOwnerComponent implements OnInit {
         $("input").val("");
         $("textarea").val("");
         $("select").val("");
-        
-        this.schoolList = [];
+
+        this.lat = "0.00";
+        this.lon = "0.00";
+        this.pincode = 0;
+
+        this.entityList = [];
     }
 
     // Save Data
 
     saveOwnerInfo() {
         var that = this;
-        commonfun.loader();
 
-        var _schlist: string[] = [];
-        _schlist = Object.keys(that.schoolList).map(function (k) { return that.schoolList[k].schid });
-
-        var saveowner = {
-            "autoid": that.ownerid,
-            "ownercode": that.ownercode,
-            "oldcode": that.oldcode,
-            "ownerpwd": that.ownerpwd,
-            "ownername": that.ownername,
-            "aadharno": that.aadharno,
-            "geoloc": that.lat + "," + that.lon,
-            "school": _schlist,
-            "mobileno1": that.mobileno1,
-            "mobileno2": that.mobileno2,
-            "email1": that.email1,
-            "email2": that.email2,
-            "address": that.address,
-            "country": that.country,
-            "state": that.state,
-            "city": that.city,
-            "pincode": that.pincode,
-            "remark1": that.remark1,
-            "typ": that.typ,
-            "isthirdparty": that.isthirdparty,
-            "uid": that.loginUser.ucode,
-            "isactive": that.isactive,
-            "mode": ""
+        if (that.ownercode == "") {
+            that._msg.Show(messageType.error, "Error", "Enter " + that.typ == "coord" ? "Co-ordinator" : "Attendent Code");
+            $(".ownercode").focus();
         }
+        else if (that.ownerpwd == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Password");
+            $(".ownerpwd").focus();
+        }
+        else if (that.ownername == "") {
+            that._msg.Show(messageType.error, "Error", "Enter " + that.typ == "coord" ? "Co-ordinator" : "Attendent Name");
+            $(".ownername").focus();
+        }
+        else if (that.mobileno1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
+            $(".mobileno1").focus();
+        }
+        else if (that.email1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Email");
+            $(".email1").focus();
+        }
+        else if (that.address == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Address");
+            $(".address").focus();
+        }
+        else if (that.entityList.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Atleast 1 Entity");
+            $(".entityname input").focus();
+        }
+        else {
+            commonfun.loader();
 
-        this._ownerervice.saveOwnerInfo(saveowner).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_ownerinfo.msg;
-                var msgid = dataResult[0].funsave_ownerinfo.msgid;
+            var _entitylist: string[] = [];
+            _entitylist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
 
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
+            var saveowner = {
+                "autoid": that.ownerid,
+                "ownercode": that.ownercode,
+                "oldcode": that.oldcode,
+                "ownerpwd": that.ownerpwd,
+                "ownername": that.ownername,
+                "aadharno": that.aadharno,
+                "geoloc": that.lat + "," + that.lon,
+                "school": _entitylist,
+                "mobileno1": that.mobileno1,
+                "mobileno2": that.mobileno2,
+                "email1": that.email1,
+                "email2": that.email2,
+                "address": that.address,
+                "country": that.country,
+                "state": that.state,
+                "city": that.city,
+                "pincode": that.pincode,
+                "remark1": that.remark1,
+                "typ": that.typ,
+                "isthirdparty": that.isthirdparty,
+                "uid": that.loginUser.ucode,
+                "isactive": that.isactive,
+                "mode": ""
+            }
 
-                    if (msgid == "1") {
-                        that.resetOwnerFields();
+            this._ownerervice.saveOwnerInfo(saveowner).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    var msg = dataResult[0].funsave_ownerinfo.msg;
+                    var msgid = dataResult[0].funsave_ownerinfo.msgid;
+
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid == "1") {
+                            that.resetOwnerFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
+
+                        commonfun.loaderhide();
                     }
                     else {
-                        that.backViewData();
+                        that._msg.Show(messageType.error, "Error", msg);
+                        commonfun.loaderhide();
                     }
-
-                    commonfun.loaderhide();
                 }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                    commonfun.loaderhide();
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
                 }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            }, err => {
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get owner Data
@@ -240,7 +308,7 @@ export class AddOwnerComponent implements OnInit {
                         that.lat = data.data[0].lat;
                         that.lon = data.data[0].lon;
                         that.aadharno = data.data[0].aadharno;
-                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.entityList = data.data[0].school !== null ? data.data[0].school : [];
                         that.typ = data.data[0].typ;
                         that.isthirdparty = data.data[0].isthirdparty;
                         that.email1 = data.data[0].email1;
@@ -253,7 +321,7 @@ export class AddOwnerComponent implements OnInit {
                         that.city = data.data[0].city;
                         that.pincode = data.data[0].pincode;
                         that.remark1 = data.data[0].remark1;
-                        that.schoolname = data.data[0].schoolname;
+                        that.entityname = data.data[0].schoolname;
                         that.isactive = data.data[0].isactive;
                         that.mode = data.data[0].mode;
                     }

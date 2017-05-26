@@ -42,7 +42,7 @@
 
     <div class="header">
         <h4>Today's Trip</h4>
-        <p-selectButton [options]="triptype" [(ngModel)]="selectedTripType"></p-selectButton>
+        <!--<p-selectButton [options]="triptype" [(ngModel)]="selectedTripType"></p-selectButton>-->
 
         <ul class="header-dropdown m-r--5">
             <li>
@@ -60,7 +60,8 @@
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-6">
-                <div *ngFor="let row of tripDT | filterBy: {'stsi': selectedTripType}" class="def-box" onclick="onSelection(this);" (click)="getTTMap(row)">
+                <!--| filterBy: {'stsi': selectedTripType}-->
+                <div *ngFor="let row of tripDT" class="def-box" onclick="onSelection(this);" (click)="getTTMap(row)">
                     <div class="row clearfix">
                         <div class="col-md-11">
                             <b>{{row.nm}}</b>

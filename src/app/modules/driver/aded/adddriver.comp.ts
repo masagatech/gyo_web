@@ -5,6 +5,8 @@ import { CommonService } from '../../../_services/common/common-service' /* add 
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Globals } from '../../../_const/globals';
 
+declare var google: any;
+
 @Component({
     templateUrl: 'adddriver.comp.html',
     providers: [DriverService, CommonService]
@@ -19,8 +21,8 @@ export class AddDriverComponent implements OnInit {
     ownerid: number = 0;
     aadharno: string = "";
     licenseno: string = "";
-    lat: string = "";
-    lon: string = "";
+    lat: string = "0.00";
+    lon: string = "0.00";
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -29,7 +31,7 @@ export class AddDriverComponent implements OnInit {
     country: string = "";
     state: string = "";
     city: string = "";
-    pincode: string = "";
+    pincode: number = 0;
     remark1: string = "";
     uploadedFiles: any = [];
     attachDocsDT: any = [];
@@ -54,6 +56,25 @@ export class AddDriverComponent implements OnInit {
         this.getDriverDetails();
     }
 
+    // get lat and long by address form google map
+
+    getLatAndLong() {
+        var that = this;
+        commonfun.loader();
+
+        var geocoder = new google.maps.Geocoder();
+        // var address = "Chakkinaka, Kalyan (E)";
+
+        geocoder.geocode({ 'address': that.address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                that.lat = results[0].geometry.location.lat();
+                that.lon = results[0].geometry.location.lng();
+                
+                commonfun.loaderhide();
+            }
+        });
+    }
+
     onUpload(event) {
         var that = this;
         var imgfile = [];
@@ -65,11 +86,6 @@ export class AddDriverComponent implements OnInit {
                 "athsize": imgfile[i].size, "athtype": imgfile[i].type, "ptype": "driver", "cuid": "vivek",
             })
         }
-
-        // for (let file of imgfile) {
-        //     that.docpath = file.path;
-        //     break;
-        // }
     }
 
     // Get File Size
@@ -105,14 +121,6 @@ export class AddDriverComponent implements OnInit {
         var that = this;
 
         that._commonservice.getMOM({ "flag": "uploadconfig" }).subscribe(data => {
-            // config = {
-            //     server: this.global.serviceurl + "uploads",
-            //     serverpath: this.global.serviceurl,
-            //     method: "post",
-            //     maxFilesize: 1000000,
-            //     acceptedFiles: '*'
-            // };
-
             that.uploadconfig.server = that.global.serviceurl + "uploads";
             that.uploadconfig.serverpath = that.global.serviceurl;
             that.uploadconfig.maxFilesize = data.data[0]._filetype;
@@ -187,72 +195,107 @@ export class AddDriverComponent implements OnInit {
         $("input").val("");
         $("textarea").val("");
         $("select").val("");
+
+        this.lat = "0.00";
+        this.lon = "0.00";
+        this.pincode = 0;
     }
 
     // Save Data
 
     saveDriverInfo() {
         var that = this;
-        commonfun.loader();
 
-        var saveDriver = {
-            "autoid": that.driverid,
-            "drivercode": that.drivercode,
-            "oldcode": that.oldcode,
-            "driverpwd": that.driverpwd,
-            "drivername": that.drivername,
-            "aadharno": that.aadharno,
-            "licenseno": that.licenseno,
-            "geoloc": that.lat + "," + that.lon,
-            "mobileno1": that.mobileno1,
-            "mobileno2": that.mobileno2,
-            "email1": that.email1,
-            "email2": that.email2,
-            "address": that.address,
-            "country": that.country,
-            "state": that.state,
-            "city": that.city,
-            "pincode": that.pincode,
-            "ownerid": that.ownerid,
-            "attachdocs": that.attachDocsDT,
-            "remark1": that.remark1,
-            "cuid": "vivek",
-            "isactive": that.isactive,
-            "mode": ""
+        if (that.ownerid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Owner");
+            $(".ownerid").focus();
         }
+        else if (that.drivercode == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Driver Code");
+            $(".drivercode").focus();
+        }
+        else if (that.driverpwd == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Password");
+            $(".driverpwd").focus();
+        }
+        else if (that.drivername == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Driver Name");
+            $(".drivername").focus();
+        }
+        else if (that.mobileno1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
+            $(".mobileno1").focus();
+        }
+        else if (that.email1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Email");
+            $(".email1").focus();
+        }
+        else if (that.address == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Address");
+            $(".address").focus();
+        }
+        else {
+            commonfun.loader();
 
-        this._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_driverinfo.msg;
-                var msgid = dataResult[0].funsave_driverinfo.msgid;
+            var saveDriver = {
+                "autoid": that.driverid,
+                "drivercode": that.drivercode,
+                "oldcode": that.oldcode,
+                "driverpwd": that.driverpwd,
+                "drivername": that.drivername,
+                "aadharno": that.aadharno,
+                "licenseno": that.licenseno,
+                "geoloc": that.lat + "," + that.lon,
+                "mobileno1": that.mobileno1,
+                "mobileno2": that.mobileno2,
+                "email1": that.email1,
+                "email2": that.email2,
+                "address": that.address,
+                "country": that.country,
+                "state": that.state,
+                "city": that.city,
+                "pincode": that.pincode,
+                "ownerid": that.ownerid,
+                "attachdocs": that.attachDocsDT,
+                "remark1": that.remark1,
+                "cuid": "vivek",
+                "isactive": that.isactive,
+                "mode": ""
+            }
 
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
+            this._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    var msg = dataResult[0].funsave_driverinfo.msg;
+                    var msgid = dataResult[0].funsave_driverinfo.msgid;
 
-                    if (msgid === "1") {
-                        that.resetDriverFields();
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid === "1") {
+                            that.resetDriverFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
                     }
                     else {
-                        that.backViewData();
+                        that._msg.Show(messageType.error, "Error", msg);
                     }
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
 
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
                 commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get Driver Data

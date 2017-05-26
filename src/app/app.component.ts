@@ -17,7 +17,7 @@ declare var loader: any;
 
 export class AppComponent implements OnInit, AfterViewInit {
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
-  public name = 'GOYO School';
+  public name = 'GOYO Entity';
   public url = 'https://twitter.com/AngularClass';
   subscription: Subscription;
   messagestack: Message[] = [];

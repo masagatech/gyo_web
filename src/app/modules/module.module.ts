@@ -10,7 +10,7 @@ import { DashboardModule } from './dashboard';
 import { MarketingDashboardModule } from './marketing/dashboard';
 import { ReportsModule } from './marketing/reports';
 
-import { StudentAttendanceReportsModule } from './reports/studentattendance';
+import { PassengerAttendanceReportsModule } from './reports/passengerattendance';
 import { DailyAttendanceReportsModule } from './reports/dailyattendance';
 import { DriverAttendanceReportsModule } from './reports/driverattendance';
 import { AttendentAttendanceReportsModule } from './reports/attendentattendance';
@@ -19,7 +19,7 @@ import { SurveyEntriesModule } from './surveyentries';
 import { OwnerModule } from './owner';
 import { DriverModule } from './driver';
 import { BatchModule } from './batch';
-import { StudentModule } from './student';
+import { PassengerModule } from './passenger';
 import { CreateScheduleModule } from './createschedule';
 import { ChangeScheduleModule } from './changeschedule';
 
@@ -41,7 +41,7 @@ export const routes = [
                     { path: 'market_user', loadChildren: './marketing/users#MarketingUserModule' },
 
                     // Reports
-                    { path: 'studentattendance', loadChildren: './reports/studentattendance#StudentAttendanceReportsModule' },
+                    { path: 'passengerattendance', loadChildren: './reports/passengerattendance#PassengerAttendanceReportsModule' },
                     { path: 'dailyattendance', loadChildren: './reports/dailyattendance#DailyAttendanceReportsModule' },
                     { path: 'driverattendance', loadChildren: './reports/driverattendance#DriverAttendanceReportsModule' },
                     { path: 'attendantattendance', loadChildren: './reports/attendentattendance#AttendentAttendanceReportsModule' },

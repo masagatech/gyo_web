@@ -12,7 +12,7 @@
                                 <label class="same-label">Entity</label>
                             </div>
                             <div class="col-md-9">
-                                <p-autoComplete id="schoolname" name="schoolname" [(ngModel)]="schoolname" [tabindex]="9" (onSelect)="selectSchoolData($event)" [suggestions]="schoolDT" (completeMethod)="getSchoolData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete schoolname"></p-autoComplete>
+                                <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>

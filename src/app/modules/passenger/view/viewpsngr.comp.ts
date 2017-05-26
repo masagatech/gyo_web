@@ -19,9 +19,9 @@ export class ViewPassengerComponent implements OnInit {
     passengerDT: any = [];
     loginUser: LoginUserModel;
 
-    schoolDT: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -39,26 +39,26 @@ export class ViewPassengerComponent implements OnInit {
         }, 0);
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event) {
-        this.schoolid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
         this.getPassengerDetails();
     }
@@ -89,11 +89,11 @@ export class ViewPassengerComponent implements OnInit {
     getPassengerDetails() {
         var that = this;
 
-        //if (that.actviewrights === "view") {
+        if (that.actviewrights === "view") {
             commonfun.loader();
 
             that._psngrservice.getPassengerDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schoolid
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid
             }).subscribe(data => {
                 try {
                     that.passengerDT = data.data;
@@ -110,7 +110,7 @@ export class ViewPassengerComponent implements OnInit {
             }, () => {
 
             })
-        //}
+        }
     }
 
     public addPassengerForm() {

@@ -16,9 +16,9 @@ export class ViewHolidayComponent implements OnInit {
     loginUser: LoginUserModel;
 
     holidayDT: any = [];
-    schoolDT: any = [];
-    schid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -51,26 +51,26 @@ export class ViewHolidayComponent implements OnInit {
         };
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event) {
-        this.schid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
         this.getHolidayGrid();
     }
@@ -131,7 +131,7 @@ export class ViewHolidayComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._holidayervice.getHoliday({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schid }).subscribe(data => {
+            that._holidayervice.getHoliday({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid }).subscribe(data => {
                 try {
                     that.holidayDT = data.data;
                 }

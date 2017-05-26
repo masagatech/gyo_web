@@ -24,9 +24,9 @@ export class DataGridComponent implements OnInit {
     bindData: any = [];
     @Input() status: string = "pending";
 
-    schoolDT: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";

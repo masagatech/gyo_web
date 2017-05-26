@@ -21,9 +21,9 @@ export class AddBatchComponent implements OnInit {
     batchcode: string = "";
     batchname: string = "";
 
-    schoolDT: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     fromtime: any = "";
     totime: any = "";
@@ -37,7 +37,7 @@ export class AddBatchComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _batchervice: BatchService) {
         this.loginUser = this._loginservice.getUser();
-        this.fillDropDownList();
+        this.getWeekList();
     }
 
     public ngOnInit() {
@@ -52,16 +52,35 @@ export class AddBatchComponent implements OnInit {
         console.log('success');
     }
 
-    fillDropDownList() {
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).then((data) => {
+            this.entityDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectEntityData(event, type) {
+        this.entityid = event.value;
+        this.entityname = event.label;
+    }
+
+    getWeekList() {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetails({ "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+        that._batchervice.getBatchDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                var d = data.data;
-
-                that.schoolDT = d.filter(a => a.group === "school");
-                that.weekDT = d.filter(a => a.group === "week");
+                that.weekDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -89,50 +108,77 @@ export class AddBatchComponent implements OnInit {
     saveBatchInfo() {
         var that = this;
 
-        var savebatch = {
-            "autoid": that.batchid,
-            "batchcode": that.batchcode,
-            "batchname": that.batchname,
-            "schoolid": that.schoolid,
-            "fromtime": that.fromtime,
-            "totime": that.totime,
-            "uid": that.loginUser.ucode,
-            "instruction": that.instruction,
-            "weekallow": that.selectedWeek
+        if (that.batchcode == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Batch Code");
+            $(".batchcode").focus();
         }
+        else if (that.batchname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Batch Name");
+            $(".batchname").focus();
+        }
+        else if (that.entityname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
+            $(".entityname input").focus();
+        }
+        else if (that.fromtime == "") {
+            that._msg.Show(messageType.error, "Error", "Enter From Time");
+            $(".fromtime").focus();
+        }
+        else if (that.totime == "") {
+            that._msg.Show(messageType.error, "Error", "Enter To Time");
+            $(".totime").focus();
+        }
+        else if (that.selectedWeek.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Week");
+        }
+        else {
+            commonfun.loader();
 
-        this._batchervice.saveBatchInfo(savebatch).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_batchinfo.msg;
-                var msgid = dataResult[0].funsave_batchinfo.msgid;
+            var savebatch = {
+                "autoid": that.batchid,
+                "batchcode": that.batchcode,
+                "batchname": that.batchname,
+                "schoolid": that.entityid,
+                "fromtime": that.fromtime,
+                "totime": that.totime,
+                "uid": that.loginUser.ucode,
+                "instruction": that.instruction,
+                "weekallow": that.selectedWeek
+            }
 
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
+            this._batchervice.saveBatchInfo(savebatch).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    var msg = dataResult[0].funsave_batchinfo.msg;
+                    var msgid = dataResult[0].funsave_batchinfo.msgid;
 
-                    if (msgid === "1") {
-                        that.resetBatchFields();
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid === "1") {
+                            that.resetBatchFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
                     }
                     else {
-                        that.backViewData();
+                        var msg = dataResult[0].funsave_batchinfo.msg;
+                        that._msg.Show(messageType.error, "Error", msg);
                     }
-                }
-                else {
-                    var msg = dataResult[0].funsave_batchinfo.msg;
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
 
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
                 commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get Batch Data
@@ -150,7 +196,8 @@ export class AddBatchComponent implements OnInit {
                         that.batchid = data.data[0].autoid;
                         that.batchcode = data.data[0].batchcode;
                         that.batchname = data.data[0].batchname;
-                        that.schoolid = data.data[0].schoolid;
+                        that.entityid = data.data[0].schoolid;
+                        that.entityname = data.data[0].schoolname;
                         that.fromtime = data.data[0].fromtime;
                         that.totime = data.data[0].totime;
                         that.instruction = data.data[0].instruction;

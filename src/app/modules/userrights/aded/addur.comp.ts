@@ -18,12 +18,12 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
     usersDT: any = [];
     menuname: string = "";
 
-    uid: string = "";
+    uid: number = 0;
     uname: string = "";
     utype: string = "";
     ufullname: string = "";
 
-    refuid: string = "";
+    refuid: number = 0;
     refuname: string = "";
     refutype: string = "";
 
@@ -44,9 +44,9 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
 
     resetUserRights() {
         $("#uname").focus();
-        this.uid = "";
+        this.uid = 0;
         this.uname = "";
-        this.refuid = "";
+        this.refuid = 0;
         this.refuname = "";
     }
 
@@ -136,45 +136,49 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
     saveUserRights() {
         var that = this;
 
-        if (that.uid == "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter User");
+        if (that.uid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter User");
+            $(".uname input").focus();
         }
-        else if (that.refuid == "") {
-            that._msg.Show(messageType.error, "Error", "Please Enter Reference User");
-        }
-        else if (that.menudetails.length === 0) {
-            that._msg.Show(messageType.error, "Error", "Please Select Company");
+        else if (that.refuid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Reference User");
+            $(".refuname input").focus();
         }
         else {
             var _giverights = that.getUserRights();
 
-            var saveUR = {
-                "uid": that.refuid,
-                "utype": that.refutype,
-                "giverights": _giverights,
-                "cuid": that.loginUser.login
+            if (_giverights.length === 0) {
+                that._msg.Show(messageType.error, "Error", "Select Atleast 1 Rights");
             }
-
-            that._userservice.saveUserRights(saveUR).subscribe(data => {
-                try {
-                    var dataResult = data.data;
-
-                    if (dataResult[0].funsave_userrights.msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", dataResult[0].funsave_userrights.msg);
-                        $("#menus").prop('checked', false);
-                    }
-                    else {
-                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_userrights.msg);
-                    }
+            else {
+                var saveUR = {
+                    "uid": that.refuid,
+                    "utype": that.refutype,
+                    "giverights": _giverights,
+                    "cuid": that.loginUser.login
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-            }, () => {
-                // console.log("Complete");
-            });
+
+                that._userservice.saveUserRights(saveUR).subscribe(data => {
+                    try {
+                        var dataResult = data.data;
+
+                        if (dataResult[0].funsave_userrights.msgid != "-1") {
+                            that._msg.Show(messageType.success, "Success", dataResult[0].funsave_userrights.msg);
+                            $("#menus").prop('checked', false);
+                        }
+                        else {
+                            that._msg.Show(messageType.error, "Error", dataResult[0].funsave_userrights.msg);
+                        }
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                }, () => {
+                    // console.log("Complete");
+                });
+            }
         }
     }
 

@@ -891,7 +891,8 @@ button.ui-button::-moz-focus-inner {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    margin-right: 3px
+    margin-right: 3px;
+    border: 1px solid #156090;
 }
 
 .ui-chkbox .ui-chkbox-icon {
@@ -3559,7 +3560,8 @@ button.ui-button::-moz-focus-inner {
     line-height: 16px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-    border-radius: 10px
+    border-radius: 10px;
+    border: 1px solid #156090;
 }
 
 .ui-radiobutton-icon {

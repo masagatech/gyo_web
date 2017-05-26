@@ -17,9 +17,9 @@ export class ViewDriverComponent implements OnInit {
     driverDT: any = [];
     loginUser: LoginUserModel;
 
-    schoolDT: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -37,26 +37,26 @@ export class ViewDriverComponent implements OnInit {
         }, 0);
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event) {
-        this.schoolid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
         this.getDriverDetails();
     }
@@ -91,7 +91,7 @@ export class ViewDriverComponent implements OnInit {
             commonfun.loader();
 
             that._driverservice.getDriverDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.schoolid
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid
             }).subscribe(data => {
                 try {
                     that.driverDT = data.data;

@@ -93,7 +93,7 @@ commonfun.chevronstyle = function() {
 }
 
 commonfun.rdbtnstyle = function() {
-    $(".ui-radiobutton-box").find('span').removeAttr('class');
+    $(".ui-radiobutton-box").find('span').hide();
 }
 
 commonfun.setAdvanceControl = function() {

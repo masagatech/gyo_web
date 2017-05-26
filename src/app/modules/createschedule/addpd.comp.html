@@ -35,9 +35,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name</label>
-                        <select [(ngModel)]="schoolid" class="form-control entity" (ngModelChange)="fillBatchDropDown();getStudentData($event);" tabindex="2">
+                        <select [(ngModel)]="entityid" class="form-control entity" (ngModelChange)="fillBatchDropDown();getPassengerData($event);" tabindex="2">
                             <option [value]="0">Select Entity</option>
-                            <option *ngFor="let row of schoolDT" [value]="row.schid">
+                            <option *ngFor="let row of entityDT" [value]="row.schid">
                                 {{row.schnm}}
                             </option>
                         </select>
@@ -113,8 +113,8 @@
                         <label class="control-label">Passenger Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="pickstudentname" name="pickstudentname" [(ngModel)]="pickstudentname" [tabindex]="8" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)" field="studnm" [minLength]="1"
-                                    [size]="30" class="form-controlAutoComplete pickstudentname"></p-autoComplete>
+                                <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="8" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete pickpassengername"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>
@@ -123,17 +123,17 @@
                     </div>
                 </div>
 
-                <p-orderList [value]="pickStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
-                    <template let-student pTemplate="editor">
+                <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
+                    <template let-passenger pTemplate="editor">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="ui-helper-clearfix">
-                                    {{student.stdnm}}
+                                    {{passenger.stdnm}}
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpStudents(student)"><i class="material-icons">remove</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">remove</i></button>
                                 </div>
                             </div>
                         </div>
@@ -194,8 +194,8 @@
                         <label class="control-label">Passenger Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="dropstudentname" name="dropstudentname" [(ngModel)]="dropstudentname" [tabindex]="8" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="studentsDT" (completeMethod)="getStudentData($event)" field="studnm" [minLength]="1"
-                                    [size]="30" class="form-controlAutoComplete dropstudentname"></p-autoComplete>
+                                <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="8" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete droppassengername"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>
@@ -204,17 +204,17 @@
                     </div>
                 </div>
 
-                <p-orderList [value]="dropStudentsDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
-                    <template let-student pTemplate="item">
+                <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
+                    <template let-passenger pTemplate="item">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="ui-helper-clearfix">
-                                    {{student.stdnm}}
+                                    {{passenger.stdnm}}
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropStudents(student)"><i class="material-icons">remove</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">remove</i></button>
                                 </div>
                             </div>
                         </div>

@@ -30,7 +30,7 @@ export class AddUserComponent implements OnInit {
     country: string = "";
     state: string = "";
     city: string = "";
-    pincode: string = "";
+    pincode: number = 0;
     isactive: boolean = false;
     mode: string = "";
     remark1: string = "";
@@ -38,10 +38,10 @@ export class AddUserComponent implements OnInit {
 
     genderDT: any = [];
 
-    schoolDT: any = [];
-    schoolList: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityList: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     private subscribeParameters: any;
 
@@ -59,46 +59,66 @@ export class AddUserComponent implements OnInit {
         $.AdminBSB.input.activate();
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event, type) {
-        this.schoolid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event, type) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
-        this.addSchoolList();
-        $(".schoolname input").focus();
+        this.addEntityList();
+        $(".entityname input").focus();
     }
 
-    // Read Get School
+    // Check Duplicate Entity
 
-    addSchoolList() {
+    isDuplicateEntity() {
         var that = this;
 
-        that.schoolList.push({
-            "schid": that.schoolid, "schnm": that.schoolname
-        });
+        for (var i = 0; i < that.entityList.length; i++) {
+            var field = that.entityList[i];
 
-        that.schoolid = 0;
-        that.schoolname = "";
+            if (field.schid == this.entityid) {
+                this._msg.Show(messageType.error, "Error", "Duplicate Entity not Allowed");
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    deleteSchool(row) {
-        this.schoolList.splice(this.schoolList.indexOf(row), 1);
+    // Read Get Entity
+
+    addEntityList() {
+        var that = this;
+        var duplicateEntity = that.isDuplicateEntity();
+
+        if (!duplicateEntity) {
+            that.entityList.push({
+                "schid": that.entityid, "schnm": that.entityname
+            });
+        }
+
+        that.entityid = 0;
+        that.entityname = "";
+    }
+
+    deleteEntity(row) {
+        this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
     fillDropDownList() {
@@ -160,74 +180,113 @@ export class AddUserComponent implements OnInit {
         $("textarea").val("");
         $("select").val("");
 
-        this.schoolList = [];
+        this.entityList = [];
     }
 
     // Save Data
 
     saveUserInfo() {
         var that = this;
-        commonfun.loader();
 
-        var _schlist: string[] = [];
-        _schlist = Object.keys(that.schoolList).map(function (k) { return that.schoolList[k].schid });
-
-        var saveuser = {
-            "uid": that.uid,
-            "oldcode": that.oldcode,
-            "ucode": that.ucode,
-            "upwd": that.upwd,
-            "fname": that.fname,
-            "lname": that.lname,
-            "school": _schlist,
-            "mobileno1": that.mobileno1,
-            "mobileno2": that.mobileno2,
-            "email1": that.email1,
-            "email2": that.email2,
-            "address": that.address,
-            "country": that.country,
-            "state": that.state,
-            "city": that.city,
-            "pincode": that.pincode,
-            "remark1": that.remark1,
-            "cuid": "vivek",
-            "isactive": that.isactive,
-            "utype": that.utype,
-            "mode": ""
+        if (that.ucode == "") {
+            that._msg.Show(messageType.error, "Error", "Enter User Code");
+            $(".ucode").focus();
         }
+        else if (that.upwd == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Password");
+            $(".upwd").focus();
+        }
+        else if (that.fname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter First Name");
+            $(".fname").focus();
+        }
+        else if (that.lname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Last Name");
+            $(".lname").focus();
+        }
+        else if (that.utype == "") {
+            that._msg.Show(messageType.error, "Error", "Select User Type");
+            $(".utype").focus();
+        }
+        else if (that.mobileno1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
+            $(".mobileno1").focus();
+        }
+        else if (that.email1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Email");
+            $(".email1").focus();
+        }
+        else if (that.address == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Address");
+            $(".address").focus();
+        }
+        else if (that.entityList.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Atleast 1 Entity");
+            $(".entityname input").focus();
+        }
+        else {
+            commonfun.loader();
 
-        this._userservice.saveUserInfo(saveuser).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_userinfo.msg;
-                var msgid = dataResult[0].funsave_userinfo.msgid;
+            var _enttlist: string[] = [];
+            _enttlist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
 
-                if (msgid !== "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
+            var saveuser = {
+                "uid": that.uid,
+                "oldcode": that.oldcode,
+                "ucode": that.ucode,
+                "upwd": that.upwd,
+                "fname": that.fname,
+                "lname": that.lname,
+                "school": _enttlist,
+                "mobileno1": that.mobileno1,
+                "mobileno2": that.mobileno2,
+                "email1": that.email1,
+                "email2": that.email2,
+                "address": that.address,
+                "country": that.country,
+                "state": that.state,
+                "city": that.city,
+                "pincode": that.pincode,
+                "remark1": that.remark1,
+                "cuid": "vivek",
+                "isactive": that.isactive,
+                "utype": that.utype,
+                "mode": ""
+            }
 
-                    if (msgid === "1") {
-                        that.resetUserFields();
+            this._userservice.saveUserInfo(saveuser).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    var msg = dataResult[0].funsave_userinfo.msg;
+                    var msgid = dataResult[0].funsave_userinfo.msgid;
+
+                    if (msgid !== "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid === "1") {
+                            that.resetUserFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
                     }
                     else {
-                        that.backViewData();
+                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_userinfo.msg);
                     }
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_userinfo.msg);
-                }
 
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+                that._msg.Show(messageType.error, "Error", err);
                 commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get user Data
@@ -250,7 +309,7 @@ export class AddUserComponent implements OnInit {
                         that.lname = data.data[0].lname;
                         that.utype = data.data[0].utype;
                         that.utype = data.data[0].utype;
-                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.entityList = data.data[0].school !== null ? data.data[0].school : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;

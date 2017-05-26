@@ -7,6 +7,7 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Globals } from '../../../_const/globals';
 
+declare var google: any;
 declare var loader: any;
 declare var adminloader: any;
 
@@ -18,7 +19,6 @@ declare var adminloader: any;
 export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
 
-    schoolDT: any = [];
     divisionDT: any = [];
     genderDT: any = [];
 
@@ -26,12 +26,15 @@ export class AddPassengerComponent implements OnInit {
     ownerid: number = 0;
     ownername: string = "";
 
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
+
     psngrid: number = 0;
     psngrcode: string = "";
     psngrname: string = "";
     gender: string = "";
     dob: any = "";
-    enttid: number = 0;
     division: string = "";
     aadharno: any = "";
 
@@ -65,7 +68,6 @@ export class AddPassengerComponent implements OnInit {
     private subscribeParameters: any;
 
     config = {
-        // Change this to your upload POST address:
         server: this.global.serviceurl + "uploads",
         method: "post",
         maxFilesize: 50,
@@ -83,8 +85,23 @@ export class AddPassengerComponent implements OnInit {
         this.getPassengerDetails();
     }
 
-    public ngAfterViewInit() {
+    // get lat and long by address form google map
 
+    getLatAndLong() {
+        var that = this;
+        commonfun.loader();
+
+        var geocoder = new google.maps.Geocoder();
+        // var address = "Chakkinaka, Kalyan (E)";
+
+        geocoder.geocode({ 'address': that.resiaddr }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                that.resilet = results[0].geometry.location.lat();
+                that.resilong = results[0].geometry.location.lng();
+                
+                commonfun.loaderhide();
+            }
+        });
     }
 
     public onUploadError(event) {
@@ -116,9 +133,33 @@ export class AddPassengerComponent implements OnInit {
     selectAutoOwners(event) {
         this.ownerid = event.value;
         this.ownername = event.label;
+
+        this.entityid = 0;
+        this.entityname = "";
     }
 
-    // Fill School, Division, Gender DropDown
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "ownerwiseentity",
+            "oid": this.ownerid,
+            "search": query
+        }).then((data) => {
+            this.entityDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectEntityData(event, type) {
+        this.entityid = event.schid;
+        this.entityname = event.schnm;
+    }
+
+    // Fill Entity, Division, Gender DropDown
 
     fillDropDownList() {
         var that = this;
@@ -126,7 +167,6 @@ export class AddPassengerComponent implements OnInit {
 
         that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.schoolDT = data.data.filter(a => a.group === "school");
                 that.divisionDT = data.data.filter(a => a.group === "division");
                 that.genderDT = data.data.filter(a => a.group === "gender");
             }
@@ -174,9 +214,33 @@ export class AddPassengerComponent implements OnInit {
     // Clear Fields
 
     resetPassengerFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
+        var that = this;
+
+        that.psngrid = 0
+        that.psngrcode = "";
+        that.psngrname = "";
+
+        that.dob = "";
+        that.division = "";
+        that.aadharno = "";
+        that.gender = "";
+        that.fathername = "";
+        that.mothername = "";
+        that.primaryemail = "";
+        that.secondaryemail = "";
+        that.primarymobile = "";
+        that.secondarymobile = "";
+        that.resiaddr = "";
+        that.resilet = "0.00";
+        that.resilong = "0.00";
+        that.pickupaddr = "";
+        that.pickuplet = "0.00";
+        that.pickuplong = "0.00";
+        that.dropaddr = "";
+        that.droplet = "0.00";
+        that.droplong = "0.00";
+        that.remark1 = "";
+        that.otherinfo = "";
     }
 
     // Active / Deactive Data
@@ -223,54 +287,68 @@ export class AddPassengerComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Owner Name");
             $(".ownername input").focus();
         }
-        else if (that.enttid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select School Name");
+        else if (that.entityid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Entity Name");
+            $(".entityname input").focus();
         }
         else if (that.psngrname === "") {
             that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
+            $(".psngrname").focus();
         }
         else if (that.division === "") {
             that._msg.Show(messageType.error, "Error", "Enter Division");
+            $(".division").focus();
         }
         else if (that.primaryemail === "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Email");
+            $(".primaryemail").focus();
         }
         else if (that.primarymobile === "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Mobile");
+            $(".primarymobile").focus();
         }
         else if (that.resiaddr === "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Address");
+            $(".resiaddr").focus();
         }
         else if (that.resilet === "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Lat");
+            $(".resilet").focus();
         }
         else if (that.resilong === "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Long");
+            $(".resilong").focus();
         }
         else if (that.pickupaddr === "") {
             that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
+            $(".pickupaddr").focus();
         }
         else if (that.pickuplet === "") {
             that._msg.Show(messageType.error, "Error", "Enter Pick Up Lat");
+            $(".pickuplet").focus();
         }
         else if (that.pickuplong === "") {
             that._msg.Show(messageType.error, "Error", "Enter Pick Up Long");
+            $(".pickuplong").focus();
         }
         else if (that.dropaddr === "") {
             that._msg.Show(messageType.error, "Error", "Enter Drop Address");
+            $(".dropaddr").focus();
         }
         else if (that.droplet === "") {
             that._msg.Show(messageType.error, "Error", "Enter Drop Lat");
+            $(".droplet").focus();
         }
         else if (that.droplong === "") {
             that._msg.Show(messageType.error, "Error", "Enter Drop Long");
+            $(".droplong").focus();
         }
         else {
             commonfun.loader();
 
-            var studentprofiledata = {};
+            var passengerprofiledata = {};
 
-            studentprofiledata = {
+            passengerprofiledata = {
                 "gender": that.gender, "dob": that.dob, "division": that.division,
                 "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
             }
@@ -279,14 +357,14 @@ export class AddPassengerComponent implements OnInit {
                 "autoid": that.psngrid,
                 "studentcode": that.psngrid,
                 "studentname": that.psngrname,
-                "schoolid": that.enttid,
+                "schoolid": that.entityid,
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
                 "email1": that.primaryemail,
                 "email2": that.secondaryemail,
                 "address": that.resiaddr,
-                "studentprofiledata": studentprofiledata,
+                "studentprofiledata": passengerprofiledata,
                 "resgeoloc": that.resilet + "," + that.resilong,
                 "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
@@ -347,7 +425,7 @@ export class AddPassengerComponent implements OnInit {
                         that.psngrid = data.data[0].autoid;
                         that.ownerid = data.data[0].ownerid;
                         that.ownername = data.data[0].ownername;
-                        that.enttid = data.data[0].schoolid;
+                        that.entityid = data.data[0].schoolid;
                         that.psngrcode = data.data[0].studentcode;
                         that.psngrname = data.data[0].studentname;
 
@@ -367,9 +445,9 @@ export class AddPassengerComponent implements OnInit {
                         that.droplong = data.data[0].droplon;
                         that.remark1 = data.data[0].remark1;
 
-                        var studentprofiledata = data.data[0].studentprofiledata;
+                        var passengerprofiledata = data.data[0].passengerprofiledata;
 
-                        if (studentprofiledata !== null) {
+                        if (passengerprofiledata !== null) {
                             that.gender = data.data[0].gender;
                             that.dob = data.data[0].dob;
                             that.division = data.data[0].division;

@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { StudentAttendanceReportsComponent } from './rptstudsatt.comp';
+import { PassengerAttendanceReportsComponent } from './rptpsngratt.comp';
 import { ReportsService } from '../../../_services/reports/rpt-service';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
@@ -11,14 +11,14 @@ import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/prim
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: StudentAttendanceReportsComponent }
+      { path: '', component: PassengerAttendanceReportsComponent }
     ]
   },
 ];
 
 @NgModule({
   declarations: [
-    StudentAttendanceReportsComponent
+    PassengerAttendanceReportsComponent
   ],
 
   imports: [
@@ -28,6 +28,6 @@ export const routes = [
   providers: [ReportsService]
 })
 
-export class StudentAttendanceReportsModule {
+export class PassengerAttendanceReportsModule {
   public static routes = routes;
 }

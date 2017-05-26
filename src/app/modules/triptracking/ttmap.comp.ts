@@ -131,6 +131,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
     fillDriverDropDown() {
         var that = this;
+        commonfun.loader();
 
         that._autoservice.getDropDownData({ "flag": "driver", "id": that.coordid }).subscribe((data) => {
             try {
@@ -139,9 +140,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
+            commonfun.loaderhide();
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
+            that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
         }, () => {
 
         })
@@ -151,11 +153,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
     showPassengerList() {
         var that = this;
+        commonfun.loader();
 
         this._ttmapservice.showPassengerList({ "driverid": that.driverid, "tripid": that.sel_tripid, "msttripid": that.sel_msttripid }).subscribe(data => {
             that.psngrDT = data.data;
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         });
@@ -165,11 +170,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
     getTripData() {
         var that = this;
+        commonfun.loader();
 
         this._ttmapservice.getTripData({ "driverid": that.driverid }).subscribe(data => {
             that.tripDT = data.data;
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         });
@@ -188,6 +196,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
     getMessage() {
         var that = this;
+        commonfun.loader();
 
         this._socketservice.getMessage().subscribe(data => {
             var _d = data;
@@ -197,29 +206,30 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
                     that.connectmsg = "Registering...";
                     that._socketservice.sendMessage("register", that.sel_tripid.toString());
                 }
-            } else
-                if (_d["evt"] == "registered") {
-                    that.connectmsg = "Registered...";
-                    setTimeout(function () {
-                        that.connectmsg = "Waiting for data..";
-                    }, 1000);
-                } else if (_d["evt"] == "data") {
-                    try {
-                        var geoloc = _d["data"];
+            } else if (_d["evt"] == "registered") {
+                that.connectmsg = "Registered...";
+                setTimeout(function () {
+                    that.connectmsg = "Waiting for data..";
+                }, 1000);
+            } else if (_d["evt"] == "data") {
+                try {
+                    var geoloc = _d["data"];
 
-                        if (that.sel_tripid == geoloc.tripid) {
-                            that.lastlat = geoloc.lat;
-                            that.lastlon = geoloc.lon;
+                    if (that.sel_tripid == geoloc.tripid) {
+                        that.lastlat = geoloc.lat;
+                        that.lastlon = geoloc.lon;
 
-                            that.connectmsg = "Lat : " + that.lastlat + ", Lon : " + that.lastlon;
-                            that.mapMove(geoloc.lat, geoloc.lon, geoloc.bearng);
-                        }
-                    } catch (error) {
-
+                        that.connectmsg = "Lat : " + that.lastlat + ", Lon : " + that.lastlon;
+                        that.mapMove(geoloc.lat, geoloc.lon, geoloc.bearng);
                     }
+                } catch (error) {
+
                 }
+            }
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         });
@@ -253,6 +263,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
     getLastLocation() {
         var that = this;
+        commonfun.loader();
+
         that._ttmapservice.getLastLocation({ "tripid": that.sel_tripid }).subscribe(data => {
             console.log(data.data);
             if (that.overlays.length == 0) {
@@ -263,8 +275,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             var bearng = data.data[0].bearng;
 
             that.mapMove(geoloc[0], geoloc[1], bearng);
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         });
@@ -273,11 +287,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     // Zoon In, Out, Clear and Reset
 
     zoomIn(map) {
-        map.setZoom(map.getZoom()+1);
+        map.setZoom(map.getZoom() + 1);
     }
-    
+
     zoomOut(map) {
-        map.setZoom(map.getZoom()-1);
+        map.setZoom(map.getZoom() - 1);
     }
 
     clear() {

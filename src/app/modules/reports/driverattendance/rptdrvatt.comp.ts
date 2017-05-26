@@ -17,9 +17,9 @@ export class DriverAttendanceReportsComponent implements OnInit {
 
     attColumn: any = [];
     attData: any = [];
-    schoolDT: any = [];
-    schoolid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
     monthname: string = "";
 
     loginUser: LoginUserModel;
@@ -41,29 +41,29 @@ export class DriverAttendanceReportsComponent implements OnInit {
         }, 0);
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event) {
-        this.schoolid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event) {
+        this.entityid = event.value;
+        this.entityname = event.label;
     }
 
-    // Fill School, Division, Gender DropDown
+    // Fill Entity, Division, Gender DropDown
 
     fillDropDownList() {
         var that = this;
@@ -93,8 +93,8 @@ export class DriverAttendanceReportsComponent implements OnInit {
     public viewAttendanceReportsRights() {
         var that = this;
 
-        if (that.schoolname === "") {
-            that._msg.Show(messageType.warn, "Warning", "Search School");
+        if (that.entityname === "") {
+            that._msg.Show(messageType.warn, "Warning", "Search Entity");
         }
         else if (that.monthname === "") {
             that._msg.Show(messageType.warn, "Warning", "Select Month");
@@ -129,7 +129,7 @@ export class DriverAttendanceReportsComponent implements OnInit {
         var that = this;
 
         that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that.schoolid
+            "flag": "column", "monthname": that.monthname, "schoolid": that.entityid
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
@@ -148,7 +148,7 @@ export class DriverAttendanceReportsComponent implements OnInit {
             commonfun.loader();
 
             that._rptservice.getAttendanceReports({
-                "flag": "driver", "monthname": that.monthname, "schoolid": that.schoolid
+                "flag": "driver", "monthname": that.monthname, "schoolid": that.entityid
             }).subscribe(data => {
                 try {
                     if (data.data.length !== 0) {

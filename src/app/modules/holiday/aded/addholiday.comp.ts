@@ -27,10 +27,10 @@ export class AddHolidayComponent implements OnInit {
     hldnm: string = "";
     hlddesc: string = "";
 
-    schoolDT: any = [];
-    schoolList: any = [];
-    schid: number = 0;
-    schoolname: string = "";
+    entityDT: any = [];
+    entityList: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     private subscribeParameters: any;
 
@@ -44,46 +44,46 @@ export class AddHolidayComponent implements OnInit {
         this.getHolidayDetails();
     }
 
-    // Auto Completed School
+    // Auto Completed Entity
 
-    getSchoolData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "school",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.schoolDT = data;
+            this.entityDT = data;
         });
     }
 
     // Selected Owners
 
-    selectSchoolData(event) {
-        this.schid = event.value;
-        this.schoolname = event.label;
+    selectEntityData(event) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
-        this.addSchoolList();
-        $(".schoolname input").focus();
+        this.addEntityList();
+        $(".entityname input").focus();
     }
 
-    // Read Get School
+    // Read Get Entity
 
-    addSchoolList() {
+    addEntityList() {
         var that = this;
 
-        that.schoolList.push({
-            "schid": that.schid, "schnm": that.schoolname
+        that.entityList.push({
+            "schid": that.entityid, "schnm": that.entityname
         });
 
-        that.schid = 0;
-        that.schoolname = "";
+        that.entityid = 0;
+        that.entityname = "";
     }
 
-    deleteSchool(row) {
-        this.schoolList.splice(this.schoolList.indexOf(row), 1);
+    deleteEntity(row) {
+        this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
     // Clear Fields
@@ -93,63 +93,82 @@ export class AddHolidayComponent implements OnInit {
         $("textarea").val("");
         $("select").val("");
 
-        this.schoolList = [];
+        this.entityList = [];
     }
 
     // Save Data
 
     saveHolidayInfo() {
         var that = this;
-        commonfun.loader();
 
-        var _schlist: string[] = [];
-
-        _schlist = Object.keys(that.schoolList).map(function (k) { return that.schoolList[k].schid });
-
-        var saveholiday = {
-            "hldid": that.hldid,
-            "hldcd": that.hldcd,
-            "hldnm": that.hldnm,
-            "hlddesc": that.hlddesc,
-            "school": _schlist,
-            "frmdt": that.frmdt,
-            "todt": that.todt,
-            "uid": "vivek"
+        if (that.frmdt == "") {
+            that._msg.Show(messageType.error, "Error", "Enter From Date");
+            $(".frmdt").focus();
         }
+        else if (that.todt == "") {
+            that._msg.Show(messageType.error, "Error", "Enter To Date");
+            $(".todt").focus();
+        }
+        else if (that.hldnm == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Holiday Title");
+            $(".hldnm").focus();
+        }
+        else if (that.entityList.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Atleast 1 Entity");
+            $(".entityname input").focus();
+        }
+        else {
+            commonfun.loader();
 
-        that._holidayervice.saveHoliday(saveholiday).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_holiday.msg;
-                var msgid = dataResult[0].funsave_holiday.msgid;
+            var _entitylist: string[] = [];
 
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
+            _entitylist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
 
-                    if (msgid == "1") {
-                        that.resetHolidayFields();
+            var saveholiday = {
+                "hldid": that.hldid,
+                "hldcd": that.hldcd,
+                "hldnm": that.hldnm,
+                "hlddesc": that.hlddesc,
+                "school": _entitylist,
+                "frmdt": that.frmdt,
+                "todt": that.todt,
+                "uid": "vivek"
+            }
+
+            that._holidayervice.saveHoliday(saveholiday).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    var msg = dataResult[0].funsave_holiday.msg;
+                    var msgid = dataResult[0].funsave_holiday.msgid;
+
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid == "1") {
+                            that.resetHolidayFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
+
+                        commonfun.loaderhide();
                     }
                     else {
-                        that.backViewData();
+                        that._msg.Show(messageType.error, "Error", msg);
+                        commonfun.loaderhide();
                     }
-
-                    commonfun.loaderhide();
                 }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                    commonfun.loaderhide();
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
                 }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get Holiday Data
@@ -170,7 +189,7 @@ export class AddHolidayComponent implements OnInit {
                         that.hlddesc = data.data[0].hlddesc;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
-                        that.schoolList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.entityList = data.data[0].school !== null ? data.data[0].school : [];
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
