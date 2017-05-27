@@ -6975,9 +6975,9 @@ section.content {
 }
 
 .form-group .control-label {
-    font-weight: normal;
     font-size: 12px;
-    color: #1A8AFE;
+    color: rgba(132, 132, 132, 0.68);
+    font-weight: bold;
 }
 
 .form-group .control-label strong {
@@ -10419,7 +10419,7 @@ fieldset[disabled] .form-control {
     margin: 6px;
     color: #333;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
     overflow: hidden;
 }
 
@@ -10431,7 +10431,7 @@ fieldset[disabled] .form-control {
 
 .sidebar .menu .list .ml-menu span {
     font-weight: normal;
-    font-size: 14px;
+    font-size: 12px;
     margin: 7px;
 }
 
