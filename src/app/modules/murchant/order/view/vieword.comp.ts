@@ -14,7 +14,7 @@ import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
 })
 
 export class ViewOrderComponent implements OnInit {
-    selectedOrderType: string = "all";
+    selectedOrderType: string = "pending";
     ordtype: SelectItem[];
 
     orderDT: any = [];
@@ -31,6 +31,7 @@ export class ViewOrderComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this.status = "pending";
         this.getOrderType();
+        this.getOrderDetails();
     }
 
     public ngOnInit() {
@@ -98,10 +99,10 @@ export class ViewOrderComponent implements OnInit {
     }
 
     public addOrderForm() {
-        this._router.navigate(['/createorder']);
+        this._router.navigate(['/murchant/createorder']);
     }
 
     public editOrderForm(row) {
-        this._router.navigate(['/editorder', row.autoid]);
+        this._router.navigate(['/murchant/editorder', row.autoid]);
     }
 }

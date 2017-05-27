@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 
 import { CreateOrderComponent } from './create/credord.comp';
+import { TrackOrderComponent } from './track/trackord.comp';
 import { ViewOrderComponent } from './view/vieword.comp';
 import { DataGridModule } from './datagrid';
 
@@ -16,6 +17,7 @@ export const routes = [
   {
     path: '', children: [
       { path: 'vieworder', component: ViewOrderComponent },
+      { path: 'trackorder', component: TrackOrderComponent  },
       { path: 'createorder', component: CreateOrderComponent },
       { path: 'editorder/:id', component: CreateOrderComponent }
     ]
@@ -25,6 +27,7 @@ export const routes = [
 @NgModule({
   declarations: [
     CreateOrderComponent,
+    TrackOrderComponent,
     ViewOrderComponent
   ],
 

@@ -4,10 +4,10 @@
             <div class="col-md-2">
                 <h4>View Order</h4>
             </div>
-            <div class="col-md-9 col-xs-9" *ngIf="actviewrights === 'view'">
-                <p-selectButton [options]="ordtype" [(ngModel)]="selectedOrderType" (ngModelChange)="getOrderDetails()"></p-selectButton>
+            <div class="col-md-9 col-xs-9">
+
             </div>
-            <div class="col-md-1 col-xs-1" align="right" *ngIf="actaddrights === 'add'">
+            <div class="col-md-1 col-xs-1" align="right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addOrderForm()">
                     <i class="material-icons">add</i></button>
             </div>
@@ -15,6 +15,11 @@
     </div>
 
     <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-selectButton [options]="ordtype" [(ngModel)]="selectedOrderType" (ngModelChange)="getOrderDetails()"></p-selectButton>
+            </div>
+        </div>
         <div class="row clearfix">
             <div class="col-md-12">
                 <div *ngFor="let ordrow of orderDT | groupBy:'merchant'; let i = index;">
