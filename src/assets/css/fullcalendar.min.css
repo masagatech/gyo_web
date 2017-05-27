@@ -710,7 +710,12 @@ a.fc-more:hover {
 }
 
 .fc-basic-view .fc-body .fc-row {
-    min-height: 4em
+    /*min-height: 4em*/
+    height: auto!important;
+}
+
+.fc-scroller.fc-day-grid-container {
+    height: auto!important;
 }
 
 .fc-row.fc-rigid .fc-content-skeleton {

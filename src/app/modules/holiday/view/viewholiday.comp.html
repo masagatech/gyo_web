@@ -47,7 +47,7 @@
                     <p-column field="todt" header="To Date" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editGridHoliday(row)">
+                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editHolidayGrid(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </template>
@@ -59,9 +59,9 @@
 
     <div class="body" *ngIf="isShowCalendar">
         <div class="row clearfix">
-            <div class="col-md-8">
-                <!--(viewRender)="getCalendarHoliday($event);"-->
-                <p-schedule [events]="holidayDT" [header]="header" defaultDate="{{defaultDate}}" (onEventClick)="editCalendarHoliday($event);" [eventLimit]="4" [editable]="true"></p-schedule>
+            <div class="col-md-12">
+                <!---->
+                <p-schedule [events]="events" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (viewRender)="getHolidayCalendar($event);" (onEventClick)="editHolidayCalendar($event);"></p-schedule>
             </div>
         </div>
     </div>

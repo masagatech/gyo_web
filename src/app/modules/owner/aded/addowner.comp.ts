@@ -248,7 +248,7 @@ export class AddOwnerComponent implements OnInit {
                 "remark1": that.remark1,
                 "typ": that.typ,
                 "isthirdparty": that.isthirdparty,
-                "uid": that.loginUser.ucode,
+                "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
                 "mode": ""
             }

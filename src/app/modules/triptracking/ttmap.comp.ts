@@ -266,7 +266,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._ttmapservice.getLastLocation({ "tripid": that.sel_tripid }).subscribe(data => {
-            console.log(data.data);
             if (that.overlays.length == 0) {
                 this.overlays.push(this.marker);
             }

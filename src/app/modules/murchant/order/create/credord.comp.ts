@@ -46,7 +46,7 @@ export class CreateOrderComponent implements OnInit {
 
     selectedPosition: any = [];
 
-    options: any = {};
+    options: any = { center: { lat: "", lng: "" }, zoom: 12 };
     overlays: any = [];
 
     @ViewChild('gmap')
@@ -63,11 +63,7 @@ export class CreateOrderComponent implements OnInit {
     }
 
     public ngOnInit() {
-        // this.options = {
-        //     center: { lat: 19.2244074, lng: 73.12671980000005 },
-        //     zoom: 12
-        // };
-
+        this.getLatAndLong();
         this.getOrderDetails();
     }
 
@@ -78,53 +74,19 @@ export class CreateOrderComponent implements OnInit {
         commonfun.loader();
 
         var geocoder = new google.maps.Geocoder();
-        // var address = "Chakkinaka, Kalyan (E)";
+        var address = "Chakkinaka, Kalyan (E)";
 
-        geocoder.geocode({ 'address': that.custaddr }, function (results, status) {
+        geocoder.geocode({ 'address': that.custaddr == "" ? address : that.custaddr }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 that.lat = results[0].geometry.location.lat();
                 that.lng = results[0].geometry.location.lng();
 
-                setTimeout(function () {
-                    that.options = {
-                        center: { lat: 19.2244074, lng: 73.12671980000005 },
-                        zoom: 12
-                    };
-                }, 100);
+                that.options.center.lat = that.lat;
+                that.options.center.lng = that.lng;
 
-                console.log(that.lat + ", " + that.lng);
                 commonfun.loaderhide();
             }
         });
-
-        // return Observable.create(observer => {
-        //     geocoder.geocode({ 'address': address }, function (results, status) {
-        //         if (status == google.maps.GeocoderStatus.OK) {
-        //             observer.next(results[0].geometry.location);
-        //             observer.complete();
-        //         } else {
-        //             console.log('Error - ', results, ' & Status - ', status);
-        //             observer.next({});
-        //             observer.complete();
-        //         }
-        //     });
-        // })
-
-        // geocoder.geocode({ 'address': address }, function (results, status) {
-        //     if (status == google.maps.GeocoderStatus.OK) {
-        //         that.lat = results[0].geometry.location.lat();
-        //         that.lng = results[0].geometry.location.lng();
-
-        //         that.mapdata.next({
-        //             data: {
-        //                 center: { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() },
-        //                 zoom: 12
-        //             }
-        //         });
-        //     }
-        // });
-
-        commonfun.loaderhide();
     }
 
     handleMapClick(event) {
@@ -142,8 +104,7 @@ export class CreateOrderComponent implements OnInit {
 
         that._ordservice.getOrderDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.outletDT = data.data; //.filter(a => a.typ === "outlet");
-                //that.riderDT = data.data.filter(a => a.typ === "rider");
+                that.outletDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

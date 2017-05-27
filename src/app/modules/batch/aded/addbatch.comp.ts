@@ -37,7 +37,6 @@ export class AddBatchComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _batchervice: BatchService) {
         this.loginUser = this._loginservice.getUser();
-        this.getWeekList();
     }
 
     public ngOnInit() {
@@ -72,13 +71,14 @@ export class AddBatchComponent implements OnInit {
     selectEntityData(event, type) {
         this.entityid = event.value;
         this.entityname = event.label;
+        this.getWeekList();
     }
 
     getWeekList() {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._batchervice.getBatchDetails({ "flag": "dropdown", "schid": that.entityid }).subscribe(data => {
             try {
                 that.weekDT = data.data;
             }
@@ -198,6 +198,7 @@ export class AddBatchComponent implements OnInit {
                         that.batchname = data.data[0].batchname;
                         that.entityid = data.data[0].schoolid;
                         that.entityname = data.data[0].schoolname;
+                        that.getWeekList();
                         that.fromtime = data.data[0].fromtime;
                         that.totime = data.data[0].totime;
                         that.instruction = data.data[0].instruction;

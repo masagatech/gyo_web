@@ -7,10 +7,10 @@ export class OrderService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     getOrderDetails(req: any) {
-        return this._dataserver.post("getOrderDetails", req)
+        return this._dataserver.post("mrcht/getOrderDetails", req)
     }
 
     saveOrderInfo(req: any) {
-        return this._dataserver.post("saveOrderInfo", req)
+        return this._dataserver.post("mrcht/saveOrderInfo", req)
     }
 }

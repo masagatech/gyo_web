@@ -113,11 +113,11 @@ export class ViewHolidayComponent implements OnInit {
             editRights = data.data.filter(a => a.mrights === "edit");
             viewRights = data.data.filter(a => a.mrights === "view");
 
-            console.log("addRights : " + addRights);
-
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+
+            that.getHolidayGrid();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -141,8 +141,7 @@ export class ViewHolidayComponent implements OnInit {
 
                 commonfun.loaderhide();
             }, err => {
-                //that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
+                that._msg.Show(messageType.error, "Error", err);
                 commonfun.loaderhide();
             }, () => {
 
@@ -150,11 +149,21 @@ export class ViewHolidayComponent implements OnInit {
         }
     }
 
+    fetchEvents(eventData) {
+        console.log("fetchEvents:", eventData.view, eventData.element);
+    }
+
     getHolidayCalendar(row) {
         var that = this;
         commonfun.loader();
 
-        that._holidayervice.getHoliday({ "flag": "calendar", "monthname": row.view.title }).subscribe(data => {
+        console.log(row);
+        console.log(row.view.title);
+
+        that._holidayervice.getHoliday({
+            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "schid": 1, "monthname": row.view.title
+        }).subscribe(data => {
             try {
                 that.events = data.data;
             }
@@ -165,11 +174,11 @@ export class ViewHolidayComponent implements OnInit {
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
             commonfun.loaderhide();
         }, () => {
 
         })
+
         that.refreshButtons();
     }
 
@@ -190,11 +199,11 @@ export class ViewHolidayComponent implements OnInit {
         this._router.navigate(['/holiday/add']);
     }
 
-    public editGridHoliday(row) {
+    public editHolidayGrid(row) {
         this._router.navigate(['/holiday/edit', row.hldid]);
     }
 
-    public editCalendarHoliday(row) {
+    public editHolidayCalendar(row) {
         this._router.navigate(['/holiday/edit', row.calEvent.id]);
     }
 }

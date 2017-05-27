@@ -2,13 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PickDropService } from '../../_services/pickdrop/pickdrop-service';
 import { CommonService } from '../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../_services/messages/message-service';
+import { MenuService } from '../../_services/menus/menu-service';
 import { LoginService } from '../../_services/login/login-service';
 import { LoginUserModel } from '../../_model/user_model';
+import { EntityService } from '../../_services/entity/entity-service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     templateUrl: 'viewpd.comp.html',
-    providers: [PickDropService, CommonService]
+    providers: [MenuService, PickDropService, EntityService, CommonService]
 })
 
 export class ChangeScheduleComponent implements OnInit {
@@ -18,6 +20,7 @@ export class ChangeScheduleComponent implements OnInit {
     header: any;
     event: MyEvent;
     defaultDate: string = "";
+    actviewrights: string = "";
 
     ownersDT: any = [];
     ownerid: number = 0;
@@ -49,6 +52,8 @@ export class ChangeScheduleComponent implements OnInit {
     vehicleDT: any = [];
 
     entityid: number = 0;
+    entityname: string = "";
+
     batchid: number = 0;
     pickautoid: number = 0;
     pickdriverid: number = 0;
@@ -65,9 +70,10 @@ export class ChangeScheduleComponent implements OnInit {
     dropfromdate: any = "";
     droptodate: any = "";
 
-    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _entityservice: EntityService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this.viewHolidayDataRights();
         this.getDefaultDate();
     }
 
@@ -89,13 +95,20 @@ export class ChangeScheduleComponent implements OnInit {
         };
     }
 
-    // Selected Calendar Date
+    public viewHolidayDataRights() {
+        var that = this;
+        var viewRights = [];
 
-    getPDDate(event) {
-        this.pickfromdate = this.formatDate(event.date);
-        this.picktodate = this.formatDate(event.date);
-        this.dropfromdate = this.formatDate(event.date);
-        this.droptodate = this.formatDate(event.date);
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "hld", "utype": that.loginUser.utype
+        }).subscribe(data => {
+            viewRights = data.data.filter(a => a.mrights === "view");
+            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        })
     }
 
     // Format Date
@@ -116,6 +129,40 @@ export class ChangeScheduleComponent implements OnInit {
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         this.defaultDate = this.formatDate(today);
+    }
+
+    // Selected Calendar Date
+
+    getPDDate(event) {
+        this.pickfromdate = this.formatDate(event.date);
+        this.picktodate = this.formatDate(event.date);
+        this.dropfromdate = this.formatDate(event.date);
+        this.droptodate = this.formatDate(event.date);
+    }
+
+    getHolidayCalendar() {
+        var that = this;
+
+        //if (that.actviewrights === "view") {
+        commonfun.loader();
+
+        that._entityservice.getEntityDetails({ "flag": "holiday", "id": that.entityid }).subscribe(data => {
+            try {
+                that.events = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+        //}
     }
 
     // Auto Completed Co-ordinator / Attendent
@@ -146,6 +193,31 @@ export class ChangeScheduleComponent implements OnInit {
         }).then((data) => {
             this.passengerDT = data;
         });
+    }
+
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "ownerwiseentity",
+            "oid": this.ownerid,
+            "search": query
+        }).then((data) => {
+            this.entityDT = data;
+        });
+    }
+
+    // Selected Owners
+
+    selectEntityData(event, type) {
+        this.entityid = event.schid;
+        this.entityname = event.schnm;
+
+        this.fillBatchDropDown();
+        this.getHolidayCalendar();
+        this.getPassengerData(event);
     }
 
     // Get Selected Auto Completed Data
