@@ -22,7 +22,8 @@
                         <label class="control-label">Co-ordinator Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" [tabindex]="1" (onSelect)="selectAutoData($event, 'owner')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'coord')" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
+                                <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" (onSelect)="selectAutoData($event, 'owner')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'coord')" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"
+                                    [tabindex]="1"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>

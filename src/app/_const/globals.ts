@@ -1,11 +1,8 @@
-export class Globals{
- serviceurl : string = "http://localhost:8082/goyoapi/";
+export class Globals {
+    // serviceurl: string = "http://localhost:8082/goyoapi/";
+    serviceurl: string = "http://35.154.230.244:8082/goyoapi/";
 
-    // serviceurl : string = "http://35.154.230.244:8082/goyoapi/";
-    
-    otherurl : string = "http://35.154.27.42:8081/goyoapi/";
+    static socketurl: string = "http://35.154.230.244:8082/";
 
-    // serviceurl : string = "http://localhost:27301/ServiceERP.svc/JSON/";
-
-    // serviceurl : string = "http://192.168.1.104/erpservice/ServiceERP.svc/JSON/";
+    otherurl: string = "http://35.154.27.42:8081/goyoapi/";
 }

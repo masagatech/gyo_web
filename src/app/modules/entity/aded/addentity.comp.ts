@@ -107,8 +107,12 @@ export class AddEntityComponent implements OnInit {
         for (var i = 0; i < this.contactDT.length; i++) {
             var field = this.contactDT[i];
 
-            if ((field.cpname == this.cpname) && (field.contactno == this.cpmobile) && (field.email == this.cpemail)) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Contact not Allowed");
+            if (field.cpcontactno == this.cpmobile) {
+                this._msg.Show(messageType.error, "Error", "Duplicate Contact No not Allowed");
+                return true;
+            }
+            if (field.cpemail == this.cpemail) {
+                this._msg.Show(messageType.error, "Error", "Duplicate Email not Allowed");
                 return true;
             }
         }

@@ -40,7 +40,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Code <strong *ngIf="schcd == ''">*</strong></label>
+                                <label class="control-label">Entity Code <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" />
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Name <strong *ngIf="schnm == ''">*</strong></label>
+                                <label class="control-label">Entity Name <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schnm" class="form-control schnm" maxlength="200" />
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Vehicles (How Many) <strong *ngIf="schvehs == ''">*</strong></label>
+                                <label class="control-label">Entity Vehicles (How Many) <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schvehs" class="form-control schvehs" maxlength="5" />
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Operator Vehicles (How Many) <strong *ngIf="oprvehs == ''">*</strong></label>
+                                <label class="control-label">Operator Vehicles (How Many) <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="oprvehs" class="form-control oprvehs" maxlength="5" />
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Address <strong *ngIf="address == ''">*</strong></label>
+                                <label class="control-label">Address <strong>*</strong></label>
                                 <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" (keydown.tab)="getLatAndLong()"></textarea>
                             </div>
                         </div>

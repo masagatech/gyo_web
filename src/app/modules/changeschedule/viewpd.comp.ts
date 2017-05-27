@@ -188,7 +188,7 @@ export class ChangeScheduleComponent implements OnInit {
         for (var i = 0; i < that.pickPassengerDT.length; i++) {
             var field = that.pickPassengerDT[i];
 
-            if (field.schid == this.entityid) {
+            if (field.stdid == this.pickpassengerid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate Passenger not Allowed");
                 return true;
             }
@@ -228,7 +228,7 @@ export class ChangeScheduleComponent implements OnInit {
         for (var i = 0; i < that.dropPassengerDT.length; i++) {
             var field = that.dropPassengerDT[i];
 
-            if (field.schid == this.entityid) {
+            if (field.stdid == this.droppassengerid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate Passenger not Allowed");
                 return true;
             }
@@ -246,7 +246,8 @@ export class ChangeScheduleComponent implements OnInit {
         if (!duplicatepassenger) {
             that.dropPassengerDT.push({
                 "counter": that.counter++,
-                "stdid": that.droppassengerid
+                "stdid": that.droppassengerid,
+                "stdnm": that.droppassengername,
             });
         }
 

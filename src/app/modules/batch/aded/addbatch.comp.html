@@ -20,7 +20,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Batch Code <strong *ngIf="batchcode == ''">*</strong></label>
+                                <label class="control-label">Batch Code <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="batchcode" class="form-control batchcode" />
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Batch Name <strong *ngIf="batchname == ''">*</strong></label>
+                                <label class="control-label">Batch Name <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="batchname" class="form-control batchname" />
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Name <strong *ngIf="entityname == ''">*</strong></label>
+                                <label class="control-label">Entity Name <strong>*</strong></label>
                                 <div class="row clearfix">
                                     <div class="col-md-10">
                                         <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
@@ -54,7 +54,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">From Time <strong *ngIf="fromtime == ''">*</strong></label>
+                                <label class="control-label">From Time <strong>*</strong></label>
                                 <input type="time" [(ngModel)]="fromtime" class="form-control" />
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">To Time <strong *ngIf="totime == ''">*</strong></label>
+                                <label class="control-label">To Time <strong>*</strong></label>
                                 <input type="time" [(ngModel)]="totime" class="form-control" />
                             </div>
                         </div>
@@ -82,7 +82,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Select Week <strong *ngIf="!weekDT.length">*</strong></label>
+                    <label class="control-label">Select Week <strong>*</strong></label>
                     <div *ngFor="let week of weekDT">
                         <div class="form-line">
                             <p-checkbox name="{{week.key}}" value="{{week.key}}" label="{{week.val}}" [(ngModel)]="selectedWeek"></p-checkbox>

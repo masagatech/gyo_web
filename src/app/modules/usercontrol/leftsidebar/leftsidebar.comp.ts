@@ -38,9 +38,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        setTimeout(function () {
-            $.AdminBSB.leftSideBar.activate();
-        }, 100);
+
     }
 
     public getMainMenuList() {
@@ -50,6 +48,9 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
             "flag": "main", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.mainMenuDT = data.data;
+            setTimeout(function () {
+                $.AdminBSB.leftSideBar.activate();
+            }, 100);
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
