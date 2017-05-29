@@ -37,5 +37,5 @@ export const routes = [
 })
 
 export class OrderDashboardModule {
-  public static routes = routes;
+  
 }
