@@ -20,8 +20,8 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: '', loadChildren: './entity#EntityModule' },
-                    { path: '', loadChildren: './outlet#OutletModule' },
+                    { path: 'entity', loadChildren: './entity#EntityModule' },
+                    { path: 'outlet', loadChildren: './outlet#OutletModule' },
                     { path: '', loadChildren: './order#OrderModule' },
                 ]
             }
