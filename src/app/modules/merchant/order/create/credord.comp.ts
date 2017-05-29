@@ -4,8 +4,8 @@ import { MessageService, messageType } from '../../../../_services/messages/mess
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
 import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
-import { OrderService } from '../../../../_services/order/ord-service';
-import { Globals } from '../../../_const/globals';
+import { OrderService } from '../../../../_services/merchant/order/ord-service';
+import { Globals } from '../../../../_const/globals';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
@@ -30,10 +30,10 @@ export class CreateOrderComponent implements OnInit {
     custname: string = "";
     custmobile: string = "";
     custaddr: string = "";
-    lat: string = "";
-    lng: string = "";
+    lat: string = "0.00";
+    lng: string = "0.00";
     deltime: any = "";
-    amtcollect: any = "";
+    amtcollect: any = "0";
     remark: string = "";
 
     mode: string = "";
@@ -59,11 +59,9 @@ export class CreateOrderComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService) {
         this.fillDropDownList();
-        // this.getLatAndLong();
     }
 
     public ngOnInit() {
-        this.getLatAndLong();
         this.getOrderDetails();
     }
 
@@ -74,9 +72,9 @@ export class CreateOrderComponent implements OnInit {
         commonfun.loader();
 
         var geocoder = new google.maps.Geocoder();
-        var address = "Chakkinaka, Kalyan (E)";
+        // var address = "Chakkinaka, Kalyan (E)";
 
-        geocoder.geocode({ 'address': that.custaddr == "" ? address : that.custaddr }, function (results, status) {
+        geocoder.geocode({ 'address': that.custaddr }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 that.lat = results[0].geometry.location.lat();
                 that.lng = results[0].geometry.location.lng();
@@ -112,7 +110,7 @@ export class CreateOrderComponent implements OnInit {
 
             commonfun.loaderhide();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {
@@ -147,19 +145,11 @@ export class CreateOrderComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
             // console.log("Complete");
         });
-    }
-
-    // Clear Fields
-
-    resetOrderFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("0");
-        this.orderDetailsDT = [];
     }
 
     // Add Order getOrderDetails
@@ -167,83 +157,119 @@ export class CreateOrderComponent implements OnInit {
     addOrderDetails() {
         var that = this;
 
-        that.orderDetailsDT.push({
-            "orddid": "0",
-            "ordno": that.ordno,
-            "custname": that.custname,
-            "custmobile": that.custmobile,
-            "custaddr": that.custaddr,
-            "lat": that.lat,
-            "lng": that.lng,
-            "addrloc": that.lat + "," + that.lng,
-            "amtcollect": that.amtcollect,
-            "deltime": that.deltime,
-            "remark": that.remark
-        })
+        if (that.ordno == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Order No");
+            $(".ordno").focus();
+        }
+        else if (that.custmobile == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
+            $(".custmobile").focus();
+        }
+        else if (that.custname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Customer Name");
+            $(".custname").focus();
+        }
+        else if (that.custaddr == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Address");
+            $(".custaddr").focus();
+        }
+        else if (that.deltime == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Delivery Time");
+            $(".deltime").focus();
+        }
+        else {
+            that.orderDetailsDT.push({
+                "orddid": "0",
+                "ordno": that.ordno,
+                "custmobile": that.custmobile,
+                "custname": that.custname,
+                "custaddr": that.custaddr,
+                "lat": that.lat,
+                "lng": that.lng,
+                "addrloc": that.lat + "," + that.lng,
+                "amtcollect": that.amtcollect,
+                "deltime": that.deltime,
+                "remark": that.remark
+            })
 
-        that.ordno = "";
-        that.custname = "";
-        that.custmobile = "";
-        that.custaddr = "";
-        that.lat = "";
-        that.lng = "";
-        that.amtcollect = "";
-        that.deltime = "";
+            that.ordno = "";
+            that.custname = "";
+            that.custmobile = "";
+            that.custaddr = "";
+            that.lat = "";
+            that.lng = "";
+            that.amtcollect = "";
+            that.deltime = "";
+        }
     }
 
     // Save Data
 
     saveOrderInfo() {
         var that = this;
-        commonfun.loader();
 
         if (that.olid === 0) {
             that._msg.Show(messageType.error, "Error", "Enter Outlet");
+            $(".olid").focus();
         }
-
-        var saveord = {
-            "ordid": that.ordid,
-            "olid": that.olid,
-            "deldate": that.deldate,
-            "picktime": that.picktime,
-            "orddtls": that.orderDetailsDT,
-            "cuid": "vivek",
-            "isactive": that.isactive,
-            "mode": ""
+        else if (that.deldate == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Delivery Date");
+            $(".deldate").focus();
         }
+        else if (that.picktime == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Pick Up Time");
+            $(".deldate").focus();
+        }
+        else if (that.orderDetailsDT.length === 0) {
+            that._msg.Show(messageType.error, "Error", "Fill atleast 1 Order Details");
+        }
+        else {
+            commonfun.loader();
 
-        this._ordservice.saveOrderInfo(saveord).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_orderinfo.msg;
-                var msgid = dataResult[0].funsave_orderinfo.msgid;
+            var saveord = {
+                "ordid": that.ordid,
+                "olid": that.olid,
+                "deldate": that.deldate,
+                "picktime": that.picktime,
+                "orddtls": that.orderDetailsDT,
+                "cuid": that.loginUser.ucode,
+                "isactive": that.isactive,
+                "mode": ""
+            }
 
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
+            this._ordservice.saveOrderInfo(saveord).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    var msg = dataResult[0].funsave_orderinfo.msg;
+                    var msgid = dataResult[0].funsave_orderinfo.msgid;
 
-                    if (msgid === "1") {
-                        that.resetOrderFields();
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid === "1") {
+                            that.resetOrderFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
                     }
                     else {
-                        that.backViewData();
+                        that._msg.Show(messageType.error, "Error", msg);
                     }
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
 
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
                 commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get ord Data
@@ -288,6 +314,46 @@ export class CreateOrderComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
+    }
+
+    // Clear Fields
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    resetOrderFields() {
+        var date = new Date();
+        var currdate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        var currtime = new Date().toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: "numeric",
+            minute: "numeric"
+        });
+
+        this.olid = 0;
+        this.deldate = this.formatDate(currdate);
+        this.picktime = currtime;
+        this.ordno = "";
+        this.custmobile = "";
+        this.custname = "";
+        this.custaddr = "";
+        this.lat = "0.00";
+        this.lng = "0.00";
+        this.amtcollect = "0";
+        this.deltime = currtime;
+        this.remark = "";
+
+        this.orderDetailsDT = [];
     }
 
     // Back For View Data

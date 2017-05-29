@@ -7,9 +7,8 @@ import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { CreateOrderComponent } from './create/credord.comp';
 import { TrackOrderComponent } from './track/trackord.comp';
 import { ViewOrderComponent } from './view/vieword.comp';
-import { DataGridModule } from './datagrid';
 
-import { OrderService } from '../../../_services/order/ord-service';
+import { OrderService } from '../../../_services/merchant/order/ord-service';
 
 import { LazyLoadEvent, DataTableModule, SelectButtonModule, GMapModule } from 'primeng/primeng';
 
@@ -32,8 +31,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, SelectButtonModule, GMapModule,
-    DataGridModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, SelectButtonModule, GMapModule
   ],
 
   providers: [OrderService]

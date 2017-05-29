@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
-    templateUrl: 'murchant.comp.html'
+    templateUrl: 'merchant.comp.html'
 })
 
-export class MurchantComponent implements OnDestroy {
+export class MerchantComponent implements OnDestroy {
     constructor() {
 
     }

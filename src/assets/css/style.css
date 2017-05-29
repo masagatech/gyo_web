@@ -6919,7 +6919,10 @@ section.content {
     -moz-border-radius: 0;
     -ms-border-radius: 0;
     border-radius: 0;
-    padding-left: 0;
+    padding-left: 5px;
+    height: 25px;
+    padding: 2px 12px;
+    font-size: 12px;
 }
 
 .form-group .help-info {
@@ -6940,7 +6943,7 @@ section.content {
 .form-group .form-line {
     width: 100%;
     position: relative;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #efefef;
 }
 
 .form-group .form-line:after {
@@ -6975,9 +6978,11 @@ section.content {
 }
 
 .form-group .control-label {
-    font-size: 12px;
-    color: rgba(132, 132, 132, 0.68);
-    font-weight: bold;
+    font-size: 11px;
+    color: rgb(154, 154, 154);
+    font-weight: normal;
+    /* background-color: #f44336; */
+    padding-left: 6px;
 }
 
 .form-group .control-label strong {
@@ -11874,6 +11879,9 @@ body.waitMe_body .waitMe_container.text>div {
 .form-controlAutoComplete input {
     border: none!important;
     width: 100%;
+    height: 25px;
+    padding: 2px 12px;
+    font-size: 12px!important;
 }
 
 .form-controlAutoComplete ul {
@@ -11961,4 +11969,12 @@ body.waitMe_body .waitMe_container.text>div {
 .def-box {
     padding: 10px;
     border-bottom: 1px solid #ccc;
+}
+
+.form-group {
+    margin-bottom: 11px!important;
+}
+
+.form-group .material-icons {
+    font-size: 16px!important;
 }

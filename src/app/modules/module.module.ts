@@ -67,8 +67,8 @@ export const routes = [
                     { path: 'createschedule', loadChildren: './createschedule#CreateScheduleModule' },
                     { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' },
 
-                    // murchant
-                    { path: 'murchant', loadChildren: './murchant#MurchantModule' },
+                    // merchant
+                    { path: 'merchant', loadChildren: './merchant#MerchantModule' },
                 ]
             }
         ]

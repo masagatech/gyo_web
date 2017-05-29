@@ -18,8 +18,8 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Outlet Name</label>
-                        <select [(ngModel)]="olid" class="form-control">
+                        <label class="control-label">Outlet Name <strong>*</strong></label>
+                        <select [(ngModel)]="olid" class="form-control olid">
                             <option [value]="0">Select Outlet</option>
                             <option *ngFor="let row of outletDT" [value]="row.key">
                                 {{row.val}}
@@ -31,49 +31,39 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Delivery Date</label>
-                        <input type="date" [(ngModel)]="deldate" class="form-control" maxlength="20" />
+                        <label class="control-label">Delivery Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="deldate" class="form-control deldate" maxlength="20" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Pick Up Time</label>
-                        <input type="time" [(ngModel)]="picktime" class="form-control" maxlength="5" />
+                        <label class="control-label">Pick Up Time <strong>*</strong></label>
+                        <input type="time" [(ngModel)]="picktime" class="form-control picktime" maxlength="5" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="header">
-        <h4>Order Details</h4>
-    </div>
-
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Order No</label>
-                        <input type="text" [(ngModel)]="ordno" class="form-control" maxlength="10" />
-                    </div>
-                </div>
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Customer Name</label>
-                                <input type="text" [(ngModel)]="custname" class="form-control" maxlength="100" />
+                                <label class="control-label">Order No <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="ordno" class="form-control ordno" maxlength="10" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Mobile No</label>
-                                <input type="text" [(ngModel)]="custmobile" class="form-control" maxlength="10" />
+                                <label class="control-label">Mobile No <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="custmobile" class="form-control custmobile" maxlength="10" />
                             </div>
                         </div>
                     </div>
@@ -83,7 +73,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Amount to be Collected</label>
-                                <input type="number" [(ngModel)]="amtcollect" class="form-control" maxlength="20" />
+                                <input type="number" [(ngModel)]="amtcollect" class="form-control text-right" maxlength="20" />
                             </div>
                         </div>
                     </div>
@@ -91,17 +81,29 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Delivery Time</label>
-                                <input type="time" [(ngModel)]="deltime" class="form-control" maxlength="20" />
+                                <input type="time" [(ngModel)]="deltime" class="form-control deltime" maxlength="20" />
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea cols="10" rows="5" [(ngModel)]="remark" class="form-control no-resize"></textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Address</label>
-                        <textarea type="text" [(ngModel)]="custaddr" class="form-control no-resize auto-growth" rows="5" cols="10" maxlength="500" (keydown.tab)="getLatAndLong()"></textarea>
+                        <label class="control-label">Customer Name <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="custname" class="form-control custname" maxlength="100" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Address <strong>*</strong></label>
+                        <textarea type="text" [(ngModel)]="custaddr" class="form-control no-resize auto-growth custaddr" rows="5" cols="10" maxlength="500" (keydown.tab)="getLatAndLong()"></textarea>
                     </div>
                 </div>
                 <div class="row clearfix">
@@ -126,12 +128,6 @@
             <!--<div class="col-md-6">
                 <p-gmap #gmap [style]="{'width':'100%','height':'280px'}" [options]="options" [overlays]="overlays" (onMapClick)="handleMapClick($event)"></p-gmap>
             </div>-->
-        </div>
-        <div class="form-group">
-            <div class="form-line">
-                <label class="control-label">Remark</label>
-                <textarea cols="10" rows="5" [(ngModel)]="remark" class="form-control no-resize"></textarea>
-            </div>
         </div>
 
         <div class="row clearfix">

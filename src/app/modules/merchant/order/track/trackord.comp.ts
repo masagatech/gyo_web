@@ -5,7 +5,7 @@ import { MenuService } from '../../../../_services/menus/menu-service';
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
 import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { OrderService } from '../../../../_services/order/ord-service';
+import { OrderService } from '../../../../_services/merchant/order/ord-service';
 import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
 
 @Component({
