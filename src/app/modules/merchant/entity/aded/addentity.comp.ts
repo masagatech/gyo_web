@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { EntityService } from '../../../../_services/merchant/entity/entity-service';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { EntityService } from '@services/merchant';
+import { LoginUserModel } from '@models';
 import { Globals } from '../../../../_const/globals';
 
 declare var $: any;

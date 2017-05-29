@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { MenuService } from '../../../../_services/menus/menu-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { OrderService } from '../../../../_services/merchant/order/ord-service';
+import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
+import { OrderService } from '@services/merchant';
+import { LoginUserModel } from '@models';
 import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
 
 @Component({

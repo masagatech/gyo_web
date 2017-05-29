@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { OutletService } from '../../../../_services/merchant/outlet/outlet-service';
+import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
+import { OutletService } from '@services/merchant';
+import { LoginUserModel } from '@models';
 import { Globals } from '../../../../_const/globals';
 import { LazyLoadEvent } from 'primeng/primeng';
 
@@ -44,7 +42,7 @@ export class AddOutletComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "entity",
+            "flag": "mrchtentt",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
@@ -94,8 +92,8 @@ export class AddOutletComponent implements OnInit {
             that._outletervice.saveOutletInfo(saveoutlet).subscribe(data => {
                 try {
                     var dataResult = data.data;
-                    var msg = dataResult[0].funsave_outlet.msg;
-                    var msgid = dataResult[0].funsave_outlet.msgid;
+                    var msg = dataResult[0].funsave_outletinfo.msg;
+                    var msgid = dataResult[0].funsave_outletinfo.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -142,6 +140,7 @@ export class AddOutletComponent implements OnInit {
                         that.olid = data.data[0].olid;
                         that.olnm = data.data[0].olnm;
                         that.enttid = data.data[0].enttid;
+                        that.enttnm = data.data[0].enttnm;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
@@ -166,6 +165,6 @@ export class AddOutletComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/outlet']);
+        this._router.navigate(['/merchant/outlet']);
     }
 }

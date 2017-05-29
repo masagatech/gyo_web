@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
-import { OrderService } from '../../../../_services/merchant/order/ord-service';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { OrderService } from '@services/merchant';
+import { LoginUserModel } from '@models';
 import { Globals } from '../../../../_const/globals';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
@@ -272,7 +270,7 @@ export class CreateOrderComponent implements OnInit {
         }
     }
 
-    // Get ord Data
+    // Get Order Data
 
     getOrderDetails() {
         var that = this;
@@ -316,6 +314,33 @@ export class CreateOrderComponent implements OnInit {
         });
     }
 
+    // Get Order Data
+
+    getCustDetails() {
+        var that = this;
+        commonfun.loader();
+
+        that._ordservice.getOrderDetails({ "flag": "existscustmobile", "custmobile": that.custmobile }).subscribe(data => {
+            try {
+                that.custname = data.data[0].custname;
+                that.custaddr = data.data[0].custaddr;
+                that.lat = data.data[0].lat;
+                that.lng = data.data[0].lon;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Clear Fields
 
     formatDate(date) {
@@ -330,11 +355,26 @@ export class CreateOrderComponent implements OnInit {
         return [year, month, day].join('-');
     }
 
+    getDeliveryTime() {
+        var currdate = new Date(this.deldate + " " + this.deltime);
+        console.log(currdate);
+
+        var after30minutes = new Date(currdate.getFullYear(), currdate.getMonth(), currdate.getDate(), currdate.getHours(), currdate.getMinutes() + 30, currdate.getSeconds());
+
+        var after30minutestime = after30minutes.toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: "numeric",
+            minute: "numeric"
+        });
+        
+        this.deltime = after30minutestime;
+    }
+
     resetOrderFields() {
         var date = new Date();
-        var currdate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        var currdate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
 
-        var currtime = new Date().toLocaleTimeString('en-US', {
+        var currtime = currdate.toLocaleTimeString('en-US', {
             hour12: false,
             hour: "numeric",
             minute: "numeric"
@@ -343,6 +383,16 @@ export class CreateOrderComponent implements OnInit {
         this.olid = 0;
         this.deldate = this.formatDate(currdate);
         this.picktime = currtime;
+
+        var getminutes = new Date(currdate).getMinutes() + 30;
+        var after30minutes = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), getminutes, date.getSeconds());
+
+        var after30minutestime = after30minutes.toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: "numeric",
+            minute: "numeric"
+        });
+
         this.ordno = "";
         this.custmobile = "";
         this.custname = "";
@@ -350,7 +400,7 @@ export class CreateOrderComponent implements OnInit {
         this.lat = "0.00";
         this.lng = "0.00";
         this.amtcollect = "0";
-        this.deltime = currtime;
+        this.deltime = after30minutestime;
         this.remark = "";
 
         this.orderDetailsDT = [];
@@ -359,6 +409,6 @@ export class CreateOrderComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/ord']);
+        this._router.navigate(['/merchant/vieworder']);
     }
 }

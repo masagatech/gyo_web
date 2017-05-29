@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Mobile No <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="custmobile" class="form-control custmobile" maxlength="10" />
+                                <input type="text" [(ngModel)]="custmobile" class="form-control custmobile" maxlength="10" (keydown.enter)="getCustDetails()" (keydown.tab)="getCustDetails()" />
                             </div>
                         </div>
                     </div>

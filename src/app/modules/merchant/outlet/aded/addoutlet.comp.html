@@ -22,7 +22,7 @@
                         <label class="control-label">Entity <strong>*</strong></label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="enttnm" name="enttnm" [(ngModel)]="enttnm" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                                <p-autoComplete id="enttnm" name="enttnm" [(ngModel)]="enttnm" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Outlet Name <strong>*</strong></label>
-                        <input type="text" [(ngModel)]="olnm" class="form-control olnm" />
+                        <input type="text" [(ngModel)]="olnm" class="form-control olnm" tabindex="2" />
                     </div>
                 </div>
             </div>

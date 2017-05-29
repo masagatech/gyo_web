@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { MenuService } from '../../../../_services/menus/menu-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { OutletService } from '../../../../_services/merchant/outlet/outlet-service';
+import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
+import { OutletService } from '@services/merchant';
+import { LoginUserModel } from '@models';
 
 @Component({
     templateUrl: 'viewoutlet.comp.html',
@@ -42,7 +39,7 @@ export class ViewOutletComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "entity",
+            "flag": "mrchtentt",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
@@ -67,18 +64,6 @@ export class ViewOutletComponent implements OnInit {
         }, 0);
     }
 
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
     public viewOutletDataRights() {
         var that = this;
         var addRights = [];
@@ -95,8 +80,6 @@ export class ViewOutletComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getOutletGrid();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -137,6 +120,6 @@ export class ViewOutletComponent implements OnInit {
     }
 
     public editOutletGrid(row) {
-        this._router.navigate(['/merchant/outlet/edit', row.hldid]);
+        this._router.navigate(['/merchant/outlet/edit', row.olid]);
     }
 }
