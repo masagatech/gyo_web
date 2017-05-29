@@ -5,9 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 
 import { ViewComponent } from './view/view.comp';
-import { DataGridModule } from './datagrid';
-
-import { OrderService } from '../../../_services/order/ord-service';
+import { OrderService } from '@services/merchant'
 
 import { LazyLoadEvent, DataTableModule, SelectButtonModule, GMapModule } from 'primeng/primeng';
 
@@ -29,8 +27,7 @@ export const routes = [
      SharedComponentModule,
       RouterModule.forChild(routes), 
       DataTableModule,
-     SelectButtonModule, GMapModule,
-    DataGridModule
+     SelectButtonModule, GMapModule
   ],
 
   providers: [OrderService]
