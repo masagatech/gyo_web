@@ -3,14 +3,14 @@ import { DataService } from '../../dataconnect';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class EntityService {
+export class MerchantService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getEntityDetails(req: any) {
-        return this._dataserver.post("getSchoolDetails", req)
+    getMerchantDetails(req: any) {
+        return this._dataserver.post("mrcht/getMerchantDetails", req)
     }
 
-    saveEntityInfo(req: any) {
-        return this._dataserver.post("saveSchoolInfo", req)
+    saveMerchantInfo(req: any) {
+        return this._dataserver.post("mrcht/saveMerchantInfo", req)
     }
 }

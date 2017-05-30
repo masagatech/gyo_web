@@ -1,39 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { EntityService } from '@services/merchant';
+import { MerchantService } from '@services/merchant';
 import { LoginUserModel } from '@models';
-import { Globals } from '../../../../_const/globals';
 
 declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addentity.comp.html',
-    providers: [EntityService]
+    templateUrl: 'addmrcht.comp.html'
 })
 
-export class AddEntityComponent implements OnInit {
+export class AddMerchantComponent implements OnInit {
     loginUser: LoginUserModel;
 
-    enttid: number = 0;
-    enttnm: string = "";
+    mrchtid: number = 0;
+    mrchtnm: string = "";
 
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _entityservice: EntityService) {
+        private _mrchtservice: MerchantService) {
         this.loginUser = this._loginservice.getUser();
     }
 
     public ngOnInit() {
         var that = this;
-        this.getEntityDetails();
+        this.getMerchantDetails();
     }
 
     // Clear Fields
 
-    resetEntityFields() {
+    resetMerchantFields() {
         $("input").val("");
         $("textarea").val("");
         $("select").val("");
@@ -41,19 +39,19 @@ export class AddEntityComponent implements OnInit {
 
     // Save Data
 
-    saveEntityInfo() {
+    saveMerchantInfo() {
         
     }
 
-    // Get Entity Data
+    // Get Merchant Data
 
-    getEntityDetails() {
+    getMerchantDetails() {
         
     }
 
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/merchant/entity']);
+        this._router.navigate(['/merchant']);
     }
 }

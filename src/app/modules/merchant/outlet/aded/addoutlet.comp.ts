@@ -4,7 +4,6 @@ import { MessageService, messageType, MenuService, LoginService, CommonService }
 import { OutletService } from '@services/merchant';
 import { LoginUserModel } from '@models';
 import { Globals } from '../../../../_const/globals';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 declare var commonfun: any;
@@ -20,9 +19,9 @@ export class AddOutletComponent implements OnInit {
     olid: number = 0;
     olnm: string = "";
 
-    entityDT: any = [];
-    enttid: number = 0;
-    enttnm: string = "";
+    mrchtDT: any = [];
+    mrchtid: number = 0;
+    mrchtnm: string = "";
 
     private subscribeParameters: any;
 
@@ -36,26 +35,26 @@ export class AddOutletComponent implements OnInit {
         this.getOutletDetails();
     }
 
-    // Auto Completed Entity
+    // Auto Completed Merchant
 
-    getEntityData(event) {
+    getMerchantData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "mrchtentt",
+            "flag": "mrcht",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
         }).then((data) => {
-            this.entityDT = data;
+            this.mrchtDT = data;
         });
     }
 
     // Selected Owners
 
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttnm = event.label;
+    selectMerchantData(event) {
+        this.mrchtid = event.value;
+        this.mrchtnm = event.label;
     }
 
     // Clear Fields
@@ -71,8 +70,8 @@ export class AddOutletComponent implements OnInit {
     saveOutletInfo() {
         var that = this;
 
-        if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
+        if (that.mrchtid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Merchant Name");
             $(".enttnm input").focus();
         }
         else if (that.olnm == "") {
@@ -85,7 +84,7 @@ export class AddOutletComponent implements OnInit {
             var saveoutlet = {
                 "olid": that.olid,
                 "olnm": that.olnm,
-                "enttid": that.enttid,
+                "mrchtid": that.mrchtid,
                 "uid": that.loginUser.ucode
             }
 
@@ -139,8 +138,8 @@ export class AddOutletComponent implements OnInit {
                     try {
                         that.olid = data.data[0].olid;
                         that.olnm = data.data[0].olnm;
-                        that.enttid = data.data[0].enttid;
-                        that.enttnm = data.data[0].enttnm;
+                        that.mrchtid = data.data[0].mrchtid;
+                        that.mrchtnm = data.data[0].mrchtnm;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

@@ -56,6 +56,7 @@ export class CreateOrderComponent implements OnInit {
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService) {
+        this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
     }
 
@@ -223,6 +224,13 @@ export class CreateOrderComponent implements OnInit {
         }
         else {
             commonfun.loader();
+            console.log(that.orderDetailsDT);
+
+            var amt = 0;
+            var ordno = Object.keys(that.orderDetailsDT).map(function (k) {
+                amt += that.orderDetailsDT[k].amtcollect;
+                return that.orderDetailsDT[k].ordno;
+            })
 
             var saveord = {
                 "ordid": that.ordid,
@@ -231,6 +239,8 @@ export class CreateOrderComponent implements OnInit {
                 "picktime": that.picktime,
                 "orddtls": that.orderDetailsDT,
                 "cuid": that.loginUser.ucode,
+                "amt": amt,
+                "ordno": ordno,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -282,17 +292,15 @@ export class CreateOrderComponent implements OnInit {
 
                 that._ordservice.getOrderDetails({ "flag": "edit", "id": that.ordid }).subscribe(data => {
                     try {
-                        var _orddata = data.data[0]._orddata;
-                        var _attachdocs = data.data[0]._attachdocs;
+                        var _orddata = data.data[0];
 
-                        that.ordid = _orddata[0].ordid;
-                        that.ordno = _orddata[0].ordno;
-                        that.deldate = _orddata[0].deldate;
-                        that.deltime = _orddata[0].deltime;
-                        that.picktime = _orddata[0].picktime;
-                        that.amtcollect = _orddata[0].amtcollect;
-                        that.isactive = _orddata[0].isactive;
-                        that.mode = _orddata[0].mode;
+                        that.ordid = _orddata.ordid;
+                        that.olid = _orddata.olid;
+                        that.deldate = _orddata.deldate;
+                        that.picktime = _orddata.picktime;
+                        that.orderDetailsDT = _orddata.orddtls;
+                        // that.isactive = _orddata.isactive;
+                        // that.mode = _orddata.mode;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
@@ -366,7 +374,7 @@ export class CreateOrderComponent implements OnInit {
             hour: "numeric",
             minute: "numeric"
         });
-        
+
         this.deltime = after30minutestime;
     }
 

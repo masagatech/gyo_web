@@ -19,10 +19,10 @@
             <div class="col-md-6 border">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Entity <strong>*</strong></label>
+                        <label class="control-label">Merchant <strong>*</strong></label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="enttnm" name="enttnm" [(ngModel)]="enttnm" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                                <p-autoComplete id="mrchtnm" name="mrchtnm" [(ngModel)]="mrchtnm" [tabindex]="1" (onSelect)="selectMerchantData($event)" [suggestions]="merchantDT" (completeMethod)="getMerchantData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete mrchtnm"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>

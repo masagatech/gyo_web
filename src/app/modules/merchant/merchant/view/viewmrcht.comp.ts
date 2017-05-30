@@ -1,30 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { MenuService } from '../../../../_services/menus/menu-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { EntityService } from '../../../../_services/entity/entity-service';
+import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { MerchantService } from '@services/merchant';
+import { LoginUserModel } from '@models';
 
 @Component({
-    templateUrl: 'viewentity.comp.html',
-    providers: [MenuService, EntityService, CommonService]
+    templateUrl: 'viewmrcht.comp.html',
+    providers: [MenuService, CommonService]
 })
 
-export class ViewEntityComponent implements OnInit {
+export class ViewMerchantComponent implements OnInit {
     loginUser: LoginUserModel;
 
-    entityDT: any = [];
+    merchantDT: any = [];
 
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _entityervice: EntityService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _mrchtervice: MerchantService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewEntityDataRights();
+        this.viewMerchantDataRights();
     }
 
     public ngOnInit() {
@@ -39,14 +36,14 @@ export class ViewEntityComponent implements OnInit {
         }, 0);
     }
 
-    public viewEntityDataRights() {
+    public viewMerchantDataRights() {
         var that = this;
         var addRights = [];
         var editRights = [];
         var viewRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "ol", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "mrchtp", "utype": that.loginUser.utype
         }).subscribe(data => {
             addRights = data.data.filter(a => a.mrights === "add");
             editRights = data.data.filter(a => a.mrights === "edit");
@@ -56,7 +53,7 @@ export class ViewEntityComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            that.getEntityGrid();
+            that.getMerchantGrid();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -64,15 +61,15 @@ export class ViewEntityComponent implements OnInit {
         })
     }
 
-    getEntityGrid() {
+    getMerchantGrid() {
         var that = this;
 
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._entityervice.getEntityDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+            that._mrchtervice.getMerchantDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
                 try {
-                    that.entityDT = data.data;
+                    that.merchantDT = data.data;
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
@@ -92,11 +89,11 @@ export class ViewEntityComponent implements OnInit {
         console.log("fetchEvents:", eventData.view, eventData.element);
     }
 
-    public addentityForm() {
-        this._router.navigate(['/entity/add']);
+    public addMerchantForm() {
+        this._router.navigate(['/merchant/add']);
     }
 
-    public editentityGrid(row) {
-        this._router.navigate(['/entity/edit', row.hldid]);
+    public editMerchantGrid(row) {
+        this._router.navigate(['/merchant/edit', row.mrchtid]);
     }
 }

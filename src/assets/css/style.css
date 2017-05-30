@@ -6921,7 +6921,7 @@ section.content {
     border-radius: 0;
     padding-left: 5px;
     height: 25px;
-    padding: 2px 12px;
+    padding: 2px;
     font-size: 12px;
 }
 
@@ -6981,8 +6981,8 @@ section.content {
     font-size: 11px;
     color: rgb(154, 154, 154);
     font-weight: normal;
-    /* background-color: #f44336; */
-    padding-left: 6px;
+    /* background-color: #f44336;
+    padding-left: 6px; */
 }
 
 .form-group .control-label strong {

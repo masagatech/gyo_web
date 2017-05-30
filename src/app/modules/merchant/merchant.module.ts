@@ -21,7 +21,8 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'orderdashboard', loadChildren: './orderdashboard#OrderDashboardModule' },
-                    { path: 'entity', loadChildren: './entity#EntityModule' },
+                    { path: 'rider', loadChildren: './riders#RidersModule' },
+                    { path: '', loadChildren: './merchant#MerchantModule' },
                     { path: 'outlet', loadChildren: './outlet#OutletModule' },
                     { path: '', loadChildren: './order#OrderModule' },
                 ]
