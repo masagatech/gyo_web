@@ -134,7 +134,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">remove</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
                                 </div>
                             </div>
                         </div>
@@ -215,7 +215,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">remove</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
                                 </div>
                             </div>
                         </div>
@@ -249,7 +249,7 @@
                     <ul class="list-group">
                         <li class="list-group-item" *ngFor="let row of pickAttList">
                             {{row.attnm}}
-                            <button type="button" class="btn btn-xs pull-right" (click)="deletePickAtt(row)"><i class="material-icons">remove</i></button>
+                            <button type="button" class="btn btn-xs pull-right" (click)="deletePickAtt(row)"><i class="material-icons">delete</i></button>
                         </li>
                     </ul>
                 </div>
@@ -278,7 +278,7 @@
                     <ul class="list-group">
                         <li class="list-group-item" *ngFor="let row of dropAttList">
                             {{row.attnm}}
-                            <button type="button" class="btn btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">remove</i></button>
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
                         </li>
                     </ul>
                 </div>

@@ -21,7 +21,6 @@ export const routes = [
   },
 ];
 
-
 @NgModule({
   declarations: [
     AddOutletComponent,

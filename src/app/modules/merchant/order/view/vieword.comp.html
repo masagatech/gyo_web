@@ -1,13 +1,10 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2">
+            <div class="col-md-9 col-xs-9">
                 <h4>View Order</h4>
             </div>
-            <div class="col-md-9 col-xs-9">
-
-            </div>
-            <div class="col-md-1 col-xs-1" align="right">
+            <div class="col-md-3 col-xs-3" align="right" *ngIf="actaddrights==='add'">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addOrderForm()">
                     <i class="material-icons">add</i></button>
             </div>
@@ -22,29 +19,30 @@
         </div>
         <div class="row clearfix">
             <div class="col-md-12">
-                <div *ngFor="let ordrow of orderDT | groupBy:'merchant'; let i = index;">
-                    <div class="block-header">
-                        <h4>{{ordrow.key}}</h4>
-                    </div>
-                    <div>
-                        <p-dataTable [value]="ordrow.value" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                            <p-column field="ordno" header="Order No" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                            <p-column field="orddate" header="Punch Time" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                            <p-column field="picktime" header="Pick Up Time" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                            <p-column field="steps" header="Steps" [style]="{'width':'50px', 'text-align':'right'}"></p-column>
-                            <p-column header="Cr. Amt" [style]="{'width':'150px','text-align':'right'}">
-                                <template let-row="rowData" pTemplate type="body">
-                                    {{row.totamt | currency:INR:true}}
-                                </template>
-                            </p-column>
-                            <p-column header="Rider" [style]="{'width':'100px', 'text-align':'left'}">
-                                <template let-row="rowData" pTemplate type="body">
-                                    <button type="button" class="btn btn-theme btn-xs">Select</button>
-                                </template>
-                            </p-column>
-                        </p-dataTable>
-                    </div>
-                </div>
+                <p-dataTable [value]="orderDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="merchant" header="Merchant" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="ordno" header="Order No" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column field="orddate" header="Punch Time" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="picktime" header="Pick Up Time" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="steps" header="Steps" [style]="{'width':'50px', 'text-align':'right'}"></p-column>
+                    <p-column header="TotalAmount" [style]="{'width':'150px','text-align':'right'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            {{row.totamt | _currency:loginUser.globsettings[0]}}
+                        </template>
+                    </p-column>
+                    <p-column header="Rider" [style]="{'width':'100px', 'text-align':'left'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn btn-theme btn-xs">Select</button>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editOrderForm(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
             </div>
         </div>
     </div>

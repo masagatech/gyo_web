@@ -1,202 +1,300 @@
 <div class="card">
-    <div class="header">
-        <h4>User</h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <span class="switch">
-                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveUserInfo()"><span class="lever"></span></label>
-                </span>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveUserInfo()">
-                    <i class="material-icons">save</i></a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
-            </li>
-        </ul>
-    </div>
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-6">
+                <h4>Pick Up and Drop</h4>
+            </div>
+            <div class="col-md-6" align="right">
+                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="savePickDropInfo()">
+                    <i class="material-icons">save</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Co-ordinator Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" (onSelect)="selectAutoData($event, 'owner')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'coord')" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"
+                                    [tabindex]="1"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity Name</label>
+                        <select [(ngModel)]="entityid" class="form-control entity" (ngModelChange)="fillBatchDropDown();getPassengerData($event);" tabindex="2">
+                            <option [value]="0">Select Entity</option>
+                            <option *ngFor="let row of entityDT" [value]="row.schid">
+                                {{row.schnm}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Batch Name</label>
+                        <select [(ngModel)]="batchid" class="form-control batch" tabindex="3" (ngModelChange)="getPickDropInfo()">
+                            <option [value]="0">Select Batch</option>
+                            <option *ngFor="let row of batchDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="header">
+                    <h2>Pick-Up</h2>
+                </div>
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">User Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="ucode" class="form-control ucode" maxlength="10" />
+                                <label class="control-label">From Date</label>
+                                <input type="date" [(ngModel)]="pickfromdate" class="form-control pickfromdate" tabindex="5" disabled (ngModelChange)="dropfromdate=pickfromdate">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Password <strong>*</strong></label>
-                                <input type="password" [(ngModel)]="upwd" class="form-control upwd" maxlength="15" />
+                                <label class="control-label">To Date</label>
+                                <input type="date" [(ngModel)]="picktodate" class="form-control picktodate" tabindex="6" disabled (ngModelChange)="droptodate=picktodate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Driver Name</label>
+                        <select [(ngModel)]="pickdriverid" class="form-control pdrv" tabindex="4" (ngModelChange)="setDropDriver()">
+                            <option [value]="0">Select Driver</option>
+                            <option *ngFor="let row of driverDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Vehicle Name</label>
+                        <select [(ngModel)]="pickvehicleno" class="form-control pveh" tabindex="6" (ngModelChange)="setDropVehicle()">
+                            <option [value]="''">Select Vehicle</option>
+                            <option *ngFor="let row of vehicleDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Passenger Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="8" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete pickpassengername"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">First Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="fname" class="form-control fname" maxlength="50" />
+                <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
+                    <template let-passenger pTemplate="editor">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="ui-helper-clearfix">
+                                    {{passenger.stdnm}}
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Last Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="lname" class="form-control lname" maxlength="50" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">User Type <strong>*</strong></label>
-                                <select [(ngModel)]="utype" class="form-control utype">
-                                    <option [value]="''">Select Type</option>
-                                    <option [value]="'admin'">System Admin</option>
-                                    <option [value]="'entity'">Entity</option>
-                                    <option [value]="'internal'">Internal</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Remark</label>
-                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Entity Name <strong>*</strong></label>
-                                <div class="row clearfix">
-                                    <div class="col-md-10">
-                                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
-                                    </div>
-                                    <div class="col-md-2" align="right">
-                                        <span class="material-icons">search</span>
-                                    </div>
+                            <div class="col-md-2">
+                                <div class="ui-helper-clearfix">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
                                 </div>
                             </div>
                         </div>
+                    </template>
+                </p-orderList>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="header">
+                    <h2>Drop</h2>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From Date</label>
+                                <input type="date" [(ngModel)]="dropfromdate" class="form-control dropfromdate" tabindex="5" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To Date</label>
+                                <input type="date" [(ngModel)]="droptodate" class="form-control droptodate" tabindex="6" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Driver Name</label>
+                        <select [(ngModel)]="dropdriverid" class="form-control ddrv" tabindex="5">
+                            <option [value]="0">Select Driver</option>
+                            <option *ngFor="let row of driverDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Vehicle Name</label>
+                        <select [(ngModel)]="dropvehicleno" class="form-control dveh" tabindex="7">
+                            <option [value]="''">Select Vehicle</option>
+                            <option *ngFor="let row of vehicleDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Passenger Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="8" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                                    [size]="30" class="form-controlAutoComplete droppassengername"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div *ngIf="entityList.length">
+                <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
+                    <template let-passenger pTemplate="item">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="ui-helper-clearfix">
+                                    {{passenger.stdnm}}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="ui-helper-clearfix">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </p-orderList>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Pickup Attendent Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="9" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'attendent')" field="label" [minLength]="1" [size]="30"
+                                    class="form-controlAutoComplete pickattname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="pickAttList.length">
                     <ul class="list-group">
-                        <li class="list-group-item" *ngFor="let row of entityList">
-                            {{row.schnm}}
-                            <button type="button" class="btn btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">remove</i></button>
+                        <li class="list-group-item" *ngFor="let row of pickAttList">
+                            {{row.attnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deletePickAtt(row)"><i class="material-icons">delete</i></button>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Mobile (Login No) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Drop Attendent Name</label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="10" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'attendent')" field="label" [minLength]="1" [size]="30"
+                                    class="form-controlAutoComplete dropattname"></p-autoComplete>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Alternate Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Email <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="email1" class="form-control email1" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Alternate Email</label>
-                                <input type="text" [(ngModel)]="email2" class="form-control" />
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500"></textarea>
-                            </div>
-                        </div>
-                    </div>
+                <div *ngIf="dropAttList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of dropAttList">
+                            {{row.attnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Country</label>
-                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">State</label>
-                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">City</label>
-                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
-                            </div>
-                        </div>
+<div class="row clearfix">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="body">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Instrunction</label>
+                        <textarea [(ngModel)]="instrunction" rows="4" class="form-control no-resize auto-growth" tabindex="9"></textarea>
                     </div>
                 </div>
             </div>

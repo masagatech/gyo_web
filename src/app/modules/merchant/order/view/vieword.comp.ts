@@ -28,13 +28,35 @@ export class ViewOrderComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this.status = "pending";
         this.getOrderType();
-        this.getOrderDetails();
+        this.AddEditOrderDataRights();
+        this.viewOrderDataRights();
     }
 
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
         }, 0);
+    }
+
+    public AddEditOrderDataRights() {
+        var that = this;
+        var addRights = [];
+        var editRights = [];
+        var viewRights = [];
+
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "mcode": "cord"
+        }).subscribe(data => {
+            addRights = data.data.filter(a => a.mrights === "add");
+            editRights = data.data.filter(a => a.mrights === "edit");
+
+            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
+            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        })
     }
 
     public viewOrderDataRights() {
@@ -44,19 +66,14 @@ export class ViewOrderComponent implements OnInit {
         var viewRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "ord", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "mcode": "vord"
         }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
-
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+            viewRights = data.data.filter(a => a.mrights === "allowed");
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
             that.getOrderDetails();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -71,28 +88,28 @@ export class ViewOrderComponent implements OnInit {
     getOrderDetails() {
         var that = this;
 
-        // if (that.actviewrights === "view") {
-        commonfun.loader();
+        if (that.actviewrights === "allowed") {
+            commonfun.loader();
 
-        that._ordservice.getOrderDetails({
-            "flag": "summary", "status": that.selectedOrderType
-        }).subscribe(data => {
-            try {
-                that.orderDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+            that._ordservice.getOrderDetails({
+                "flag": "summary", "status": that.selectedOrderType
+            }).subscribe(data => {
+                try {
+                    that.orderDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-        })
-        // }
+            })
+        }
     }
 
     public addOrderForm() {
@@ -100,6 +117,6 @@ export class ViewOrderComponent implements OnInit {
     }
 
     public editOrderForm(row) {
-        this._router.navigate(['/merchant/editorder', row.autoid]);
+        this._router.navigate(['/merchant/editorder', row.ordid]);
     }
 }
