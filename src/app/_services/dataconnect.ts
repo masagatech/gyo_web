@@ -35,9 +35,8 @@ export class DataService {
 
     get(api: string, params: any) {
         return this._http.get(this.global.serviceurl + api + "?" + $.param(params))
-            .toPromise()
-            .then(res => <any[]>res.json().data)
-            .then(data => { return data; });
+            .map(res => res.json())
+            .catch(this.handleError);;
 
     }
 

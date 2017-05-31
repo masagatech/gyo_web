@@ -13,4 +13,12 @@ export class OrderService {
     saveOrderInfo(req: any) {
         return this._dataserver.post("mrcht/saveOrderInfo", req)
     }
+
+    getOrderdash(req: any) {
+        return this._dataserver.get("mrcht/getOrderDash", req)
+    }
+
+    getOrderDetailsDash(req: any) {
+        return this._dataserver.get("mrcht/getDashOrdDetails", req)
+    }
 }

@@ -1,51 +1,162 @@
 <div class="card">
-    <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-2">
-                <h4>View Order</h4>
-            </div>
-            <div class="col-md-9 col-xs-9">
+	<div class="pull-right">
 
-            </div>
-            <div class="col-md-1 col-xs-1" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addOrderForm()">
-                    <i class="material-icons">add</i></button>
-            </div>
-        </div>
-    </div>
+		<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);" role="button" aria-expanded="true">
+			<i class="material-icons" style="margin-right: 27px;">refresh</i>
+			<span class="label-count" style="background-color: #fdfdfd;top: 9px;">{{ refreshCounter }}</span>
+		</a>
+	</div>
 
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <p-selectButton [options]="ordtype" [(ngModel)]="selectedOrderType" (ngModelChange)="getOrderDetails()"></p-selectButton>
-            </div>
-        </div>
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <div *ngFor="let ordrow of orderDT | groupBy:'merchant'; let i = index;">
-                    <div class="block-header">
-                        <h4>{{ordrow.key}}</h4>
-                    </div>
-                    <div>
-                        <p-dataTable [value]="ordrow.value" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                            <p-column field="ordno" header="Order No" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                            <p-column field="orddate" header="Punch Time" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                            <p-column field="picktime" header="Pick Up Time" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                            <p-column field="steps" header="Steps" [style]="{'width':'50px', 'text-align':'right'}"></p-column>
-                            <p-column header="Cr. Amt" [style]="{'width':'150px','text-align':'right'}">
-                                <template let-row="rowData" pTemplate type="body">
-                                    {{row.totamt | currency:INR:true}}
-                                </template>
-                            </p-column>
-                            <p-column header="Rider" [style]="{'width':'100px', 'text-align':'left'}">
-                                <template let-row="rowData" pTemplate type="body">
-                                    <button type="button" class="btn btn-theme btn-xs">Select</button>
-                                </template>
-                            </p-column>
-                        </p-dataTable>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="body">
+		<ul class="nav nav-tabs tab-nav-right" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#home_only_icon_title" (click)="changeStatus('0')" data-toggle="tab" aria-expanded="false">
+					<i class="material-icons">home</i> Pending ({{dashCount["0"]}})
+				</a>
+			</li>
+			<li role="presentation">
+				<a href="#profile_only_icon_title" (click)="changeStatus('1')" data-toggle="tab" aria-expanded="true">
+					<i class="material-icons">face</i> Waiting ({{dashCount["1"]}})
+				</a>
+			</li>
+			<li role="presentation" class="">
+				<a href="#messages_only_icon_title" (click)="changeStatus('2')" data-toggle="tab" aria-expanded="false">
+					<i class="material-icons">email</i> Assigned ({{dashCount["2"]}})
+				</a>
+			</li>
+			<li role="presentation" class="">
+				<a href="#settings_only_icon_title" (click)="changeStatus('3')" data-toggle="tab" aria-expanded="false">
+					<i class="material-icons">settings</i> On the Way ({{dashCount["3"]}})
+				</a>
+			</li>
+			<li role="presentation" class="">
+				<a href="#settings_only_icon_title" (click)="changeStatus('4')" data-toggle="tab" aria-expanded="false">
+					<i class="material-icons">settings</i> Deliverd ({{dashCount["4"]}})
+				</a>
+			</li>
+			<li role="presentation" class="">
+				<a href="#settings_only_icon_title" (click)="changeStatus('5')" data-toggle="tab" aria-expanded="false">
+					<i class="material-icons">settings</i> Declined ({{dashCount["5"]}})
+				</a>
+			</li>
+		</ul>
+
+
+
+		<div class="tab-content">
+
+			<table class="table table-responsive slim">
+				<thead>
+					<tr>
+						<th style="width:80px;">
+							Id#
+						</th>
+						<th>
+							Ord.No's#
+						</th>
+						<th style="width:100px;">
+							Area
+						</th>
+						<th style="width:100px;">
+							City
+						</th>
+						<th style="width:100px;">
+							Time
+						</th>
+						<th style="width:30px;">
+							Steps
+						</th>
+						<th style="width:100px;">
+							Amount
+						</th>
+						<th style="width:150px;">
+							Remarks
+						</th>
+						<th style="width:150px;">
+							Rider
+						</th>
+					</tr>
+				</thead>
+				<tbody *ngFor="let ordgrp of orderDT | groupBy:'olnm'; let i = index;">
+					<tr class="headerrow">
+						<td colspan="9"><b>{{ordgrp.key}}</b></td>
+					</tr>
+					<tr *ngFor="let ordrow of ordgrp.value">
+						<td>{{ordrow.ordid}}</td>
+						<td>
+
+							<button class="btn btn-theme btn-xs" (click)="openPanel($event,ordrow.ordid)" data-close="true">{{ordrow.ordno}}</button></td>
+						<td>{{ordrow.area}}</td>
+						<td>{{ordrow.city}}</td>
+						<td>{{ordrow.pchtm}} {{ordrow.timediff}} </td>
+						<td class="text-center">{{ordrow.ordno.length}}</td>
+						<td class="text-right">{{ordrow.totamt | _currency:{'decimals':2, 'currsym': '' } }}</td>
+						<td><input type="text" class="form-control"></td>
+						<td class="text-center"><button class="btn btn-theme btn-xs" (click)="modalShow(ordrow.hsid)">Select Rider</button></td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+	</div>
+</div>
+<section>
+	<aside id="rightsidebar" class="right-sidebar">
+		<ul class="nav nav-tabs tab-nav-right" role="tablist">
+			<li role="presentation" class="active"><a href="#skins" data-toggle="tab">Order Details</a></li>
+
+		</ul>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+				<ul class="demo-choose-skin">
+					<li *ngFor="let item of orddetdash" (click)="changeSkin(item.nm)">
+						<span class="label bg-black">Ord.No.</span> <span class="label bg-blue-grey">#{{item.ono}}</span>
+						<h6>
+							{{item.cnm}}
+						</h6>
+						<p><i class="material-icons">settings_cell</i> {{item.cno}}</p>
+						<p><a><i class="material-icons">location_on</i></a> {{item.cadr}}</p>
+						<p><b>Remark : </b>{{item.rem}}</p>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</aside>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="largeModalLabel">Available Riders</h4>
+			</div>
+			<div class="modal-body" id="riders">
+				<table class="table table-responsive slim">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>RType</th>
+							<th>Battry</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of riders">
+							<td>{{ item.nm }}</td>
+							<td>{{ item.rdrtyp }}</td>
+							<td>{{ item.btry + '%' }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-link waves-effect">Select</button>
+				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+			</div>
+		</div>
+	</div>
 </div>
