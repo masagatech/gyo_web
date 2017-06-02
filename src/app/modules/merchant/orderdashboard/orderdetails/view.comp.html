@@ -1,0 +1,24 @@
+<section>
+	<aside id="rightsidebar" class="right-sidebar">
+		<ul class="nav nav-tabs tab-nav-right" role="tablist">
+			<li role="presentation" class="active"><a href="#skins" data-toggle="tab">Order Details</a></li>
+
+		</ul>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+				<ul class="demo-choose-skin">
+					<li *ngFor="let item of orddetdash" (click)="changeSkin(item.nm)">
+						<span class="label bg-black">Ord.No.</span> <span class="label bg-blue-grey">#{{item.ono}}</span>
+						<h6>
+							{{item.cnm}}
+						</h6>
+						<p><i class="material-icons">settings_cell</i> {{item.cno}}</p>
+						<p><a><i class="material-icons">location_on</i></a> {{item.cadr}}</p>
+						<p><b>Remark : </b>{{item.rem}}</p>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</aside>
+</section>

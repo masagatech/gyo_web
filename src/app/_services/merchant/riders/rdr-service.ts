@@ -13,4 +13,8 @@ export class RiderService {
     saveRiderInfo(req: any) {
         return this._dataserver.post("mrcht/saveRiderInfo", req)
     }
+
+     getAvailable(req: any) {
+        return this._dataserver.get("mrcht/getAvailRider", req)
+    }
 }

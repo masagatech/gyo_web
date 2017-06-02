@@ -2,12 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
 import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services'
-import { OrderService, RiderService } from '@services/merchant'
+import { OrderService,RiderService } from '@services/merchant'
 import { LoginUserModel } from '@models'
 
 declare var $: any;
-declare var swal: any;
-
 
 @Component({
     templateUrl: 'view.comp.html',
@@ -29,12 +27,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     dashCount: any = { "0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0 };
     refreshCounter: any = 0;
     orddetdash: any = [];
-    riders: any = [];
-    counter: number = 0;
+    riders :any = [];
+    counter:number = 0;
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService,
         private _riders: RiderService
-    ) {
+        ) {
         this.loginUser = this._loginservice.getUser();
         this.status = "pending";
         this.getOrderType();
@@ -45,9 +43,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.checkTime();
-        var that = this;
         setTimeout(function () {
-            that.otherEvents();
             commonfun.navistyle();
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -177,59 +173,6 @@ export class ViewComponent implements OnInit, OnDestroy {
         // }
     }
 
-
-    private sendOrder() {
-        var that = this;
-        //this.orddetdash = [];
-        var uids = [];
-
-        for (var i = 0; i < that.riders.length; i++) {
-            var d = that.riders[i];
-            console.log(d.ch)
-            if (d.ch) {
-                uids.push(d.rdrid);
-            }
-        }
-        console.log(uids);
-
-        if (uids.length == 0) {
-
-            return;
-        }
-        var order = {
-            "olnm": this.selectdOrder.olnm,
-            "ordid": this.selectdOrder.ordid,
-            "pchtm": this.selectdOrder.pchtm,
-            "stops": this.selectdOrder.ordno.length,
-            "amt": this.selectdOrder.totamt,
-            "pcktm": this.selectdOrder.pcktm
-        }
-
-        commonfun.loader('#riders');
-        that._ordservice.pushOrderToRider({
-            "orddt": order, "uids": '{' + uids.join(",") + '}', "status": this.selectedOrderType
-        }).subscribe(data => {
-            try {
-
-                console.log(data.data);
-                $("#largeModal").modal('hide');
-                that.showSuccessmsg("Sent", "");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide('#riders');
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide('#riders');
-        }, () => {
-
-        })
-
-    }
-
     public addOrderForm() {
         this._router.navigate(['/murchant/createorder']);
     }
@@ -243,22 +186,17 @@ export class ViewComponent implements OnInit, OnDestroy {
         $.AdminBSB.leftSideBar.Open();
     }
 
-    wait: boolean = false;
     checkTime() {
         var refreshSecs = 10;
-
+        
         var that = this;
         setInterval(function () {
-            if (!that.wait) {
-                if (that.counter == refreshSecs) {
-                    that.counter = 0;
-                    that.getOrderDetails();
-                }
-                that.counter++;
-                that.refreshCounter = that.counter;
-            } else {
-                that.counter = refreshSecs;
+            if (that.counter == refreshSecs) {
+                that.counter = 0;
+                that.getOrderDetails();
             }
+            that.counter++;
+            that.refreshCounter = that.counter;
         }, 1000);
 
         // setInterval(function(){
@@ -279,36 +217,14 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     changeStatus(status: any) {
-        
         this.selectedOrderType = status;
         this.counter = 0;
         this.getOrderDetails();
     }
-    selectdOrder: any;
 
-    modalShow(order: any) {
-        this.wait = true;
-        this.selectdOrder = order;
-        this.getAvailRiders(order.hsid);
+    modalShow(hsid:any){
+        this.getAvailRiders(hsid);
         $("#largeModal").modal('show');
-    }
-
-    otherEvents() {
-        var that = this;
-        $('#largeModal').on('hidden.bs.modal', function () {
-            // do something…
-            that.wait = false;
-        })
-    }
-
-    showSuccessmsg(title1, message1) {
-        swal({
-            title: title1,
-            text: message1,
-            type: "success",
-            showConfirmButton: false,
-            timer: 2000
-        })
     }
 
 }

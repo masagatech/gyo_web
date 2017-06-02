@@ -51,28 +51,28 @@
 						<th style="width:80px;">
 							Id#
 						</th>
-						<th>
+						<th >
 							Ord.No's#
 						</th>
-						<th style="width:100px;">
+						<th style="width:100px;" class="text-center">
 							Area
 						</th>
-						<th style="width:100px;">
+						<th style="width:100px;" class="text-center">
 							City
 						</th>
-						<th style="width:100px;">
+						<th style="width:100px;" class="text-center">
 							Time
 						</th>
-						<th style="width:30px;">
+						<th style="width:30px;" class="text-center">
 							Steps
 						</th>
-						<th style="width:100px;">
-							Amount
+						<th style="width:100px;" class="text-center">
+							Amt to Col.
 						</th>
 						<th style="width:150px;">
 							Remarks
 						</th>
-						<th style="width:150px;">
+						<th style="width:150px;" class="text-center">
 							Rider
 						</th>
 					</tr>
@@ -86,13 +86,19 @@
 						<td>
 
 							<button class="btn btn-theme btn-xs" (click)="openPanel($event,ordrow.ordid)" data-close="true">{{ordrow.ordno}}</button></td>
-						<td>{{ordrow.area}}</td>
-						<td>{{ordrow.city}}</td>
-						<td>{{ordrow.pchtm}} {{ordrow.timediff}} </td>
+						<td class="text-center">{{ordrow.area}}</td>
+						<td class="text-center">{{ordrow.city}}</td>
+						<td class="text-center">{{ordrow.pchtm}} <span class="{{ordrow.timediff  > 3 ? 'col-pink' : 'col-teal'}}">{{ordrow.timediff}}</span></td>
 						<td class="text-center">{{ordrow.ordno.length}}</td>
 						<td class="text-right">{{ordrow.totamt | _currency:{'decimals':2, 'currsym': '' } }}</td>
 						<td><input type="text" class="form-control"></td>
-						<td class="text-center"><button class="btn btn-theme btn-xs" (click)="modalShow(ordrow.hsid)">Select Rider</button></td>
+						<td class="text-center">
+							
+							<span *ngIf="selectedOrderType > 1">{{ordrow.nm}}</span>	
+							<button class="btn btn-theme btn-xs" *ngIf="selectedOrderType <= 1" (click)="modalShow(ordrow)">Select Rider</button>
+							
+							
+							</td>
 					</tr>
 				</tbody>
 			</table>
@@ -110,8 +116,12 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane fade in active in active" id="skins">
 				<ul class="demo-choose-skin">
-					<li *ngFor="let item of orddetdash" (click)="changeSkin(item.nm)">
+					<li *ngFor="let item of orddetdash">
 						<span class="label bg-black">Ord.No.</span> <span class="label bg-blue-grey">#{{item.ono}}</span>
+						<i class="ordstatus material-icons {{item.st == '0' ? 'pending' : item.st == '1' ? 'p' : 'd'}}">
+                                {{item.st == "0" ? "access_time" : item.st == "1" ? "play_arrow" : "done"}}
+                    	</i>
+						
 						<h6>
 							{{item.cnm}}
 						</h6>
@@ -139,24 +149,33 @@
 				<table class="table table-responsive slim">
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>RType</th>
-							<th>Battry</th>
+							<th> Name</th>
+							<th style="width:100px;" class="text-center">Contact</th>
+							<th style="width:100px;" class="text-center">RType</th>
+							<th style="width:60px;" class="text-center">Battery</th>
+							<th style="width:60px;" class="text-center">Select</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr *ngFor="let item of riders">
-							<td>{{ item.nm }}</td>
-							<td>{{ item.rdrtyp }}</td>
-							<td>{{ item.btry + '%' }}</td>
+						<tr *ngFor="let item of riders; let i =index">
+							<td class="icons"><i class="material-icons">person_pin_circle</i> {{ item.nm }}</td>
+							<td class="text-center">{{ item.mb }}</td>
+							<td class="text-center">{{ item.rdrtyp }} </td>
+							<td align="center">{{ item.btry + '%' }}</td>
+							<td align="center">
+								<input class="filled-in" type="checkbox" id="{{i+1}}" [(ngModel)]="item.ch" name="menu{{i+1}}" value="1">
+								<label for="{{i+1}}"></label>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-link waves-effect">Select</button>
+				<button type="button" class="btn btn-link waves-effect" (click)="sendOrder()">SEND</button>
 				<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+

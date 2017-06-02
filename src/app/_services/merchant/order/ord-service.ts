@@ -21,4 +21,8 @@ export class OrderService {
     getOrderDetailsDash(req: any) {
         return this._dataserver.get("mrcht/getDashOrdDetails", req)
     }
+
+    pushOrderToRider(req: any) {
+        return this._dataserver.post("mrcht/pushOrderToRider", req)
+    }
 }
