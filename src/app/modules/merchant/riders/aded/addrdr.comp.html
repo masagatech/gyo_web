@@ -257,7 +257,7 @@
 
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="16" />
@@ -265,7 +265,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="state" class="form-control state" maxlength="20" tabindex="17" />
@@ -276,7 +276,7 @@
 
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="city" class="form-control city" maxlength="20" tabindex="18" />
@@ -284,10 +284,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Pin Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="19" />
+                                <label class="control-label">Area <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="area" class="form-control area" maxlength="20" tabindex="19" />
                             </div>
                         </div>
                     </div>
@@ -295,10 +295,10 @@
 
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <div class="form-group form-float">
+                        <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Hotspot <strong>*</strong></label>
-                                <p-autoComplete id="hotspot" name="hotspot" [(ngModel)]="hotspotname" [tabindex]="20" (onSelect)="selectHotspotData($event)" [suggestions]="hotspotDT" (completeMethod)="getHotspotData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete hotspot"></p-autoComplete>
+                                <label class="control-label">Pin Code <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="pincode" class="form-control pincode" maxlength="20" tabindex="19" />
                             </div>
                         </div>
                     </div>
@@ -306,7 +306,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Rider Type <strong>*</strong></label>
-                                <select name="gender" [(ngModel)]="rdrtyp" class="form-control" tabindex="21">
+                                <select name="gender" [(ngModel)]="rdrtyp" class="form-control rdrtyp" tabindex="21">
                                     <option [value]="''">Select Rider Type</option>
                                     <option *ngFor="let row of rdrtypDT" [value]="row.key">
                                         {{row.val}}
@@ -322,7 +322,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Salary Package <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="salpkg" class="form-control" maxlength="20" tabindex="22" />
+                                <input type="text" [(ngModel)]="salpkg" class="form-control salpkg" maxlength="20" tabindex="22" />
                             </div>
                         </div>
                     </div>
@@ -330,9 +330,16 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Working Shift <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="workshift" class="form-control" maxlength="20" tabindex="23" />
+                                <input type="text" [(ngModel)]="workshift" class="form-control workshift" maxlength="20" tabindex="23" />
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Hotspot <strong>*</strong></label>
+                        <p-autoComplete id="hotspot" name="hotspot" [(ngModel)]="hotspotname" [tabindex]="20" (onSelect)="selectHotspotData($event)" [suggestions]="hotspotDT" (completeMethod)="getHotspotData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete hotspot"></p-autoComplete>
                     </div>
                 </div>
 

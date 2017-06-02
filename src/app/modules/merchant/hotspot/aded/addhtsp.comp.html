@@ -1,0 +1,116 @@
+<div class="card">
+    <div class="header">
+        <h4>Hotspot</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveHotspotInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Hotspot Name <strong>*</strong></label>
+                        <input type="text" name="htspnm" [(ngModel)]="htspnm" maxlength="50" class="form-control fname" tabindex="1" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Address <strong>*</strong></label>
+                        <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" (keydown.tab)="getLatAndLong()" tabindex="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Latitude <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="lat" class="form-control lat" maxlength="20" tabindex="3" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Longitude <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="lng" class="form-control lng" maxlength="20" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Country <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="5" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">State <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="state" class="form-control state" maxlength="20" tabindex="6" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">City <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="city" class="form-control city" maxlength="20" tabindex="7" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Area <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="area" class="form-control area" maxlength="20" tabindex="8" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Pin Code <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="pincode" class="form-control pincode" maxlength="20" tabindex="9" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Status <strong>*</strong></label>
+                                <select name="status" [(ngModel)]="status" class="form-control status" tabindex="10">
+                                    <option value="1">Active</option>
+                                    <option value="0">Dective</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>

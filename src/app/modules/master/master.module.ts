@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MerchantComponent } from '../merchant/merchant.comp';
+import { MasterComponent } from '../master/master.comp';
 import { AuthGuard } from '../../_services/authguard-service';
 
 import { DashboardModule } from './dashboard';
@@ -14,18 +14,13 @@ import { CommonModule } from '@angular/common';
 export const routes = [
     {
         path: '',
-        component: MerchantComponent,
+        component: MasterComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 children: [
-                    { path: 'hotspot', loadChildren: './hotspot#HotspotModule' },
-                    { path: 'rider', loadChildren: './riders#RidersModule' },
-                    { path: '', loadChildren: './merchant#MerchantModule' },
-                    { path: 'outlet', loadChildren: './outlet#OutletModule' },
-                    { path: 'orderdashboard', loadChildren: './orderdashboard#OrderDashboardModule' },
-                    { path: '', loadChildren: './order#OrderModule' },
+                    { path: 'location', loadChildren: './location#LocationModule' },
                 ]
             }
         ]
@@ -38,11 +33,11 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        MerchantComponent
+        MasterComponent
     ],
     providers: [AuthGuard]
 })
 
-export class MerchantModule {
+export class MasterModule {
 
 }

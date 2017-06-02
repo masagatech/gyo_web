@@ -51,6 +51,7 @@ export class AddRiderComponent implements OnInit {
     country: string = "";
     state: string = "";
     city: string = "";
+    area: string = "";
     pincode: string = "";
 
     hotspotDT: any = [];
@@ -164,6 +165,7 @@ export class AddRiderComponent implements OnInit {
         that.country = "";
         that.state = "";
         that.city = "";
+        that.area = "";
         that.pincode = "";
         that.hotspotid = 0;
         that.hotspotname = "";
@@ -258,10 +260,10 @@ export class AddRiderComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter City");
             $(".city").focus();
         }
-        // else if (that.hotspotid === 0) {
-        //     that._msg.Show(messageType.error, "Error", "Enter Hotspot");
-        //     $(".hotspot input").focus();
-        // }
+        else if (that.area === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Area");
+            $(".area").focus();
+        }
         else if (that.rdrtyp === "") {
             that._msg.Show(messageType.error, "Error", "Enter Rider Type");
             $(".rdrtyp").focus();
@@ -282,6 +284,10 @@ export class AddRiderComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".rdrpwd").focus();
         }
+        // else if (that.hotspotid === 0) {
+        //     that._msg.Show(messageType.error, "Error", "Enter Hotspot");
+        //     $(".hotspot input").focus();
+        // }
         else {
             for (var i = 0; i <= that.weekDT.length - 1; i++) {
                 _week = null;
