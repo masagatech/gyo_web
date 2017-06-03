@@ -14,6 +14,7 @@ export interface LoginUserModel {
   ucode: string;
   utype: string;
   email: string;
+  dispname: string;
   fullname: string;
   uphoto: string;
   login: string,
