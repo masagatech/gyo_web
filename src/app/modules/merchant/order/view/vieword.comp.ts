@@ -11,9 +11,6 @@ import { LazyLoadEvent, SelectItem } from 'primeng/primeng';
 })
 
 export class ViewOrderComponent implements OnInit {
-    selectedOrderType: string = "pending";
-    ordtype: SelectItem[];
-
     orderDT: any = [];
     loginUser: LoginUserModel;
 
@@ -21,13 +18,9 @@ export class ViewOrderComponent implements OnInit {
     acteditrights: string = "";
     actviewrights: string = "";
 
-    status: string = "";
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService) {
         this.loginUser = this._loginservice.getUser();
-        this.status = "pending";
-        this.getOrderType();
         this.AddEditOrderDataRights();
         this.viewOrderDataRights();
     }
@@ -79,12 +72,6 @@ export class ViewOrderComponent implements OnInit {
         })
     }
 
-    getOrderType() {
-        this.ordtype = [];
-        this.ordtype.push({ label: 'Pending', value: 'pending' });
-        this.ordtype.push({ label: 'Accepted', value: 'accepted' });
-    }
-
     getOrderDetails() {
         var that = this;
 
@@ -92,10 +79,15 @@ export class ViewOrderComponent implements OnInit {
             commonfun.loader();
 
             that._ordservice.getOrderDetails({
-                "flag": "summary", "status": that.selectedOrderType
+                "flag": "summary", "status": "all", "uid": that.loginUser.uid
             }).subscribe(data => {
                 try {
-                    that.orderDT = data.data;
+                    if (data.data.length !== 0 && data.data[0].errmsgcode !== "norecords") {
+                        that.orderDT = data.data;
+                    }
+                    else {
+                        that.orderDT = [];
+                    }
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);

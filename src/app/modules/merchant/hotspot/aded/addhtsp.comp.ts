@@ -74,6 +74,7 @@ export class AddHotspotComponent implements OnInit {
         that.city = "";
         that.area = "";
         that.pincode = "";
+        that.status = 1;
     }
 
     // Active / Deactive Data
@@ -124,15 +125,15 @@ export class AddHotspotComponent implements OnInit {
         }
         else if (that.address === "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
-            $(".lname").focus();
+            $(".address").focus();
         }
         else if (that.lat === "") {
             that._msg.Show(messageType.error, "Error", "Enter Latitude");
-            $(".licenseno").focus();
+            $(".lat").focus();
         }
         else if (that.lng === "") {
             that._msg.Show(messageType.error, "Error", "Enter Longitude");
-            $(".ofclmob").focus();
+            $(".lng").focus();
         }
         else if (that.country === "") {
             that._msg.Show(messageType.error, "Error", "Enter Country");
@@ -161,8 +162,8 @@ export class AddHotspotComponent implements OnInit {
                 "country": that.country,
                 "state": that.state,
                 "city": that.city,
-                "pincode": that.pincode,
                 "area": that.area,
+                "pincode": that.pincode,
                 "status": that.status,
                 "cuid": that.loginUser.ucode,
                 "mode": ""

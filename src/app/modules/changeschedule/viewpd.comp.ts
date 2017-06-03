@@ -176,8 +176,12 @@ export class ChangeScheduleComponent implements OnInit {
             "typ": this.loginUser.utype,
             "otype": otype,
             "search": query
-        }).then(data => {
-            this.ownersDT = data;
+        }).subscribe(data => {
+            this.ownersDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -190,8 +194,12 @@ export class ChangeScheduleComponent implements OnInit {
             "flag": "passenger",
             "search": query,
             "id": this.entityid
-        }).then((data) => {
+        }).subscribe((data) => {
             this.passengerDT = data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -204,8 +212,12 @@ export class ChangeScheduleComponent implements OnInit {
             "flag": "ownerwiseentity",
             "oid": this.ownerid,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 

@@ -4,14 +4,14 @@ import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class OutletService {
+export class CommonService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getOutletDetails(req: any) {
-        return this._dataserver.post(Globals.mrchtroute + "getOutletDetails", req)
+    getDropDownData(req: any) {
+        return this._dataserver.post(Globals.mrchtroute + "getDropDownData", req)
     }
 
-    saveOutletInfo(req: any) {
-        return this._dataserver.post(Globals.mrchtroute + "saveOutletInfo", req)
+    getAutoData(req: any) {
+        return this._dataserver.get(Globals.mrchtroute + "getAutoData", req)
     }
 }

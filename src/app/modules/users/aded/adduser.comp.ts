@@ -16,6 +16,10 @@ declare var adminloader: any;
 export class AddUserComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    stateDT: any = [];
+    cityDT: any = [];
+    areaDT: any = [];
+
     uid: number = 0;
     ucode: string = "";
     oldcode: string = "";
@@ -27,9 +31,10 @@ export class AddUserComponent implements OnInit {
     email1: string = "";
     email2: string = "";
     address: string = "";
-    country: string = "";
-    state: string = "";
-    city: string = "";
+    country: string = "India";
+    state: number = 0;
+    city: number = 0;
+    area: number = 0;
     pincode: number = 0;
     isactive: boolean = false;
     mode: string = "";
@@ -38,10 +43,17 @@ export class AddUserComponent implements OnInit {
 
     genderDT: any = [];
 
+    isAllEnttRights: boolean = true;
     entityDT: any = [];
     entityList: any = [];
     entityid: number = 0;
     entityname: string = "";
+
+    isAllOLRights: boolean = true;
+    outletDT: any = [];
+    outletList: any = [];
+    olid: number = 0;
+    olnm: string = "";
 
     private subscribeParameters: any;
 
@@ -49,6 +61,10 @@ export class AddUserComponent implements OnInit {
         private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
+
+        this.fillStateDropDown();
+        this.fillCityDropDown();
+        this.fillAreaDropDown();
     }
 
     public ngOnInit() {
@@ -57,6 +73,112 @@ export class AddUserComponent implements OnInit {
 
     public ngAfterViewInit() {
         $.AdminBSB.input.activate();
+    }
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._userservice.getUserDetails({ "flag": "dropdown" }).subscribe(data => {
+            that.genderDT = data.data;
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get State DropDown
+
+    fillStateDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
+            try {
+                that.stateDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get City DropDown
+
+    fillCityDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.cityDT = [];
+        that.areaDT = [];
+
+        that.city = 0;
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
+            try {
+                that.cityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Area DropDown
+
+    fillAreaDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.areaDT = [];
+
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
+            try {
+                that.areaDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Is Rights Entity
+
+    isAllEntityRights() {
+        if (this.isAllEnttRights) {
+            this.entityList = [];
+        }
     }
 
     // Auto Completed Entity
@@ -69,12 +191,16 @@ export class AddUserComponent implements OnInit {
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
     selectEntityData(event, type) {
         this.entityid = event.value;
@@ -121,20 +247,78 @@ export class AddUserComponent implements OnInit {
         this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
+    // Is Rights Outlet
 
-        that._userservice.getUserDetails({ "flag": "dropdown" }).subscribe(data => {
-            that.genderDT = data.data;
-            commonfun.loaderhide();
+    isAllOutletRights() {
+        if (this.isAllOLRights) {
+            this.outletList = [];
+        }
+    }
+
+    // Auto Completed Outlet
+
+    getOutletData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "outlet",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).subscribe((data) => {
+            this.outletDT = data.data;
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
+            this._msg.Show(messageType.error, "Error", err);
         }, () => {
 
-        })
+        });
+    }
+
+    // Selected Outlet
+
+    selectOutletData(event, type) {
+        this.olid = event.value;
+        this.olnm = event.label;
+
+        this.addOutletList();
+        $(".olnm input").focus();
+    }
+
+    // Check Duplicate Outlet
+
+    isDuplicateOutlet() {
+        var that = this;
+
+        for (var i = 0; i < that.outletList.length; i++) {
+            var field = that.outletList[i];
+
+            if (field.olid == this.olid) {
+                this._msg.Show(messageType.error, "Error", "Duplicate Outlet not Allowed");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Read Get Outlet
+
+    addOutletList() {
+        var that = this;
+        var duplicateOutlet = that.isDuplicateOutlet();
+
+        if (!duplicateOutlet) {
+            that.outletList.push({
+                "olid": that.olid, "olnm": that.olnm
+            });
+        }
+
+        that.olid = 0;
+        that.olnm = "";
+    }
+
+    deleteOutlet(row) {
+        this.outletList.splice(this.outletList.indexOf(row), 1);
     }
 
     // Active / Deactive Data
@@ -176,9 +360,26 @@ export class AddUserComponent implements OnInit {
     // Clear Fields
 
     resetUserFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
+        var that = this;
+
+        that.uid = 0
+        that.ucode = "";
+        that.upwd = "";
+        that.fname = "";
+        that.lname = "";
+        that.utype = "";
+        that.remark1 = "";
+        that.mobileno1 = "";
+        that.mobileno2 = "";
+
+        that.email1 = "";
+        that.email2 = "";
+        that.address = "";
+        that.country = "India";
+        that.state = 0;
+        that.city = 0;
+        that.area = 0;
+        that.pincode = 0;
 
         this.entityList = [];
     }
@@ -220,15 +421,14 @@ export class AddUserComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
         }
-        else if (that.entityList.length == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Atleast 1 Entity");
-            $(".entityname input").focus();
-        }
         else {
             commonfun.loader();
 
             var _enttlist: string[] = [];
-            _enttlist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
+            _enttlist = that.isAllEnttRights ? ["0"] : Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
+
+            var _outletlist: string[] = [];
+            _outletlist = that.isAllOLRights ? ["0"] : Object.keys(that.outletList).map(function (k) { return that.outletList[k].olid });
 
             var saveuser = {
                 "uid": that.uid,
@@ -238,6 +438,7 @@ export class AddUserComponent implements OnInit {
                 "fname": that.fname,
                 "lname": that.lname,
                 "school": _enttlist,
+                "outlet": _outletlist,
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -246,9 +447,10 @@ export class AddUserComponent implements OnInit {
                 "country": that.country,
                 "state": that.state,
                 "city": that.city,
+                "area": that.area,
                 "pincode": that.pincode,
                 "remark1": that.remark1,
-                "cuid": "vivek",
+                "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
                 "utype": that.utype,
                 "mode": ""
@@ -271,17 +473,19 @@ export class AddUserComponent implements OnInit {
                         }
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_userinfo.msg);
+                        that._msg.Show(messageType.error, "Error", "Error 101 : " + dataResult[0].funsave_userinfo.msg);
+                        console.log("Error 101 : " + dataResult[0].funsave_userinfo.msg);
                     }
 
                     commonfun.loaderhide();
                 }
                 catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
+                    that._msg.Show(messageType.error, "Error", "Error 102 : " + e);
+                    console.log("Error 102 : " + e);
                 }
             }, err => {
-                console.log(err);
-                that._msg.Show(messageType.error, "Error", err);
+                console.log("Error 103 : " + err);
+                that._msg.Show(messageType.error, "Error", "Error 103 : " + err);
                 commonfun.loaderhide();
             }, () => {
                 // console.log("Complete");
@@ -309,7 +513,10 @@ export class AddUserComponent implements OnInit {
                         that.lname = data.data[0].lname;
                         that.utype = data.data[0].utype;
                         that.utype = data.data[0].utype;
+                        that.isAllEnttRights = data.data[0].isallenttrights;
+                        that.isAllOLRights = data.data[0].isallolrights;
                         that.entityList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.outletList = data.data[0].outlet !== null ? data.data[0].outlet : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;
@@ -317,7 +524,10 @@ export class AddUserComponent implements OnInit {
                         that.address = data.data[0].address;
                         that.country = data.data[0].country;
                         that.state = data.data[0].state;
+                        that.fillCityDropDown();
                         that.city = data.data[0].city;
+                        that.fillAreaDropDown();
+                        that.area = data.data[0].area;
                         that.pincode = data.data[0].pincode;
                         that.remark1 = data.data[0].remark1;
                         that.isactive = data.data[0].isactive;

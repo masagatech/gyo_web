@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { OrderService } from '@services/merchant';
+import { MessageService, messageType, LoginService } from '@services';
+import { OrderService, CommonService } from '@services/merchant';
 import { LoginUserModel } from '@models';
 import { Globals } from '../../../../_const/globals';
 import { Observable } from 'rxjs';
@@ -21,6 +21,10 @@ export class CreateOrderComponent implements OnInit {
 
     ordid: number = 0;
     olid: number = 0;
+    olname: string = "";
+    hsid: number = 0;
+    hsname: string = "";
+
     deldate: any = "";
     picktime: any = "";
 
@@ -31,6 +35,7 @@ export class CreateOrderComponent implements OnInit {
     lat: string = "0.00";
     lng: string = "0.00";
     deltime: any = "";
+    ordamt: any = "0";
     amtcollect: any = "0";
     remark: string = "";
 
@@ -57,7 +62,8 @@ export class CreateOrderComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _ordservice: OrderService) {
         this.loginUser = this._loginservice.getUser();
-        this.fillDropDownList();
+        // this.fillDropDownList();
+        this.setAutoOutlet();
     }
 
     public ngOnInit() {
@@ -99,7 +105,7 @@ export class CreateOrderComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._ordservice.getOrderDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._ordservice.getOrderDetails({ "flag": "dropdown", "uid": that.loginUser.uid }).subscribe(data => {
             try {
                 that.outletDT = data.data;
             }
@@ -115,6 +121,58 @@ export class CreateOrderComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Auto Completed Outlet
+
+    getAutoOutlet(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "outlet",
+            "uid": this.loginUser.uid,
+            "search": query
+        }).subscribe(data => {
+            this.outletDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Outlet
+
+    selectAutoOutlet(event) {
+        this.olid = event.olid;
+        this.olname = event.olname;
+        this.hsid = event.hsid;
+        this.hsname = event.hsname;
+    }
+
+    // Set Outlet Fields
+
+    setAutoOutlet() {
+        this._autoservice.getAutoData({
+            "flag": "nooutlet",
+            "uid": this.loginUser.uid
+        }).subscribe(data => {
+            var errmsgcode = data.data[0].errmsgcode;
+            var olname = data.data[0].olname;
+            var hsname = data.data[0].hsname;
+
+            if (errmsgcode == "nool" || errmsgcode == "only1") {
+                $(".olname input").prop("disabled", "disabled");
+                this.olid = 0;
+                this.olname = olname;
+                this.hsid = 0;
+                this.hsname = hsname;
+            }
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
     }
 
     // Active / Deactive Data
@@ -186,6 +244,7 @@ export class CreateOrderComponent implements OnInit {
                 "lat": that.lat,
                 "lng": that.lng,
                 "addrloc": that.lat + "," + that.lng,
+                "amt": that.ordamt,
                 "amtcollect": that.amtcollect,
                 "deltime": that.deltime,
                 "remark": that.remark
@@ -209,7 +268,7 @@ export class CreateOrderComponent implements OnInit {
 
         if (that.olid === 0) {
             that._msg.Show(messageType.error, "Error", "Enter Outlet");
-            $(".olid").focus();
+            $(".olname input").focus();
         }
         else if (that.deldate == "") {
             that._msg.Show(messageType.error, "Error", "Enter Delivery Date");
@@ -290,6 +349,9 @@ export class CreateOrderComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.ordid = params['id'];
 
+                $(".ordm select").prop("disabled", "disabled");
+                $(".ordm input").prop("disabled", "disabled");
+
                 that._ordservice.getOrderDetails({ "flag": "edit", "id": that.ordid }).subscribe(data => {
                     try {
                         var _orddata = data.data[0];
@@ -330,10 +392,18 @@ export class CreateOrderComponent implements OnInit {
 
         that._ordservice.getOrderDetails({ "flag": "existscustmobile", "custmobile": that.custmobile }).subscribe(data => {
             try {
-                that.custname = data.data[0].custname;
-                that.custaddr = data.data[0].custaddr;
-                that.lat = data.data[0].lat;
-                that.lng = data.data[0].lon;
+                if (data.data.length > 0) {
+                    that.custname = data.data[0].custname;
+                    that.custaddr = data.data[0].custaddr;
+                    that.lat = data.data[0].lat;
+                    that.lng = data.data[0].lon;
+                }
+                else {
+                    that.custname = "";
+                    that.custaddr = "";
+                    that.lat = "0.00";
+                    that.lng = "0.00";
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

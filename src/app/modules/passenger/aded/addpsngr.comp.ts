@@ -123,8 +123,12 @@ export class AddPassengerComponent implements OnInit {
             "typ": this.loginUser.utype,
             "otype": "coord",
             "search": query
-        }).then(data => {
-            this.ownersDT = data;
+        }).subscribe(data => {
+            this.ownersDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -147,8 +151,12 @@ export class AddPassengerComponent implements OnInit {
             "flag": "ownerwiseentity",
             "oid": this.ownerid,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 

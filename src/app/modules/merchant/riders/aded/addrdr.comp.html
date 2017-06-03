@@ -147,7 +147,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle Type</label>
+                                <label class="control-label">Vehicle Type <strong>*</strong></label>
                                 <select name="gender" [(ngModel)]="vehtyp" class="form-control" tabindex="11">
                                     <option [value]="''">Select Vehicle Type</option>
                                     <option *ngFor="let row of vehicleDT" [value]="row.key">
@@ -160,7 +160,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">{{vehtyp}} No</label>
+                                <label class="control-label">{{vehtyp}} No <strong>*</strong></label>
                                 <input type="text" name="vehno" [(ngModel)]="vehno" class="form-control vehno" tabindex="12">
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Bank Name <strong>*</strong></label>
+                                <label class="control-label">Bank Name</label>
                                 <input type="text" name="bknm" [(ngModel)]="bknm" maxlength="50" class="form-control bknm" tabindex="24" />
                             </div>
                         </div>
@@ -193,7 +193,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Account No <strong>*</strong></label>
+                                <label class="control-label">Account No</label>
                                 <input type="text" name="acno" [(ngModel)]="acno" maxlength="50" class="form-control acno" tabindex="26" />
                             </div>
                         </div>
@@ -211,7 +211,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Branch <strong>*</strong></label>
+                                <label class="control-label">Branch</label>
                                 <input type="text" name="branch" [(ngModel)]="branch" maxlength="50" class="form-control branch" tabindex="28" />
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Password</label>
+                                <label class="control-label">Password <strong>*</strong></label>
                                 <input type="password" name="rdrpwd" [(ngModel)]="rdrpwd" maxlength="50" class="form-control rdrpwd" tabindex="14" />
                             </div>
                         </div>
@@ -245,7 +245,7 @@
             </div>
 
             <div class="header">
-                <h4>Working Details</h4>
+                <h4>Address Details</h4>
             </div>
             <div class="body">
                 <div class="form-group">
@@ -260,7 +260,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="16" />
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="11" disabled />
                             </div>
                         </div>
                     </div>
@@ -268,7 +268,12 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="state" class="form-control state" maxlength="20" tabindex="17" />
+                                <select [(ngModel)]="state" class="form-control state" tabindex="12" (ngModelChange)="fillCityDropDown()">
+                                    <option [value]="0">Select State</option>
+                                    <option *ngFor="let row of stateDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -279,7 +284,12 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="city" class="form-control city" maxlength="20" tabindex="18" />
+                                <select [(ngModel)]="city" class="form-control city" tabindex="13" (ngModelChange)="fillAreaDropDown()">
+                                    <option [value]="0">Select City</option>
+                                    <option *ngFor="let row of cityDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -287,7 +297,12 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Area <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="area" class="form-control area" maxlength="20" tabindex="19" />
+                                <select [(ngModel)]="area" class="form-control area" tabindex="14">
+                                    <option [value]="0">Select Area</option>
+                                    <option *ngFor="let row of areaDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -339,10 +354,15 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Hotspot <strong>*</strong></label>
-                        <p-autoComplete id="hotspot" name="hotspot" [(ngModel)]="hotspotname" [tabindex]="20" (onSelect)="selectHotspotData($event)" [suggestions]="hotspotDT" (completeMethod)="getHotspotData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete hotspot"></p-autoComplete>
+                        <p-autoComplete id="hotspot" name="hotspot" [(ngModel)]="hsname" [tabindex]="20" (onSelect)="selectAutoHotspot($event)" [suggestions]="hotspotDT" (completeMethod)="getAutoHotspot($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete hotspot"></p-autoComplete>
                     </div>
                 </div>
+            </div>
 
+            <div class="header">
+                <h4>Week Days</h4>
+            </div>
+            <div class="body">
                 <div class="form-group">
                     <div class="form-line">
                         <div id="week">

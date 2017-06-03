@@ -114,8 +114,12 @@ export class CreateScheduleComponent implements OnInit {
             "typ": this.loginUser.utype,
             "otype": otype,
             "search": query
-        }).then(data => {
-            this.ownersDT = data;
+        }).subscribe(data => {
+            this.ownersDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -128,8 +132,12 @@ export class CreateScheduleComponent implements OnInit {
             "flag": "passenger",
             "search": query,
             "id": this.entityid
-        }).then(data => {
-            this.passengerDT = data;
+        }).subscribe(data => {
+            this.passengerDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 

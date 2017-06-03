@@ -51,8 +51,12 @@ export class AttendentAttendanceReportsComponent implements OnInit {
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 

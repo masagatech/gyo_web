@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { OwnerService } from '../../../_services/owner/owner-service';
 import { LoginService } from '../../../_services/login/login-service';
@@ -10,11 +10,15 @@ declare var google: any;
 
 @Component({
     templateUrl: 'addowner.comp.html',
-    providers: [OwnerService, CommonService]
+    providers: [CommonService]
 })
 
 export class AddOwnerComponent implements OnInit {
     loginUser: LoginUserModel;
+
+    stateDT: any = [];
+    cityDT: any = [];
+    areaDT: any = [];
 
     ownerid: number = 0;
     ownercode: string = "";
@@ -31,9 +35,10 @@ export class AddOwnerComponent implements OnInit {
     email1: string = "";
     email2: string = "";
     address: string = "";
-    country: string = "";
-    state: string = "";
-    city: string = "";
+    country: string = "India";
+    state: number = 0;
+    city: number = 0;
+    area: number = 0;
     pincode: number = 0;
     remark1: string = "";
 
@@ -47,16 +52,16 @@ export class AddOwnerComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _ownerervice: OwnerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService, private _loginservice: LoginService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _ownerervice: OwnerService,
+        private _autoservice: CommonService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
+
+        this.fillStateDropDown();
+        this.fillCityDropDown();
+        this.fillAreaDropDown();
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            commonfun.rdbtnstyle();
-        }, 0);
-
         this.getOwnerDetails();
     }
 
@@ -79,6 +84,88 @@ export class AddOwnerComponent implements OnInit {
         });
     }
 
+    // Get State DropDown
+
+    fillStateDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
+            try {
+                that.stateDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get City DropDown
+
+    fillCityDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.cityDT = [];
+        that.areaDT = [];
+
+        that.city = 0;
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
+            try {
+                that.cityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Area DropDown
+
+    fillAreaDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.areaDT = [];
+
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
+            try {
+                that.areaDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Auto Completed Entity
 
     getEntityData(event) {
@@ -89,8 +176,12 @@ export class AddOwnerComponent implements OnInit {
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -177,13 +268,27 @@ export class AddOwnerComponent implements OnInit {
     // Clear Fields
 
     resetOwnerFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
+        var that = this;
 
-        this.lat = "0.00";
-        this.lon = "0.00";
-        this.pincode = 0;
+        that.typ = "coord";
+        that.isthirdparty = "N";
+        that.ownerid = 0;
+        that.ownercode = "";
+        that.ownerpwd = "";
+        that.ownername = "";
+        that.aadharno = "";
+        that.mobileno1 = "";
+        that.mobileno2 = "";
+        that.email1 = "";
+        that.email2 = "";
+        that.address = "";
+        that.lat = "0.00";
+        that.lon = "0.00";
+        that.country = "India";
+        that.state = 0;
+        that.city = 0;
+        that.area = 0;
+        that.pincode = 0;
 
         this.entityList = [];
     }
@@ -244,6 +349,7 @@ export class AddOwnerComponent implements OnInit {
                 "country": that.country,
                 "state": that.state,
                 "city": that.city,
+                "area": that.area,
                 "pincode": that.pincode,
                 "remark1": that.remark1,
                 "typ": that.typ,
@@ -318,7 +424,10 @@ export class AddOwnerComponent implements OnInit {
                         that.address = data.data[0].address;
                         that.country = data.data[0].country;
                         that.state = data.data[0].state;
+                        that.fillCityDropDown();
                         that.city = data.data[0].city;
+                        that.fillAreaDropDown();
+                        that.area = data.data[0].area;
                         that.pincode = data.data[0].pincode;
                         that.remark1 = data.data[0].remark1;
                         that.entityname = data.data[0].schoolname;

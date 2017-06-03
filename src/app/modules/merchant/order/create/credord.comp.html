@@ -14,21 +14,24 @@
     </div>
 
     <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-6">
+        <div class="row clearfix ordm">
+            <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Outlet Name <strong>*</strong></label>
-                        <select [(ngModel)]="olid" class="form-control olid">
-                            <option [value]="0">Select Outlet</option>
-                            <option *ngFor="let row of outletDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                        <p-autoComplete id="outlet" name="outlet" [(ngModel)]="olname" [tabindex]="3" (onSelect)="selectAutoOutlet($event)" [suggestions]="outletDT" (completeMethod)="getAutoOutlet($event)" field="olname" [minLength]="1" [size]="30" class="form-controlAutoComplete olname"></p-autoComplete>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Hotspot Name <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="hsname" class="form-control" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Delivery Date <strong>*</strong></label>
@@ -36,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Pick Up Time <strong>*</strong></label>
@@ -69,7 +72,15 @@
                     </div>
                 </div>
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Order Amount</label>
+                                <input type="number" [(ngModel)]="ordamt" class="form-control text-right" maxlength="20" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Amount to be Collected</label>
@@ -77,7 +88,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Delivery Time</label>
@@ -143,11 +154,10 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="orderDetailsDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="ordno" header="Order No" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
+                    <p-column field="ordno" header="Order No" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
                     <p-column field="custname" header="Customer Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="custmobile" header="Mobile No" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="lat" header="Latitude" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="lng" header="Longitude" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="amt" header="Order Amount" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
                     <p-column field="amtcollect" header="Amount To Be Collected" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
                     <p-column field="deltime" header="Delivery Time" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">

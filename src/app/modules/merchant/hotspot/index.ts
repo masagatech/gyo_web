@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AddHotspotComponent } from './aded/addhtsp.comp';
 import { ViewHotspotComponent } from './view/viewhtsp.comp';
 
-import { HotspotService } from '../../../_services/merchant/hotspot/htsp-service';
+import { HotspotService } from '@services/merchant';
 
 import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
 

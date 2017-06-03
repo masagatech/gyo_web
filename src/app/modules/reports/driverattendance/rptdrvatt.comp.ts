@@ -51,8 +51,12 @@ export class DriverAttendanceReportsComponent implements OnInit {
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -144,31 +148,31 @@ export class DriverAttendanceReportsComponent implements OnInit {
     getAttendanceReports() {
         var that = this;
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        //if (that.actviewrights === "view") {
+        commonfun.loader();
 
-            that._rptservice.getAttendanceReports({
-                "flag": "driver", "monthname": that.monthname, "schoolid": that.entityid
-            }).subscribe(data => {
-                try {
-                    if (data.data.length !== 0) {
-                        that.attData = data.data;
-                    }
-                    else {
-                        that.attData = [];
-                    }
+        that._rptservice.getAttendanceReports({
+            "flag": "driver", "monthname": that.monthname, "schoolid": that.entityid
+        }).subscribe(data => {
+            try {
+                if (data.data.length !== 0) {
+                    that.attData = data.data;
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
+                else {
+                    that.attData = [];
                 }
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-            })
-        }
+        })
+        //}
     }
 }

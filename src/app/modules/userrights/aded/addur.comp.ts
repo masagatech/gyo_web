@@ -59,8 +59,12 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         this._autoservice.getAutoData({
             "flag": "users",
             "search": query
-        }).then(data => {
-            this.usersDT = data;
+        }).subscribe(data => {
+            this.usersDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 

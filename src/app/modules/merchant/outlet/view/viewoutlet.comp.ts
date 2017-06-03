@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
-import { OutletService } from '@services/merchant';
+import { MessageService, messageType, MenuService, LoginService } from '@services';
+import { OutletService, CommonService } from '@services/merchant';
+import { Globals } from '@globals';
 import { LoginUserModel } from '@models';
 
 @Component({
@@ -11,6 +12,8 @@ import { LoginUserModel } from '@models';
 
 export class ViewOutletComponent implements OnInit {
     loginUser: LoginUserModel;
+
+    mrchtroute: string = "";
 
     merchantDT: any = [];
     mrchtid: number = 0;
@@ -31,6 +34,7 @@ export class ViewOutletComponent implements OnInit {
     public ngOnInit() {
         var that = this;
         that.refreshButtons();
+        //that.mrchtroute = Globals.mrchtroute;
     }
 
     // Auto Completed Merchant
@@ -39,12 +43,16 @@ export class ViewOutletComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "mrchtentt",
+            "flag": "merchant",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then((data) => {
-            this.merchantDT = data;
+        }).subscribe((data) => {
+            this.merchantDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -95,7 +103,12 @@ export class ViewOutletComponent implements OnInit {
 
             that._outletservice.getOutletDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "mrchtid": that.mrchtid }).subscribe(data => {
                 try {
-                    that.outletDT = data.data;
+                    if (data.data.length !== 0 && data.data[0].errmsgcode !== "norecords") {
+                        that.outletDT = data.data;
+                    }
+                    else {
+                        that.outletDT = [];
+                    }
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);

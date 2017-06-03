@@ -173,7 +173,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Lon</label>
+                                <label class="control-label">Long</label>
                                 <input type="text" [(ngModel)]="lon" class="form-control" maxlength="50" tabindex="17" />
                             </div>
                         </div>
@@ -184,16 +184,21 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Country</label>
-                                <input type="text" [(ngModel)]="country" class="form-control" maxlength="20" tabindex="18" />
+                                <label class="control-label">Country <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="11" disabled />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">State</label>
-                                <input type="text" [(ngModel)]="state" class="form-control" maxlength="20" tabindex="19" />
+                                <label class="control-label">State <strong>*</strong></label>
+                                <select [(ngModel)]="state" class="form-control state" tabindex="12" (ngModelChange)="fillCityDropDown()">
+                                    <option [value]="0">Select State</option>
+                                    <option *ngFor="let row of stateDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -203,11 +208,32 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">City</label>
-                                <input type="text" [(ngModel)]="city" class="form-control" maxlength="20" tabindex="20" />
+                                <label class="control-label">City <strong>*</strong></label>
+                                <select [(ngModel)]="city" class="form-control city" tabindex="13" (ngModelChange)="fillAreaDropDown()">
+                                    <option [value]="0">Select City</option>
+                                    <option *ngFor="let row of cityDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Area <strong>*</strong></label>
+                                <select [(ngModel)]="area" class="form-control area" tabindex="14">
+                                    <option [value]="0">Select Area</option>
+                                    <option *ngFor="let row of areaDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">

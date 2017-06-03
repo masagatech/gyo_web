@@ -1,16 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { EntityService } from '../../../_services/entity/entity-service';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService, messageType } from '../../../_services/messages/message-service';
+import { EntityService } from '../../../_services/entity/entity-service';
+import { CommonService } from '../../../_services/common/common-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
 
 declare var google: any;
 
 @Component({
     templateUrl: 'addentity.comp.html',
-    providers: [EntityService]
+    providers: [CommonService]
 })
 
 export class AddEntityComponent implements OnInit {
+    loginUser: LoginUserModel;
+
+    stateDT: any = [];
+    cityDT: any = [];
+    areaDT: any = [];
+
     schid: number = 0;
     schcd: string = "";
     schnm: string = "";
@@ -19,9 +28,10 @@ export class AddEntityComponent implements OnInit {
     schvehs: any = "";
     oprvehs: any = "";
     address: string = "";
-    country: string = "";
-    state: string = "";
-    city: string = "";
+    country: string = "India";
+    state: number = 0;
+    city: number = 0;
+    area: number = 0;
     pincode: number = 0;
     entttype: string = "";
     remark1: string = "";
@@ -46,8 +56,14 @@ export class AddEntityComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _entityservice: EntityService, private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService,
+        private _autoservice: CommonService, private _loginservice: LoginService) {
+        this.loginUser = this._loginservice.getUser();
+
         this.fillDropDownList();
+        this.fillStateDropDown();
+        this.fillCityDropDown();
+        this.fillAreaDropDown();
     }
 
     public ngAfterViewInit() {
@@ -57,6 +73,31 @@ export class AddEntityComponent implements OnInit {
         $.AdminBSB.input.activate();
         $(".schcd").focus();
         this.getEntityDetails();
+    }
+
+    // Entity Type DropDown
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._entityservice.getEntityDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.weekDT = data.data.filter(a => a.group === "week");
+                that.entttypeDT = data.data.filter(a => a.group === "entttype");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // get lat and long by address form google map
@@ -78,16 +119,15 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
-    // Entity Type DropDown
+    // Get State DropDown
 
-    fillDropDownList() {
+    fillStateDropDown() {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
             try {
-                that.weekDT = data.data.filter(a => a.group === "week");
-                that.entttypeDT = data.data.filter(a => a.group === "entttype");
+                that.stateDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -95,7 +135,65 @@ export class AddEntityComponent implements OnInit {
 
             commonfun.loaderhide();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get City DropDown
+
+    fillCityDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.cityDT = [];
+        that.areaDT = [];
+
+        that.city = 0;
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
+            try {
+                that.cityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Area DropDown
+
+    fillAreaDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.areaDT = [];
+
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
+            try {
+                that.areaDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {
@@ -170,9 +268,22 @@ export class AddEntityComponent implements OnInit {
     // Clear Fields
 
     resetentityFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
+        var that = this;
+
+        that.entttype = "";
+        that.schcd = "";
+        that.schnm = "";
+        that.schvehs = "";
+        that.oprvehs = "";
+        that.remark1 = "";
+        that.address = "";
+        that.lat = "0.00";
+        that.lon = "0.00";
+        that.country = "India";
+        that.state = 0;
+        that.city = 0;
+        that.area = 0;
+        that.pincode = 0;
     }
 
     // Active / Deactive Data
@@ -284,6 +395,7 @@ export class AddEntityComponent implements OnInit {
                     "country": that.country,
                     "state": that.state,
                     "city": that.city,
+                    "area": that.area,
                     "pincode": that.pincode,
                     "name": that.name,
                     "mob1": that.mobile,
@@ -362,9 +474,11 @@ export class AddEntityComponent implements OnInit {
                         }
 
                         that.address = data.data[0].address;
-                        that.country = data.data[0].country;
                         that.state = data.data[0].state;
+                        that.fillCityDropDown();
                         that.city = data.data[0].city;
+                        that.fillAreaDropDown();
+                        that.area = data.data[0].area;
                         that.pincode = data.data[0].pincode;
 
                         that.name = data.data[0].name;

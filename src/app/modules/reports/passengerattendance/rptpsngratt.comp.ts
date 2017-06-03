@@ -51,8 +51,12 @@ export class PassengerAttendanceReportsComponent implements OnInit {
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then((data) => {
-            this.entityDT = data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
@@ -107,7 +111,7 @@ export class PassengerAttendanceReportsComponent implements OnInit {
             var viewRights = [];
 
             that._menuservice.getMenuDetails({
-                "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptstudsatt", "utype": that.loginUser.utype
+                "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptpsngrsatt", "utype": that.loginUser.utype
             }).subscribe(data => {
                 addRights = data.data.filter(a => a.mrights === "add");
                 editRights = data.data.filter(a => a.mrights === "edit");

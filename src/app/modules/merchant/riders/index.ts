@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AddRiderComponent } from './aded/addrdr.comp';
 import { ViewRiderComponent } from './view/viewrdr.comp';
 
-import { RiderService } from '../../../_services/merchant/riders/rdr-service';
+import { RiderService } from '@services/merchant';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 

@@ -9,7 +9,7 @@ declare var $: any;
 
 @Component({
     templateUrl: 'viewhtsp.comp.html',
-    providers: [MenuService, CommonService, HotspotService]
+    providers: [MenuService, CommonService]
 })
 
 export class ViewHotspotComponent implements OnInit {

@@ -48,8 +48,12 @@ export class ViewVehicleComponent implements OnInit {
             "typ": this.loginUser.utype,
             "otype": "coord",
             "search": query
-        }).then((data) => {
-            this.ownerDT = data;
+        }).subscribe((data) => {
+            this.ownerDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 

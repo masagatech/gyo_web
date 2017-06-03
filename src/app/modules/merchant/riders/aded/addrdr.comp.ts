@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
-import { RiderService } from '@services/merchant';
+import { MessageService, messageType, LoginService } from '@services';
+import { RiderService, CommonService } from '@services/merchant';
 import { LoginUserModel } from '@models';
-import { Globals } from '../../../../_const/globals';
 
 declare var google: any;
 declare var loader: any;
@@ -20,6 +19,10 @@ export class AddRiderComponent implements OnInit {
     genderDT: any = [];
     maritalstatusDT: any = [];
     vehicleDT: any = [];
+
+    stateDT: any = [];
+    cityDT: any = [];
+    areaDT: any = [];
 
     rdrid: number = 0;
     rdrcode: string = "";
@@ -48,15 +51,15 @@ export class AddRiderComponent implements OnInit {
     primaryemail: string = "";
 
     address: string = "";
-    country: string = "";
-    state: string = "";
-    city: string = "";
-    area: string = "";
-    pincode: string = "";
+    country: string = "India";
+    state: number = 0;
+    city: number = 0;
+    area: number = 0;
+    pincode: number = 0;
 
     hotspotDT: any = [];
-    hotspotid: number = 0;
-    hotspotname: string = "";
+    hsid: number = 0;
+    hsname: string = "";
 
     rdrtypDT: any = [];
     rdrtyp: string = "";
@@ -82,6 +85,10 @@ export class AddRiderComponent implements OnInit {
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this.fillDropDownList();
+        
+        this.fillStateDropDown();
+        this.fillCityDropDown();
+        this.fillAreaDropDown();
     }
 
     public ngOnInit() {
@@ -99,16 +106,20 @@ export class AddRiderComponent implements OnInit {
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
             "search": query
-        }).then(data => {
-            this.hotspotDT = data;
+        }).subscribe(data => {
+            this.hotspotDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
     // Selected Users
 
     selectAutoHotspot(event) {
-        this.hotspotid = event.value;
-        this.hotspotname = event.label;
+        this.hsid = event.value;
+        this.hsname = event.label;
     }
 
     // Fill Division, Gender DropDown
@@ -140,6 +151,88 @@ export class AddRiderComponent implements OnInit {
         })
     }
 
+    // Get State DropDown
+
+    fillStateDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
+            try {
+                that.stateDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get City DropDown
+
+    fillCityDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.cityDT = [];
+        that.areaDT = [];
+
+        that.city = 0;
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
+            try {
+                that.cityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Area DropDown
+
+    fillAreaDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.areaDT = [];
+
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
+            try {
+                that.areaDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Clear Fields
 
     resetRiderFields() {
@@ -162,13 +255,13 @@ export class AddRiderComponent implements OnInit {
         that.vehtyp = "";
         that.vehno = "";
         that.address = "";
-        that.country = "";
-        that.state = "";
-        that.city = "";
-        that.area = "";
-        that.pincode = "";
-        that.hotspotid = 0;
-        that.hotspotname = "";
+        that.country = "India";
+        that.state = 0;
+        that.city = 0;
+        that.area = 0;
+        that.pincode = 0;
+        that.hsid = 0;
+        that.hsname = "";
         that.rdrtyp = "";
         that.salpkg = "";
         that.workshift = "";
@@ -252,15 +345,15 @@ export class AddRiderComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Country");
             $(".country").focus();
         }
-        else if (that.state === "") {
+        else if (that.state === 0) {
             that._msg.Show(messageType.error, "Error", "Enter State");
             $(".state").focus();
         }
-        else if (that.city === "") {
+        else if (that.city === 0) {
             that._msg.Show(messageType.error, "Error", "Enter City");
             $(".city").focus();
         }
-        else if (that.area === "") {
+        else if (that.area === 0) {
             that._msg.Show(messageType.error, "Error", "Enter Area");
             $(".area").focus();
         }
@@ -284,10 +377,10 @@ export class AddRiderComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".rdrpwd").focus();
         }
-        // else if (that.hotspotid === 0) {
-        //     that._msg.Show(messageType.error, "Error", "Enter Hotspot");
-        //     $(".hotspot input").focus();
-        // }
+        else if (that.hsid === 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Hotspot");
+            $(".hotspot input").focus();
+        }
         else {
             for (var i = 0; i <= that.weekDT.length - 1; i++) {
                 _week = null;
@@ -335,8 +428,9 @@ export class AddRiderComponent implements OnInit {
                     "country": that.country,
                     "state": that.state,
                     "city": that.city,
+                    "area": that.area,
                     "pincode": that.pincode,
-                    "hotspot": that.hotspotid,
+                    "hsid": that.hsid,
                     "rdrtyp": that.rdrtyp,
                     "salpkg": that.salpkg,
                     "workshift": that.workshift,
@@ -416,9 +510,13 @@ export class AddRiderComponent implements OnInit {
                         that.address = data.data[0].address;
                         that.country = data.data[0].country;
                         that.state = data.data[0].state;
+                        that.fillCityDropDown();
                         that.city = data.data[0].city;
+                        that.fillAreaDropDown();
+                        that.area = data.data[0].area;
                         that.pincode = data.data[0].pincode;
-                        that.hotspotid = data.data[0].hotspotid;
+                        that.hsid = data.data[0].hsid;
+                        that.hsname = data.data[0].hsname;
                         that.rdrtyp = data.data[0].rdrtyp;
                         that.salpkg = data.data[0].salpkg;
                         that.workshift = data.data[0].workshift;

@@ -10,7 +10,7 @@ import { ViewOrderComponent } from './view/vieword.comp';
 
 import { OrderService } from '../../../_services/merchant/order/ord-service';
 
-import { LazyLoadEvent, DataTableModule, SelectButtonModule, GMapModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -31,7 +31,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, SelectButtonModule, GMapModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, GMapModule
   ],
 
   providers: [OrderService]

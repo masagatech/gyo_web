@@ -60,8 +60,7 @@
     <div class="body" *ngIf="isShowCalendar">
         <div class="row clearfix">
             <div class="col-md-12">
-                <!---->
-                <p-schedule [events]="events" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (viewRender)="getHolidayCalendar($event);" (onEventClick)="editHolidayCalendar($event);"></p-schedule>
+                <p-schedule [events]="holidayDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (viewRender)="getHolidayCalendar($event);" (onEventClick)="editHolidayCalendar($event);"></p-schedule>
             </div>
         </div>
     </div>

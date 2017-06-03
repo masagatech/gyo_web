@@ -16,8 +16,7 @@ declare var loader: any;
 
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
-  userfullname: string = "";
-  usertype: string = "";
+  dispname: string = "";
 
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
   public name = 'Angular 2 Webpack Starter';
@@ -49,8 +48,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private _authservice: AuthenticationService, private _loginservice: LoginService,
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
-    this.userfullname = this.loginUser.fullname;
-    this.usertype = this.loginUser.utype;
+    this.dispname = this.loginUser.dispname;
 
     _router.events.forEach((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {

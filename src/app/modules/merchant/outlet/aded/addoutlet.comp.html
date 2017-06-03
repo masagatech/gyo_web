@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4>Holiday</h4>
+        <h4>Outlet</h4>
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveOutletInfo()">
@@ -37,8 +37,144 @@
                         <input type="text" [(ngModel)]="olnm" class="form-control olnm" tabindex="2" />
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Hotspot <strong>*</strong></label>
+                        <p-autoComplete id="hotspot" name="hotspot" [(ngModel)]="hsname" [tabindex]="3" (onSelect)="selectAutoHotspot($event)" [suggestions]="hotspotDT" (completeMethod)="getAutoHotspot($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete hsname"></p-autoComplete>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Primary Mobile <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="pmob" class="form-control pmob" maxlength="20" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Secondary Mobile</label>
+                                <input type="text" [(ngModel)]="smob" class="form-control smob" maxlength="20" tabindex="5" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Primary Email <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="pemail" class="form-control pemail" maxlength="20" tabindex="6" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Secondary Email</label>
+                                <input type="text" [(ngModel)]="semail" class="form-control semail" maxlength="20" tabindex="7" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Address <strong>*</strong></label>
+                        <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" (keydown.tab)="getLatAndLong()" tabindex="8"></textarea>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Latitude <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="lat" class="form-control lat" maxlength="20" tabindex="9" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Longitude <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="lng" class="form-control lng" maxlength="20" tabindex="10" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Country <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="11" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">State <strong>*</strong></label>
+                                <select [(ngModel)]="state" class="form-control state" tabindex="12" (ngModelChange)="fillCityDropDown()">
+                                    <option [value]="0">Select State</option>
+                                    <option *ngFor="let row of stateDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">City <strong>*</strong></label>
+                                <select [(ngModel)]="city" class="form-control city" tabindex="13" (ngModelChange)="fillAreaDropDown()">
+                                    <option [value]="0">Select City</option>
+                                    <option *ngFor="let row of cityDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Area <strong>*</strong></label>
+                                <select [(ngModel)]="area" class="form-control area" tabindex="14">
+                                    <option [value]="0">Select Area</option>
+                                    <option *ngFor="let row of areaDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Pin Code <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="pincode" class="form-control pincode" maxlength="20" tabindex="15" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

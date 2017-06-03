@@ -1,18 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DriverService } from '../../../_services/driver/driver-service';
-import { CommonService } from '../../../_services/common/common-service' /* add reference for view file type */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
+import { CommonService } from '../../../_services/common/common-service';
+import { DriverService } from '../../../_services/driver/driver-service';
+import { LoginService } from '../../../_services/login/login-service';
+import { LoginUserModel } from '../../../_model/user_model';
 import { Globals } from '../../../_const/globals';
 
 declare var google: any;
 
 @Component({
     templateUrl: 'adddriver.comp.html',
-    providers: [DriverService, CommonService]
+    providers: [CommonService]
 })
 
 export class AddDriverComponent implements OnInit {
+    loginUser: LoginUserModel;
+
+    stateDT: any = [];
+    cityDT: any = [];
+    areaDT: any = [];
+
     driverid: number = 0;
     drivercode: string = "";
     oldcode: string = "";
@@ -28,9 +36,10 @@ export class AddDriverComponent implements OnInit {
     email1: string = "";
     email2: string = "";
     address: string = "";
-    country: string = "";
-    state: string = "";
-    city: string = "";
+    country: string = "India";
+    state: number = 0;
+    city: number = 0;
+    area: number = 0;
     pincode: number = 0;
     remark1: string = "";
     uploadedFiles: any = [];
@@ -47,13 +56,41 @@ export class AddDriverComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _msg: MessageService, private _commonservice: CommonService) {
+        private _msg: MessageService, private _autoservice: CommonService) {
         this.fillDropDownList();
         this.getUploadConfig();
+        
+        this.fillStateDropDown();
+        this.fillCityDropDown();
+        this.fillAreaDropDown();
     }
 
     public ngOnInit() {
         this.getDriverDetails();
+    }
+
+    // Fill Owner Drop Down
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._driverservice.getDriverDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.ownerDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // get lat and long by address form google map
@@ -73,6 +110,88 @@ export class AddDriverComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
+    }
+
+    // Get State DropDown
+
+    fillStateDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
+            try {
+                that.stateDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get City DropDown
+
+    fillCityDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.cityDT = [];
+        that.areaDT = [];
+
+        that.city = 0;
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
+            try {
+                that.cityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Area DropDown
+
+    fillAreaDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.areaDT = [];
+
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
+            try {
+                that.areaDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     onUpload(event) {
@@ -120,7 +239,7 @@ export class AddDriverComponent implements OnInit {
     getUploadConfig() {
         var that = this;
 
-        that._commonservice.getMOM({ "flag": "uploadconfig" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "uploadconfig" }).subscribe(data => {
             that.uploadconfig.server = that.global.serviceurl + "uploads";
             that.uploadconfig.serverpath = that.global.serviceurl;
             that.uploadconfig.maxFilesize = data.data[0]._filetype;
@@ -129,30 +248,6 @@ export class AddDriverComponent implements OnInit {
             console.log("Error");
         }, () => {
             console.log("Complete");
-        })
-    }
-
-    // Fill Owner Drop Down
-
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
-
-        that._driverservice.getDriverDetails({ "flag": "dropdown" }).subscribe(data => {
-            try {
-                that.ownerDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
         })
     }
 
@@ -192,13 +287,25 @@ export class AddDriverComponent implements OnInit {
     // Clear Fields
 
     resetDriverFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
+        var that = this;
 
-        this.lat = "0.00";
-        this.lon = "0.00";
-        this.pincode = 0;
+        that.ownerid = 0;
+        that.drivercode = "";
+        that.driverpwd = "";
+        that.drivername = "";
+        that.aadharno = "";
+        that.mobileno1 = "";
+        that.mobileno2 = "";
+        that.email1 = "";
+        that.email2 = "";
+        that.address = "";
+        that.lat = "0.00";
+        that.lon = "0.00";
+        that.country = "India";
+        that.state = 0;
+        that.city = 0;
+        that.area = 0;
+        that.pincode = 0;
     }
 
     // Save Data
@@ -254,6 +361,7 @@ export class AddDriverComponent implements OnInit {
                 "country": that.country,
                 "state": that.state,
                 "city": that.city,
+                "area": that.area,
                 "pincode": that.pincode,
                 "ownerid": that.ownerid,
                 "attachdocs": that.attachDocsDT,
@@ -329,7 +437,10 @@ export class AddDriverComponent implements OnInit {
                         that.address = _driverdata[0].address;
                         that.country = _driverdata[0].country;
                         that.state = _driverdata[0].state;
+                        that.fillCityDropDown();
                         that.city = _driverdata[0].city;
+                        that.fillAreaDropDown();
+                        that.area = _driverdata[0].area;
                         that.pincode = _driverdata[0].pincode;
                         that.ownerid = _driverdata[0].ownerid;
                         that.remark1 = _driverdata[0].remark1;

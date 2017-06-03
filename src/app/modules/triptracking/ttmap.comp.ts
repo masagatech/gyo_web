@@ -114,8 +114,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             "typ": this.loginUser.utype,
             "otype": "coord",
             "search": query
-        }).then(data => {
-            this.coordDT = data;
+        }).subscribe(data => {
+            this.coordDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
         });
     }
 
