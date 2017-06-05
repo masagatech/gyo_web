@@ -195,7 +195,7 @@ export class ChangeScheduleComponent implements OnInit {
             "search": query,
             "id": this.entityid
         }).subscribe((data) => {
-            this.passengerDT = data;
+            this.passengerDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {

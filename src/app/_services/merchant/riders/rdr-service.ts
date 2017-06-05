@@ -8,11 +8,11 @@ export class RiderService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     getRiderDetails(req: any) {
-        return this._dataserver.post(Globals.mrchtroute + "getRiderDetails", req)
+        return this._dataserver.post("getRiderDetails", req)
     }
 
     saveRiderInfo(req: any) {
-        return this._dataserver.post(Globals.mrchtroute + "saveRiderInfo", req)
+        return this._dataserver.post("saveRiderInfo", req)
     }
 
      getAvailable(req: any) {
