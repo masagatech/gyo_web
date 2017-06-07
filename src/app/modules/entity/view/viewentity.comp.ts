@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../../_services/menus/menu-service';
@@ -11,7 +11,7 @@ import { EntityService } from '../../../_services/entity/entity-service';
     providers: [MenuService, EntityService]
 })
 
-export class ViewEntityComponent implements OnInit {
+export class ViewEntityComponent implements OnInit, OnDestroy {
     entityDT: any = [];
     loginUser: LoginUserModel;
 
@@ -28,6 +28,9 @@ export class ViewEntityComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
         }, 0);
     }
 
@@ -86,5 +89,10 @@ export class ViewEntityComponent implements OnInit {
 
     public editEntityForm(row) {
         this._router.navigate(['/entity/edit', row.autoid]);
+    }
+    
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

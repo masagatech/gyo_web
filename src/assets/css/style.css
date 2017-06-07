@@ -3133,6 +3133,14 @@ a {
     animation: none !important;
 }
 
+section.full-content {
+    margin: 70px 0 0 0;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
 section.content {
     margin: 70px 0 0 250px;
     -moz-transition: 0.5s;
@@ -11977,6 +11985,7 @@ body.waitMe_body .waitMe_container.text>div {
 .def-box {
     padding: 10px;
     border-bottom: 1px solid #ccc;
+    cursor: pointer;
 }
 
 .form-group {

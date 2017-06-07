@@ -141,7 +141,7 @@ export class AddVehicleComponent implements OnInit {
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
-                "cuid": "vivek",
+                "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
                 "mode": ""
             }

@@ -113,9 +113,12 @@ export class AddEntityComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
                 that.lat = results[0].geometry.location.lat();
                 that.lon = results[0].geometry.location.lng();
-
-                commonfun.loaderhide();
             }
+            else {
+                that._msg.Show(messageType.error, "Error", "Couldn't find your Location");
+            }
+
+            commonfun.loaderhide();
         });
     }
 
@@ -404,7 +407,7 @@ export class AddEntityComponent implements OnInit {
                     "email2": that.email,
                     "contact": that.contactDT,
                     "remark1": that.remark1,
-                    "uid": "vivek"
+                    "uid": that.loginUser.ucode
                 }
 
                 this._entityservice.saveEntityInfo(saveentity).subscribe(data => {

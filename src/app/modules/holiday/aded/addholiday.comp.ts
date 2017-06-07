@@ -136,7 +136,7 @@ export class AddHolidayComponent implements OnInit {
                 "school": _entitylist,
                 "frmdt": that.frmdt,
                 "todt": that.todt,
-                "uid": "vivek"
+                "uid": that.loginUser.ucode
             }
 
             that._holidayervice.saveHoliday(saveholiday).subscribe(data => {

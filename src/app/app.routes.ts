@@ -9,5 +9,6 @@ export const ROUTES: Routes = [
   { path: 'home',  component: HomeComponent },
   { path: 'login',  component: LoginComponent },
   { path: '', loadChildren: './modules#ModuleModule'},
+  { path: '', loadChildren: './admin#AdminModule'},
   { path: '**',    component: NoContentComponent },
 ];

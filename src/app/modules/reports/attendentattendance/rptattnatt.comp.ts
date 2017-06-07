@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
@@ -12,7 +12,7 @@ import { ReportsService } from '../../../_services/reports/rpt-service';
     providers: [CommonService, MenuService, ReportsService]
 })
 
-export class AttendentAttendanceReportsComponent implements OnInit {
+export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
     monthDT: any = [];
 
     attColumn: any = [];
@@ -38,6 +38,9 @@ export class AttendentAttendanceReportsComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
         }, 0);
     }
 
@@ -174,5 +177,10 @@ export class AttendentAttendanceReportsComponent implements OnInit {
 
             })
         }
+    }
+    
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

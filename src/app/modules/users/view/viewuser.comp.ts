@@ -65,7 +65,7 @@ export class ViewUserComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._userervice.getUserDetails({ "flag": "all" }).subscribe(data => {
+            that._userervice.getUserDetails({ "flag": "all", "utype": that.loginUser.utype, "cuid": that.loginUser.ucode }).subscribe(data => {
                 try {
                     that.usersDT = data.data;
                 }

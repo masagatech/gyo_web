@@ -19,6 +19,7 @@ declare var adminloader: any;
 export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    standardDT: any = [];
     divisionDT: any = [];
     genderDT: any = [];
 
@@ -35,6 +36,7 @@ export class AddPassengerComponent implements OnInit {
     psngrname: string = "";
     gender: string = "";
     dob: any = "";
+    standard: string = "";
     division: string = "";
     aadharno: any = "";
 
@@ -48,12 +50,12 @@ export class AddPassengerComponent implements OnInit {
     resiaddr: string = "";
     pickupaddr: string = "";
     dropaddr: string = "";
-    resilet: any = "";
-    resilong: any = "";
-    pickuplet: any = "";
-    pickuplong: any = "";
-    droplet: any = "";
-    droplong: any = "";
+    resilet: any = "0.00";
+    resilong: any = "0.00";
+    pickuplet: any = "0.00";
+    pickuplong: any = "0.00";
+    droplet: any = "0.00";
+    droplong: any = "0.00";
 
     isCopyPickupAddr: boolean = false;
     isCopyDropAddr: boolean = false;
@@ -86,23 +88,6 @@ export class AddPassengerComponent implements OnInit {
     }
 
     // get lat and long by address form google map
-
-    getLatAndLong() {
-        var that = this;
-        commonfun.loader();
-
-        var geocoder = new google.maps.Geocoder();
-        // var address = "Chakkinaka, Kalyan (E)";
-
-        geocoder.geocode({ 'address': that.resiaddr }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                that.resilet = results[0].geometry.location.lat();
-                that.resilong = results[0].geometry.location.lng();
-                
-                commonfun.loaderhide();
-            }
-        });
-    }
 
     public onUploadError(event) {
         console.log('error');
@@ -175,6 +160,7 @@ export class AddPassengerComponent implements OnInit {
 
         that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
+                that.standardDT = data.data.filter(a => a.group === "standard");
                 that.divisionDT = data.data.filter(a => a.group === "division");
                 that.genderDT = data.data.filter(a => a.group === "gender");
             }
@@ -195,27 +181,60 @@ export class AddPassengerComponent implements OnInit {
 
     // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
 
-    copyPDAddrAndLatLong() {
-        if (this.isCopyPickupAddr) {
-            this.pickupaddr = this.resiaddr;
-            this.pickuplet = this.resilet;
-            this.pickuplong = this.resilong;
-        }
-        else {
-            this.pickupaddr = "";
-            this.pickuplet = "";
-            this.pickuplong = "";
-        }
+    getLatAndLong(pdtype) {
+        var that = this;
+        commonfun.loader();
 
-        if (this.isCopyDropAddr) {
-            this.dropaddr = this.resiaddr;
-            this.droplet = this.resilet;
-            this.droplong = this.resilong;
+        var geocoder = new google.maps.Geocoder();
+        var address = pdtype == "resiaddr" ? that.resiaddr : pdtype == "pickupaddr" ? that.pickupaddr : that.dropaddr; //"Chakkinaka, Kalyan (E)";
+
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (pdtype == "resiaddr") {
+                    that.resilet = results[0].geometry.location.lat();
+                    that.resilong = results[0].geometry.location.lng();
+                }
+                else if (pdtype == "pickupaddr") {
+                    that.pickuplet = results[0].geometry.location.lat();
+                    that.pickuplong = results[0].geometry.location.lng();
+                }
+                else {
+                    that.droplet = results[0].geometry.location.lat();
+                    that.droplong = results[0].geometry.location.lng();
+                }
+            }
+            else {
+                that._msg.Show(messageType.error, "Error", "Couldn't find your Location");
+            }
+
+            commonfun.loaderhide();
+        });
+    }
+
+    copyPDAddrAndLatLong(pdtype) {
+        if (pdtype == "pickaddr") {
+            if (this.isCopyPickupAddr) {
+                this.pickupaddr = this.resiaddr;
+                this.pickuplet = this.resilet;
+                this.pickuplong = this.resilong;
+            }
+            else {
+                this.pickupaddr = "";
+                this.pickuplet = "";
+                this.pickuplong = "";
+            }
         }
         else {
-            this.dropaddr = "";
-            this.droplet = "";
-            this.droplong = "";
+            if (this.isCopyDropAddr) {
+                this.dropaddr = this.resiaddr;
+                this.droplet = this.resilet;
+                this.droplong = this.resilong;
+            }
+            else {
+                this.dropaddr = "";
+                this.droplet = "";
+                this.droplong = "";
+            }
         }
     }
 
@@ -257,7 +276,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
 
         var act_deactHoliday = {
-            "autoid": that.ownerid,
+            "autoid": that.psngrid,
             "isactive": that.isactive,
             "mode": that.mode
         }
@@ -265,8 +284,8 @@ export class AddPassengerComponent implements OnInit {
         that._psngrservice.savePassengerInfo(act_deactHoliday).subscribe(data => {
             try {
                 var dataResult = data.data;
-                var msg = dataResult[0].funsave_Passengerinfo.msg;
-                var msgid = dataResult[0].funsave_Passengerinfo.msgid;
+                var msg = dataResult[0].funsave_studentinfo.msg;
+                var msgid = dataResult[0].funsave_studentinfo.msgid;
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
@@ -303,8 +322,12 @@ export class AddPassengerComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
             $(".psngrname").focus();
         }
+        else if (that.standard === "") {
+            that._msg.Show(messageType.error, "Error", "Select Standard");
+            $(".standard").focus();
+        }
         else if (that.division === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Division");
+            that._msg.Show(messageType.error, "Error", "Select Division");
             $(".division").focus();
         }
         else if (that.primaryemail === "") {
@@ -357,7 +380,7 @@ export class AddPassengerComponent implements OnInit {
             var passengerprofiledata = {};
 
             passengerprofiledata = {
-                "gender": that.gender, "dob": that.dob, "division": that.division,
+                "gender": that.gender, "dob": that.dob, "standard": that.standard, "division": that.division,
                 "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
             }
 
@@ -378,8 +401,10 @@ export class AddPassengerComponent implements OnInit {
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
                 "aadharno": that.aadharno,
                 "ownerid": that.ownerid,
-                "uid": "vivek",
-                "remark1": that.remark1
+                "uid": that.loginUser.ucode,
+                "remark1": that.remark1,
+                "isactive": that.isactive,
+                "mode": ""
             }
 
             that._psngrservice.savePassengerInfo(savePassenger).subscribe(data => {
@@ -434,16 +459,17 @@ export class AddPassengerComponent implements OnInit {
                         that.ownerid = data.data[0].ownerid;
                         that.ownername = data.data[0].ownername;
                         that.entityid = data.data[0].schoolid;
+                        that.entityname = data.data[0].schoolname;
                         that.psngrcode = data.data[0].studentcode;
                         that.psngrname = data.data[0].studentname;
 
                         that.aadharno = data.data[0].aadharno;
-                        that.mothername = data.data[0].name.split(';')[0];
+                        that.mothername = data.data[0].mothername;
                         that.primarymobile = data.data[0].mobileno1;
                         that.primaryemail = data.data[0].email1;
                         that.secondarymobile = data.data[0].mobileno2;
                         that.secondaryemail = data.data[0].email2;
-                        that.fathername = data.data[0].name.split(';')[1];
+                        that.fathername = data.data[0].fathername;
                         that.resiaddr = data.data[0].address;
                         that.resilet = data.data[0].resilat;
                         that.resilong = data.data[0].resilon;
@@ -452,16 +478,28 @@ export class AddPassengerComponent implements OnInit {
                         that.droplet = data.data[0].droplat;
                         that.droplong = data.data[0].droplon;
                         that.remark1 = data.data[0].remark1;
+                        that.isactive = data.data[0].isactive;
+                        that.mode = data.data[0].mode;
 
                         var passengerprofiledata = data.data[0].passengerprofiledata;
 
                         if (passengerprofiledata !== null) {
                             that.gender = data.data[0].gender;
                             that.dob = data.data[0].dob;
+                            that.standard = data.data[0].standard;
                             that.division = data.data[0].division;
                             that.pickupaddr = data.data[0].pickupaddr;
                             that.dropaddr = data.data[0].dropaddr;
                             that.otherinfo = data.data[0].otherinfo;
+                        }
+                        else {
+                            that.gender = "";
+                            that.dob = "";
+                            that.standard = "";
+                            that.division = "";
+                            that.pickupaddr = "";
+                            that.dropaddr = "";
+                            that.otherinfo = "";
                         }
                     }
                     catch (e) {

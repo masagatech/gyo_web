@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
@@ -12,7 +12,7 @@ import { ReportsService } from '../../../_services/reports/rpt-service';
     providers: [CommonService, MenuService, ReportsService]
 })
 
-export class PassengerAttendanceReportsComponent implements OnInit {
+export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     monthDT: any = [];
 
     attColumn: any = [];
@@ -38,6 +38,9 @@ export class PassengerAttendanceReportsComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
         }, 0);
     }
 
@@ -73,9 +76,7 @@ export class PassengerAttendanceReportsComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._rptservice.getAttendanceReports({
-            "flag": "dropdown", "date": "1/Mar/2017", "month": "6"
-        }).subscribe(data => {
+        that._rptservice.getAttendanceReports({ "flag": "dropdown"}).subscribe(data => {
             try {
                 that.monthDT = data.data;
             }
@@ -157,8 +158,6 @@ export class PassengerAttendanceReportsComponent implements OnInit {
                 "flag": "student", "monthname": that.monthname, "schoolid": that.entityid
             }).subscribe(data => {
                 try {
-                    console.log(data.data);
-
                     if (data.data.length !== 0) {
                         that.attData = data.data;
                     }
@@ -178,5 +177,10 @@ export class PassengerAttendanceReportsComponent implements OnInit {
 
             })
         }
+    }
+    
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

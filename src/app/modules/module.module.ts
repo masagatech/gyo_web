@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
+import { SharedComponentModule } from '../_shared/sharedcomp.module';
 
-import { HeaderComponent } from './usercontrol/header/header.comp';
-import { LeftSideBarComponent } from './usercontrol/leftsidebar/leftsidebar.comp';
 import { DashboardModule } from './dashboard';
 
 import { MarketingDashboardModule } from './marketing/dashboard';
@@ -80,13 +79,12 @@ export const routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(routes),
+        SharedComponentModule,
         FormsModule,
         CommonModule,
     ],
     declarations: [
-        ModuleComponent,
-        HeaderComponent,
-        LeftSideBarComponent
+        ModuleComponent
     ],
     providers: [AuthGuard]
 })

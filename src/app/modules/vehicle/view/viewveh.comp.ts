@@ -7,6 +7,7 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { VehicleService } from '../../../_services/vehicle/veh-service';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewveh.comp.html',
@@ -63,6 +64,9 @@ export class ViewVehicleComponent implements OnInit {
         this.ownerid = event.value;
         this.ownername = event.label;
 
+        Cookie.set("_onrid_", this.ownerid.toString());
+        Cookie.set("_onrnm_", this.ownername);
+
         this.getVehicleDetails();
     }
 
@@ -83,7 +87,11 @@ export class ViewVehicleComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            that.getVehicleDetails();
+            if (Cookie.get('_onrnm_') != null) {
+                that.ownerid = parseInt(Cookie.get('_onrid_'));
+                that.ownername = Cookie.get('_onrnm_');
+                that.getVehicleDetails();
+            }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {

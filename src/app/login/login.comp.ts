@@ -4,6 +4,7 @@ import { LoginService } from '../_services/login/login-service';
 import { MessageService, messageType } from '../_services/messages/message-service';
 import { UserReq, LoginUserModel } from '../_model/user_model';
 import { Router } from '@angular/router';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'login.comp.html',
@@ -16,17 +17,19 @@ export class LoginComponent implements OnInit {
     _user = new UserReq("", "");
 
     constructor(private _router: Router, private _service: AuthenticationService, private _loginservice: LoginService, private _msg: MessageService) {
-        // var that = this;
-        // var checks = this._service.checkCredentials();
+        var that = this;
+        var checks = this._service.checkCredentials();
 
-        // if (checks.status) that._router.navigate(['/']);
+        if (checks.status) that._router.navigate(['/']);
 
-        // if (checks.takefrmdb) {
-        //     that._service.getSession(function (e) {
-        //         if (e == "success")
-        //             that._router.navigate(['/']);
-        //     }, checks);
-        // }
+        if (checks.takefrmdb) {
+            that._service.getSession(function (e) {
+                if (e == "success")
+                    that._router.navigate(['/']);
+            }, checks);
+        }
+
+        Cookie.deleteAll();
     }
 
     login(e) {
@@ -42,7 +45,13 @@ export class LoginComponent implements OnInit {
 
                         if (userDetails.status) {
                             this._loginservice.setUsers(userDetails);
-                            this._router.navigate(['/']);
+
+                            if (this._loginservice.getUser().ucode == "admin") {
+                                this._router.navigate(['/company']);
+                            }
+                            else {
+                                this._router.navigate(['/']);
+                            }
                         } else {
                             this._msg.Show(messageType.error, "Error", userDetails.errmsg);
                         }

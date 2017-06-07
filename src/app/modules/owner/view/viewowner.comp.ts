@@ -7,6 +7,7 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { OwnerService } from '../../../_services/owner/owner-service';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewowner.comp.html',
@@ -62,6 +63,9 @@ export class ViewOwnerComponent implements OnInit {
         this.entityid = event.value;
         this.entityname = event.label;
 
+        Cookie.set("_onrenttid_", this.entityid.toString());
+        Cookie.set("_onrenttnm_", this.entityname);
+
         this.getOwnerDetails();
     }
 
@@ -81,6 +85,12 @@ export class ViewOwnerComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+
+            if (Cookie.get('_onrenttnm_') != null) {
+                that.entityid = parseInt(Cookie.get('_onrenttid_'));
+                that.entityname = Cookie.get('_onrenttnm_');
+                that.getOwnerDetails();
+            }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {

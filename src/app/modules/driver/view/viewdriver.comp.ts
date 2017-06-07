@@ -7,6 +7,7 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { DriverService } from '../../../_services/driver/driver-service';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewdriver.comp.html',
@@ -62,6 +63,9 @@ export class ViewDriverComponent implements OnInit {
         this.entityid = event.value;
         this.entityname = event.label;
 
+        Cookie.set("_drventtid_", this.entityid.toString());
+        Cookie.set("_drventtnm_", this.entityname);
+
         this.getDriverDetails();
     }
 
@@ -81,6 +85,12 @@ export class ViewDriverComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+
+            if (Cookie.get('_drventtnm_') != null) {
+                that.entityid = parseInt(Cookie.get('_drventtid_'));
+                that.entityname = Cookie.get('_drventtnm_');
+                that.getDriverDetails();
+            }
         }, err => {
             //that._msg.Show(messageType.error, "Error", err);
         }, () => {

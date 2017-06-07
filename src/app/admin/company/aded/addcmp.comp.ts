@@ -1,31 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../_services/users/user-service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
-import { Router, ActivatedRoute } from '@angular/router';
+import { CompanyService } from '../../../_services/company/cmp-service';
 
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'adduser.comp.html',
-    providers: [UserService, CommonService]
+    templateUrl: 'addcmp.comp.html',
+    providers: [CompanyService, CommonService]
 })
 
-export class AddUserComponent implements OnInit {
+export class AddCompanyComponent implements OnInit {
     loginUser: LoginUserModel;
 
     stateDT: any = [];
     cityDT: any = [];
     areaDT: any = [];
 
-    uid: number = 0;
-    ucode: string = "";
-    oldcode: string = "";
-    upwd: string = "";
-    fname: string = "";
-    lname: string = "";
+    cmpid: number = 0;
+    cmpcd: string = "";
+    cmpnm: string = "";
+    cmpdesc: string = "";
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -38,23 +36,12 @@ export class AddUserComponent implements OnInit {
     pincode: number = 0;
     isactive: boolean = false;
     mode: string = "";
-    remark1: string = "";
-    utype: string = "";
-
-    genderDT: any = [];
-
-    isAllEnttRights: boolean = true;
-    entityDT: any = [];
-    entityList: any = [];
-    entityid: number = 0;
-    entityname: string = "";
 
     private subscribeParameters: any;
 
-    constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+    constructor(private _cmpservice: CompanyService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        private _router: Router, private _msg: MessageService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
-        this.fillDropDownList();
 
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -62,27 +49,11 @@ export class AddUserComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.getUserDetails();
+        this.getCompanyDetails();
     }
 
     public ngAfterViewInit() {
         $.AdminBSB.input.activate();
-    }
-
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
-
-        that._userservice.getUserDetails({ "flag": "dropdown" }).subscribe(data => {
-            that.genderDT = data.data;
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     // Get State DropDown
@@ -167,102 +138,28 @@ export class AddUserComponent implements OnInit {
         })
     }
 
-    // Is Rights Entity
-
-    isAllEntityRights() {
-        if (this.isAllEnttRights) {
-            this.entityList = [];
-        }
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event, type) {
-        this.entityid = event.value;
-        this.entityname = event.label;
-
-        this.addEntityList();
-        $(".entityname input").focus();
-    }
-
-    // Check Duplicate Entity
-
-    isDuplicateEntity() {
-        var that = this;
-
-        for (var i = 0; i < that.entityList.length; i++) {
-            var field = that.entityList[i];
-
-            if (field.schid == this.entityid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Entity not Allowed");
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // Read Get Entity
-
-    addEntityList() {
-        var that = this;
-        var duplicateEntity = that.isDuplicateEntity();
-
-        if (!duplicateEntity) {
-            that.entityList.push({
-                "schid": that.entityid, "schnm": that.entityname
-            });
-        }
-
-        that.entityid = 0;
-        that.entityname = "";
-    }
-
-    deleteEntity(row) {
-        this.entityList.splice(this.entityList.indexOf(row), 1);
-    }
-
     // Active / Deactive Data
 
-    active_deactiveUserInfo() {
+    active_deactiveCompanyInfo() {
         var that = this;
 
-        var act_deactuser = {
-            "uid": that.uid,
+        var act_deactCompany = {
+            "cmpid": that.cmpid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        this._userservice.saveUserInfo(act_deactuser).subscribe(data => {
+        this._cmpservice.saveCompanyInfo(act_deactCompany).subscribe(data => {
             try {
                 var dataResult = data.data;
 
-                if (dataResult[0].funsave_userinfo.msgid != "-1") {
-                    var msg = dataResult[0].funsave_userinfo.msg;
+                if (dataResult[0].funsave_Companyinfo.msgid != "-1") {
+                    var msg = dataResult[0].funsave_Companyinfo.msg;
                     that._msg.Show(messageType.success, "Success", msg);
-                    that.getUserDetails();
+                    that.getCompanyDetails();
                 }
                 else {
-                    var msg = dataResult[0].funsave_userinfo.msg;
+                    var msg = dataResult[0].funsave_Companyinfo.msg;
                     that._msg.Show(messageType.error, "Error", msg);
                 }
             }
@@ -279,16 +176,13 @@ export class AddUserComponent implements OnInit {
 
     // Clear Fields
 
-    resetUserFields() {
+    resetCompanyFields() {
         var that = this;
 
-        that.uid = 0
-        that.ucode = "";
-        that.upwd = "";
-        that.fname = "";
-        that.lname = "";
-        that.utype = "";
-        that.remark1 = "";
+        that.cmpid = 0
+        that.cmpcd = "";
+        that.cmpnm = "";
+        that.cmpdesc = "";
         that.mobileno1 = "";
         that.mobileno2 = "";
 
@@ -300,34 +194,20 @@ export class AddUserComponent implements OnInit {
         that.city = 0;
         that.area = 0;
         that.pincode = 0;
-
-        this.entityList = [];
     }
 
     // Save Data
 
-    saveUserInfo() {
+    saveCompanyInfo() {
         var that = this;
 
-        if (that.ucode == "") {
-            that._msg.Show(messageType.error, "Error", "Enter User Code");
-            $(".ucode").focus();
+        if (that.cmpcd == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Company Code");
+            $(".cmpcd").focus();
         }
-        else if (that.upwd == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Password");
-            $(".upwd").focus();
-        }
-        else if (that.fname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter First Name");
-            $(".fname").focus();
-        }
-        else if (that.lname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Last Name");
-            $(".lname").focus();
-        }
-        else if (that.utype == "") {
-            that._msg.Show(messageType.error, "Error", "Select User Type");
-            $(".utype").focus();
+        else if (that.cmpnm == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Company Name");
+            $(".cmpnm").focus();
         }
         else if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
@@ -344,17 +224,11 @@ export class AddUserComponent implements OnInit {
         else {
             commonfun.loader();
 
-            var _enttlist: string[] = [];
-            _enttlist = that.isAllEnttRights ? ["0"] : Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
-
-            var saveuser = {
-                "uid": that.uid,
-                "oldcode": that.oldcode,
-                "ucode": that.ucode,
-                "upwd": that.upwd,
-                "fname": that.fname,
-                "lname": that.lname,
-                "school": _enttlist,
+            var saveCompany = {
+                "cmpid": that.cmpid,
+                "cmpcd": that.cmpcd,
+                "cmpnm": that.cmpnm,
+                "cmpdesc": that.cmpdesc,
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -365,32 +239,30 @@ export class AddUserComponent implements OnInit {
                 "city": that.city,
                 "area": that.area,
                 "pincode": that.pincode,
-                "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
-                "utype": that.utype,
                 "mode": ""
             }
 
-            this._userservice.saveUserInfo(saveuser).subscribe(data => {
+            this._cmpservice.saveCompanyInfo(saveCompany).subscribe(data => {
                 try {
                     var dataResult = data.data;
-                    var msg = dataResult[0].funsave_userinfo.msg;
-                    var msgid = dataResult[0].funsave_userinfo.msgid;
+                    var msg = dataResult[0].funsave_Companyinfo.msg;
+                    var msgid = dataResult[0].funsave_Companyinfo.msgid;
 
                     if (msgid !== "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.resetUserFields();
+                            that.resetCompanyFields();
                         }
                         else {
                             that.backViewData();
                         }
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", "Error 101 : " + dataResult[0].funsave_userinfo.msg);
-                        console.log("Error 101 : " + dataResult[0].funsave_userinfo.msg);
+                        that._msg.Show(messageType.error, "Error", "Error 101 : " + dataResult[0].funsave_Companyinfo.msg);
+                        console.log("Error 101 : " + dataResult[0].funsave_Companyinfo.msg);
                     }
 
                     commonfun.loaderhide();
@@ -409,28 +281,22 @@ export class AddUserComponent implements OnInit {
         }
     }
 
-    // Get user Data
+    // Get Company Data
 
-    getUserDetails() {
+    getCompanyDetails() {
         var that = this;
         commonfun.loader();
 
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.uid = params['id'];
+                this.cmpid = params['id'];
 
-                that._userservice.getUserDetails({ "flag": "edit", "id": this.uid }).subscribe(data => {
+                that._cmpservice.getCompanyDetails({ "flag": "edit", "id": this.cmpid }).subscribe(data => {
                     try {
-                        that.uid = data.data[0].uid;
-                        that.oldcode = data.data[0].ucode;
-                        that.ucode = data.data[0].ucode;
-                        that.upwd = data.data[0].upwd;
-                        that.fname = data.data[0].fname;
-                        that.lname = data.data[0].lname;
-                        that.utype = data.data[0].utype;
-                        that.utype = data.data[0].utype;
-                        that.isAllEnttRights = data.data[0].isallenttrights;
-                        that.entityList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.cmpid = data.data[0].cmpid;
+                        that.cmpcd = data.data[0].cmpcd;
+                        that.cmpnm = data.data[0].cmpnm;
+                        that.cmpdesc = data.data[0].cmpdesc;
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;
@@ -443,7 +309,6 @@ export class AddUserComponent implements OnInit {
                         that.fillAreaDropDown();
                         that.area = data.data[0].area;
                         that.pincode = data.data[0].pincode;
-                        that.remark1 = data.data[0].remark1;
                         that.isactive = data.data[0].isactive;
                         that.mode = data.data[0].mode;
                     }
@@ -469,6 +334,6 @@ export class AddUserComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/user']);
+        this._router.navigate(['/company']);
     }
 }

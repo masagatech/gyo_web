@@ -177,6 +177,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         this._ttmapservice.getTripData({ "driverid": that.driverid }).subscribe(data => {
+            that.sel_tripid = 0;
             that.tripDT = data.data;
             commonfun.loaderhide();
         }, err => {

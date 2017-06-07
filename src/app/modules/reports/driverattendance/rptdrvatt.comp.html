@@ -1,11 +1,10 @@
 <div class="card">
     <div class="header">
-        <h4>Attendance</h4>
+        <h4>Driver Attendance</h4>
         <div class="row clearfix">
             <div class="col-md-7">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Entity</label>
                         <p-autoComplete id="entityname" name="schooentityname" [(ngModel)]="entityname" placeholder="Entity Name" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1"
                             [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
                     </div>
@@ -14,7 +13,6 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Month</label>
                         <select name="monthname" [(ngModel)]="monthname" class="form-control">
                             <option [value]="''">Select Month</option>
                             <option *ngFor="let row of monthDT" [value]="row.month">
@@ -25,7 +23,7 @@
                 </div>
             </div>
             <div class="col-md-1">
-                <div class="form-group-only">
+                <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="viewAttendanceReportsRights()">
                         <span class="material-icons">search</span>
                     </button>
@@ -35,7 +33,7 @@
     </div>
 
     <div class="body no-padding">
-        <p-dataTable [value]="attData" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+        <p-dataTable [value]="attData">
             <p-column field="drivername" header="Driver Name" [style]="{'width': '165px', 'text-align': 'left'}"></p-column>
             <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width':'30px','text-align':'left'}">
                 <template let-drow="rowData" pTemplate type="body">

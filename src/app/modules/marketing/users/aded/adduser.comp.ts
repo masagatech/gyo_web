@@ -129,7 +129,7 @@ export class AddMarketUserComponent implements OnInit {
             "city": that.city,
             "pincode": that.pincode,
             "remark1": that.remark1,
-            "cuid": "vivek",
+            "cuid": that.loginUser.ucode,
             "isactive": that.isactive,
             "devid": that.devid,
             "utype": "marketing",

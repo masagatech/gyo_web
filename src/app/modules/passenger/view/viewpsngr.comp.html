@@ -39,8 +39,11 @@
                         </template>
                     </p-column>
                     <p-column field="studentname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>
-                    <p-column field="schoolname" header="Entity Name" [style]="{'width': '300px', 'text-align': 'left'}"></p-column>
-                    <p-column field="ownername" header="Owner Name" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
+                    <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
+                    <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
+                    <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
+                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
+                    <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editPassengerForm(row)">
