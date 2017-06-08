@@ -1,0 +1,242 @@
+<div class="col-md-1">
+</div>
+<div class="col-md-10">
+    <div class="card">
+        <div class="header">
+            <h4>Workspace</h4>
+            <ul class="header-dropdown m-r--5">
+                <li>
+                    <span class="switch">
+                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveWorkspaceInfo()"><span class="lever"></span></label>
+                    </span>
+                </li>
+                <li>
+                    <a role="button" class="btn btn-theme btn-xs" (click)="saveWorkspaceInfo()">
+                        <i class="material-icons">save</i></a>
+                </li>
+                <li>
+                    <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                        <i class="material-icons">arrow_back</i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                <div class="col-md-6 border">
+                    <div class="row clearfix">
+                        <div class="col-md-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Workspace Code <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="wscode" class="form-control wscode" minlength="4" maxlength="6" tabindex="1" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Workspace Name <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="wsname" class="form-control wsname" minlength="4" maxlength="100" tabindex="2" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Description</label>
+                                    <textarea [(ngModel)]="wsdesc" rows="5" class="form-control no-resize auto-growth wsdesc" maxlength="500" tabindex="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Login Code <strong>*</strong></label>
+                                    <div class="row clearfix">
+                                        <div class="col-md-7">
+                                            <input type="text" [(ngModel)]="lgcode" class="form-control lgcode" minlength="3" maxlength="6" tabindex="4" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            {{"." + wscode}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Password <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="lgpwd" class="form-control lgpwd" minlength="4" maxlength="10" tabindex="5" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Remark</label>
+                                    <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth remark" maxlength="500" tabindex="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Contact Person <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="cpname" class="form-control cpname" minlength="10" maxlength="10" tabindex="7" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Mobile (Login No) <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" minlength="10" maxlength="10" tabindex="8" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Alternate Mobile</label>
+                                    <input type="text" [(ngModel)]="mobileno2" class="form-control" minlength="10" maxlength="10" tabindex="9" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Email <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="email1" class="form-control email1" minlength="5" maxlength="50" tabindex="10" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Alternate Email</label>
+                                    <input type="text" [(ngModel)]="email2" class="form-control" minlength="5" maxlength="50" tabindex="11" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Address</label>
+                                    <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="12"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Country <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="13" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">State <strong>*</strong></label>
+                                    <select [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="14">
+                                        <option [value]="0">Select State</option>
+                                        <option *ngFor="let row of stateDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">City <strong>*</strong></label>
+                                    <select [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="15">
+                                        <option [value]="0">Select City</option>
+                                        <option *ngFor="let row of cityDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <table cellspacing="3" cellpadding="3" class="ui-datatable" width="100%">
+                        <tr>
+                            <td align="center">Workspace Type</td>
+                            <td align="center">Rate / Passenger</td>
+                            <td align="center">Max Allowed Entity </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="company" [(ngModel)]="iscompany" value="Company" name="Company" class="actrights filled-in" />
+                                <label class="control-label" for="company">Company</label>
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="cmppsngrrate" class="form-control cmppsngrrate text-right" maxlength="20" tabindex="16" />
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="cmpenttmaxno" class="form-control cmpenttmaxno text-right" maxlength="20" tabindex="17" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="school" [(ngModel)]="isschool" value="School" name="School" class="actrights filled-in" />
+                                <label class="control-label" for="school">School</label>
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="schpsngrrate" class="form-control schpsngrrate text-right" maxlength="20" tabindex="18" />
+                            </td>
+                            <td>
+                                <input type="number" [(ngModel)]="schenttmaxno" class="form-control schenttmaxno text-right" maxlength="20" tabindex="19" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!--<div class="form-line">
+                        <label class="control-label"> <strong>*</strong></label>
+                        <span style="margin-right:5px;" *ngFor="let wstrow of wstypeDT">
+                            <input type="checkbox" id="{{wstrow.key}}" value="{{wstrow.key}}" name="{{wstrow.key}}" class="actrights filled-in" />
+                            <label class="control-label" for="{{wstrow.key}}">{{wstrow.val}}</label>
+                        </span>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-1">
+</div>

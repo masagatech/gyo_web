@@ -16,6 +16,7 @@ declare var loader: any;
 
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
+  wsname: string = "";
   dispname: string = "";
 
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
@@ -48,6 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private _authservice: AuthenticationService, private _loginservice: LoginService,
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
+
+    this.wsname =  this.loginUser.wsname;
     this.dispname = this.loginUser.dispname;
 
     _router.events.forEach((event: NavigationEvent) => {

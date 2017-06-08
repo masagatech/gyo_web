@@ -3,20 +3,20 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AddCompanyComponent } from './aded/addcmp.comp';
-import { ViewCompanyComponent } from './view/viewcmp.comp';
+import { AddWorkspaceComponent } from './aded/addws.comp';
+import { ViewWorkspaceComponent } from './view/viewws.comp';
 
-import { CompanyService } from '../../_services/company/cmp-service';
+import { WorkspaceService } from '../../_services/workspace/ws-service';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewCompanyComponent },
-      { path: 'add', component: AddCompanyComponent },
-      { path: 'details/:id', component: AddCompanyComponent },
-      { path: 'edit/:id', component: AddCompanyComponent }
+      { path: '', component: ViewWorkspaceComponent },
+      { path: 'add', component: AddWorkspaceComponent },
+      { path: 'details/:id', component: AddWorkspaceComponent },
+      { path: 'edit/:id', component: AddWorkspaceComponent }
     ]
   },
 ];
@@ -24,17 +24,17 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddCompanyComponent,
-    ViewCompanyComponent
+    AddWorkspaceComponent,
+    ViewWorkspaceComponent
   ],
 
   imports: [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
   ],
 
-  providers: [CompanyService]
+  providers: [WorkspaceService]
 })
 
-export class CompanyModule {
+export class WorkspaceModule {
   public static routes = routes;
 }

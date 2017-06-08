@@ -4,8 +4,6 @@ import { AdminComponent } from '../admin/admin.comp';
 import { AuthGuard } from '../_services/authguard-service';
 import { SharedComponentModule } from '../_shared/sharedcomp.module';
 
-import { CompanyModule } from './company';
-
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -18,7 +16,7 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'company', loadChildren: './company#CompanyModule' },
+                    { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
                 ]
             }
         ]

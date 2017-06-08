@@ -17,6 +17,10 @@ export interface LoginUserModel {
   dispname: string;
   fullname: string;
   uphoto: string;
+  wsid: number;
+  wscode: string;
+  wsname: string;
+  lgcode: string;
   login: string,
   status: boolean,
   errcode: string,

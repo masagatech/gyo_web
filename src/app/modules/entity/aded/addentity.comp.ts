@@ -5,6 +5,7 @@ import { EntityService } from '../../../_services/entity/entity-service';
 import { CommonService } from '../../../_services/common/common-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
+import { Globals } from '../../../_const/globals';
 
 declare var google: any;
 
@@ -54,11 +55,16 @@ export class AddEntityComponent implements OnInit {
     weekDT: any = [];
     entttypeDT: any = [];
 
+    uploadPhotoDT: any = [];
+    global = new Globals();
+    uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService,
         private _autoservice: CommonService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
+        this.getUploadConfig();
 
         this.fillDropDownList();
         this.fillStateDropDown();
@@ -81,10 +87,19 @@ export class AddEntityComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that.loginUser.wscode }).subscribe(data => {
             try {
+                that.entttypeDT = data.data.filter(a => a.group === "workspace");
+
+                if (that.entttypeDT.length == 1) {
+                    that.entttype = that.entttypeDT[0].key;
+                }
+                else {
+                    that.entttypeDT.push({ "key": "", "val": "Select Entity Type" });
+                    that.entttype = "";
+                }
+
                 that.weekDT = data.data.filter(a => a.group === "week");
-                that.entttypeDT = data.data.filter(a => a.group === "entttype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -268,6 +283,63 @@ export class AddEntityComponent implements OnInit {
         this.contactDT.splice(this.contactDT.indexOf(row), 1);
     }
 
+    onUpload(event) {
+        var that = this;
+        var imgfile = [];
+        imgfile = JSON.parse(event.xhr.response);
+
+        console.log(imgfile);
+
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace("www\\uploads\\", "") })
+        }
+    }
+
+    // Get File Size
+
+    formatSizeUnits(bytes) {
+        if (bytes >= 1073741824) {
+            bytes = (bytes / 1073741824).toFixed(2) + ' GB';
+        }
+        else if (bytes >= 1048576) {
+            bytes = (bytes / 1048576).toFixed(2) + ' MB';
+        }
+        else if (bytes >= 1024) {
+            bytes = (bytes / 1024).toFixed(2) + ' KB';
+        }
+        else if (bytes > 1) {
+            bytes = bytes + ' bytes';
+        }
+        else if (bytes == 1) {
+            bytes = bytes + ' byte';
+        }
+        else {
+            bytes = '0 byte';
+        }
+
+        return bytes;
+    }
+
+    removeFileUpload() {
+        this.uploadPhotoDT.splice(0, 1);
+    }
+
+    getUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+            that.uploadconfig.server = that.global.serviceurl + "uploads";
+            that.uploadconfig.serverpath = that.global.serviceurl;
+            that.uploadconfig.uploadurl = that.global.uploadurl;
+            that.uploadconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
     // Clear Fields
 
     resetentityFields() {
@@ -390,6 +462,7 @@ export class AddEntityComponent implements OnInit {
                     "entttype": that.entttype,
                     "schcd": that.schcd,
                     "schnm": that.schnm,
+                    "schlogo": that.uploadPhotoDT[0].athurl,
                     "schgeoloc": that.lat + "," + that.lon,
                     "schvehs": that.schvehs,
                     "oprvehs": that.oprvehs,
@@ -463,6 +536,8 @@ export class AddEntityComponent implements OnInit {
                         that.entttype = data.data[0].entttype;
                         that.schcd = data.data[0].schoolcode;
                         that.schnm = data.data[0].schoolname;
+                        that.getUploadConfig();
+                        that.uploadPhotoDT.push({ "athurl": data.data[0].schlogo });
                         that.lat = data.data[0].lat;
                         that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;
@@ -487,7 +562,7 @@ export class AddEntityComponent implements OnInit {
                         that.name = data.data[0].name;
                         that.email = data.data[0].email1;
                         that.mobile = data.data[0].mobileno1;
-                        that.contactDT = data.data[0].contact;
+                        that.contactDT = data.data[0].contact !== null ? data.data[0].contact : [];
 
                         that.remark1 = data.data[0].remark1;
                         that.isactive = data.data[0].isactive;

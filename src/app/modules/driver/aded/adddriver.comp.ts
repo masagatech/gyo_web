@@ -241,11 +241,11 @@ export class AddDriverComponent implements OnInit {
     getUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "uploadconfig" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
             that.uploadconfig.server = that.global.serviceurl + "uploads";
             that.uploadconfig.serverpath = that.global.serviceurl;
-            that.uploadconfig.maxFilesize = data.data[0]._filetype;
-            that.uploadconfig.acceptedFiles = data.data[0]._filesize;
+            that.uploadconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
             console.log("Error");
         }, () => {

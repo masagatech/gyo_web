@@ -46,8 +46,8 @@ export class LoginComponent implements OnInit {
                         if (userDetails.status) {
                             this._loginservice.setUsers(userDetails);
 
-                            if (this._loginservice.getUser().ucode == "admin") {
-                                this._router.navigate(['/company']);
+                            if (userDetails.ucode == "admin") {
+                                this._router.navigate(['/workspace']);
                             }
                             else {
                                 this._router.navigate(['/']);

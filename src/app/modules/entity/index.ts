@@ -8,7 +8,7 @@ import { ViewEntityComponent } from './view/viewentity.comp';
 
 import { EntityService } from '../../_services/entity/entity-service';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, CheckboxModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -28,7 +28,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, FileUploadModule
   ],
 
   providers: [EntityService]

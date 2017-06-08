@@ -25,8 +25,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Entity Type</label>
-                                <select [(ngModel)]="entttype" class="form-control entttype">
-                                    <option [value]="">Select Entity Type</option>
+                                <select id="entttype" [(ngModel)]="entttype" class="form-control entttype">
                                     <option *ngFor="let row of entttypeDT" [value]="row.key">	
                                         {{row.val}}
                                     </option>
@@ -40,7 +39,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Code <strong>*</strong></label>
+                                <label class="control-label">{{entttype}} Code <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" />
                             </div>
                         </div>
@@ -48,7 +47,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Name <strong>*</strong></label>
+                                <label class="control-label">{{entttype}} Name <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schnm" class="form-control schnm" maxlength="200" />
                             </div>
                         </div>
@@ -59,7 +58,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Entity Vehicles (How Many) <strong>*</strong></label>
+                                <label class="control-label">{{entttype}} Vehicles (How Many) <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schvehs" class="form-control schvehs" maxlength="5" />
                             </div>
                         </div>
@@ -154,30 +153,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Area <strong>*</strong></label>
-                                <select [(ngModel)]="area" class="form-control area" tabindex="14">
-                                    <option [value]="0">Select Area</option>
-                                    <option *ngFor="let row of areaDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -253,7 +228,7 @@
             </div>
         </div>
     </div>
-    <div class="body">
+    <div class="body" *ngIf="contactDT.length">
         <p-dataTable #dt [value]="contactDT" [lazy]="true">
             <p-column header="#" [style]="{'width':'50px','text-align':'center'}">
                 <template let-i="rowIndex" pTemplate="body">
@@ -277,12 +252,28 @@
         </h4>
     </div>
     <div class="body">
-        <div id="week">
-            <span style="margin-right:5px;" *ngFor="let week of weekDT; let i = index;">
-                <input type="checkbox" id="{{week.key}}" value="{{week.key}}" name="week{{i + 1}}" data-menuid="week.key" data-right="item"
-                    class="actrights filled-in" />
-                <label for="{{week.key}}">{{week.val}}</label>
-            </span>
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <div id="week">
+                    <span style="margin-right:5px;" *ngFor="let week of weekDT; let i = index;">
+                        <input type="checkbox" id="{{week.key}}" value="{{week.key}}" name="week{{i + 1}}" data-menuid="week.key" data-right="item"
+                            class="actrights filled-in" />
+                        <label for="{{week.key}}">{{week.val}}</label>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <p-fileUpload name="fileUploaded" url="{{uploadconfig.server}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="auto">
+                    <template pTemplate type="content">
+                        <div *ngIf="uploadPhotoDT.length">
+                            <div *ngFor="let file of uploadPhotoDT" class="box">
+                                <img src="http://localhost:8082/images/{{file.athurl}}" height="80px" />
+                            </div>
+                        </div>
+                        <span *ngIf="!uploadPhotoDT.length">{{entttype}} Logo....</span>
+                    </template>
+                </p-fileUpload>
+            </div>
         </div>
     </div>
 </div>
