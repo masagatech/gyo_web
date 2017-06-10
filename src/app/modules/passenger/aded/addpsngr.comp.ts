@@ -22,6 +22,10 @@ export class AddPassengerComponent implements OnInit {
     standardDT: any = [];
     divisionDT: any = [];
     genderDT: any = [];
+    pickrouteDT: any = [];
+    droprouteDT: any = [];
+    pickstopsDT: any = [];
+    dropstopsDT: any = [];
 
     ownersDT: any = [];
     ownerid: number = 0;
@@ -56,6 +60,10 @@ export class AddPassengerComponent implements OnInit {
     pickuplong: any = "0.00";
     droplet: any = "0.00";
     droplong: any = "0.00";
+    pickrtid: number = 0;
+    pickstpid: number = 0;
+    droprtid: number = 0;
+    dropstpid: number = 0;
 
     isCopyPickupAddr: boolean = false;
     isCopyDropAddr: boolean = false;
@@ -152,7 +160,7 @@ export class AddPassengerComponent implements OnInit {
         this.entityname = event.schnm;
     }
 
-    // Fill Entity, Division, Gender DropDown
+    // Fill Standard, Division, Gender, Pick Up Route and Drop Route DropDown
 
     fillDropDownList() {
         var that = this;
@@ -163,6 +171,8 @@ export class AddPassengerComponent implements OnInit {
                 that.standardDT = data.data.filter(a => a.group === "standard");
                 that.divisionDT = data.data.filter(a => a.group === "division");
                 that.genderDT = data.data.filter(a => a.group === "gender");
+                that.pickrouteDT = data.data.filter(a => a.group === "route");
+                that.droprouteDT = data.data.filter(a => a.group === "route");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -177,6 +187,165 @@ export class AddPassengerComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Fill Pick Up Stops DropDown
+
+    fillPickStopsDDL() {
+        var that = this;
+        commonfun.loader("#pickstpid");
+
+        if (that.droprtid == 0) {
+            that.droprtid = that.pickrtid;
+            that.fillDropStopsDDL();
+        }
+
+        that._psngrservice.getPassengerDetails({ "flag": "filterddl", "rtid": that.pickrtid }).subscribe(data => {
+            try {
+                that.pickstopsDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide("#pickstpid");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Fill Drop Stops DropDown
+
+    fillDropStopsDDL() {
+        var that = this;
+        commonfun.loader("#dropstpid");
+
+        that._psngrservice.getPassengerDetails({ "flag": "filterddl", "rtid": that.droprtid }).subscribe(data => {
+            try {
+                that.dropstopsDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide("#dropstpid");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Pick Address, Lat, Long
+
+    getPickAddressLatLon() {
+        var that = this;
+
+        if (that.dropstpid == 0) {
+            that.dropstpid = that.pickstpid;
+        }
+
+        if (that.pickrtid == 0) {
+            $(".pickupaddr").removeAttr("disabled");
+            $(".pickuplet").removeAttr("disabled");
+            $(".pickuplong").removeAttr("disabled");
+
+            that.pickupaddr = "";
+            that.pickuplet = "";
+            that.pickuplong = "";
+        }
+        else {
+            $(".pickupaddr").attr("disabled", "disabled");
+            $(".pickuplet").attr("disabled", "disabled");
+            $(".pickuplong").attr("disabled", "disabled");
+
+            commonfun.loader();
+
+            that._psngrservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
+                try {
+                    if (data.data.length > 0) {
+                        that.pickupaddr = data.data[0].address;
+                        that.pickuplet = data.data[0].lat;
+                        that.pickuplong = data.data[0].long;
+                    }
+                    else {
+                        that.pickupaddr = "";
+                        that.pickuplet = "";
+                        that.pickuplong = "";
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+    }
+
+    // Get Drop Address, Lat, Long
+
+    getDropAddressLatLon() {
+        var that = this;
+
+        if (that.droprtid == 0) {
+            $(".dropaddr").removeAttr("disabled");
+            $(".droplet").removeAttr("disabled");
+            $(".droplong").removeAttr("disabled");
+
+            that.dropaddr = "";
+            that.droplet = "";
+            that.droplong = "";
+        }
+        else {
+            $(".dropaddr").attr("disabled", "disabled");
+            $(".droplet").attr("disabled", "disabled");
+            $(".droplong").attr("disabled", "disabled");
+
+            commonfun.loader();
+
+            that._psngrservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
+                try {
+                    if (data.data.length > 0) {
+                        that.dropaddr = data.data[0].address;
+                        that.droplet = data.data[0].lat;
+                        that.droplong = data.data[0].long;
+                    }
+                    else {
+                        that.dropaddr = "";
+                        that.droplet = "";
+                        that.droplong = "";
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
     }
 
     // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
@@ -260,9 +429,15 @@ export class AddPassengerComponent implements OnInit {
         that.resiaddr = "";
         that.resilet = "0.00";
         that.resilong = "0.00";
+
+        that.pickrtid = 0;
+        that.pickstpid = 0;
         that.pickupaddr = "";
         that.pickuplet = "0.00";
         that.pickuplong = "0.00";
+
+        that.droprtid = 0;
+        that.dropstpid = 0;
         that.dropaddr = "";
         that.droplet = "0.00";
         that.droplong = "0.00";
@@ -307,74 +482,102 @@ export class AddPassengerComponent implements OnInit {
 
     // Save Data
 
-    savePassengerInfo() {
+    isValidPassenger() {
         var that = this;
 
         if (that.ownerid === 0) {
             that._msg.Show(messageType.error, "Error", "Enter Owner Name");
             $(".ownername input").focus();
+            return false;
         }
         else if (that.entityid === 0) {
             that._msg.Show(messageType.error, "Error", "Select Entity Name");
             $(".entityname input").focus();
+            return false;
         }
         else if (that.psngrname === "") {
             that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
             $(".psngrname").focus();
+            return false;
         }
         else if (that.standard === "") {
             that._msg.Show(messageType.error, "Error", "Select Standard");
             $(".standard").focus();
+            return false;
         }
         else if (that.division === "") {
             that._msg.Show(messageType.error, "Error", "Select Division");
             $(".division").focus();
+            return false;
         }
         else if (that.primaryemail === "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Email");
             $(".primaryemail").focus();
+            return false;
         }
         else if (that.primarymobile === "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Mobile");
             $(".primarymobile").focus();
+            return false;
         }
         else if (that.resiaddr === "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Address");
             $(".resiaddr").focus();
+            return false;
         }
         else if (that.resilet === "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Lat");
             $(".resilet").focus();
+            return false;
         }
         else if (that.resilong === "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Long");
             $(".resilong").focus();
+            return false;
         }
-        else if (that.pickupaddr === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
-            $(".pickupaddr").focus();
+        else if (that.pickrtid == 0) {
+            if (that.pickupaddr === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
+                $(".pickupaddr").focus();
+                return false;
+            }
+            else if (that.pickuplet === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up Lat");
+                $(".pickuplet").focus();
+                return false;
+            }
+            else if (that.pickuplong === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up Long");
+                $(".pickuplong").focus();
+                return false;
+            }
         }
-        else if (that.pickuplet === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Pick Up Lat");
-            $(".pickuplet").focus();
+        else if (that.droprtid == 0) {
+            if (that.dropaddr === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop Address");
+                $(".dropaddr").focus();
+                return false;
+            }
+            else if (that.droplet === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop Lat");
+                $(".droplet").focus();
+                return false;
+            }
+            else if (that.droplong === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop Long");
+                $(".droplong").focus();
+                return false;
+            }
         }
-        else if (that.pickuplong === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Pick Up Long");
-            $(".pickuplong").focus();
-        }
-        else if (that.dropaddr === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Drop Address");
-            $(".dropaddr").focus();
-        }
-        else if (that.droplet === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Drop Lat");
-            $(".droplet").focus();
-        }
-        else if (that.droplong === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Drop Long");
-            $(".droplong").focus();
-        }
-        else {
+
+        return true;
+    }
+
+    savePassengerInfo() {
+        var that = this;
+        var isvalid: boolean = that.isValidPassenger();
+
+        if (isvalid) {
             commonfun.loader();
 
             var passengerprofiledata = {};
@@ -395,8 +598,12 @@ export class AddPassengerComponent implements OnInit {
                 "email1": that.primaryemail,
                 "email2": that.secondaryemail,
                 "address": that.resiaddr,
-                "studentprofiledata": passengerprofiledata,
                 "resgeoloc": that.resilet + "," + that.resilong,
+                "pickrtid": that.pickrtid,
+                "droprtid": that.droprtid,
+                "pickstpid": that.pickstpid,
+                "dropstpid": that.dropstpid,
+                "studentprofiledata": passengerprofiledata,
                 "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
                 "aadharno": that.aadharno,
@@ -473,6 +680,17 @@ export class AddPassengerComponent implements OnInit {
                         that.resiaddr = data.data[0].address;
                         that.resilet = data.data[0].resilat;
                         that.resilong = data.data[0].resilon;
+
+                        that.pickrtid = data.data[0].pickrtid;
+                        that.fillPickStopsDDL();
+                        that.pickstpid = data.data[0].pickstpid;
+                        that.droprtid = data.data[0].droprtid;
+                        that.fillDropStopsDDL();
+                        that.dropstpid = data.data[0].dropstpid;
+
+                        that.getPickAddressLatLon();
+                        that.getDropAddressLatLon();
+
                         that.pickuplet = data.data[0].pickuplat;
                         that.pickuplong = data.data[0].pickuplon;
                         that.droplet = data.data[0].droplat;

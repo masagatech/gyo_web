@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
                         if (userDetails.status) {
                             this._loginservice.setUsers(userDetails);
 
-                            if (userDetails.ucode == "admin") {
+                            if (userDetails.issysadmin) {
                                 this._router.navigate(['/workspace']);
                             }
                             else {

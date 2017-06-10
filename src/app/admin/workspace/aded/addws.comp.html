@@ -73,7 +73,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <label class="control-label">Password <strong>*</strong></label>
-                                    <input type="text" [(ngModel)]="lgpwd" class="form-control lgpwd" minlength="4" maxlength="10" tabindex="5" />
+                                    <input type="password" [(ngModel)]="lgpwd" class="form-control lgpwd" minlength="4" maxlength="10" tabindex="5" />
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <label class="control-label">Contact Person <strong>*</strong></label>
-                                    <input type="text" [(ngModel)]="cpname" class="form-control cpname" minlength="10" maxlength="10" tabindex="7" />
+                                    <input type="text" [(ngModel)]="cpname" class="form-control cpname" minlength="10" maxlength="100" tabindex="7" />
                                 </div>
                             </div>
                         </div>
@@ -192,13 +192,28 @@
                     </div>
                 </div>
             </div>
+
+            <hr />
+
             <div class="row clearfix">
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <p-fileUpload name="fileUploaded" url="{{uploadconfig.server}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="auto">
+                        <template pTemplate type="content">
+                            <div *ngIf="uploadPhotoDT.length">
+                                <div *ngFor="let file of uploadPhotoDT" class="box">
+                                    <img src="{{uploadconfig.uploadurl + file.athurl}}" height="80px" />
+                                </div>
+                            </div>
+                            <span *ngIf="!uploadPhotoDT.length">Logo....</span>
+                        </template>
+                    </p-fileUpload>
+                </div>
+                <div class="col-md-6">
                     <table cellspacing="3" cellpadding="3" class="ui-datatable" width="100%">
                         <tr>
                             <td align="center">Workspace Type</td>
-                            <td align="center">Rate / Passenger</td>
-                            <td align="center">Max Allowed Entity </td>
+                            <td align="center" width="150px">Rate / Passenger</td>
+                            <td align="center" width="150px">Max Allowed Entity </td>
                         </tr>
                         <tr>
                             <td>
@@ -225,14 +240,6 @@
                             </td>
                         </tr>
                     </table>
-
-                    <!--<div class="form-line">
-                        <label class="control-label"> <strong>*</strong></label>
-                        <span style="margin-right:5px;" *ngFor="let wstrow of wstypeDT">
-                            <input type="checkbox" id="{{wstrow.key}}" value="{{wstrow.key}}" name="{{wstrow.key}}" class="actrights filled-in" />
-                            <label class="control-label" for="{{wstrow.key}}">{{wstrow.val}}</label>
-                        </span>
-                    </div>-->
                 </div>
             </div>
         </div>

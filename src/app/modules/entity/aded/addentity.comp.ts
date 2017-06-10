@@ -283,6 +283,8 @@ export class AddEntityComponent implements OnInit {
         this.contactDT.splice(this.contactDT.indexOf(row), 1);
     }
 
+    // File upload
+
     onUpload(event) {
         var that = this;
         var imgfile = [];
@@ -536,8 +538,9 @@ export class AddEntityComponent implements OnInit {
                         that.entttype = data.data[0].entttype;
                         that.schcd = data.data[0].schoolcode;
                         that.schnm = data.data[0].schoolname;
+
                         that.getUploadConfig();
-                        that.uploadPhotoDT.push({ "athurl": data.data[0].schlogo });
+                        that.uploadPhotoDT.push({ "athurl":  that.uploadconfig.uploadurl + data.data[0].schlogo });
                         that.lat = data.data[0].lat;
                         that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;

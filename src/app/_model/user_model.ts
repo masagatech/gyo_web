@@ -23,6 +23,7 @@ export interface LoginUserModel {
   lgcode: string;
   login: string,
   status: boolean,
+  issysadmin: boolean,
   errcode: string,
   errmsg: string,
   sessiondetails: any;

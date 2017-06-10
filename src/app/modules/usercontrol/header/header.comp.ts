@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../../_services/auth-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { AppState } from '../../../app.service';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var loader: any;
@@ -50,8 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
 
-    this.wsname =  this.loginUser.wsname;
     this.dispname = this.loginUser.dispname;
+    this.getHeaderDetails();
 
     _router.events.forEach((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {
@@ -70,6 +71,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
         commonfun.loaderhide();
       }
     });
+  }
+
+  getHeaderDetails() {
+    if (Cookie.get('_wsname_') != null) {
+      this.wsname = Cookie.get('_wsname_');
+    }
   }
 
   ngOnInit() {

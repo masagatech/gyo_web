@@ -14,10 +14,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class CreateScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
 
-    ownersDT: any = [];
-    ownerid: number = 0;
-    ownername: string = "";
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
 
+    attendantDT: any = [];
     pickattid: number = 0;
     pickattname: string = "";
     dropattid: number = 0;
@@ -38,12 +39,11 @@ export class CreateScheduleComponent implements OnInit {
     pickPassengerDT: any = [];
     dropPassengerDT: any = [];
 
-    entityDT: any = [];
     batchDT: any = [];
     driverDT: any = [];
-    vehicleDT: any = [];
+    pickVehicleDT: any = [];
+    dropVehicleDT: any = [];
 
-    entityid: number = 0;
     batchid: number = 0;
     pickautoid: number = 0;
     pickdriverid: number = 0;
@@ -59,6 +59,10 @@ export class CreateScheduleComponent implements OnInit {
     picktodate: any = "";
     dropfromdate: any = "";
     droptodate: any = "";
+
+    routeDT: any = [];
+    pickrtid: number = 0;
+    droprtid: number = 0;
 
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
@@ -105,17 +109,36 @@ export class CreateScheduleComponent implements OnInit {
 
     // Auto Completed Co-ordinator / Attendent
 
-    getOwnerData(event, otype) {
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "search": query
+        }).subscribe(data => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Auto Completed Attendent
+
+    getAttendantData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
             "flag": "owner",
             "uid": this.loginUser.uid,
             "typ": this.loginUser.utype,
-            "otype": otype,
+            "otype": "attendent",
             "search": query
         }).subscribe(data => {
-            this.ownersDT = data.data;
+            this.attendantDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -131,7 +154,7 @@ export class CreateScheduleComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "passenger",
             "search": query,
-            "id": this.entityid
+            "id": this.enttid
         }).subscribe(data => {
             this.passengerDT = data.data;
         }, err => {
@@ -165,11 +188,12 @@ export class CreateScheduleComponent implements OnInit {
             this.dropPassenger();
         }
         else {
-            this.ownerid = event.value;
-            this.ownername = event.label;
-            this.fillEntityDropDown(this.ownerid);
-            this.fillDriverDropDown(this.ownerid);
-            this.fillVehicleDropDown(this.ownerid);
+            this.enttid = event.value;
+            this.enttname = event.label;
+            this.fillBatchDropDown();
+            this.fillDriverDropDown();
+            this.fillRouteDropDown();
+            this.getPassengerData(event);
         }
     }
 
@@ -213,6 +237,27 @@ export class CreateScheduleComponent implements OnInit {
         that.droppassengername = "";
     }
 
+    // Pick Up Passenger By Route
+
+    pickupPassengerByRoute() {
+        var that = this;
+
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "pickpsngr", "id": that.pickrtid }).subscribe((data) => {
+            try {
+                that.pickPassengerDT = data.data;
+                that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
+
+        })
+    }
+
     // Check Drop Duplicate Passenger
 
     isDuplicateDropPassenger() {
@@ -246,6 +291,28 @@ export class CreateScheduleComponent implements OnInit {
 
         that.droppassengerid = 0;
         that.droppassengername = "";
+    }
+
+    // Drop Passenger By Route
+
+    dropPassengerByRoute() {
+        var that = this;
+
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "droppsngr", "id": that.droprtid }).subscribe((data) => {
+            try {
+                that.dropPassengerDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
+
+        })
+
+        that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
     }
 
     // Delete Pick Up Passenger
@@ -327,7 +394,7 @@ export class CreateScheduleComponent implements OnInit {
     fillBatchDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.entityid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.enttid }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
             }
@@ -344,10 +411,10 @@ export class CreateScheduleComponent implements OnInit {
 
     // Driver DropDown
 
-    fillDriverDropDown(_ownerid) {
+    fillDriverDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": _ownerid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": that.enttid }).subscribe((data) => {
             try {
                 that.driverDT = data.data;
             }
@@ -364,18 +431,44 @@ export class CreateScheduleComponent implements OnInit {
 
     // Vehicle DropDown
 
-    fillVehicleDropDown(_ownerid) {
+    fillVehicleDropDown(_drvid, typ) {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _ownerid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": _drvid }).subscribe((data) => {
             try {
-                that.vehicleDT = data.data;
+                if (typ == "pick") {
+                    that.pickVehicleDT = data.data;
+                    that.dropVehicleDT = data.data;
+                }
+                else {
+                    that.dropVehicleDT = data.data;
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             // that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
+
+        })
+    }
+
+    // Route DropDown
+
+    fillRouteDropDown() {
+        var that = this;
+
+        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "route", "id": that.enttid }).subscribe((data) => {
+            try {
+                that.routeDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -392,6 +485,12 @@ export class CreateScheduleComponent implements OnInit {
 
     setDropVehicle() {
         this.dropvehicleno = this.pickvehicleno;
+    }
+
+    // copy pick route in drop route
+
+    setDropRoute() {
+        this.droprtid = this.pickrtid;
     }
 
     // reverse array
@@ -411,7 +510,7 @@ export class CreateScheduleComponent implements OnInit {
         var that = this;
 
         this._pickdropservice.getPickDropDetails({
-            "flag": "edit", "ownerid": that.ownerid, "schoolid": that.entityid, "batchid": that.batchid
+            "flag": "edit", "enttid": that.enttid, "batchid": that.batchid
         }).subscribe(data => {
             try {
                 var d = data.data;
@@ -478,12 +577,8 @@ export class CreateScheduleComponent implements OnInit {
     savePickDropInfo() {
         var that = this;
 
-        if (that.ownername === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Owner Name");
-            $(".ownername input").focus();
-        }
-        else if (that.entityid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select Entity");
+        if (that.enttid === 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Entity");
             $(".entity").focus();
         }
         else if (that.batchid === 0) {
@@ -549,9 +644,8 @@ export class CreateScheduleComponent implements OnInit {
 
                 _pickdrop.push({
                     "autoid": that.pickautoid,
-                    "ownid": that.ownerid,
-                    "schid": that.entityid,
-                    "schnm": that.entityid,
+                    "schid": that.enttid,
+                    "schnm": that.enttid,
                     "btchid": that.batchid,
                     "drvid": that.pickdriverid,
                     "vhclno": that.pickvehicleno,
@@ -572,9 +666,8 @@ export class CreateScheduleComponent implements OnInit {
 
                 _pickdrop.push({
                     "autoid": that.dropautoid,
-                    "ownid": that.ownerid,
-                    "schid": that.entityid,
-                    "schnm": that.entityid,
+                    "schid": that.enttid,
+                    "schnm": that.enttid,
                     "btchid": that.batchid,
                     "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
                     "vhclno": that.dropvehicleno,

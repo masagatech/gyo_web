@@ -3987,7 +3987,7 @@ section.content {
     display: inline-block;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.12);
-    width: 80px;
+    width: 100px;
 }
 
 .info-box .icon i {
@@ -4026,6 +4026,7 @@ section.content {
 .info-box .content {
     display: inline-block;
     padding: 7px 10px;
+    width: 100%;
 }
 
 .info-box .content .text {

@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-9 col-xs-9">
+                <h4>Stops</h4>
+            </div>
+            <div class="col-md-3 col-xs-3" align="right" *ngIf="actaddrights === 'add'">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addStopsForm()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div *ngFor="let row of stopsDT | groupBy:'rtname'; let i = index;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>{{row.key}}</h2>
+                <!--<ul class="header-dropdown m-r--5">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a role="button" (click)="editStopsForm(row)"><i class="material-icons">edit</i> Edit</a></li>
+                            <li><a role="button"><i class="material-icons">delete</i> Remove</a></li>
+                        </ul>
+                    </li>
+                </ul>-->
+            </div>
+            <div class="body">
+                <p *ngFor="let rtrow of row.value">{{rtrow.stpname}}</p>
+            </div>
+        </div>
+    </div>
+</div>

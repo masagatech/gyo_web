@@ -94,7 +94,6 @@ export class ViewPassengerComponent implements OnInit {
                 
                 that.getPassengerDetails();
             }
-
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {

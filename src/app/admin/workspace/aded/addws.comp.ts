@@ -5,6 +5,7 @@ import { MessageService, messageType } from '../../../_services/messages/message
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { WorkspaceService } from '../../../_services/workspace/ws-service';
+import { Globals } from '../../../_const/globals';
 
 declare var adminloader: any;
 
@@ -25,6 +26,7 @@ export class AddWorkspaceComponent implements OnInit {
     wscode: string = "";
     wsname: string = "";
     wsdesc: string = "";
+    oldcode: string = "";
     lgcode: string = "";
     lgpwd: string = "";
     cpname: string = "";
@@ -51,11 +53,16 @@ export class AddWorkspaceComponent implements OnInit {
 
     mode: string = "";
 
+    uploadPhotoDT: any = [];
+    global = new Globals();
+    uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+
     private subscribeParameters: any;
 
     constructor(private _wsservice: WorkspaceService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
+        this.getUploadConfig();
 
         this.fillDropDownList();
         this.fillStateDropDown();
@@ -175,6 +182,67 @@ export class AddWorkspaceComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // File upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+            that.uploadconfig.server = that.global.serviceurl + "uploads";
+            that.uploadconfig.serverpath = that.global.serviceurl;
+            that.uploadconfig.uploadurl = that.global.uploadurl;
+            that.uploadconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    onUpload(event) {
+        var that = this;
+        var imgfile = [];
+        that.uploadPhotoDT = [];
+
+        imgfile = JSON.parse(event.xhr.response);
+
+        console.log(imgfile);
+
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace("www\\uploads\\", "") })
+        }
+    }
+
+    // Get File Size
+
+    formatSizeUnits(bytes) {
+        if (bytes >= 1073741824) {
+            bytes = (bytes / 1073741824).toFixed(2) + ' GB';
+        }
+        else if (bytes >= 1048576) {
+            bytes = (bytes / 1048576).toFixed(2) + ' MB';
+        }
+        else if (bytes >= 1024) {
+            bytes = (bytes / 1024).toFixed(2) + ' KB';
+        }
+        else if (bytes > 1) {
+            bytes = bytes + ' bytes';
+        }
+        else if (bytes == 1) {
+            bytes = bytes + ' byte';
+        }
+        else {
+            bytes = '0 byte';
+        }
+
+        return bytes;
+    }
+
+    removeFileUpload() {
+        this.uploadPhotoDT.splice(0, 1);
     }
 
     // Clear Fields
@@ -360,8 +428,10 @@ export class AddWorkspaceComponent implements OnInit {
             var saveWorkspace = {
                 "wsautoid": that.wsid,
                 "wscode": that.wscode,
+                "oldcode": that.oldcode,
                 "wsname": that.wsname,
                 "wsdesc": that.wsdesc,
+                "wslogo": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "wstype": _wstype,
                 "cmppsngrrate": that.cmppsngrrate,
                 "cmpenttmaxno": that.cmpenttmaxno,
@@ -437,10 +507,16 @@ export class AddWorkspaceComponent implements OnInit {
                         that.wsid = data.data[0].wsautoid;
                         that.wscode = data.data[0].wscode;
                         that.wsname = data.data[0].wsname;
+
+                        if (data.data[0].wslogo !== "") {
+                            that.uploadPhotoDT.push({ "athurl": data.data[0].wslogo });
+                        }
+
                         that.wsdesc = data.data[0].wsdesc;
+                        that.oldcode = data.data[0].lgcode;
                         that.lgcode = data.data[0].lgcode;
                         that.lgpwd = data.data[0].lgpwd;
-                        
+
                         that.cpname = data.data[0].name;
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
@@ -456,13 +532,13 @@ export class AddWorkspaceComponent implements OnInit {
                         that.pincode = data.data[0].pincode;
                         that.isactive = data.data[0].isactive;
                         that.remark = data.data[0].remark1;
-                        
+
                         that.iscompany = data.data[0].wstype == "Company" ? true : false;
                         that.cmppsngrrate = data.data[0].cmppsngrrate;
                         that.cmpenttmaxno = data.data[0].cmpenttmaxno;
 
                         that.isschool = data.data[0].wstype == "School" ? true : false;
-                        that.schenttmaxno = data.data[0].schenttmaxno;
+                        that.schpsngrrate = data.data[0].schpsngrrate;
                         that.schenttmaxno = data.data[0].schenttmaxno;
 
                         that.mode = data.data[0].mode;

@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SharedComponentModule } from '../../_shared/sharedcomp.module';
 
 import { AddWorkspaceComponent } from './aded/addws.comp';
 import { ViewWorkspaceComponent } from './view/viewws.comp';
 
 import { WorkspaceService } from '../../_services/workspace/ws-service';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -29,7 +30,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule,
+    AutoCompleteModule, FileUploadModule
   ],
 
   providers: [WorkspaceService]

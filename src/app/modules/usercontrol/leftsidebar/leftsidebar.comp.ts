@@ -45,9 +45,10 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "main", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype
+            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.mainMenuDT = data.data;
+
             setTimeout(function () {
                 $.AdminBSB.leftSideBar.activate();
             }, 100);
@@ -62,7 +63,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "parent", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype
+            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.parentMenuDT = data.data;
         }, err => {

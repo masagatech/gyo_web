@@ -92,6 +92,11 @@ commonfun.chevronstyle = function() {
     $(".fc-next-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
 }
 
+commonfun.orderstyle = function() {
+    $(".ui-orderlist").find('.ui-grid-col-2').removeAttr('class').addClass('ui-grid-col-1');
+    $(".ui-orderlist").find('.ui-grid-col-10').removeAttr('class').addClass('ui-grid-col-11');
+}
+
 commonfun.rdbtnstyle = function() {
     $(".ui-radiobutton-box").find('span').hide();
 }
