@@ -47,7 +47,7 @@
                     <p-column field="todt" header="To Date" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editHolidayGrid(row)">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editHolidayGrid(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </template>

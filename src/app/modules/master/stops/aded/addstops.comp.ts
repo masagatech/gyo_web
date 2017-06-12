@@ -277,7 +277,9 @@ export class AddStopsComponent implements OnInit {
                     "stpid": that.stpid,
                     "stpname": that.stpname,
                     "address": that.address,
-                    "geoloc": that.lat + "," + that.long,
+                    "lat": that.lat != null ? "" : that.lat,
+                    "long": that.long != null ? "" : that.long,
+                    "geoloc": that.lat != null ? "" : that.lat + "," + that.long != null ? "" : that.long,
                     "rtid": that.rtid,
                     "isactive": true
                 })
@@ -380,7 +382,7 @@ export class AddStopsComponent implements OnInit {
                     "stpid": _slrow.stpid,
                     "stpname": _slrow.stpname,
                     "address": _slrow.address,
-                    //"geoloc": _slrow.lat + "," + _slrow.long,
+                    "geoloc": _slrow.geoloc !== undefined ? _slrow.lat + "," + _slrow.long : _slrow.geoloc,
                     "rtid": _slrow.rtid,
                     "isactive": _slrow.isactive,
                     "ordno": i + 1

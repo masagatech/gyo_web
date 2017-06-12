@@ -48,10 +48,12 @@ export class CreateScheduleComponent implements OnInit {
     pickautoid: number = 0;
     pickdriverid: number = 0;
     pickvehicleno: string = "";
+    pickpsngrtype: string = "bypsngr";
 
     dropautoid: number = 0;
     dropdriverid: number = 0;
     dropvehicleno: string = "";
+    droppsngrtype: string = "bypsngr";
 
     instrunction: string = "";
 
@@ -73,7 +75,6 @@ export class CreateScheduleComponent implements OnInit {
         this.getPDDate();
 
         setTimeout(function () {
-            $(".ownername input").focus();
             $(".ui-picklist-buttons").hide();
             $(".ui-picklist-source-controls").show();
             $(".ui-picklist-target-controls").show();
@@ -279,6 +280,8 @@ export class CreateScheduleComponent implements OnInit {
 
     dropPassenger() {
         var that = this;
+        that.dropPassengerDT = [];
+
         var duplicatepassenger = that.isDuplicateDropPassenger();
 
         if (!duplicatepassenger) {
@@ -297,6 +300,7 @@ export class CreateScheduleComponent implements OnInit {
 
     dropPassengerByRoute() {
         var that = this;
+        that.dropPassengerDT = [];
 
         that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "droppsngr", "id": that.droprtid }).subscribe((data) => {
             try {
@@ -367,26 +371,6 @@ export class CreateScheduleComponent implements OnInit {
 
     deleteDropAtt(row) {
         this.dropAttList.splice(this.dropAttList.indexOf(row), 1);
-    }
-
-    // Entity DropDown
-
-    fillEntityDropDown(_ownerid) {
-        var that = this;
-
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "entity", "id": _ownerid }).subscribe((data) => {
-            try {
-                that.entityDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-        }, () => {
-
-        })
     }
 
     // Batch DropDown
@@ -493,6 +477,12 @@ export class CreateScheduleComponent implements OnInit {
         this.droprtid = this.pickrtid;
     }
 
+    // copy pick type in drop type
+
+    setDropPsngrType() {
+        this.droppsngrtype = this.pickpsngrtype;
+    }
+
     // reverse array
 
     reverseArr(input) {
@@ -522,12 +512,14 @@ export class CreateScheduleComponent implements OnInit {
                         that.pickautoid = pickdata.autoid;
                         that.pickdriverid = pickdata.driverid;
                         that.pickvehicleno = pickdata.vehicleno;
+                        that.pickrtid = pickdata.rtid;
                         that.pickPassengerDT = pickdata.studentdata;
                     }
                     else {
                         that.pickautoid = 0;
                         that.pickdriverid = 0;
                         that.pickvehicleno = "";
+                        that.pickrtid = 0;
                         that.pickPassengerDT = [];
                     }
 
@@ -537,12 +529,14 @@ export class CreateScheduleComponent implements OnInit {
                         that.dropautoid = dropdata.autoid;
                         that.dropdriverid = dropdata.driverid;
                         that.dropvehicleno = dropdata.vehicleno;
+                        that.droprtid = dropdata.rtid;
                         that.dropPassengerDT = dropdata.studentdata;
                     }
                     else {
                         that.dropautoid = 0;
                         that.dropdriverid = 0;
                         that.dropvehicleno = "";
+                        that.droprtid = 0;
                         that.dropPassengerDT = [];
                     }
                 }
@@ -550,11 +544,13 @@ export class CreateScheduleComponent implements OnInit {
                     that.pickautoid = 0;
                     that.pickdriverid = 0;
                     that.pickvehicleno = "";
+                    that.pickrtid = 0;
                     that.pickPassengerDT = [];
 
                     that.dropautoid = 0;
                     that.dropdriverid = 0;
                     that.dropvehicleno = "";
+                    that.droprtid = 0;
                     that.dropPassengerDT = [];
                 }
 
@@ -601,6 +597,14 @@ export class CreateScheduleComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
             $(".dveh").focus();
         }
+        else if (that.pickrtid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
+            $(".proute").focus();
+        }
+        else if (that.droprtid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Drop Route");
+            $(".droute").focus();
+        }
         else if (that.pickPassengerDT.length === 0) {
             that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up Passenger");
             $(".pickpassengername").focus();
@@ -645,10 +649,11 @@ export class CreateScheduleComponent implements OnInit {
                 _pickdrop.push({
                     "autoid": that.pickautoid,
                     "schid": that.enttid,
-                    "schnm": that.enttid,
+                    "schnm": that.enttname,
                     "btchid": that.batchid,
                     "drvid": that.pickdriverid,
                     "vhclno": that.pickvehicleno,
+                    "rtid": that.pickrtid,
                     "attsid": _pickattsid,
                     "studdt": _pickstudDT,
                     "studsid": _pickstudsid,
@@ -656,7 +661,8 @@ export class CreateScheduleComponent implements OnInit {
                     "inst": that.instrunction,
                     "frmdt": that.pickfromdate,
                     "todt": that.picktodate,
-                    "typ": "p"
+                    "typ": "p",
+                    "psngrtype": that.pickpsngrtype
                 });
             }
 
@@ -671,6 +677,7 @@ export class CreateScheduleComponent implements OnInit {
                     "btchid": that.batchid,
                     "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
                     "vhclno": that.dropvehicleno,
+                    "rtid": that.droprtid,
                     "attsid": _dropattsid,
                     "studdt": _dropstudDT,
                     "studsid": _dropstudsid,
@@ -678,7 +685,8 @@ export class CreateScheduleComponent implements OnInit {
                     "inst": that.instrunction,
                     "frmdt": that.dropfromdate,
                     "todt": that.droptodate,
-                    "typ": "d"
+                    "typ": "d",
+                    "psngrtype": that.droppsngrtype
                 });
             }
 

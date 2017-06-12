@@ -111,19 +111,19 @@
                 <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [listStyle]="{'height':'auto'}" [responsive]="true" header="Stops">
                     <template let-stops pTemplate="editor">
                         <div class="row">
-                            <div class="col-md-1">
-                                <div class="ui-helper-clearfix">
-                                    {{stops.ordno}}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
                                     {{stops.stpname}}
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="ui-helper-clearfix">
                                     {{stops.address}}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="ui-helper-clearfix">
+                                    {{stops.lat + ", " + stops.long}}
                                 </div>
                             </div>
                             <div class="col-md-1" align="right">

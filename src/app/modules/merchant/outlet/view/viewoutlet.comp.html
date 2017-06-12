@@ -37,7 +37,7 @@
                     <p-column field="mrchtnm" header="Merchant Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editOutletGrid(row)">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editOutletGrid(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </template>

@@ -5,7 +5,7 @@
                 <h4>View Pick Up and Drop</h4>
             </div>
             <div class="col-md-6" align="right">
-                <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="savePickDropInfo()">
+                <button type="button" class="btn btn-theme btn-xs" (click)="savePickDropInfo()">
                     <i class="material-icons">save</i>
                 </button>
             </div>
@@ -18,28 +18,10 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Co-ordinator Name</label>
-                                <div class="row clearfix">
-                                    <div class="col-md-10">
-                                        <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" (onSelect)="selectAutoData($event, 'owner')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'coord')" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"
-                                            [tabindex]="1"></p-autoComplete>
-                                    </div>
-                                    <div class="col-md-2" align="right">
-                                        <span class="material-icons">search</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="form-line">
                                 <label class="control-label">Entity Name <strong>*</strong></label>
                                 <div class="row clearfix">
                                     <div class="col-md-10">
-                                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="2" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="schnm" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"
+                                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectAutoData($event, 'entity')" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"
                                             tabindex="10"></p-autoComplete>
                                     </div>
                                     <div class="col-md-2" align="right">
@@ -49,26 +31,13 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Entity Name</label>
-                                <select [(ngModel)]="entityid" class="form-control" (ngModelChange)="fillBatchDropDown();getHolidayCalendar();getPassengerData($event);" tabindex="2">
-                                    <option [value]="0">Select Entity</option>
-                                    <option *ngFor="let row of entityDT" [value]="row.schid">	
-                                        {{row.schnm}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
                 <div class="row clearfix">
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Batch Name</label>
-                                <select [(ngModel)]="batchid" class="form-control" tabindex="3">
+                                <select [(ngModel)]="batchid" class="form-control" tabindex="2">
                                     <option [value]="0">Select Batch</option>
                                     <option *ngFor="let row of batchDT" [value]="row.key">
                                         {{row.val}}
@@ -83,7 +52,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Instrunction</label>
-                                <textarea [(ngModel)]="instrunction" rows="5" class="form-control no-resize auto-growth" tabindex="4"></textarea>
+                                <textarea [(ngModel)]="instrunction" rows="5" class="form-control no-resize auto-growth" tabindex="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -111,7 +80,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From Date</label>
-                                <input type="date" [(ngModel)]="pickfromdate" class="form-control" tabindex="5" (ngModelChange)="dropfromdate=pickfromdate">
+                                <input type="date" [(ngModel)]="pickfromdate" class="form-control" tabindex="4" (ngModelChange)="dropfromdate=pickfromdate">
                             </div>
                         </div>
                     </div>
@@ -119,7 +88,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To Date</label>
-                                <input type="date" [(ngModel)]="picktodate" class="form-control" tabindex="6" (ngModelChange)="droptodate=picktodate">
+                                <input type="date" [(ngModel)]="picktodate" class="form-control" tabindex="5" (ngModelChange)="droptodate=picktodate">
                             </div>
                         </div>
                     </div>
@@ -127,7 +96,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="pickdriverid" class="form-control" tabindex="7" (ngModelChange)="setDropDriver()">
+                        <select [(ngModel)]="pickdriverid" class="form-control" tabindex="6" (ngModelChange)="fillVehicleDropDown(pickdriverid, 'pick');setDropDriver()">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
@@ -138,9 +107,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle Name</label>
-                        <select [(ngModel)]="pickvehicleno" class="form-control" tabindex="8" (ngModelChange)="setDropVehicle()">
+                        <select [(ngModel)]="pickvehicleno" class="form-control pveh" tabindex="7" (ngModelChange)="setDropVehicle()">
                             <option [value]="''">Select Vehicle</option>
-                            <option *ngFor="let row of vehicleDT" [value]="row.key">	
+                            <option *ngFor="let row of pickVehicleDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -148,10 +117,30 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
+                        <label class="control-label">Passenger Type</label>
+                        <select [(ngModel)]="pickpsngrtype" class="form-control pickpsngrtype" tabindex="8" (ngModelChange)="setDropPsngrType();">
+                            <option [value]="'bypsngr'">By Passenger</option>
+                            <option [value]="'byrt'">By Route</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="pickpsngrtype == 'byrt'">
+                    <div class="form-line">
+                        <label class="control-label">Route Name</label>
+                        <select [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="9" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
+                            <option [value]="0">Select Route</option>
+                            <option *ngFor="let row of routeDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
+                    <div class="form-line">
                         <label class="control-label">Passenger Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="9" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                                <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
                                     [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
@@ -163,19 +152,19 @@
 
                 <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
                     <template let-passenger pTemplate="editor">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <div class="ui-helper-clearfix">
-                                            {{passenger.stdnm}}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="ui-helper-clearfix">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
-                                        </div>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="ui-helper-clearfix">
+                                    {{passenger.stdnm}}
                                 </div>
-                            </template>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="ui-helper-clearfix">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </p-orderList>
             </div>
             <div class="col-md-6">
@@ -190,7 +179,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From Date</label>
-                                <input type="date" [(ngModel)]="dropfromdate" class="form-control" tabindex="5" disabled>
+                                <input type="date" [(ngModel)]="dropfromdate" class="form-control" tabindex="11" disabled>
                             </div>
                         </div>
                     </div>
@@ -198,7 +187,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To Date</label>
-                                <input type="date" [(ngModel)]="droptodate" class="form-control" tabindex="6" disabled>
+                                <input type="date" [(ngModel)]="droptodate" class="form-control" tabindex="12" disabled>
                             </div>
                         </div>
                     </div>
@@ -206,7 +195,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="dropdriverid" class="form-control" tabindex="10">
+                        <select [(ngModel)]="dropdriverid" class="form-control" tabindex="13" (ngModelChange)="fillVehicleDropDown(dropdriverid, 'drop')">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
@@ -217,9 +206,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle Name</label>
-                        <select [(ngModel)]="dropvehicleno" class="form-control" tabindex="11">
+                        <select [(ngModel)]="dropvehicleno" class="form-control dveh" tabindex="14">
                             <option [value]="''">Select Vehicle</option>
-                            <option *ngFor="let row of vehicleDT" [value]="row.key">	
+                            <option *ngFor="let row of dropVehicleDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -227,27 +216,47 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
+                        <label class="control-label">Passenger Type</label>
+                        <select [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="15">
+                            <option [value]="'bypsngr'">By Passenger</option>
+                            <option [value]="'byrt'">By Route</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="droppsngrtype == 'byrt'">
+                    <div class="form-line">
+                        <label class="control-label">Route Name</label>
+                        <select [(ngModel)]="droprtid" class="form-control droprtname" tabindex="16" (ngModelChange)="dropPassengerByRoute()">
+                            <option [value]="0">Select Route</option>
+                            <option *ngFor="let row of routeDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
+                    <div class="form-line">
                         <label class="control-label">Passenger Name</label>
-                        <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="12" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                        <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
                             [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
                     </div>
                 </div>
 
                 <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
                     <template let-passenger pTemplate="item">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <div class="ui-helper-clearfix">
-                                            {{passenger.stdnm}}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="ui-helper-clearfix">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
-                                        </div>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="ui-helper-clearfix">
+                                    {{passenger.stdnm}}
                                 </div>
-                            </template>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="ui-helper-clearfix">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                 </p-orderList>
             </div>
         </div>
@@ -259,7 +268,7 @@
                         <label class="control-label">Pickup Attendent Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="9" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'attendent')" field="label" [minLength]="1" [size]="30"
+                                <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="18" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'attendent')" field="label" [minLength]="1" [size]="30"
                                     class="form-controlAutoComplete pickattname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
@@ -284,7 +293,7 @@
                         <label class="control-label">Drop Attendent Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="10" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')" field="label" [minLength]="1" [size]="30"
+                                <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="19" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')" field="label" [minLength]="1" [size]="30"
                                     class="form-controlAutoComplete dropattname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">

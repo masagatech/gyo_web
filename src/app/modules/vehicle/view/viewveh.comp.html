@@ -40,7 +40,7 @@
                     <p-column field="ownername" header="Owner Name" [style]="{'width':'150px','text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn bg-orange waves-effect btn-xs" (click)="editVehicleForm(row)">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editVehicleForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </template>
