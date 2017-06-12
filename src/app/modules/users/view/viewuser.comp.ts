@@ -61,11 +61,14 @@ export class ViewUserComponent implements OnInit {
 
     getUserDetails() {
         var that = this;
+        var uparams = {};
 
         if (that.actviewrights === "view") {
             commonfun.loader();
+            uparams = { "flag": "all", "utype": that.loginUser.utype, "cuid": that.loginUser.ucode };
+            console.log(uparams);
 
-            that._userervice.getUserDetails({ "flag": "all", "utype": that.loginUser.utype, "cuid": that.loginUser.ucode }).subscribe(data => {
+            that._userervice.getUserDetails(uparams).subscribe(data => {
                 try {
                     that.usersDT = data.data;
                 }

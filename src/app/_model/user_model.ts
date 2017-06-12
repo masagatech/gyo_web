@@ -20,6 +20,7 @@ export interface LoginUserModel {
   wsid: number;
   wscode: string;
   wsname: string;
+  wslogo: string;
   lgcode: string;
   login: string,
   status: boolean,

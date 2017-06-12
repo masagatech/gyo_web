@@ -5139,10 +5139,11 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 
 .navbar-brand {
     float: left;
-    height: 50px;
-    padding: 15px 15px;
+    height: 75px;
+    /*padding: 15px 15px;*/
+    padding: 0 15px;
     font-size: 18px;
-    line-height: 20px;
+    line-height: 70px;
 }
 
 .navbar-brand:hover,
@@ -5152,6 +5153,14 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 
 .navbar-brand>img {
     display: block;
+}
+
+.navbar-brand>img.logo {
+    border-radius: 50%;
+}
+
+.navbar-brand>span.title {
+    padding-left: 10px;
 }
 
 @media (min-width: 768px) {

@@ -6,6 +6,7 @@ import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { AppState } from '../../../app.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 declare var loader: any;
@@ -18,7 +19,11 @@ declare var loader: any;
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   wsname: string = "";
+  wslogo: string = "";
   dispname: string = "";
+
+  global = new Globals();
+  uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
   public name = 'Angular 2 Webpack Starter';
@@ -76,6 +81,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getHeaderDetails() {
     if (Cookie.get('_wsname_') != null) {
       this.wsname = Cookie.get('_wsname_');
+      this.wslogo = this.global.uploadurl + Cookie.get('_wslogo_');
     }
   }
 

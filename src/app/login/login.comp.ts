@@ -50,6 +50,9 @@ export class LoginComponent implements OnInit {
                                 this._router.navigate(['/workspace']);
                             }
                             else {
+                                Cookie.set("_wsautoid_", userDetails.wsid.toString());
+                                Cookie.set("_wsname_", userDetails.wsname);
+                                Cookie.set("_wslogo_", userDetails.wslogo);
                                 this._router.navigate(['/']);
                             }
                         } else {
