@@ -111,8 +111,8 @@ export class ViewOwnerComponent implements OnInit {
             commonfun.loader();
 
             that._ownerservice.getOwnerDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "schid": that.entityid, "cuid": that.loginUser.ucode, "wsautoid": that._wsdetails.wsautoid
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._wsdetails.issysadmin,
+                "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.ownerDT = data.data;

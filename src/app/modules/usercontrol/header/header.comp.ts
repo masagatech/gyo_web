@@ -18,6 +18,7 @@ declare var loader: any;
 
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
+  _wsdetails: any = [];
   wsname: string = "";
   wslogo: string = "";
   userfullname: string = "";
@@ -55,6 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private _authservice: AuthenticationService, private _loginservice: LoginService,
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
+    this._wsdetails = Globals.getWSDetails();
 
     this.userfullname = this.loginUser.fullname;
     this.getHeaderDetails();
@@ -79,10 +81,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getHeaderDetails() {
-    var _wsdetails = Globals.getWSDetails();
-
-    this.wsname = _wsdetails.wsname;
-    this.wslogo = this.global.uploadurl + _wsdetails.wslogo;
+    this.wsname = this._wsdetails.wsname;
+    this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
   }
 
   ngOnInit() {

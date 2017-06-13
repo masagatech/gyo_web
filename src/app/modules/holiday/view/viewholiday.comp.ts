@@ -65,7 +65,7 @@ export class ViewHolidayComponent implements OnInit {
             "flag": "entity",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
+            "issysadmin": this._wsdetails.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {

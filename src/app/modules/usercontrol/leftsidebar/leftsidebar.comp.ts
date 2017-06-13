@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../../_services/auth-service'
 import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
+import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 
@@ -15,6 +16,8 @@ declare var $: any;
 
 export class LeftSideBarComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
+
+    _wsdetails: any = [];
 
     userfullname: string = "";
     usertype: string = "";
@@ -35,6 +38,8 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
 
         this.getMainMenuList();
         this.getParentMenuList();
+        
+        this._wsdetails = Globals.getWSDetails();
     }
 
     ngOnInit() {
@@ -45,7 +50,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
+            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that._wsdetails.issysadmin, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.mainMenuDT = data.data;
 
@@ -63,7 +68,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
+            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that._wsdetails.issysadmin, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.parentMenuDT = data.data;
         }, err => {

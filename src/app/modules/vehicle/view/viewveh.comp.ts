@@ -8,6 +8,7 @@ import { CommonService } from '../../../_services/common/common-service'; /* add
 import { VehicleService } from '../../../_services/vehicle/veh-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Globals } from '../../../_const/globals';
 
 @Component({
     templateUrl: 'viewveh.comp.html',
@@ -17,6 +18,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class ViewVehicleComponent implements OnInit {
     vehicleDT: any = [];
     loginUser: LoginUserModel;
+
+    _wsdetails: any = [];
 
     ownerDT: any = [];
     ownerid: number = 0;
@@ -29,6 +32,7 @@ export class ViewVehicleComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _vehservice: VehicleService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.viewVehicleDataRights();
     }
 
@@ -48,8 +52,8 @@ export class ViewVehicleComponent implements OnInit {
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
             "otype": "coord",
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this.loginUser.wsautoid,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.ownerDT = data.data;
@@ -109,7 +113,7 @@ export class ViewVehicleComponent implements OnInit {
 
             that._vehservice.getVehicleDetails({
                 "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "oid": that.ownerid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that.loginUser.wsautoid
+                "oid": that.ownerid, "issysadmin": that._wsdetails.issysadmin, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.vehicleDT = data.data;
