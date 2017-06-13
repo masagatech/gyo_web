@@ -8,6 +8,7 @@ import { CommonService } from '../../../_services/common/common-service'; /* add
 import { PassengerService } from '../../../_services/passenger/psngr-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 
@@ -20,6 +21,8 @@ export class ViewPassengerComponent implements OnInit {
     passengerDT: any = [];
     loginUser: LoginUserModel;
 
+    _wsdetails: any = [];
+
     entityDT: any = [];
     entityid: number = 0;
     entityname: string = "";
@@ -31,6 +34,7 @@ export class ViewPassengerComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.viewPassengerDataRights();
     }
 
@@ -48,7 +52,9 @@ export class ViewPassengerComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -91,7 +97,7 @@ export class ViewPassengerComponent implements OnInit {
             if (Cookie.get('_psngrenttnm_') != null) {
                 that.entityid = parseInt(Cookie.get('_psngrenttid_'));
                 that.entityname = Cookie.get('_psngrenttnm_');
-                
+
                 that.getPassengerDetails();
             }
         }, err => {
@@ -108,7 +114,11 @@ export class ViewPassengerComponent implements OnInit {
             commonfun.loader();
 
             that._psngrservice.getPassengerDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid
+                "flag": "all",
+                "uid": that.loginUser.uid,
+                "utype": that.loginUser.utype,
+                "schid": that.entityid,
+                "wsautoid": that._wsdetails.wsautoid,
             }).subscribe(data => {
                 try {
                     that.passengerDT = data.data;

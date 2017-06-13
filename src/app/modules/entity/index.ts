@@ -8,6 +8,8 @@ import { ViewEntityComponent } from './view/viewentity.comp';
 
 import { EntityService } from '../../_services/entity/entity-service';
 
+import { OnlyNumber } from '@directives';
+
 import { LazyLoadEvent, DataTableModule, CheckboxModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
@@ -24,7 +26,8 @@ export const routes = [
 @NgModule({
   declarations: [
     AddEntityComponent,
-    ViewEntityComponent
+    ViewEntityComponent,
+    OnlyNumber
   ],
 
   imports: [

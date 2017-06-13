@@ -6,6 +6,7 @@ import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { UserService } from '../../../_services/users/user-service';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 
@@ -18,6 +19,8 @@ export class ViewUserComponent implements OnInit {
     usersDT: any = [];
     loginUser: LoginUserModel;
 
+    _wsdetails: any = [];
+
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
@@ -26,6 +29,7 @@ export class ViewUserComponent implements OnInit {
         public _menuservice: MenuService, private _loginservice: LoginService, private _userervice: UserService) {
         this.loginUser = this._loginservice.getUser();
         this.viewUserDataRights();
+        this._wsdetails = Globals.getWSDetails();
     }
 
     public ngOnInit() {
@@ -65,8 +69,8 @@ export class ViewUserComponent implements OnInit {
 
         if (that.actviewrights === "view") {
             commonfun.loader();
-            uparams = { "flag": "all", "utype": that.loginUser.utype, "cuid": that.loginUser.ucode };
-            console.log(uparams);
+            
+            uparams = { "flag": "all", "utype": that.loginUser.utype, "cuid": that.loginUser.ucode, "wsautoid": that._wsdetails.wsautoid };
 
             that._userervice.getUserDetails(uparams).subscribe(data => {
                 try {

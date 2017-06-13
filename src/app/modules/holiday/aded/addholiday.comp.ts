@@ -19,6 +19,8 @@ declare var commonfun: any;
 export class AddHolidayComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    _wsdetails: any = [];
+
     hldid: number = 0;
     frmdt: any = "";
     todt: any = "";
@@ -32,11 +34,15 @@ export class AddHolidayComponent implements OnInit {
     entityid: number = 0;
     entityname: string = "";
 
+    mode: string = "";
+    isactive: boolean = true;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _holidayervice: HolidayService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
     }
 
     public ngOnInit() {
@@ -52,7 +58,9 @@ export class AddHolidayComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -136,7 +144,10 @@ export class AddHolidayComponent implements OnInit {
                 "school": _entitylist,
                 "frmdt": that.frmdt,
                 "todt": that.todt,
-                "uid": that.loginUser.ucode
+                "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
+                "isactive": that.isactive,
+                "mode": ""
             }
 
             that._holidayervice.saveHoliday(saveholiday).subscribe(data => {
@@ -193,6 +204,8 @@ export class AddHolidayComponent implements OnInit {
                         that.hlddesc = data.data[0].hlddesc;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
+                        that.isactive = data.data[0].isactive;
+                        that.mode = data.data[0].mode;
                         that.entityList = data.data[0].school !== null ? data.data[0].school : [];
                     }
                     catch (e) {

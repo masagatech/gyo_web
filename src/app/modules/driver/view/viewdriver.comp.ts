@@ -8,6 +8,7 @@ import { CommonService } from '../../../_services/common/common-service'; /* add
 import { DriverService } from '../../../_services/driver/driver-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Globals } from '../../../_const/globals';
 
 @Component({
     templateUrl: 'viewdriver.comp.html',
@@ -17,6 +18,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class ViewDriverComponent implements OnInit {
     driverDT: any = [];
     loginUser: LoginUserModel;
+
+    _wsdetails: any = [];
 
     entityDT: any = [];
     entityid: number = 0;
@@ -29,6 +32,7 @@ export class ViewDriverComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _driverservice: DriverService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.viewDriverDataRights();
     }
 
@@ -46,7 +50,9 @@ export class ViewDriverComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -105,7 +111,11 @@ export class ViewDriverComponent implements OnInit {
             commonfun.loader();
 
             that._driverservice.getDriverDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid
+                "flag": "all",
+                "uid": that.loginUser.uid,
+                "utype": that.loginUser.utype,
+                "schid": that.entityid,
+                "wsautoid": that._wsdetails.wsautoid,
             }).subscribe(data => {
                 try {
                     that.driverDT = data.data;

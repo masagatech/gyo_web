@@ -22,7 +22,7 @@ export class AddWorkspaceComponent implements OnInit {
     cityDT: any = [];
     areaDT: any = [];
 
-    wsid: number = 0;
+    wsautoid: number = 0;
     wscode: string = "";
     wsname: string = "";
     wsdesc: string = "";
@@ -68,6 +68,10 @@ export class AddWorkspaceComponent implements OnInit {
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
+
+        if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
+            this._router.navigate(['/']);
+        }
     }
 
     public ngOnInit() {
@@ -250,7 +254,7 @@ export class AddWorkspaceComponent implements OnInit {
     resetWorkspaceFields() {
         var that = this;
 
-        that.wsid = 0
+        that.wsautoid = 0
         that.wscode = "";
         that.wsname = "";
         that.wsdesc = "";
@@ -286,7 +290,7 @@ export class AddWorkspaceComponent implements OnInit {
         var that = this;
 
         var act_deactWorkspace = {
-            "wsid": that.wsid,
+            "wsautoid": that.wsautoid,
             "isactive": that.isactive,
             "mode": that.mode
         }
@@ -426,7 +430,7 @@ export class AddWorkspaceComponent implements OnInit {
             }
 
             var saveWorkspace = {
-                "wsautoid": that.wsid,
+                "wsautoid": that.wsautoid,
                 "wscode": that.wscode,
                 "oldcode": that.oldcode,
                 "wsname": that.wsname,
@@ -500,11 +504,11 @@ export class AddWorkspaceComponent implements OnInit {
 
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.wsid = params['id'];
+                this.wsautoid = params['id'];
 
-                that._wsservice.getWorkspaceDetails({ "flag": "edit", "id": this.wsid }).subscribe(data => {
+                that._wsservice.getWorkspaceDetails({ "flag": "edit", "id": this.wsautoid }).subscribe(data => {
                     try {
-                        that.wsid = data.data[0].wsautoid;
+                        that.wsautoid = data.data[0].wsautoid;
                         that.wscode = data.data[0].wscode;
                         that.wsname = data.data[0].wsname;
 

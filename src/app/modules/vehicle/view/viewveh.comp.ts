@@ -46,8 +46,10 @@ export class ViewVehicleComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "owner",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
             "otype": "coord",
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this.loginUser.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.ownerDT = data.data;
@@ -106,7 +108,8 @@ export class ViewVehicleComponent implements OnInit {
             commonfun.loader();
 
             that._vehservice.getVehicleDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "oid": that.ownerid
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "oid": that.ownerid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that.loginUser.wsautoid
             }).subscribe(data => {
                 try {
                     that.vehicleDT = data.data;

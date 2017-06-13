@@ -18,14 +18,17 @@ declare var $: any;
 export class ViewWorkspaceComponent implements OnInit {
     loginUser: LoginUserModel;
     workspaceDT: any = [];
-    
+
     wsautoid: number = 0;
     wscode: string = "";
     wsname: string = "";
+    wstype: string = "";
     wslogo: string = "";
     lgcode: string = "";
+    issysadmin: boolean = false;
+
     headertitle: string = "";
-    
+
     global = new Globals();
     uploadconfig = { uploadurl: "" };
 
@@ -33,8 +36,13 @@ export class ViewWorkspaceComponent implements OnInit {
         private _wsservice: WorkspaceService) {
         this.loginUser = this._loginservice.getUser();
         this.getUploadConfig();
+        Cookie.delete("_wsdetails_");
 
         this.getWorkspaceDetails();
+
+        if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
+            this._router.navigate(['/']);
+        }
     }
 
     public ngOnInit() {
@@ -61,9 +69,11 @@ export class ViewWorkspaceComponent implements OnInit {
                 that.wsautoid = myWorkspaceDT[0].wsautoid;
                 that.wscode = myWorkspaceDT[0].wscode;
                 that.wsname = myWorkspaceDT[0].wsname;
+                that.wstype = myWorkspaceDT[0].wstype;
                 that.wslogo = myWorkspaceDT[0].wslogo;
                 that.lgcode = myWorkspaceDT[0].lgcode;
-                that.headertitle = "My Workspace";
+                that.issysadmin = myWorkspaceDT[0].issysadmin;
+                that.headertitle = "My Workspace (" + myWorkspaceDT[0].wsname + ")";
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -88,18 +98,21 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public openForm() {
-        Cookie.set("_wsautoid_", this.wsautoid.toString());
-        Cookie.set("_wsname_", this.wsname);
-        Cookie.set("_wslogo_", this.wslogo);
+        var _wsdetails = {
+            "wsautoid": this.wsautoid.toString(),
+            "wscode": this.wscode,
+            "wsname": this.wsname,
+            "wstype": this.wstype,
+            "wslogo": this.wslogo,
+            "issysadmin": this.issysadmin
+        }
 
+        Cookie.set("_wsdetails_", JSON.stringify(_wsdetails));
         this._router.navigate(['/']);
     }
 
     public getMainForm(row) {
-        Cookie.set("_wsautoid_", row.wsautoid);
-        Cookie.set("_wsname_", row.wsname);
-        Cookie.set("_wslogo_", row.wslogo);
-
+        Cookie.set("_wsdetails_", JSON.stringify(row));
         this._router.navigate(['/']);
     }
 }

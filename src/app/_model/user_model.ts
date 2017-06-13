@@ -17,7 +17,7 @@ export interface LoginUserModel {
   dispname: string;
   fullname: string;
   uphoto: string;
-  wsid: number;
+  wsautoid: number;
   wscode: string;
   wsname: string;
   wslogo: string;

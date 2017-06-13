@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">{{entttype}} Vehicles (How Many) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="schvehs" class="form-control schvehs" maxlength="5" />
+                                <input type="text" [(ngModel)]="schvehs" OnlyNumber="true" class="form-control schvehs" maxlength="5" />
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Operator Vehicles (How Many) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="oprvehs" class="form-control oprvehs" maxlength="5" />
+                                <input type="text" [(ngModel)]="oprvehs" OnlyNumber="true" class="form-control oprvehs" maxlength="5" />
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Lat</label>
-                                <input type="text" [(ngModel)]="lat" class="form-control lat" maxlength="50" />
+                                <input type="text" [(ngModel)]="lat" OnlyNumber="true" class="form-control lat" maxlength="50" />
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Long</label>
-                                <input type="text" [(ngModel)]="lon" class="form-control lon" maxlength="50" />
+                                <input type="text" [(ngModel)]="lon" OnlyNumber="true" class="form-control lon" maxlength="50" />
                             </div>
                         </div>
                     </div>
@@ -267,10 +267,10 @@
                     <template pTemplate type="content">
                         <div *ngIf="uploadPhotoDT.length">
                             <div *ngFor="let file of uploadPhotoDT" class="box">
-                                <img src="{{file.athurl}}" height="80px" />
+                                <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
                             </div>
                         </div>
-                        <span *ngIf="!uploadPhotoDT.length">{{entttype}} Logo....</span>
+                        <span *ngIf="!uploadPhotoDT.length">Upload {{entttype}} Logo Here....</span>
                     </template>
                 </p-fileUpload>
             </div>

@@ -19,7 +19,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
     userfullname: string = "";
     usertype: string = "";
     userphoto: string = "";
-    useremail: string = "";
+    wsname: string = "";
     toggleClass: string = "";
 
     mainMenuDT: any = [];
@@ -31,7 +31,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         this.userfullname = this.loginUser.fullname;
         this.usertype = this.loginUser.utype;
         this.userphoto = this.loginUser.uphoto;
-        this.useremail = this.loginUser.email;
+        this.wsname = this.loginUser.wsname;
 
         this.getMainMenuList();
         this.getParentMenuList();

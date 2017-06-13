@@ -19,6 +19,8 @@ declare var adminloader: any;
 export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    _wsdetails: any = [];
+
     standardDT: any = [];
     divisionDT: any = [];
     genderDT: any = [];
@@ -87,6 +89,7 @@ export class AddPassengerComponent implements OnInit {
     constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.fillDropDownList();
     }
 
@@ -113,8 +116,10 @@ export class AddPassengerComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "owner",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
             "otype": "coord",
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             this.ownersDT = data.data;
@@ -608,7 +613,8 @@ export class AddPassengerComponent implements OnInit {
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
                 "aadharno": that.aadharno,
                 "ownerid": that.ownerid,
-                "uid": that.loginUser.ucode,
+                "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
                 "remark1": that.remark1,
                 "isactive": that.isactive,
                 "mode": ""
@@ -660,7 +666,11 @@ export class AddPassengerComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.psngrid = params['id'];
 
-                that._psngrservice.getPassengerDetails({ "flag": "edit", "id": that.psngrid }).subscribe(data => {
+                that._psngrservice.getPassengerDetails({
+                    "flag": "edit",
+                    "id": that.psngrid,
+                    "wsautoid": that._wsdetails.wsautoid
+                }).subscribe(data => {
                     try {
                         that.psngrid = data.data[0].autoid;
                         that.ownerid = data.data[0].ownerid;

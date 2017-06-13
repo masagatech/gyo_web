@@ -5,6 +5,7 @@ import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { BatchService } from '../../../_services/batch/batch-service';
+import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 declare var commonfun: any;
@@ -32,11 +33,16 @@ export class AddBatchComponent implements OnInit {
     weekDT: any = [];
     selectedWeek: string[] = [];
 
+    mode: string = "";
+    isactive: boolean = true;
+
+    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _batchervice: BatchService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
     }
 
     public ngOnInit() {
@@ -59,7 +65,9 @@ export class AddBatchComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -145,9 +153,12 @@ export class AddBatchComponent implements OnInit {
                 "schoolid": that.entityid,
                 "fromtime": that.fromtime,
                 "totime": that.totime,
-                "uid": that.loginUser.ucode,
+                "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
                 "instruction": that.instruction,
-                "weekallow": that.selectedWeek
+                "weekallow": that.selectedWeek,
+                "isactive": that.isactive,
+                "mode": ""
             }
 
             this._batchervice.saveBatchInfo(savebatch).subscribe(data => {
@@ -191,11 +202,15 @@ export class AddBatchComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.batchid = params['id'];
+                that.batchid = params['id'];
 
-                that._batchervice.getBatchDetails({ "flag": "edit", "id": this.batchid }).subscribe(data => {
+                that._batchervice.getBatchDetails({
+                    "flag": "edit",
+                    "id": that.batchid,
+                    "wsautoid": that._wsdetails.wsautoid
+                }).subscribe(data => {
                     try {
                         that.batchid = data.data[0].autoid;
                         that.batchcode = data.data[0].batchcode;

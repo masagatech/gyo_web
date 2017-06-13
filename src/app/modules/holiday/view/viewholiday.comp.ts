@@ -6,6 +6,7 @@ import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { HolidayService } from '../../../_services/holiday/holiday-service';
+import { Globals } from '../../../_const/globals';
 
 @Component({
     templateUrl: 'viewholiday.comp.html',
@@ -14,6 +15,8 @@ import { HolidayService } from '../../../_services/holiday/holiday-service';
 
 export class ViewHolidayComponent implements OnInit {
     loginUser: LoginUserModel;
+
+    _wsdetails: any = [];
 
     holidayDT: any = [];
     entityDT: any = [];
@@ -35,6 +38,8 @@ export class ViewHolidayComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _holidayervice: HolidayService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
+
         this.getDefaultDate();
         this.viewHolidayDataRights();
     }
@@ -59,7 +64,9 @@ export class ViewHolidayComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -120,8 +127,6 @@ export class ViewHolidayComponent implements OnInit {
             that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getHolidayGrid();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -135,7 +140,13 @@ export class ViewHolidayComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._holidayervice.getHoliday({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid }).subscribe(data => {
+            that._holidayervice.getHoliday({
+                "flag": "all",
+                "uid": that.loginUser.uid,
+                "utype": that.loginUser.utype,
+                "wsautoid": that._wsdetails.wsautoid,
+                "schid": that.entityid
+            }).subscribe(data => {
                 try {
                     that.holidayDT = data.data;
                 }

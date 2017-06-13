@@ -53,15 +53,17 @@ export class AddDriverComponent implements OnInit {
 
     uploadconfig = { server: "", serverpath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
+    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
 
         this.fillDropDownList();
         this.getUploadConfig();
-        
+
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
@@ -77,7 +79,11 @@ export class AddDriverComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._driverservice.getDriverDetails({ "flag": "dropdown", "cuid": that.loginUser.ucode }).subscribe(data => {
+        that._driverservice.getDriverDetails({
+            "flag": "dropdown",
+            "cuid": that.loginUser.ucode,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.ownerDT = data.data;
             }
@@ -108,7 +114,7 @@ export class AddDriverComponent implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
                 that.lat = results[0].geometry.location.lat();
                 that.lon = results[0].geometry.location.lng();
-                
+
                 commonfun.loaderhide();
             }
         });
@@ -369,6 +375,7 @@ export class AddDriverComponent implements OnInit {
                 "attachdocs": that.attachDocsDT,
                 "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -418,7 +425,11 @@ export class AddDriverComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.driverid = params['id'];
 
-                that._driverservice.getDriverDetails({ "flag": "edit", "id": that.driverid }).subscribe(data => {
+                that._driverservice.getDriverDetails({
+                    "flag": "edit",
+                    "id": that.driverid,
+                    "wsautoid": that._wsdetails.wsautoid
+                }).subscribe(data => {
                     try {
                         var _driverdata = data.data[0]._driverdata;
                         var _attachdocs = data.data[0]._attachdocs;

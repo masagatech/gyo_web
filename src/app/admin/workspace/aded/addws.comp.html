@@ -201,7 +201,7 @@
                         <template pTemplate type="content">
                             <div *ngIf="uploadPhotoDT.length">
                                 <div *ngFor="let file of uploadPhotoDT" class="box">
-                                    <img src="{{uploadconfig.uploadurl + file.athurl}}" height="80px" />
+                                    <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
                                 </div>
                             </div>
                             <span *ngIf="!uploadPhotoDT.length">Logo....</span>

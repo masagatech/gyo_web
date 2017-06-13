@@ -59,11 +59,13 @@ export class AddEntityComponent implements OnInit {
     global = new Globals();
     uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
+    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService,
         private _autoservice: CommonService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.getUploadConfig();
 
         this.fillDropDownList();
@@ -87,7 +89,7 @@ export class AddEntityComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that.loginUser.wscode }).subscribe(data => {
+        that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
             try {
                 that.entttypeDT = data.data.filter(a => a.group === "workspace");
 
@@ -288,6 +290,8 @@ export class AddEntityComponent implements OnInit {
     onUpload(event) {
         var that = this;
         var imgfile = [];
+        that.uploadPhotoDT = [];
+
         imgfile = JSON.parse(event.xhr.response);
 
         console.log(imgfile);
@@ -344,7 +348,7 @@ export class AddEntityComponent implements OnInit {
 
     // Clear Fields
 
-    resetentityFields() {
+    resetEntityFields() {
         var that = this;
 
         that.entttype = "";
@@ -464,7 +468,7 @@ export class AddEntityComponent implements OnInit {
                     "entttype": that.entttype,
                     "schcd": that.schcd,
                     "schnm": that.schnm,
-                    "schlogo": that.uploadPhotoDT[0].athurl,
+                    "schlogo": that.uploadPhotoDT.length == 0 ? "" : that.uploadPhotoDT[0].athurl,
                     "schgeoloc": that.lat + "," + that.lon,
                     "schvehs": that.schvehs,
                     "oprvehs": that.oprvehs,
@@ -482,7 +486,10 @@ export class AddEntityComponent implements OnInit {
                     "email2": that.email,
                     "contact": that.contactDT,
                     "remark1": that.remark1,
-                    "uid": that.loginUser.ucode
+                    "cuid": that.loginUser.ucode,
+                    "wsautoid": that._wsdetails.wsautoid,
+                    "isactive": that.isactive,
+                    "mode": ""
                 }
 
                 this._entityservice.saveEntityInfo(saveentity).subscribe(data => {
@@ -495,7 +502,7 @@ export class AddEntityComponent implements OnInit {
                             this._msg.Show(messageType.success, "Success", msg);
 
                             if (msgid === "1") {
-                                that.resetentityFields();
+                                that.resetEntityFields();
                             }
                             else {
                                 that.backViewData();
@@ -532,7 +539,11 @@ export class AddEntityComponent implements OnInit {
             if (params['id'] !== undefined) {
                 this.schid = params['id'];
 
-                that._entityservice.getEntityDetails({ "flag": "edit", "id": this.schid }).subscribe(data => {
+                that._entityservice.getEntityDetails({
+                    "flag": "edit",
+                    "id": that.schid,
+                    "wsautoid": that._wsdetails.wsautoid
+                }).subscribe(data => {
                     try {
                         that.schid = data.data[0].autoid;
                         that.entttype = data.data[0].entttype;
@@ -540,7 +551,7 @@ export class AddEntityComponent implements OnInit {
                         that.schnm = data.data[0].schoolname;
 
                         that.getUploadConfig();
-                        that.uploadPhotoDT.push({ "athurl":  that.uploadconfig.uploadurl + data.data[0].schlogo });
+                        data.data[0].schlogo !== "" ? that.uploadPhotoDT.push({ "athurl": that.uploadconfig.uploadurl + data.data[0].schlogo }) : "";
                         that.lat = data.data[0].lat;
                         that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;

@@ -5,6 +5,7 @@ import { MenuService } from '../../../_services/menus/menu-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { EntityService } from '../../../_services/entity/entity-service';
+import { Globals } from '../../../_const/globals';
 
 @Component({
     templateUrl: 'viewentity.comp.html',
@@ -15,6 +16,8 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     entityDT: any = [];
     loginUser: LoginUserModel;
 
+    _wsdetails: any = [];
+
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
@@ -23,6 +26,8 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
         this.viewEntityDataRights();
+        
+        this._wsdetails = Globals.getWSDetails();
     }
 
     public ngOnInit() {
@@ -65,7 +70,10 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._entityservice.getEntityDetails({ "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype }).subscribe(data => {
+            that._entityservice.getEntityDetails({
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "wsautoid": that._wsdetails.wsautoid, "cuid": that.loginUser.ucode
+            }).subscribe(data => {
                 try {
                     that.entityDT = data.data;
                 }
@@ -90,7 +98,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     public editEntityForm(row) {
         this._router.navigate(['/entity/edit', row.autoid]);
     }
-    
+
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

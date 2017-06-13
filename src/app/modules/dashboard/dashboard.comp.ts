@@ -4,6 +4,7 @@ import { MessageService, messageType } from '../../_services/messages/message-se
 import { LoginService } from '../../_services/login/login-service';
 import { LoginUserModel } from '../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Globals } from '../../_const/globals';
 
 @Component({
     templateUrl: 'dashboard.comp.html',
@@ -14,9 +15,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashboardDT: any = [];
     loginUser: LoginUserModel;
 
+    _wsdetails: any = [];
+
     constructor(private _autoservice: CommonService, private _loginservice: LoginService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.getDashboard();
     }
 
@@ -24,7 +28,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     getDashboard() {
         var that = this;
-        var dbparams = { "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype }
+        var dbparams = {
+            "uid": that.loginUser.uid, "issysadmin": that._wsdetails.issysadmin,
+            "utype": that.loginUser.utype, "wsautoid": that._wsdetails.wsautoid
+        }
 
         console.log(dbparams);
         commonfun.loader();

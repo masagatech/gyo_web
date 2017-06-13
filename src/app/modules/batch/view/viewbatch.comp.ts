@@ -8,6 +8,7 @@ import { CommonService } from '../../../_services/common/common-service'; /* add
 import { BatchService } from '../../../_services/batch/batch-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Globals } from '../../../_const/globals';
 
 @Component({
     templateUrl: 'viewbatch.comp.html',
@@ -17,6 +18,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class ViewBatchComponent implements OnInit {
     batchDT: any = [];
     loginUser: LoginUserModel;
+    
+    _wsdetails: any = [];
 
     entityDT: any = [];
     entityid: number = 0;
@@ -29,6 +32,7 @@ export class ViewBatchComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _batchervice: BatchService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.viewBatchDataRights();
     }
 
@@ -46,7 +50,9 @@ export class ViewBatchComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -105,7 +111,8 @@ export class ViewBatchComponent implements OnInit {
             commonfun.loader();
 
             that._batchervice.getBatchDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "schid": that.entityid
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.batchDT = data.data;

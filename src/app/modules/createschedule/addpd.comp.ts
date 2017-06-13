@@ -5,6 +5,7 @@ import { MessageService, messageType } from '../../_services/messages/message-se
 import { LoginService } from '../../_services/login/login-service';
 import { LoginUserModel } from '../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Globals } from '../../_const/globals';
 
 @Component({
     templateUrl: 'addpd.comp.html',
@@ -13,6 +14,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class CreateScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
+
+    _wsdetails: any = [];
 
     entityDT: any = [];
     enttid: number = 0;
@@ -69,6 +72,7 @@ export class CreateScheduleComponent implements OnInit {
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
     }
 
     public ngOnInit() {
@@ -116,7 +120,9 @@ export class CreateScheduleComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             this.entityDT = data.data;

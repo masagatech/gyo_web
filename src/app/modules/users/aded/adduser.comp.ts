@@ -5,6 +5,7 @@ import { MessageService, messageType } from '../../../_services/messages/message
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Globals } from '../../../_const/globals';
 
 declare var adminloader: any;
 
@@ -42,6 +43,7 @@ export class AddUserComponent implements OnInit {
     utype: string = "";
 
     genderDT: any = [];
+    _wsdetails: any = [];
 
     isAllEnttRights: boolean = true;
     entityDT: any = [];
@@ -54,6 +56,7 @@ export class AddUserComponent implements OnInit {
     constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.fillDropDownList();
 
         this.fillStateDropDown();
@@ -183,7 +186,9 @@ export class AddUserComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -367,6 +372,7 @@ export class AddUserComponent implements OnInit {
                 "pincode": that.pincode,
                 "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
                 "isactive": that.isactive,
                 "utype": that.utype,
                 "mode": ""
@@ -419,7 +425,7 @@ export class AddUserComponent implements OnInit {
             if (params['id'] !== undefined) {
                 this.uid = params['id'];
 
-                that._userservice.getUserDetails({ "flag": "edit", "id": this.uid }).subscribe(data => {
+                that._userservice.getUserDetails({ "flag": "edit", "id": this.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
                     try {
                         that.uid = data.data[0].uid;
                         that.oldcode = data.data[0].ucode;

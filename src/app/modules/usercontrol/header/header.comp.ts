@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   wsname: string = "";
   wslogo: string = "";
-  dispname: string = "";
+  userfullname: string = "";
 
   global = new Globals();
   uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
 
-    this.dispname = this.loginUser.dispname;
+    this.userfullname = this.loginUser.fullname;
     this.getHeaderDetails();
 
     _router.events.forEach((event: NavigationEvent) => {
@@ -79,10 +79,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getHeaderDetails() {
-    if (Cookie.get('_wsname_') != null) {
-      this.wsname = Cookie.get('_wsname_');
-      this.wslogo = this.global.uploadurl + Cookie.get('_wslogo_');
-    }
+    var _wsdetails = Globals.getWSDetails();
+
+    this.wsname = _wsdetails.wsname;
+    this.wslogo = this.global.uploadurl + _wsdetails.wslogo;
   }
 
   ngOnInit() {

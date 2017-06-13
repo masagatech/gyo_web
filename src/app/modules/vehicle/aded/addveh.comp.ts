@@ -48,7 +48,11 @@ export class AddVehicleComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._vehservice.getVehicleDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._vehservice.getVehicleDetails({
+            "flag": "dropdown",
+            "cuid": that.loginUser.ucode,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.ownerDT = data.data;
             }
@@ -142,6 +146,7 @@ export class AddVehicleComponent implements OnInit {
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
                 "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -191,7 +196,11 @@ export class AddVehicleComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.vehid = params['id'];
 
-                that._vehservice.getVehicleDetails({ "flag": "edit", "id": that.vehid }).subscribe(data => {
+                that._vehservice.getVehicleDetails({
+                    "flag": "edit",
+                    "id": that.vehid,
+                    "wsautoid": that._wsdetails.wsautoid
+                }).subscribe(data => {
                     try {
                         var _vehicledata = data.data;
 

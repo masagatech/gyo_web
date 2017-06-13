@@ -5,6 +5,7 @@ import { CommonService } from '../../../_services/common/common-service'; /* add
 import { OwnerService } from '../../../_services/owner/owner-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
+import { Globals } from '../../../_const/globals';
 
 declare var google: any;
 
@@ -15,6 +16,8 @@ declare var google: any;
 
 export class AddOwnerComponent implements OnInit {
     loginUser: LoginUserModel;
+
+    _wsdetails: any = [];
 
     stateDT: any = [];
     cityDT: any = [];
@@ -55,6 +58,7 @@ export class AddOwnerComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _ownerervice: OwnerService,
         private _autoservice: CommonService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
 
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -174,7 +178,9 @@ export class AddOwnerComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -355,6 +361,7 @@ export class AddOwnerComponent implements OnInit {
                 "typ": that.typ,
                 "isthirdparty": that.isthirdparty,
                 "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -400,11 +407,15 @@ export class AddOwnerComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.ownerid = params['id'];
+                that.ownerid = params['id'];
 
-                that._ownerervice.getOwnerDetails({ "flag": "edit", "id": this.ownerid }).subscribe(data => {
+                that._ownerervice.getOwnerDetails({
+                    "flag": "edit",
+                    "id": that.ownerid,
+                    "wsautoid": that._wsdetails.wsautoid
+                }).subscribe(data => {
                     try {
                         that.ownerid = data.data[0].autoid;
                         that.oldcode = data.data[0].ownercode;
