@@ -9,7 +9,7 @@ import { Globals } from '../../_const/globals';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SelectItem, GMap } from 'primeng/primeng';
 
-// declare var google: any;
+declare var google: any;
 
 @Component({
     templateUrl: 'ttmap.comp.html',
@@ -57,16 +57,20 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        // this.getMessage();
+        this.getMessage();
         this.getTripType();
     }
 
     ngOnInit() {
-        // this._socketservice.close();
+        this._socketservice.close();
 
-        // this.marker = new google.maps.Marker({ position: { lat: 0, lng: 0 }, title: "" });
-        // this.map = this._gmap.getMap();
-        // this.getDefaultMap();
+        this.marker = new google.maps.Marker({ position: { lat: 0, lng: 0 }, title: "" });
+        this.map = this._gmap.getMap();
+        this.getDefaultMap();
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+        }, 0);
     }
 
     getDefaultMap() {
@@ -186,7 +190,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        this._ttmapservice.getTripData({ "vehtypeid": that.vehtypeid }).subscribe(data => {
+        this._ttmapservice.getTripData({ "flag":"vh", "vehid": that.vehtypeid }).subscribe(data => {
             that.sel_tripid = 0;
             that.tripDT = data.data;
             commonfun.loaderhide();
@@ -207,113 +211,115 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         that.sel_msttripid = row.id;
     }
 
-/*
-    // get Tracking Map Data
-
-    getMessage() {
-        var that = this;
-        commonfun.loader();
-
-        this._socketservice.getMessage().subscribe(data => {
-            var _d = data;
-
-            if (_d["evt"] == "regreq") {
-                if (that.sel_tripid !== 0) {
-                    that.connectmsg = "Registering...";
-                    that._socketservice.sendMessage("register", that.sel_tripid.toString());
-                }
-            } else if (_d["evt"] == "registered") {
-                that.connectmsg = "Registered...";
-                setTimeout(function () {
-                    that.connectmsg = "Waiting for data..";
-                }, 1000);
-            } else if (_d["evt"] == "data") {
-                try {
-                    var geoloc = _d["data"];
-
-                    if (that.sel_tripid == geoloc.tripid) {
-                        that.lastlat = geoloc.lat;
-                        that.lastlon = geoloc.lon;
-
-                        that.connectmsg = "Lat : " + that.lastlat + ", Lon : " + that.lastlon;
-                        that.mapMove(geoloc.lat, geoloc.lon, geoloc.bearng);
+    
+        // get Tracking Map Data
+    
+        getMessage() {
+            var that = this;
+            commonfun.loader();
+    
+            this._socketservice.getMessage().subscribe(data => {
+                var _d = data;
+    
+                if (_d["evt"] == "regreq") {
+                    if (that.sel_tripid !== 0) {
+                        that.connectmsg = "Registering...";
+                        that._socketservice.sendMessage("register", that.sel_tripid.toString());
                     }
-                } catch (error) {
-
+                } else if (_d["evt"] == "registered") {
+                    that.connectmsg = "Registered...";
+                    setTimeout(function () {
+                        that.connectmsg = "Waiting for data..";
+                    }, 1000);
+                } else if (_d["evt"] == "data") {
+                    try {
+                        var geoloc = _d["data"];
+    
+                        if (that.sel_tripid == geoloc.tripid) {
+                            that.lastlat = geoloc.lat;
+                            that.lastlon = geoloc.lon;
+    
+                            that.connectmsg = "Lat : " + that.lastlat + ", Lon : " + that.lastlon;
+                            that.mapMove(geoloc.lat, geoloc.lon, geoloc.bearng);
+                        }
+                    } catch (error) {
+    
+                    }
                 }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
+    
+        togglePlayPause() {
+            this.isPlay = !this.isPlay;
+    
+            if (this.isPlay) {
+                this.mapMove(this.lastlat, this.lastlon, 0);
             }
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
-    }
-
-    togglePlayPause() {
-        this.isPlay = !this.isPlay;
-
-        if (this.isPlay) {
-            this.mapMove(this.lastlat, this.lastlon, 0);
         }
-    }
-
-    mapMove(lat: any, lon: any, bearng: any) {
-        if (this.isPlay) {
-            var latlng = new google.maps.LatLng(lat, lon);
-            this.marker.setPosition(latlng);
-            this._gmap.map.setCenter(latlng);
-        }
-        else {
-
-        }
-    }
-
-    sendMessage() {
-        this._socketservice.close();
-        this.getLastLocation();
-        this.connectmsg = "Connecting...";
-        this._socketservice.connect();
-    }
-
-    getLastLocation() {
-        var that = this;
-        commonfun.loader();
-
-        that._ttmapservice.getLastLocation({ "tripid": that.sel_tripid }).subscribe(data => {
-            if (that.overlays.length == 0) {
-                this.overlays.push(this.marker);
+    
+        mapMove(lat: any, lon: any, bearng: any) {
+            if (this.isPlay) {
+                var latlng = new google.maps.LatLng(lat, lon);
+                this.marker.setPosition(latlng);
+                this._gmap.map.setCenter(latlng);
             }
+            else {
+    
+            }
+        }
+    
+        sendMessage() {
+            this._socketservice.close();
+            this.getLastLocation();
+            this.connectmsg = "Connecting...";
+            this._socketservice.connect();
+        }
+    
+        getLastLocation() {
+            var that = this;
+            commonfun.loader();
+    
+            that._ttmapservice.getLastLocation({ "tripid": that.sel_tripid }).subscribe(data => {
+                if (that.overlays.length == 0) {
+                    this.overlays.push(this.marker);
+                }
+    
+                var geoloc = data.data[0].loc;
+                var bearng = data.data[0].bearng;
+    
+                that.mapMove(geoloc[0], geoloc[1], bearng);
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
+    
+        // Zoon In, Out, Clear and Reset
+    
+        zoomIn(map) {
+            map.setZoom(map.getZoom() + 1);
+        }
+    
+        zoomOut(map) {
+            map.setZoom(map.getZoom() - 1);
+        }
+    
+        clear() {
+            // this.overlays = [];
+        }
+    
 
-            var geoloc = data.data[0].loc;
-            var bearng = data.data[0].bearng;
-
-            that.mapMove(geoloc[0], geoloc[1], bearng);
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
-    }
-
-    // Zoon In, Out, Clear and Reset
-
-    zoomIn(map) {
-        map.setZoom(map.getZoom() + 1);
-    }
-
-    zoomOut(map) {
-        map.setZoom(map.getZoom() - 1);
-    }
-
-    clear() {
-        // this.overlays = [];
-    }
-*/
-
-    ngOnDestroy() {
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }
