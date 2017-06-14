@@ -25,7 +25,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">User Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="ucode" class="form-control ucode" maxlength="10" />
+                                <input type="text" [(ngModel)]="ucode" class="form-control ucode" maxlength="10" tabindex="1" />
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Password <strong>*</strong></label>
-                                <input type="password" [(ngModel)]="upwd" class="form-control upwd" maxlength="15" />
+                                <input type="password" [(ngModel)]="upwd" class="form-control upwd" maxlength="15" tabindex="2" />
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">First Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="fname" class="form-control fname" maxlength="50" />
+                                <input type="text" [(ngModel)]="fname" class="form-control fname" maxlength="50" tabindex="3" />
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Last Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="lname" class="form-control lname" maxlength="50" />
+                                <input type="text" [(ngModel)]="lname" class="form-control lname" maxlength="50" tabindex="4" />
                             </div>
                         </div>
                     </div>
@@ -63,43 +63,73 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">User Type <strong>*</strong></label>
-                                <select [(ngModel)]="utype" class="form-control utype">
+                                <select [(ngModel)]="utype" class="form-control utype" tabindex="5">
                                     <option [value]="''">Select Type</option>
-                                    <option [value]="'admin'">System Admin</option>
-                                    <option [value]="'entity'">Entity</option>
-                                    <option [value]="'internal'">Internal</option>
+                                    <option *ngFor="let row of utypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input id="allenttrights" name="allenttrights" type="checkbox" [(ngModel)]="isAllEnttRights" (change)="isAllEntityRights()" class="filled-in">
-                                <label for="allenttrights" class="control-label">All Entity Rights</label>
-                                <div class="row clearfix" *ngIf="!isAllEnttRights">
-                                    <div class="col-md-10">
-                                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
-                                    </div>
-                                    <div class="col-md-2" align="right">
-                                        <span class="material-icons">search</span>
+                <div *ngIf="utype !== 'admin' && utype !== 'user'">
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input id="allenttrights" name="allenttrights" type="checkbox" [(ngModel)]="isAllEnttRights" (change)="isAllEntityRights()" class="filled-in">
+                                    <label for="allenttrights" class="control-label">All Entity Rights</label>
+                                    <div class="row clearfix" *ngIf="!isAllEnttRights">
+                                        <div class="col-md-10">
+                                            <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="6" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                                        </div>
+                                        <div class="col-md-2" align="right">
+                                            <span class="material-icons">search</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div *ngIf="entityList.length">
-                    <ul class="list-group">
-                        <li class="list-group-item" *ngFor="let row of entityList">
-                            {{row.schnm}}
-                            <button type="button" class="btn btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">delete</i></button>
-                        </li>
-                    </ul>
+                    <div *ngIf="entityList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let row of entityList">
+                                {{row.schnm}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">delete</i></button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="row clearfix hide">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input id="allvehrights" name="allvehrights" type="checkbox" [(ngModel)]="isAllVehRights" (change)="isAllVehicleRights()" class="filled-in">
+                                    <label for="allvehrights" class="control-label">All Vehicle Rights</label>
+                                    <div class="row clearfix" *ngIf="!isAllVehRights">
+                                        <div class="col-md-10">
+                                            <p-autoComplete id="vehtypename" name="vehtypename" [(ngModel)]="vehtypename" [tabindex]="6" (onSelect)="selectVehicleData($event)" [suggestions]="vehtypeDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehtypename"></p-autoComplete>
+                                        </div>
+                                        <div class="col-md-2" align="right">
+                                            <span class="material-icons">search</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="vehtypeList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let row of vehtypeList">
+                                {{row.vehtypename}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteVehicle(row)"><i class="material-icons">delete</i></button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="row clearfix">
@@ -107,7 +137,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Remark</label>
-                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="7"></textarea>
                             </div>
                         </div>
                     </div>
@@ -119,7 +149,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Mobile (Login No) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" />
+                                <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="8" />
                             </div>
                         </div>
                     </div>
@@ -127,7 +157,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Alternate Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" />
+                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="9" />
                             </div>
                         </div>
                     </div>
@@ -138,7 +168,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Email <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="email1" class="form-control email1" />
+                                <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="10" />
                             </div>
                         </div>
                     </div>
@@ -146,7 +176,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Alternate Email</label>
-                                <input type="text" [(ngModel)]="email2" class="form-control" />
+                                <input type="text" [(ngModel)]="email2" class="form-control" tabindex="11" />
                             </div>
                         </div>
                     </div>
@@ -157,7 +187,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500"></textarea>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="12"></textarea>
                             </div>
                         </div>
                     </div>
@@ -168,7 +198,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="11" disabled />
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="13" disabled />
                             </div>
                         </div>
                     </div>
@@ -176,7 +206,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State <strong>*</strong></label>
-                                <select [(ngModel)]="state" class="form-control state" tabindex="12" (ngModelChange)="fillCityDropDown()">
+                                <select [(ngModel)]="state" class="form-control state" tabindex="13" (ngModelChange)="fillCityDropDown()">
                                     <option [value]="0">Select State</option>
                                     <option *ngFor="let row of stateDT" [value]="row.key">
                                         {{row.val}}
@@ -192,7 +222,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City <strong>*</strong></label>
-                                <select [(ngModel)]="city" class="form-control city" tabindex="13" (ngModelChange)="fillAreaDropDown()">
+                                <select [(ngModel)]="city" class="form-control city" tabindex="14" (ngModelChange)="fillAreaDropDown()">
                                     <option [value]="0">Select City</option>
                                     <option *ngFor="let row of cityDT" [value]="row.key">
                                         {{row.val}}
@@ -205,7 +235,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Area <strong>*</strong></label>
-                                <select [(ngModel)]="area" class="form-control area" tabindex="14">
+                                <select [(ngModel)]="area" class="form-control area" tabindex="15">
                                     <option [value]="0">Select Area</option>
                                     <option *ngFor="let row of areaDT" [value]="row.key">
                                         {{row.val}}
@@ -216,12 +246,12 @@
                     </div>
                 </div>
 
-                <div class="row clearfix">
+                <div class="row clearfix" style="display: none;">
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" />
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="16" />
                             </div>
                         </div>
                     </div>

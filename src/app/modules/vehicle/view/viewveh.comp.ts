@@ -21,9 +21,9 @@ export class ViewVehicleComponent implements OnInit {
 
     _wsdetails: any = [];
 
-    ownerDT: any = [];
-    ownerid: number = 0;
-    ownername: string = "";
+    entityDT: any = [];
+    entityid: number = 0;
+    entityname: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -42,21 +42,20 @@ export class ViewVehicleComponent implements OnInit {
         }, 0);
     }
 
-    // Auto Completed owner
+    // Auto Completed Entity
 
-    getOwnerData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "owner",
+            "flag": "entity",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "otype": "coord",
             "issysadmin": this._wsdetails.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
-            this.ownerDT = data.data;
+            this.entityDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -66,12 +65,12 @@ export class ViewVehicleComponent implements OnInit {
 
     // Selected Owners
 
-    selectOwnerData(event) {
-        this.ownerid = event.value;
-        this.ownername = event.label;
+    selectEntityData(event) {
+        this.entityid = event.value;
+        this.entityname = event.label;
 
-        Cookie.set("_onrid_", this.ownerid.toString());
-        Cookie.set("_onrnm_", this.ownername);
+        Cookie.set("_enttid_", this.entityid.toString());
+        Cookie.set("_enttnm_", this.entityname);
 
         this.getVehicleDetails();
     }
@@ -93,9 +92,9 @@ export class ViewVehicleComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            if (Cookie.get('_onrnm_') != null) {
-                that.ownerid = parseInt(Cookie.get('_onrid_'));
-                that.ownername = Cookie.get('_onrnm_');
+            if (Cookie.get('_enttnm_') != null) {
+                that.entityid = parseInt(Cookie.get('_enttid_'));
+                that.entityname = Cookie.get('_enttnm_');
                 that.getVehicleDetails();
             }
         }, err => {
@@ -112,8 +111,11 @@ export class ViewVehicleComponent implements OnInit {
             commonfun.loader();
 
             that._vehservice.getVehicleDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "oid": that.ownerid, "issysadmin": that._wsdetails.issysadmin, "wsautoid": that._wsdetails.wsautoid
+                "flag": "all",
+                "uid": that.loginUser.uid,
+                "utype": that.loginUser.utype,
+                "enttid": that.entityid,
+                "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.vehicleDT = data.data;

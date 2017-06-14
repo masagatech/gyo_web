@@ -69,8 +69,8 @@ export class ViewOwnerComponent implements OnInit {
         this.entityid = event.value;
         this.entityname = event.label;
 
-        Cookie.set("_onrenttid_", this.entityid.toString());
-        Cookie.set("_onrenttnm_", this.entityname);
+        Cookie.set("_enttid_", this.entityid.toString());
+        Cookie.set("_enttnm_", this.entityname);
 
         this.getOwnerDetails();
     }
@@ -92,9 +92,9 @@ export class ViewOwnerComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            if (Cookie.get('_onrenttnm_') != null) {
-                that.entityid = parseInt(Cookie.get('_onrenttid_'));
-                that.entityname = Cookie.get('_onrenttnm_');
+            if (Cookie.get('_enttnm_') != null) {
+                that.entityid = parseInt(Cookie.get('_enttid_'));
+                that.entityname = Cookie.get('_enttnm_');
                 that.getOwnerDetails();
             }
         }, err => {

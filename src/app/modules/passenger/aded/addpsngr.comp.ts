@@ -29,13 +29,9 @@ export class AddPassengerComponent implements OnInit {
     pickstopsDT: any = [];
     dropstopsDT: any = [];
 
-    ownersDT: any = [];
-    ownerid: number = 0;
-    ownername: string = "";
-
     entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: string = "";
 
     psngrid: number = 0;
     psngrcode: string = "";
@@ -94,7 +90,7 @@ export class AddPassengerComponent implements OnInit {
     }
 
     public ngOnInit() {
-        $(".ownername input").focus();
+        $(".enttname input").focus();
         this.getPassengerDetails();
     }
 
@@ -108,46 +104,17 @@ export class AddPassengerComponent implements OnInit {
         console.log('success');
     }
 
-    // AutoCompleted Users
-
-    getAutoOwners(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "owner",
-            "uid": this.loginUser.uid,
-            "utype": this.loginUser.utype,
-            "otype": "coord",
-            "issysadmin": this._wsdetails.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe(data => {
-            this.ownersDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Users
-
-    selectAutoOwners(event) {
-        this.ownerid = event.value;
-        this.ownername = event.label;
-
-        this.entityid = 0;
-        this.entityname = "";
-    }
-
     // Auto Completed Entity
 
     getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "ownerwiseentity",
-            "oid": this.ownerid,
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -158,11 +125,11 @@ export class AddPassengerComponent implements OnInit {
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
-    selectEntityData(event, type) {
-        this.entityid = event.schid;
-        this.entityname = event.schnm;
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
     }
 
     // Fill Standard, Division, Gender, Pick Up Route and Drop Route DropDown
@@ -490,14 +457,9 @@ export class AddPassengerComponent implements OnInit {
     isValidPassenger() {
         var that = this;
 
-        if (that.ownerid === 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Owner Name");
-            $(".ownername input").focus();
-            return false;
-        }
-        else if (that.entityid === 0) {
+        if (that.enttid === 0) {
             that._msg.Show(messageType.error, "Error", "Select Entity Name");
-            $(".entityname input").focus();
+            $(".enttname input").focus();
             return false;
         }
         else if (that.psngrname === "") {
@@ -596,7 +558,7 @@ export class AddPassengerComponent implements OnInit {
                 "autoid": that.psngrid,
                 "studentcode": that.psngrid,
                 "studentname": that.psngrname,
-                "schoolid": that.entityid,
+                "schoolid": that.enttid,
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
@@ -612,7 +574,6 @@ export class AddPassengerComponent implements OnInit {
                 "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
                 "aadharno": that.aadharno,
-                "ownerid": that.ownerid,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._wsdetails.wsautoid,
                 "remark1": that.remark1,
@@ -673,10 +634,8 @@ export class AddPassengerComponent implements OnInit {
                 }).subscribe(data => {
                     try {
                         that.psngrid = data.data[0].autoid;
-                        that.ownerid = data.data[0].ownerid;
-                        that.ownername = data.data[0].ownername;
-                        that.entityid = data.data[0].schoolid;
-                        that.entityname = data.data[0].schoolname;
+                        that.enttid = data.data[0].schoolid;
+                        that.enttname = data.data[0].schoolname;
                         that.psngrcode = data.data[0].studentcode;
                         that.psngrname = data.data[0].studentname;
 

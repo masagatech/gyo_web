@@ -5,9 +5,11 @@ import { MessageService, messageType } from '../../_services/messages/message-se
 import { LoginService } from '../../_services/login/login-service';
 import { LoginUserModel } from '../../_model/user_model';
 import { SocketService } from '../../_services/socket/socket-service';
+import { Globals } from '../../_const/globals';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SelectItem, GMap } from 'primeng/primeng';
 
-declare var google: any;
+// declare var google: any;
 
 @Component({
     templateUrl: 'ttmap.comp.html',
@@ -16,6 +18,8 @@ declare var google: any;
 
 export class TripTrackingComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
+
     selectedTripType: number = 0;
     triptype: SelectItem[];
 
@@ -25,12 +29,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     map: any;
     marker: any;
     overlays: any = [];
-    coordDT: any = [];
-    driverDT: any = [];
 
-    coordid: number = 0;
-    coordname: string = "";
-    driverid: number = 0;
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
+
+    vehtypeDT: any = [];
+    vehtypeid: number = 0;
 
     tripDT: any = [];
     messageDT: any = [];
@@ -50,23 +55,18 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     constructor(public _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _socketservice: SocketService) {
         this.loginUser = this._loginservice.getUser();
-        this.getMessage();
+        this._wsdetails = Globals.getWSDetails();
+
+        // this.getMessage();
         this.getTripType();
     }
 
     ngOnInit() {
-        this._socketservice.close();
+        // this._socketservice.close();
 
-        this.marker = new google.maps.Marker({ position: { lat: 0, lng: 0 }, title: "" });
-        this.map = this._gmap.getMap();
-        this.getDefaultMap();
-
-        // this.coordid = 2;
-        // this.coordname = "Mahesh Tiwari";
-        this.fillDriverDropDown();
-        // this.driverid = 1;
-
-        // this.getTripData();
+        // this.marker = new google.maps.Marker({ position: { lat: 0, lng: 0 }, title: "" });
+        // this.map = this._gmap.getMap();
+        // this.getDefaultMap();
     }
 
     getDefaultMap() {
@@ -103,19 +103,20 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         this.triptype.push({ "label": "Completed", "value": "2" });
     }
 
-    // Auto Completed Co-ordinator / Attendent
+    // Auto Completed Entity
 
-    getCoordinatorData(event) {
+    getEntityData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "owner",
+            "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
-            "otype": "coord",
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
-        }).subscribe(data => {
-            this.coordDT = data.data;
+        }).subscribe((data) => {
+            this.entityDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -123,23 +124,32 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Get Selected Auto Completed Data
+    // Selected Entity
 
-    selectCoordinatorData(event) {
-        this.coordid = event.value;
-        this.coordname = event.label;
-        this.fillDriverDropDown();
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        Cookie.set("_enttid_", this.enttid.toString());
+        Cookie.set("_enttnm_", this.enttname);
+
+        if (Cookie.get('_enttnm_') != null) {
+            this.enttid = parseInt(Cookie.get('_enttid_'));
+            this.enttname = Cookie.get('_enttnm_');
+
+            this.fillVehicleDropDown();
+        }
     }
 
-    // Driver DropDown
+    // Vehicle DropDown
 
-    fillDriverDropDown() {
+    fillVehicleDropDown() {
         var that = this;
         commonfun.loader();
 
-        that._autoservice.getDropDownData({ "flag": "driver", "id": that.coordid }).subscribe((data) => {
+        that._autoservice.getDropDownData({ "flag": "vehicle", "id": that.enttid }).subscribe((data) => {
             try {
-                that.driverDT = data.data;
+                that.vehtypeDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -153,13 +163,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Show Passenger Data By Driver, Trip
+    // Show Passenger Data By vehicle, Trip
 
     showPassengerList() {
         var that = this;
         commonfun.loader();
 
-        this._ttmapservice.showPassengerList({ "driverid": that.driverid, "tripid": that.sel_tripid, "msttripid": that.sel_msttripid }).subscribe(data => {
+        this._ttmapservice.showPassengerList({ "vehtypeid": that.vehtypeid, "tripid": that.sel_tripid, "msttripid": that.sel_msttripid }).subscribe(data => {
             that.psngrDT = data.data;
             commonfun.loaderhide();
         }, err => {
@@ -176,7 +186,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        this._ttmapservice.getTripData({ "driverid": that.driverid }).subscribe(data => {
+        this._ttmapservice.getTripData({ "vehtypeid": that.vehtypeid }).subscribe(data => {
             that.sel_tripid = 0;
             that.tripDT = data.data;
             commonfun.loaderhide();
@@ -197,6 +207,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         that.sel_msttripid = row.id;
     }
 
+/*
     // get Tracking Map Data
 
     getMessage() {
@@ -301,6 +312,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     clear() {
         // this.overlays = [];
     }
+*/
 
     ngOnDestroy() {
     }

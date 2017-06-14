@@ -17,6 +17,10 @@ declare var google: any;
 export class AddDriverComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
+
     stateDT: any = [];
     cityDT: any = [];
     areaDT: any = [];
@@ -26,11 +30,8 @@ export class AddDriverComponent implements OnInit {
     oldcode: string = "";
     driverpwd: string = "";
     drivername: string = "";
-    ownerid: number = 0;
     aadharno: string = "";
     licenseno: string = "";
-    lat: string = "0.00";
-    lon: string = "0.00";
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -48,7 +49,6 @@ export class AddDriverComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
-    ownerDT: any = [];
     global = new Globals();
 
     uploadconfig = { server: "", serverpath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
@@ -61,7 +61,6 @@ export class AddDriverComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.fillDropDownList();
         this.getUploadConfig();
 
         this.fillStateDropDown();
@@ -73,51 +72,32 @@ export class AddDriverComponent implements OnInit {
         this.getDriverDetails();
     }
 
-    // Fill Owner Drop Down
+    // Auto Completed Entity
 
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
+    getEntityData(event) {
+        let query = event.query;
 
-        that._driverservice.getDriverDetails({
-            "flag": "dropdown",
-            "cuid": that.loginUser.ucode,
-            "wsautoid": that._wsdetails.wsautoid
-        }).subscribe(data => {
-            try {
-                that.ownerDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
+            this._msg.Show(messageType.error, "Error", err);
         }, () => {
 
-        })
+        });
     }
 
-    // get lat and long by address form google map
+    // Selected Entity
 
-    getLatAndLong() {
-        var that = this;
-        commonfun.loader();
-
-        var geocoder = new google.maps.Geocoder();
-        // var address = "Chakkinaka, Kalyan (E)";
-
-        geocoder.geocode({ 'address': that.address }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                that.lat = results[0].geometry.location.lat();
-                that.lon = results[0].geometry.location.lng();
-
-                commonfun.loaderhide();
-            }
-        });
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
     }
 
     // Get State DropDown
@@ -297,7 +277,8 @@ export class AddDriverComponent implements OnInit {
     resetDriverFields() {
         var that = this;
 
-        that.ownerid = 0;
+        that.enttid = 0;
+        that.enttname = "";
         that.drivercode = "";
         that.driverpwd = "";
         that.drivername = "";
@@ -307,8 +288,6 @@ export class AddDriverComponent implements OnInit {
         that.email1 = "";
         that.email2 = "";
         that.address = "";
-        that.lat = "0.00";
-        that.lon = "0.00";
         that.country = "India";
         that.state = 0;
         that.city = 0;
@@ -321,9 +300,9 @@ export class AddDriverComponent implements OnInit {
     saveDriverInfo() {
         var that = this;
 
-        if (that.ownerid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Owner");
-            $(".ownerid").focus();
+        if (that.enttid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Entity");
+            $(".enttid").focus();
         }
         else if (that.drivercode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Driver Code");
@@ -360,7 +339,6 @@ export class AddDriverComponent implements OnInit {
                 "drivername": that.drivername,
                 "aadharno": that.aadharno,
                 "licenseno": that.licenseno,
-                "geoloc": that.lat + "," + that.lon,
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -371,7 +349,7 @@ export class AddDriverComponent implements OnInit {
                 "city": that.city,
                 "area": that.area,
                 "pincode": that.pincode,
-                "ownerid": that.ownerid,
+                "enttid": that.enttid,
                 "attachdocs": that.attachDocsDT,
                 "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
@@ -382,9 +360,9 @@ export class AddDriverComponent implements OnInit {
 
             this._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_driverinfo.msg;
-                    var msgid = dataResult[0].funsave_driverinfo.msgid;
+                    var dataResult = data.data[0].funsave_driverinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -439,8 +417,6 @@ export class AddDriverComponent implements OnInit {
                         that.oldcode = _driverdata[0].drivercode;
                         that.driverpwd = _driverdata[0].driverpwd;
                         that.drivername = _driverdata[0].drivername;
-                        that.lat = _driverdata[0].lat;
-                        that.lon = _driverdata[0].lon;
                         that.aadharno = _driverdata[0].aadharno;
                         that.licenseno = _driverdata[0].licenseno;
                         that.email1 = _driverdata[0].email1;
@@ -455,7 +431,8 @@ export class AddDriverComponent implements OnInit {
                         that.fillAreaDropDown();
                         that.area = _driverdata[0].area;
                         that.pincode = _driverdata[0].pincode;
-                        that.ownerid = _driverdata[0].ownerid;
+                        that.enttid = _driverdata[0].enttid;
+                        that.enttname = _driverdata[0].enttname;
                         that.remark1 = _driverdata[0].remark1;
                         that.isactive = _driverdata[0].isactive;
                         that.mode = _driverdata[0].mode;

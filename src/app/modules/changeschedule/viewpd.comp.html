@@ -96,7 +96,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="pickdriverid" class="form-control" tabindex="6" (ngModelChange)="fillVehicleDropDown(pickdriverid, 'pick');setDropDriver()">
+                        <select [(ngModel)]="pickdriverid" class="form-control" tabindex="6" (ngModelChange)="setDropDriver()">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
@@ -107,9 +107,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle Name</label>
-                        <select [(ngModel)]="pickvehicleno" class="form-control pveh" tabindex="7" (ngModelChange)="setDropVehicle()">
+                        <select [(ngModel)]="pickvehicleid" class="form-control pveh" tabindex="7" (ngModelChange)="setDropVehicle()">
                             <option [value]="''">Select Vehicle</option>
-                            <option *ngFor="let row of pickVehicleDT" [value]="row.key">
+                            <option *ngFor="let row of vehicleDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -140,7 +140,7 @@
                         <label class="control-label">Passenger Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                                <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
                                     [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
@@ -195,7 +195,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="dropdriverid" class="form-control" tabindex="13" (ngModelChange)="fillVehicleDropDown(dropdriverid, 'drop')">
+                        <select [(ngModel)]="dropdriverid" class="form-control" tabindex="13">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">	
                                 {{row.val}}
@@ -206,9 +206,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle Name</label>
-                        <select [(ngModel)]="dropvehicleno" class="form-control dveh" tabindex="14">
+                        <select [(ngModel)]="dropvehicleid" class="form-control dveh" tabindex="14">
                             <option [value]="''">Select Vehicle</option>
-                            <option *ngFor="let row of dropVehicleDT" [value]="row.key">
+                            <option *ngFor="let row of vehicleDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -237,7 +237,7 @@
                 <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
                     <div class="form-line">
                         <label class="control-label">Passenger Name</label>
-                        <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="studnm" [minLength]="1"
+                        <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
                             [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
                     </div>
                 </div>

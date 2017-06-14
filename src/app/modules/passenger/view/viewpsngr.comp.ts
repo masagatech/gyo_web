@@ -71,8 +71,8 @@ export class ViewPassengerComponent implements OnInit {
         this.entityid = event.value;
         this.entityname = event.label;
 
-        Cookie.set("_psngrenttid_", this.entityid.toString());
-        Cookie.set("_psngrenttnm_", this.entityname);
+        Cookie.set("_enttid_", this.entityid.toString());
+        Cookie.set("_enttnm_", this.entityname);
 
         this.getPassengerDetails();
     }
@@ -94,9 +94,9 @@ export class ViewPassengerComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            if (Cookie.get('_psngrenttnm_') != null) {
-                that.entityid = parseInt(Cookie.get('_psngrenttid_'));
-                that.entityname = Cookie.get('_psngrenttnm_');
+            if (Cookie.get('_enttnm_') != null) {
+                that.entityid = parseInt(Cookie.get('_enttid_'));
+                that.entityname = Cookie.get('_enttnm_');
 
                 that.getPassengerDetails();
             }

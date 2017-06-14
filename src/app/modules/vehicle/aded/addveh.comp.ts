@@ -15,12 +15,18 @@ import { Globals } from '../../../_const/globals';
 export class AddVehicleComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
+
+    vehtypeDT: any = [];
+
     vehid: number = 0;
     vehno: string = "";
-    vehtyp: string = "";
+    vehregno: string = "";
+    vehtype: string = "";
     vehmake: string = "";
     vehmdl: string = "";
-    ownerid: number = 0;
     capacity: number = 0;
     vehcond: string = "";
     vehfclt: string = "";
@@ -28,13 +34,11 @@ export class AddVehicleComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
-    ownerDT: any = [];
-
     _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _msg: MessageService, private _loginservice: LoginService, private _commonservice: CommonService) {
+        private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.fillDropDownList();
@@ -44,19 +48,43 @@ export class AddVehicleComponent implements OnInit {
         this.getVehicleDetails();
     }
 
-    // Fill Owner Drop Down
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Entity
+
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
+    }
+
+    // Fill Vehicle Type Drop Down
 
     fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._vehservice.getVehicleDetails({
-            "flag": "dropdown",
-            "cuid": that.loginUser.ucode,
-            "wsautoid": that._wsdetails.wsautoid
-        }).subscribe(data => {
+        that._vehservice.getVehicleDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.ownerDT = data.data;
+                that.vehtypeDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -118,21 +146,25 @@ export class AddVehicleComponent implements OnInit {
     saveVehicleInfo() {
         var that = this;
 
-        if (that.ownerid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Owner");
-            $(".ownerid").focus();
+        if (that.enttid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Entity");
+            $(".enttname input").focus();
+        }
+        else if (that.vehtype == "") {
+            that._msg.Show(messageType.error, "Error", "Select Vehicle Type");
+            $(".vehtype").focus();
         }
         else if (that.vehno == "") {
             that._msg.Show(messageType.error, "Error", "Enter Vehicle No");
             $(".vehno").focus();
         }
-        else if (that.vehtyp == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Vehicle Type");
-            $(".vehtyp").focus();
+        else if (that.vehregno == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Vehicle Registration No");
+            $(".vehregno").focus();
         }
-        else if (that.ownerid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Owner");
-            $(".ownerid").focus();
+        else if (that.capacity == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Capacity");
+            $(".capacity").focus();
         }
         else {
             commonfun.loader();
@@ -140,10 +172,11 @@ export class AddVehicleComponent implements OnInit {
             var savevehicle = {
                 "autoid": that.vehid,
                 "vehno": that.vehno,
-                "vehtyp": that.vehtyp,
+                "vehregno": that.vehregno,
+                "vehtype": that.vehtype,
                 "vehmake": that.vehmake,
                 "vehmdl": that.vehmdl,
-                "ownerid": that.ownerid,
+                "enttid": that.enttid,
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
@@ -207,11 +240,13 @@ export class AddVehicleComponent implements OnInit {
                         var _vehicledata = data.data;
 
                         that.vehid = _vehicledata[0].autoid;
+                        that.enttid = _vehicledata[0].enttid;
+                        that.enttname = _vehicledata[0].enttname;
                         that.vehno = _vehicledata[0].vehicleno;
-                        that.vehtyp = _vehicledata[0].vehicletype;
+                        that.vehregno = _vehicledata[0].vehregno;
+                        that.vehtype = _vehicledata[0].vehicletype;
                         that.vehmake = _vehicledata[0].vehiclemake;
                         that.vehmdl = _vehicledata[0].vehiclemodel;
-                        that.ownerid = _vehicledata[0].ownerid;
                         that.capacity = _vehicledata[0].capacity;
                         that.vehcond = _vehicledata[0].vehiclecondition;
                         that.vehfclt = _vehicledata[0].vehiclefacility;

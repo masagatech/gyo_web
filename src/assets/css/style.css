@@ -2441,7 +2441,7 @@ a {
 }
 
 section.full-content {
-    margin: 52px 0 0 0;
+    margin: 50px 0 0 0;
     -moz-transition: 0.5s;
     -o-transition: 0.5s;
     -webkit-transition: 0.5s;
@@ -2449,7 +2449,7 @@ section.full-content {
 }
 
 section.content {
-    margin: 52px 0 0 265px;
+    margin: 50px 0 0 250px;
     -moz-transition: 0.5s;
     -o-transition: 0.5s;
     -webkit-transition: 0.5s;
@@ -3785,7 +3785,7 @@ section.content {
 [type="checkbox"]+label {
     padding-left: 26px;
     height: 25px;
-    line-height: 21px;
+    line-height: 22px;
     font-size: 13px;
     font-weight: normal;
 }

@@ -9,10 +9,10 @@
                     <div class="form-line">
                         <div class="row clearfix">
                             <div class="col-md-1">
-                                <label>Owner</label>
+                                <label>Entity</label>
                             </div>
                             <div class="col-md-9">
-                                <p-autoComplete id="ownername" name="ownername" [(ngModel)]="ownername" [tabindex]="1" (onSelect)="selectOwnerData($event)" [suggestions]="ownerDT" (completeMethod)="getOwnerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete ownername"></p-autoComplete>
+                                <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
                                 <span class="material-icons">search</span>
@@ -32,12 +32,11 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="vehicleDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="vehicleno" header="Vehicle No" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'text-align':'left'}"></p-column>
-                    <p-column field="vehiclemake" header="Vehicle Make" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="vehiclemodel" header="Vehicle Model" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="vehregno" header="Vehicle Registration No" [style]="{'width':'200px', 'text-align':'left'}"></p-column>
                     <p-column field="capacity" header="Capacity" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="ownername" header="Owner Name" [style]="{'width':'150px','text-align': 'left'}"></p-column>
+                    <p-column field="vehiclefacility" header="Vehicle Facility" [style]="{'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editVehicleForm(row)">

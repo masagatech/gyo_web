@@ -69,8 +69,8 @@ export class ViewDriverComponent implements OnInit {
         this.entityid = event.value;
         this.entityname = event.label;
 
-        Cookie.set("_drventtid_", this.entityid.toString());
-        Cookie.set("_drventtnm_", this.entityname);
+        Cookie.set("_enttid_", this.entityid.toString());
+        Cookie.set("_enttnm_", this.entityname);
 
         this.getDriverDetails();
     }
@@ -92,9 +92,9 @@ export class ViewDriverComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            if (Cookie.get('_drventtnm_') != null) {
-                that.entityid = parseInt(Cookie.get('_drventtid_'));
-                that.entityname = Cookie.get('_drventtnm_');
+            if (Cookie.get('_enttnm_') != null) {
+                that.entityid = parseInt(Cookie.get('_enttid_'));
+                that.entityname = Cookie.get('_enttnm_');
                 that.getDriverDetails();
             }
         }, err => {
@@ -114,7 +114,7 @@ export class ViewDriverComponent implements OnInit {
                 "flag": "all",
                 "uid": that.loginUser.uid,
                 "utype": that.loginUser.utype,
-                "schid": that.entityid,
+                "enttid": that.entityid,
                 "wsautoid": that._wsdetails.wsautoid,
             }).subscribe(data => {
                 try {

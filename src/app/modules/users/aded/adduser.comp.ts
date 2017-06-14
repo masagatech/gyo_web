@@ -17,6 +17,9 @@ declare var adminloader: any;
 export class AddUserComponent implements OnInit {
     loginUser: LoginUserModel;
 
+    utypeDT: any = [];
+    utype: string = "";
+
     stateDT: any = [];
     cityDT: any = [];
     areaDT: any = [];
@@ -40,9 +43,7 @@ export class AddUserComponent implements OnInit {
     isactive: boolean = false;
     mode: string = "";
     remark1: string = "";
-    utype: string = "";
 
-    genderDT: any = [];
     _wsdetails: any = [];
 
     isAllEnttRights: boolean = true;
@@ -51,13 +52,19 @@ export class AddUserComponent implements OnInit {
     entityid: number = 0;
     entityname: string = "";
 
+    isAllVehRights: boolean = true;
+    vehtypeDT: any = [];
+    vehtypeList: any = [];
+    vehtypeid: number = 0;
+    vehtypename: string = "";
+
     private subscribeParameters: any;
 
     constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-        this.fillDropDownList();
+        this.fillUserTypeDropDown();
 
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -72,12 +79,12 @@ export class AddUserComponent implements OnInit {
         $.AdminBSB.input.activate();
     }
 
-    fillDropDownList() {
+    fillUserTypeDropDown() {
         var that = this;
         commonfun.loader();
 
-        that._userservice.getUserDetails({ "flag": "dropdown" }).subscribe(data => {
-            that.genderDT = data.data;
+        that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
+            that.utypeDT = data.data;
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -246,6 +253,84 @@ export class AddUserComponent implements OnInit {
         this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
+    // Is Rights Vehicle
+
+    isAllVehicleRights() {
+        if (this.isAllVehRights) {
+            this.vehtypeList = [];
+        }
+    }
+
+    // Auto Completed Vehicle
+
+    getVehicleData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "vehicle",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "isallenttrights": this.isAllEnttRights,
+            "enttlist": this.entityList,
+            "search": query
+        }).subscribe((data) => {
+            this.vehtypeDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Vehicle
+
+    selectVehicleData(event, type) {
+        this.vehtypeid = event.value;
+        this.vehtypename = event.label;
+
+        this.addVehicleList();
+        $(".vehtypename input").focus();
+    }
+
+    // Check Duplicate Vehicle
+
+    isDuplicateVehicle() {
+        var that = this;
+
+        for (var i = 0; i < that.vehtypeList.length; i++) {
+            var field = that.vehtypeList[i];
+
+            if (field.vehtypeid == this.vehtypeid) {
+                this._msg.Show(messageType.error, "Error", "Duplicate Vehicle not Allowed");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Read Get Vehicle
+
+    addVehicleList() {
+        var that = this;
+        var duplicateVehicle = that.isDuplicateVehicle();
+
+        if (!duplicateVehicle) {
+            that.vehtypeList.push({
+                "vehtypeid": that.vehtypeid, "vehtypename": that.vehtypename
+            });
+        }
+
+        that.vehtypeid = 0;
+        that.vehtypename = "";
+    }
+
+    deleteVehicle(row) {
+        this.vehtypeList.splice(this.vehtypeList.indexOf(row), 1);
+    }
+
     // Active / Deactive Data
 
     active_deactiveUserInfo() {
@@ -305,8 +390,10 @@ export class AddUserComponent implements OnInit {
         that.city = 0;
         that.area = 0;
         that.pincode = 0;
+        that.isactive = true;
 
-        this.entityList = [];
+        that.entityList = [];
+        that.vehtypeList = [];
     }
 
     // Save Data
@@ -352,6 +439,9 @@ export class AddUserComponent implements OnInit {
             var _enttlist: string[] = [];
             _enttlist = that.isAllEnttRights ? ["0"] : Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
 
+            var _vehlist: string[] = [];
+            _vehlist = that.isAllVehRights ? ["0"] : Object.keys(that.vehtypeList).map(function (k) { return that.vehtypeList[k].vehtypeid });
+
             var saveuser = {
                 "uid": that.uid,
                 "oldcode": that.oldcode,
@@ -360,6 +450,7 @@ export class AddUserComponent implements OnInit {
                 "fname": that.fname,
                 "lname": that.lname,
                 "school": _enttlist,
+                "vehicle": _vehlist,
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -437,6 +528,8 @@ export class AddUserComponent implements OnInit {
                         that.utype = data.data[0].utype;
                         that.isAllEnttRights = data.data[0].isallenttrights;
                         that.entityList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.isAllVehRights = data.data[0].isallvehrights;
+                        that.vehtypeList = data.data[0].vehicle !== null ? data.data[0].vehicle : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;
@@ -467,6 +560,7 @@ export class AddUserComponent implements OnInit {
                 })
             }
             else {
+                that.resetUserFields();
                 commonfun.loaderhide();
             }
         });
