@@ -181,7 +181,6 @@ export class AddHolidayComponent implements OnInit {
                 console.log(err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }

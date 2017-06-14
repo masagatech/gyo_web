@@ -103,7 +103,6 @@ export class AddMarketUserComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -166,7 +165,6 @@ export class AddMarketUserComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
-            // console.log("Complete");
         });
     }
 

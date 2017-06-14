@@ -90,7 +90,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngAfterViewInit() {
-    console.log('Initial App State view');
     loader.loadall();
   }
 

@@ -7,8 +7,8 @@ import { LoginUserModel } from '../../../_model/user_model';
 import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
 import { PassengerService } from '../../../_services/passenger/psngr-service';
 import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Globals } from '../../../_const/globals';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -65,7 +65,7 @@ export class ViewPassengerComponent implements OnInit {
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
     selectEntityData(event) {
         this.entityid = event.value;

@@ -127,7 +127,6 @@ export class MarkeingDashboardComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
-            // console.log("Complete");
         })
     }
 

@@ -267,7 +267,6 @@ export class AddOwnerComponent implements OnInit {
         }, err => {
             console.log(err);
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -396,7 +395,6 @@ export class AddOwnerComponent implements OnInit {
                 console.log(err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }

@@ -5,9 +5,8 @@ import { CommonService } from '../../../../_services/common/common-service' /* a
 import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
-
+import { Globals } from '../../../../_const/globals';
 import { GMap } from 'primeng/primeng';
-
 
 declare var google: any;
 
@@ -26,11 +25,13 @@ export class AddStopsComponent implements OnInit {
     private map: any;
 
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
 
-    enttDT: any = [];
-    routesDT: any = [];
-
+    entityDT: any = [];
     enttid: number = 0;
+    enttname: string = "";
+
+    routesDT: any = [];
     rtid: number = 0;
     rtname: string = "";
 
@@ -50,8 +51,9 @@ export class AddStopsComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _stopsservice: StopsService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _commonservice: CommonService, private cdRef: ChangeDetectorRef) {
+        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
 
         this.fillEntityDropDown();
     }
@@ -61,19 +63,46 @@ export class AddStopsComponent implements OnInit {
             center: { lat: this.lat, lng: this.long },
             zoom: 18
         };
+
         this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.long }, title: "", draggable: true });
-
-        this.overlays = [this.marker]
-
-
+        this.overlays = [this.marker];
     }
 
     private ovrldrag(e) {
         this.lat = this.marker.position.lat();
         this.long = this.marker.position.lng();
-
-
     }
+
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this._wsdetails.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Entity
+
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        this.fillRoutesDropDown();
+    }
+
     // get lat and long by address form google map
 
     getLatAndLong() {
@@ -102,13 +131,10 @@ export class AddStopsComponent implements OnInit {
     }
 
     handleMapClick(e) {
-
         this.lat = e.latLng.lat();
         this.long = e.latLng.lng();
         var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
         this.marker.setPosition(latlng);
-
-
     }
 
     // Open Popup For Saving Routes
@@ -179,7 +205,6 @@ export class AddStopsComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }
@@ -192,7 +217,7 @@ export class AddStopsComponent implements OnInit {
 
         that._stopsservice.getStopsDetails({ "flag": "enttddl" }).subscribe(data => {
             try {
-                that.enttDT = data.data;
+                that.entityDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -398,7 +423,6 @@ export class AddStopsComponent implements OnInit {
         }, err => {
             console.log(err);
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -473,7 +497,6 @@ export class AddStopsComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }

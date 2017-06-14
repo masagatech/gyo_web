@@ -103,7 +103,6 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -180,7 +179,6 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
                 }, err => {
                     that._msg.Show(messageType.error, "Error", err);
                 }, () => {
-                    // console.log("Complete");
                 });
             }
         }
@@ -259,11 +257,9 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
-            // console.log("Complete");
         })
     }
 
     ngOnDestroy() {
-        console.log('ngOnDestroy');
     }
 }

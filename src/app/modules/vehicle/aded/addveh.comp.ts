@@ -129,7 +129,6 @@ export class AddVehicleComponent implements OnInit {
         }, err => {
             console.log(err);
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -216,7 +215,6 @@ export class AddVehicleComponent implements OnInit {
                 console.log(err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }

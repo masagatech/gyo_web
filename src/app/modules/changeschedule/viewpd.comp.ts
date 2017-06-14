@@ -232,7 +232,12 @@ export class ChangeScheduleComponent implements OnInit {
     fillBatchDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "batch", "id": that.enttid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "dropdown",
+            "group": "batch",
+            "id": that.enttid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
             }
@@ -252,7 +257,10 @@ export class ChangeScheduleComponent implements OnInit {
     fillDriverDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "driver", "id": that.enttid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "dropdown", "group": "driver", "id": that.enttid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.driverDT = data.data;
             }
@@ -272,7 +280,10 @@ export class ChangeScheduleComponent implements OnInit {
     fillVehicleDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "vehicle", "id": that.enttid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "dropdown", "group": "vehicle", "id": that.enttid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.vehicleDT = data.data;
             }
@@ -292,7 +303,10 @@ export class ChangeScheduleComponent implements OnInit {
     fillRouteDropDown() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "route", "id": that.enttid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "dropdown", "group": "route", "id": that.enttid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.routeDT = data.data;
             }
@@ -398,7 +412,10 @@ export class ChangeScheduleComponent implements OnInit {
     pickupPassengerByRoute() {
         var that = this;
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "pickpsngr", "id": that.pickrtid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "dropdown", "group": "pickpsngr", "id": that.pickrtid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.pickPassengerDT = data.data;
                 that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
@@ -455,7 +472,10 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
         that.dropPassengerDT = [];
 
-        that._pickdropservice.getPickDropDetails({ "flag": "dropdown", "group": "droppsngr", "id": that.droprtid }).subscribe((data) => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "dropdown", "group": "droppsngr", "id": that.droprtid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.dropPassengerDT = data.data;
             }

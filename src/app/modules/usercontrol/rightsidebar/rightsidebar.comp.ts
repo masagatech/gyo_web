@@ -50,6 +50,5 @@ export class RightSideBarComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        console.log('Destroy');
     }
 }

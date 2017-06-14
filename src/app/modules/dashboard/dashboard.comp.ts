@@ -33,7 +33,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             "utype": that.loginUser.utype, "wsautoid": that._wsdetails.wsautoid
         }
 
-        console.log(dbparams);
         commonfun.loader();
 
         that._autoservice.getDashboard(dbparams).subscribe(data => {

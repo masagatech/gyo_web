@@ -32,9 +32,8 @@ export class ViewUserRightsComponent implements OnInit, OnDestroy {
             this.totalRecords = userrights.data[1].recordstotal;
             this.viewUserDT = userrights.data[0];
         }, err => {
-            console.log("Error");
+            console.log(err);
         }, () => {
-            // console.log("Complete");
         })
     }
 
@@ -51,6 +50,5 @@ export class ViewUserRightsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        console.log('ngOnDestroy');
     }
 }

@@ -149,7 +149,6 @@ export class AddLocationComponent implements OnInit {
         }, err => {
             console.log(err);
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -216,7 +215,6 @@ export class AddLocationComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }

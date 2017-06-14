@@ -64,12 +64,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   public ngOnInit() {
-    console.log('Initial App State', this.appState.state);
-    // loader.loadall();
   }
 
   public ngAfterViewInit() {
-    console.log('Initial App State view');
     loader.loadall();
   }
 

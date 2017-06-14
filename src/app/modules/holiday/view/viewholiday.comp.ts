@@ -165,15 +165,12 @@ export class ViewHolidayComponent implements OnInit {
     }
 
     fetchEvents(eventData) {
-        console.log("fetchEvents:", eventData.view, eventData.element);
+        
     }
 
     getHolidayCalendar(row) {
         var that = this;
         commonfun.loader();
-
-        console.log(row);
-        console.log(row.view.title);
 
         that._holidayervice.getHoliday({
             "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype,

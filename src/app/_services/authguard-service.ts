@@ -58,7 +58,6 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
         }, checks);
       } else {
         this._router.navigate(['login']);
-        console.log("logged out");
         observer.next(true);
       }
     }).first();

@@ -38,7 +38,6 @@ export class SurveyDetailsComp implements OnInit {
             //that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
-            // console.log("Complete");
             $(".details").waitMe('hide');
         })
     }

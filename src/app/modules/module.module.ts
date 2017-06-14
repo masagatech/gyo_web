@@ -67,10 +67,7 @@ export const routes = [
 
                     // Schedule
                     { path: 'createschedule', loadChildren: './createschedule#CreateScheduleModule' },
-                    { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' },
-
-                    // Merchant
-                    { path: 'merchant', loadChildren: './merchant#MerchantModule' },
+                    { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' }
                 ]
             }
         ]

@@ -50,11 +50,9 @@ export class AddBatchComponent implements OnInit {
     }
 
     public onUploadError(event) {
-        console.log('error');
     }
 
     public onUploadSuccess(event) {
-        console.log('success');
     }
 
     // Auto Completed Entity
@@ -191,7 +189,6 @@ export class AddBatchComponent implements OnInit {
                 console.log(err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
             });
         }
     }

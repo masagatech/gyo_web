@@ -144,7 +144,6 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
-            // console.log("Complete");
         })
     }
 

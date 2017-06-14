@@ -42,10 +42,7 @@ module.exports = function (options) {
    plugins: [
      function() {
        this.plugin('done', function(stats) {
-         console.log('Starting deployment to GitHub.');
-
          const logger = function (msg) {
-           console.log(msg);
          };
 
          const options = {
@@ -64,10 +61,8 @@ module.exports = function (options) {
          const ghpages = require('gh-pages');
          ghpages.publish(webpackConfig.output.path, options, function(err) {
            if (err) {
-             console.log('GitHub deployment done. STATUS: ERROR.');
              throw err;
            } else {
-             console.log('GitHub deployment done. STATUS: SUCCESS.');
            }
          });
        });

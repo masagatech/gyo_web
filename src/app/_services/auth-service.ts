@@ -66,11 +66,9 @@ export class AuthenticationService {
             this._loginservice.setUsers(userDetails);
           } else {
             this._router.navigate(['login']);
-            console.log("user status false");
           }
         } else {
           this._router.navigate(['login']);
-          console.log("data status false");
         }
       } else {
         this._router.navigate(['login']);
