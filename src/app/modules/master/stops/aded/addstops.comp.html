@@ -73,8 +73,8 @@
 							<div class="form-group" id="address">
 								<div class="form-line">
 									<label class="control-label">Address <strong>*</strong></label>
-									<textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4"
-										(blur)="getLatAndLong()"></textarea>
+									<textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4"
+										(keydown.tab)="getLatAndLong()"></textarea>
 								</div>
 							</div>
 						</div>

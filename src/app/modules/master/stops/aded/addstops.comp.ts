@@ -37,8 +37,8 @@ export class AddStopsComponent implements OnInit {
     stpid: number = 0;
     stpname: string = "";
     address: string = "";
-    lat: string = "0.00";
-    long: string = "0.00";
+    lat: number = 0.00;
+    long: number = 0.00;
 
     stopsList: any = [];
     selectedStops: any = [];
@@ -272,8 +272,8 @@ export class AddStopsComponent implements OnInit {
     resetStopsFields() {
         this.stpname = "";
         this.address = "";
-        this.lat = "0.00";
-        this.long = "0.00";
+        this.lat = 0.00;
+        this.long = 0.00;
     }
 
     // add stops list
@@ -305,10 +305,10 @@ export class AddStopsComponent implements OnInit {
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
         }
-        else if (that.lat == "") {
+        else if (that.lat == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Lat");
         }
-        else if (that.long == "") {
+        else if (that.long == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Long");
         }
         else {
