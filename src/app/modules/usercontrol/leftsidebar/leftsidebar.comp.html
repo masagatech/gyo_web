@@ -26,14 +26,14 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">Menu</li>
-                <li *ngFor="let row of mainMenuDT">
+                <li *ngFor="let row of mainMenuDT" routerLinkActive="active">
                     <a href="javascript:void(0);" class="{{row.mclass}}" (click)="openMainMenu(row)">
                         <i class="material-icons">{{row.micon}}</i>
                         <span>{{row.mname}}</span>
                     </a>
                     <ul class="ml-menu">
-                        <li *ngFor="let mrow of row.pMenuDT">
-                            <a [routerLink]="mrow.mlink" routerLinkActivate="active">
+                        <li *ngFor="let mrow of row.pMenuDT" routerLinkActive="active">
+                            <a [routerLink]="mrow.mlink">
                                 <i class="material-icons">{{mrow.micon}}</i>
                                 <span>{{mrow.mname}}</span>
                             </a>

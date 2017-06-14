@@ -36,7 +36,7 @@ export class ViewWorkspaceComponent implements OnInit {
         private _wsservice: WorkspaceService) {
         this.loginUser = this._loginservice.getUser();
         this.getUploadConfig();
-        Cookie.delete("_wsdetails_");
+        
 
         this.getWorkspaceDetails();
 
