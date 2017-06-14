@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StopsService } from '../../../../_services/stops/stp-service';
 import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
 import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
+
+import { GMap } from 'primeng/primeng';
+
 
 declare var google: any;
 
@@ -14,6 +17,14 @@ declare var google: any;
 })
 
 export class AddStopsComponent implements OnInit {
+    marker: any;
+    @ViewChild("gmap")
+    _gmap: GMap;
+
+    private options: any;
+    private overlays: any[];
+    private map: any;
+
     loginUser: LoginUserModel;
 
     enttDT: any = [];
@@ -39,13 +50,64 @@ export class AddStopsComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _stopsservice: StopsService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _commonservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService, private _commonservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
 
         this.fillEntityDropDown();
     }
 
     public ngOnInit() {
+        this.options = {
+            center: { lat: this.lat, lng: this.long },
+            zoom: 18
+        };
+        this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.long }, title: "", draggable: true });
+
+        this.overlays = [this.marker]
+
+
+    }
+
+    private ovrldrag(e) {
+        this.lat = this.marker.position.lat();
+        this.long = this.marker.position.lng();
+
+
+    }
+    // get lat and long by address form google map
+
+    getLatAndLong() {
+        let that = this;
+        commonfun.loader("#address");
+
+        let geocoder = new google.maps.Geocoder();
+        // let address = "Chakkinaka, Kalyan (E)";
+
+        geocoder.geocode({ 'address': that.address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                that.lat = results[0].geometry.location.lat();
+                that.long = results[0].geometry.location.lng();
+
+                var latlng = new google.maps.LatLng(that.lat, that.long);
+                that.marker.setPosition(latlng);
+                that._gmap.map.setCenter(latlng);
+            }
+            else {
+                that._msg.Show(messageType.error, "Error", "Unable to find location.");
+            }
+
+            commonfun.loaderhide("#address");
+            that.cdRef.detectChanges();
+        });
+    }
+
+    handleMapClick(e) {
+
+        this.lat = e.latLng.lat();
+        this.long = e.latLng.lng();
+        var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+        this.marker.setPosition(latlng);
+
 
     }
 
@@ -62,7 +124,7 @@ export class AddStopsComponent implements OnInit {
             if (that.rtid !== 0) {
                 that.rtname = $("#ddlRoutes option:selected").text();
             }
-            else{
+            else {
                 that.rtname = "";
             }
 
@@ -205,26 +267,6 @@ export class AddStopsComponent implements OnInit {
     }
 
     // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
-
-    getLatAndLong() {
-        var that = this;
-        commonfun.loader();
-
-        var geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({ 'address': that.address }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                that.lat = results[0].geometry.location.lat();
-                that.long = results[0].geometry.location.lng();
-            }
-            else {
-                that._msg.Show(messageType.error, "Error", "Couldn't find your Location");
-            }
-
-            commonfun.loaderhide();
-        });
-    }
-
     // Clear Fields
 
     resetStopsFields() {
@@ -300,6 +342,11 @@ export class AddStopsComponent implements OnInit {
         this.lat = row.lat;
         this.long = row.long;
         this.rtid = row.rtid;
+        if (this.lat.toString() != "0" && this.lat.toString() != "") {
+            var latlng = new google.maps.LatLng(this.lat, this.long);
+            this.marker.setPosition(latlng);
+            this._gmap.map.setCenter(latlng);
+        }
     }
 
     // Edit Stops

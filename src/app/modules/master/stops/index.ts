@@ -9,7 +9,7 @@ import { ViewStopsComponent } from './view/viewstops.comp';
 
 import { StopsService } from '../../../_services/stops/stp-service';
 
-import { LazyLoadEvent, DataTableModule, OrderListModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, OrderListModule,GMapModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -29,7 +29,7 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, OrderListModule
-  ],
+  ,GMapModule],
 
   providers: [StopsService]
 })
