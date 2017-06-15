@@ -21,7 +21,7 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'location', loadChildren: './location#LocationModule' },
-                    { path: 'stops', loadChildren: './stops#StopsModule' },
+                    { path: 'routes', loadChildren: './routes#RoutesModule' },
                 ]
             }
         ]

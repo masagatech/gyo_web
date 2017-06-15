@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from '../../../_services/common/common-service' /* add reference for emp */
 import { UserService } from '../../../_services/users/user-service' /* add reference for user */
 import { LoginService } from '../../../_services/login/login-service' /* add reference for login */
 import { LoginUserModel } from '../../../_model/user_model';
 import { MenuService } from '../../../_services/menus/menu-service';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Globals } from '../../../_const/globals';
 
 @Component({
     templateUrl: 'addur.comp.html',
@@ -30,11 +31,13 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
     menudetails: any = [];
     selectedMenus: string[] = [];
 
+    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
         private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
         this.getMenuDetails();
     }
 
@@ -56,13 +59,17 @@ export class AddUserRightsComponent implements OnInit, OnDestroy {
         var that = this;
         let query = event.query;
 
-        this._autoservice.getAutoData({
+        that._autoservice.getAutoData({
             "flag": "users",
+            "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin,
+            "wsautoid": that._wsdetails.wsautoid,
             "search": query
         }).subscribe(data => {
-            this.usersDT = data.data;
+            that.usersDT = data.data;
         }, err => {
-            this._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         });

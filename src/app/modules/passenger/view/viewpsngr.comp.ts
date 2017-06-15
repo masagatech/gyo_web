@@ -53,7 +53,7 @@ export class ViewPassengerComponent implements OnInit {
             "flag": "entity",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": this._wsdetails.issysadmin,
+            "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
@@ -118,6 +118,7 @@ export class ViewPassengerComponent implements OnInit {
                 "uid": that.loginUser.uid,
                 "utype": that.loginUser.utype,
                 "schid": that.entityid,
+                "issysadmin": that.loginUser.issysadmin,
                 "wsautoid": that._wsdetails.wsautoid,
             }).subscribe(data => {
                 try {

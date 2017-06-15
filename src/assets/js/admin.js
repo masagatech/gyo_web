@@ -325,6 +325,9 @@ $.AdminBSB.input = {
 $.AdminBSB.select = {
     activate: function () {
         if ($.fn.selectpicker) { $('select:not(.ms)').selectpicker(); }
+    },
+     refresh: function (id) {
+        $('#' + id).selectpicker('refresh'); 
     }
 }
 //==========================================================================================================================

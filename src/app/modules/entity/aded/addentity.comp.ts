@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { EntityService } from '../../../_services/entity/entity-service';
@@ -6,6 +6,7 @@ import { CommonService } from '../../../_services/common/common-service';
 import { LoginService } from '../../../_services/login/login-service';
 import { LoginUserModel } from '../../../_model/user_model';
 import { Globals } from '../../../_const/globals';
+import { GMap } from 'primeng/primeng';
 
 declare var google: any;
 
@@ -16,6 +17,13 @@ declare var google: any;
 
 export class AddEntityComponent implements OnInit {
     loginUser: LoginUserModel;
+    
+    marker: any;
+    @ViewChild("gmap")
+    _gmap: GMap;
+    
+    private overlays: any[];
+    private map: any;
 
     stateDT: any = [];
     cityDT: any = [];
@@ -26,8 +34,8 @@ export class AddEntityComponent implements OnInit {
     schnm: string = "";
     lat: string = "0.00";
     lon: string = "0.00";
-    schvehs: any = "";
-    oprvehs: any = "";
+    schvehs: number = 0;
+    oprvehs: number = 0;
     address: string = "";
     country: string = "India";
     state: number = 0;
@@ -57,13 +65,13 @@ export class AddEntityComponent implements OnInit {
 
     uploadPhotoDT: any = [];
     global = new Globals();
-    uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService,
-        private _autoservice: CommonService, private _loginservice: LoginService) {
+        private _autoservice: CommonService, private _loginservice: LoginService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.getUploadConfig();
@@ -74,13 +82,47 @@ export class AddEntityComponent implements OnInit {
         this.fillAreaDropDown();
     }
 
-    public ngAfterViewInit() {
-    }
-
     public ngOnInit() {
         $.AdminBSB.input.activate();
         $(".schcd").focus();
         this.getEntityDetails();
+
+        this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.lon }, title: "", draggable: true });
+        this.overlays = [this.marker];
+    }
+
+    private ovrldrag(e) {
+        this.lat = this.marker.position.lat();
+        this.lon = this.marker.position.lng();
+    }
+
+    // get lat and long by address form google map
+
+    getLatAndLong() {
+        var that = this;
+        commonfun.loader("#address");
+
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': that.address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                that.lat = results[0].geometry.location.lat();
+                that.lon = results[0].geometry.location.lng();
+            }
+            else {
+                that._msg.Show(messageType.error, "Error", "Couldn't find your Location");
+            }
+
+            commonfun.loaderhide("#address");
+            that.cdRef.detectChanges();
+        });
+    }
+
+    handleMapClick(e) {
+        this.lat = e.latLng.lat();
+        this.lon = e.latLng.lng();
+        var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+        this.marker.setPosition(latlng);
     }
 
     // Entity Type DropDown
@@ -97,7 +139,7 @@ export class AddEntityComponent implements OnInit {
                     that.entttype = that.entttypeDT[0].key;
                 }
                 else {
-                    that.entttypeDT.push({ "key": "", "val": "Select Entity Type" });
+                    that.entttypeDT.splice(0, 0, { "key": "", "val": "Select Entity Type" });
                     that.entttype = "";
                 }
 
@@ -115,28 +157,6 @@ export class AddEntityComponent implements OnInit {
         }, () => {
 
         })
-    }
-
-    // get lat and long by address form google map
-
-    getLatAndLong() {
-        var that = this;
-        commonfun.loader();
-
-        var geocoder = new google.maps.Geocoder();
-        // var address = "Chakkinaka, Kalyan (E)";
-
-        geocoder.geocode({ 'address': that.address }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                that.lat = results[0].geometry.location.lat();
-                that.lon = results[0].geometry.location.lng();
-            }
-            else {
-                that._msg.Show(messageType.error, "Error", "Couldn't find your Location");
-            }
-
-            commonfun.loaderhide();
-        });
     }
 
     // Get State DropDown
@@ -287,6 +307,23 @@ export class AddEntityComponent implements OnInit {
 
     // File upload
 
+    getUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+            that.uploadconfig.server = that.global.serviceurl + "uploads";
+            that.uploadconfig.serverpath = that.global.serviceurl;
+            that.uploadconfig.uploadurl = that.global.uploadurl;
+            that.uploadconfig.filepath = that.global.filepath;
+            that.uploadconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
     onUpload(event) {
         var that = this;
         var imgfile = [];
@@ -297,7 +334,7 @@ export class AddEntityComponent implements OnInit {
         console.log(imgfile);
 
         for (var i = 0; i < imgfile.length; i++) {
-            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace("www\\uploads\\", "") })
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
         }
     }
 
@@ -330,22 +367,6 @@ export class AddEntityComponent implements OnInit {
         this.uploadPhotoDT.splice(0, 1);
     }
 
-    getUploadConfig() {
-        var that = this;
-
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
-            that.uploadconfig.server = that.global.serviceurl + "uploads";
-            that.uploadconfig.serverpath = that.global.serviceurl;
-            that.uploadconfig.uploadurl = that.global.uploadurl;
-            that.uploadconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
-        }, err => {
-            console.log("Error");
-        }, () => {
-            console.log("Complete");
-        })
-    }
-
     // Clear Fields
 
     resetEntityFields() {
@@ -354,8 +375,8 @@ export class AddEntityComponent implements OnInit {
         that.entttype = "";
         that.schcd = "";
         that.schnm = "";
-        that.schvehs = "";
-        that.oprvehs = "";
+        that.schvehs = 0;
+        that.oprvehs = 0;
         that.remark1 = "";
         that.address = "";
         that.lat = "0.00";
@@ -410,24 +431,16 @@ export class AddEntityComponent implements OnInit {
         var weeklyoff = "";
 
         if (that.entttype == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Type");
+            that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Type");
             $(".entttype").focus();
         }
         else if (that.schcd == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Code");
+            that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Code");
             $(".schcd").focus();
         }
         else if (that.schnm == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
+            that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Name");
             $(".schnm").focus();
-        }
-        else if (that.schvehs == "") {
-            that._msg.Show(messageType.error, "Error", "Enter How Many Entity Vehicles");
-            $(".schvehs").focus();
-        }
-        else if (that.oprvehs == "") {
-            that._msg.Show(messageType.error, "Error", "Enter How Many Operator Vehicles");
-            $(".oprvehs").focus();
         }
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
@@ -440,6 +453,14 @@ export class AddEntityComponent implements OnInit {
         else if (that.lon == "") {
             that._msg.Show(messageType.error, "Error", "Enter Lon");
             $(".lon").focus();
+        }
+        else if (that.state == 0) {
+            that._msg.Show(messageType.error, "Error", "Select State");
+            $(".state").focus();
+        }
+        else if (that.city == 0) {
+            that._msg.Show(messageType.error, "Error", "Select City");
+            $(".city").focus();
         }
         else {
             for (var i = 0; i <= that.weekDT.length - 1; i++) {
@@ -456,8 +477,8 @@ export class AddEntityComponent implements OnInit {
             }
 
             weeklyoff = "{" + wkrights.slice(0, -1) + "}";
-
-            if (weeklyoff == "") {
+            
+            if (weeklyoff == '{}') {
                 this._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
             else {
@@ -470,8 +491,8 @@ export class AddEntityComponent implements OnInit {
                     "schnm": that.schnm,
                     "schlogo": that.uploadPhotoDT.length == 0 ? "" : that.uploadPhotoDT[0].athurl,
                     "schgeoloc": that.lat + "," + that.lon,
-                    "schvehs": that.schvehs,
-                    "oprvehs": that.oprvehs,
+                    "schvehs": that.schvehs.toString() == "" ? 0 : that.schvehs,
+                    "oprvehs": that.oprvehs.toString() == "" ? 0 : that.oprvehs,
                     "weeklyoff": weeklyoff,
                     "address": that.address,
                     "country": that.country,

@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuService } from '../../../../_services/menus/menu-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
+import { MessageService, messageType, MenuService, LoginService } from '@services';
 import { LocationService } from '../../../../_services/location/loc-service';
+import { LoginUserModel } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'viewloc.comp.html',
-    providers: [CommonService, MenuService]
+    providers: [MenuService]
 })
 
 export class ViewLocationComponent implements OnInit {
@@ -22,7 +19,7 @@ export class ViewLocationComponent implements OnInit {
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _locservice: LocationService) {
+        private _loginservice: LoginService, private _locservice: LocationService) {
         this.loginUser = this._loginservice.getUser();
         this.viewLocationDataRights();
     }
@@ -34,10 +31,10 @@ export class ViewLocationComponent implements OnInit {
     }
 
     public viewLocationDataRights() {
-        var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
+        let that = this;
+        let addRights = [];
+        let editRights = [];
+        let viewRights = [];
 
         that._menuservice.getMenuDetails({
             "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "loc", "utype": that.loginUser.utype
@@ -57,7 +54,7 @@ export class ViewLocationComponent implements OnInit {
     }
 
     getLocationDetails() {
-        var that = this;
+        let that = this;
 
         if (that.actviewrights === "view") {
             commonfun.loader();
@@ -84,10 +81,10 @@ export class ViewLocationComponent implements OnInit {
     }
 
     public addLocationForm() {
-        this._router.navigate(['/master/location/add']);
+        this._router.navigate(['/location/add']);
     }
 
     public editLocationForm(row) {
-        this._router.navigate(['/master/location/edit', row.locid]);
+        this._router.navigate(['/location/edit', row.locid]);
     }
 }

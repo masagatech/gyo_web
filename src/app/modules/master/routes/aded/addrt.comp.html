@@ -29,7 +29,7 @@
                                 <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
-                                <span class="material-icons">search</span>
+                                <span class="material-icons"><a role="button" (click)="fillRoutesDropDown()">search</a></span>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,6 @@
             <div class="row clearfix">
                 <div class="col-md-6 border">
                     <div class="row clearfix">
-
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div class="form-line">
@@ -97,18 +96,18 @@
                             <div *ngIf="!isedit">
                                 <div class="form-group" align="right">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="addStopsList()">
-                            <span class="material-icons">add</span>
-                        </button>
+                                        <span class="material-icons">add</span>
+                                    </button>
                                 </div>
                             </div>
                             <div *ngIf="isedit">
                                 <div class="form-group" align="right">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="updateStopsList()"> 
-                            <span class="material-icons">edit</span>
-                        </button>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="cancelStopsList()">
-                            <span class="material-icons">cancel</span>
-                        </button>
+                                        <span class="material-icons">done</span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="resetStopsFields()">
+                                        <span class="material-icons">cancel</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -142,8 +141,8 @@
 								<div class="col-md-1" align="right">
 									<div class="ui-helper-clearfix">
 										<button type="button" class="btn btn-theme btn-xs" (click)="editStopsList(stops)">
-                                        <i class="material-icons">edit</i>
-                                    </button>
+                                            <i class="material-icons">edit</i>
+                                        </button>
 									</div>
 								</div>
 								<div class="col-md-1" align="right">
@@ -160,21 +159,22 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="addRoutesModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="largeModalLabel">Create Routes</h4>
-                </div>
-                <div class="modal-body" id="reason">
-                    <label class="control-label">Routes Name <strong>*</strong></label>
-                    <input type="text" [(ngModel)]="rtname" class="form-control rtname" maxlength="100" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-theme" (click)="saveRoutesInfo()">Save</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
+<div class="modal fade" id="addRoutesModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">Create Routes</h4>
+            </div>
+            <div class="modal-body" id="reason">
+                <label class="control-label">Routes Name <strong>*</strong></label>
+                <input type="text" [(ngModel)]="rtname" class="form-control rtname" maxlength="100" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-theme" (click)="saveRoutesInfo()">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>

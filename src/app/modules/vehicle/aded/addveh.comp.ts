@@ -57,7 +57,7 @@ export class AddVehicleComponent implements OnInit {
             "flag": "entity",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": this._wsdetails.issysadmin,
+            "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {

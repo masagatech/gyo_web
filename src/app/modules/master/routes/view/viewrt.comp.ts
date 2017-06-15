@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { MenuService } from '../../../../_services/menus/menu-service';
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
 import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { StopsService } from '../../../../_services/stops/stp-service';
+import { RoutesService } from '../../../../_services/routes/rt-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'viewstops.comp.html',
+    templateUrl: 'viewrt.comp.html',
     providers: [CommonService, MenuService]
 })
 
-export class ViewStopsComponent implements OnInit {
+export class ViewRoutesComponent implements OnInit {
     stopsDT: any = [];
     loginUser: LoginUserModel;
 
@@ -22,7 +22,7 @@ export class ViewStopsComponent implements OnInit {
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _stpservice: StopsService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RoutesService) {
         this.loginUser = this._loginservice.getUser();
         this.viewStopsDataRights();
     }
@@ -64,7 +64,7 @@ export class ViewStopsComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._stpservice.getStopsDetails({
+            that._rtservice.getStopsDetails({
                 "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype
             }).subscribe(data => {
                 try {
@@ -86,10 +86,10 @@ export class ViewStopsComponent implements OnInit {
     }
 
     public addStopsForm() {
-        this._router.navigate(['/master/stops/add']);
+        this._router.navigate(['/routes/add']);
     }
 
     public editStopsForm(row) {
-        this._router.navigate(['/master/stops/edit', row.stpid]);
+        this._router.navigate(['/routes/edit', row.stpid]);
     }
 }

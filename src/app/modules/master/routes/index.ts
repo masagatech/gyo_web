@@ -4,35 +4,35 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 
-import { AddStopsComponent } from './aded/addstops.comp';
-import { ViewStopsComponent } from './view/viewstops.comp';
+import { AddRoutesComponent } from './aded/addrt.comp';
+import { ViewRoutesComponent } from './view/viewrt.comp';
 
-import { StopsService } from '../../../_services/stops/stp-service';
+import { RoutesService } from '../../../_services/routes/rt-service';
 
 import { LazyLoadEvent, DataTableModule, OrderListModule, AutoCompleteModule, GMapModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewStopsComponent },
-      { path: 'add', component: AddStopsComponent },
-      { path: 'edit/:id', component: AddStopsComponent }
+      { path: '', component: ViewRoutesComponent },
+      { path: 'add', component: AddRoutesComponent },
+      { path: 'edit/:id', component: AddRoutesComponent }
     ]
   },
 ];
 
 @NgModule({
   declarations: [
-    AddStopsComponent,
-    ViewStopsComponent
+    AddRoutesComponent,
+    ViewRoutesComponent
   ],
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, OrderListModule, AutoCompleteModule, GMapModule],
 
-  providers: [StopsService]
+  providers: [RoutesService]
 })
 
-export class StopsModule {
+export class RoutesModule {
   public static routes = routes;
 }

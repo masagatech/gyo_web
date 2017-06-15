@@ -50,7 +50,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that._wsdetails.issysadmin, "utype": that.loginUser.utype
+            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.mainMenuDT = data.data;
 
@@ -68,7 +68,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that._wsdetails.issysadmin, "utype": that.loginUser.utype
+            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
         }).subscribe(data => {
             that.parentMenuDT = data.data;
         }, err => {

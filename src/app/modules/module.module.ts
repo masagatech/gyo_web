@@ -50,12 +50,11 @@ export const routes = [
                     { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
 
                     // Masters
-                    { path: 'master', loadChildren: './master#MasterModule' },
+                    { path: '', loadChildren: './master#MasterModule' },
 
                     { path: 'entity', loadChildren: './entity#EntityModule' },
                     { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'batch', loadChildren: './batch#BatchModule' },
-                    { path: 'owner', loadChildren: './owner#OwnerModule' },
                     { path: 'driver', loadChildren: './driver#DriverModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },

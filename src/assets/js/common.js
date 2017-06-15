@@ -129,3 +129,15 @@ var browserConf = {};
 browserConf.setTitle = function(title) {
     document.title = title;
 }
+
+commonfun.chatinit = function() {
+    $('.chat_body').slideToggle('slow');
+
+    $('.chat_head').click(function() {
+        $('.chat_body').slideToggle('slow');
+    });
+
+    $('.close').click(function() {
+        $('.msg_box').hide();
+    });
+}

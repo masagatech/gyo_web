@@ -16,6 +16,7 @@ declare var adminloader: any;
 
 export class AddWorkspaceComponent implements OnInit {
     loginUser: LoginUserModel;
+    disablecode: boolean = false;
 
     wstypeDT: any = [];
     stateDT: any = [];
@@ -44,18 +45,18 @@ export class AddWorkspaceComponent implements OnInit {
     isactive: boolean = false;
 
     iscompany: boolean = false;
-    cmppsngrrate: any = "0.00";
+    cmppsngrrate: any = "0";
     cmpenttmaxno: number = 0;
 
     isschool: boolean = false;
-    schpsngrrate: any = "0.00";
+    schpsngrrate: any = "0";
     schenttmaxno: number = 0;
 
     mode: string = "";
 
     uploadPhotoDT: any = [];
     global = new Globals();
-    uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     private subscribeParameters: any;
 
@@ -197,6 +198,7 @@ export class AddWorkspaceComponent implements OnInit {
             that.uploadconfig.server = that.global.serviceurl + "uploads";
             that.uploadconfig.serverpath = that.global.serviceurl;
             that.uploadconfig.uploadurl = that.global.uploadurl;
+            that.uploadconfig.filepath = that.global.filepath;
             that.uploadconfig.maxFilesize = data.data[0]._filesize;
             that.uploadconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
@@ -216,7 +218,7 @@ export class AddWorkspaceComponent implements OnInit {
         console.log(imgfile);
 
         for (var i = 0; i < imgfile.length; i++) {
-            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace("www\\uploads\\", "") })
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
         }
     }
 
@@ -276,11 +278,11 @@ export class AddWorkspaceComponent implements OnInit {
         that.isactive = true;
 
         that.iscompany = false;
-        that.cmppsngrrate = "0.00";
+        that.cmppsngrrate = "0";
         that.cmpenttmaxno = 0;
 
         that.isschool = false;
-        that.schpsngrrate = "0.00";
+        that.schpsngrrate = "0";
         that.schenttmaxno = 0;
     }
 
@@ -289,34 +291,40 @@ export class AddWorkspaceComponent implements OnInit {
     active_deactiveWorkspaceInfo() {
         var that = this;
 
-        var act_deactWorkspace = {
-            "wsautoid": that.wsautoid,
-            "isactive": that.isactive,
-            "mode": that.mode
-        }
+        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.wsautoid = params['id'];
 
-        this._wsservice.saveWorkspaceInfo(act_deactWorkspace).subscribe(data => {
-            try {
-                var dataResult = data.data;
+                var act_deactWorkspace = {
+                    "wsautoid": that.wsautoid,
+                    "isactive": that.isactive,
+                    "mode": that.mode
+                }
 
-                if (dataResult[0].funsave_workspaceinfo.msgid != "-1") {
-                    var msg = dataResult[0].funsave_workspaceinfo.msg;
-                    that._msg.Show(messageType.success, "Success", msg);
-                    that.getWorkspaceDetails();
-                }
-                else {
-                    var msg = dataResult[0].funsave_Workspaceinfo.msg;
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
+                this._wsservice.saveWorkspaceInfo(act_deactWorkspace).subscribe(data => {
+                    try {
+                        var dataResult = data.data;
+
+                        if (dataResult[0].funsave_workspaceinfo.msgid != "-1") {
+                            var msg = dataResult[0].funsave_workspaceinfo.msg;
+                            that._msg.Show(messageType.success, "Success", msg);
+                            that.getWorkspaceDetails();
+                        }
+                        else {
+                            var msg = dataResult[0].funsave_Workspaceinfo.msg;
+                            that._msg.Show(messageType.error, "Error", msg);
+                        }
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                }, () => {
+                    // console.log("Complete");
+                });
             }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-        }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -333,11 +341,6 @@ export class AddWorkspaceComponent implements OnInit {
         else if (that.wsname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Workspace Name");
             $(".wsname").focus();
-            return false;
-        }
-        else if (that.wsdesc == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Workspace Description");
-            $(".wsdesc").focus();
             return false;
         }
         else if (that.lgcode == "") {
@@ -370,12 +373,28 @@ export class AddWorkspaceComponent implements OnInit {
             $(".address").focus();
             return false;
         }
+        else if (that.country == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Country");
+            $(".country").focus();
+            return false;
+        }
+        else if (that.state == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter State");
+            $(".state").focus();
+            return false;
+        }
+        else if (that.city == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter City");
+            $(".city").focus();
+            return false;
+        }
         else if ((!that.iscompany) && (!that.isschool)) {
             that._msg.Show(messageType.error, "Error", "Select 1 Workspace Type");
             return false;
         }
-        else if (that.iscompany) {
-            if (that.cmppsngrrate == "0.00") {
+        
+        if (that.iscompany) {
+            if (that.cmppsngrrate == "0") {
                 that._msg.Show(messageType.error, "Error", "Enter Rate / Passenger for Company");
                 $(".cmppsngrrate").focus();
                 return false;
@@ -387,9 +406,10 @@ export class AddWorkspaceComponent implements OnInit {
             }
 
             console.log("abc 001");
+            console.log("isschool : " + that.isschool);
         }
-        else if (that.isschool) {
-            if (that.schpsngrrate == "0.00") {
+        if (that.isschool == true) {
+            if (that.schpsngrrate == "0") {
                 that._msg.Show(messageType.error, "Error", "Enter Rate / Passenger for School");
                 $(".schpsngrrate").focus();
                 return false;
@@ -402,6 +422,8 @@ export class AddWorkspaceComponent implements OnInit {
 
             console.log("abc 002");
         }
+
+        console.log("isschool : " + that.isschool);
 
         return true;
     }
@@ -504,7 +526,8 @@ export class AddWorkspaceComponent implements OnInit {
 
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.wsautoid = params['id'];
+                that.wsautoid = params['id'];
+                that.disablecode = true;
 
                 that._wsservice.getWorkspaceDetails({ "flag": "edit", "id": this.wsautoid }).subscribe(data => {
                     try {
@@ -537,11 +560,11 @@ export class AddWorkspaceComponent implements OnInit {
                         that.isactive = data.data[0].isactive;
                         that.remark = data.data[0].remark1;
 
-                        that.iscompany = data.data[0].wstype == "Company" ? true : false;
+                        that.iscompany = data.data[0].iscompany;
                         that.cmppsngrrate = data.data[0].cmppsngrrate;
                         that.cmpenttmaxno = data.data[0].cmpenttmaxno;
 
-                        that.isschool = data.data[0].wstype == "School" ? true : false;
+                        that.isschool = data.data[0].isschool;
                         that.schpsngrrate = data.data[0].schpsngrrate;
                         that.schenttmaxno = data.data[0].schenttmaxno;
 
@@ -561,6 +584,7 @@ export class AddWorkspaceComponent implements OnInit {
                 })
             }
             else {
+                that.resetWorkspaceFields();
                 commonfun.loaderhide();
             }
         });

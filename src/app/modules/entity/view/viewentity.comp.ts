@@ -71,7 +71,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._entityservice.getEntityDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
                 "wsautoid": that._wsdetails.wsautoid, "cuid": that.loginUser.ucode
             }).subscribe(data => {
                 try {

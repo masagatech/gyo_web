@@ -1,21 +1,21 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { StopsService } from '../../../../_services/stops/stp-service';
-import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
 import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { LoginService } from '../../../../_services/login/login-service';
 import { LoginUserModel } from '../../../../_model/user_model';
+import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
+import { RoutesService } from '../../../../_services/routes/rt-service';
 import { Globals } from '../../../../_const/globals';
 import { GMap } from 'primeng/primeng';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addstops.comp.html',
+    templateUrl: 'addrt.comp.html',
     providers: [CommonService]
 })
 
-export class AddStopsComponent implements OnInit {
+export class AddRoutesComponent implements OnInit {
     marker: any;
     @ViewChild("gmap")
     _gmap: GMap;
@@ -50,7 +50,7 @@ export class AddStopsComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _stopsservice: StopsService, private _routeParams: ActivatedRoute, private _router: Router,
+    constructor(private _RoutesService: RoutesService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
@@ -71,36 +71,6 @@ export class AddStopsComponent implements OnInit {
     private ovrldrag(e) {
         this.lat = this.marker.position.lat();
         this.long = this.marker.position.lng();
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "utype": this.loginUser.utype,
-            "issysadmin": this._wsdetails.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        this.fillRoutesDropDown();
     }
 
     // get lat and long by address form google map
@@ -135,6 +105,36 @@ export class AddStopsComponent implements OnInit {
         this.long = e.latLng.lng();
         var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
         this.marker.setPosition(latlng);
+    }
+
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Entity
+
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        this.fillRoutesDropDown();
     }
 
     // Open Popup For Saving Routes
@@ -178,22 +178,22 @@ export class AddStopsComponent implements OnInit {
                 "cuid": that.loginUser.ucode
             }
 
-            this._stopsservice.saveRoutesInfo(savert).subscribe(data => {
+            this._RoutesService.saveRoutesInfo(savert).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_routesinfo.msg;
-                    var msgid = dataResult[0].funsave_routesinfo.msgid;
+                    var dataResult = data.data[0].funsave_routesinfo;
+                    var _msg = dataResult.msg;
+                    var _msgid = dataResult.msgid;
+                    var _rtid = dataResult.rtid;
 
-                    if (msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", msg);
-
-                        that.enttid = 0;
-                        that.rtid = 0;
-                        that.rtname = "";
+                    if (_msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", _msg);
                         that.fillRoutesDropDown();
+
+                        that.rtid = _rtid;
+                        that.rtname = "";
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", msg);
+                        that._msg.Show(messageType.error, "Error", _msg);
                     }
 
                     commonfun.loaderhide();
@@ -215,7 +215,7 @@ export class AddStopsComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._stopsservice.getStopsDetails({ "flag": "enttddl" }).subscribe(data => {
+        that._RoutesService.getStopsDetails({ "flag": "enttddl" }).subscribe(data => {
             try {
                 that.entityDT = data.data;
             }
@@ -239,7 +239,7 @@ export class AddStopsComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._stopsservice.getStopsDetails({ "flag": "rtddl", "enttid": that.enttid }).subscribe(data => {
+        that._RoutesService.getStopsDetails({ "flag": "rtddl", "enttid": that.enttid }).subscribe(data => {
             try {
                 that.routesDT = data.data;
             }
@@ -263,7 +263,7 @@ export class AddStopsComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._stopsservice.getStopsDetails({ "flag": "byroute", "rtid": that.rtid }).subscribe(data => {
+        that._RoutesService.getStopsDetails({ "flag": "byroute", "rtid": that.rtid }).subscribe(data => {
             try {
                 var _stpdata = data.data;
 
@@ -295,6 +295,7 @@ export class AddStopsComponent implements OnInit {
     // Clear Fields
 
     resetStopsFields() {
+        this.stpid = 0;
         this.stpname = "";
         this.address = "";
         this.lat = 0.00;
@@ -344,15 +345,21 @@ export class AddStopsComponent implements OnInit {
                     "stpid": that.stpid,
                     "stpname": that.stpname,
                     "address": that.address,
-                    "lat": that.lat != null ? "" : that.lat,
-                    "long": that.long != null ? "" : that.long,
-                    "geoloc": that.lat != null ? "" : that.lat + "," + that.long != null ? "" : that.long,
+                    "lat": that.lat,
+                    "long": that.long,
+                    "geoloc": that.lat != 0 ? "0.00" : that.lat + "," + that.long != null ? "0.00" : that.long,
                     "rtid": that.rtid,
                     "isactive": true
                 })
+
+                console.log(that.lat != null ? "0.00" : that.lat + "," + that.long != null ? "0.00" : that.long);
             }
 
             that.resetStopsFields();
+
+            setTimeout(function () {
+                commonfun.orderstyle();
+            }, 200);
         }
     }
 
@@ -406,7 +413,7 @@ export class AddStopsComponent implements OnInit {
             "mode": that.mode
         }
 
-        this._stopsservice.saveStopsInfo(act_deactstp).subscribe(data => {
+        this._RoutesService.saveStopsInfo(act_deactstp).subscribe(data => {
             try {
                 var dataResult = data.data;
 
@@ -467,7 +474,7 @@ export class AddStopsComponent implements OnInit {
                 "stops": _stopsList
             }
 
-            this._stopsservice.saveStopsInfo(savestp).subscribe(data => {
+            this._RoutesService.saveStopsInfo(savestp).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_stopsinfo.msg;
@@ -504,6 +511,6 @@ export class AddStopsComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/stops']);
+        this._router.navigate(['/routes']);
     }
 }

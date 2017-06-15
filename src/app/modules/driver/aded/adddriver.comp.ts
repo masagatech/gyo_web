@@ -51,7 +51,7 @@ export class AddDriverComponent implements OnInit {
 
     global = new Globals();
 
-    uploadconfig = { server: "", serverpath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     _wsdetails: any = [];
     private subscribeParameters: any;
@@ -81,7 +81,7 @@ export class AddDriverComponent implements OnInit {
             "flag": "entity",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": this._wsdetails.issysadmin,
+            "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
@@ -182,6 +182,25 @@ export class AddDriverComponent implements OnInit {
         })
     }
 
+    // File upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
+            that.uploadconfig.server = that.global.serviceurl + "uploads";
+            that.uploadconfig.serverpath = that.global.serviceurl;
+            that.uploadconfig.uploadurl = that.global.uploadurl;
+            that.uploadconfig.filepath = that.global.filepath;
+            that.uploadconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
     onUpload(event) {
         var that = this;
         var imgfile = [];
@@ -189,7 +208,7 @@ export class AddDriverComponent implements OnInit {
 
         for (var i = 0; i < imgfile.length; i++) {
             that.attachDocsDT.push({
-                "athid": "0", "athname": imgfile[i].name, "athurl": imgfile[i].path.replace("www\\uploads\\", ""),
+                "athid": "0", "athname": imgfile[i].name, "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, ""),
                 "athsize": imgfile[i].size, "athtype": imgfile[i].type, "ptype": "driver", "cuid": that.loginUser.ucode,
             })
         }
@@ -222,21 +241,6 @@ export class AddDriverComponent implements OnInit {
 
     removeFileUpload() {
         this.attachDocsDT.splice(0, 1);
-    }
-
-    getUploadConfig() {
-        var that = this;
-
-        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
-            that.uploadconfig.server = that.global.serviceurl + "uploads";
-            that.uploadconfig.serverpath = that.global.serviceurl;
-            that.uploadconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
-        }, err => {
-            console.log("Error");
-        }, () => {
-            console.log("Complete");
-        })
     }
 
     // Active / Deactive Data

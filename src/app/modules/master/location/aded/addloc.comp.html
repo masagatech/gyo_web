@@ -1,32 +1,24 @@
-<div class="card">
-    <div class="header">
-        <h4>Location</h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <span class="switch">
-                    <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveLocationInfo()"><span class="lever"></span></label>
-                </span>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveLocationInfo()">
-                    <i class="material-icons">save</i></a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
-            </li>
-        </ul>
-    </div>
+<div class="col-md-2">
+</div>
+<div class="col-md-8">
+    <div class="card" id="card">
+        <div class="header">
+            <h4>Location</h4>
+            <ul class="header-dropdown m-r--5">
+                <li>
+                    <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()"><i class="material-icons">arrow_back</i></a>
+                </li>
+            </ul>
+        </div>
 
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-8 border">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
+        <div class="body">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="input-group" style="z-index:11;">
                             <div class="form-line">
                                 <label class="control-label">State Name <strong>*</strong></label>
-                                <select [(ngModel)]="stateid" class="form-control stateid">
+                                <select [(ngModel)]="stateid" data-live-search="true" (ngModelChange)="onStateChange($event)" tabindex="0" id="ddlstate" class="form-control stateid">
                                     <option [value]="0">Select State</option>
                                     <option *ngFor="let row of stateDT" [value]="row.key">
                                         {{row.val}}
@@ -36,77 +28,87 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="input-group" style="z-index:10;">
+                            <div class="form-line">
+                                <label class="control-label">City Name <strong>*</strong></label>
+                                <select [(ngModel)]="ctid" #t data-live-search="true" (ngModelChange)="onCityChange($event)" tabindex="1" id="ddlcity" class="form-control stateid">
+                                    <option [value]="0">Select City</option>
+                                    <option *ngFor="let row of cityDT" [value]="row.ctid">
+                                        {{row.ctnm + " ("+ row.ctcd +")"}}
+                                    </option>
+                                </select>
+                            </div>
+                            <span class="input-group-addon" style="padding-right: 0; padding-left: 10px; padding-top: 23px; padding-bottom: 0px; margin-bottom: 0px!important;">
+                                <button type="button"  (click)="onCityPlus()" class="btn btn-theme btn-xs">
+									<i class="material-icons" style="color:#fff">add</i></button>
+								<button type="button"  (click)="onCityEdit()" class="btn btn-theme btn-xs">
+									<i class="material-icons" style="color:#fff">edit</i></button>
+							</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="input-group" style="z-index:9;">
+                            <div class="form-line">
+                                <label class="control-label">Area Name</label>
+                                <select [(ngModel)]="arid" data-live-search="true" (ngModelChange)="onAreaChange($event)" tabindex="1" id="ddlarea" class="form-control">
+                                    <option [value]="0">Select Area</option>
+                                    <option *ngFor="let row of areaDT" [value]="row.arid">
+                                        {{row.arnm + " ("+ row.arcd +")"}}
+                                    </option>
+                                </select>
+                            </div>
+                            <span class="input-group-addon" style="padding-right: 0; padding-left: 10px; padding-top: 23px;   padding-bottom: 0px;margin-bottom: 0px!important;">
+                                <button type="button" (click)="onAreaPlus()" class="btn btn-theme btn-xs">
+									<i class="material-icons" style="color:#fff">add</i></button>
+                                <button type="button"  (click)="onAreaEdit()" class="btn btn-theme btn-xs">
+									<i class="material-icons" style="color:#fff">edit</i></button>
+							</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-2">
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="pop" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="riders">
                 <div class="row clearfix">
                     <div class="col-md-5">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">City Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="ctcd" class="form-control citycode" maxlength="10" (keydown.enter)="getAreaByCity()" (keydown.tab)="getAreaByCity()" />
+                                <label class="control-label">{{modelnm}} Code <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="cd" class="form-control code" maxlength="10" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-7">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">City Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="ctnm" class="form-control cityname" maxlength="50" />
+                                <label class="control-label">{{modelnm}} Name <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="nm" class="form-control name" maxlength="50" />
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Area Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="arcd" class="form-control citycode" maxlength="10" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Area Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="arnm" class="form-control cityname" maxlength="50" (keydown.enter)="addAreaList()" (keydown.tab)="addAreaList()" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="addAreaList()">
-                                <span class="material-icons">add</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix" *ngFor="let row of arealist">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            {{row.arcd}}
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            {{row.arnm}}
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-theme btn-xs">
-                                <span class="material-icons">edit</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-theme btn-xs">
-                                <span class="material-icons">delete</span>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect" (click)="save()">SAVE</button>
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
             </div>
         </div>
     </div>

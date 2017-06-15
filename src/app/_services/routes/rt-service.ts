@@ -3,7 +3,7 @@ import { DataService } from '../dataconnect';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class StopsService {
+export class RoutesService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     saveRoutesInfo(req: any) {

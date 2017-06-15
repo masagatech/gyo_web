@@ -181,7 +181,7 @@ export class ChangeScheduleComponent implements OnInit {
             "flag": "entity",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": this._wsdetails.issysadmin,
+            "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe(data => {
@@ -354,7 +354,7 @@ export class ChangeScheduleComponent implements OnInit {
             "flag": "passenger",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": this._wsdetails.issysadmin,
+            "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query,
             "id": this.enttid
