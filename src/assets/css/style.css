@@ -3125,8 +3125,7 @@ section.content {
 
 .card .header .header-dropdown {
     position: absolute;
-    /*top: 20px;*/
-    top: 12px;
+    top: 20px;
     right: 15px;
     list-style: none;
 }
@@ -3152,6 +3151,12 @@ section.content {
     font-size: 18px;
     font-weight: normal;
     color: #111;
+}
+
+.card .header h2.title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .card .header h2 small {

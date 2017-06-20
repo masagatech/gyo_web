@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { MenuService } from '../../../_services/menus/menu-service';
-import { LoginService } from '../../../_services/login/login-service';
-import { LoginUserModel } from '../../../_model/user_model';
-import { ReportsService } from '../../../_services/reports/rpt-service';
+import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
+import { ReportsService } from '@services/master';
 
 @Component({
     templateUrl: 'rptdrvatt.comp.html',
@@ -13,6 +10,9 @@ import { ReportsService } from '../../../_services/reports/rpt-service';
 })
 
 export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
+    loginUser: LoginUserModel;
+    _wsdetails: any = [];
+
     monthDT: any = [];
 
     attColumn: any = [];
@@ -22,8 +22,6 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
     entityname: string = "";
     monthname: string = "";
 
-    loginUser: LoginUserModel;
-
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
@@ -32,6 +30,8 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
+
         this.fillDropDownList();
     }
 
@@ -52,7 +52,9 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;

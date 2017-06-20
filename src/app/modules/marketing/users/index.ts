@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AddMarketUserComponent } from './aded/adduser.comp';
 import { ViewMarketUserComponent } from './view/viewuser.comp';
 
-import { UserService } from '../../../_services/users/user-service';
+import { UserService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 

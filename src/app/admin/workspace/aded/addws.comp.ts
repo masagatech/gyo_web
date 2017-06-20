@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { MessageService, messageType } from '../../../_services/messages/message-service';
-import { LoginService } from '../../../_services/login/login-service';
-import { LoginUserModel } from '../../../_model/user_model';
-import { WorkspaceService } from '../../../_services/workspace/ws-service';
-import { Globals } from '../../../_const/globals';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
+import { WorkspaceService } from '@services/master';
 
 declare var adminloader: any;
 

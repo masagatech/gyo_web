@@ -97,6 +97,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     loader.skinChanger(theme);
   }
 
+  openWorkspaceForm() {
+    Cookie.delete("_enttid_");
+    Cookie.delete("_enttnm_");
+    this._router.navigate(['/workspace']);
+  }
+
   logout() {
     this._authservice.logout();
   }

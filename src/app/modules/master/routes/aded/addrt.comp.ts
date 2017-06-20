@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { CommonService } from '../../../../_services/common/common-service' /* add reference for view file type */
-import { RoutesService } from '../../../../_services/routes/rt-service';
-import { Globals } from '../../../../_const/globals';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { RoutesService } from '@services/master';
+import { LoginUserModel, Globals } from '@models';
 import { GMap } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -16,6 +14,9 @@ declare var google: any;
 })
 
 export class AddRoutesComponent implements OnInit {
+    loginUser: LoginUserModel;
+    _wsdetails: any = [];
+
     marker: any;
     @ViewChild("gmap")
     _gmap: GMap;
@@ -23,9 +24,6 @@ export class AddRoutesComponent implements OnInit {
     private options: any;
     private overlays: any[];
     private map: any;
-
-    loginUser: LoginUserModel;
-    _wsdetails: any = [];
 
     entityDT: any = [];
     enttid: number = 0;
@@ -54,11 +52,11 @@ export class AddRoutesComponent implements OnInit {
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-
-        this.fillEntityDropDown();
     }
 
     public ngOnInit() {
+        this.editRoutes();
+
         this.options = {
             center: { lat: this.lat, lng: this.long },
             zoom: 18
@@ -209,30 +207,6 @@ export class AddRoutesComponent implements OnInit {
         }
     }
 
-    // Fill Entity DropDown
-
-    fillEntityDropDown() {
-        var that = this;
-        commonfun.loader();
-
-        that._RoutesService.getStopsDetails({ "flag": "enttddl" }).subscribe(data => {
-            try {
-                that.entityDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     // Fill Route DropDown
 
     fillRoutesDropDown() {
@@ -257,6 +231,54 @@ export class AddRoutesComponent implements OnInit {
         })
     }
 
+    // Get Route Edit
+
+    editRoutes() {
+        var that = this;
+        commonfun.loader();
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.rtid = params['id'];
+
+                that._RoutesService.getStopsDetails({ "flag": "editroute", "rtid": that.rtid }).subscribe(data => {
+                    try {
+                        var _routedata = data.data;
+
+                        if (_routedata.length > 0) {
+                            that.enttid = _routedata[0].enttid;
+                            that.enttname = _routedata[0].enttname;
+                            that.fillRoutesDropDown();
+                            that.getStopsByRoute();
+
+                            $(".enttname input").prop("disabled", "disabled");
+                            $(".rtname").prop("disabled", "disabled");
+                        }
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+            else {
+                if (Cookie.get('_enttnm_') != null) {
+                    that.enttid = parseInt(Cookie.get('_enttid_'));
+                    that.enttname = Cookie.get('_enttnm_');
+                }
+
+                that.resetAllStopsFields();
+            }
+        });
+    }
+
     // Get Stops Data
 
     getStopsByRoute() {
@@ -269,6 +291,7 @@ export class AddRoutesComponent implements OnInit {
 
                 if (_stpdata.length > 0) {
                     that.stopsList = _stpdata;
+
                     setTimeout(function () {
                         commonfun.orderstyle();
                     }, 200);
@@ -292,7 +315,21 @@ export class AddRoutesComponent implements OnInit {
     }
 
     // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
+
     // Clear Fields
+
+    resetAllStopsFields() {
+        this.enttid = 0;
+        this.enttname = "";
+        this.rtid = 0;
+        this.rtname = "";
+
+        this.stpid = 0;
+        this.stpname = "";
+        this.address = "";
+        this.lat = 0.00;
+        this.long = 0.00;
+    }
 
     resetStopsFields() {
         this.stpid = 0;
@@ -373,7 +410,7 @@ export class AddRoutesComponent implements OnInit {
         this.address = row.address;
         this.lat = row.lat;
         this.long = row.long;
-        this.rtid = row.rtid;
+
         if (this.lat.toString() != "0" && this.lat.toString() != "") {
             var latlng = new google.maps.LatLng(this.lat, this.long);
             this.marker.setPosition(latlng);
@@ -462,15 +499,16 @@ export class AddRoutesComponent implements OnInit {
                     "address": _slrow.address,
                     "geoloc": _slrow.geoloc !== undefined ? _slrow.lat + "," + _slrow.long : _slrow.geoloc,
                     "rtid": _slrow.rtid,
-                    "isactive": _slrow.isactive,
-                    "ordno": i + 1
+                    "cuid": that.loginUser.ucode,
+                    "ordno": i + 1,
+                    "wsautoid": that.loginUser.wsautoid,
+                    "isactive": _slrow.isactive
                 })
             }
 
             var savestp = {
                 "rtid": that.rtid,
                 "rtname": that.rtname,
-                "cuid": that.loginUser.ucode,
                 "stops": _stopsList
             }
 
@@ -511,6 +549,6 @@ export class AddRoutesComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/routes']);
+        this._router.navigate(['/master/routes']);
     }
 }

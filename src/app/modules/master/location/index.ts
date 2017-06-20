@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AddLocationComponent } from './aded/addloc.comp';
 import { ViewLocationComponent } from './view/viewloc.comp';
 
-import { LocationService } from '../../../_services/location/loc-service';
+import { LocationService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
 

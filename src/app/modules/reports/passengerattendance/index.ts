@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { PassengerAttendanceReportsComponent } from './rptpsngratt.comp';
-import { ReportsService } from '../../../_services/reports/rpt-service';
+import { ReportsService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 

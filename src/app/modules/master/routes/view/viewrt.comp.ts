@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { MenuService } from '../../../../_services/menus/menu-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { RoutesService } from '../../../../_services/routes/rt-service';
+import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { RoutesService } from '@services/master';
+import { LoginUserModel, Globals } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewrt.comp.html',
@@ -14,8 +12,14 @@ import { LazyLoadEvent } from 'primeng/primeng';
 })
 
 export class ViewRoutesComponent implements OnInit {
-    stopsDT: any = [];
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
+
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
+
+    stopsDT: any = [];
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -24,6 +28,8 @@ export class ViewRoutesComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RoutesService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
+
         this.viewStopsDataRights();
     }
 
@@ -31,6 +37,39 @@ export class ViewRoutesComponent implements OnInit {
         setTimeout(function () {
             commonfun.navistyle();
         }, 0);
+    }
+
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Entity
+
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        Cookie.set("_enttid_", this.enttid.toString());
+        Cookie.set("_enttnm_", this.enttname);
+
+        this.getStopsDetails();
     }
 
     public viewStopsDataRights() {
@@ -50,9 +89,14 @@ export class ViewRoutesComponent implements OnInit {
             that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
 
-            that.getStopsDetails();
+            if (Cookie.get('_enttnm_') != null) {
+                that.enttid = parseInt(Cookie.get('_enttid_'));
+                that.enttname = Cookie.get('_enttnm_');
+
+                that.getStopsDetails();
+            }
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -65,7 +109,7 @@ export class ViewRoutesComponent implements OnInit {
             commonfun.loader();
 
             that._rtservice.getStopsDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype
+                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that.enttid
             }).subscribe(data => {
                 try {
                     that.stopsDT = data.data;
@@ -85,11 +129,12 @@ export class ViewRoutesComponent implements OnInit {
         }
     }
 
-    public addStopsForm() {
-        this._router.navigate(['/routes/add']);
+    public addRoutesForm() {
+        this._router.navigate(['/master/routes/add']);
     }
 
-    public editStopsForm(row) {
-        this._router.navigate(['/routes/edit', row.stpid]);
+    public editRoutesForm(row) {
+        console.log(row);
+        this._router.navigate(['/master/routes/edit', row.rtid]);
     }
 }

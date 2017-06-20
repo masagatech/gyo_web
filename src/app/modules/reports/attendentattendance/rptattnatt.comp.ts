@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { MenuService } from '../../../_services/menus/menu-service';
-import { LoginService } from '../../../_services/login/login-service';
-import { LoginUserModel } from '../../../_model/user_model';
-import { ReportsService } from '../../../_services/reports/rpt-service';
+import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
+import { ReportsService } from '@services/master';
 
 @Component({
     templateUrl: 'rptattnatt.comp.html',
@@ -13,16 +10,17 @@ import { ReportsService } from '../../../_services/reports/rpt-service';
 })
 
 export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
+    loginUser: LoginUserModel;
+    _wsdetails: any = [];
+
     monthDT: any = [];
 
     attColumn: any = [];
     attData: any = [];
     entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: string = "";
     monthname: string = "";
-
-    loginUser: LoginUserModel;
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -32,6 +30,8 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
+
         this.fillDropDownList();
     }
 
@@ -52,7 +52,9 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -66,8 +68,8 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
     // Selected Owners
 
     selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
+        this.enttid = event.value;
+        this.enttname = event.label;
     }
 
     // Fill Month DropDown
@@ -100,7 +102,7 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
     public viewAttendanceReportsRights() {
         var that = this;
 
-        if (that.entityname === "") {
+        if (that.enttname === "") {
             that._msg.Show(messageType.warn, "Warning", "Search Entity");
         }
         else if (that.monthname === "") {
@@ -136,7 +138,7 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that.entityid
+            "flag": "column", "monthname": that.monthname, "schoolid": that.enttid
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
@@ -154,7 +156,7 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._rptservice.getAttendanceReports({
-                "flag": "driver", "monthname": that.monthname, "schoolid": that.entityid
+                "flag": "driver", "monthname": that.monthname, "schoolid": that.enttid
             }).subscribe(data => {
                 try {
                     if (data.data.length !== 0) {
@@ -177,7 +179,7 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
             })
         }
     }
-    
+
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

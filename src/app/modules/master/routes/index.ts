@@ -7,7 +7,7 @@ import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { AddRoutesComponent } from './aded/addrt.comp';
 import { ViewRoutesComponent } from './view/viewrt.comp';
 
-import { RoutesService } from '../../../_services/routes/rt-service';
+import { RoutesService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, OrderListModule, AutoCompleteModule, GMapModule } from 'primeng/primeng';
 

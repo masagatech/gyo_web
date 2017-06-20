@@ -7,7 +7,7 @@ import { SharedComponentModule } from '../../_shared/sharedcomp.module';
 import { AddWorkspaceComponent } from './aded/addws.comp';
 import { ViewWorkspaceComponent } from './view/viewws.comp';
 
-import { WorkspaceService } from '../../_services/workspace/ws-service';
+import { WorkspaceService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 

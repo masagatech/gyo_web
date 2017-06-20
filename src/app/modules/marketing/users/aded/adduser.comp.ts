@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../../_services/users/user-service';
-import { CommonService } from '../../../../_services/common/common-service'; /* add reference for master of master */
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { LoginUserModel } from '@models';
+import { UserService } from '@services/master';
 
 declare var adminloader: any;
 
 @Component({
     templateUrl: 'adduser.comp.html',
-    providers: [UserService, CommonService]
+    providers: [CommonService]
 })
 
 export class AddMarketUserComponent implements OnInit {

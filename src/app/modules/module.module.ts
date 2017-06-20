@@ -40,33 +40,19 @@ export const routes = [
                     { path: 'market_user', loadChildren: './marketing/users#MarketingUserModule' },
 
                     // Reports
-                    { path: 'passengerattendance', loadChildren: './reports/passengerattendance#PassengerAttendanceReportsModule' },
-                    { path: 'dailyattendance', loadChildren: './reports/dailyattendance#DailyAttendanceReportsModule' },
-                    { path: 'driverattendance', loadChildren: './reports/driverattendance#DriverAttendanceReportsModule' },
-                    { path: 'attendantattendance', loadChildren: './reports/attendentattendance#AttendentAttendanceReportsModule' },
+                    { path: 'reports', loadChildren: './reports#ReportsModule' },
 
-                    // Trip Tracking
-                    { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
+                    // Schedule
+                    { path: '', loadChildren: './schedule#ScheduleModule' },
+
+                    // Survey Entries
                     { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
 
                     // Masters
-                    { path: '', loadChildren: './master#MasterModule' },
-
-                    { path: 'entity', loadChildren: './entity#EntityModule' },
-                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
-                    { path: 'batch', loadChildren: './batch#BatchModule' },
-                    { path: 'driver', loadChildren: './driver#DriverModule' },
-                    { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
-                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
-                    { path: 'user', loadChildren: './users#UserModule' },
+                    { path: 'master', loadChildren: './master#MasterModule' },
 
                     // Setting
-                    { path: 'setting', loadChildren: './userrights#UserRightsModule' },
-                    { path: 'userrights', loadChildren: './userrights#UserRightsModule' },
-
-                    // Schedule
-                    { path: 'createschedule', loadChildren: './createschedule#CreateScheduleModule' },
-                    { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' }
+                    { path: 'settings', loadChildren: './settings#SettingsModule' },
                 ]
             }
         ]

@@ -28,7 +28,7 @@
                                     <a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a>
                                 </li>
                                 <li *ngIf="this.loginUser.issysadmin">
-                                    <a role="button" [routerLink]="['/workspace']"><i class="fa fa-building-o"></i> Workspace</a>
+                                    <a role="button" (click)="openWorkspaceForm()"><i class="fa fa-building-o"></i> Workspace</a>
                                 </li>
                                 <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
                             </ul>

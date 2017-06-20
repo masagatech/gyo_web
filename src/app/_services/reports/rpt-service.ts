@@ -9,4 +9,8 @@ export class ReportsService {
     getAttendanceReports(req: any) {
         return this._dataserver.post("getAttendanceReports", req)
     }
+
+    getRouteWisePassengerReports(req: any) {
+        return this._dataserver.post("getRouteWisePassengerReports", req)
+    }
 }

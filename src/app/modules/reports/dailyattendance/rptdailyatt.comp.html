@@ -7,16 +7,9 @@
             <div class="col-md-7">
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" placeholder="Entity Name" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30"
-                            class="form-controlAutoComplete entityname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" placeholder="Entity Name" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete enttname"></p-autoComplete>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
-                        <span class="material-icons">search</span>
-                    </button>
                 </div>
             </div>
         </div>

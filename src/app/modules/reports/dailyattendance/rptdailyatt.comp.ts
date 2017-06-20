@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../../_services/common/common-service'; /* add reference for master of master */
-import { MenuService } from '../../../_services/menus/menu-service';
-import { LoginService } from '../../../_services/login/login-service';
-import { LoginUserModel } from '../../../_model/user_model';
-import { ReportsService } from '../../../_services/reports/rpt-service';
+import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
+import { ReportsService } from '@services/master';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'rptdailyatt.comp.html',
@@ -13,14 +11,15 @@ import { ReportsService } from '../../../_services/reports/rpt-service';
 })
 
 export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
+    loginUser: LoginUserModel;
+    _wsdetails: any = [];
+
     entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: string = "";
 
     attColumn: any = [];
     attData: any = [];
-
-    loginUser: LoginUserModel;
 
     actviewrights: string = "";
 
@@ -28,6 +27,8 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
+
         this.viewAttendanceReportsRights();
     }
 
@@ -48,7 +49,9 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -62,8 +65,13 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
     // Selected Owners
 
     selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        Cookie.set("_enttid_", this.enttid.toString());
+        Cookie.set("_enttnm_", this.enttname);
+
+        this.getAttendanceReports();
     }
 
     public viewAttendanceReportsRights() {
@@ -79,7 +87,12 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
             console.log(that.actviewrights);
 
-            // that.getAttendanceReports();
+            if (Cookie.get('_enttnm_') != null) {
+                this.enttid = parseInt(Cookie.get('_enttid_'));
+                this.enttname = Cookie.get('_enttnm_');
+
+                that.getAttendanceReports();
+            }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -94,7 +107,7 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getAttendanceReports({
-            "flag": "daily", "schoolid": that.entityid
+            "flag": "daily", "schoolid": that.enttid
         }).subscribe(data => {
             try {
                 that.attData = data.data;
@@ -112,7 +125,7 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         })
         // }
     }
-    
+
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

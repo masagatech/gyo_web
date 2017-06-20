@@ -1,11 +1,28 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-9 col-xs-9">
+            <div class="col-md-3">
                 <h4>Routes / Stops</h4>
             </div>
+            <div class="col-md-6 col-xs-9">
+                <div class="form-group">
+                    <div class="form-line">
+                        <div class="row clearfix">
+                            <div class="col-md-1">
+                                <label>Entity</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-3 col-xs-3" align="right" *ngIf="actaddrights === 'add'">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addStopsForm()">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addRoutesForm()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -17,16 +34,8 @@
         <div class="card">
             <div class="header">
                 <h4>{{row.key}}</h4>
-                <ul class="header-dropdown m-r--5">
-                    <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">more_vert</i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a role="button" (click)="editRoutesForm(row)"><i class="material-icons">edit</i> Edit</a></li>
-                            <li><a role="button"><i class="material-icons">delete</i> Remove</a></li>
-                        </ul>
-                    </li>
+                <ul class="header-dropdown m-r--5 pull-right">
+                    <li><a role="button" (click)="editRoutesForm(stopsDT[i])"><i class="material-icons">edit</i></a></li>
                 </ul>
             </div>
             <div class="body">

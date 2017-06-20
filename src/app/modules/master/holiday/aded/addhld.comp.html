@@ -1,0 +1,91 @@
+<div class="card">
+    <div class="header">
+        <h4>Holiday</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveHolidayInfo()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" (ngModelChange)="todt = frmdt" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="todt" class="form-control date todt" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Holiday Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="hldnm" class="form-control hldnm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Description</label>
+                                <textarea [(ngModel)]="hlddesc" rows="4" class="form-control no-resize auto-growth"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Entity <strong>*</strong></label>
+                                <div class="row clearfix">
+                                    <div class="col-md-10">
+                                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                                    </div>
+                                    <div class="col-md-2" align="right">
+                                        <span class="material-icons">search</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="entityList.length">
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let row of entityList">
+                            {{row.schnm}}
+                            <button type="button" class="btn btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">delete</i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService } from '@services';
-import { LocationService } from '../../../../_services/location/loc-service';
+import { LocationService } from '@services/master';
 import { LoginUserModel } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
 
@@ -81,10 +81,10 @@ export class ViewLocationComponent implements OnInit {
     }
 
     public addLocationForm() {
-        this._router.navigate(['/location/add']);
+        this._router.navigate(['/master/location/add']);
     }
 
     public editLocationForm(row) {
-        this._router.navigate(['/location/edit', row.locid]);
+        this._router.navigate(['/master/location/edit', row.locid]);
     }
 }

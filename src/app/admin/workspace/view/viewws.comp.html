@@ -19,7 +19,7 @@
     <div *ngFor="let row of workspaceDT" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="card" style="height: 150px;">
             <div class="header">
-                <h2>
+                <h2 class="title">
                     <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
                     <a role="button" (click)="getMainForm(row)">{{row.wsname}}</a> <small>{{row.lgcode + "." + row.wscode}}</small>
                 </h2>
@@ -37,6 +37,7 @@
             </div>
             <div class="body">
                 <ul>
+                    <li><b>Total Entity :</b> {{row.countentity}}</li>
                     <li>{{row.name}}</li>
                     <li>{{row.mobileno1}}</li>
                     <li>{{row.email1}}</li>

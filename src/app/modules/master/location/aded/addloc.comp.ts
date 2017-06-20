@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LocationService } from '../../../../_services/location/loc-service';
+import { LocationService } from '@services/master';;
 import { LoginUserModel } from '@models';
 
 declare let google: any;
@@ -471,7 +471,7 @@ export class AddLocationComponent implements OnInit, AfterViewInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/location']);
+        this._router.navigate(['/master/location']);
     }
 
     public ngAfterViewInit() {

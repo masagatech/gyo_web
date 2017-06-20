@@ -1,0 +1,123 @@
+<div class="card">
+    <div class="header">
+        <h4>Vehicle</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <span class="switch">
+                    <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveVehicleInfo()"><span class="lever"></span></label>
+                </span>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveVehicleInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity Name <strong>*</strong></label>
+                        <div class="row clearfix">
+                            <div class="col-md-10">
+                                <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                            </div>
+                            <div class="col-md-2" align="right">
+                                <span class="material-icons">search</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle Type <strong>*</strong></label>
+                                <select name="vehtype" [(ngModel)]="vehtype" class="form-control vehtype" tabindex="2">
+                                    <option [value]="''">Select Vehicle Type</option>
+                                    <option *ngFor="let row of vehtypeDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle No <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehno" class="form-control vehno" maxlength="50" tabindex="3" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle Registration No <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehregno" class="form-control vehregno" maxlength="50" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle Make <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehmake" class="form-control vehmake" maxlength="50" tabindex="5" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle Model <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehmdl" class="form-control vehmdl" maxlength="50" tabindex="6" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Capacity</label>
+                                <input type="number" [(ngModel)]="capacity" class="form-control capacity" maxlength="50" tabindex="7" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle Condition</label>
+                                <input type="text" [(ngModel)]="vehcond" class="form-control" maxlength="50" tabindex="8" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Vehicle Facility</label>
+                                <input type="text" [(ngModel)]="vehfclt" class="form-control" maxlength="50" tabindex="9" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>

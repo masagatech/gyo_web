@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, messageType } from '../../../../_services/messages/message-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuService } from '../../../../_services/menus/menu-service';
-import { LoginService } from '../../../../_services/login/login-service';
-import { LoginUserModel } from '../../../../_model/user_model';
-import { UserService } from '../../../../_services/users/user-service';
+import { MessageService, messageType, LoginService, MenuService } from '@services';
+import { LoginUserModel } from '@models';
+import { UserService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 
 @Component({
-    templateUrl: 'viewuser.comp.html',
-    providers: [UserService]
+    templateUrl: 'viewuser.comp.html'
 })
 
 export class ViewMarketUserComponent implements OnInit {

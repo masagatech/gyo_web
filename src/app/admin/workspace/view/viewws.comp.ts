@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
-import { LoginService } from '../../../_services/login/login-service';
-import { LoginUserModel } from '../../../_model/user_model';
-import { WorkspaceService } from '../../../_services/workspace/ws-service';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
+import { WorkspaceService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 
@@ -27,6 +25,9 @@ export class ViewWorkspaceComponent implements OnInit {
     lgcode: string = "";
     issysadmin: boolean = false;
 
+    enttid: number = 0;
+    enttnm: string = "";
+
     headertitle: string = "";
 
     global = new Globals();
@@ -36,7 +37,7 @@ export class ViewWorkspaceComponent implements OnInit {
         private _wsservice: WorkspaceService) {
         this.loginUser = this._loginservice.getUser();
         this.getUploadConfig();
-        
+
 
         this.getWorkspaceDetails();
 
@@ -73,6 +74,9 @@ export class ViewWorkspaceComponent implements OnInit {
                 that.wslogo = myWorkspaceDT[0].wslogo;
                 that.lgcode = myWorkspaceDT[0].lgcode;
                 that.issysadmin = myWorkspaceDT[0].issysadmin;
+
+                that.enttid = myWorkspaceDT[0].enttid;
+                that.enttnm = myWorkspaceDT[0].enttnm;
                 that.headertitle = "My Workspace (" + myWorkspaceDT[0].wsname + ")";
             }
             catch (e) {
@@ -108,11 +112,23 @@ export class ViewWorkspaceComponent implements OnInit {
         }
 
         Cookie.set("_wsdetails_", JSON.stringify(_wsdetails));
+
+        if (this.enttid !== 0) {
+            Cookie.set("_enttid_", this.enttid.toString());
+            Cookie.set("_enttnm_", this.enttnm);
+        }
+
         this._router.navigate(['/']);
     }
 
     public getMainForm(row) {
         Cookie.set("_wsdetails_", JSON.stringify(row));
+
+        if (row.enttid !== 0) {
+            Cookie.set("_enttid_", row.enttid.toString());
+            Cookie.set("_enttnm_", row.enttnm);
+        }
+
         this._router.navigate(['/']);
     }
 }
