@@ -18,6 +18,9 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     enttid: number = 0;
     enttname: string = "";
 
+    batchDT: any = [];
+    batchid: number = 0;
+
     stopsDT: any = [];
     passengerDT: any = [];
 
@@ -42,6 +45,32 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
+    public viewRouteMapPassengerReportsRights() {
+        var that = this;
+        var addRights = [];
+        var editRights = [];
+        var viewRights = [];
+
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rtwisepsngr", "utype": that.loginUser.utype
+        }).subscribe(data => {
+            viewRights = data.data.filter(a => a.mrights === "view");
+            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+            console.log(that.actviewrights);
+
+            if (Cookie.get('_enttnm_') != null) {
+                that.enttid = parseInt(Cookie.get('_enttid_'));
+                that.enttname = Cookie.get('_enttnm_');
+
+                that.fillBatchDropDown();
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        })
+    }
+
     // Auto Completed Entity
 
     getEntityData(event) {
@@ -63,7 +92,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
     selectEntityData(event) {
         this.enttid = event.value;
@@ -72,34 +101,34 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         Cookie.set("_enttid_", this.enttid.toString());
         Cookie.set("_enttnm_", this.enttname);
 
-        this.getEntityWiseRoute();
+        this.fillBatchDropDown();
     }
 
-    public viewRouteMapPassengerReportsRights() {
+    // Batch DropDown
+
+    fillBatchDropDown() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rtwisepsngr", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            viewRights = data.data.filter(a => a.mrights === "view");
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-            console.log(that.actviewrights);
-
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.getEntityWiseRoute();
+        that._rptservice.getRouteWisePassengerReports({
+            "flag": "batch",
+            "id": that.enttid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
+            try {
+                that.batchDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
         }, () => {
 
         })
     }
+
+    // View Route List
 
     getEntityWiseRoute() {
         var that = this;
@@ -107,7 +136,9 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._rptservice.getRouteWisePassengerReports({ "flag": "route", "enttid": that.enttid }).subscribe(data => {
+            that._rptservice.getRouteWisePassengerReports({
+                "flag": "route", "enttid": that.enttid, "batchid": that.batchid
+            }).subscribe(data => {
                 try {
                     that.stopsDT = data.data;
                 }
@@ -126,6 +157,8 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         }
     }
 
+    // View Passenger List
+
     getRouteWisePassenger(row) {
         var that = this;
 
@@ -133,7 +166,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._rptservice.getRouteWisePassengerReports({
-                "flag": "routemap", "stpid": row.stpid, "rtid": row.rtid, "enttid": row.enttid
+                "flag": "routemap", "stpid": row.stpid, "rtid": row.rtid, "enttid": row.enttid, "batchid": row.batchid
             }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {

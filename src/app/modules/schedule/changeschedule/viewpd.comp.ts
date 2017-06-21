@@ -19,12 +19,13 @@ export class ChangeScheduleComponent implements OnInit {
     header: any;
     event: MyEvent;
     defaultDate: string = "";
-    actviewrights: string = "";
+    acteditrights: string = "";
 
     entityDT: any = [];
     enttid: number = 0;
     enttname: string = "";
 
+    attendantDT: any = [];
     pickattid: number = 0;
     pickattname: string = "";
     dropattid: number = 0;
@@ -75,8 +76,9 @@ export class ChangeScheduleComponent implements OnInit {
     ispickup: boolean = true;
     isdrop: boolean = true;
 
-    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _entityservice: EntityService, private _router: Router, private _msg: MessageService) {
+    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+        public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService, private _router: Router,
+        private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.viewScheduleDataRights();
@@ -101,15 +103,46 @@ export class ChangeScheduleComponent implements OnInit {
         };
     }
 
+    hideWhenPickData() {
+        if (!this.ispickup) {
+            if (this.pickautoid == 0) {
+                this.pickdriverid = 0;
+                this.pickvehicleid = "";
+                this.pickpsngrtype = "bypsngr";
+                this.pickrtid = 0;
+                this.pickPassengerDT = [];
+            }
+        }
+    }
+
+    copyPickInfoInDrop() {
+        if (this.isdrop) {
+            this.setDropDriver();
+            this.setDropVehicle();
+            this.setDropPsngrType();
+            this.setDropRoute();
+            this.dropPassengerDT = this.reverseArr(this.pickPassengerDT);
+        }
+        else {
+            if (this.dropautoid == 0) {
+                this.dropdriverid = 0;
+                this.dropvehicleid = "";
+                this.droppsngrtype = "bypsngr";
+                this.droprtid = 0;
+                this.dropPassengerDT = [];
+            }
+        }
+    }
+
     public viewScheduleDataRights() {
         var that = this;
-        var viewRights = [];
+        var editRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "asch", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "esch", "utype": that.loginUser.utype
         }).subscribe(data => {
-            viewRights = data.data.filter(a => a.mrights === "view");
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+            editRights = data.data.filter(a => a.mrights === "edit");
+            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
 
             if (Cookie.get('_enttnm_') != null) {
                 this.enttid = parseInt(Cookie.get('_enttid_'));
@@ -202,6 +235,48 @@ export class ChangeScheduleComponent implements OnInit {
         });
     }
 
+    // Auto Completed Attendent
+
+    getAttendantData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "users",
+            "uid": this.loginUser.uid,
+            "typ": this.loginUser.utype,
+            "otype": "attd",
+            "search": query
+        }).subscribe(data => {
+            this.attendantDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Auto Completed Passenger
+
+    getPassengerData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "passenger",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query,
+            "id": this.enttid
+        }).subscribe((data) => {
+            this.passengerDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
     // Get Selected Auto Completed Data
 
     selectAutoData(event, type) {
@@ -277,7 +352,7 @@ export class ChangeScheduleComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -300,7 +375,7 @@ export class ChangeScheduleComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
-            // that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
             console.log(err);
         }, () => {
 
@@ -352,28 +427,6 @@ export class ChangeScheduleComponent implements OnInit {
 
     setDropPsngrType() {
         this.droppsngrtype = this.pickpsngrtype;
-    }
-
-    // Auto Completed Passenger
-
-    getPassengerData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "passenger",
-            "uid": this.loginUser.uid,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query,
-            "id": this.enttid
-        }).subscribe((data) => {
-            this.passengerDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
     }
 
     // Check Pickup Duplicate Passenger
@@ -571,6 +624,9 @@ export class ChangeScheduleComponent implements OnInit {
         commonfun.loader();
         var that = this;
 
+        var pickdata = [];
+        var dropdata = [];
+
         this._pickdropservice.getPickDropDetails({
             "flag": "edit", "schoolid": that.enttid, "batchid": that.batchid, "frmdt": event.date, "todt": event.date
         }).subscribe(data => {
@@ -578,42 +634,46 @@ export class ChangeScheduleComponent implements OnInit {
                 var d = data.data;
 
                 if (d.length !== 0) {
-                    var pickdata = d.filter(a => a.typ === "p")[0];
+                    pickdata = d.filter(a => a.typ === "p");
 
                     if (pickdata.length !== 0) {
-                        that.pickautoid = pickdata.autoid;
-                        that.pickdriverid = pickdata.driverid;
-                        that.pickvehicleid = pickdata.vehicleno;
-                        that.pickPassengerDT = pickdata.studentdata;
-                        that.pickpsngrtype = pickdata.psngrtype;
-                        that.pickrtid = pickdata.rtid;
-                        that.pickfromdate = pickdata.frmdt;
-                        that.picktodate = pickdata.todt;
+                        that.ispickup = true;
+                        that.pickautoid = pickdata[0].autoid;
+                        that.pickdriverid = pickdata[0].driverid;
+                        that.pickvehicleid = pickdata[0].vehicleno;
+                        that.pickPassengerDT = pickdata[0].studentdata;
+                        that.pickpsngrtype = pickdata[0].psngrtype;
+                        that.pickrtid = pickdata[0].rtid;
+                        that.pickfromdate = pickdata[0].frmdt;
+                        that.picktodate = pickdata[0].todt;
                     }
                     else {
+                        that.ispickup = false;
                         that.pickautoid = 0;
                         that.pickdriverid = 0;
                         that.pickvehicleid = "";
-                        that.pickpsngrtype = "bypsngr"
+                        that.pickpsngrtype = "bypsngr";
                         that.pickrtid = 0;
                         that.pickPassengerDT = [];
 
                         that.getPDDate(event);
                     }
 
-                    var dropdata = d.filter(a => a.typ === "d")[0];
+                    dropdata = d.filter(a => a.typ === "d");
 
                     if (dropdata.length !== 0) {
-                        that.dropautoid = dropdata.autoid;
-                        that.dropdriverid = dropdata.driverid;
-                        that.dropvehicleid = dropdata.vehicleno;
-                        that.droppsngrtype = dropdata.psngrtype;
-                        that.droprtid = dropdata.rtid;
-                        that.dropPassengerDT = dropdata.studentdata;
-                        that.dropfromdate = dropdata.frmdt;
-                        that.droptodate = dropdata.todt;
+                        that.isdrop = true;
+                        that.dropautoid = dropdata[0].autoid;
+                        that.dropdriverid = dropdata[0].driverid;
+                        that.dropvehicleid = dropdata[0].vehicleno;
+                        that.droppsngrtype = dropdata[0].psngrtype;
+                        that.droprtid = dropdata[0].rtid;
+                        that.dropPassengerDT = dropdata[0].studentdata;
+                        that.dropfromdate = dropdata[0].frmdt;
+                        that.droptodate = dropdata[0].todt;
                     }
                     else {
+                        that.isdrop = false;
                         that.dropautoid = 0;
                         that.dropdriverid = 0;
                         that.dropvehicleid = "";
@@ -625,14 +685,20 @@ export class ChangeScheduleComponent implements OnInit {
                     }
                 }
                 else {
+                    that.ispickup = true;
                     that.pickautoid = 0;
                     that.pickdriverid = 0;
                     that.pickvehicleid = "";
+                    that.pickpsngrtype = "bypsngr";
+                    that.pickrtid = 0;
                     that.pickPassengerDT = [];
 
+                    that.isdrop = true;
                     that.dropautoid = 0;
                     that.dropdriverid = 0;
                     that.dropvehicleid = "";
+                    that.droppsngrtype = "bypsngr";
+                    that.droprtid = 0;
                     that.dropPassengerDT = [];
 
                     that.getPDDate(event);
@@ -672,30 +738,15 @@ export class ChangeScheduleComponent implements OnInit {
             $(".pdrv").focus();
             return false;
         }
-        else if (that.dropdriverid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select Drop Driver");
-            $(".ddrv").focus();
-            return false;
-        }
         else if (that.pickvehicleid === "") {
             that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle No");
             $(".pveh").focus();
-            return false;
-        }
-        else if (that.dropvehicleid === "") {
-            that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
-            $(".dveh").focus();
             return false;
         }
         else if (that.pickpsngrtype == "byrt") {
             if (that.pickrtid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
                 $(".proute").focus();
-                return false;
-            }
-            else if (that.droprtid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Drop Route");
-                $(".droute").focus();
                 return false;
             }
         }
@@ -709,6 +760,21 @@ export class ChangeScheduleComponent implements OnInit {
             $(".droppassengername").focus();
             return false;
         }
+        /*else if (that.dropdriverid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Drop Driver");
+            $(".ddrv").focus();
+            return false;
+        }
+        else if (that.dropvehicleid === "") {
+            that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
+            $(".dveh").focus();
+            return false;
+        }
+        else if (that.droprtid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Drop Route");
+            $(".droute").focus();
+            return false;
+        }*/
         else if (that.ispickup == false && that.isdrop == false) {
             that._msg.Show(messageType.error, "Error", "Please Select atleast 1 Pick up / Drop Checkbox");
             $(".droppassengername").focus();
@@ -738,17 +804,17 @@ export class ChangeScheduleComponent implements OnInit {
 
             var savepickdrop = {};
 
-            for (var i = 0; i < that.pickPassengerDT.length; i++) {
-                _pickstudDT.push({
-                    "stdid": that.pickPassengerDT[i].stdid,
-                    "stdnm": that.pickPassengerDT[i].stdnm,
-                    "stpid": that.pickPassengerDT[i].stpid
-                });
-            }
-
             if (that.pickPassengerDT.length !== 0) {
+                for (var i = 0; i < that.pickPassengerDT.length; i++) {
+                    _pickstudDT.push({
+                        "stdid": that.pickPassengerDT[i].stdid,
+                        "stdnm": that.pickPassengerDT[i].stdnm,
+                        "stpid": that.pickPassengerDT[i].stpid
+                    });
+                }
+
+                _pickattsid = Object.keys(that.pickAttList).map(function (k) { return that.pickAttList[k].attid });
                 _pickstudsid = Object.keys(_pickstudDT).map(function (k) { return _pickstudDT[k].stdid });
-                _dropstudsid = Object.keys(_dropstudDT).map(function (k) { return _dropstudDT[k].stdid });
 
                 _pickdrop.push({
                     "autoid": that.pickautoid,
@@ -759,26 +825,32 @@ export class ChangeScheduleComponent implements OnInit {
                     "vhclid": that.pickvehicleid.split('~')[0],
                     "vhclno": that.pickvehicleid.split('~')[1],
                     "rtid": that.pickrtid,
+                    "attsid": _pickattsid,
                     "studdt": _pickstudDT,
                     "studsid": _pickstudsid,
                     "uid": that.loginUser.ucode,
                     "inst": that.instrunction,
                     "frmdt": that.pickfromdate,
                     "todt": that.picktodate,
-                    "typ": that.ispickup ? "p" : "n",
-                    "psngrtype": that.pickpsngrtype
-                });
-            }
-
-            for (var i = 0; i < that.dropPassengerDT.length; i++) {
-                _dropstudDT.push({
-                    "stdid": that.dropPassengerDT[i].stdid,
-                    "stdnm": that.dropPassengerDT[i].stdnm,
-                    "stpid": that.dropPassengerDT[i].stpid
+                    "typ": "p",
+                    "psngrtype": that.pickpsngrtype,
+                    "wsautoid": that._wsdetails.wsautoid,
+                    "isactive": that.ispickup
                 });
             }
 
             if (that.dropPassengerDT.length !== 0) {
+                for (var i = 0; i < that.dropPassengerDT.length; i++) {
+                    _dropstudDT.push({
+                        "stdid": that.dropPassengerDT[i].stdid,
+                        "stdnm": that.dropPassengerDT[i].stdnm,
+                        "stpid": that.dropPassengerDT[i].stpid
+                    });
+                }
+
+                _dropattsid = Object.keys(that.dropAttList).map(function (k) { return that.dropAttList[k].attid });
+                _dropstudsid = Object.keys(_dropstudDT).map(function (k) { return _dropstudDT[k].stdid });
+
                 _pickdrop.push({
                     "autoid": that.dropautoid,
                     "schid": that.enttid,
@@ -788,14 +860,17 @@ export class ChangeScheduleComponent implements OnInit {
                     "vhclid": that.dropvehicleid.split('~')[0],
                     "vhclno": that.dropvehicleid.split('~')[1],
                     "rtid": that.droprtid,
+                    "attsid": _dropattsid,
                     "studdt": _dropstudDT,
                     "studsid": _dropstudsid,
                     "uid": that.loginUser.ucode,
                     "inst": that.instrunction,
                     "frmdt": that.dropfromdate,
                     "todt": that.droptodate,
-                    "typ": that.isdrop ? "d" : "n",
-                    "psngrtype": that.droppsngrtype
+                    "typ": "d",
+                    "psngrtype": that.droppsngrtype,
+                    "wsautoid": that._wsdetails.wsautoid,
+                    "isactive": that.isdrop
                 });
             }
 
@@ -807,7 +882,6 @@ export class ChangeScheduleComponent implements OnInit {
 
                     if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
-                        that._router.navigate(['/changeschedule']);
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);

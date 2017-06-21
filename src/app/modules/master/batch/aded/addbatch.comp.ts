@@ -239,8 +239,10 @@ export class AddBatchComponent implements OnInit {
             }
             else {
                 if (Cookie.get('_enttnm_') != null) {
-                    that.enttid = parseInt(Cookie.get('_enttid_'));
-                    that.enttname = Cookie.get('_enttnm_');
+                    this.enttid = parseInt(Cookie.get('_enttid_'));
+                    this.enttname = Cookie.get('_enttnm_');
+
+                    this.getWeekList();
                 }
 
                 that.resetBatchFields();

@@ -18,6 +18,9 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
     enttid: number = 0;
     enttname: string = "";
 
+    batchDT: any = [];
+    batchid: number = 0;
+
     stopsDT: any = [];
     passengerDT: any = [];
 
@@ -42,6 +45,31 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
+    public viewNoRouteMapPassengerReportsRights() {
+        var that = this;
+        var addRights = [];
+        var editRights = [];
+        var viewRights = [];
+
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "nortmappsngr", "utype": that.loginUser.utype
+        }).subscribe(data => {
+            viewRights = data.data.filter(a => a.mrights === "view");
+            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+
+            if (Cookie.get('_enttnm_') != null) {
+                that.enttid = parseInt(Cookie.get('_enttid_'));
+                that.enttname = Cookie.get('_enttnm_');
+
+                that.fillBatchDropDown();
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        })
+    }
+
     // Auto Completed Entity
 
     getEntityData(event) {
@@ -63,7 +91,7 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
     selectEntityData(event) {
         this.enttid = event.value;
@@ -72,34 +100,34 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
         Cookie.set("_enttid_", this.enttid.toString());
         Cookie.set("_enttnm_", this.enttname);
 
-        this.getNoRouteMapPassenger();
+        this.fillBatchDropDown();
     }
 
-    public viewNoRouteMapPassengerReportsRights() {
+    // Batch DropDown
+
+    fillBatchDropDown() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "nortmappsngr", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            viewRights = data.data.filter(a => a.mrights === "view");
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-            console.log(that.actviewrights);
-
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.getNoRouteMapPassenger();
+        that._rptservice.getRouteWisePassengerReports({
+            "flag": "batch",
+            "id": that.enttid,
+            "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
+            try {
+                that.batchDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
         }, () => {
 
         })
     }
+
+    // View Passenger List
 
     getNoRouteMapPassenger() {
         var that = this;
@@ -108,7 +136,7 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._rptservice.getRouteWisePassengerReports({
-                "flag": "noroutemap", "enttid": that.enttid
+                "flag": "noroutemap", "enttid": that.enttid, "batchid": "4"
             }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {

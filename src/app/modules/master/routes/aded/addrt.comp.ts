@@ -146,7 +146,7 @@ export class AddRoutesComponent implements OnInit {
         }
         else {
             if (that.rtid !== 0) {
-                that.rtname = $("#ddlRoutes option:selected").text();
+                that.rtname = $("#ddlRoutes option:selected").text().trim();
             }
             else {
                 that.rtname = "";
@@ -173,7 +173,8 @@ export class AddRoutesComponent implements OnInit {
                 "rtid": that.rtid,
                 "rtname": that.rtname,
                 "enttid": that.enttid,
-                "cuid": that.loginUser.ucode
+                "cuid": that.loginUser.ucode,
+                "wsautoid": that._wsdetails.wsautoid
             }
 
             this._RoutesService.saveRoutesInfo(savert).subscribe(data => {
@@ -272,6 +273,8 @@ export class AddRoutesComponent implements OnInit {
                 if (Cookie.get('_enttnm_') != null) {
                     that.enttid = parseInt(Cookie.get('_enttid_'));
                     that.enttname = Cookie.get('_enttnm_');
+
+                    that.fillRoutesDropDown();
                 }
 
                 that.resetAllStopsFields();
@@ -501,7 +504,7 @@ export class AddRoutesComponent implements OnInit {
                     "rtid": _slrow.rtid,
                     "cuid": that.loginUser.ucode,
                     "ordno": i + 1,
-                    "wsautoid": that.loginUser.wsautoid,
+                    "wsautoid": that._wsdetails.wsautoid,
                     "isactive": _slrow.isactive
                 })
             }

@@ -4,11 +4,23 @@
             <div class="col-md-3">
                 <h4>Route Wise Passenger</h4>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
                         <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" placeholder="Entity Name" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30"
                             class="form-controlAutoComplete enttname"></p-autoComplete>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <select [(ngModel)]="batchid" class="form-control batch" tabindex="2" (ngModelChange)="getEntityWiseRoute()">
+                            <option [value]="0">Select Batch</option>
+                            <option *ngFor="let row of batchDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -46,15 +58,14 @@
                             <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
                             <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
                             <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
-                            <p-column field="pdtype" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                            <p-column field="p" header="P" [style]="{'width': '30px', 'text-align': 'left'}">
+                            <p-column header="P" [style]="{'width': '30px', 'text-align': 'left'}">
                                 <template let-drow="rowData" pTemplate type="body">
-                                    <span class="material-icons {{drow.ispick === 'check' ? 'act-green' : 'act-red'}}">{{drow.ispick}}</span>
+                                    <span class="material-icons {{drow.pdtype.p === 'check' ? 'act-green' : 'act-red'}}">{{drow.pdtype.p == null ? 'cancel' : drow.pdtype.p}}</span>
                                 </template>
                             </p-column>
-                            <p-column field="d" header="D" [style]="{'width': '30px', 'text-align': 'left'}">
+                            <p-column header="D" [style]="{'width': '30px', 'text-align': 'left'}">
                                 <template let-drow="rowData" pTemplate type="body">
-                                    <span class="material-icons {{drow.isdrop === 'check' ? 'act-green' : 'act-red'}}">{{drow.ispick}}</span>
+                                    <span class="material-icons {{drow.pdtype.d === 'check' ? 'act-green' : 'act-red'}}">{{drow.pdtype.d == null ? 'cancel' : drow.pdtype.d}}</span>
                                 </template>
                             </p-column>
                         </p-dataTable>

@@ -5153,9 +5153,10 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
     display: block;
 }
 
-.navbar-brand>img.logo {
+
+/*.navbar-brand>img.logo {
     border-radius: 50%;
-}
+}*/
 
 .navbar-brand>span.title {
     padding-left: 10px;

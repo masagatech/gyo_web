@@ -4,14 +4,14 @@
             <div class="col-md-6">
                 <h4>View Pick Up and Drop</h4>
             </div>
-            <div class="col-md-6" align="right">
+            <div class="col-md-6" align="right" *ngIf="acteditrights == 'edit'">
                 <button type="button" class="btn btn-theme btn-xs" (click)="savePickDropInfo()">
                     <i class="material-icons">save</i>
                 </button>
             </div>
         </div>
     </div>
-    <div class="body">
+    <div class="body" *ngIf="acteditrights == 'edit'">
         <div class="row clearfix">
             <div class="col-md-6">
                 <div class="row clearfix">
@@ -71,7 +71,7 @@
             <div class="col-md-6 border">
                 <div class="header content-header">
                     <span>
-                        <input id="chkpickup" name="chkpickup" [(ngModel)]="ispickup" type="checkbox" checked class="filled-in">
+                        <input id="chkpickup" name="chkpickup" [(ngModel)]="ispickup" type="checkbox" checked class="filled-in" (ngModelChange)="hideWhenPickData()">
                         <label for="chkpickup">Pick-Up</label>
                     </span>
                 </div>
@@ -170,7 +170,7 @@
             <div class="col-md-6">
                 <div class="header content-header">
                     <span>
-                        <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" checked class="filled-in">
+                        <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" checked class="filled-in" (ngModelChange)="copyPickInfoInDrop()">
                         <label for="chkdrop">Drop</label>
                     </span>
                 </div>
@@ -268,7 +268,7 @@
                         <label class="control-label">Pickup Attendent Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="18" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'attendent')" field="label" [minLength]="1" [size]="30"
+                                <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="18" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="attendantDT" (completeMethod)="getAttendantData($event)" field="label" [minLength]="1" [size]="30"
                                     class="form-controlAutoComplete pickattname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
@@ -293,7 +293,7 @@
                         <label class="control-label">Drop Attendent Name</label>
                         <div class="row clearfix">
                             <div class="col-md-10">
-                                <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="19" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="ownersDT" (completeMethod)="getOwnerData($event, 'Attendent')" field="label" [minLength]="1" [size]="30"
+                                <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="19" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="attendantDT" (completeMethod)="getAttendantData($event)" field="label" [minLength]="1" [size]="30"
                                     class="form-controlAutoComplete dropattname"></p-autoComplete>
                             </div>
                             <div class="col-md-2" align="right">
