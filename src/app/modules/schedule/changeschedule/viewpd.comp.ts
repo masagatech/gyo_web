@@ -241,10 +241,11 @@ export class ChangeScheduleComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "users",
+            "flag": "attd",
             "uid": this.loginUser.uid,
-            "typ": this.loginUser.utype,
-            "otype": "attd",
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             this.attendantDT = data.data;
@@ -281,13 +282,13 @@ export class ChangeScheduleComponent implements OnInit {
 
     selectAutoData(event, type) {
         if (type === "pickatt") {
-            this.pickattid = event.value;
-            this.pickattname = event.label;
+            this.pickattid = event.uid;
+            this.pickattname = event.uname;
             this.addPickAttData();
         }
         else if (type === "dropatt") {
-            this.dropattid = event.value;
-            this.dropattname = event.label;
+            this.dropattid = event.uid;
+            this.dropattname = event.uname;
             this.addDropAttData();
         }
         else if (type === "pickstuds") {

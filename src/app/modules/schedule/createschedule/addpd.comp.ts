@@ -249,13 +249,13 @@ export class CreateScheduleComponent implements OnInit {
 
     selectAutoData(event, type) {
         if (type === "pickatt") {
-            this.pickattid = event.value;
-            this.pickattname = event.label;
+            this.pickattid = event.uid;
+            this.pickattname = event.uname;
             this.addPickAttData();
         }
         else if (type === "dropatt") {
-            this.dropattid = event.value;
-            this.dropattname = event.label;
+            this.dropattid = event.uid;
+            this.dropattname = event.uname;
             this.addDropAttData();
         }
         else if (type === "pickstuds") {
@@ -557,6 +557,8 @@ export class CreateScheduleComponent implements OnInit {
             "attid": that.pickattid,
             "attnm": that.pickattname,
         });
+
+        console.log(that.pickAttList);
 
         that.pickattid = 0;
         that.pickattname = "";
