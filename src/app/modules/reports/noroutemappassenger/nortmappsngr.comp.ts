@@ -136,7 +136,7 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._rptservice.getRouteWisePassengerReports({
-                "flag": "noroutemap", "enttid": that.enttid, "batchid": "4"
+                "flag": "noroutemap", "enttid": that.enttid, "batchid": that.batchid
             }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {

@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Route Name <strong>*</strong></label>
-                        <select [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtname" tabindex="2" (ngModelChange)="getStopsByRoute()">
+                        <select [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtid" tabindex="2" (ngModelChange)="getStopsByRoute()">
                             <option [value]="0">Select Route</option>
                             <option *ngFor="let row of routesDT" [value]="row.key">
                                 {{row.value}}

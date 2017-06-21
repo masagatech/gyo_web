@@ -13,8 +13,8 @@ import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewLocationComponent },
-      { path: 'add', component: AddLocationComponent },
+      { path: 'view', component: ViewLocationComponent },
+      { path: '', component: AddLocationComponent },
       { path: 'edit/:id', component: AddLocationComponent }
     ]
   },

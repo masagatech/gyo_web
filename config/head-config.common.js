@@ -13,7 +13,7 @@
  * Will not prefix the publicPath on href (href attributes are added by default
  *
  */
-var cssver = 5;
+var cssver = 6;
 var conf = {
     link: [
         /** <link> tags for 'apple-touch-icon' (AKA Web Clips). **/
@@ -37,7 +37,7 @@ var conf = {
         { rel: 'stylesheet', href: 'assets/css/partial_style.css?v=' + cssver },
         { rel: 'stylesheet', href: 'assets/css/font-awesome.min.css' },
         { rel: 'stylesheet', href: 'assets/css/fullcalendar.min.css?v=' + cssver },
-        { rel: 'stylesheet', href: 'assets/css/all-themes.css' },
+        { rel: 'stylesheet', href: 'assets/css/all-themes.css?v=' + cssver },
 
         /** <link> tags for android web app icons **/
         // { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/assets/icon/android-icon-192x192.png' },

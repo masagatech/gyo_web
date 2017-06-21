@@ -660,8 +660,6 @@ export class CreateScheduleComponent implements OnInit {
                     }
                 }
                 else {
-                    that.batchid = 0;
-
                     that.ispickup = true;
                     that.pickautoid = 0;
                     that.pickdriverid = 0;

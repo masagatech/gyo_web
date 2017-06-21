@@ -253,7 +253,7 @@ export class AddRoutesComponent implements OnInit {
                             that.getStopsByRoute();
 
                             $(".enttname input").prop("disabled", "disabled");
-                            $(".rtname").prop("disabled", "disabled");
+                            $(".rtid").prop("disabled", "disabled");
                         }
                     }
                     catch (e) {
