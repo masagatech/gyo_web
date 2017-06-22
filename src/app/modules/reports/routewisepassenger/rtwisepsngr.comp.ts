@@ -133,6 +133,8 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     getEntityWiseRoute() {
         var that = this;
 
+        that.passengerDT = [];
+
         if (that.actviewrights === "view") {
             commonfun.loader();
 

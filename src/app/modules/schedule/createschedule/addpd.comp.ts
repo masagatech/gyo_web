@@ -490,8 +490,6 @@ export class CreateScheduleComponent implements OnInit {
 
     dropPassenger() {
         var that = this;
-        that.dropPassengerDT = [];
-
         var duplicatepassenger = that.isDuplicateDropPassenger();
 
         if (!duplicatepassenger) {
@@ -510,7 +508,6 @@ export class CreateScheduleComponent implements OnInit {
 
     dropPassengerByRoute() {
         var that = this;
-        that.dropPassengerDT = [];
 
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown",
@@ -520,7 +517,6 @@ export class CreateScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.dropPassengerDT = data.data;
-                console.log(that.dropPassengerDT);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
