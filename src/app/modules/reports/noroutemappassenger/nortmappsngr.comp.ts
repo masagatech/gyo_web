@@ -141,7 +141,9 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
                 try {
                     if (data.data.length > 0) {
                         that.passengerDT = data.data;
-                        that.headerTitle = data.data[0].rtname + " - " + data.data[0].stpname;
+                    }
+                    else {
+                        that.passengerDT = [];
                     }
                 }
                 catch (e) {

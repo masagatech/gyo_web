@@ -1,17 +1,13 @@
 <div class="card">
-
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-4 border">
-
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity</label>
-
                         <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
-
                 </div>
                 <div class="row clearfix">
                     <div class="col-md-10">
@@ -19,23 +15,22 @@
                             <div class="form-line">
                                 <label class="control-label">Vehicle</label>
                                 <select [(ngModel)]="vehtypeid" class="form-control" tabindex="2">
-                            <option [value]="0">Select Vehicle</option>
-                            <option *ngFor="let row of vehtypeDT" [value]="row.key">	
-                                {{row.val}}
-                            </option>
-                        </select>
+                                    <option [value]="0">Select Vehicle</option>
+                                    <option *ngFor="let row of vehtypeDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2 text-center">
                         <button type="button" (click)="getTripData()" class="btn btn-theme btn-xs">
-                    <span class="material-icons">subdirectory_arrow_right</span>
-                </button>
+                            <span class="material-icons">subdirectory_arrow_right</span>
+                        </button>
                     </div>
                 </div>
                 <div class="row clearfix">
                     <div class="col-md-12">
-                        <!--| filterBy: {'stsi': selectedTripType}-->
                         <div *ngFor="let row of tripDT" class="def-box" onclick="onSelection(this);" (click)="getTTMap(row)">
                             <div class="row clearfix">
                                 <div class="col-md-11">
@@ -45,16 +40,15 @@
                                 </div>
                                 <div class="col-md-1" align="right">
                                     <span class="material-icons {{row.sts}}">
-                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
-                            </span>
+                                        {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                                    </span>
                                 </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-3">
                                     <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
-                                {{row.pd == "p" ? "Pickup" : "Drop"}}
-                            </span>
-
+                                        {{row.pd == "p" ? "Pickup" : "Drop"}}
+                                    </span>
                                 </div>
                                 <div class="col-md-9">
                                     {{row.date}} - {{row.time}}
@@ -63,12 +57,11 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="col-md-8">
                 <a *ngIf="!isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-play"></span></a>
                 <a *ngIf="isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-pause"></span></a>
+
                 <div class="form-group">
                     <p-gmap #gmap [style]="{'width':'100%','height':'500px'}" [options]="options" [overlays]="overlays"></p-gmap>
                 </div>
@@ -90,8 +83,7 @@
                         </div>
                         <div class="col-md-1" align="right">
                             <span class="material-icons {{row.stsi == '0' ? 'pending' : row.stsi == '1' ? 'started' : 'stopped'}}">
-
-                                                    {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "done" : "warning"}}
+                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "done" : "warning"}}
                             </span>
                         </div>
                     </div>
@@ -107,10 +99,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
-
-
 </div>
