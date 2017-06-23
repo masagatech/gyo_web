@@ -75,16 +75,6 @@ export class CreateScheduleComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.viewScheduleDataRights();
-
-        if (Cookie.get('_enttnm_') != null) {
-            this.enttid = parseInt(Cookie.get('_enttid_'));
-            this.enttname = Cookie.get('_enttnm_');
-
-            this.fillBatchDropDown();
-            this.fillDriverDropDown();
-            this.fillVehicleDropDown();
-            this.fillRouteDropDown();
-        }
     }
 
     public ngOnInit() {

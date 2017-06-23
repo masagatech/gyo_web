@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 
-import { NoRouteMapPassengerComponent } from './nortmappsngr.comp';
+import { UnschedulePassengerComponent } from './unschdpsngr.comp';
 import { ReportsService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
@@ -12,14 +12,14 @@ import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/prim
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: NoRouteMapPassengerComponent }
+      { path: '', component: UnschedulePassengerComponent }
     ]
   },
 ];
 
 @NgModule({
   declarations: [
-    NoRouteMapPassengerComponent
+    UnschedulePassengerComponent
   ],
 
   imports: [
@@ -29,6 +29,6 @@ export const routes = [
   providers: [ReportsService]
 })
 
-export class NoRouteMapPassengerModule {
+export class UnschedulePassengerModule {
   public static routes = routes;
 }

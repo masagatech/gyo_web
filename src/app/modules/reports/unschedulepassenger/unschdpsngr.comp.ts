@@ -6,11 +6,11 @@ import { ReportsService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'rtwisepsngr.comp.html',
+    templateUrl: 'unschdpsngr.comp.html',
     providers: [MenuService, CommonService]
 })
 
-export class RouteWisePassengerComponent implements OnInit, OnDestroy {
+export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -18,17 +18,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     enttid: number = 0;
     enttname: string = "";
 
-    batchDT: any = [];
-    batchid: number = 0;
-
-    routesDT: any = [];
-    stopsDT: any = [];
     passengerDT: any = [];
-
-    rtname: string = "";
-    stpname: string = "";
-    batchname: string = "";
-
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
@@ -36,7 +26,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.viewRouteWisePassengerReportsRights();
+        this.viewUnscheduleReportsRights();
     }
 
     public ngOnInit() {
@@ -48,24 +38,23 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    public viewRouteWisePassengerReportsRights() {
+    public viewUnscheduleReportsRights() {
         var that = this;
         var addRights = [];
         var editRights = [];
         var viewRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rtwisepsngr", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "unschdpsngr", "utype": that.loginUser.utype
         }).subscribe(data => {
             viewRights = data.data.filter(a => a.mrights === "view");
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-            console.log(that.actviewrights);
 
             if (Cookie.get('_enttnm_') != null) {
                 that.enttid = parseInt(Cookie.get('_enttid_'));
                 that.enttname = Cookie.get('_enttnm_');
 
-                that.getEntityWiseRoute();
+                that.getUnschedulePassenger();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -104,51 +93,31 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         Cookie.set("_enttid_", this.enttid.toString());
         Cookie.set("_enttnm_", this.enttname);
 
-        this.getEntityWiseRoute();
+        this.getUnschedulePassenger();
     }
 
-    // Batch DropDown
+    // View Passenger List
 
-    fillBatchDropDown() {
-        var that = this;
-
-        that._rptservice.getRouteWisePassengerReports({
-            "flag": "batch",
-            "id": that.enttid,
-            "wsautoid": that._wsdetails.wsautoid
-        }).subscribe((data) => {
-            try {
-                that.batchDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-        }, () => {
-
-        })
-    }
-
-    // View Route List
-
-    getEntityWiseRoute() {
+    getUnschedulePassenger() {
         var that = this;
 
         if (that.actviewrights === "view") {
             commonfun.loader();
 
             that._rptservice.getRouteWisePassengerReports({
-                "flag": "route", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+                "flag": "unschedule", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
-                    that.routesDT = data.data;
+                    if (data.data.length > 0) {
+                        that.passengerDT = data.data;
+                    }
+                    else {
+                        that.passengerDT = [];
+                    }
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
                 }
-
                 commonfun.loaderhide();
             }, err => {
                 that._msg.Show(messageType.error, "Error", err);
@@ -158,69 +127,6 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
 
             })
         }
-    }
-
-    // View Route List
-
-    getRouteWiseStops(row) {
-        var that = this;
-        that.stopsDT = [];
-
-        commonfun.loader("#ddlstops");
-
-        that._rptservice.getRouteWisePassengerReports({
-            "flag": "stops", "enttid": row.enttid, "rtid": row.rtid, "batchid": row.batchid, "wsautoid": that._wsdetails.wsautoid
-        }).subscribe(data => {
-            try {
-                row.stopsDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide("#ddlstops");
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide("#ddlstops");
-        }, () => {
-
-        })
-    }
-
-    // View Passenger List
-
-    getStopsWisePassenger(row) {
-        var that = this;
-
-        $("#passengerModal").modal('show');
-        commonfun.loader("#passengerModal");
-
-        that.passengerDT = [];
-
-        that._rptservice.getRouteWisePassengerReports({
-            "flag": "rtwise", "stpid": row.stpid, "enttid": row.schoolid, "rtid": row.rtid,
-            "batchid": row.batchid, "wsautoid": that._wsdetails.wsautoid
-        }).subscribe(data => {
-            try {
-                if (data.data.length > 0) {
-                    that.passengerDT = data.data;
-                    that.rtname = data.data[0].rtname
-                    that.stpname = data.data[0].stpname;
-                    that.batchname = data.data[0].batchname;
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-            commonfun.loaderhide("#passengerModal");
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide("#passengerModal");
-        }, () => {
-
-        })
     }
 
     public ngOnDestroy() {

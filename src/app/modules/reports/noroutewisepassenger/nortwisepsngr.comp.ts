@@ -6,11 +6,11 @@ import { ReportsService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'nortmappsngr.comp.html',
+    templateUrl: 'nortwisepsngr.comp.html',
     providers: [MenuService, CommonService]
 })
 
-export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
+export class NoRouteWisePassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -33,7 +33,7 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.viewNoRouteMapPassengerReportsRights();
+        this.viewNoRouteWisePassengerReportsRights();
     }
 
     public ngOnInit() {
@@ -45,14 +45,14 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    public viewNoRouteMapPassengerReportsRights() {
+    public viewNoRouteWisePassengerReportsRights() {
         var that = this;
         var addRights = [];
         var editRights = [];
         var viewRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "nortmappsngr", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "nortwisepsngr", "utype": that.loginUser.utype
         }).subscribe(data => {
             viewRights = data.data.filter(a => a.mrights === "view");
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
@@ -129,14 +129,14 @@ export class NoRouteMapPassengerComponent implements OnInit, OnDestroy {
 
     // View Passenger List
 
-    getNoRouteMapPassenger() {
+    getNoRouteWisePassenger() {
         var that = this;
 
         if (that.actviewrights === "view") {
             commonfun.loader();
 
             that._rptservice.getRouteWisePassengerReports({
-                "flag": "noroutemap", "enttid": that.enttid, "batchid": that.batchid
+                "flag": "nortwise", "enttid": that.enttid, "batchid": that.batchid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {

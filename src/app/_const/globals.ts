@@ -5,11 +5,12 @@ export class Globals {
     // uploadurl: string = "http://localhost:8082/images/";
     // filepath: string = "www\\uploads\\";
 
-    serviceurl: string = "http://35.154.230.244:8082/goyoapi/";
-    uploadurl: string = "http://35.154.230.244:8082/images/";
+    serviceurl: string = "http://track.goyo.in:8082/goyoapi/";
+    uploadurl: string = "http://track.goyo.in:8082/images/";
     filepath: string = "www/uploads/";
 
-    static socketurl: string = "http://35.154.230.244:8082/";
+    static socketurl: string = "http://track.goyo.in:8082/";
+    
     otherurl: string = "http://35.154.27.42:8081/goyoapi/";
 
     public static getWSDetails() {

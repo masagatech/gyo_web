@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Batch</label>
-                        <select [(ngModel)]="batchid" class="form-control batch" tabindex="2" (ngModelChange)="getNoRouteMapPassenger()">
+                        <select [(ngModel)]="batchid" class="form-control batch" tabindex="2" (ngModelChange)="getNoRouteWisePassenger()">
                             <option [value]="0">Select Batch</option>
                             <option *ngFor="let row of batchDT" [value]="row.key">
                                 {{row.val}}
