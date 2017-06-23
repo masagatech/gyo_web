@@ -66,7 +66,7 @@ export class ViewUserComponent implements OnInit {
         if (that.actviewrights === "view") {
             commonfun.loader();
             
-            uparams = { "flag": "all", "utype": that.loginUser.utype, "cuid": that.loginUser.ucode, "wsautoid": that._wsdetails.wsautoid };
+            uparams = { "flag": "all", "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "wsautoid": that._wsdetails.wsautoid };
 
             that._userervice.getUserDetails(uparams).subscribe(data => {
                 try {
