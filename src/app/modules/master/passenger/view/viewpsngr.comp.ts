@@ -48,6 +48,7 @@ export class ViewPassengerComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
@@ -112,6 +113,7 @@ export class ViewPassengerComponent implements OnInit {
             that._psngrservice.getPassengerDetails({
                 "flag": "all",
                 "uid": that.loginUser.uid,
+                "ucode": that.loginUser.ucode,
                 "utype": that.loginUser.utype,
                 "schid": that.entityid,
                 "issysadmin": that.loginUser.issysadmin,

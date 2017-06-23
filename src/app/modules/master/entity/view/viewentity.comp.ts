@@ -23,7 +23,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
         this.viewEntityDataRights();
-        
+
         this._wsdetails = Globals.getWSDetails();
     }
 
@@ -68,8 +68,8 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._entityservice.getEntityDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-                "wsautoid": that._wsdetails.wsautoid, "cuid": that.loginUser.ucode
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.entityDT = data.data;

@@ -222,6 +222,7 @@ export class ChangeScheduleComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,

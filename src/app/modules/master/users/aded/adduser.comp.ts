@@ -190,6 +190,7 @@ export class AddUserComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "entity",
             "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
@@ -434,8 +435,19 @@ export class AddUserComponent implements OnInit {
             commonfun.loader();
 
             var _enttlist: string[] = [];
-            _enttlist = that.isAllEnttRights ? ["0"] : Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
 
+            if (that.utype == "admin" || that.utype == "user") {
+                _enttlist = ["0"];
+            }
+            else {
+                if (that.isAllEnttRights) {
+                    _enttlist = ["0"];
+                }
+                else {
+                    _enttlist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
+                }
+            }
+            
             var _vehlist: string[] = [];
             _vehlist = that.isAllVehRights ? ["0"] : Object.keys(that.vehtypeList).map(function (k) { return that.vehtypeList[k].vehtypeid });
 
