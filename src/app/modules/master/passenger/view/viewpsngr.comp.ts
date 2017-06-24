@@ -111,13 +111,8 @@ export class ViewPassengerComponent implements OnInit {
             commonfun.loader();
 
             that._psngrservice.getPassengerDetails({
-                "flag": "all",
-                "uid": that.loginUser.uid,
-                "ucode": that.loginUser.ucode,
-                "utype": that.loginUser.utype,
-                "schid": that.entityid,
-                "issysadmin": that.loginUser.issysadmin,
-                "wsautoid": that._wsdetails.wsautoid,
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "schid": that.entityid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.passengerDT = data.data;

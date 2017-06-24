@@ -108,8 +108,8 @@ export class ViewBatchComponent implements OnInit {
             commonfun.loader();
 
             that._batchervice.getBatchDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin, "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.batchDT = data.data;

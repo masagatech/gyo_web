@@ -108,11 +108,8 @@ export class ViewVehicleComponent implements OnInit {
             commonfun.loader();
 
             that._vehservice.getVehicleDetails({
-                "flag": "all",
-                "uid": that.loginUser.uid,
-                "utype": that.loginUser.utype,
-                "enttid": that.entityid,
-                "wsautoid": that._wsdetails.wsautoid
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin, "enttid": that.entityid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.vehicleDT = data.data;

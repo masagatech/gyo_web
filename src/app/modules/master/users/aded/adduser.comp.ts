@@ -267,6 +267,7 @@ export class AddUserComponent implements OnInit {
         this._autoservice.getAutoData({
             "flag": "vehicle",
             "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,

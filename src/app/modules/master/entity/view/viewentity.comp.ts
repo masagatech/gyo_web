@@ -55,7 +55,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
             that.getEntityDetails();
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -77,6 +77,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
                 }
+                
                 commonfun.loaderhide();
             }, err => {
                 that._msg.Show(messageType.error, "Error", err);

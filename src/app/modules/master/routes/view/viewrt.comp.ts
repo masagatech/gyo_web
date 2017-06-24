@@ -110,7 +110,8 @@ export class ViewRoutesComponent implements OnInit {
             commonfun.loader();
 
             that._rtservice.getStopsDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that.enttid
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "enttid": that.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.stopsDT = data.data;

@@ -349,7 +349,7 @@ export class AddDriverComponent implements OnInit {
                 "state": that.state,
                 "city": that.city,
                 "area": that.area,
-                "pincode": that.pincode,
+                "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
                 "enttid": that.enttid,
                 "attachdocs": that.attachDocsDT,
                 "remark1": that.remark1,

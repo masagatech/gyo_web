@@ -148,11 +148,8 @@ export class ViewHolidayComponent implements OnInit {
             commonfun.loader();
 
             that._holidayervice.getHoliday({
-                "flag": "all",
-                "uid": that.loginUser.uid,
-                "utype": that.loginUser.utype,
-                "wsautoid": that._wsdetails.wsautoid,
-                "schid": that.entityid
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin, "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.holidayDT = data.data;
@@ -164,6 +161,7 @@ export class ViewHolidayComponent implements OnInit {
                 commonfun.loaderhide();
             }, err => {
                 that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
                 commonfun.loaderhide();
             }, () => {
 
@@ -172,7 +170,7 @@ export class ViewHolidayComponent implements OnInit {
     }
 
     fetchEvents(eventData) {
-        
+
     }
 
     getHolidayCalendar(row) {

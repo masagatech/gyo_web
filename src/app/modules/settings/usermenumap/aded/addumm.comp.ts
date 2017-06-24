@@ -58,6 +58,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         that._autoservice.getAutoData({
             "flag": "users",
             "uid": that.loginUser.uid,
+            "ucode": this.loginUser.ucode,
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
             "wsautoid": that._wsdetails.wsautoid,

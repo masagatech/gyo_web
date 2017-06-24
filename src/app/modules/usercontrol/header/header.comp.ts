@@ -100,6 +100,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openWorkspaceForm() {
     Cookie.delete("_enttid_");
     Cookie.delete("_enttnm_");
+    Cookie.delete("_wsdetails_");
     this._router.navigate(['/workspace']);
   }
 

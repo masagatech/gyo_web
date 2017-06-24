@@ -95,7 +95,7 @@ export class ViewDriverComponent implements OnInit {
                 that.getDriverDetails();
             }
         }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         })
@@ -108,12 +108,8 @@ export class ViewDriverComponent implements OnInit {
             commonfun.loader();
 
             that._driverservice.getDriverDetails({
-                "flag": "all",
-                "uid": that.loginUser.uid,
-                "utype": that.loginUser.utype,
-                "enttid": that.entityid,
-                "issysadmin": that.loginUser.issysadmin,
-                "wsautoid": that._wsdetails.wsautoid,
+                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                "enttid": that.entityid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
             }).subscribe(data => {
                 try {
                     that.driverDT = data.data;

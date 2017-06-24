@@ -116,7 +116,6 @@ export class AddBatchComponent implements OnInit {
         this.fromtime = "";
         this.totime = "";
         this.instruction = "";
-        this.weekDT = [];
     }
 
     // Save Data
