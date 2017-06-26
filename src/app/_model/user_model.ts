@@ -16,6 +16,7 @@ export interface LoginUserModel {
   email: string;
   dispname: string;
   fullname: string;
+  utypename: string;
   uphoto: string;
   wsautoid: number;
   wscode: string;

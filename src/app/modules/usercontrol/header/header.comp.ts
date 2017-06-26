@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loginUser = this._loginservice.getUser();
     this._wsdetails = Globals.getWSDetails();
 
-    this.userfullname = this.loginUser.fullname;
+    this.userfullname = this.loginUser.fullname + " (" + this.loginUser.utypename + ")";
     this.getHeaderDetails();
 
     _router.events.forEach((event: NavigationEvent) => {

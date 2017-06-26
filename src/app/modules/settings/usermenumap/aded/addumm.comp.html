@@ -16,32 +16,28 @@
     </div>
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">User Name</label>
                         <p-autoComplete id="uname" name="uname" [(ngModel)]="uname" [tabindex]="1" (onSelect)="selectAutoUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="form-group">
                     <div class="form-line">
-                        <div class="row clearfix">
-                            <div class="col-md-12">
-                                <div class="pull-left">
-                                    <label class="control-label">Reference User Name</label>
-                                    <p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuname" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete refuname"></p-autoComplete>
-                                </div>
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="getUserRightsById(refuid, refutype)">
-										<span class="material-icons">restore</span>
-									</button>
-                                </div>
-                            </div>
-                        </div>
+                        <label class="control-label">Reference User Name</label>
+                        <p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuname" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete refuname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-theme btn-xs" (click)="getUserRightsById(refuid, refutype)">
+                    <span class="material-icons">restore</span>
+                </button>
             </div>
         </div>
         <div class="row clearfix">

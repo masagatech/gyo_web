@@ -7,8 +7,8 @@
             <div class="col-md-5" *ngIf="actviewrights === 'view'">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Entity</label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" placeholder="Entity Name" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30"
+                        <label class="control-label">Entity Name</label>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" placeholder="Entity Name"
                             class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
@@ -27,10 +27,12 @@
             <div class="body">
                 <div *ngFor="let drow of row.value">
                     <div class="row clearfix">
-                        <div class="col-md-8">
-                            Batch : {{drow.batchname}} <br /> Passenger ({{drow.countstuds}})
+                        <div class="col-md-10">
+                            <b>Batch :</b> {{drow.batchname}}
+                            <br /> <b>Timing :</b> {{drow.batchtime}}
+                            <br /> <b>Passenger :</b> ({{drow.countstuds}})
                         </div>
-                        <div class="col-md-4" align="right">
+                        <div class="col-md-2" align="right">
                             <a href="javascript:void(0);" (click)="getRouteWiseStops(drow)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">more_vert</i>
                             </a>
