@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddEntityComponent } from './aded/addentity.comp';
 import { ViewEntityComponent } from './view/viewentity.comp';
@@ -15,10 +16,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, FileUploadModule } from
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewEntityComponent },
-      { path: 'add', component: AddEntityComponent },
-      { path: 'details/:id', component: AddEntityComponent },
-      { path: 'edit/:id', component: AddEntityComponent }
+      { path: '', component: ViewEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "view", "urlname": "/entity" } },
+      { path: 'add', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];
@@ -34,7 +35,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, FileUploadModule
   ],
 
-  providers: [EntityService]
+  providers: [AuthGuard, EntityService]
 })
 
 export class EntityModule {

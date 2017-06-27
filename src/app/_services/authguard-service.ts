@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
     var routeconfig = route.data;
     var checks = this.authser.checkCredentials();
     var that = this;
-    
+
     return Observable.create((observer: Subject<boolean>) => {
       if (checks.status) {
         that.checkMenuAccess(route, state, that._loginservice.getUser(), function (e) {
@@ -66,20 +66,22 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   private checkMenuAccess(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, userdetails, callback) {
     var segments = state.url;
     var maindata = route.data;
+
     if (maindata.hasOwnProperty("submodule")) {
-      var module = maindata["module"];
+      var module1 = maindata["module"];
       var rights = maindata["rights"];
       var submodule = maindata["submodule"];
 
       var params = {
         "uid": userdetails.uid,
-        "ucode": userdetails.ucode,
         "utype": userdetails.utype,
-        "ptype": module,
+        "ptype": "p",
+        "mcode": submodule,
         "actcd": rights,
         "sessionid": userdetails.sessiondetails.sessionid,
         "url": segments
       };
+
       this.authser.checkmenuaccess(params).subscribe(d => {
         if (d.data) {
           if (d.data[0].access) {
@@ -93,8 +95,6 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
       }, () => {
 
       });
-
-
     } else {
       callback(true);
       return;

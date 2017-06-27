@@ -596,6 +596,8 @@ export class CreateScheduleComponent implements OnInit {
         commonfun.loader();
         var that = this;
 
+        var pickalldata = [];
+        var dropalldata = [];
         var pickdata = [];
         var dropdata = [];
 
@@ -606,46 +608,59 @@ export class CreateScheduleComponent implements OnInit {
                 var d = data.data;
 
                 if (d.length !== 0) {
-                    var pickdata = d.filter(a => a.typ === "p");
+                    pickalldata = d.filter(a => a.typ === "p");
+                    dropalldata = d.filter(a => a.typ === "d");
+
+                    if (pickalldata.length !== 0) {
+                        that.pickautoid = pickalldata[0].autoid;
+                        pickdata = pickalldata.filter(a => a.isactive === true);
+                    }
+                    else {
+                        that.pickautoid = 0;
+                        pickdata = [];
+                    }
+
+                    if (dropalldata.length !== 0) {
+                        that.dropautoid = dropalldata[0].autoid;
+                        dropdata = dropalldata.filter(a => a.isactive === true);
+                    }
+                    else {
+                        that.dropautoid = 0;
+                        dropdata = [];
+                    }
 
                     if (pickdata.length !== 0) {
-                        that.ispickup = pickdata[0].isactive;
-                        that.pickautoid = pickdata[0].autoid;
-                        that.pickdriverid = pickdata[0].driverid;
+                        that.pickdriverid = pickdata[0].driverid;   
                         that.pickvehicleid = pickdata[0].vehicleno;
                         that.pickpsngrtype = pickdata[0].psngrtype;
                         that.pickrtid = pickdata[0].rtid;
                         that.pickPassengerDT = pickdata[0].studentdata;
+                        that.ispickup = pickdata[0].isactive;
                     }
                     else {
-                        that.ispickup = false;
-                        that.pickautoid = 0;
                         that.pickdriverid = 0;
                         that.pickvehicleid = "";
                         that.pickpsngrtype = "bypsngr";
                         that.pickrtid = 0;
                         that.pickPassengerDT = [];
+                        that.ispickup = false;
                     }
 
-                    var dropdata = d.filter(a => a.typ === "d");
-
                     if (dropdata.length !== 0) {
-                        that.isdrop = dropdata[0].isactive;
-                        that.dropautoid = dropdata[0].autoid;
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropvehicleid = dropdata[0].vehicleno;
                         that.droppsngrtype = dropdata[0].psngrtype;
                         that.droprtid = dropdata[0].rtid;
                         that.dropPassengerDT = dropdata[0].studentdata;
+                        that.isdrop = dropdata[0].isactive;
                     }
                     else {
-                        that.isdrop = false;
-                        that.dropautoid = 0;
                         that.dropdriverid = 0;
                         that.dropvehicleid = "";
                         that.droppsngrtype = "bypsngr";
                         that.droprtid = 0;
                         that.dropPassengerDT = [];
+                        that.isdrop = false;
                     }
                 }
                 else {

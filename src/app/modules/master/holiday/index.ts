@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddHolidayComponent } from './aded/addhld.comp';
 import { ViewHolidayComponent } from './view/viewhld.comp';
@@ -13,14 +14,13 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, Sch
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewHolidayComponent },
-      { path: 'add', component: AddHolidayComponent },
-      { path: 'details/:id', component: AddHolidayComponent },
-      { path: 'edit/:id', component: AddHolidayComponent }
+      { path: '', component: ViewHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "view", "urlname": "/holiday" } },
+      { path: 'add', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];
-
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ export const routes = [
     AutoCompleteModule, ScheduleModule
   ],
 
-  providers: [HolidayService]
+  providers: [AuthGuard, HolidayService]
 })
 
 export class HolidayModule {

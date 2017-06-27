@@ -15,7 +15,7 @@ export class ChangeScheduleComponent implements OnInit {
 
     _wsdetails: any = [];
 
-    events: any[];
+    events: any = [];
     header: any;
     event: MyEvent;
     defaultDate: string = "";
@@ -24,6 +24,8 @@ export class ChangeScheduleComponent implements OnInit {
     entityDT: any = [];
     enttid: number = 0;
     enttname: string = "";
+
+    pddata: any = [];
 
     attendantDT: any = [];
     pickattid: number = 0;
@@ -92,15 +94,16 @@ export class ChangeScheduleComponent implements OnInit {
             $(".ui-picklist-buttons").hide();
             $(".ui-picklist-source-controls").show();
             $(".ui-picklist-target-controls").show();
-
-            commonfun.chevronstyle();
         }, 0);
 
         that.header = {
-            left: 'prev,next',
+            left: 'prev',
             center: 'title',
-            right: 'today'
+            right: 'next',
+            //right: 'today'
         };
+
+        that.refreshButtons();
     }
 
     hideWhenPickData() {
@@ -180,6 +183,12 @@ export class ChangeScheduleComponent implements OnInit {
         this.defaultDate = this.formatDate(today);
     }
 
+    refreshButtons() {
+        setTimeout(function () {
+            commonfun.chevronstyle();
+        }, 0);
+    }
+
     // Selected Calendar Date
 
     getPDDate(event) {
@@ -189,15 +198,19 @@ export class ChangeScheduleComponent implements OnInit {
         this.droptodate = this.formatDate(event.date);
     }
 
-    getHolidayCalendar() {
+    getPDCalendar() {
         var that = this;
+        that.pddata = [];
 
         //if (that.actviewrights === "view") {
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "holiday", "id": that.enttid }).subscribe(data => {
+        that._pickdropservice.getPickDropDetails({
+            "flag": "calendar", "schoolid": that.enttid, "batchid": that.batchid
+        }).subscribe(data => {
             try {
                 that.events = data.data;
+                that.refreshButtons();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -628,62 +641,78 @@ export class ChangeScheduleComponent implements OnInit {
         commonfun.loader();
         var that = this;
 
+        var pickalldata = [];
+        var dropalldata = [];
         var pickdata = [];
         var dropdata = [];
 
         this._pickdropservice.getPickDropDetails({
-            "flag": "edit", "schoolid": that.enttid, "batchid": that.batchid, "frmdt": event.date, "todt": event.date
+            "flag": "edit", "schoolid": that.enttid, "batchid": that.batchid,
+            "frmdt": event.calEvent.start, "todt": event.calEvent.end
         }).subscribe(data => {
             try {
-                var d = data.data;
+                that.pddata = data.data;
 
-                if (d.length !== 0) {
-                    pickdata = d.filter(a => a.typ === "p");
+                if (that.pddata.length !== 0) {
+                    pickalldata = that.pddata.filter(a => a.typ === "p");
+                    dropalldata = that.pddata.filter(a => a.typ === "d");
 
-                    if (pickdata.length !== 0) {
-                        that.ispickup = true;
-                        that.pickautoid = pickdata[0].autoid;
-                        that.pickdriverid = pickdata[0].driverid;
-                        that.pickvehicleid = pickdata[0].vehicleno;
-                        that.pickPassengerDT = pickdata[0].studentdata;
-                        that.pickpsngrtype = pickdata[0].psngrtype;
-                        that.pickrtid = pickdata[0].rtid;
-                        that.pickfromdate = pickdata[0].frmdt;
-                        that.picktodate = pickdata[0].todt;
+                    if (pickalldata.length !== 0) {
+                        that.pickautoid = pickalldata[0].autoid;
+                        pickdata = pickalldata.filter(a => a.isactive === true);
                     }
                     else {
-                        that.ispickup = false;
                         that.pickautoid = 0;
+                        pickdata = [];
+                    }
+
+                    if (dropalldata.length !== 0) {
+                        that.dropautoid = dropalldata[0].autoid;
+                        dropdata = dropalldata.filter(a => a.isactive === true);
+                    }
+                    else {
+                        that.dropautoid = 0;
+                        dropdata = [];
+                    }
+
+                    if (pickdata.length !== 0) {
+                        that.pickfromdate = pickdata[0].frmdt;
+                        that.picktodate = pickdata[0].todt;
+                        that.pickdriverid = pickdata[0].driverid;
+                        that.pickvehicleid = pickdata[0].vehicleno;
+                        that.pickpsngrtype = pickdata[0].psngrtype;
+                        that.pickrtid = pickdata[0].rtid;
+                        that.pickPassengerDT = pickdata[0].studentdata;
+                        that.ispickup = pickdata[0].isactive;
+                    }
+                    else {
                         that.pickdriverid = 0;
                         that.pickvehicleid = "";
                         that.pickpsngrtype = "bypsngr";
                         that.pickrtid = 0;
                         that.pickPassengerDT = [];
+                        that.ispickup = false;
 
                         that.getPDDate(event);
                     }
 
-                    dropdata = d.filter(a => a.typ === "d");
-
                     if (dropdata.length !== 0) {
-                        that.isdrop = true;
-                        that.dropautoid = dropdata[0].autoid;
+                        that.dropfromdate = dropdata[0].frmdt;
+                        that.droptodate = dropdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropvehicleid = dropdata[0].vehicleno;
                         that.droppsngrtype = dropdata[0].psngrtype;
                         that.droprtid = dropdata[0].rtid;
                         that.dropPassengerDT = dropdata[0].studentdata;
-                        that.dropfromdate = dropdata[0].frmdt;
-                        that.droptodate = dropdata[0].todt;
+                        that.isdrop = dropdata[0].isactive;
                     }
                     else {
-                        that.isdrop = false;
-                        that.dropautoid = 0;
                         that.dropdriverid = 0;
                         that.dropvehicleid = "";
                         that.droppsngrtype = "bypsngr";
                         that.droprtid = 0;
                         that.dropPassengerDT = [];
+                        that.isdrop = false;
 
                         that.getPDDate(event);
                     }
@@ -787,6 +816,7 @@ export class ChangeScheduleComponent implements OnInit {
 
         return true;
     }
+
     // Save
 
     savePickDropInfo() {
@@ -886,6 +916,7 @@ export class ChangeScheduleComponent implements OnInit {
 
                     if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
+                        that.getPDCalendar();
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
