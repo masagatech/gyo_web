@@ -102,10 +102,12 @@ export class AddHolidayComponent implements OnInit {
         var that = this;
 
         var act_deacthld = {
-            "autoid": that.hldid,
+            "hldid": that.hldid,
             "isactive": that.isactive,
             "mode": that.mode
         }
+
+        console.log(act_deacthld);
 
         this._hldservice.saveHoliday(act_deacthld).subscribe(data => {
             try {
@@ -232,6 +234,7 @@ export class AddHolidayComponent implements OnInit {
                     "wsautoid": that._wsdetails.wsautoid
                 }).subscribe(data => {
                     try {
+                        console.log(data.data);
                         that.hldid = data.data[0].hldid;
                         that.hldcd = data.data[0].hldcd;
                         that.hldnm = data.data[0].hldnm;
