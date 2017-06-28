@@ -35,6 +35,7 @@
                     <p-column field="mobile" header="Primary Mobile" [style]="{'width': '120px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="email" header="Primary Email" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(row)">

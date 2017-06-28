@@ -21,7 +21,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: TripTrackingComponent, canActivate: [AuthGuard],
-        data: { "module": "schd", "submodule": "tt", "rights": "view", "urlname": "/triptracking" }
+        data: { "module": "", "submodule": "tt", "rights": "view", "urlname": "/triptracking" }
       }
     ]
   },

@@ -48,54 +48,17 @@
                     <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column header="Mobile" [style]="{'width':'200px','text-align':'center','vertical-align':'top'}">
+                    <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            <div class="form-group">
-                                <div class="row clearfix">
-                                    <div class="col-md-3">
-                                        <label>Primary</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{row.mobileno1}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group" *ngIf="row.mobileno2 !== ''">
-                                <div class="row clearfix">
-                                    <div class="col-md-3">
-                                        <label>Secondary</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{row.mobileno2}}
-                                    </div>
-                                </div>
-                            </div>
+                            {{row.mobileno1}} {{", " + row.mobileno2}}
                         </template>
                     </p-column>
-                    <p-column header="Email" [style]="{'width':'250px','text-align':'center','vertical-align':'top'}">
+                    <p-column header="Email" [style]="{'width':'250px','text-align':'left','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            <div class="form-group">
-                                <div class="row clearfix">
-                                    <div class="col-md-3">
-                                        <label>Primary</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{row.email1}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group" *ngIf="row.email2 !== ''">
-                                <div class="row clearfix">
-                                    <div class="col-md-3">
-                                        <label>Secondary</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{row.email2}}
-                                    </div>
-                                </div>
-                            </div>
+                            {{row.email1}} <br /> {{row.email2}}
                         </template>
                     </p-column>
+                    <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}" *ngIf="acteditrights==='edit'">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">

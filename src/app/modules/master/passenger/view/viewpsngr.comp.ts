@@ -198,11 +198,6 @@ export class ViewPassengerComponent implements OnInit {
     }
 
     public editPassengerForm(row) {
-        if (row.isactive) {
-            this._router.navigate(['/master/passenger/edit', row.autoid]);
-        }
-        else {
-            this._msg.Show(messageType.error, "Error", "This Records is Deactivated");
-        }
+        this._router.navigate(['/master/passenger/edit', row.autoid]);
     }
 }

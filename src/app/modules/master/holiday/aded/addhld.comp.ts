@@ -37,7 +37,7 @@ export class AddHolidayComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _holidayervice: HolidayService, private _autoservice: CommonService) {
+        private _hldservice: HolidayService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
     }
@@ -96,6 +96,39 @@ export class AddHolidayComponent implements OnInit {
         this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
+    // Active / Deactive Data
+
+    active_deactiveHolidayInfo() {
+        var that = this;
+
+        var act_deacthld = {
+            "autoid": that.hldid,
+            "isactive": that.isactive,
+            "mode": that.mode
+        }
+
+        this._hldservice.saveHoliday(act_deacthld).subscribe(data => {
+            try {
+                var dataResult = data.data;
+
+                if (dataResult[0].funsave_holiday.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_holiday.msg);
+                    that.getHolidayDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_holiday.msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
     // Clear Fields
 
     resetHolidayFields() {
@@ -148,7 +181,7 @@ export class AddHolidayComponent implements OnInit {
                 "mode": ""
             }
 
-            that._holidayervice.saveHoliday(saveholiday).subscribe(data => {
+            that._hldservice.saveHoliday(saveholiday).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_holiday.msg;
@@ -193,7 +226,7 @@ export class AddHolidayComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.hldid = params['id'];
 
-                that._holidayervice.getHoliday({
+                that._hldservice.getHoliday({
                     "flag": "edit",
                     "id": that.hldid,
                     "wsautoid": that._wsdetails.wsautoid

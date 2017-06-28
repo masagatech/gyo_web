@@ -38,7 +38,7 @@ export class AddBatchComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
-        private _loginservice: LoginService, private _batchervice: BatchService) {
+        private _loginservice: LoginService, private _batchservice: BatchService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
     }
@@ -87,7 +87,7 @@ export class AddBatchComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._batchervice.getBatchDetails({
+        that._batchservice.getBatchDetails({
             "flag": "dropdown",
             "schid": that.enttid,
             "wsautoid": that._wsdetails.wsautoid
@@ -106,6 +106,39 @@ export class AddBatchComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Active / Deactive Data
+
+    active_deactiveBatchInfo() {
+        var that = this;
+
+        var act_deactbatch = {
+            "autoid": that.batchid,
+            "isactive": that.isactive,
+            "mode": that.mode
+        }
+
+        this._batchservice.saveBatchInfo(act_deactbatch).subscribe(data => {
+            try {
+                var dataResult = data.data;
+
+                if (dataResult[0].funsave_batchinfo.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_batchinfo.msg);
+                    that.getBatchDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_batchinfo.msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Clear Fields
@@ -164,7 +197,7 @@ export class AddBatchComponent implements OnInit {
                 "mode": ""
             }
 
-            this._batchervice.saveBatchInfo(savebatch).subscribe(data => {
+            this._batchservice.saveBatchInfo(savebatch).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_batchinfo.msg;
@@ -208,7 +241,7 @@ export class AddBatchComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.batchid = params['id'];
 
-                that._batchervice.getBatchDetails({
+                that._batchservice.getBatchDetails({
                     "flag": "edit",
                     "id": that.batchid,
                     "wsautoid": that._wsdetails.wsautoid
@@ -224,6 +257,8 @@ export class AddBatchComponent implements OnInit {
                         that.totime = data.data[0].totime;
                         that.instruction = data.data[0].instruction;
                         that.selectedWeek = data.data[0].weekallow !== null ? data.data[0].weekallow : [];
+                        that.isactive = data.data[0].isactive;
+                        that.mode = data.data[0].mode;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
