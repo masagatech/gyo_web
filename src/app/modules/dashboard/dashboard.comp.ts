@@ -28,12 +28,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     getDashboard() {
         var that = this;
+        commonfun.loader();
+        
         var dbparams = {
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
         }
-
-        commonfun.loader();
 
         that._autoservice.getDashboard(dbparams).subscribe(data => {
             try {

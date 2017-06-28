@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddPassengerComponent } from './aded/addpsngr.comp';
 import { ViewPassengerComponent } from './view/viewpsngr.comp';
@@ -13,10 +14,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } fr
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewPassengerComponent },
-      { path: 'add', component: AddPassengerComponent },
-      { path: 'details/:id', component: AddPassengerComponent },
-      { path: 'edit/:id', component: AddPassengerComponent }
+      { path: '', component: ViewPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "view", "urlname": "/driver" } },
+      { path: 'add', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];
@@ -32,7 +33,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
   ],
 
-  providers: [PassengerService]
+  providers: [AuthGuard, PassengerService]
 })
 
 export class PassengerModule {

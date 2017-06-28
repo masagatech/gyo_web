@@ -3,24 +3,8 @@ import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 import { SharedComponentModule } from '../_shared/sharedcomp.module';
-
-import { DashboardModule } from './dashboard';
-
-import { MarketingDashboardModule } from './marketing/dashboard';
-import { ReportsModule } from './marketing/reports';
-
-import { PassengerAttendanceReportsModule } from './reports/passengerattendance';
-import { DailyAttendanceReportsModule } from './reports/dailyattendance';
-import { DriverAttendanceReportsModule } from './reports/driverattendance';
-import { AttendentAttendanceReportsModule } from './reports/attendentattendance';
-
-import { SurveyEntriesModule } from './surveyentries';
-import { OwnerModule } from './owner';
-import { DriverModule } from './driver';
-import { BatchModule } from './batch';
-import { PassengerModule } from './passenger';
-import { CreateScheduleModule } from './createschedule';
-import { ChangeScheduleModule } from './changeschedule';
+import { NoContentComponent } from '../no-content';
+import { NoPageComponent } from '../no-page';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -35,9 +19,9 @@ export const routes = [
                 path: '',
                 children: [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
-                    { path: 'marketing', loadChildren: './marketing/dashboard#MarketingDashboardModule' },
-                    { path: 'reports', loadChildren: './marketing/reports#ReportsModule' },
-                    { path: 'market_user', loadChildren: './marketing/users#MarketingUserModule' },
+
+                    // Marketing
+                    { path: 'marketing', loadChildren: './marketing#MarketingModule' },
 
                     // Reports
                     { path: 'reports', loadChildren: './reports#ReportsModule' },
@@ -53,6 +37,8 @@ export const routes = [
 
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },
+                    
+                    { path: 'no-page', component: NoPageComponent },
                 ]
             }
         ]
@@ -66,7 +52,8 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        ModuleComponent
+        ModuleComponent,
+        NoPageComponent,
     ],
     providers: [AuthGuard]
 })

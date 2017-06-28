@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddBatchComponent } from './aded/addbatch.comp';
 import { ViewBatchComponent } from './view/viewbatch.comp';
@@ -13,10 +14,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } fr
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewBatchComponent },
-      { path: 'add', component: AddBatchComponent },
-      { path: 'details/:id', component: AddBatchComponent },
-      { path: 'edit/:id', component: AddBatchComponent }
+      { path: '', component: ViewBatchComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "btc", "rights": "view", "urlname": "/batch" } },
+      { path: 'add', component: AddBatchComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "btc", "rights": "view", "urlname": "/add" } },
+      { path: 'details/:id', component: AddBatchComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "btc", "rights": "view", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddBatchComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "btc", "rights": "view", "urlname": "/edit" } }
     ]
   },
 ];
@@ -32,7 +33,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
   ],
 
-  providers: [BatchService]
+  providers: [AuthGuard, BatchService]
 })
 
 export class BatchModule {

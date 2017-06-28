@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { DailyAttendanceReportsComponent } from './rptdailyatt.comp';
 import { ReportsService } from '@services/master';
@@ -11,7 +12,10 @@ import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/prim
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: DailyAttendanceReportsComponent }
+      {
+        path: '', component: DailyAttendanceReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptdailyatt", "rights": "view", "urlname": "/dailyattendance" }
+      }
     ]
   },
 ];
@@ -25,7 +29,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [ReportsService]
+  providers: [AuthGuard, ReportsService]
 })
 
 export class DailyAttendanceReportsModule {

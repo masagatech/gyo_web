@@ -22,8 +22,8 @@ export class AddUserComponent implements OnInit {
     areaDT: any = [];
 
     uid: number = 0;
+    loginid: number = 0;
     ucode: string = "";
-    oldcode: string = "";
     upwd: string = "";
     fname: string = "";
     lname: string = "";
@@ -454,7 +454,7 @@ export class AddUserComponent implements OnInit {
 
             var saveuser = {
                 "uid": that.uid,
-                "oldcode": that.oldcode,
+                "loginid": that.loginid,
                 "ucode": that.ucode,
                 "upwd": that.upwd,
                 "fname": that.fname,
@@ -529,7 +529,7 @@ export class AddUserComponent implements OnInit {
                 that._userservice.getUserDetails({ "flag": "edit", "id": this.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
                     try {
                         that.uid = data.data[0].uid;
-                        that.oldcode = data.data[0].ucode;
+                        that.loginid = data.data[0].loginid;
                         that.ucode = data.data[0].ucode;
                         that.upwd = data.data[0].upwd;
                         that.fname = data.data[0].fname;

@@ -24,8 +24,8 @@ export class AddDriverComponent implements OnInit {
     areaDT: any = [];
 
     driverid: number = 0;
+    loginid: number = 0;
     drivercode: string = "";
-    oldcode: string = "";
     driverpwd: string = "";
     drivername: string = "";
     aadharno: string = "";
@@ -334,8 +334,8 @@ export class AddDriverComponent implements OnInit {
 
             var saveDriver = {
                 "autoid": that.driverid,
+                "loginid": that.loginid,
                 "drivercode": that.drivercode,
-                "oldcode": that.oldcode,
                 "driverpwd": that.driverpwd,
                 "drivername": that.drivername,
                 "aadharno": that.aadharno,
@@ -414,8 +414,8 @@ export class AddDriverComponent implements OnInit {
                         var _attachdocs = data.data[0]._attachdocs;
 
                         that.driverid = _driverdata[0].autoid;
+                        that.loginid = data.data[0].loginid;
                         that.drivercode = _driverdata[0].drivercode;
-                        that.oldcode = _driverdata[0].drivercode;
                         that.driverpwd = _driverdata[0].driverpwd;
                         that.drivername = _driverdata[0].drivername;
                         that.aadharno = _driverdata[0].aadharno;

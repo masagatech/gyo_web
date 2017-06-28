@@ -3,11 +3,6 @@ import { RouterModule } from '@angular/router';
 import { MasterComponent } from '../master/master.comp';
 import { AuthGuard } from '../../_services/authguard-service';
 
-import { DashboardModule } from './dashboard';
-
-import { CreateOrderComponent } from './order/credord';
-import { ViewOrderComponent } from './order/vieword';
-
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 

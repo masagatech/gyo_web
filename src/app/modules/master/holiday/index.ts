@@ -14,10 +14,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, Sch
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "view", "urlname": "/holiday" } },
-      { path: 'add', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "entt", "submodule": "hld", "rights": "edit", "urlname": "/edit" } }
+      { path: '', component: ViewHolidayComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "hld", "rights": "view", "urlname": "/holiday" } },
+      { path: 'add', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "hld", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "hld", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddHolidayComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "hld", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];

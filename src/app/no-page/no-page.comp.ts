@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: '',
+  selector: 'no-page',
   template: `
     <div>
-      <h1>404: page missing</h1>
+      <h1>Page Not Found</h1>
     </div>
   `
 })
-export class NoContentComponent {
+
+export class NoPageComponent {
 
 }

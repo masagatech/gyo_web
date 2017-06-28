@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddMarketUserComponent } from './aded/adduser.comp';
 import { ViewMarketUserComponent } from './view/viewuser.comp';
@@ -13,10 +14,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } fr
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewMarketUserComponent },
-      { path: 'add', component: AddMarketUserComponent },
-      { path: 'details/:id', component: AddMarketUserComponent },
-      { path: 'edit/:id', component: AddMarketUserComponent }
+      { path: '', component: ViewMarketUserComponent, canActivate: [AuthGuard], data: { "module": "mrktn", "submodule": "mrktnusr", "rights": "view", "urlname": "/user" } },
+      { path: 'add', component: AddMarketUserComponent, canActivate: [AuthGuard], data: { "module": "mrktn", "submodule": "mrktnusr", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddMarketUserComponent, canActivate: [AuthGuard], data: { "module": "mrktn", "submodule": "mrktnusr", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddMarketUserComponent, canActivate: [AuthGuard], data: { "module": "mrktn", "submodule": "mrktnusr", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];
@@ -32,7 +33,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
   ],
 
-  providers: [UserService]
+  providers: [AuthGuard, UserService]
 })
 
 export class MarketingUserModule {

@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { TripTrackingComponent } from './ttmap.comp';
-
 import { TTMapService } from '@services/master';
 import { Globals } from '@models';
 
@@ -19,7 +19,10 @@ export const config: SocketIoConfig = {
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: TripTrackingComponent }
+      {
+        path: '', component: TripTrackingComponent, canActivate: [AuthGuard],
+        data: { "module": "schd", "submodule": "tt", "rights": "view", "urlname": "/triptracking" }
+      }
     ]
   },
 ];
@@ -34,11 +37,11 @@ export const routes = [
     RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule
   ],
 
-  providers: [TTMapService]
+  providers: [AuthGuard, TTMapService]
 })
 
 export class TripTrackingModule {
-  
+
 
   constructor() {
 

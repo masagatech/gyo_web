@@ -80,7 +80,7 @@ export class ViewRoutesComponent implements OnInit {
         var viewRights = [];
 
         that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "stp", "utype": that.loginUser.utype
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rt", "utype": that.loginUser.utype
         }).subscribe(data => {
             addRights = data.data.filter(a => a.mrights === "add");
             editRights = data.data.filter(a => a.mrights === "edit");

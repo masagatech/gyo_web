@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddDriverComponent } from './aded/adddriver.comp';
 import { ViewDriverComponent } from './view/viewdriver.comp';
@@ -13,10 +14,10 @@ import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } 
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewDriverComponent },
-      { path: 'add', component: AddDriverComponent },
-      { path: 'details/:id', component: AddDriverComponent },
-      { path: 'edit/:id', component: AddDriverComponent }
+      { path: '', component: ViewDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "view", "urlname": "/driver" } },
+      { path: 'add', component: AddDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];
@@ -31,7 +32,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [DriverService]
+  providers: [AuthGuard, DriverService]
 })
 
 export class DriverModule {

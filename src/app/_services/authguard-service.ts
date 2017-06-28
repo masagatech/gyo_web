@@ -36,7 +36,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
           if (e) {
             observer.next(true);
           } else {
-            that._router.navigate(['/']);
+            that._router.navigate(['/no-page']);
             observer.next(true);
           }
         })
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
               if (e) {
                 observer.next(true);
               } else {
-                that._router.navigate(['/']);
+                that._router.navigate(['/no-page']);
                 observer.next(true);
               }
             });
