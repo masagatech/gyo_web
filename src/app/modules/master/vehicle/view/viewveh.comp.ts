@@ -35,7 +35,8 @@ export class ViewVehicleComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
-        }, 0);
+            $(".entityname input").focus();
+        }, 100);
     }
 
     // Auto Completed Entity

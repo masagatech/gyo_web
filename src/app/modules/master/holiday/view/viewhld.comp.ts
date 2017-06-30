@@ -45,6 +45,10 @@ export class ViewHolidayComponent implements OnInit {
         var that = this;
         that.refreshButtons();
 
+        setTimeout(function () {
+            $(".entityname input").focus();
+        }, 100);
+
         that.header = {
             left: 'prev',
             center: 'title',

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../_shared/sharedcomp.module';
+import { AuthGuard } from '../../_services/authguard-service';
 
 import { AddWorkspaceComponent } from './aded/addws.comp';
 import { ViewWorkspaceComponent } from './view/viewws.comp';
@@ -14,10 +15,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, Fil
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewWorkspaceComponent },
-      { path: 'add', component: AddWorkspaceComponent },
-      { path: 'details/:id', component: AddWorkspaceComponent },
-      { path: 'edit/:id', component: AddWorkspaceComponent }
+      { path: '', component: ViewWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "", "submodule": "ws", "rights": "view", "urlname": "/workspace" } },
+      { path: 'add', component: AddWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "", "submodule": "ws", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "", "submodule": "ws", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "", "submodule": "ws", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];
@@ -34,7 +35,7 @@ export const routes = [
     AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [WorkspaceService]
+  providers: [AuthGuard, WorkspaceService]
 })
 
 export class WorkspaceModule {

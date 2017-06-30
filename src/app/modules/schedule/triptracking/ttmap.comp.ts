@@ -64,60 +64,52 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
 
         let imagePath = 'assets/img/bus1.png#markerOne';
 
-
         let image = {
             url: imagePath,
-            // This marker is 20 pixels wide by 32 pixels high.
-            // The origin for this image is (0, 0).
             origin: new google.maps.Point(0, 0),
-            // The anchor for this image is the base of the flagpole at (0, 32).
             anchor: new google.maps.Point(0, 0),
         };
 
-        this.marker = new google.maps.Marker(
-            {
-                position: {
-                    lat: 19.2500675
-                    , lng: 73.1426076
-                }, title: "",
-                strokeColor: 'red',
-                strokeWeight: 3,
-                scale: 6,
-                icon: image,
-                rotation: -20.21
-
-            }
-
-
+        this.marker = new google.maps.Marker({
+            position: {
+                lat: 19.2500675
+                , lng: 73.1426076
+            }, title: "",
+            strokeColor: 'red',
+            strokeWeight: 3,
+            scale: 6,
+            icon: image,
+            rotation: -20.21
+        }
         );
+
         this.overlays = [this.marker];
         this.map = this._gmap.getMap();
         this.getDefaultMap();
+
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
-
-        }, 0);
+            $(".enttname input").focus();
+        }, 100);
 
     }
 
     getDefaultMap() {
         var tripdata = {
             "status": 200,
-            "data": [
-                {
-                    "_id": "59077358b9d3a72be4594dfd",
+            "data": [{
+                "_id": "59077358b9d3a72be4594dfd",
 
-                    "bearing": -1.302723,
-                    "loctm": "2017-05-01T17:41:25.498Z",
-                    "loc": [
-                        19.2500675,
-                        73.1426076
-                    ],
-                    "sertm": "2017-05-01T17:41:44.738Z",
-                    "__v": 0
-                }
-            ]
+                "bearing": -1.302723,
+                "loctm": "2017-05-01T17:41:25.498Z",
+                "loc": [
+                    19.2500675,
+                    73.1426076
+                ],
+                "sertm": "2017-05-01T17:41:44.738Z",
+                "__v": 0
+            }]
         }
 
         var geoloc = tripdata.data[0].loc;
@@ -240,7 +232,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         that.sel_msttripid = row.id;
     }
 
-
     // get Tracking Map Data
 
     getMessage() {
@@ -255,12 +246,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
                     that.connectmsg = "Registering...";
                     that._socketservice.sendMessage("register", that.sel_tripid.toString());
                 }
-            } else if (_d["evt"] == "registered") {
+            }
+            else if (_d["evt"] == "registered") {
                 that.connectmsg = "Registered...";
                 setTimeout(function () {
                     that.connectmsg = "Waiting for data..";
                 }, 1000);
-            } else if (_d["evt"] == "data") {
+            }
+            else if (_d["evt"] == "data") {
                 try {
                     var geoloc = _d["data"];
 
@@ -345,7 +338,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
     clear() {
         // this.overlays = [];
     }
-
 
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;

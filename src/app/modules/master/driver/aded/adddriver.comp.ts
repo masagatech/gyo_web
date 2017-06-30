@@ -67,6 +67,10 @@ export class AddDriverComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $(".enttname input").focus();
+        }, 100);
+
         this.getDriverDetails();
     }
 
@@ -280,6 +284,7 @@ export class AddDriverComponent implements OnInit {
     resetDriverFields() {
         var that = this;
 
+        that.driverid = 0;
         that.drivercode = "";
         that.driverpwd = "";
         that.drivername = "";

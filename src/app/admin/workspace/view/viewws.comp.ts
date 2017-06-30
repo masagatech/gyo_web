@@ -10,12 +10,17 @@ declare var $: any;
 
 @Component({
     templateUrl: 'viewws.comp.html',
-    providers: [WorkspaceService]
+    providers: [WorkspaceService, CommonService]
 })
 
 export class ViewWorkspaceComponent implements OnInit {
     loginUser: LoginUserModel;
     workspaceDT: any = [];
+    _wsdetails: any = [];
+
+    autoWorkspaceDT: any = [];
+    autowsid: number = 0;
+    autowsname: string = "";
 
     wsautoid: number = 0;
     wscode: string = "";
@@ -34,10 +39,16 @@ export class ViewWorkspaceComponent implements OnInit {
     uploadconfig = { uploadurl: "" };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _wsservice: WorkspaceService) {
+        private _wsservice: WorkspaceService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
+        this._wsdetails = Globals.getWSDetails();
+
         this.getUploadConfig();
 
+        if (Cookie.get('_autowsnm_') != null) {
+            this.autowsid = parseInt(Cookie.get('_autowsid_'));
+            this.autowsname = Cookie.get('_autowsnm_');
+        }
 
         this.getWorkspaceDetails();
 
@@ -52,6 +63,35 @@ export class ViewWorkspaceComponent implements OnInit {
         }, 0);
     }
 
+    // Auto Completed Workspace
+
+    getAutoWorkspaceData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "workspace",
+            "search": query
+        }).subscribe((data) => {
+            this.autoWorkspaceDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Workspace
+
+    selectAutoWorkspaceData(event) {
+        this.autowsid = event.value;
+        this.autowsname = event.label;
+
+        Cookie.set("_autowsid_", this.autowsid.toString());
+        Cookie.set("_autowsnm_", this.autowsname);
+
+        this.getWorkspaceDetails();
+    }
+
     getUploadConfig() {
         this.uploadconfig.uploadurl = this.global.uploadurl
     }
@@ -62,7 +102,10 @@ export class ViewWorkspaceComponent implements OnInit {
 
         commonfun.loader();
 
-        that._wsservice.getWorkspaceDetails({ "flag": "all" }).subscribe(data => {
+        that._wsservice.getWorkspaceDetails({
+            "flag": "userwise", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that.autowsid
+        }).subscribe(data => {
             try {
                 that.workspaceDT = data.data.filter(a => a.issysadmin === false);
                 myWorkspaceDT = data.data.filter(a => a.issysadmin === true);
@@ -91,6 +134,15 @@ export class ViewWorkspaceComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    resetWorkspaceDetails() {
+        this.autowsid = 0;
+        this.autowsname = "";
+        Cookie.delete("_autowsid_");
+        Cookie.delete("_autowsnm_");
+
+        this.getWorkspaceDetails();
     }
 
     public addWorkspaceForm() {

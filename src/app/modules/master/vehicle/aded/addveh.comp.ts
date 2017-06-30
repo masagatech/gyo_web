@@ -43,6 +43,10 @@ export class AddVehicleComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $(".enttname input").focus();
+        }, 100);
+
         this.getVehicleDetails();
     }
 
@@ -134,6 +138,7 @@ export class AddVehicleComponent implements OnInit {
     // Clear Fields
 
     resetVehicleFields() {
+        this.vehid = 0;
         this.vehtype = "";
         this.vehno = "";
         this.vehregno = "";

@@ -36,7 +36,8 @@ export class ViewRoutesComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
-        }, 0);
+            $(".enttname input").focus();
+        }, 100);
     }
 
     // Auto Completed Entity

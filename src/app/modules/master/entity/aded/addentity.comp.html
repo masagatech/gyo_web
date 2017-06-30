@@ -2,7 +2,7 @@
     <div class="header">
         <h4>Entity</h4>
         <ul class="header-dropdown m-r--5">
-            <li>
+            <li *ngIf="schid !== 0">
                 <span class="switch">
                     <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveEntityInfo()"><span class="lever"></span></label>
                 </span>

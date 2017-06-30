@@ -41,10 +41,12 @@ export class ViewPassengerComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
+            $(".enttname input").focus();
+
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
-        }, 0);
+        }, 100);
     }
 
     // Auto Completed Entity

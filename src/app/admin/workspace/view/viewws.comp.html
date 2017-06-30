@@ -1,23 +1,40 @@
 <div class="card">
     <div class="header">
-        <h4>
-            <a role="button" (click)="openForm()">{{headertitle}}</a>
-            <a role="button" class="btn btn-theme btn-xs" (click)="openForm()">
-                <i class="material-icons">arrow_forward</i>
-            </a>
-        </h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
-                    <i class="material-icons">add</i>
-                </a>
-            </li>
-        </ul>
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>
+                    <a role="button" (click)="openForm()">{{headertitle}}</a>
+                    <a role="button" class="btn btn-theme btn-xs" (click)="openForm()">
+                        <i class="material-icons">arrow_forward</i>
+                    </a>
+                </h4>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Search Workspace Name <strong>*</strong></label>
+                        <p-autoComplete id="autowsname" name="autowsname" [(ngModel)]="autowsname" [tabindex]="9" (onSelect)="selectAutoWorkspaceData($event)" [suggestions]="autoWorkspaceDT" (completeMethod)="getAutoWorkspaceData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete autowsname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1" style="padding-top: 10px;">
+                <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
+                    <span class="material-icons">restore</span>
+                </button>
+            </div>
+            <div class="col-md-2" align="right" style="padding-top: 10px;">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
+                   <span class="material-icons">add</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row clearfix">
     <div *ngFor="let row of workspaceDT" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="card" style="height: 150px;">
+        <div class="card" style="height: 200px;">
             <div class="header">
                 <h2 class="title">
                     <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
@@ -37,7 +54,7 @@
             </div>
             <div class="body">
                 <ul>
-                    <li><b>Total Entity :</b> {{row.countentity}}</li>
+                    <li>Total Entity : {{row.countentity}}</li>
                     <li>{{row.name}}</li>
                     <li>{{row.mobileno1}}</li>
                     <li>{{row.email1}}</li>

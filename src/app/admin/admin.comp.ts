@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../_services/auth-service';
-import { LoginService } from '../_services/login/login-service';
-import { LoginUserModel } from '../_model/user_model';
+import { LoginService } from '@services';
+import { LoginUserModel } from '@models';
 
 declare var $: any;
 declare var loader: any;
@@ -14,7 +15,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   dispname: string = "";
 
-  constructor(private _authservice: AuthenticationService, private _loginservice: LoginService) {
+  constructor(private _router: Router, private _authservice: AuthenticationService, private _loginservice: LoginService) {
     this.loginUser = this._loginservice.getUser();
     this.dispname = this.loginUser.dispname;
   }

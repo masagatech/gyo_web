@@ -43,7 +43,10 @@ export class AddHolidayComponent implements OnInit {
     }
 
     public ngOnInit() {
-        var that = this;
+        setTimeout(function () {
+            $(".frmdt").focus();
+        }, 100);
+
         this.getHolidayDetails();
     }
 
@@ -134,9 +137,13 @@ export class AddHolidayComponent implements OnInit {
     // Clear Fields
 
     resetHolidayFields() {
-        $("input").val("");
-        $("textarea").val("");
-        $("select").val("");
+        this.hldid = 0;
+        this.frmdt = "";
+        this.todt = "";
+        this.hldnm = "";
+        this.hlddesc = "";
+        this.enttid = 0;
+        this.enttname = "";
 
         this.entityList = [];
     }
@@ -259,6 +266,7 @@ export class AddHolidayComponent implements OnInit {
                 })
             }
             else {
+                that.resetHolidayFields();
                 commonfun.loaderhide();
             }
         });

@@ -2,7 +2,7 @@
     <div class="header">
         <h4>Batch</h4>
         <ul class="header-dropdown m-r--5">
-            <li>
+            <li *ngIf="batchid !== 0">
                 <span class="switch">
                     <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveBatchInfo()"><span class="lever"></span></label>
                 </span>

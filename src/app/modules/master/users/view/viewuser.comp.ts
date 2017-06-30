@@ -31,7 +31,7 @@ export class ViewUserComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
-        }, 0);
+        }, 100);
     }
 
     public viewUserDataRights() {

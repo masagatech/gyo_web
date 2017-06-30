@@ -2,7 +2,7 @@
     <div class="header">
         <h4>Driver</h4>
         <ul class="header-dropdown m-r--5">
-            <li>
+            <li *ngIf="driverid !== 0">
                 <span class="switch">
                     <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()"><span class="lever"></span></label>
                 </span>
@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>

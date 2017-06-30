@@ -69,6 +69,10 @@ export class AddUserComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $(".ucode").focus();
+        }, 100);
+
         this.getUserDetails();
     }
 
@@ -390,6 +394,7 @@ export class AddUserComponent implements OnInit {
         that.area = 0;
         that.pincode = 0;
         that.isactive = true;
+        that.mode = "";
 
         that.entityList = [];
         that.vehtypeList = [];

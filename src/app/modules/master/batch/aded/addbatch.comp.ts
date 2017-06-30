@@ -44,6 +44,10 @@ export class AddBatchComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $(".enttname input").focus();
+        }, 100);
+
         this.getBatchDetails();
     }
 
@@ -144,6 +148,7 @@ export class AddBatchComponent implements OnInit {
     // Clear Fields
 
     resetBatchFields() {
+        this.batchid = 0;
         this.batchcode = "";
         this.batchname = "";
         this.fromtime = "";

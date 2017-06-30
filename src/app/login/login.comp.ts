@@ -33,10 +33,12 @@ export class LoginComponent implements OnInit {
     }
 
     login(e) {
-        this.btnLoginText = "Loging..";
-        this._user.email
+        var that = this;
+        that.btnLoginText = "Loging..";
 
-        this._service.login(this._user).subscribe(d => {
+        commonfun.loader("#loginloader");
+
+        that._service.login(that._user).subscribe(d => {
             try {
                 if (d) {
                     if (d.status) {
@@ -44,26 +46,29 @@ export class LoginComponent implements OnInit {
                         let userDetails: LoginUserModel = usrobj[0];
 
                         if (userDetails.status) {
-                            this._loginservice.setUsers(userDetails);
+                            that._loginservice.setUsers(userDetails);
 
                             if (userDetails.issysadmin) {
-                                this._router.navigate(['/workspace']);
+                                that._router.navigate(['/workspace']);
                             }
                             else {
                                 Cookie.set("_wsdetails_", JSON.stringify(userDetails));
-                                this._router.navigate(['/']);
+                                that._router.navigate(['/']);
                             }
                         } else {
-                            this._msg.Show(messageType.error, "Error", userDetails.errmsg);
+                            that._msg.Show(messageType.error, "Error", userDetails.errmsg);
                         }
                     }
                 }
             }
             catch (e) {
-                this._msg.Show(messageType.error, "Error", e);
+                that._msg.Show(messageType.error, "Error", e);
             }
+            
+            commonfun.loaderhide("#loginloader");
         }, err => {
-            this._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide("#loginloader");
         });
 
         e.preventDefault();

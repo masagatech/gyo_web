@@ -38,7 +38,9 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
+        setTimeout(function () {
+            $(".uname input").focus();
+        }, 100);
     }
 
     resetUserRights() {
@@ -123,8 +125,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
             mitem = this.menudetails[i];
 
             if (mitem !== null) {
-                //_giverights.push({ "mid": mitem.mid, "mrights": mitem.selectedMenuRights });
-
                 var actrights = "";
 
                 $("#M" + mitem.mid).find("input[type=checkbox]").each(function () {

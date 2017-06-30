@@ -91,10 +91,12 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
 
         setTimeout(function () {
+            $(".enttname input").focus();
+
             $(".ui-picklist-buttons").hide();
             $(".ui-picklist-source-controls").show();
             $(".ui-picklist-target-controls").show();
-        }, 0);
+        }, 100);
 
         that.header = {
             left: 'prev',

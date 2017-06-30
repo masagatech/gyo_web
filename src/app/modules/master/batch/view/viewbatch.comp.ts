@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { BatchService } from '@services/master';
 
 @Component({
@@ -35,7 +35,8 @@ export class ViewBatchComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
-        }, 0);
+            $(".entityname input").focus();
+        }, 100);
     }
 
     // Auto Completed Entity

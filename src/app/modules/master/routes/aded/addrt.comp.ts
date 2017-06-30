@@ -55,6 +55,10 @@ export class AddRoutesComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $(".enttname input").focus();
+        }, 100);
+
         this.editRoutes();
 
         this.options = {

@@ -37,11 +37,13 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         setTimeout(function () {
+            $(".entityname input").focus();
             commonfun.navistyle();
+
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
-        }, 0);
+        }, 100);
     }
 
     // Auto Completed Entity

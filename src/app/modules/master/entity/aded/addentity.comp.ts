@@ -14,11 +14,11 @@ declare var google: any;
 
 export class AddEntityComponent implements OnInit {
     loginUser: LoginUserModel;
-    
+
     marker: any;
     @ViewChild("gmap")
     _gmap: GMap;
-    
+
     private overlays: any[];
     private map: any;
 
@@ -80,8 +80,11 @@ export class AddEntityComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $(".schcd").focus();
+        }, 100);
+
         $.AdminBSB.input.activate();
-        $(".schcd").focus();
         this.getEntityDetails();
 
         this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.lon }, title: "", draggable: true });
@@ -369,6 +372,7 @@ export class AddEntityComponent implements OnInit {
     resetEntityFields() {
         var that = this;
 
+        that.schid = 0;
         that.entttype = "";
         that.schcd = "";
         that.schnm = "";
@@ -383,6 +387,8 @@ export class AddEntityComponent implements OnInit {
         that.city = 0;
         that.area = 0;
         that.pincode = 0;
+        that.isactive = true;
+        that.mode = "";
     }
 
     // Active / Deactive Data
@@ -474,7 +480,7 @@ export class AddEntityComponent implements OnInit {
             }
 
             weeklyoff = "{" + wkrights.slice(0, -1) + "}";
-            
+
             if (weeklyoff == '{}') {
                 this._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
@@ -614,6 +620,7 @@ export class AddEntityComponent implements OnInit {
                 })
             }
             else {
+                that.resetEntityFields();
                 commonfun.loaderhide();
             }
         });

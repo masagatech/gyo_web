@@ -81,10 +81,12 @@ export class CreateScheduleComponent implements OnInit {
         this.getPDDate();
 
         setTimeout(function () {
+            $(".enttname input").focus();
+
             $(".ui-picklist-buttons").hide();
             $(".ui-picklist-source-controls").show();
             $(".ui-picklist-target-controls").show();
-        }, 0);
+        }, 100);
     }
 
     hideWhenPickData() {

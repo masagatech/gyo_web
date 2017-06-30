@@ -32,6 +32,8 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
+            $(".enttname input").focus();
+
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();

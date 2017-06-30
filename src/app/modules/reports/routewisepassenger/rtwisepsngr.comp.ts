@@ -42,10 +42,12 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
+            $(".enttname input").focus();
+
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
-        }, 0);
+        }, 100);
     }
 
     public viewRouteWisePassengerReportsRights() {

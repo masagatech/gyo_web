@@ -91,7 +91,10 @@ export class AddPassengerComponent implements OnInit {
     }
 
     public ngOnInit() {
-        $(".enttname input").focus();
+        setTimeout(function () {
+            $(".enttname input").focus();
+        }, 1000);
+
         this.getPassengerDetails();
     }
 
@@ -741,7 +744,6 @@ export class AddPassengerComponent implements OnInit {
                 })
             }
             else {
-
                 if (Cookie.get('_enttnm_') != null) {
                     this.enttid = parseInt(Cookie.get('_enttid_'));
                     this.enttname = Cookie.get('_enttnm_');
