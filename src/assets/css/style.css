@@ -10412,6 +10412,14 @@ body.waitMe_body .waitMe_container.text>div {
     margin-left: -10px;
 }
 
+.PA,
+.DA {
+    background: -webkit-linear-gradient(#8BC34A, #E91E63);
+    color: #FFFFFF;
+    padding: 10px;
+    margin-left: -10px;
+}
+
 .act-red {
     background-color: #F44336;
     color: #FFFFFF;

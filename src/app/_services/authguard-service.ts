@@ -74,7 +74,9 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
 
       var params = {
         "uid": userdetails.uid,
+        "ucode": userdetails.ucode,
         "utype": userdetails.utype,
+        "issysadmin": userdetails.issysadmin,
         "ptype": "p",
         "mcode": submodule,
         "actcd": rights,

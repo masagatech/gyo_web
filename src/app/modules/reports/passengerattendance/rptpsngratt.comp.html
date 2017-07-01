@@ -40,7 +40,7 @@
             <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
             <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width': '30px', 'text-align':'left'}">
                 <template let-drow="rowData" pTemplate type="body">
-                    <span class="{{drow[atcol.day]}}">{{drow[atcol.day]}}</span>
+                    <span class="{{drow[atcol.day] == null ? 'A' : drow[atcol.day]}}">{{drow[atcol.day] == null ? 'A' : drow[atcol.day]}}</span>
                 </template>
             </p-column>
             <p-column field="p" header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
