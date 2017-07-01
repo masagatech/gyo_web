@@ -103,24 +103,25 @@ export class ViewWorkspaceComponent implements OnInit {
         commonfun.loader();
 
         that._wsservice.getWorkspaceDetails({
-            "flag": "userwise", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that.autowsid
+            "flag": "userwise", "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin, "wsautoid": that.autowsid
         }).subscribe(data => {
             try {
                 that.workspaceDT = data.data.filter(a => a.issysadmin === false);
                 myWorkspaceDT = data.data.filter(a => a.issysadmin === true);
 
-                that.wsautoid = myWorkspaceDT[0].wsautoid;
-                that.wscode = myWorkspaceDT[0].wscode;
-                that.wsname = myWorkspaceDT[0].wsname;
-                that.wstype = myWorkspaceDT[0].wstype;
-                that.wslogo = myWorkspaceDT[0].wslogo;
-                that.lgcode = myWorkspaceDT[0].lgcode;
-                that.issysadmin = myWorkspaceDT[0].issysadmin;
+                if (myWorkspaceDT.length > 0) {
+                    that.wsautoid = myWorkspaceDT[0].wsautoid;
+                    that.wscode = myWorkspaceDT[0].wscode;
+                    that.wsname = myWorkspaceDT[0].wsname;
+                    that.wstype = myWorkspaceDT[0].wstype;
+                    that.wslogo = myWorkspaceDT[0].wslogo;
+                    that.lgcode = myWorkspaceDT[0].lgcode;
+                    that.issysadmin = myWorkspaceDT[0].issysadmin;
 
-                that.enttid = myWorkspaceDT[0].enttid;
-                that.enttnm = myWorkspaceDT[0].enttnm;
-                that.headertitle = "My Workspace (" + myWorkspaceDT[0].wsname + ")";
+                    that.enttid = myWorkspaceDT[0].enttid;
+                    that.enttnm = myWorkspaceDT[0].enttnm;
+                    that.headertitle = "My Workspace (" + myWorkspaceDT[0].wsname + ")";
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

@@ -1,4 +1,39 @@
-<div class="card">
+<div class="card" *ngIf="!loginUser.issysadmin">
+    <div class="header">
+        <h4>My Workspace</h4>
+    </div>
+    <div class="body">
+        <div *ngFor="let row of workspaceDT">
+            <div class="row clearfix">
+                <div class="col-md-3">
+                    <div align="right">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="getMainForm(row)">
+                            <i class="material-icons">arrow_forward</i></button>
+                        <button type="button" class="btn btn-theme btn-xs" (click)="editWorkspaceForm(row)">
+                            <i class="material-icons">edit</i></button>
+                    </div>
+                    <hr />
+                    <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="215px">
+                </div>
+                <div class="col-md-9">
+                    <ul>
+                        <li>
+                            <h4><a role="button" (click)="getMainForm(row)">{{row.wsname}}</a></h4>
+                        </li>
+                        <li>{{row.ucode}}</li>
+                        <li>Total Entity : {{row.countentity}}</li>
+                        <li>{{row.name}} ({{row.mobileno1}})</li>
+                        <li>{{row.wstype}}</li>
+                        <li>{{row.email1}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card" *ngIf="loginUser.issysadmin">
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-4">
@@ -32,7 +67,8 @@
         </div>
     </div>
 </div>
-<div class="row clearfix">
+
+<div class="row clearfix" *ngIf="loginUser.issysadmin">
     <div *ngFor="let row of workspaceDT" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="card" style="height: 200px;">
             <div class="header">
@@ -40,7 +76,7 @@
                     <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
                     <a role="button" (click)="getMainForm(row)">{{row.wsname}}</a> <small>{{row.lgcode + "." + row.wscode}}</small>
                 </h2>
-                <ul class="header-dropdown m-r--5">
+                <ul class="header-dropdown m-r--5" style="top:20px">
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">more_vert</i>
@@ -55,15 +91,14 @@
             <div class="body">
                 <ul>
                     <li>Total Entity : {{row.countentity}}</li>
-                    <li>{{row.name}}</li>
-                    <li>{{row.mobileno1}}</li>
+                    <li>{{row.name}} ({{row.mobileno1}})</li>
+                    <li>{{row.wstype}}</li>
                     <li>{{row.email1}}</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-
 
 <div class="card" style="display: none;">
     <div class="body no-padding">

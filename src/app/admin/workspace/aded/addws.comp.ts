@@ -24,7 +24,7 @@ export class AddWorkspaceComponent implements OnInit {
     wscode: string = "";
     wsname: string = "";
     wsdesc: string = "";
-    oldcode: string = "";
+    loginid: number = 0;
     lgcode: string = "";
     lgpwd: string = "";
     cpname: string = "";
@@ -281,6 +281,8 @@ export class AddWorkspaceComponent implements OnInit {
         that.isschool = false;
         that.schpsngrrate = "0";
         that.schenttmaxno = 0;
+
+        that.uploadPhotoDT = [];
     }
 
     // Active / Deactive Data
@@ -389,7 +391,7 @@ export class AddWorkspaceComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select 1 Workspace Type");
             return false;
         }
-        
+
         if (that.iscompany) {
             if (that.cmppsngrrate == "0") {
                 that._msg.Show(messageType.error, "Error", "Enter Rate / Passenger for Company");
@@ -451,7 +453,7 @@ export class AddWorkspaceComponent implements OnInit {
             var saveWorkspace = {
                 "wsautoid": that.wsautoid,
                 "wscode": that.wscode,
-                "oldcode": that.oldcode,
+                "loginid": that.loginid,
                 "wsname": that.wsname,
                 "wsdesc": that.wsdesc,
                 "wslogo": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
@@ -526,46 +528,53 @@ export class AddWorkspaceComponent implements OnInit {
                 that.wsautoid = params['id'];
                 that.disablecode = true;
 
-                that._wsservice.getWorkspaceDetails({ "flag": "edit", "id": this.wsautoid }).subscribe(data => {
+                that._wsservice.getWorkspaceDetails({
+                    "flag": "edit", "id": this.wsautoid, "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin
+                }).subscribe(data => {
                     try {
-                        that.wsautoid = data.data[0].wsautoid;
-                        that.wscode = data.data[0].wscode;
-                        that.wsname = data.data[0].wsname;
+                        if (data.data.length > 0) {
+                            that.wsautoid = data.data[0].wsautoid;
+                            that.wscode = data.data[0].wscode;
+                            that.wsname = data.data[0].wsname;
 
-                        if (data.data[0].wslogo !== "") {
-                            that.uploadPhotoDT.push({ "athurl": data.data[0].wslogo });
+                            if (data.data[0].wslogo !== "") {
+                                that.uploadPhotoDT.push({ "athurl": data.data[0].wslogo });
+                            }
+
+                            that.wsdesc = data.data[0].wsdesc;
+                            that.loginid = data.data[0].loginid;
+                            that.lgcode = data.data[0].lgcode;
+                            that.lgpwd = data.data[0].lgpwd;
+
+                            that.cpname = data.data[0].name;
+                            that.email1 = data.data[0].email1;
+                            that.email2 = data.data[0].email2;
+                            that.mobileno1 = data.data[0].mobileno1;
+                            that.mobileno2 = data.data[0].mobileno2;
+                            that.address = data.data[0].address;
+                            that.country = data.data[0].country;
+                            that.state = data.data[0].state;
+                            that.fillCityDropDown();
+                            that.city = data.data[0].city;
+                            that.fillAreaDropDown();
+                            that.area = data.data[0].area;
+                            that.pincode = data.data[0].pincode;
+                            that.isactive = data.data[0].isactive;
+                            that.remark = data.data[0].remark1;
+
+                            that.iscompany = data.data[0].iscompany;
+                            that.cmppsngrrate = data.data[0].cmppsngrrate;
+                            that.cmpenttmaxno = data.data[0].cmpenttmaxno;
+
+                            that.isschool = data.data[0].isschool;
+                            that.schpsngrrate = data.data[0].schpsngrrate;
+                            that.schenttmaxno = data.data[0].schenttmaxno;
+
+                            that.mode = data.data[0].mode;
                         }
-
-                        that.wsdesc = data.data[0].wsdesc;
-                        that.oldcode = data.data[0].lgcode;
-                        that.lgcode = data.data[0].lgcode;
-                        that.lgpwd = data.data[0].lgpwd;
-
-                        that.cpname = data.data[0].name;
-                        that.email1 = data.data[0].email1;
-                        that.email2 = data.data[0].email2;
-                        that.mobileno1 = data.data[0].mobileno1;
-                        that.mobileno2 = data.data[0].mobileno2;
-                        that.address = data.data[0].address;
-                        that.country = data.data[0].country;
-                        that.state = data.data[0].state;
-                        that.fillCityDropDown();
-                        that.city = data.data[0].city;
-                        that.fillAreaDropDown();
-                        that.area = data.data[0].area;
-                        that.pincode = data.data[0].pincode;
-                        that.isactive = data.data[0].isactive;
-                        that.remark = data.data[0].remark1;
-
-                        that.iscompany = data.data[0].iscompany;
-                        that.cmppsngrrate = data.data[0].cmppsngrrate;
-                        that.cmpenttmaxno = data.data[0].cmpenttmaxno;
-
-                        that.isschool = data.data[0].isschool;
-                        that.schpsngrrate = data.data[0].schpsngrrate;
-                        that.schenttmaxno = data.data[0].schenttmaxno;
-
-                        that.mode = data.data[0].mode;
+                        else {
+                            that.resetWorkspaceFields();
+                        }
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

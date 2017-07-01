@@ -3125,7 +3125,7 @@ section.content {
 
 .card .header .header-dropdown {
     position: absolute;
-    top: 20px;
+    top: 5px;
     right: 15px;
     list-style: none;
 }
@@ -3178,7 +3178,7 @@ section.content {
 }
 
 .card .body ul li {
-    padding: 5px;
+    padding: 0 0 10px;
     list-style: none;
 }
 
