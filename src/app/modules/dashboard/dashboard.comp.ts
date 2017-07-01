@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonService } from '../../_services/common/common-service'; /* add reference for master of master */
-import { MessageService, messageType } from '../../_services/messages/message-service';
-import { LoginService } from '../../_services/login/login-service';
-import { LoginUserModel } from '../../_model/user_model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Globals } from '../../_const/globals';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'dashboard.comp.html',
@@ -29,7 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getDashboard() {
         var that = this;
         commonfun.loader();
-        
+
         var dbparams = {
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
@@ -52,6 +50,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
+    }
+
+    // open
+
+    openForm(row) {
+        var that = this;
+
+        if (row.dbtype == "user") {
+            console.log(row.dbcode);
+            Cookie.delete('_srcutype_');
+            Cookie.set("_srcutype_", row.dbcode);
+        }
+
+        that._router.navigate([row.dblink]);
     }
 
     ngOnInit() {

@@ -7,7 +7,9 @@
         <div class="col-md-4" *ngFor="let dbrow of dashboardDT">
             <div class="info-box {{dbrow.dbcss}} hover-expand-effect">
                 <div class="icon">
-                    <i class="material-icons">{{dbrow.dbicon}}</i>
+                    <a role="button" (click)="openForm(dbrow)">
+                        <i class="material-icons">{{dbrow.dbicon}}</i>
+                    </a>
                 </div>
                 <div class="content">
                     <div class="text">{{dbrow.dbhead}}</div>

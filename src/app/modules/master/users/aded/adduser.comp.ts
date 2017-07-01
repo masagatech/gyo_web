@@ -57,8 +57,8 @@ export class AddUserComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+    constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService,
+        private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.fillUserTypeDropDown();
@@ -453,7 +453,7 @@ export class AddUserComponent implements OnInit {
                     _enttlist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
                 }
             }
-            
+
             var _vehlist: string[] = [];
             _vehlist = that.isAllVehRights ? ["0"] : Object.keys(that.vehtypeList).map(function (k) { return that.vehtypeList[k].vehtypeid });
 

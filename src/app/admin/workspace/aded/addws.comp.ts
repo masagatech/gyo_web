@@ -438,7 +438,6 @@ export class AddWorkspaceComponent implements OnInit {
 
         if (_iswsvalid) {
             commonfun.loader();
-            console.log("abc 003");
 
             if ((that.iscompany) && (!that.isschool)) {
                 _wstype = "Company";
@@ -497,19 +496,19 @@ export class AddWorkspaceComponent implements OnInit {
                         }
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", "Error 101 : " + dataResult.msg);
-                        console.log("Error 101 : " + dataResult.msg);
+                        that._msg.Show(messageType.error, "Error", dataResult.msg);
+                        console.log(dataResult.msg);
                     }
 
                     commonfun.loaderhide();
                 }
                 catch (e) {
-                    that._msg.Show(messageType.error, "Error", "Error 102 : " + e);
-                    console.log("Error 102 : " + e);
+                    that._msg.Show(messageType.error, "Error", e);
+                    console.log(e);
                 }
             }, err => {
-                console.log("Error 103 : " + err);
-                that._msg.Show(messageType.error, "Error", "Error 103 : " + err);
+                console.log(err);
+                that._msg.Show(messageType.error, "Error", err);
                 commonfun.loaderhide();
             }, () => {
                 // console.log("Complete");
@@ -573,7 +572,12 @@ export class AddWorkspaceComponent implements OnInit {
                             that.mode = data.data[0].mode;
                         }
                         else {
-                            that.resetWorkspaceFields();
+                            if (that.loginUser.issysadmin) {
+                                that.resetWorkspaceFields();
+                            }
+                            else {
+                                that.backViewData();
+                            }
                         }
                     }
                     catch (e) {

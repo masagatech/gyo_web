@@ -3303,6 +3303,11 @@ section.content {
     margin-bottom: 30px;
 }
 
+.info-box a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .info-box .icon {
     display: inline-block;
     text-align: center;
