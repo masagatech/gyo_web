@@ -1581,6 +1581,7 @@ select.selectpicker {
 }
 
 .bootstrap-select.form-control:not([class*="col-"]) {
+    height: 31px;
     width: 100%;
 }
 

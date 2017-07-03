@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -13,7 +13,7 @@ declare var $: any;
     providers: [MenuService, CommonService]
 })
 
-export class ViewPassengerComponent implements OnInit {
+export class ViewPassengerComponent implements OnInit, OnDestroy {
     passengerDT: any = [];
     loginUser: LoginUserModel;
 
@@ -201,5 +201,10 @@ export class ViewPassengerComponent implements OnInit {
 
     public editPassengerForm(row) {
         this._router.navigate(['/master/passenger/edit', row.autoid]);
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }
