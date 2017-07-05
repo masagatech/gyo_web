@@ -55,12 +55,19 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.passengerDT, 'User Details', { "showLabels": true });
+        var arrayDT = [];
+
+        arrayDT.push({
+            "rtname": "Vitthalwadi", "batchname": "CHM 001", "batchtime": "07:00 AM to 01:00 PM",
+            "passenger": [{ "psngrid": "1", "psngrname": "Vivek Pandey" }, { "psngrid": "2", "psngrname": "Vinay Pandey" }]
+        });
+
+        new Angular2Csv(arrayDT, 'User Details', { "showLabels": true });
     }
 
     public exportToPDF() {
         let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.passengerDT));
+        doc.text(20, 20, JSON.stringify(this.routesDT));
         doc.save('Test.pdf');
 
         // let pdf = new jsPDF('l', 'pt', 'a4');
