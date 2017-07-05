@@ -326,10 +326,6 @@ export class AddDriverComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
         }
-        else if (that.email1 == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Email");
-            $(".email1").focus();
-        }
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();

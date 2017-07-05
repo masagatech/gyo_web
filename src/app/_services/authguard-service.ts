@@ -84,11 +84,15 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
         "url": segments
       };
 
+      console.log(params);
+
       this.authser.checkmenuaccess(params).subscribe(d => {
         if (d.data) {
           if (d.data[0].access) {
+            console.log("params 1");
             callback(true);
           } else {
+            console.log("params 2");
             callback(false);
           }
         }

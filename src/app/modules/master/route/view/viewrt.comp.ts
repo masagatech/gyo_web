@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
-import { RoutesService } from '@services/master';
+import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -11,7 +11,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     providers: [CommonService, MenuService]
 })
 
-export class ViewRoutesComponent implements OnInit {
+export class ViewRouteComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -26,7 +26,7 @@ export class ViewRoutesComponent implements OnInit {
     actviewrights: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RoutesService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RouteService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
@@ -133,11 +133,11 @@ export class ViewRoutesComponent implements OnInit {
     }
 
     public addRoutesForm() {
-        this._router.navigate(['/master/routes/add']);
+        this._router.navigate(['/master/route/add']);
     }
 
     public editRoutesForm(row) {
         console.log(row);
-        this._router.navigate(['/master/routes/edit', row.rtid]);
+        this._router.navigate(['/master/route/edit', row.rtid]);
     }
 }

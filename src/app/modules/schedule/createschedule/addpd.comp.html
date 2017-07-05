@@ -95,15 +95,24 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group" *ngIf="pickpsngrtype == 'byrt'">
-                    <div class="form-line">
-                        <label class="control-label">Route Name</label>
-                        <select [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="8" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
-                            <option [value]="0">Select Route</option>
-                            <option *ngFor="let row of routeDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                <div class="row clearfix" *ngIf="pickpsngrtype == 'byrt'">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Route Name</label>
+                                <select [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="8" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
+                                    <option [value]="0">Select Route</option>
+                                    <option *ngFor="let row of routeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1" style="padding-top: 12px; text-align: right;">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="pickupPassengerByRoute()">
+                            <span class="material-icons">restore</span>
+                        </button>
                     </div>
                 </div>
                 <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
@@ -189,15 +198,24 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group" *ngIf="droppsngrtype == 'byrt'">
-                    <div class="form-line">
-                        <label class="control-label">Route Name</label>
-                        <select [(ngModel)]="droprtid" class="form-control droprtname" tabindex="15" (ngModelChange)="dropPassengerByRoute()">
-                            <option [value]="0">Select Route</option>
-                            <option *ngFor="let row of routeDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                <div class="row clearfix" *ngIf="droppsngrtype == 'byrt'">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Route Name</label>
+                                <select [(ngModel)]="droprtid" class="form-control droprtname" tabindex="15" (ngModelChange)="dropPassengerByRoute()">
+                                    <option [value]="0">Select Route</option>
+                                    <option *ngFor="let row of routeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1" style="padding-top: 12px; text-align: right;">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="dropPassengerByRoute()">
+                            <span class="material-icons">restore</span>
+                        </button>
                     </div>
                 </div>
                 <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">

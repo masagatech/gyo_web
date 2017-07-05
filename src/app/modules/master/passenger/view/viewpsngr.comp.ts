@@ -23,6 +23,9 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     enttid: number = 0;
     enttname: string = "";
 
+    standardDT: any = [];
+    standard: string = "";
+
     autoPassengerDT: any = [];
     psngrid: number = 0;
     psngrname: string = "";
@@ -35,6 +38,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+
+        this.fillDropDownList();
         this.viewPassengerDataRights();
     }
 
@@ -119,6 +124,31 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         this.getPassengerDetails();
     }
 
+    // Fill Entity, Standard, Month DropDown
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.standardDT = data.data.filter(a => a.group === "standard");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // View Data Rights
 
     public viewPassengerDataRights() {
@@ -159,7 +189,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         var params = {};
 
         if (that.actviewrights === "view") {
-            commonfun.loader();
+            commonfun.loader("#fltrpsngr");
 
             if (that.psngrname == "") {
                 Cookie.set("_psngrid_", "0");
@@ -171,24 +201,23 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
             params = {
                 "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                "schid": that.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid,
+                "schid": that.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
                 "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
             };
 
             that._psngrservice.getPassengerDetails(params).subscribe(data => {
                 try {
-                    console.log(params);
                     that.passengerDT = data.data;
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
                 }
 
-                commonfun.loaderhide();
+                commonfun.loaderhide("#fltrpsngr");
             }, err => {
                 that._msg.Show(messageType.error, "Error", err);
                 console.log(err);
-                commonfun.loaderhide();
+                commonfun.loaderhide("#fltrpsngr");
             }, () => {
 
             })

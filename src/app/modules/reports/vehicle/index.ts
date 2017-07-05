@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { AuthGuard } from '../../../_services/authguard-service';
 
-import { NoRouteWisePassengerComponent } from './nortwisepsngr.comp';
-import { ReportsService } from '@services/master';
+import { VehicleReportsComponent } from './rptveh.comp';
+import { VehicleService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -14,8 +14,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: NoRouteWisePassengerComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "nortwisepsngr", "rights": "view", "urlname": "/noroutewisepassenger" }
+        path: '', component: VehicleReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptpsngr", "rights": "view", "urlname": "/vehicle" }
       }
     ]
   },
@@ -23,16 +23,16 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    NoRouteWisePassengerComponent
+    VehicleReportsComponent
   ],
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, ReportsService]
+  providers: [AuthGuard, VehicleService]
 })
 
-export class NoRouteWisePassengerModule {
+export class VehicleReportsModule {
   public static routes = routes;
 }

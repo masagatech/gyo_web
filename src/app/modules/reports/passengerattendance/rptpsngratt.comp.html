@@ -1,33 +1,57 @@
 <div class="card">
     <div class="header">
         <h4>Passenger Attendance</h4>
-        <div class="row clearfix">
-            <div class="col-md-7">
+        <div class="row clearfix" id="fltrpsngr">
+            <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name</label>
-                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group">
                     <div class="form-line">
-                        <select name="monthname" [(ngModel)]="monthname" class="form-control">
+                        <label class="control-label">Month</label>
+                        <select name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getAttendanceReports()">
                             <option [value]="''">Select Month</option>
-                            <option *ngFor="let row of monthDT" [value]="row.month">
-                                {{row.month}}
+                            <option *ngFor="let row of monthDT" [value]="row.key">
+                                {{row.val}}
                             </option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="viewAttendanceReportsRights()">
-                        <span class="material-icons">search</span>
+                    <div class="form-line">
+                        <label class="control-label">Standard</label>
+                        <select name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getAttendanceReports()">
+                            <option [value]="''">All</option>
+                            <option *ngFor="let row of standardDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1" style="padding-top: 12px;">
+                <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
+                    <span class="material-icons">subdirectory_arrow_right</span>
+                </button>
+            </div>
+            <div class="col-md-3" style="padding-top: 12px;">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
                     </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

@@ -94,42 +94,51 @@
                         <div class="form-line">
                             <label class="control-label">Driver Name</label>
                             <select [(ngModel)]="pickdriverid" class="form-control" tabindex="6" (ngModelChange)="setDropDriver()">
-                            <option [value]="0">Select Driver</option>
-                            <option *ngFor="let row of driverDT" [value]="row.key">	
-                                {{row.val}}
-                            </option>
-                        </select>
+                                <option [value]="0">Select Driver</option>
+                                <option *ngFor="let row of driverDT" [value]="row.key">	
+                                    {{row.val}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Vehicle Name</label>
                             <select [(ngModel)]="pickvehicleid" class="form-control pveh" tabindex="7" (ngModelChange)="setDropVehicle()">
-                            <option [value]="''">Select Vehicle</option>
-                            <option *ngFor="let row of vehicleDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                                <option [value]="''">Select Vehicle</option>
+                                <option *ngFor="let row of vehicleDT" [value]="row.key">
+                                    {{row.val}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Passenger Type</label>
                             <select [(ngModel)]="pickpsngrtype" class="form-control pickpsngrtype" tabindex="8" (ngModelChange)="setDropPsngrType();">
-                            <option [value]="'bypsngr'">By Passenger</option>
-                            <option [value]="'byrt'">By Route</option>
-                        </select>
+                                <option [value]="'bypsngr'">By Passenger</option>
+                                <option [value]="'byrt'">By Route</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="form-group" *ngIf="pickpsngrtype == 'byrt'">
-                        <div class="form-line">
-                            <label class="control-label">Route Name</label>
-                            <select [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="9" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
-                            <option [value]="0">Select Route</option>
-                            <option *ngFor="let row of routeDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                    <div class="row clearfix" *ngIf="pickpsngrtype == 'byrt'">
+                        <div class="col-md-11">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Route Name</label>
+                                    <select [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="9" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
+                                        <option [value]="0">Select Route</option>
+                                        <option *ngFor="let row of routeDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1" style="padding-top: 12px; text-align: right;">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="pickupPassengerByRoute()">
+                                <span class="material-icons">restore</span>
+                            </button>
                         </div>
                     </div>
                     <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
@@ -143,27 +152,27 @@
 
                     <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
                         <template let-passenger pTemplate="editor">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="ui-helper-clearfix">
-                                    {{passenger.stdnm}}
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="ui-helper-clearfix">
+                                        {{passenger.stdnm}}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="ui-helper-clearfix">
+                                        <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                        </template>
                     </p-orderList>
                 </div>
                 <div class="col-md-6">
                     <div class="header content-header">
                         <span>
-                        <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" checked class="filled-in" (ngModelChange)="copyPickInfoInDrop()">
-                        <label for="chkdrop">Drop</label>
-                    </span>
+                            <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" checked class="filled-in" (ngModelChange)="copyPickInfoInDrop()">
+                            <label for="chkdrop">Drop</label>
+                        </span>
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-6">
@@ -187,42 +196,51 @@
                         <div class="form-line">
                             <label class="control-label">Driver Name</label>
                             <select [(ngModel)]="dropdriverid" class="form-control" tabindex="13">
-                            <option [value]="0">Select Driver</option>
-                            <option *ngFor="let row of driverDT" [value]="row.key">	
-                                {{row.val}}
-                            </option>
-                        </select>
+                                <option [value]="0">Select Driver</option>
+                                <option *ngFor="let row of driverDT" [value]="row.key">	
+                                    {{row.val}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Vehicle Name</label>
                             <select [(ngModel)]="dropvehicleid" class="form-control dveh" tabindex="14">
-                            <option [value]="''">Select Vehicle</option>
-                            <option *ngFor="let row of vehicleDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                                <option [value]="''">Select Vehicle</option>
+                                <option *ngFor="let row of vehicleDT" [value]="row.key">
+                                    {{row.val}}
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Passenger Type</label>
                             <select [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="15">
-                            <option [value]="'bypsngr'">By Passenger</option>
-                            <option [value]="'byrt'">By Route</option>
-                        </select>
+                                <option [value]="'bypsngr'">By Passenger</option>
+                                <option [value]="'byrt'">By Route</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="form-group" *ngIf="droppsngrtype == 'byrt'">
-                        <div class="form-line">
-                            <label class="control-label">Route Name</label>
-                            <select [(ngModel)]="droprtid" class="form-control droprtname" tabindex="16" (ngModelChange)="dropPassengerByRoute()">
-                            <option [value]="0">Select Route</option>
-                            <option *ngFor="let row of routeDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
+                    <div class="row clearfix" *ngIf="droppsngrtype == 'byrt'">
+                        <div class="col-md-11">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Route Name</label>
+                                    <select [(ngModel)]="droprtid" class="form-control droprtname" tabindex="16" (ngModelChange)="dropPassengerByRoute()">
+                                        <option [value]="0">Select Route</option>
+                                        <option *ngFor="let row of routeDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1" style="padding-top: 12px; text-align: right;">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="dropPassengerByRoute()">
+                                <span class="material-icons">restore</span>
+                            </button>
                         </div>
                     </div>
                     <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">

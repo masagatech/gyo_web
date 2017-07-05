@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 import { SharedComponentModule } from '../_shared/sharedcomp.module';
-import { NoPageComponent } from '../no-page';
+import { NoPageComponent } from './no-page';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -36,7 +36,7 @@ export const routes = [
 
                     // Marketing
                     { path: 'marketing', loadChildren: './marketing#MarketingModule' },
-                    
+
                     { path: 'no-page', component: NoPageComponent },
                 ]
             }
@@ -52,6 +52,7 @@ export const routes = [
     ],
     declarations: [
         ModuleComponent,
+        // NoContentComponent,
         NoPageComponent,
     ],
     providers: [AuthGuard]

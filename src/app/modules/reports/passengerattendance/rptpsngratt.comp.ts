@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptpsngratt.comp.html',
@@ -14,13 +17,15 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     _wsdetails: any = [];
 
     monthDT: any = [];
+    standardDT: any = [];
 
     attColumn: any = [];
     attData: any = [];
     entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: string = "";
     monthname: string = "";
+    standard: string = "";
 
     actaddrights: string = "";
     acteditrights: string = "";
@@ -33,17 +38,49 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         this._wsdetails = Globals.getWSDetails();
 
         this.fillDropDownList();
+        this.viewAttendanceReportsRights();
+        this.getDefaultMonth();
     }
 
     public ngOnInit() {
+        var that = this;
+
         setTimeout(function () {
-            $(".entityname input").focus();
+            $(".enttname input").focus();
             commonfun.navistyle();
 
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    getDefaultMonth() {
+        let date = new Date();
+        let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let mname = monthNames[date.getMonth()] + "-" + date.getFullYear().toString().substr(-2);
+
+        this.monthname = mname;
+    }
+
+    // Export
+
+    public exportToCSV() {
+        new Angular2Csv(this.attData, 'User Details', { "showLabels": true });
+    }
+
+    public exportToPDF() {
+        let doc = new jsPDF();
+        doc.text(20, 20, JSON.stringify(this.attData));
+        doc.save('Test.pdf');
+
+        // let pdf = new jsPDF('l', 'pt', 'a4');
+        // let options = {
+        //     pagesplit: true
+        // };
+        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
+        //     pdf.save("test.pdf");
+        // });
     }
 
     // Auto Completed Entity
@@ -71,19 +108,25 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     // Selected Owners
 
     selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        Cookie.set("_enttid_", this.enttid.toString());
+        Cookie.set("_enttnm_", this.enttname);
+
+        this.getAttendanceReports();
     }
 
-    // Fill Entity, Division, Gender DropDown
+    // Fill Entity, Standard, Month DropDown
 
     fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._rptservice.getAttendanceReports({ "flag": "dropdown"}).subscribe(data => {
+        that._rptservice.getAttendanceReports({ "flag": "filterddl" }).subscribe(data => {
             try {
-                that.monthDT = data.data;
+                that.monthDT = data.data.filter(a => a.group === "month");
+                that.standardDT = data.data.filter(a => a.group === "standard");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -105,43 +148,40 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     public viewAttendanceReportsRights() {
         var that = this;
 
-        if (that.entityname === "") {
-            that._msg.Show(messageType.warn, "Warning", "Search Entity");
-        }
-        else if (that.monthname === "") {
-            that._msg.Show(messageType.warn, "Warning", "Select Month");
-        }
-        else {
-            var addRights = [];
-            var editRights = [];
-            var viewRights = [];
+        var addRights = [];
+        var editRights = [];
+        var viewRights = [];
 
-            that._menuservice.getMenuDetails({
-                "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptpsngrsatt", "utype": that.loginUser.utype
-            }).subscribe(data => {
-                addRights = data.data.filter(a => a.mrights === "add");
-                editRights = data.data.filter(a => a.mrights === "edit");
-                viewRights = data.data.filter(a => a.mrights === "view");
+        that._menuservice.getMenuDetails({
+            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptpsngrsatt", "utype": that.loginUser.utype
+        }).subscribe(data => {
+            addRights = data.data.filter(a => a.mrights === "add");
+            editRights = data.data.filter(a => a.mrights === "edit");
+            viewRights = data.data.filter(a => a.mrights === "view");
 
-                that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-                that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-                that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
+            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+
+            if (Cookie.get('_enttnm_') != null) {
+                that.enttid = parseInt(Cookie.get('_enttid_'));
+                that.enttname = Cookie.get('_enttnm_');
 
                 that.getAttendanceColumn();
                 that.getAttendanceReports();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-            }, () => {
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
 
-            })
-        }
+        })
     }
 
     getAttendanceColumn() {
         var that = this;
 
         that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that.entityid
+            "flag": "column", "monthname": that.monthname, "schoolid": that.enttid
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
@@ -155,34 +195,43 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     getAttendanceReports() {
         var that = this;
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        if (that.enttname === "") {
+            that._msg.Show(messageType.warn, "Warning", "Search Entity");
+        }
+        else if (that.monthname === "") {
+            that._msg.Show(messageType.warn, "Warning", "Select Month");
+        }
+        else {
+            if (that.actviewrights === "view") {
+                commonfun.loader("#fltrpsngr");
 
-            that._rptservice.getAttendanceReports({
-                "flag": "student", "monthname": that.monthname, "schoolid": that.entityid
-            }).subscribe(data => {
-                try {
-                    if (data.data.length !== 0) {
-                        that.attData = data.data;
+                that._rptservice.getAttendanceReports({
+                    "flag": "student", "monthname": that.monthname, "standard": that.standard, "schoolid": that.enttid
+                }).subscribe(data => {
+                    try {
+                        if (data.data.length !== 0) {
+                            that.attData = data.data;
+                        }
+                        else {
+                            that.attData = [];
+                        }
                     }
-                    else {
-                        that.attData = [];
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
                     }
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
 
-            })
+                    commonfun.loaderhide("#fltrpsngr");
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide("#fltrpsngr");
+                }, () => {
+
+                })
+            }
         }
     }
-    
+
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

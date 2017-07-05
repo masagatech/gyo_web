@@ -29,10 +29,9 @@
                             <img alt="{{row.drivername}}" src="uploads/driver/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </template>
                     </p-column>
-                    <p-column field="drivercode" header="Driver Code" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="drivername" header="Driver Name" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="drivername" header="Driver Name" [style]="{'width':'200px','text-align':'left'}"></p-column>
                     <p-column field="aadharno" header="Aadhar No" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="email1" header="Email" [style]="{'width':'250px','text-align': 'left'}"></p-column>
+                    <p-column field="address" header="Address" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="mobileno1" header="Mobile" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">

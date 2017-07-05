@@ -1,10 +1,10 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-2 col-xs-4">
+        <div class="row clearfix" id="fltrpsngr">
+            <div class="col-md-2 col-xs-2">
                 <h4>Passenger</h4>
             </div>
-            <div class="col-md-4 col-xs-8" *ngIf="actviewrights === 'view'">
+            <div class="col-md-3 col-xs-7" *ngIf="actviewrights === 'view'">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
@@ -15,7 +15,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-8" *ngIf="actviewrights === 'view'">
+            <div class="col-md-2 col-xs-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard</label>
+                        <select name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getPassengerDetails()">
+                            <option [value]="''">All</option>
+                            <option *ngFor="let row of standardDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-8" *ngIf="actviewrights === 'view'">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Passenger Name <strong>*</strong></label>
@@ -50,12 +63,12 @@
                     <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            {{row.mobileno1}} {{", " + row.mobileno2}}
+                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
                         </template>
                     </p-column>
                     <p-column header="Email" [style]="{'width':'250px','text-align':'left','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            {{row.email1}} <br /> {{row.email2}}
+                            {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
                         </template>
                     </p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>

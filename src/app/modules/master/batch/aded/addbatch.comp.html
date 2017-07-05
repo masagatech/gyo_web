@@ -81,7 +81,7 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Select Week <strong>*</strong></label>
+                    <label class="control-label">Working Days <strong>*</strong></label>
                     <div *ngFor="let week of weekDT">
                         <div class="form-line">
                             <p-checkbox name="{{week.key}}" value="{{week.key}}" label="{{week.val}}" [(ngModel)]="selectedWeek"></p-checkbox>

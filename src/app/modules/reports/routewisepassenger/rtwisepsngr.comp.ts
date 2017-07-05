@@ -4,6 +4,8 @@ import { MessageService, messageType, LoginService, MenuService, CommonService }
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rtwisepsngr.comp.html',
@@ -48,6 +50,26 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    // Export
+
+    public exportToCSV() {
+        new Angular2Csv(this.passengerDT, 'User Details', { "showLabels": true });
+    }
+
+    public exportToPDF() {
+        let doc = new jsPDF();
+        doc.text(20, 20, JSON.stringify(this.passengerDT));
+        doc.save('Test.pdf');
+
+        // let pdf = new jsPDF('l', 'pt', 'a4');
+        // let options = {
+        //     pagesplit: true
+        // };
+        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
+        //     pdf.save("test.pdf");
+        // });
     }
 
     public viewRouteWisePassengerReportsRights() {

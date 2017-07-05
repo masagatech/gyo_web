@@ -20,8 +20,19 @@ export const routes = [
                     { path: 'driverattendance', loadChildren: './driverattendance#DriverAttendanceReportsModule' },
                     { path: 'attendantattendance', loadChildren: './attendentattendance#AttendentAttendanceReportsModule' },
                     { path: 'routewisepassenger', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
-                    { path: 'noroutewisepassenger', loadChildren: './noroutewisepassenger#NoRouteWisePassengerModule' },
+                    { path: 'directpassenger', loadChildren: './directpassenger#DirectPassengerComponent' },
                     { path: 'unschedulepassenger', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
+
+                    { path: 'entity', loadChildren: './entity#EntityReportsModule' },
+                    { path: 'users', loadChildren: './users#UserReportsModule' },
+                    { path: 'location', loadChildren: './location#LocationReportsModule' },
+
+                    { path: 'batch', loadChildren: './batch#BatchReportsModule' },
+                    { path: 'route', loadChildren: './route#RouteReportsModule' },
+                    { path: 'passenger', loadChildren: './passenger#PassengerReportsModule' },
+                    { path: 'driver', loadChildren: './driver#DriverReportsModule' },
+                    { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
+                    { path: 'holiday', loadChildren: './holiday#HolidayReportsModule' },
                 ]
             }
         ]

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { RoutesService } from '@services/master';
+import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
 import { GMap } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -13,7 +13,7 @@ declare var google: any;
     providers: [CommonService]
 })
 
-export class AddRoutesComponent implements OnInit {
+export class AddRouteComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -48,7 +48,7 @@ export class AddRoutesComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _RoutesService: RoutesService, private _routeParams: ActivatedRoute, private _router: Router,
+    constructor(private _rtservice: RouteService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
@@ -182,7 +182,7 @@ export class AddRoutesComponent implements OnInit {
                 "wsautoid": that._wsdetails.wsautoid
             }
 
-            this._RoutesService.saveRoutesInfo(savert).subscribe(data => {
+            this._rtservice.saveRoutesInfo(savert).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_routesinfo;
                     var _msg = dataResult.msg;
@@ -219,7 +219,7 @@ export class AddRoutesComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._RoutesService.getStopsDetails({ "flag": "rtddl", "enttid": that.enttid }).subscribe(data => {
+        that._rtservice.getStopsDetails({ "flag": "rtddl", "enttid": that.enttid }).subscribe(data => {
             try {
                 that.routesDT = data.data;
             }
@@ -247,7 +247,7 @@ export class AddRoutesComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.rtid = params['id'];
 
-                that._RoutesService.getStopsDetails({ "flag": "editroute", "rtid": that.rtid }).subscribe(data => {
+                that._rtservice.getStopsDetails({ "flag": "editroute", "rtid": that.rtid }).subscribe(data => {
                     try {
                         var _routedata = data.data;
 
@@ -293,7 +293,7 @@ export class AddRoutesComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._RoutesService.getStopsDetails({ "flag": "byroute", "rtid": that.rtid }).subscribe(data => {
+        that._rtservice.getStopsDetails({ "flag": "byroute", "rtid": that.rtid }).subscribe(data => {
             try {
                 var _stpdata = data.data;
 
@@ -458,7 +458,7 @@ export class AddRoutesComponent implements OnInit {
             "mode": that.mode
         }
 
-        this._RoutesService.saveStopsInfo(act_deactstp).subscribe(data => {
+        this._rtservice.saveStopsInfo(act_deactstp).subscribe(data => {
             try {
                 var dataResult = data.data;
 
@@ -520,7 +520,7 @@ export class AddRoutesComponent implements OnInit {
                 "stops": _stopsList
             }
 
-            this._RoutesService.saveStopsInfo(savestp).subscribe(data => {
+            this._rtservice.saveStopsInfo(savestp).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_stopsinfo.msg;
@@ -557,6 +557,6 @@ export class AddRoutesComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/routes']);
+        this._router.navigate(['/master/route']);
     }
 }

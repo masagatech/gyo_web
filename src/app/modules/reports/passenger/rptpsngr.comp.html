@@ -1,0 +1,96 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix" id="fltrpsngr">
+            <div class="col-md-2 col-xs-2">
+                <h4>Passenger</h4>
+            </div>
+            <div class="col-md-3 col-xs-7" *ngIf="actviewrights === 'view'">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity Name <strong>*</strong></label>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="autoEntityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <span class="material-icons inputlinkico">
+                            <a role="button" (click)="getPassengerDetails()" class="btn btn-theme btn-search">search</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard</label>
+                        <select name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getPassengerDetails()">
+                            <option [value]="''">All</option>
+                            <option *ngFor="let row of standardDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-8" *ngIf="actviewrights === 'view'">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Passenger Name <strong>*</strong></label>
+                        <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <span class="material-icons inputlinkico">
+                            <a role="button" (click)="getPassengerDetails()" class="btn btn-theme btn-search">search</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4" style="padding-top: 12px;">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column header="" [style]="{'width':'50px','text-align':'center','vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <img alt="{{row.studentname}}" src="uploads/passenger/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px"
+                                width="40px">
+                        </template>
+                    </p-column>
+                    <p-column field="studentname" header="Passenger Name" [style]="{'width': '130px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="gender" header="Gender" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="mothername" header="Mother Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="fathername" header="Father Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                        </template>
+                    </p-column>
+                    <p-column header="Email" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                        </template>
+                    </p-column>
+                    <p-column field="alert" header="Alert" [style]="{'width': '60px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="address" header="Residental Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pickupaddr" header="Pick-up Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="dropaddr" header="Drop Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pickrtname" header="Pick-up Route" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="droprtname" header="Drop Route" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pickstpname" header="Pick-up Stop" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="dropstpname" header="Drop Stop" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="mode" header="Status" [style]="{'width':'60px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

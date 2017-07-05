@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptattnatt.comp.html',
@@ -44,6 +46,26 @@ export class AttendentAttendanceReportsComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    // Export
+
+    public exportToCSV() {
+        new Angular2Csv(this.attData, 'User Details', { "showLabels": true });
+    }
+
+    public exportToPDF() {
+        let doc = new jsPDF();
+        doc.text(20, 20, JSON.stringify(this.attData));
+        doc.save('Test.pdf');
+
+        // let pdf = new jsPDF('l', 'pt', 'a4');
+        // let options = {
+        //     pagesplit: true
+        // };
+        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
+        //     pdf.save("test.pdf");
+        // });
     }
 
     // Auto Completed Entity

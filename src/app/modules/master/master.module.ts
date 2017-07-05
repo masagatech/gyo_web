@@ -23,7 +23,7 @@ export const routes = [
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'user', loadChildren: './users#UserModule' },
                     { path: 'location', loadChildren: './location#LocationModule' },
-                    { path: 'routes', loadChildren: './routes#RoutesModule' },
+                    { path: 'route', loadChildren: './route#RouteModule' },
                 ]
             }
         ]

@@ -10,7 +10,7 @@ import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
-import { NoContentComponent } from './no-content';
+// import { NoContentComponent } from './no-content';
 import { HomeComponent } from './home';
 import { SharedModule, GlobalShared } from './_shared/shared.module';
 import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
@@ -38,7 +38,7 @@ type StoreType = {
     AppComponent,
     HomeComponent,
     LoginComponent,
-    NoContentComponent,
+    // NoContentComponent,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
