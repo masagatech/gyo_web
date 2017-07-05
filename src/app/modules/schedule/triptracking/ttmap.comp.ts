@@ -201,7 +201,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -219,7 +218,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -273,7 +271,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
-            // console.log("Complete");
         });
     }
 
@@ -321,7 +318,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             commonfun.loaderhide();
         }, () => {
-            // console.log("Complete");
         });
     }
 

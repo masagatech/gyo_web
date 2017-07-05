@@ -137,7 +137,6 @@ export class ViewRouteComponent implements OnInit {
     }
 
     public editRoutesForm(row) {
-        console.log(row);
         this._router.navigate(['/master/route/edit', row.rtid]);
     }
 }

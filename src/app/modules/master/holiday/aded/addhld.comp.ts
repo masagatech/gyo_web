@@ -110,8 +110,6 @@ export class AddHolidayComponent implements OnInit {
             "mode": that.mode
         }
 
-        console.log(act_deacthld);
-
         this._hldservice.saveHoliday(act_deacthld).subscribe(data => {
             try {
                 var dataResult = data.data;
@@ -130,7 +128,7 @@ export class AddHolidayComponent implements OnInit {
         }, err => {
             console.log(err);
         }, () => {
-            // console.log("Complete");
+            
         });
     }
 
@@ -241,7 +239,6 @@ export class AddHolidayComponent implements OnInit {
                     "wsautoid": that._wsdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        console.log(data.data);
                         that.hldid = data.data[0].hldid;
                         that.hldcd = data.data[0].hldcd;
                         that.hldnm = data.data[0].hldnm;

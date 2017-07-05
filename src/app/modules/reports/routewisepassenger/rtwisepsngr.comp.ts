@@ -83,7 +83,6 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             viewRights = data.data.filter(a => a.mrights === "view");
             that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-            console.log(that.actviewrights);
 
             if (Cookie.get('_enttnm_') != null) {
                 that.enttid = parseInt(Cookie.get('_enttid_'));
