@@ -55,14 +55,13 @@
     </div>
 
     <div class="body no-padding">
-        <div class="row clearfix">
+        <div #passenger class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'50px','text-align':'center','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.studentname}}" src="uploads/passenger/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px"
-                                width="40px">
-                        </template>
+                        <img alt="{{row.studentname}}" src="uploads/passenger/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                    </template>
                     </p-column>
                     <p-column field="studentname" header="Passenger Name" [style]="{'width': '130px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="gender" header="Gender" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -72,13 +71,13 @@
                     <p-column field="fathername" header="Father Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
-                        </template>
+                        {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                    </template>
                     </p-column>
                     <p-column header="Email" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
-                        </template>
+                        {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                    </template>
                     </p-column>
                     <p-column field="alert" header="Alert" [style]="{'width': '60px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="address" header="Residental Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -90,6 +89,81 @@
                     <p-column field="dropstpname" header="Drop Stop" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'60px', 'text-align':'left','vertical-align':'top'}"></p-column>
                 </p-dataTable>
+            </div>
+        </div>
+
+        <div id="render_me" class="row clearfix" style="display: none;">
+            <div class="col-md-4" *ngFor="let row of passengerDT">
+                <table>
+                    <tr>
+                        <td>Passenger Name</td>
+                        <td>{{row.studentname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{{row.gender}}</td>
+                    </tr>
+                    <tr>
+                        <td>Standard</td>
+                        <td>{{row.standard}}</td>
+                    </tr>
+                    <tr>
+                        <td>Division</td>
+                        <td>{{row.division}}</td>
+                    </tr>
+                    <tr>
+                        <td>Mother Name</td>
+                        <td>{{row.mothername}}</td>
+                    </tr>
+                    <tr>
+                        <td>Father Name</td>
+                        <td>{{row.fathername}}</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile</td>
+                        <td>{{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>{{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Alert</td>
+                        <td>{{row.alert}}</td>
+                    </tr>
+                    <tr>
+                        <td>Residental Address</td>
+                        <td>{{row.address}}</td>
+                    </tr>
+                    <tr>
+                        <td>Pick-up Address</td>
+                        <td>{{row.pickupaddr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Drop Address</td>
+                        <td>{{row.dropaddr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Pick Route Name</td>
+                        <td>{{row.pickrtname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Drop Route Name</td>
+                        <td>{{row.droprtname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Pick Stop Name</td>
+                        <td>{{row.pickstpname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Drop Stop Name</td>
+                        <td>{{row.dropstpname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>{{row.mode}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

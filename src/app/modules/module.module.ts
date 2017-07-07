@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
 import { AuthGuard } from '../_services/authguard-service';
 import { SharedComponentModule } from '../_shared/sharedcomp.module';
-import { NoPageComponent } from '../no-page';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -19,8 +18,11 @@ export const routes = [
                 children: [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
 
+                    // Trip Tracking
+                    { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
+
                     // Schedule
-                    { path: '', loadChildren: './schedule#ScheduleModule' },
+                    { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
 
                     // Survey Entries
                     { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
@@ -37,7 +39,7 @@ export const routes = [
                     // Marketing
                     { path: 'marketing', loadChildren: './marketing#MarketingModule' },
 
-                    { path: 'no-page', component: NoPageComponent },
+                    // { path: 'no-page', component: NoPageComponent },
                 ]
             }
         ]
@@ -52,8 +54,7 @@ export const routes = [
     ],
     declarations: [
         ModuleComponent,
-        // NoContentComponent,
-        NoPageComponent,
+        // NoPageComponent,
     ],
     providers: [AuthGuard]
 })

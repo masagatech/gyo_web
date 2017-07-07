@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService } from '@services';
 import { LocationService } from '@services/master';
@@ -20,6 +20,8 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
     acteditrights: string = "";
     actviewrights: string = "";
 
+    @ViewChild('location') location: ElementRef;
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _locservice: LocationService) {
         this.loginUser = this._loginservice.getUser();
@@ -39,21 +41,17 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.locationDT, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.locationDT, 'LocationReports', { "showLabels": true });
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.locationDT));
-        doc.save('Test.pdf');
-
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.location.nativeElement, 0, 0, options, () => {
+            pdf.save("LocationReports.pdf");
+        });
     }
 
     public viewLocationDataRights() {

@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix" id="fltrpsngr">
+            <div class="col-md-2 col-xs-2">
+                <h4>Master Of Master</h4>
+            </div>
+            <div class="col-md-10 col-xs-10" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addMOMForm()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-3 border">
+        <div class="card">
+            <div class="header">
+                Group
+            </div>
+            <div class="body">
+                <div *ngFor="let row of momGroupDT" style="padding: 10px;">
+                    <a role="button" (click)="BindMOMGrid(row);">{{row.grpnm}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="header" *ngIf="momDT.length">
+                {{headertitle}}
+            </div>
+            <div class="body">
+                <p-dataTable #dt [value]="momDT">
+                    <p-column field="key" header="Key" [style]="{'width':'150px','text-align':'left'}"></p-column>
+                    <p-column field="val" header="Value" [style]="{'text-align':'left'}"></p-column>
+                    <p-column styleClass="col-button" [style]="{'width':'60px','text-align':'left'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" (click)="editMOMForm(row)" class="btn btn-theme btn-xs">
+                                <span class="material-icons">edit</span>
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

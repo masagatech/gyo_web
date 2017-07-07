@@ -520,6 +520,8 @@ export class AddWorkspaceComponent implements OnInit {
 
     getWorkspaceDetails() {
         var that = this;
+        that.uploadPhotoDT = [];
+        
         commonfun.loader();
 
         this.subscribeParameters = this._routeParams.params.subscribe(params => {

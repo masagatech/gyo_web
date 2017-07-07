@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -33,6 +33,8 @@ export class UserReportsComponent implements OnInit, OnDestroy {
     acteditrights: string = "";
     actviewrights: string = "";
 
+    @ViewChild('users') users: ElementRef;
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();
@@ -57,21 +59,17 @@ export class UserReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.usersDT, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.usersDT, 'UserReports', { "showLabels": true });
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.usersDT));
-        doc.save('Test.pdf');
-
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.users.nativeElement, 0, 0, options, () => {
+            pdf.save("UserReports.pdf");
+        });
     }
 
     // Fill Dropdown

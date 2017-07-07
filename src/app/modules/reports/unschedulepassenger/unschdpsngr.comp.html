@@ -19,7 +19,7 @@
         No Records Found
     </div>
     <div class="body no-padding">
-        <div class="row clearfix">
+        <div #unschdpsngr class="row clearfix">
             <div class="col-md-12" *ngIf="passengerDT.length">
                 <p-dataTable [value]="passengerDT">
                     <p-column field="psngrname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>

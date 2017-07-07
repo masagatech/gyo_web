@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -33,6 +33,8 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
 
     actviewrights: string = "";
 
+    @ViewChild('rtwisepsngr') rtwisepsngr: ElementRef;
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
@@ -55,28 +57,17 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        var arrayDT = [];
-
-        arrayDT.push({
-            "rtname": "Vitthalwadi", "batchname": "CHM 001", "batchtime": "07:00 AM to 01:00 PM",
-            "passenger": [{ "psngrid": "1", "psngrname": "Vivek Pandey" }, { "psngrid": "2", "psngrname": "Vinay Pandey" }]
-        });
-
-        new Angular2Csv(arrayDT, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.routesDT, 'RouteWisePassenger', { "showLabels": true });
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.routesDT));
-        doc.save('Test.pdf');
-
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.rtwisepsngr.nativeElement, 0, 0, options, () => {
+            pdf.save("RouteWisePassenger.pdf");
+        });
     }
 
     public viewRouteWisePassengerReportsRights() {

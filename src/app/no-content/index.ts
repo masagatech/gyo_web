@@ -1,1 +1,1 @@
-export * from './no-content.comp';
+export * from './no-content.component';

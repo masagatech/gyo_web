@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="row clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Group</label>
+                <select id="group" name="group" [(ngModel)]="group" class="form-control">
+                    <option value="">-- Select Group --</option>
+                    <option *ngFor="let grow of groupdt" [value]="grow.key">
+                        {{grow.val}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Key</label>
+                <input id="key" name="key" type="text" [(ngModel)]="key" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Value</label>
+        <input id="val" name="val" type="text" [(ngModel)]="val" class="form-control" />
+    </div>
+</div>

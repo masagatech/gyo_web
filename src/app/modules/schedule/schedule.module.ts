@@ -15,9 +15,8 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
-                    { path: 'createschedule', loadChildren: './createschedule#CreateScheduleModule' },
-                    { path: 'changeschedule', loadChildren: './changeschedule#ChangeScheduleModule' }
+                    { path: 'create', loadChildren: './createschedule#CreateScheduleModule' },
+                    { path: 'edit', loadChildren: './changeschedule#ChangeScheduleModule' }
                 ]
             }
         ]

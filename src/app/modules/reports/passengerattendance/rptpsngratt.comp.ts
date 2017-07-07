@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -30,6 +30,8 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     actaddrights: string = "";
     acteditrights: string = "";
     actviewrights: string = "";
+
+    @ViewChild('psngrattnd') psngrattnd: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
@@ -70,17 +72,15 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.attData));
-        doc.save('Test.pdf');
+        let pdf = new jsPDF();
 
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let options = {
+            pagesplit: true
+        };
+
+        pdf.addHTML(this.psngrattnd.nativeElement, 0, 0, options, () => {
+            pdf.save("PassengerAttendance.pdf");
+        });
     }
 
     // Auto Completed Entity
@@ -114,7 +114,7 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         Cookie.set("_enttid_", this.enttid.toString());
         Cookie.set("_enttnm_", this.enttname);
 
-        this.getAttendanceReports();
+        this.getAttendanceColumn();
     }
 
     // Fill Entity, Standard, Month DropDown
@@ -168,7 +168,6 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
                 that.enttname = Cookie.get('_enttnm_');
 
                 that.getAttendanceColumn();
-                that.getAttendanceReports();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -185,6 +184,7 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
+                that.getAttendanceReports();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);

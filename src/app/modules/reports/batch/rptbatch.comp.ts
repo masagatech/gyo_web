@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
@@ -27,6 +27,8 @@ export class BatchReportsComponent implements OnInit, OnDestroy {
     acteditrights: string = "";
     actviewrights: string = "";
 
+    @ViewChild('batch') batch: ElementRef;
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _batchervice: BatchService) {
         this.loginUser = this._loginservice.getUser();
@@ -48,21 +50,17 @@ export class BatchReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.batchDT, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.batchDT, 'BatchReports', { "showLabels": true });
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.batchDT));
-        doc.save('Test.pdf');
-
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.batch.nativeElement, 0, 0, options, () => {
+            pdf.save("BatchReports.pdf");
+        });
     }
 
     // Auto Completed Entity

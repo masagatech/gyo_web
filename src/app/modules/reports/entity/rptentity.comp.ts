@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -21,6 +21,8 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     acteditrights: string = "";
     actviewrights: string = "";
 
+    @ViewChild('entity') entity: ElementRef;
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
@@ -42,21 +44,17 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.entityDT, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.entityDT, 'EntityDetials', { "showLabels": true });
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.entityDT));
-        doc.save('Test.pdf');
-
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.entity.nativeElement, 0, 0, options, () => {
+            pdf.save("EntityDetials.pdf");
+        });
     }
 
     public viewEntityDataRights() {

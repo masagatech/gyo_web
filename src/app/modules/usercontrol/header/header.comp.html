@@ -24,10 +24,10 @@
                             <ul class="menu tasks">
                                 <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
                                 <li><a role="button" [routerLink]="['/aboutus']"><i class="fa fa-info"></i> About Us</a></li>
-                                <li *ngIf="this.loginUser.issysadmin">
+                                <li *ngIf="this.loginUser.utype == 'admin'">
                                     <a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a>
                                 </li>
-                                <li *ngIf="this.loginUser.utype == 'admin' && this.loginUser.issysadmin">
+                                <li *ngIf="this.loginUser.issysadmin">
                                     <a role="button" (click)="openWorkspaceForm()"><i class="fa fa-building-o"></i> Workspace</a>
                                 </li>
                                 <li *ngIf="this.loginUser.utype == 'admin' && !this.loginUser.issysadmin">

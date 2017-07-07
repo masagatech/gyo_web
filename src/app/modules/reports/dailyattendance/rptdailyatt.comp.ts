@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -25,6 +25,8 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
 
     actviewrights: string = "";
 
+    @ViewChild('dailyatt') dailyatt: ElementRef;
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
         private _autoservice: CommonService) {
@@ -45,24 +47,28 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
+    getDefaultMonth() {
+        let date = new Date();
+        let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let mname = monthNames[date.getMonth()] + "-" + date.getFullYear().toString().substr(-2);
+
+        return mname;
+    }
+
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.attData, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.attData, 'DailyAttendance', { "showLabels": true });
     }
 
     public exportToPDF() {
-        let doc = new jsPDF();
-        doc.text(20, 20, JSON.stringify(this.attData));
-        doc.save('Test.pdf');
-
-        // let pdf = new jsPDF('l', 'pt', 'a4');
-        // let options = {
-        //     pagesplit: true
-        // };
-        // pdf.addHTML(this.el.nativeElement, 0, 0, options, () => {
-        //     pdf.save("test.pdf");
-        // });
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.dailyatt.nativeElement, 0, 0, options, () => {
+            pdf.save("DailyAttendance.pdf");
+        });
     }
 
     // Auto Completed Entity
@@ -126,28 +132,30 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
 
     getAttendanceReports() {
         var that = this;
+        var monthname = that.getDefaultMonth();
 
-        // if (that.actviewrights === "view") {
-        commonfun.loader();
+        if (that.actviewrights === "view") {
+            commonfun.loader();
 
-        that._rptservice.getAttendanceReports({
-            "flag": "daily", "schoolid": that.enttid
-        }).subscribe(data => {
-            try {
-                that.attData = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+            that._rptservice.getAttendanceReports({
+                "flag": "daily", "monthname": monthname, "schoolid": that.enttid
+            }).subscribe(data => {
+                try {
+                    that.attData = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-        })
-        // }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
     }
 
     public ngOnDestroy() {

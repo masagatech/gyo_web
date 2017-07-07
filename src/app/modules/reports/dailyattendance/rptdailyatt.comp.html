@@ -1,10 +1,10 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <h4>Today's Attendance</h4>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name</label>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="body no-padding">
-        <div class="row clearfix">
+        <div #dailyatt class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="attData">
                     <p-column field="studsname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>

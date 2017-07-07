@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
+import { SharedComponentModule } from '../../_shared/sharedcomp.module';
 import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
-import { AuthGuard } from '../../../_services/authguard-service';
+import { AuthGuard } from '../../_services/authguard-service';
 
 import { TripTrackingComponent } from './ttmap.comp';
 import { TTMapService } from '@services/master';
@@ -41,8 +41,6 @@ export const routes = [
 })
 
 export class TripTrackingModule {
-
-
   constructor() {
 
   }

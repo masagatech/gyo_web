@@ -1,7 +1,9 @@
 <div class="card">
     <div class="header">
-        <h4>Passenger Attendance</h4>
         <div class="row clearfix" id="fltrpsngr">
+            <div class="col-md-2">
+                <h4>Passenger Attendance</h4>
+            </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
@@ -15,7 +17,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
-                        <select name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getAttendanceReports()">
+                        <select name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getAttendanceColumn()">
                             <option [value]="''">Select Month</option>
                             <option *ngFor="let row of monthDT" [value]="row.key">
                                 {{row.val}}
@@ -28,7 +30,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Standard</label>
-                        <select name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getAttendanceReports()">
+                        <select name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getAttendanceColumn()">
                             <option [value]="''">All</option>
                             <option *ngFor="let row of standardDT" [value]="row.key">
                                 {{row.val}}
@@ -37,12 +39,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1" style="padding-top: 12px;">
-                <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
-                    <span class="material-icons">subdirectory_arrow_right</span>
-                </button>
+            <div class="col-md-1" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceColumn()">
+                        <span class="material-icons">subdirectory_arrow_right</span>
+                    </button>
+                </div>
             </div>
-            <div class="col-md-3" style="padding-top: 12px;">
+            <div class="col-md-1" style="padding-top: 20px;" align="right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
@@ -58,19 +62,81 @@
     </div>
 
     <div class="body no-padding">
-        <p-dataTable [value]="attData">
-            <p-column field="stdnm" header="Student Name" [style]="{'width': '160px', 'text-align': 'left'}"></p-column>
-            <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
-            <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
-            <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width': '30px', 'text-align':'left'}">
-                <template let-drow="rowData" pTemplate type="body">
-                    <span class="{{drow[atcol.day] == null ? 'A' : drow[atcol.day]}}">{{drow[atcol.day] == null ? 'A' : drow[atcol.day]}}</span>
-                </template>
-            </p-column>
-            <p-column field="p" header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-            <p-column field="d" header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-            <p-column field="a" header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-            <p-column field="h" header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-        </p-dataTable>
+        <div #psngrattnd class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="attData">
+                    <p-column field="stdnm" header="Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
+                    <p-column field="standard" header="Std" [style]="{'width': '50px', 'text-align': 'left'}"></p-column>
+                    <p-column field="division" header="Div" [style]="{'width': '50px', 'text-align': 'left'}"></p-column>
+                    <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width': '30px', 'text-align':'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            <span class="{{drow[atcol.day] == null ? 'A' : drow[atcol.day]}}">{{drow[atcol.day] == null ? 'A' : drow[atcol.day]}}</span>
+                        </template>
+                    </p-column>
+                    <p-column field="p" header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
+                    <p-column field="d" header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
+                    <p-column field="a" header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
+                    <p-column field="h" header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6" align="right">
+                <div class="small-box">
+                    <div class="header">
+                        Legends
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="small-box">
+                            <div class="apsent"></div>
+                            <div class="content">
+                                Absent
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="holiday"></div>
+                            <div class="content">
+                                Holiday
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small-box">
+                            <div class="pickdrop"></div>
+                            <div class="content">
+                                Pick up
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="pickdrop"></div>
+                            <div class="content">
+                                Drop
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="small-box">
+                            <div class="pickbutnotdrop"></div>
+                            <div class="content">
+                                Pick up, but not Drop
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="dropbutnotpick"></div>
+                            <div class="content">
+                                Not Pick up, but Drop
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

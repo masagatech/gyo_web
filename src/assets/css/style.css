@@ -10394,11 +10394,39 @@ body.waitMe_body .waitMe_container.text>div {
     border-radius: 5px;
 }
 
-.H {
+.apsent {
+    background-color: #E91E63;
+    color: #FFFFFF;
+    padding: 12px;
+    text-align: center;
+}
+
+.holiday {
     background-color: #03A9F4;
     color: #FFFFFF;
-    padding: 10px;
-    margin-left: -10px;
+    padding: 12px;
+    text-align: center;
+}
+
+.pickdrop {
+    background-color: #8BC34A;
+    color: #FFFFFF;
+    padding: 12px;
+    text-align: center;
+}
+
+.pickbutnotdrop {
+    background: -webkit-linear-gradient(#E91E63, #8BC34A);
+    color: #FFFFFF;
+    padding: 12px;
+    text-align: center;
+}
+
+.dropbutnotpick {
+    background: -webkit-linear-gradient(#8BC34A, #E91E63);
+    color: #FFFFFF;
+    padding: 12px;
+    text-align: center;
 }
 
 .P,
@@ -10417,11 +10445,26 @@ body.waitMe_body .waitMe_container.text>div {
     margin-left: -10px;
 }
 
-.PA,
-.DA {
-    background: -webkit-linear-gradient(#8BC34A, #E91E63);
+.H {
+    background-color: #03A9F4;
     color: #FFFFFF;
     padding: 10px;
+    margin-left: -10px;
+}
+
+.PA,
+.AP {
+    background: -webkit-linear-gradient(#E91E63, #8BC34A);
+    color: #FFFFFF;
+    padding: 6px;
+    margin-left: -10px;
+}
+
+.DA,
+.AD {
+    background: -webkit-linear-gradient(#8BC34A, #E91E63);
+    color: #FFFFFF;
+    padding: 6px;
     margin-left: -10px;
 }
 
@@ -10505,4 +10548,28 @@ body.waitMe_body .waitMe_container.text>div {
 .slim th,
 td {
     padding: 2px;
+}
+
+.small-box {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    cursor: default;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.small-box .header {
+    padding: 5px;
+    background-color: #4CAF50;
+    color: #ffffff;
+    width: 100%;
+    text-align: center;
+}
+
+.small-box .content {
+    padding: 2px 10px;
+    border: solid 1px #eeeeee;
+    width: 100%;
+    text-align: left;
 }
