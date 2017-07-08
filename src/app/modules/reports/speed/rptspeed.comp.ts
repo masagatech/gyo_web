@@ -133,7 +133,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         Cookie.set("_drvid_", this.drvid.toString());
         Cookie.set("_drvnm_", this.drvname);
 
-        this.getSpeedReports();
+        this.getSpeedVialationReports();
     }
 
     public viewSpeedDataRights() {
@@ -160,7 +160,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
                 that.drvid = parseInt(Cookie.get('_drvid_'));
                 that.drvname = Cookie.get('_devnm_');
 
-                that.getSpeedReports();
+                that.getSpeedVialationReports();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -169,13 +169,13 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getSpeedReports() {
+    getSpeedVialationReports() {
         var that = this;
 
         if (that.actviewrights === "view") {
             commonfun.loader();
 
-            that._rptservice.getSpeedReports({
+            that._rptservice.getSpeedVialationReports({
                 "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
                 "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "enttid": that.enttid, "drvid": that.drvid
             }).subscribe(data => {
