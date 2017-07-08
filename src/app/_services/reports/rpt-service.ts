@@ -13,4 +13,8 @@ export class ReportsService {
     getRouteWisePassengerReports(req: any) {
         return this._dataserver.post("getRouteWisePassengerReports", req)
     }
+
+    getSpeedReports(req: any) {
+        return this._dataserver.post("getSpeedReports", req)
+    }
 }

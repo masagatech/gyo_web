@@ -22,6 +22,8 @@ export const routes = [
                     { path: 'routewisepassenger', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'directpassenger', loadChildren: './directpassenger#DirectPassengerComponent' },
                     { path: 'unschedulepassenger', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
+                    
+                    { path: 'speed', loadChildren: './speed#SpeedReportsModule' },
 
                     { path: 'entity', loadChildren: './entity#EntityReportsModule' },
                     { path: 'users', loadChildren: './users#UserReportsModule' },

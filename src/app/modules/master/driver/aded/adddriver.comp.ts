@@ -414,8 +414,10 @@ export class AddDriverComponent implements OnInit {
                         var _driverdata = data.data[0]._driverdata;
                         var _attachdocs = data.data[0]._attachdocs;
 
+                        console.log(_driverdata);
+
                         that.driverid = _driverdata[0].autoid;
-                        that.loginid = data.data[0].loginid;
+                        that.loginid = _driverdata[0].loginid;
                         that.drivercode = _driverdata[0].drivercode;
                         that.driverpwd = _driverdata[0].driverpwd;
                         that.drivername = _driverdata[0].drivername;
