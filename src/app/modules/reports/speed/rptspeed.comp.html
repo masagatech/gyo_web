@@ -1,14 +1,27 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2 col-md-2">
+            <div class="col-md-1 col-xs-1">
                 <h4>Speed</h4>
             </div>
-            <div class="col-md-3 col-xs-10" *ngIf="actviewrights === 'view'">
+            <div class="col-md-2 col-xs-2" style="padding-top: 20px;">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <select name="viewedon" [(ngModel)]="viewedon" class="form-control viewedon" tabindex="1">
+                            <option [value]="'30'">Last 30 Days</option>
+                            <option [value]="'15'">Last 15 Days</option>
+                            <option [value]="'7'">Last 7 Days</option>
+                            <option [value]="'2'">Yesterday</option>
+                            <option [value]="'1'">Today</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-9" *ngIf="actviewrights === 'view'">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="2" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -17,7 +30,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name <strong>*</strong></label>
-                        <p-autoComplete id="drvname" name="drvname" [(ngModel)]="drvname" [tabindex]="9" (onSelect)="selectDriverData($event)" [suggestions]="driverDT" (completeMethod)="getDriverData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete drvname"></p-autoComplete>
+                        <p-autoComplete id="drvname" name="drvname" [(ngModel)]="drvname" [tabindex]="3" (onSelect)="selectDriverData($event)" [suggestions]="driverDT" (completeMethod)="getDriverData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete drvname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -38,7 +51,7 @@
     </div>
 
     <div class="body no-padding">
-        <div #speed class="row clearfix">
+        <!--<div #speed class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="speedDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column field="trpdate" header="Date" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
@@ -47,6 +60,34 @@
                     <p-column field="topspeed" header="Top Speed" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
                 </p-dataTable>
             </div>
-        </div>
+        </div>-->
+
+        <p-dataTable [value]="speedDT">
+            <p-headerColumnGroup>
+                <p-row>
+                    <p-column header="Date" rowspan="3"></p-column>
+                </p-row>
+                <p-row>
+                    <p-column header="Pickup" colspan="3"></p-column>
+                    <p-column header="Drop" colspan="3"></p-column>
+                </p-row>
+                <p-row>
+                    <p-column header="Vehicle" [style]="{'width': '200px', 'vertical-align': 'top'}"></p-column>
+                    <p-column header="Route" [style]="{'width': '200px', 'vertical-align': 'top'}"></p-column>
+                    <p-column header="Top Speed" [style]="{'width': '80px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                    <p-column header="Vehicle" [style]="{'width': '200px', 'vertical-align':'top'}"></p-column>
+                    <p-column header="Route" [style]="{'width': '200px', 'vertical-align': 'top'}"></p-column>
+                    <p-column header="Top Speed" [style]="{'width': '80px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                </p-row>
+            </p-headerColumnGroup>
+
+            <p-column field="trpdate"></p-column>
+            <p-column field="pickvehname" [style]="{'width': '200px', 'vertical-align':'top'}"></p-column>
+            <p-column field="pickrtname" [style]="{'width': '200px', 'vertical-align':'top'}"></p-column>
+            <p-column field="picktopspeed" [style]="{'width': '80px', 'text-align': 'center', 'vertical-align':'top'}"></p-column>
+            <p-column field="dropvehname" [style]="{'width': '200px', 'vertical-align':'top'}"></p-column>
+            <p-column field="droprtname" [style]="{'width': '200px', 'vertical-align':'top'}"></p-column>
+            <p-column field="droptopspeed" [style]="{'width': '80px', 'text-align': 'center', 'vertical-align':'top'}"></p-column>
+        </p-dataTable>
     </div>
 </div>

@@ -19,6 +19,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
 
     _wsdetails: any = [];
 
+    viewedon: string = "30";
+
     entityDT: any = [];
     enttid: number = 0;
     enttname: string = "";
@@ -176,8 +178,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             that._rptservice.getSpeedVialationReports({
-                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "enttid": that.enttid, "drvid": that.drvid
+                "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid
             }).subscribe(data => {
                 try {
                     that.speedDT = data.data;
