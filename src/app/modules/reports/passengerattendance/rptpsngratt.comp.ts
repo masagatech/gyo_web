@@ -36,8 +36,8 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         this._wsdetails = Globals.getWSDetails();
 
         this.fillDropDownList();
-        this.viewAttendanceReportsRights();
         this.getDefaultMonth();
+        this.viewAttendanceReportsRights();
     }
 
     public ngOnInit() {
@@ -178,31 +178,31 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.warn, "Warning", "Select Month");
         }
         else {
-                commonfun.loader("#fltrpsngr");
+            commonfun.loader("#fltrpsngr");
 
-                that._rptservice.getAttendanceReports({
-                    "flag": "student", "monthname": that.monthname, "standard": that.standard, "schoolid": that.enttid
-                }).subscribe(data => {
-                    try {
-                        if (data.data.length !== 0) {
-                            that.attData = data.data;
-                        }
-                        else {
-                            that.attData = [];
-                        }
+            that._rptservice.getAttendanceReports({
+                "flag": "student", "monthname": that.monthname, "standard": that.standard, "schoolid": that.enttid
+            }).subscribe(data => {
+                try {
+                    if (data.data.length !== 0) {
+                        that.attData = data.data;
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that.attData = [];
                     }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-                    commonfun.loaderhide("#fltrpsngr");
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide("#fltrpsngr");
-                }, () => {
+                commonfun.loaderhide("#fltrpsngr");
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide("#fltrpsngr");
+            }, () => {
 
-                })
+            })
         }
     }
 

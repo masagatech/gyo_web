@@ -22,9 +22,9 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewEntityDataRights();
 
         this._wsdetails = Globals.getWSDetails();
+        this.viewEntityDataRights();
     }
 
     public ngOnInit() {
