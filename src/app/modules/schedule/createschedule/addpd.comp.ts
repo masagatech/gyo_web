@@ -12,7 +12,6 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class CreateScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
-    actaddrights: string = "";
 
     _wsdetails: any = [];
 
@@ -122,28 +121,16 @@ export class CreateScheduleComponent implements OnInit {
 
     public viewScheduleDataRights() {
         var that = this;
-        var addRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "asch", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
+        if (Cookie.get('_enttnm_') != null) {
+            this.enttid = parseInt(Cookie.get('_enttid_'));
+            this.enttname = Cookie.get('_enttnm_');
 
-            if (Cookie.get('_enttnm_') != null) {
-                this.enttid = parseInt(Cookie.get('_enttid_'));
-                this.enttname = Cookie.get('_enttnm_');
-
-                this.fillBatchDropDown();
-                this.fillDriverDropDown();
-                this.fillVehicleDropDown();
-                this.fillRouteDropDown();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            this.fillBatchDropDown();
+            this.fillDriverDropDown();
+            this.fillVehicleDropDown();
+            this.fillRouteDropDown();
+        }
     }
 
     // Selected Calendar Date
@@ -632,7 +619,7 @@ export class CreateScheduleComponent implements OnInit {
                     }
 
                     if (pickdata.length !== 0) {
-                        that.pickdriverid = pickdata[0].driverid;   
+                        that.pickdriverid = pickdata[0].driverid;
                         that.pickvehicleid = pickdata[0].vehicleno;
                         that.pickpsngrtype = pickdata[0].psngrtype;
                         that.pickrtid = pickdata[0].rtid;

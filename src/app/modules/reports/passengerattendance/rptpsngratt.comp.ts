@@ -27,10 +27,6 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     monthname: string = "";
     standard: string = "";
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     @ViewChild('psngrattnd') psngrattnd: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -148,32 +144,12 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     public viewAttendanceReportsRights() {
         var that = this;
 
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
+        if (Cookie.get('_enttnm_') != null) {
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+            that.enttname = Cookie.get('_enttnm_');
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptpsngrsatt", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
-
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.getAttendanceColumn();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            that.getAttendanceColumn();
+        }
     }
 
     getAttendanceColumn() {
@@ -202,7 +178,6 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.warn, "Warning", "Select Month");
         }
         else {
-            if (that.actviewrights === "view") {
                 commonfun.loader("#fltrpsngr");
 
                 that._rptservice.getAttendanceReports({
@@ -228,7 +203,6 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
                 }, () => {
 
                 })
-            }
         }
     }
 

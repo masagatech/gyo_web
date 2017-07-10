@@ -23,10 +23,6 @@ export class RouteReportsComponent implements OnInit, OnDestroy {
     entityid: number = 0;
     entityname: string = "";
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     @ViewChild('route') route: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
@@ -99,59 +95,37 @@ export class RouteReportsComponent implements OnInit, OnDestroy {
 
     public viewrouteDataRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "mcode": "veh"
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
-
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            if (Cookie.get('_enttnm_') != null) {
-                that.entityid = parseInt(Cookie.get('_enttid_'));
-                that.entityname = Cookie.get('_enttnm_');
-                that.getRouteDetails();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+        if (Cookie.get('_enttnm_') != null) {
+            that.entityid = parseInt(Cookie.get('_enttid_'));
+            that.entityname = Cookie.get('_enttnm_');
+            that.getRouteDetails();
+        }
     }
 
     getRouteDetails() {
         var that = this;
+        commonfun.loader();
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        that._rtservice.getStopsDetails({
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "enttid": that.entityid, "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.routeDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-            that._rtservice.getStopsDetails({
-                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin, "enttid": that.entityid, "wsautoid": that._wsdetails.wsautoid
-            }).subscribe(data => {
-                try {
-                    that.routeDT = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            })
-        }
+        })
     }
 
     public ngOnDestroy() {

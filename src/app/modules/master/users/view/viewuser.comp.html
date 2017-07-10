@@ -55,7 +55,7 @@
                         </template>
                     </p-column>
                     <p-column field="mode" header="Status" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
+                    <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editUserForm(row)">
                                 <i class="material-icons">edit</i>

@@ -25,10 +25,6 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
     enttname: string = "";
     monthname: string = "";
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     @ViewChild('drvatt') drvatt: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -141,32 +137,12 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
     public viewAttendanceReportsRights() {
         var that = this;
 
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
+        if (Cookie.get('_enttnm_') != null) {
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+            that.enttname = Cookie.get('_enttnm_');
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rptdrvatt", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
-
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.getAttendanceColumn();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            that.getAttendanceColumn();
+        }
     }
 
     getAttendanceColumn() {
@@ -195,32 +171,30 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.warn, "Warning", "Select Month");
         }
         else {
-            if (that.actviewrights === "view") {
-                commonfun.loader();
+            commonfun.loader();
 
-                that._rptservice.getAttendanceReports({
-                    "flag": "driver", "monthname": that.monthname, "schoolid": that.enttid
-                }).subscribe(data => {
-                    try {
-                        if (data.data.length !== 0) {
-                            that.attData = data.data;
-                        }
-                        else {
-                            that.attData = [];
-                        }
+            that._rptservice.getAttendanceReports({
+                "flag": "driver", "monthname": that.monthname, "schoolid": that.enttid
+            }).subscribe(data => {
+                try {
+                    if (data.data.length !== 0) {
+                        that.attData = data.data;
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that.attData = [];
                     }
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-                })
-            }
+            })
         }
     }
 

@@ -24,9 +24,6 @@ export const routes = [
                     // Schedule
                     { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
 
-                    // Survey Entries
-                    { path: 'surveyentries', loadChildren: './surveyentries#SurveyEntriesModule' },
-
                     // Masters
                     { path: 'master', loadChildren: './master#MasterModule' },
 

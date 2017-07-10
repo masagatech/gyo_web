@@ -29,10 +29,6 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     drvid: number = 0;
     drvname: string = "";
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     @ViewChild('speed') speed: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
@@ -141,62 +137,41 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
 
     public viewSpeedDataRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptspd", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
+        if (Cookie.get('_enttnm_') != null) {
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+            that.enttname = Cookie.get('_enttnm_');
 
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+            that.drvid = Cookie.get('_drvid_') == undefined ? 0 : parseInt(Cookie.get('_drvid_'));
+            that.drvname = Cookie.get('_devnm_');
 
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.drvid = Cookie.get('_drvid_') == undefined ? 0 : parseInt(Cookie.get('_drvid_'));
-                that.drvname = Cookie.get('_devnm_');
-
-                that.getSpeedVialationReports();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            that.getSpeedVialationReports();
+        }
     }
 
     getSpeedVialationReports() {
         var that = this;
         var params = {};
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
-            params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
-            
-            that._rptservice.getSpeedVialationReports(params).subscribe(data => {
-                try {
-                    that.speedDT = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
+        commonfun.loader();
+        params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
 
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
+        that._rptservice.getSpeedVialationReports(params).subscribe(data => {
+            try {
+                that.speedDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-            })
-        }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     public ngOnDestroy() {

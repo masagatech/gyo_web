@@ -4,7 +4,7 @@
             <div class="col-md-2">
                 <h4>Vehicle</h4>
             </div>
-            <div class="col-md-9 col-xs-9" *ngIf="actviewrights === 'view'">
+            <div class="col-md-9 col-xs-9">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-1" align="right" *ngIf="actaddrights === 'add'">
+            <div class="col-md-1 col-xs-1" align="right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addVehicleForm()">
                     <i class="material-icons">add</i></button>
             </div>
@@ -30,7 +30,7 @@
                     <p-column field="capacity" header="Capacity" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="vehiclefacility" header="Vehicle Facility" [style]="{'text-align':'left'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left'}" *ngIf="acteditrights==='edit'">
+                    <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editVehicleForm(row)">
                                 <i class="material-icons">edit</i>

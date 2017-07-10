@@ -30,10 +30,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     psngrid: number = 0;
     psngrname: string = "";
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
@@ -153,75 +149,54 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
     public viewPassengerDataRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "psngr", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
+        if (Cookie.get('_enttnm_') != null) {
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+            that.enttname = Cookie.get('_enttnm_');
 
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+            that.psngrid = parseInt(Cookie.get('_psngrid_'));
+            that.psngrname = Cookie.get('_psngrnm_');
 
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.psngrid = parseInt(Cookie.get('_psngrid_'));
-                that.psngrname = Cookie.get('_psngrnm_');
-
-                that.getPassengerDetails();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            that.getPassengerDetails();
+        }
     }
 
     getPassengerDetails() {
         var that = this;
         var params = {};
 
-        if (that.actviewrights === "view") {
-            commonfun.loader("#fltrpsngr");
+        commonfun.loader("#fltrpsngr");
 
-            if (that.psngrname == "") {
-                Cookie.set("_psngrid_", "0");
-                Cookie.set("_psngrnm_", "");
-                
-                that.psngrid = parseInt(Cookie.get('_psngrid_'));
-                that.psngrname = Cookie.get('_psngrnm_');
+        if (that.psngrname == "") {
+            Cookie.set("_psngrid_", "0");
+            Cookie.set("_psngrnm_", "");
+
+            that.psngrid = parseInt(Cookie.get('_psngrid_'));
+            that.psngrname = Cookie.get('_psngrnm_');
+        }
+
+        params = {
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "schid": that.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+        };
+
+        that._psngrservice.getPassengerDetails(params).subscribe(data => {
+            try {
+                that.passengerDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
 
-            params = {
-                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                "schid": that.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
-                "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
-            };
+            commonfun.loaderhide("#fltrpsngr");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide("#fltrpsngr");
+        }, () => {
 
-            that._psngrservice.getPassengerDetails(params).subscribe(data => {
-                try {
-                    that.passengerDT = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide("#fltrpsngr");
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide("#fltrpsngr");
-            }, () => {
-
-            })
-        }
+        })
     }
 
     public addPassengerForm() {

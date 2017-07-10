@@ -16,10 +16,6 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
     locationDT: any = [];
     loginUser: LoginUserModel;
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     @ViewChild('location') location: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
@@ -56,54 +52,32 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
 
     public viewLocationDataRights() {
         let that = this;
-        let addRights = [];
-        let editRights = [];
-        let viewRights = [];
-
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "rptloc", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
-
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getLocationDetails();
-        }, err => {
-            //that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+        that.getLocationDetails();
     }
 
     getLocationDetails() {
         let that = this;
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        commonfun.loader();
 
-            that._locservice.getLocationDetails({
-                "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype
-            }).subscribe(data => {
-                try {
-                    that.locationDT = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
+        that._locservice.getLocationDetails({
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype
+        }).subscribe(data => {
+            try {
+                that.locationDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-            })
-        }
+        })
     }
 
     public ngOnDestroy() {

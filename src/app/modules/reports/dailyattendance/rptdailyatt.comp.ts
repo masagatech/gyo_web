@@ -23,8 +23,6 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
     attColumn: any = [];
     attData: any = [];
 
-    actviewrights: string = "";
-
     @ViewChild('dailyatt') dailyatt: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -107,55 +105,39 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
 
     public viewAttendanceReportsRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "rptdailyatt", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            viewRights = data.data.filter(a => a.mrights === "view");
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+        if (Cookie.get('_enttnm_') != null) {
+            this.enttid = parseInt(Cookie.get('_enttid_'));
+            this.enttname = Cookie.get('_enttnm_');
 
-            if (Cookie.get('_enttnm_') != null) {
-                this.enttid = parseInt(Cookie.get('_enttid_'));
-                this.enttname = Cookie.get('_enttnm_');
-
-                that.getAttendanceReports();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            that.getAttendanceReports();
+        }
     }
 
     getAttendanceReports() {
         var that = this;
         var monthname = that.getDefaultMonth();
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        commonfun.loader();
 
-            that._rptservice.getAttendanceReports({
-                "flag": "daily", "monthname": monthname, "schoolid": that.enttid
-            }).subscribe(data => {
-                try {
-                    that.attData = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
+        that._rptservice.getAttendanceReports({
+            "flag": "daily", "monthname": monthname, "schoolid": that.enttid
+        }).subscribe(data => {
+            try {
+                that.attData = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-            })
-        }
+        })
     }
 
     public ngOnDestroy() {

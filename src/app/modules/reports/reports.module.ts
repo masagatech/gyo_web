@@ -20,7 +20,7 @@ export const routes = [
                     { path: 'driverattendance', loadChildren: './driverattendance#DriverAttendanceReportsModule' },
                     { path: 'attendantattendance', loadChildren: './attendentattendance#AttendentAttendanceReportsModule' },
                     { path: 'routewisepassenger', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
-                    { path: 'directpassenger', loadChildren: './directpassenger#DirectPassengerComponent' },
+                    { path: 'directpassenger', loadChildren: './directpassenger#DirectPassengerModule' },
                     { path: 'unschedulepassenger', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
                     
                     { path: 'speed', loadChildren: './speed#SpeedReportsModule' },

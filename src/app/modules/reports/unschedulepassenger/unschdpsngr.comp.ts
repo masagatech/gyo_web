@@ -21,7 +21,6 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     enttname: string = "";
 
     passengerDT: any = [];
-    actviewrights: string = "";
 
     @ViewChild('unschdpsngr') unschdpsngr: ElementRef;
 
@@ -62,27 +61,13 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
 
     public viewUnscheduleReportsRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "mcode": "unschdpsngr", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            viewRights = data.data.filter(a => a.mrights === "view");
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
+        if (Cookie.get('_enttnm_') != null) {
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+            that.enttname = Cookie.get('_enttnm_');
 
-            if (Cookie.get('_enttnm_') != null) {
-                that.enttid = parseInt(Cookie.get('_enttid_'));
-                that.enttname = Cookie.get('_enttnm_');
-
-                that.getUnschedulePassenger();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            that.getUnschedulePassenger();
+        }
     }
 
     // Auto Completed Entity
@@ -124,32 +109,30 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     getUnschedulePassenger() {
         var that = this;
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        commonfun.loader();
 
-            that._rptservice.getRouteWisePassengerReports({
-                "flag": "unschedule", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
-            }).subscribe(data => {
-                try {
-                    if (data.data.length > 0) {
-                        that.passengerDT = data.data;
-                    }
-                    else {
-                        that.passengerDT = [];
-                    }
+        that._rptservice.getRouteWisePassengerReports({
+            "flag": "unschedule", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.passengerDT = data.data;
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
+                else {
+                    that.passengerDT = [];
                 }
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-            })
-        }
+        })
     }
 
     public ngOnDestroy() {

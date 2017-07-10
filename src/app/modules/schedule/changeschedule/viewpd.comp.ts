@@ -19,7 +19,6 @@ export class ChangeScheduleComponent implements OnInit {
     header: any;
     event: MyEvent;
     defaultDate: string = "";
-    acteditrights: string = "";
 
     entityDT: any = [];
     enttid: number = 0;
@@ -141,28 +140,16 @@ export class ChangeScheduleComponent implements OnInit {
 
     public viewScheduleDataRights() {
         var that = this;
-        var editRights = [];
 
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "mcode": "esch", "utype": that.loginUser.utype
-        }).subscribe(data => {
-            editRights = data.data.filter(a => a.mrights === "edit");
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
+        if (Cookie.get('_enttnm_') != null) {
+            this.enttid = parseInt(Cookie.get('_enttid_'));
+            this.enttname = Cookie.get('_enttnm_');
 
-            if (Cookie.get('_enttnm_') != null) {
-                this.enttid = parseInt(Cookie.get('_enttid_'));
-                this.enttname = Cookie.get('_enttnm_');
-
-                this.fillBatchDropDown();
-                this.fillDriverDropDown();
-                this.fillVehicleDropDown();
-                this.fillRouteDropDown();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+            this.fillBatchDropDown();
+            this.fillDriverDropDown();
+            this.fillVehicleDropDown();
+            this.fillRouteDropDown();
+        }
     }
 
     // Format Date
@@ -204,7 +191,6 @@ export class ChangeScheduleComponent implements OnInit {
         var that = this;
         that.pddata = [];
 
-        //if (that.actviewrights === "view") {
         commonfun.loader();
 
         that._pickdropservice.getPickDropDetails({
@@ -226,7 +212,6 @@ export class ChangeScheduleComponent implements OnInit {
         }, () => {
 
         })
-        //}
     }
 
     // Auto Completed Entity

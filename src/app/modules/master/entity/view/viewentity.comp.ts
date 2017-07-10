@@ -15,10 +15,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     _wsdetails: any = [];
 
-    actaddrights: string = "";
-    acteditrights: string = "";
-    actviewrights: string = "";
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
@@ -38,55 +34,33 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     public viewEntityDataRights() {
         var that = this;
-        var addRights = [];
-        var editRights = [];
-        var viewRights = [];
-
-        that._menuservice.getMenuDetails({
-            "flag": "actrights", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "mcode": "entt"
-        }).subscribe(data => {
-            addRights = data.data.filter(a => a.mrights === "add");
-            editRights = data.data.filter(a => a.mrights === "edit");
-            viewRights = data.data.filter(a => a.mrights === "view");
-
-            that.actaddrights = addRights.length !== 0 ? addRights[0].mrights : "";
-            that.acteditrights = editRights.length !== 0 ? editRights[0].mrights : "";
-            that.actviewrights = viewRights.length !== 0 ? viewRights[0].mrights : "";
-
-            that.getEntityDetails();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        })
+        that.getEntityDetails();
     }
 
     getEntityDetails() {
         var that = this;
 
-        if (that.actviewrights === "view") {
-            commonfun.loader();
+        commonfun.loader();
 
-            that._entityservice.getEntityDetails({
-                "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
-            }).subscribe(data => {
-                try {
-                    that.entityDT = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-                
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
+        that._entityservice.getEntityDetails({
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.entityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-            })
-        }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     public addEntityForm() {

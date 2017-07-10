@@ -5,7 +5,7 @@
                 <h4>User</h4>
             </div>
             <div class="col-md-2">
-                <div class="form-group form-float">
+                <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">User Type <strong>*</strong></label>
                         <select [(ngModel)]="srcutype" class="form-control utype" tabindex="5" (ngModelChange)="getUserDetails()">
@@ -26,12 +26,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1" style="padding-top: 12px;">
-                <button type="button" class="btn btn-theme btn-xs" (click)="resetUserDetails()">
-                    <span class="material-icons">restore</span>
-                </button>
+            <div class="col-md-1" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetUserDetails()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
             </div>
-            <div class="col-md-3" style="padding-top: 12px;">
+            <div class="col-md-3" style="padding-top: 20px; text-align: right;">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>

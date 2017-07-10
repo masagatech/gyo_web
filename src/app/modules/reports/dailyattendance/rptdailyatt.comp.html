@@ -13,6 +13,18 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3" style="padding-top: 20px; text-align: right;">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
