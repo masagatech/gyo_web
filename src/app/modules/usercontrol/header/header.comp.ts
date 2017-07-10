@@ -1,12 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
-import { MessageService, messageType } from '../../../_services/messages/message-service';
-import { AuthenticationService } from '../../../_services/auth-service';
-import { LoginService } from '../../../_services/login/login-service';
-import { LoginUserModel } from '../../../_model/user_model';
+import { MessageService, messageType, MenuService, LoginService, AuthenticationService } from '@services';
+import { LoginUserModel, Globals } from '@models';
 import { AppState } from '../../../app.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Globals } from '../../../_const/globals';
 
 declare var $: any;
 declare var loader: any;
@@ -23,12 +20,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   wslogo: string = "";
   userfullname: string = "";
 
+  mname: string = "";
+
   global = new Globals();
   uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-  public angularclassLogo = 'assets/img/angularclass-avatar.png';
-  public name = 'Angular 2 Webpack Starter';
-  public url = 'https://twitter.com/AngularClass';
+  reportsMenuDT: any = [];
 
   private themes: any = [
     { nm: 'red', disp: 'Red' },
@@ -53,13 +50,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { nm: 'black', disp: 'black' }
   ];
 
-  constructor(private _authservice: AuthenticationService, private _loginservice: LoginService,
+  constructor(private _authservice: AuthenticationService, public _menuservice: MenuService, private _loginservice: LoginService,
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
     this._wsdetails = Globals.getWSDetails();
 
     this.userfullname = this.loginUser.fullname + " (" + this.loginUser.utypename + ")";
     this.getHeaderDetails();
+    this.getChildMenuList();
 
     _router.events.forEach((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {
@@ -91,6 +89,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public ngAfterViewInit() {
     loader.loadall();
+  }
+
+  public getChildMenuList() {
+    var that = this;
+
+    that._menuservice.getMenuDetails({
+      "flag": "child", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
+    }).subscribe(data => {
+      that.reportsMenuDT = data.data;
+    }, err => {
+      that._msg.Show(messageType.error, "Error", err);
+    }, () => {
+    })
   }
 
   private changeSkin(theme: any) {

@@ -101,6 +101,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         Cookie.set("_enttnm_", this.enttname);
 
         this.getDriverData(event);
+        this.getSpeedVialationReports();
     }
 
     // Auto Completed Driver
@@ -129,8 +130,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     // Selected Driver
 
     selectDriverData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
+        this.drvid = event.value;
+        this.drvname = event.label;
 
         Cookie.set("_drvid_", this.drvid.toString());
         Cookie.set("_drvnm_", this.drvname);
@@ -159,7 +160,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
                 that.enttid = parseInt(Cookie.get('_enttid_'));
                 that.enttname = Cookie.get('_enttnm_');
 
-                that.drvid = parseInt(Cookie.get('_drvid_'));
+                that.drvid = Cookie.get('_drvid_') == undefined ? 0 : parseInt(Cookie.get('_drvid_'));
                 that.drvname = Cookie.get('_devnm_');
 
                 that.getSpeedVialationReports();
@@ -173,13 +174,13 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
 
     getSpeedVialationReports() {
         var that = this;
+        var params = {};
 
         if (that.actviewrights === "view") {
             commonfun.loader();
-
-            that._rptservice.getSpeedVialationReports({
-                "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid
-            }).subscribe(data => {
+            params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
+            
+            that._rptservice.getSpeedVialationReports(params).subscribe(data => {
                 try {
                     that.speedDT = data.data;
                 }
