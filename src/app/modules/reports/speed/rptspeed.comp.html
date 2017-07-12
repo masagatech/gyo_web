@@ -57,7 +57,7 @@
     </div>
 
     <div class="row clearfix">
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div *ngFor="let item of speedDT | groupBy: 'drvname'">
                 <div class="header">
                     <b>Driver Name : </b>{{item.key}}
@@ -97,13 +97,23 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="header">
                 Unsafe Deriver
             </div>
             <div class="body">
-                <div *ngFor="let item of speedDriverDT | groupBy: 'drvname'">
-                    {{item.drvname}}<br /> <b>Max Speed :</b> {{item.topspeed}}<br /> <b>Speed Violation Count :</b> {{item.cntspeed}}
+                <div *ngFor="let row of speedDriverDT | groupBy: 'drvname'">
+                    <b>{{row.key}}</b>
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <br>Max Speed<br> Speed Violation Count
+                        </div>
+                        <div class="col-md-3" *ngFor="let mrow of row.value">
+                            <b>{{mrow.pdtype}}</b>
+                            <br /> {{mrow.topspeed}}
+                            <br /> {{mrow.cntspeed}}
+                        </div>
+                    </div>
                     <hr />
                 </div>
             </div>

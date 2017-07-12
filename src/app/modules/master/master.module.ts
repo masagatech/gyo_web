@@ -24,6 +24,7 @@ export const routes = [
                     { path: 'user', loadChildren: './users#UserModule' },
                     { path: 'location', loadChildren: './location#LocationModule' },
                     { path: 'route', loadChildren: './route#RouteModule' },
+                    { path: 'leavepassenger', loadChildren: './leavepassenger#LeavePassengerModule' },
                 ]
             }
         ]
