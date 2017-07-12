@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { AuthGuard } from '../../../_services/authguard-service';
 
-import { AddUserMenuMapComponent } from './addumm.comp';
+import { AddGeneralComponent } from './addgen.comp';
 
-import { UserService } from '@services/master';
+import { GeneralService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -15,8 +15,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: AddUserMenuMapComponent, canActivate: [AuthGuard],
-        data: { "module": "set", "submodule": "umm", "rights": "allowed", "urlname": "/usermenumap" }
+        path: '', component: AddGeneralComponent, canActivate: [AuthGuard],
+        data: { "module": "set", "submodule": "umm", "rights": "allowed", "urlname": "/general" }
       }
     ]
   },
@@ -24,7 +24,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddUserMenuMapComponent
+    AddGeneralComponent
   ],
 
   imports: [
@@ -32,9 +32,9 @@ export const routes = [
     CheckboxModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, UserService]
+  providers: [AuthGuard, GeneralService]
 })
 
-export class UserMenuMapModule {
+export class GeneralModule {
   public static routes = routes;
 }

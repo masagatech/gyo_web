@@ -1,13 +1,12 @@
 <div class="card">
     <div class="header">
+        <h4>Speed Violation</h4>
+
         <div class="row clearfix">
-            <div class="col-md-1 col-xs-1">
-                <h4>Speed</h4>
-            </div>
             <div class="col-md-2 col-xs-2" style="padding-top: 20px;">
                 <div class="form-group form-float">
                     <div class="form-line">
-                        <select name="viewedon" [(ngModel)]="viewedon" class="form-control viewedon" tabindex="1" (ngModelChange)="getSpeedVialationReports()">
+                        <select name="viewedon" [(ngModel)]="viewedon" class="form-control viewedon" tabindex="1" (ngModelChange)="getSpeedViolationReports()">
                             <option [value]="'30'">Last 30 Days</option>
                             <option [value]="'15'">Last 15 Days</option>
                             <option [value]="'7'">Last 7 Days</option>
@@ -35,6 +34,13 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetSpeedViolationReports()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
+            </div>
             <div class="col-md-1" style="padding-top: 20px; text-align: right;">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,33 +56,57 @@
         </div>
     </div>
 
-    <div #speed class="body p-datatable">
-        <p-dataTable [value]="speedDT">
-            <p-headerColumnGroup>
-                <p-row>
-                    <p-column header="Date" rowspan="3"></p-column>
-                </p-row>
-                <p-row>
-                    <p-column header="Pickup" colspan="3"></p-column>
-                    <p-column header="Drop" colspan="3"></p-column>
-                </p-row>
-                <p-row>
-                    <p-column header="Vehicle" [style]="{'width': '200px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
-                    <p-column header="Route" [style]="{'width': '200px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
-                    <p-column header="Top Speed" [style]="{'width': '100px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
-                    <p-column header="Vehicle" [style]="{'width': '200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-                    <p-column header="Route" [style]="{'width': '200px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
-                    <p-column header="Top Speed" [style]="{'width': '100px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
-                </p-row>
-            </p-headerColumnGroup>
+    <div class="row clearfix">
+        <div class="col-md-10">
+            <div *ngFor="let item of speedDT | groupBy: 'drvname'">
+                <div class="header">
+                    <b>Driver Name : </b>{{item.key}}
+                </div>
+                <div #speed class="body p-datatable">
+                    <p-dataTable [value]="item.value">
+                        <p-headerColumnGroup>
+                            <p-row>
+                                <p-column header="Date" rowspan="3"></p-column>
+                            </p-row>
+                            <p-row>
+                                <p-column header="Pickup" colspan="4"></p-column>
+                                <p-column header="Drop" colspan="4"></p-column>
+                            </p-row>
+                            <p-row>
+                                <p-column header="Vehicle" [style]="{'width': '150px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
+                                <p-column header="Route" [style]="{'width': '150px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
+                                <p-column header="Top Speed" [style]="{'width': '100px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                                <p-column header="Count" [style]="{'width': '60px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                                <p-column header="Vehicle" [style]="{'width': '150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                                <p-column header="Route" [style]="{'width': '150px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
+                                <p-column header="Top Speed" [style]="{'width': '100px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                                <p-column header="Count" [style]="{'width': '60px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                            </p-row>
+                        </p-headerColumnGroup>
 
-            <p-column field="trpdate"></p-column>
-            <p-column field="pickvehname" [style]="{'width': '200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-            <p-column field="pickrtname" [style]="{'width': '200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-            <p-column field="picktopspeed" [style]="{'width': '100px', 'text-align': 'center', 'vertical-align':'top'}"></p-column>
-            <p-column field="dropvehname" [style]="{'width': '200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-            <p-column field="droprtname" [style]="{'width': '200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-            <p-column field="droptopspeed" [style]="{'width': '100px', 'text-align': 'center', 'vertical-align':'top'}"></p-column>
-        </p-dataTable>
+                        <p-column field="trpdate" [style]="{'text-align':'center', 'vertical-align':'top'}"></p-column>
+                        <p-column field="pickvehname" [style]="{'width': '150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column field="pickrtname" [style]="{'width': '150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column field="picktopspeed" [style]="{'width': '100px', 'text-align': 'center', 'vertical-align':'top'}"></p-column>
+                        <p-column field="pickcntspeed" [style]="{'width': '60px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                        <p-column field="dropvehname" [style]="{'width': '150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column field="droprtname" [style]="{'width': '150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column field="droptopspeed" [style]="{'width': '100px', 'text-align': 'center', 'vertical-align':'top'}"></p-column>
+                        <p-column field="dropcntspeed" [style]="{'width': '60px', 'text-align': 'center','vertical-align': 'top'}"></p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="header">
+                Unsafe Deriver
+            </div>
+            <div class="body">
+                <div *ngFor="let item of speedDriverDT | groupBy: 'drvname'">
+                    {{item.drvname}}<br /> <b>Max Speed :</b> {{item.topspeed}}<br /> <b>Speed Violation Count :</b> {{item.cntspeed}}
+                    <hr />
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -21,6 +21,8 @@ export interface LoginUserModel {
   wsautoid: number;
   wscode: string;
   wsname: string;
+  schenttmaxno: number;
+  cmpenttmaxno: number;
   wslogo: string;
   lgcode: string;
   login: string,

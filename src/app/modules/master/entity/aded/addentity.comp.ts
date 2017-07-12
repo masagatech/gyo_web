@@ -53,6 +53,7 @@ export class AddEntityComponent implements OnInit {
 
     mode: string = "";
     isactive: boolean = true;
+    isvalidentt: boolean = true;
 
     contactDT: any = [];
     duplicateContact: boolean = true;
@@ -157,6 +158,57 @@ export class AddEntityComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Get Valid Entity
+
+    getValidEntity() {
+        var that = this;
+        var params = {};
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['id'] == undefined) {
+                commonfun.loader();
+
+                params = {
+                    "flag": "validentt", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+                }
+
+                that._entityservice.getEntityDetails(params).subscribe(data => {
+                    try {
+                        var enttdata = data.data.filter(a => a.entttype === that.entttype);
+
+                        if (enttdata.length > 0) {
+                            var countentity = enttdata[0].countentt;
+                            var limitentity = that.entttype == "Company" ? that._wsdetails.schenttmaxno : that._wsdetails.cmpenttmaxno;
+
+                            if (limitentity <= countentity) {
+                                that.isvalidentt = false;
+                                that._msg.Show(messageType.error, "Error", "Only " + limitentity + " Entity Allowed");
+                            }
+                            else {
+                                that.isvalidentt = true;
+                            }
+                        }
+                        else {
+                            that.isvalidentt = false;
+                        }
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+        });
     }
 
     // Get State DropDown
@@ -482,7 +534,7 @@ export class AddEntityComponent implements OnInit {
             weeklyoff = "{" + wkrights.slice(0, -1) + "}";
 
             if (weeklyoff == '{}') {
-                this._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
+                that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
             else {
                 commonfun.loader();
@@ -516,14 +568,14 @@ export class AddEntityComponent implements OnInit {
                     "mode": ""
                 }
 
-                this._entityservice.saveEntityInfo(saveentity).subscribe(data => {
+                that._entityservice.saveEntityInfo(saveentity).subscribe(data => {
                     try {
                         var dataResult = data.data;
                         var msg = dataResult[0].funsave_schoolinfo.msg;
                         var msgid = dataResult[0].funsave_schoolinfo.msgid;
 
                         if (msgid != "-1") {
-                            this._msg.Show(messageType.success, "Success", msg);
+                            that._msg.Show(messageType.success, "Success", msg);
 
                             if (msgid === "1") {
                                 that.resetEntityFields();
@@ -533,7 +585,7 @@ export class AddEntityComponent implements OnInit {
                             }
                         }
                         else {
-                            this._msg.Show(messageType.error, "Error", msg);
+                            that._msg.Show(messageType.error, "Error", msg);
                         }
 
                         commonfun.loaderhide();
@@ -559,9 +611,9 @@ export class AddEntityComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.schid = params['id'];
+                that.schid = params['id'];
 
                 that._entityservice.getEntityDetails({
                     "flag": "edit",
@@ -620,6 +672,7 @@ export class AddEntityComponent implements OnInit {
                 })
             }
             else {
+                that.getValidEntity();
                 that.resetEntityFields();
                 commonfun.loaderhide();
             }

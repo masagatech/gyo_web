@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="header">
+        <h4>General Setting</h4>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Type</label>
+                        <select id="gsettype" name="gsettype" [(ngModel)]="gsettypid" class="form-control">
+                            <option value="0">-- Select Type --</option>
+                            <option *ngFor="let grow of gensetDT" [value]="grow.key">
+                                {{grow.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Value</label>
+                        <input id="gsetval" name="gsetval" type="text" [(ngModel)]="gsetval" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" style="padding-top: 20px;">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="saveGeneralSetting()">
+                        <i class="material-icons">save</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

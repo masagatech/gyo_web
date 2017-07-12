@@ -29,6 +29,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     drvid: number = 0;
     drvname: string = "";
 
+    speedDriverDT: any = [];
+
     @ViewChild('speed') speed: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
@@ -97,7 +99,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         Cookie.set("_enttnm_", this.enttname);
 
         this.getDriverData(event);
-        this.getSpeedVialationReports();
+        this.getLimitSpeedDriver();
+        this.getSpeedViolationReports();
     }
 
     // Auto Completed Driver
@@ -132,7 +135,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         Cookie.set("_drvid_", this.drvid.toString());
         Cookie.set("_drvnm_", this.drvname);
 
-        this.getSpeedVialationReports();
+        this.getSpeedViolationReports();
     }
 
     public viewSpeedDataRights() {
@@ -142,21 +145,47 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
             that.enttid = parseInt(Cookie.get('_enttid_'));
             that.enttname = Cookie.get('_enttnm_');
 
-            that.drvid = Cookie.get('_drvid_') == undefined ? 0 : parseInt(Cookie.get('_drvid_'));
-            that.drvname = Cookie.get('_devnm_');
+            that.drvid = parseInt(Cookie.get('_drvid_'));
+            that.drvname = Cookie.get('_drvnm_');
 
-            that.getSpeedVialationReports();
+            that.getLimitSpeedDriver();
+            that.getSpeedViolationReports();
         }
     }
 
-    getSpeedVialationReports() {
+    getLimitSpeedDriver() {
+        var that = this;
+        var params = {};
+
+        commonfun.loader();
+        params = { "flag": "Top5", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
+
+        that._rptservice.getSpeedViolationReports(params).subscribe(data => {
+            try {
+                that.speedDriverDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    getSpeedViolationReports() {
         var that = this;
         var params = {};
 
         commonfun.loader();
         params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
 
-        that._rptservice.getSpeedVialationReports(params).subscribe(data => {
+        that._rptservice.getSpeedViolationReports(params).subscribe(data => {
             try {
                 that.speedDT = data.data;
             }
@@ -172,6 +201,16 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
+    }
+
+    resetSpeedViolationReports() {
+        Cookie.delete('_drvid_');
+        Cookie.delete('_drvname_');
+
+        this.drvid = 0;
+        this.drvname = "";
+
+        this.getSpeedViolationReports();
     }
 
     public ngOnDestroy() {

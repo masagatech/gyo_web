@@ -19,22 +19,22 @@
     </div>
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6 border">
-                <div class="row clearfix">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Entity Type</label>
-                                <select id="entttype" [(ngModel)]="entttype" class="form-control entttype">
-                                    <option *ngFor="let row of entttypeDT" [value]="row.key">	
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity Type</label>
+                        <select id="entttype" [(ngModel)]="entttype" class="form-control entttype" (ngModelChange)="getValidEntity()">
+                            <option *ngFor="let row of entttypeDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="row clearfix" *ngIf="isvalidentt">
+            <div class="col-md-6 border">
                 <div class="row clearfix">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -158,121 +158,123 @@
         </div>
     </div>
 
-    <div class="header">
-        <h4>Primary Contact</h4>
-    </div>
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Name</label>
-                        <input type="text" [(ngModel)]="name" class="form-control" maxlength="50" />
+    <div *ngIf="isvalidentt">
+        <div class="header">
+            <h4>Primary Contact</h4>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Name</label>
+                            <input type="text" [(ngModel)]="name" class="form-control" maxlength="50" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Contact No</label>
-                        <input type="text" [(ngModel)]="mobile" class="form-control" maxlength="10" />
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Contact No</label>
+                            <input type="text" [(ngModel)]="mobile" class="form-control" maxlength="10" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Email</label>
-                        <input type="text" [(ngModel)]="email" class="form-control" maxlength="150" />
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Email</label>
+                            <input type="text" [(ngModel)]="email" class="form-control" maxlength="150" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="header">
-        <h4>Secondary Contact</h4>
-    </div>
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Name</label>
-                        <input type="text" [(ngModel)]="cpname" class="form-control cpname" maxlength="50" />
+        <div class="header">
+            <h4>Secondary Contact</h4>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Name</label>
+                            <input type="text" [(ngModel)]="cpname" class="form-control cpname" maxlength="50" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Contact No</label>
-                        <input type="text" [(ngModel)]="cpmobile" class="form-control cpmobile" maxlength="10" />
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Contact No</label>
+                            <input type="text" [(ngModel)]="cpmobile" class="form-control cpmobile" maxlength="10" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Email</label>
-                        <input type="text" [(ngModel)]="cpemail" class="form-control cpemail" maxlength="150" />
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Email</label>
+                            <input type="text" [(ngModel)]="cpemail" class="form-control cpemail" maxlength="150" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="addCPRow()">
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="addCPRow()">
                         <i class="material-icons">add</i>
                     </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="body" *ngIf="contactDT.length">
-        <p-dataTable #dt [value]="contactDT" [lazy]="true">
-            <p-column header="#" [style]="{'width':'50px','text-align':'center'}">
-                <template let-i="rowIndex" pTemplate="body">
-                    {{i + 1}}
-                </template>
-            </p-column>
-            <p-column header="Name" field="cpname" [style]="{'text-align':'left'}"></p-column>
-            <p-column header="Contact No" field="cpcontactno" [style]="{'width':'250px','text-align':'left'}"></p-column>
-            <p-column header="Email" field="cpemail" [style]="{'width':'250px','text-align':'left'}"></p-column>
-            <p-column [style]="{'width':'50px','text-align':'center'}">
-                <template let-col let-row="rowData" pTemplate="body">
-                    <button class="btn btn-danger btn-xs" (click)="deleteCPRow(row)"><i class="material-icons">delete</i></button>
-                </template>
-            </p-column>
-        </p-dataTable>
-    </div>
+        <div class="body" *ngIf="contactDT.length">
+            <p-dataTable #dt [value]="contactDT" [lazy]="true">
+                <p-column header="#" [style]="{'width':'50px','text-align':'center'}">
+                    <template let-i="rowIndex" pTemplate="body">
+                        {{i + 1}}
+                    </template>
+                </p-column>
+                <p-column header="Name" field="cpname" [style]="{'text-align':'left'}"></p-column>
+                <p-column header="Contact No" field="cpcontactno" [style]="{'width':'250px','text-align':'left'}"></p-column>
+                <p-column header="Email" field="cpemail" [style]="{'width':'250px','text-align':'left'}"></p-column>
+                <p-column [style]="{'width':'50px','text-align':'center'}">
+                    <template let-col let-row="rowData" pTemplate="body">
+                        <button class="btn btn-danger btn-xs" (click)="deleteCPRow(row)"><i class="material-icons">delete</i></button>
+                    </template>
+                </p-column>
+            </p-dataTable>
+        </div>
 
-    <div class="header">
-        <h4>Week Days
-            <h6>(Working Days)</h6>
-        </h4>
-    </div>
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-8">
-                <div id="week">
-                    <span style="margin-right:5px;" *ngFor="let week of weekDT; let i = index;">
+        <div class="header">
+            <h4>Week Days
+                <h6>(Working Days)</h6>
+            </h4>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                <div class="col-md-8">
+                    <div id="week">
+                        <span style="margin-right:5px;" *ngFor="let week of weekDT; let i = index;">
                         <input type="checkbox" id="{{week.key}}" value="{{week.key}}" name="week{{i + 1}}" data-menuid="week.key" data-right="item"
                             class="actrights filled-in" />
                         <label for="{{week.key}}">{{week.val}}</label>
                     </span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <p-fileUpload name="fileUploaded" url="{{uploadconfig.server}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="auto">
-                    <template pTemplate type="content">
-                        <div *ngIf="uploadPhotoDT.length">
-                            <div *ngFor="let file of uploadPhotoDT" class="box">
-                                <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
+                <div class="col-md-4">
+                    <p-fileUpload name="fileUploaded" url="{{uploadconfig.server}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="auto">
+                        <template pTemplate type="content">
+                            <div *ngIf="uploadPhotoDT.length">
+                                <div *ngFor="let file of uploadPhotoDT" class="box">
+                                    <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
+                                </div>
                             </div>
-                        </div>
-                        <span *ngIf="!uploadPhotoDT.length">Upload {{entttype}} Logo Here....</span>
-                    </template>
-                </p-fileUpload>
+                            <span *ngIf="!uploadPhotoDT.length">Upload {{entttype}} Logo Here....</span>
+                        </template>
+                    </p-fileUpload>
+                </div>
             </div>
         </div>
     </div>
