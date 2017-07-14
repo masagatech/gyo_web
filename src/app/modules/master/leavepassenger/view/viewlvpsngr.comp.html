@@ -2,57 +2,42 @@
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-2">
-                <h4>Holiday</h4>
+                <h4>Leave Passenger</h4>
             </div>
             <div class="col-md-7 col-xs-7">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshHoliday('grid')">
-                    <span class="material-icons">apps</span>
-                </button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshHoliday('calendar')">
-                    <span class="material-icons">date_range</span>
-                </button>
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addHolidayForm()">
+            <div class="col-md-3" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addLeavePassenger()">
                     <span class="material-icons">add</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="body no-padding" *ngIf="isShowGrid">
+    <div class="body no-padding">
         <div class="row clearfix">
             <div class="col-md-12">
-                <p-dataTable [value]="holidayDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="hldnm" header="Holiday Name" [style]="{'text-align': 'left'}"></p-column>
+                <p-dataTable [value]="lvpsngrDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="studentname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="frmdt" header="From Date" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
                     <p-column field="todt" header="To Date" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
-                    <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column field="standard" header="Standard" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column field="division" header="Division" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editHolidayGrid(row)">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editLeavePassenger(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </template>
                     </p-column>
                 </p-dataTable>
-            </div>
-        </div>
-    </div>
-
-    <div class="body" *ngIf="isShowCalendar">
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <p-schedule [events]="holidayDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (viewRender)="getHolidayCalendar($event);" (onEventClick)="editHolidayCalendar($event);"></p-schedule>
             </div>
         </div>
     </div>

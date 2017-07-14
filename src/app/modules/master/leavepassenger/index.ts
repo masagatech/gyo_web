@@ -7,7 +7,7 @@ import { AuthGuard } from '../../../_services/authguard-service';
 import { AddLeavePassengerComponent } from './aded/addlvpsngr.comp';
 import { ViewLeavePassengerComponent } from './view/viewlvpsngr.comp';
 
-import { HolidayService } from '@services/master';
+import { LeavePassengerService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
 
@@ -33,7 +33,7 @@ export const routes = [
     AutoCompleteModule, ScheduleModule
   ],
 
-  providers: [AuthGuard, HolidayService]
+  providers: [AuthGuard, LeavePassengerService]
 })
 
 export class LeavePassengerModule {

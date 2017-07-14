@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { HolidayService } from '@services/master';
+import { LeavePassengerService } from '@services/master';
 
 @Component({
     templateUrl: 'viewlvpsngr.comp.html',
@@ -15,10 +15,10 @@ export class ViewLeavePassengerComponent implements OnInit {
     _wsdetails: any = [];
 
     entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: string = "";
 
-    holidayDT: any = [];
+    lvpsngrDT: any = [];
 
     private events: any[];
     private header: any;
@@ -29,12 +29,11 @@ export class ViewLeavePassengerComponent implements OnInit {
     isShowCalendar: any = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _holidayervice: HolidayService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _lvpsngrservice: LeavePassengerService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.getDefaultDate();
-        this.viewHolidayDataRights();
+        this.viewLeavePassengerDataRights();
     }
 
     public ngOnInit() {
@@ -42,40 +41,14 @@ export class ViewLeavePassengerComponent implements OnInit {
         that.refreshButtons();
 
         setTimeout(function () {
-            $(".entityname input").focus();
+            $(".enttname input").focus();
         }, 100);
-
-        that.header = {
-            left: 'prev',
-            center: 'title',
-            // right: 'month,agendaWeek,agendaDay,today'
-            right: 'next'
-        };
     }
 
     refreshButtons() {
         setTimeout(function () {
             commonfun.navistyle();
-            commonfun.chevronstyle();
         }, 0);
-    }
-
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
-    getDefaultDate() {
-        var date = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        this.defaultDate = this.formatDate(today);
     }
 
     // Auto Completed Entity
@@ -103,36 +76,35 @@ export class ViewLeavePassengerComponent implements OnInit {
     // Selected Owners
 
     selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
+        this.enttid = event.value;
+        this.enttname = event.label;
 
-        Cookie.set("_enttid_", this.entityid.toString());
-        Cookie.set("_enttnm_", this.entityname);
+        Cookie.set("_enttid_", this.enttid.toString());
+        Cookie.set("_enttnm_", this.enttname);
 
-        this.getHolidayGrid();
+        this.getLeavePassenger();
     }
 
-    public viewHolidayDataRights() {
+    public viewLeavePassengerDataRights() {
         var that = this;
 
         if (Cookie.get('_enttnm_') != null) {
-            that.entityid = parseInt(Cookie.get('_enttid_'));
-            that.entityname = Cookie.get('_enttnm_');
-            that.getHolidayGrid();
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+            that.enttname = Cookie.get('_enttnm_');
+            that.getLeavePassenger();
         }
     }
 
-    getHolidayGrid() {
+    getLeavePassenger() {
         var that = this;
-
         commonfun.loader();
 
-        that._holidayervice.getHoliday({
+        that._lvpsngrservice.getLeavePassenger({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin, "schid": that.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.holidayDT = data.data;
+                that.lvpsngrDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -148,59 +120,12 @@ export class ViewLeavePassengerComponent implements OnInit {
         })
     }
 
-    fetchEvents(eventData) {
-
+    public addLeavePassenger() {
+        this._router.navigate(['/master/leavepassenger/add']);
     }
 
-    getHolidayCalendar(row) {
-        var that = this;
-        commonfun.loader();
-
-        that._holidayervice.getHoliday({
-            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "schid": 1, "monthname": row.view.title
-        }).subscribe(data => {
-            try {
-                that.events = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-
-        that.refreshButtons();
-    }
-
-    isshHoliday(viewtype) {
-        if (viewtype == "grid") {
-            this.isShowGrid = true;
-            this.isShowCalendar = false;
-        }
-        else {
-            this.isShowGrid = false;
-            this.isShowCalendar = true;
-        }
-
-        this.refreshButtons();
-    }
-
-    public addHolidayForm() {
-        this._router.navigate(['/master/holiday/add']);
-    }
-
-    public editHolidayGrid(row) {
-        this._router.navigate(['/master/holiday/edit', row.hldid]);
-    }
-
-    public editHolidayCalendar(row) {
-        this._router.navigate(['/master/holiday/edit', row.calEvent.id]);
+    public editLeavePassenger(row) {
+        this._router.navigate(['/master/leavepassenger/edit', row.slid]);
     }
 }
 

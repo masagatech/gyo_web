@@ -1,9 +1,9 @@
 <div class="card">
     <div class="header">
-        <h4>Holiday</h4>
+        <h4>Leave Passenger</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveHolidayInfo()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveLeavePassenger()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Passenger Name <strong>*</strong></label>
-                        <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="9" (onSelect)="selectPassengerData($event)" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From Date <strong>*</strong></label>
-                                <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" (ngModelChange)="todt = frmdt" />
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" [tabindex]="3" (ngModelChange)="todt = frmdt" />
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,23 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To Date <strong>*</strong></label>
-                                <input type="date" [(ngModel)]="todt" class="form-control date todt" />
+                                <input type="date" [(ngModel)]="todt" class="form-control date todt" [tabindex]="4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <label class="control-label">Leave Type <strong>*</strong></label>
+                                <select [(ngModel)]="restype" class="form-control restype" tabindex="5">
+                                    <option [value]="''">Select Type</option>
+                                    <option *ngFor="let row of leavetypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -56,8 +72,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Reason</label>
-                                <textarea [(ngModel)]="resdesc" rows="4" class="form-control no-resize auto-growth"></textarea>
+                                <label class="control-label">Remark</label>
+                                <textarea [(ngModel)]="remark" rows="4" class="form-control no-resize auto-growth" [tabindex]="6"></textarea>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { HolidayService } from '@services/master';
+import { LeavePassengerService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
@@ -18,9 +18,8 @@ export class AddLeavePassengerComponent implements OnInit {
 
     _wsdetails: any = [];
 
-    leaveid: number = 0;
-    restype: string = "";
-    resdesc: string = "";
+    slid: number = 0;
+    remark: string = "";
 
     entityDT: any = [];
     enttid: number = 0;
@@ -33,23 +32,27 @@ export class AddLeavePassengerComponent implements OnInit {
     frmdt: any = "";
     todt: any = "";
 
+    leavetypeDT: string = "";
+    restype: string = "";
+
     ispickup: boolean = false;
     isdrop: boolean = false;
-    
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _hldservice: HolidayService, private _autoservice: CommonService) {
+        private _lvpsngrservice: LeavePassengerService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
     }
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".frmdt").focus();
+            $(".enttname input").focus();
         }, 100);
 
-        this.getHolidayDetails();
+        this.fillLeaveTypeDropDown();
+        this.getLeavePassenger();
     }
 
     // Auto Completed Entity
@@ -74,33 +77,95 @@ export class AddLeavePassengerComponent implements OnInit {
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
     selectEntityData(event) {
         this.enttid = event.value;
         this.enttname = event.label;
-        
+        this.getPassengerData(event);
+
         $(".enttname input").focus();
+    }
+
+    // Auto Completed Passenger
+
+    getPassengerData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "passenger",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "id": this.enttid,
+            "search": query
+        }).subscribe((data) => {
+            this.passengerDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Passenger
+
+    selectPassengerData(event) {
+        this.psngrid = event.value;
+        this.psngrname = event.label;
+
+        Cookie.set("_psngrid_", this.psngrid.toString());
+        Cookie.set("_psngrnm_", this.psngrname);
+    }
+
+    // Leave Type
+
+    fillLeaveTypeDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._lvpsngrservice.getLeavePassenger({ "flag": "dropdown" }).subscribe(data => {
+            that.leavetypeDT = data.data;
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Clear Fields
 
-    resetHolidayFields() {
-        this.leaveid = 0;
-        this.frmdt = "";
-        this.todt = "";
-        this.psngrid = 0;
-        this.psngrname = "";
+    resetLeavePassengerFields() {
+        this.slid = 0;
         this.enttid = 0;
         this.enttname = "";
+        this.psngrid = 0;
+        this.psngrname = "";
+        this.frmdt = "";
+        this.todt = "";
+        this.restype = "";
+        this.remark = "";
     }
 
     // Save Data
 
-    saveHolidayInfo() {
+    saveLeavePassenger() {
         var that = this;
 
-        if (that.frmdt == "") {
+        if (that.enttid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
+            $(".enttname input").focus();
+        }
+        else if (that.psngrid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
+            $(".psngrname input").focus();
+        }
+        else if (that.frmdt == "") {
             that._msg.Show(messageType.error, "Error", "Enter From Date");
             $(".frmdt").focus();
         }
@@ -108,40 +173,34 @@ export class AddLeavePassengerComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter To Date");
             $(".todt").focus();
         }
-        else if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
-            $(".enttname").focus();
-        }
-        else if (that.psngrid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
-            $(".psngrname input").focus();
-        }
         else {
             commonfun.loader();
 
-            var saveholiday = {
-                "leaveid": that.leaveid,
-                "restype": that.restype,
-                "resdesc": that.resdesc,
+            var savelvpsngr = {
+                "slid": that.slid,
+                "enttid": that.enttid,
+                "psngrid": that.psngrid,
                 "frmdt": that.frmdt,
                 "todt": that.todt,
                 "ispickup": that.ispickup,
                 "isdrop": that.isdrop,
+                "restype": that.restype,
+                "remark": that.remark,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._wsdetails.wsautoid
             }
 
-            that._hldservice.saveHoliday(saveholiday).subscribe(data => {
+            that._lvpsngrservice.saveLeavePassenger(savelvpsngr).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_holiday.msg;
-                    var msgid = dataResult[0].funsave_holiday.msgid;
+                    var dataResult = data.data[0].funsave_studentleave;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid == "1") {
-                            that.resetHolidayFields();
+                            that.resetLeavePassengerFields();
                         }
                         else {
                             that.backViewData();
@@ -166,25 +225,29 @@ export class AddLeavePassengerComponent implements OnInit {
         }
     }
 
-    // Get Holiday Data
+    // Get Leave Passenger Data
 
-    getHolidayDetails() {
+    getLeavePassenger() {
         var that = this;
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.leaveid = params['id'];
+                that.slid = params['id'];
 
-                that._hldservice.getHoliday({
+                that._lvpsngrservice.getLeavePassenger({
                     "flag": "edit",
-                    "id": that.leaveid,
+                    "id": that.slid,
                     "wsautoid": that._wsdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        that.leaveid = data.data[0].leaveid;
+                        that.slid = data.data[0].slid;
+                        that.enttid = data.data[0].enttid;
+                        that.enttname = data.data[0].enttname;
+                        that.psngrid = data.data[0].psngrid;
+                        that.psngrname = data.data[0].psngrname;
                         that.restype = data.data[0].restype;
-                        that.resdesc = data.data[0].resdesc;
+                        that.remark = data.data[0].resdesc;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
                         that.ispickup = data.data[0].ispickup;
@@ -204,7 +267,7 @@ export class AddLeavePassengerComponent implements OnInit {
                 })
             }
             else {
-                that.resetHolidayFields();
+                that.resetLeavePassengerFields();
                 commonfun.loaderhide();
             }
         });

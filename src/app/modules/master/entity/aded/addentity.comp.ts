@@ -181,11 +181,11 @@ export class AddEntityComponent implements OnInit {
 
                         if (enttdata.length > 0) {
                             var countentity = enttdata[0].countentt;
-                            var limitentity = that.entttype == "Company" ? that._wsdetails.schenttmaxno : that._wsdetails.cmpenttmaxno;
+                            var limitentity = that.entttype == "Company" ? that._wsdetails.cmpenttmaxno : that._wsdetails.schenttmaxno;
 
                             if (limitentity <= countentity) {
                                 that.isvalidentt = false;
-                                that._msg.Show(messageType.error, "Error", "Only " + limitentity + " Entity Allowed");
+                                that._msg.Show(messageType.info, "Info", "Only " + limitentity + " " + that.entttype + " Allowed");
                             }
                             else {
                                 that.isvalidentt = true;
