@@ -177,11 +177,19 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
                 "flag": "driver", "monthname": that.monthname, "schoolid": that.enttid
             }).subscribe(data => {
                 try {
-                    if (data.data.length !== 0) {
-                        that.attData = data.data;
+                    if (data.data.length == 0) {
+                        that.attData = [];
+                    }
+                    else if (data.data.length == 1) {
+                        if (data.data[0].drivername !== null) {
+                            that.attData = data.data;
+                        }
+                        else {
+                            that.attData = [];
+                        }
                     }
                     else {
-                        that.attData = [];
+                        that.attData = data.data;
                     }
                 }
                 catch (e) {

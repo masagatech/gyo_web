@@ -634,7 +634,7 @@ export class ChangeScheduleComponent implements OnInit {
         var dropdata = [];
 
         this._pickdropservice.getPickDropDetails({
-            "flag": "edit", "schoolid": that.enttid, "batchid": that.batchid,
+            "flag": "view", "mode": "edit", "schoolid": that.enttid, "batchid": that.batchid, "wsautoid": that._wsdetails.wsautoid,
             "frmdt": event.calEvent.start, "todt": event.calEvent.end
         }).subscribe(data => {
             try {
@@ -653,15 +653,6 @@ export class ChangeScheduleComponent implements OnInit {
                         pickdata = [];
                     }
 
-                    if (dropalldata.length !== 0) {
-                        that.dropautoid = dropalldata[0].autoid;
-                        dropdata = dropalldata.filter(a => a.isactive === true);
-                    }
-                    else {
-                        that.dropautoid = 0;
-                        dropdata = [];
-                    }
-
                     if (pickdata.length !== 0) {
                         that.pickfromdate = pickdata[0].frmdt;
                         that.picktodate = pickdata[0].todt;
@@ -670,6 +661,7 @@ export class ChangeScheduleComponent implements OnInit {
                         that.pickpsngrtype = pickdata[0].psngrtype;
                         that.pickrtid = pickdata[0].rtid;
                         that.pickPassengerDT = pickdata[0].studentdata;
+                        that.pickAttList = pickdata[0].attendantdata;
                         that.ispickup = pickdata[0].isactive;
                     }
                     else {
@@ -678,9 +670,19 @@ export class ChangeScheduleComponent implements OnInit {
                         that.pickpsngrtype = "bypsngr";
                         that.pickrtid = 0;
                         that.pickPassengerDT = [];
+                        that.pickAttList = [];
                         that.ispickup = false;
 
                         that.getPDDate(event);
+                    }
+
+                    if (dropalldata.length !== 0) {
+                        that.dropautoid = dropalldata[0].autoid;
+                        dropdata = dropalldata.filter(a => a.isactive === true);
+                    }
+                    else {
+                        that.dropautoid = 0;
+                        dropdata = [];
                     }
 
                     if (dropdata.length !== 0) {
@@ -691,6 +693,7 @@ export class ChangeScheduleComponent implements OnInit {
                         that.droppsngrtype = dropdata[0].psngrtype;
                         that.droprtid = dropdata[0].rtid;
                         that.dropPassengerDT = dropdata[0].studentdata;
+                        that.dropAttList = dropdata[0].attendantdata;
                         that.isdrop = dropdata[0].isactive;
                     }
                     else {
@@ -699,6 +702,7 @@ export class ChangeScheduleComponent implements OnInit {
                         that.droppsngrtype = "bypsngr";
                         that.droprtid = 0;
                         that.dropPassengerDT = [];
+                        that.dropAttList = [];
                         that.isdrop = false;
 
                         that.getPDDate(event);
@@ -712,6 +716,7 @@ export class ChangeScheduleComponent implements OnInit {
                     that.pickpsngrtype = "bypsngr";
                     that.pickrtid = 0;
                     that.pickPassengerDT = [];
+                    that.pickAttList = [];
 
                     that.isdrop = true;
                     that.dropautoid = 0;
@@ -720,6 +725,7 @@ export class ChangeScheduleComponent implements OnInit {
                     that.droppsngrtype = "bypsngr";
                     that.droprtid = 0;
                     that.dropPassengerDT = [];
+                    that.dropAttList = [];
 
                     that.getPDDate(event);
                 }

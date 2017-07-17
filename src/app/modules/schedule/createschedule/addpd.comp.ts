@@ -536,8 +536,6 @@ export class CreateScheduleComponent implements OnInit {
             "attnm": that.pickattname,
         });
 
-        console.log(that.pickAttList);
-
         that.pickattid = 0;
         that.pickattname = "";
     }
@@ -591,7 +589,7 @@ export class CreateScheduleComponent implements OnInit {
         var dropdata = [];
 
         this._pickdropservice.getPickDropDetails({
-            "flag": "add", "schoolid": that.enttid, "batchid": that.batchid
+            "flag": "view", "mode": "add", "schoolid": that.enttid, "batchid": that.batchid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 var d = data.data;
@@ -609,6 +607,26 @@ export class CreateScheduleComponent implements OnInit {
                         pickdata = [];
                     }
 
+                    if (pickdata.length !== 0) {
+                        that.pickdriverid = pickdata[0].driverid;
+                        that.pickvehicleid = pickdata[0].vehicleno;
+                        that.pickpsngrtype = pickdata[0].psngrtype;
+                        that.pickrtid = pickdata[0].rtid;
+                        that.pickPassengerDT = pickdata[0].studentdata;
+                        that.pickAttList = pickdata[0].attendantdata;
+                        console.log(pickdata);
+                        that.ispickup = pickdata[0].isactive;
+                    }
+                    else {
+                        that.pickdriverid = 0;
+                        that.pickvehicleid = "";
+                        that.pickpsngrtype = "bypsngr";
+                        that.pickrtid = 0;
+                        that.pickPassengerDT = [];
+                        that.pickAttList = [];
+                        that.ispickup = false;
+                    }
+
                     if (dropalldata.length !== 0) {
                         that.dropautoid = dropalldata[0].autoid;
                         dropdata = dropalldata.filter(a => a.isactive === true);
@@ -618,29 +636,13 @@ export class CreateScheduleComponent implements OnInit {
                         dropdata = [];
                     }
 
-                    if (pickdata.length !== 0) {
-                        that.pickdriverid = pickdata[0].driverid;
-                        that.pickvehicleid = pickdata[0].vehicleno;
-                        that.pickpsngrtype = pickdata[0].psngrtype;
-                        that.pickrtid = pickdata[0].rtid;
-                        that.pickPassengerDT = pickdata[0].studentdata;
-                        that.ispickup = pickdata[0].isactive;
-                    }
-                    else {
-                        that.pickdriverid = 0;
-                        that.pickvehicleid = "";
-                        that.pickpsngrtype = "bypsngr";
-                        that.pickrtid = 0;
-                        that.pickPassengerDT = [];
-                        that.ispickup = false;
-                    }
-
                     if (dropdata.length !== 0) {
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropvehicleid = dropdata[0].vehicleno;
                         that.droppsngrtype = dropdata[0].psngrtype;
                         that.droprtid = dropdata[0].rtid;
                         that.dropPassengerDT = dropdata[0].studentdata;
+                        that.dropAttList = dropdata[0].attendantdata;
                         that.isdrop = dropdata[0].isactive;
                     }
                     else {
@@ -649,6 +651,7 @@ export class CreateScheduleComponent implements OnInit {
                         that.droppsngrtype = "bypsngr";
                         that.droprtid = 0;
                         that.dropPassengerDT = [];
+                        that.dropAttList = [];
                         that.isdrop = false;
                     }
                 }
@@ -660,6 +663,7 @@ export class CreateScheduleComponent implements OnInit {
                     that.pickpsngrtype = "bypsngr";
                     that.pickrtid = 0;
                     that.pickPassengerDT = [];
+                    that.pickAttList = [];
 
                     that.isdrop = true;
                     that.dropautoid = 0;
@@ -668,6 +672,7 @@ export class CreateScheduleComponent implements OnInit {
                     that.droppsngrtype = "bypsngr";
                     that.droprtid = 0;
                     that.dropPassengerDT = [];
+                    that.dropAttList = [];
                 }
 
                 commonfun.loaderhide();

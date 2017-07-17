@@ -31,6 +31,8 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     stpname: string = "";
     batchname: string = "";
 
+    exportData: any = [];
+
     @ViewChild('rtwisepsngr') rtwisepsngr: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
@@ -50,22 +52,6 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
-    }
-
-    // Export
-
-    public exportToCSV() {
-        new Angular2Csv(this.routesDT, 'RouteWisePassenger', { "showLabels": true });
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.rtwisepsngr.nativeElement, 0, 0, options, () => {
-            pdf.save("RouteWisePassenger.pdf");
-        });
     }
 
     public viewRouteWisePassengerReportsRights() {
@@ -225,6 +211,44 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
+    }
+
+    // Export
+
+    exportToCSV() {
+        var that = this;
+
+        commonfun.loader("#exportemp");
+
+        that._rptservice.getRouteWisePassengerReports({
+            "flag": "export", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.exportData = data.data;
+                new Angular2Csv(that.exportData, 'RouteWisePassenger', { "showLabels": true });
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide("#exportemp");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide("#exportemp");
+        }, () => {
+
+        })
+    }
+
+    public exportToPDF() {
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        let options = {
+            pagesplit: true
+        };
+        pdf.addHTML(this.rtwisepsngr.nativeElement, 0, 0, options, () => {
+            pdf.save("GroupWisePassenger.pdf");
+        });
     }
 
     public ngOnDestroy() {

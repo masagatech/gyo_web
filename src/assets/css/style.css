@@ -7042,6 +7042,7 @@ fieldset[disabled] .form-control {
     -moz-border-radius: 0;
     -ms-border-radius: 0;
     border-radius: 0;
+    padding: 10px;
 }
 
 .list-group .list-group-item .list-group-item-heading {
@@ -10465,6 +10466,13 @@ body.waitMe_body .waitMe_container.text>div {
     background: -webkit-linear-gradient(#8BC34A, #E91E63);
     color: #FFFFFF;
     padding: 6px;
+    margin-left: -10px;
+}
+
+.LV {
+    background-color: #FF9800;
+    color: #FFFFFF;
+    padding: 10px;
     margin-left: -10px;
 }
 
