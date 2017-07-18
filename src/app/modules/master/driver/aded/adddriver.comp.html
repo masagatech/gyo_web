@@ -33,7 +33,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Driver Code <strong>*</strong>{{loginid}}</label>
+                                <label class="control-label">Driver Code <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="drivercode" class="form-control drivercode" maxlength="10" tabindex="2" />
                             </div>
                         </div>
@@ -86,6 +86,21 @@
                                 <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="7"></textarea>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <p-fileUpload name="fileUploaded" url="{{uploadphotoconfig.server}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="auto">
+                            <template pTemplate type="content">
+                                <div *ngIf="uploadPhotoDT.length">
+                                    <div *ngFor="let file of uploadPhotoDT" class="box">
+                                        <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                    </div>
+                                </div>
+                                <span *ngIf="!uploadPhotoDT.length">Upload Photo....</span>
+                            </template>
+                        </p-fileUpload>
                     </div>
                 </div>
             </div>
@@ -207,19 +222,19 @@
 
         <div class="row clearfix">
             <div class="col-md-8">
-                <p-fileUpload name="fileUploaded" url="{{uploadconfig.server}}" (onUpload)="onUpload($event)" multiple="multiple" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="auto">
+                <p-fileUpload name="fileUploaded" url="{{uploaddocconfig.server}}" (onUpload)="onDocUpload($event)" multiple="multiple" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="auto">
                     <template pTemplate type="content">
                         <div *ngIf="attachDocsDT.length">
                             <div *ngFor="let file of attachDocsDT" class="box">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <img src="http://localhost:8082/images/{{file.athurl}}" height="80px" />
+                                        <img src="{{uploaddocconfig.uploadurl + file.athurl}}" height="80px" />
                                     </div>
                                     <div class="col-md-8">
                                         <b>Size : </b> {{formatSizeUnits(file.athsize)}}
                                     </div>
                                     <div class="col-md-1">
-                                        <a role="button" (click)="removeFileUpload()"><i class="fa fa-remove"></i></a>
+                                        <a role="button" (click)="removeDocUpload()"><i class="fa fa-remove"></i></a>
                                     </div>
                                 </div>
                                 <hr />

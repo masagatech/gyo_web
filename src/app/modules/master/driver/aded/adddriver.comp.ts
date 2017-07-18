@@ -47,9 +47,11 @@ export class AddDriverComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
-    global = new Globals();
+    uploadPhotoDT: any = [];
 
-    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    global = new Globals();
+    uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    uploaddocconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     _wsdetails: any = [];
     private subscribeParameters: any;
@@ -59,7 +61,8 @@ export class AddDriverComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.getUploadConfig();
+        this.getPhotoUploadConfig();
+        this.getDocUploadConfig();
 
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -185,18 +188,18 @@ export class AddDriverComponent implements OnInit {
         })
     }
 
-    // File upload
+    // Driver Photo Upload
 
-    getUploadConfig() {
+    getPhotoUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
-            that.uploadconfig.server = that.global.serviceurl + "uploads";
-            that.uploadconfig.serverpath = that.global.serviceurl;
-            that.uploadconfig.uploadurl = that.global.uploadurl;
-            that.uploadconfig.filepath = that.global.filepath;
-            that.uploadconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+            that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
+            that.uploadphotoconfig.serverpath = that.global.serviceurl;
+            that.uploadphotoconfig.uploadurl = that.global.uploadurl;
+            that.uploadphotoconfig.filepath = that.global.filepath;
+            that.uploadphotoconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadphotoconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
             console.log("Error");
         }, () => {
@@ -204,17 +207,56 @@ export class AddDriverComponent implements OnInit {
         })
     }
 
-    onUpload(event) {
+    onPhotoUpload(event) {
+        var that = this;
+        var imgfile = [];
+        that.uploadPhotoDT = [];
+
+        imgfile = JSON.parse(event.xhr.response);
+
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
+        }
+    }
+
+    removePhotoUpload() {
+        this.uploadPhotoDT.splice(0, 1);
+    }
+
+    // Driver Document Upload
+
+    getDocUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
+            that.uploaddocconfig.server = that.global.serviceurl + "uploads";
+            that.uploaddocconfig.serverpath = that.global.serviceurl;
+            that.uploaddocconfig.uploadurl = that.global.uploadurl;
+            that.uploaddocconfig.filepath = that.global.filepath;
+            that.uploaddocconfig.maxFilesize = data.data[0]._filesize;
+            that.uploaddocconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    onDocUpload(event) {
         var that = this;
         var imgfile = [];
         imgfile = JSON.parse(event.xhr.response);
 
         for (var i = 0; i < imgfile.length; i++) {
             that.attachDocsDT.push({
-                "athid": "0", "athname": imgfile[i].name, "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, ""),
+                "athid": "0", "athname": imgfile[i].name, "athurl": imgfile[i].path.replace(that.uploaddocconfig.filepath, ""),
                 "athsize": imgfile[i].size, "athtype": imgfile[i].type, "ptype": "driver", "cuid": that.loginUser.ucode,
             })
         }
+    }
+
+    removeDocUpload() {
+        this.attachDocsDT.splice(0, 1);
     }
 
     // Get File Size
@@ -240,10 +282,6 @@ export class AddDriverComponent implements OnInit {
         }
 
         return bytes;
-    }
-
-    removeFileUpload() {
-        this.attachDocsDT.splice(0, 1);
     }
 
     // Active / Deactive Data
@@ -299,6 +337,8 @@ export class AddDriverComponent implements OnInit {
         that.city = 0;
         that.area = 0;
         that.pincode = 0;
+
+        that.uploadPhotoDT = [];
     }
 
     // Save Data
@@ -341,6 +381,7 @@ export class AddDriverComponent implements OnInit {
                 "drivername": that.drivername,
                 "aadharno": that.aadharno,
                 "licenseno": that.licenseno,
+                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -414,8 +455,6 @@ export class AddDriverComponent implements OnInit {
                         var _driverdata = data.data[0]._driverdata;
                         var _attachdocs = data.data[0]._attachdocs;
 
-                        console.log(_driverdata);
-
                         that.driverid = _driverdata[0].autoid;
                         that.loginid = _driverdata[0].loginid;
                         that.drivercode = _driverdata[0].drivercode;
@@ -440,6 +479,10 @@ export class AddDriverComponent implements OnInit {
                         that.remark1 = _driverdata[0].remark1;
                         that.isactive = _driverdata[0].isactive;
                         that.mode = _driverdata[0].mode;
+
+                        if (_driverdata[0].FilePath !== "") {
+                            that.uploadPhotoDT.push({ "athurl": _driverdata[0].FilePath });
+                        }
 
                         that.attachDocsDT = _attachdocs === null ? [] : _attachdocs;
                     }

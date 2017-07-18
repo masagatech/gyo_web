@@ -52,6 +52,7 @@ export class AddWorkspaceComponent implements OnInit {
     mode: string = "";
 
     uploadPhotoDT: any = [];
+
     global = new Globals();
     uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
@@ -211,8 +212,6 @@ export class AddWorkspaceComponent implements OnInit {
         that.uploadPhotoDT = [];
 
         imgfile = JSON.parse(event.xhr.response);
-
-        console.log(imgfile);
 
         for (var i = 0; i < imgfile.length; i++) {
             that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
