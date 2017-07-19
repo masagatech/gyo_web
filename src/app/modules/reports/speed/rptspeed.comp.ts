@@ -158,7 +158,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         var params = {};
 
         commonfun.loader();
-        params = { "flag": "Top5", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
+        params = { "flag": "Top5", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid }
 
         that._rptservice.getSpeedViolationReports(params).subscribe(data => {
             try {
@@ -183,7 +183,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         var params = {};
 
         commonfun.loader();
-        params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid }
+        params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid }
 
         that._rptservice.getSpeedViolationReports(params).subscribe(data => {
             try {

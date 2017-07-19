@@ -5,7 +5,7 @@
     color: #fff!important;
 }
 
-.theme-red .button,
+.theme-red .ui-panel-titlebar,
 .theme-red .btn-theme,
 .theme-red .login-page {
     background: #F44336!important;
@@ -98,7 +98,7 @@
     color: #fff!important;
 }
 
-.theme-pink .button,
+.theme-pink .ui-panel-titlebar,
 .theme-pink .btn-theme,
 .theme-pink .login-page {
     background: #E91E63!important;
@@ -191,7 +191,7 @@
     color: #fff!important;
 }
 
-.theme-purple .button,
+.theme-purple .ui-panel-titlebar,
 .theme-purple .btn-theme,
 .theme-purple .login-page {
     background: #9C27B0!important;
@@ -284,7 +284,7 @@
     color: #fff!important;
 }
 
-.theme-deep-purple .button,
+.theme-deep-purple .ui-panel-titlebar,
 .theme-deep-purple .btn-theme,
 .theme-deep-purple .login-page {
     background: #673AB7!important;
@@ -385,7 +385,7 @@
     color: #fff!important;
 }
 
-.theme-indigo .button,
+.theme-indigo .ui-panel-titlebar,
 .theme-indigo .btn-theme,
 .theme-indigo .login-page {
     background: #3F51B5!important;
@@ -486,7 +486,7 @@
     color: #fff!important;
 }
 
-.theme-blue .button,
+.theme-blue .ui-panel-titlebar,
 .theme-blue .btn-theme,
 .theme-blue .login-page {
     background: #2196F3!important;
@@ -587,7 +587,7 @@
     color: #fff!important;
 }
 
-.theme-light-blue .button,
+.theme-light-blue .ui-panel-titlebar,
 .theme-light-blue .btn-theme,
 .theme-light-blue .login-page {
     background: #03A9F4!important;
@@ -688,7 +688,7 @@
     color: #fff!important;
 }
 
-.theme-cyan .button,
+.theme-cyan .ui-panel-titlebar,
 .theme-cyan .btn-theme,
 .theme-cyan .login-page {
     background: #00BCD4!important;
@@ -789,7 +789,7 @@
     color: #fff!important;
 }
 
-.theme-teal .button,
+.theme-teal .ui-panel-titlebar,
 .theme-teal .btn-theme,
 .theme-teal .login-page {
     background: #009688!important;
@@ -890,7 +890,7 @@
     color: #fff!important;
 }
 
-.theme-green .button,
+.theme-green .ui-panel-titlebar,
 .theme-green .btn-theme,
 .theme-green .login-page {
     background: #4CAF50!important;
@@ -991,7 +991,7 @@
     color: #fff!important;
 }
 
-.theme-light-green .button,
+.theme-light-green .ui-panel-titlebar,
 .theme-light-green .btn-theme,
 .theme-light-green .login-page {
     background: #8BC34A!important;
@@ -1092,7 +1092,7 @@
     color: #fff!important;
 }
 
-.theme-lime .button,
+.theme-lime .ui-panel-titlebar,
 .theme-lime .btn-theme,
 .theme-lime .login-page {
     background: #CDDC39!important;
@@ -1193,7 +1193,7 @@
     color: #fff!important;
 }
 
-.theme-yellow .button,
+.theme-yellow .ui-panel-titlebar,
 .theme-yellow .btn-theme,
 .theme-yellow .login-page {
     background: #FFEB3B!important;
@@ -1294,7 +1294,7 @@
     color: #fff!important;
 }
 
-.theme-amber .button,
+.theme-amber .ui-panel-titlebar,
 .theme-amber .btn-theme,
 .theme-amber .login-page {
     background: #FFC107!important;
@@ -1395,7 +1395,7 @@
     color: #fff!important;
 }
 
-.theme-orange .button,
+.theme-orange .ui-panel-titlebar,
 .theme-orange .btn-theme,
 .theme-orange .login-page {
     background: #FF9800!important;
@@ -1496,7 +1496,7 @@
     color: #fff!important;
 }
 
-.theme-deep-orange .button,
+.theme-deep-orange .ui-panel-titlebar,
 .theme-deep-orange .btn-theme,
 .theme-deep-orange .login-page {
     background: #FF5722!important;
@@ -1597,7 +1597,7 @@
     color: #fff!important;
 }
 
-.theme-brown .button,
+.theme-brown .ui-panel-titlebar,
 .theme-brown .btn-theme,
 .theme-brown .login-page {
     background: #795548!important;
@@ -1698,7 +1698,7 @@
     color: #fff!important;
 }
 
-.theme-grey .button,
+.theme-grey .ui-panel-titlebar,
 .theme-grey .btn-theme,
 .theme-grey .login-page {
     background: #9E9E9E!important;
@@ -1803,7 +1803,7 @@
     color: #fff!important;
 }
 
-.theme-blue-grey .button,
+.theme-blue-grey .ui-panel-titlebar,
 .theme-blue-gray .btn-theme,
 .theme-blue-gray .login-page {
     background: #607D8B!important;
@@ -1904,7 +1904,7 @@
     color: #fff!important;
 }
 
-.theme-black .button,
+.theme-black .ui-panel-titlebar,
 .theme-black .btn-theme,
 .theme-black .login-page {
     background: #000!important;

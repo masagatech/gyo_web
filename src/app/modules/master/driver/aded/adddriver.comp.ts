@@ -401,7 +401,7 @@ export class AddDriverComponent implements OnInit {
                 "mode": ""
             }
 
-            this._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
+            that._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_driverinfo;
                     var msg = dataResult.msg;
@@ -440,6 +440,8 @@ export class AddDriverComponent implements OnInit {
 
     getDriverDetails() {
         var that = this;
+        that.uploadPhotoDT = [];
+
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
@@ -482,6 +484,9 @@ export class AddDriverComponent implements OnInit {
 
                         if (_driverdata[0].FilePath !== "") {
                             that.uploadPhotoDT.push({ "athurl": _driverdata[0].FilePath });
+                        }
+                        else {
+                            that.uploadPhotoDT = [];
                         }
 
                         that.attachDocsDT = _attachdocs === null ? [] : _attachdocs;

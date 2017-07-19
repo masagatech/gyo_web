@@ -25,21 +25,48 @@ export class ViewUserComponent implements OnInit {
     usersDT: any = [];
     loginUser: LoginUserModel;
 
+    global = new Globals();
     _wsdetails: any = [];
+
+    isShowGrid: boolean = true;
+    isShowList: boolean = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewUserDataRights();
         this._wsdetails = Globals.getWSDetails();
 
         this.fillUserTypeDropDown();
+        this.viewUserDataRights();
     }
 
     public ngOnInit() {
+        var that = this;
+        that.refreshButtons();
+    }
+
+    isshUser(viewtype) {
+        var that = this;
+        commonfun.loader("#divShow");
+
+        if (viewtype == "grid") {
+            that.isShowGrid = true;
+            that.isShowList = false;
+            commonfun.loaderhide("#divShow");
+        }
+        else {
+            that.isShowGrid = false;
+            that.isShowList = true;
+            commonfun.loaderhide("#divShow");
+        }
+
+        that.refreshButtons();
+    }
+
+    refreshButtons() {
         setTimeout(function () {
             commonfun.navistyle();
-        }, 100);
+        }, 0);
     }
 
     fillUserTypeDropDown() {

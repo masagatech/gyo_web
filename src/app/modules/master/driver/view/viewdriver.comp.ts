@@ -15,11 +15,15 @@ export class ViewDriverComponent implements OnInit {
     driverDT: any = [];
     loginUser: LoginUserModel;
 
+    global = new Globals();
     _wsdetails: any = [];
 
     entityDT: any = [];
     entityid: number = 0;
     entityname: string = "";
+
+    isShowGrid: boolean = true;
+    isShowList: boolean = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _driverservice: DriverService) {
@@ -29,10 +33,34 @@ export class ViewDriverComponent implements OnInit {
     }
 
     public ngOnInit() {
+        var that = this;
+        that.refreshButtons();
+
         setTimeout(function () {
             commonfun.navistyle();
             $(".entityname input").focus();
         }, 100);
+    }
+
+    isshDriver(viewtype) {
+        var that = this;
+
+        if (viewtype == "grid") {
+            that.isShowGrid = true;
+            that.isShowList = false;
+        }
+        else {
+            that.isShowGrid = false;
+            that.isShowList = true;
+        }
+
+        that.refreshButtons();
+    }
+
+    refreshButtons() {
+        setTimeout(function () {
+            commonfun.navistyle();
+        }, 0);
     }
 
     // Auto Completed Entity

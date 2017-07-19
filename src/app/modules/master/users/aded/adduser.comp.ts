@@ -57,12 +57,18 @@ export class AddUserComponent implements OnInit {
 
     private subscribeParameters: any;
 
+    uploadPhotoDT: any = [];
+
+    global = new Globals();
+    uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+
     constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService,
         private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-        this.fillUserTypeDropDown();
+        this.getPhotoUploadConfig();
 
+        this.fillUserTypeDropDown();
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
@@ -334,6 +340,41 @@ export class AddUserComponent implements OnInit {
         this.vehtypeList.splice(this.vehtypeList.indexOf(row), 1);
     }
 
+    // Driver Photo Upload
+
+    getPhotoUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+            that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
+            that.uploadphotoconfig.serverpath = that.global.serviceurl;
+            that.uploadphotoconfig.uploadurl = that.global.uploadurl;
+            that.uploadphotoconfig.filepath = that.global.filepath;
+            that.uploadphotoconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadphotoconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    onPhotoUpload(event) {
+        var that = this;
+        var imgfile = [];
+        that.uploadPhotoDT = [];
+
+        imgfile = JSON.parse(event.xhr.response);
+
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
+        }
+    }
+
+    removePhotoUpload() {
+        this.uploadPhotoDT.splice(0, 1);
+    }
+
     // Active / Deactive Data
 
     active_deactiveUserInfo() {
@@ -398,6 +439,7 @@ export class AddUserComponent implements OnInit {
 
         that.entityList = [];
         that.vehtypeList = [];
+        that.uploadPhotoDT = [];
     }
 
     // Save Data
@@ -464,6 +506,7 @@ export class AddUserComponent implements OnInit {
                 "upwd": that.upwd,
                 "fname": that.fname,
                 "lname": that.lname,
+                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "school": _enttlist,
                 "vehicle": _vehlist,
                 "mobileno1": that.mobileno1,
@@ -484,11 +527,11 @@ export class AddUserComponent implements OnInit {
                 "mode": ""
             }
 
-            this._userservice.saveUserInfo(saveuser).subscribe(data => {
+            that._userservice.saveUserInfo(saveuser).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_userinfo.msg;
-                    var msgid = dataResult[0].funsave_userinfo.msgid;
+                    var dataResult = data.data[0].funsave_userinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid !== "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -501,22 +544,19 @@ export class AddUserComponent implements OnInit {
                         }
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", "Error 101 : " + dataResult[0].funsave_userinfo.msg);
-                        console.log("Error 101 : " + dataResult[0].funsave_userinfo.msg);
+                        that._msg.Show(messageType.error, "Error", "Error 101 : " + msg);
                     }
 
                     commonfun.loaderhide();
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", "Error 102 : " + e);
-                    console.log("Error 102 : " + e);
                 }
             }, err => {
-                console.log("Error 103 : " + err);
                 that._msg.Show(messageType.error, "Error", "Error 103 : " + err);
                 commonfun.loaderhide();
             }, () => {
-                // console.log("Complete");
+                
             });
         }
     }
@@ -525,6 +565,8 @@ export class AddUserComponent implements OnInit {
 
     getUserDetails() {
         var that = this;
+        that.uploadPhotoDT = [];
+
         commonfun.loader();
 
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
@@ -560,6 +602,13 @@ export class AddUserComponent implements OnInit {
                         that.remark1 = data.data[0].remark1;
                         that.isactive = data.data[0].isactive;
                         that.mode = data.data[0].mode;
+
+                        if (data.data[0].FilePath !== "") {
+                            that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
+                        }
+                        else {
+                            that.uploadPhotoDT = [];
+                        }
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

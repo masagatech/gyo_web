@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { AuthGuard } from '../../../_services/authguard-service';
 
 import { AddUserComponent } from './aded/adduser.comp';
@@ -9,7 +10,10 @@ import { ViewUserComponent } from './view/viewuser.comp';
 
 import { UserService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
+import {
+  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule,
+  CheckboxModule, AutoCompleteModule, FileUploadModule
+} from 'primeng/primeng';
 
 export const routes = [
   {
@@ -31,7 +35,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, CheckboxModule, AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule,
+    CheckboxModule, AutoCompleteModule, FileUploadModule
   ],
 
   providers: [AuthGuard, UserService]
