@@ -13,7 +13,11 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     entityDT: any = [];
     loginUser: LoginUserModel;
 
+    global = new Globals();
     _wsdetails: any = [];
+
+    isShowGrid: boolean = true;
+    isShowList: boolean = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
@@ -24,11 +28,37 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
+        var that = this;
+        that.refreshButtons();
+
         setTimeout(function () {
-            commonfun.navistyle();
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
+        }, 0);
+    }
+
+    isshEntity(viewtype) {
+        var that = this;
+        commonfun.loader("#divShow");
+
+        if (viewtype == "grid") {
+            that.isShowGrid = true;
+            that.isShowList = false;
+            commonfun.loaderhide("#divShow");
+        }
+        else {
+            that.isShowGrid = false;
+            that.isShowList = true;
+            commonfun.loaderhide("#divShow");
+        }
+
+        that.refreshButtons();
+    }
+
+    refreshButtons() {
+        setTimeout(function () {
+            commonfun.navistyle();
         }, 0);
     }
 

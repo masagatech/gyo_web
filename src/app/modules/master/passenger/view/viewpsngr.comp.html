@@ -1,9 +1,7 @@
 <div class="card">
     <div class="header">
+        <h4>Passenger</h4>
         <div class="row clearfix" id="fltrpsngr">
-            <div class="col-md-2 col-xs-2">
-                <h4>Passenger</h4>
-            </div>
             <div class="col-md-3 col-xs-7">
                 <div class="form-group">
                     <div class="form-line">
@@ -39,7 +37,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-4" align="right">
+            <div class="col-md-2 col-xs-2" style="padding-top: 20px">
+                <button type="button" class="btn btn-theme btn-xs" (click)="isshPassenger('grid')">
+                    <i class="material-icons">apps</i></button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="isshPassenger('list')">
+                    <i class="material-icons">list</i></button>
+            </div>
+            <div class="col-md-2 col-xs-4" align="right" style="padding-top: 20px">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addPassengerForm()">
                     <i class="material-icons">add</i></button>
             </div>
@@ -47,13 +51,30 @@
     </div>
 
     <div class="body no-padding">
-        <div class="row clearfix">
+        <div class="row clearfix" *ngIf="isShowGrid">
+            <div class="col-md-12">
+                <p-dataGrid [value]="passengerDT" [paginator]="true" [rows]="20">
+                    <template let-row pTemplate="item">
+                        <div style="padding:3px" class="ui-g-12 ui-md-3">
+                            <p-panel [header]="row.studentname" [style]="{'text-align':'center'}">
+                                <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                                <div class="car-detail"><b>Standard :</b> {{row.standard + " - " + row.division}}</div>
+                                <hr class="ui-widget-content" style="border-top:0">
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                            </p-panel>
+                        </div>
+                    </template>
+                </p-dataGrid>
+            </div>
+        </div>
+        <div class="row clearfix" *ngIf="isShowList">
             <div class="col-md-12">
                 <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
                         <template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.studentname}}" src="uploads/passenger/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px"
-                                width="40px">
+                            <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </template>
                     </p-column>
                     <p-column field="studentname" header="Passenger Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>

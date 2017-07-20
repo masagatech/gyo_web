@@ -340,7 +340,7 @@ export class AddUserComponent implements OnInit {
         this.vehtypeList.splice(this.vehtypeList.indexOf(row), 1);
     }
 
-    // Driver Photo Upload
+    // User Photo Upload
 
     getPhotoUploadConfig() {
         var that = this;

@@ -17,7 +17,11 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     passengerDT: any = [];
     loginUser: LoginUserModel;
 
+    global = new Globals();
     _wsdetails: any = [];
+
+    isShowGrid: boolean = true;
+    isShowList: boolean = false;
 
     autoEntityDT: any = [];
     enttid: number = 0;
@@ -40,14 +44,40 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
+        var that = this;
+        that.refreshButtons();
+
         setTimeout(function () {
-            commonfun.navistyle();
             $(".enttname input").focus();
 
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    isshPassenger(viewtype) {
+        var that = this;
+        commonfun.loader("#divShow");
+
+        if (viewtype == "grid") {
+            that.isShowGrid = true;
+            that.isShowList = false;
+            commonfun.loaderhide("#divShow");
+        }
+        else {
+            that.isShowGrid = false;
+            that.isShowList = true;
+            commonfun.loaderhide("#divShow");
+        }
+
+        that.refreshButtons();
+    }
+
+    refreshButtons() {
+        setTimeout(function () {
+            commonfun.navistyle();
+        }, 0);
     }
 
     // Auto Completed Entity

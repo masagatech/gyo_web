@@ -11,8 +11,8 @@ import { ViewUserComponent } from './view/viewuser.comp';
 import { UserService } from '@services/master';
 
 import {
-  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule,
-  CheckboxModule, AutoCompleteModule, FileUploadModule
+  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
+  AutoCompleteModule, FileUploadModule
 } from 'primeng/primeng';
 
 export const routes = [

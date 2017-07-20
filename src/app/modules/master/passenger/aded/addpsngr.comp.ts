@@ -69,24 +69,30 @@ export class AddPassengerComponent implements OnInit {
 
     otherinfo: string = "";
     remark1: string = "";
+
+    uploadPhotoDT: any = [];
+
     global = new Globals();
+    uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     mode: string = "";
     isactive: boolean = true;
 
     private subscribeParameters: any;
 
-    config = {
+    /*config = {
         server: this.global.serviceurl + "uploads",
         method: "post",
         maxFilesize: 50,
         acceptedFiles: 'image/*'
-    };
+    };*/
 
     constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+
+        this.getPhotoUploadConfig();
         this.fillDropDownList();
     }
 
@@ -96,16 +102,6 @@ export class AddPassengerComponent implements OnInit {
         }, 1000);
 
         this.getPassengerDetails();
-    }
-
-    // get lat and long by address form google map
-
-    public onUploadError(event) {
-        console.log('error');
-    }
-
-    public onUploadSuccess(event) {
-        console.log('success');
     }
 
     // Auto Completed Entity
@@ -354,7 +350,7 @@ export class AddPassengerComponent implements OnInit {
         }
     }
 
-    // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
+    // get lat and long by address form google map
 
     getLatAndLong(pdtype) {
         var that = this;
@@ -385,6 +381,8 @@ export class AddPassengerComponent implements OnInit {
             commonfun.loaderhide();
         });
     }
+
+    // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
 
     copyPDAddrAndLatLong(pdtype) {
         if (pdtype == "pickaddr") {
@@ -450,6 +448,43 @@ export class AddPassengerComponent implements OnInit {
         that.droplong = "0.00";
         that.remark1 = "";
         that.otherinfo = "";
+
+        that.uploadPhotoDT = [];
+    }
+
+    // User Photo Upload
+
+    getPhotoUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+            that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
+            that.uploadphotoconfig.serverpath = that.global.serviceurl;
+            that.uploadphotoconfig.uploadurl = that.global.uploadurl;
+            that.uploadphotoconfig.filepath = that.global.filepath;
+            that.uploadphotoconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadphotoconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    onPhotoUpload(event) {
+        var that = this;
+        var imgfile = [];
+        that.uploadPhotoDT = [];
+
+        imgfile = JSON.parse(event.xhr.response);
+
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
+        }
+    }
+
+    removePhotoUpload() {
+        this.uploadPhotoDT.splice(0, 1);
     }
 
     // Active / Deactive Data
@@ -593,6 +628,7 @@ export class AddPassengerComponent implements OnInit {
                 "autoid": that.psngrid,
                 "studentcode": that.psngrid,
                 "studentname": that.psngrname,
+                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "schoolid": that.enttid,
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
@@ -728,6 +764,16 @@ export class AddPassengerComponent implements OnInit {
                                 that.dropaddr = "";
                                 that.otherinfo = "";
                             }
+
+                            if (data.data[0].FilePath !== "") {
+                                that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
+                            }
+                            else {
+                                that.uploadPhotoDT = [];
+                            }
+                        }
+                        else {
+                            that.resetPassengerFields();
                         }
                     }
                     catch (e) {
