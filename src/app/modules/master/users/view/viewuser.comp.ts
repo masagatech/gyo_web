@@ -125,8 +125,9 @@ export class ViewUserComponent implements OnInit {
 
         if (Cookie.get('_srcutype_') != null) {
             that.srcutype = Cookie.get('_srcutype_');
-            that.getUserDetails();
         }
+
+        that.getUserDetails();
     }
 
     getUserDetails() {

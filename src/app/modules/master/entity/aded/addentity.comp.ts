@@ -626,16 +626,13 @@ export class AddEntityComponent implements OnInit {
                         that.schcd = data.data[0].schoolcode;
                         that.schnm = data.data[0].schoolname;
 
-                        // if (data.data[0].schlogo !== "") {
-                        //     that.uploadLogoDT.push({ "athurl": data.data[0].schlogo });
-                        // }
-                        // else {
-                        //     that.uploadLogoDT = [];
-                        // }
+                        if (data.data[0].schlogo !== "") {
+                            that.uploadLogoDT.push({ "athurl": data.data[0].schlogo });
+                        }
+                        else {
+                            that.uploadLogoDT = [];
+                        }
 
-                        that.getLogoUploadConfig();
-                        data.data[0].schlogo !== "" ? that.uploadLogoDT.push({ "athurl": that.uploadlogoconfig.uploadurl + data.data[0].schlogo }) : "";
-                        
                         that.lat = data.data[0].lat;
                         that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;

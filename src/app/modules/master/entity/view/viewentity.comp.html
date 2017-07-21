@@ -19,7 +19,7 @@
 
     <div class="body no-padding">
         <div class="row clearfix" *ngIf="isShowGrid">
-            <div class="col-md-12">
+            <div class="col-md-12" *ngIf="entityDT.length">
                 <div *ngFor="let row of entityDT | groupBy: 'entttype'">
                     <div class="header">
                         <b>{{row.key}}</b>
@@ -39,6 +39,9 @@
                         </template>
                     </p-dataGrid>
                 </div>
+            </div>
+            <div class="col-md-12" *ngIf="!entityDT.length">
+                No records found
             </div>
         </div>
         <div class="row clearfix" *ngIf="isShowList">

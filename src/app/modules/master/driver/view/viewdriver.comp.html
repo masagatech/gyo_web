@@ -26,7 +26,7 @@
 
     <div class="body no-padding">
         <div class="row clearfix" *ngIf="isShowGrid">
-            <div class="col-md-12">
+            <div class="col-md-12" *ngIf="driverDT.length">
                 <p-dataGrid [value]="driverDT" [paginator]="true" [rows]="20">
                     <template let-row pTemplate="item">
                         <div style="padding:3px" class="ui-g-12 ui-md-3">
@@ -41,6 +41,9 @@
                         </div>
                     </template>
                 </p-dataGrid>
+            </div>
+            <div class="col-md-12" *ngIf="!driverDT.length">
+                No records found
             </div>
         </div>
         <div class="row clearfix" *ngIf="isShowList">
