@@ -58,10 +58,31 @@
                             <span class="{{drow[atcol.day]}}">{{drow[atcol.day]}}</span>
                         </template>
                     </p-column>
-                    <p-column field="p" header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-                    <p-column field="d" header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-                    <p-column field="a" header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-                    <p-column field="h" header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
+                    <p-column header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.P == null ? "0" : drow.P}}
+                        </template>
+                    </p-column>
+                    <p-column header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.D == null ? "0" : drow.D}}
+                        </template>
+                    </p-column>
+                    <p-column header="PD" [styleClass]="'PD'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.PD == null ? "0" : drow.PD}}
+                        </template>
+                    </p-column>
+                    <p-column header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.A == null ? "0" : drow.A}}
+                        </template>
+                    </p-column>
+                    <p-column header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.H == null ? "0" : drow.H}}
+                        </template>
+                    </p-column>
                 </p-dataTable>
             </div>
         </div>

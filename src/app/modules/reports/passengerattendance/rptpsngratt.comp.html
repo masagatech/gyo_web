@@ -65,18 +65,44 @@
         <div #psngrattnd class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="attData">
-                    <p-column field="stdnm" header="Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
-                    <p-column field="standard" header="Std" [style]="{'width': '50px', 'text-align': 'left'}"></p-column>
-                    <p-column field="division" header="Div" [style]="{'width': '50px', 'text-align': 'left'}"></p-column>
+                    <p-column field="stdnm" header="Name" [style]="{'width': '160px', 'text-align': 'left'}"></p-column>
+                    <p-column field="standard" header="Std" [style]="{'width': '35px', 'text-align': 'left'}"></p-column>
+                    <p-column field="division" header="Div" [style]="{'width': '35px', 'text-align': 'left'}"></p-column>
                     <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width': '30px', 'text-align':'left'}">
                         <template let-drow="rowData" pTemplate type="body">
                             <span class="{{drow[atcol.day]}}">{{drow[atcol.day]}}</span>
                         </template>
                     </p-column>
-                    <p-column field="p" header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-                    <p-column field="d" header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-                    <p-column field="a" header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
-                    <p-column field="h" header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}"></p-column>
+                    <p-column header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.P == null ? "0" : drow.P}}
+                        </template>
+                    </p-column>
+                    <p-column header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.D == null ? "0" : drow.D}}
+                        </template>
+                    </p-column>
+                    <p-column header="PD" [styleClass]="'PD'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.PD == null ? "0" : drow.PD}}
+                        </template>
+                    </p-column>
+                    <p-column header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.A == null ? "0" : drow.A}}
+                        </template>
+                    </p-column>
+                    <p-column header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.H == null ? "0" : drow.H}}
+                        </template>
+                    </p-column>
+                    <p-column header="LV" [styleClass]="'LV'" [style]="{'width': '30px', 'text-align': 'left'}">
+                        <template let-drow="rowData" pTemplate type="body">
+                            {{drow.LV == null ? "0" : drow.LV}}
+                        </template>
+                    </p-column>
                 </p-dataTable>
             </div>
         </div>

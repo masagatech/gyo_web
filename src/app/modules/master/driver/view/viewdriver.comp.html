@@ -31,6 +31,7 @@
                     <template let-row pTemplate="item">
                         <div style="padding:3px" class="ui-g-12 ui-md-3">
                             <p-panel [header]="row.drivername" [style]="{'text-align':'center'}">
+                                <span class="material-icons reject" *ngIf="!row.isactive">close</span>
                                 <img alt="{{row.drivername}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
                                 <!-- <div class="car-detail">{{car.year}} - {{car.color}}</div> -->
                                 <hr class="ui-widget-content" style="border-top:0">
@@ -42,8 +43,8 @@
                     </template>
                 </p-dataGrid>
             </div>
-            <div class="col-md-12" *ngIf="!driverDT.length">
-                No records found
+            <div class="col-md-12 empty-message" *ngIf="!driverDT.length">
+                {{emptymsg}}
             </div>
         </div>
         <div class="row clearfix" *ngIf="isShowList">

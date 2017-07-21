@@ -51,17 +51,17 @@ export class AddWorkspaceComponent implements OnInit {
 
     mode: string = "";
 
-    uploadPhotoDT: any = [];
+    uploadLogoDT: any = [];
 
     global = new Globals();
-    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    uploadlogoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     private subscribeParameters: any;
 
     constructor(private _wsservice: WorkspaceService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
-        this.getUploadConfig();
+        this.getLogoUploadConfig();
 
         this.fillDropDownList();
         this.fillStateDropDown();
@@ -189,16 +189,16 @@ export class AddWorkspaceComponent implements OnInit {
 
     // File upload
 
-    getUploadConfig() {
+    getLogoUploadConfig() {
         var that = this;
 
         that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
-            that.uploadconfig.server = that.global.serviceurl + "uploads";
-            that.uploadconfig.serverpath = that.global.serviceurl;
-            that.uploadconfig.uploadurl = that.global.uploadurl;
-            that.uploadconfig.filepath = that.global.filepath;
-            that.uploadconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+            that.uploadlogoconfig.server = that.global.serviceurl + "uploads";
+            that.uploadlogoconfig.serverpath = that.global.serviceurl;
+            that.uploadlogoconfig.uploadurl = that.global.uploadurl;
+            that.uploadlogoconfig.filepath = that.global.filepath;
+            that.uploadlogoconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadlogoconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
             console.log("Error");
         }, () => {
@@ -206,15 +206,15 @@ export class AddWorkspaceComponent implements OnInit {
         })
     }
 
-    onUpload(event) {
+    onLogoUpload(event) {
         var that = this;
         var imgfile = [];
-        that.uploadPhotoDT = [];
+        that.uploadLogoDT = [];
 
         imgfile = JSON.parse(event.xhr.response);
 
         for (var i = 0; i < imgfile.length; i++) {
-            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
+            that.uploadLogoDT.push({ "athurl": imgfile[i].path.replace(that.uploadlogoconfig.filepath, "") })
         }
     }
 
@@ -243,8 +243,8 @@ export class AddWorkspaceComponent implements OnInit {
         return bytes;
     }
 
-    removeFileUpload() {
-        this.uploadPhotoDT.splice(0, 1);
+    removeLogoUpload() {
+        this.uploadLogoDT.splice(0, 1);
     }
 
     // Clear Fields
@@ -281,7 +281,7 @@ export class AddWorkspaceComponent implements OnInit {
         that.schpsngrrate = "0";
         that.schenttmaxno = 0;
 
-        that.uploadPhotoDT = [];
+        that.uploadLogoDT = [];
     }
 
     // Active / Deactive Data
@@ -454,7 +454,7 @@ export class AddWorkspaceComponent implements OnInit {
                 "loginid": that.loginid,
                 "wsname": that.wsname,
                 "wsdesc": that.wsdesc,
-                "wslogo": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
+                "wslogo": that.uploadLogoDT.length > 0 ? that.uploadLogoDT[0].athurl : "",
                 "wstype": _wstype,
                 "cmppsngrrate": that.cmppsngrrate,
                 "cmpenttmaxno": that.cmpenttmaxno,
@@ -519,7 +519,7 @@ export class AddWorkspaceComponent implements OnInit {
 
     getWorkspaceDetails() {
         var that = this;
-        that.uploadPhotoDT = [];
+        that.uploadLogoDT = [];
         
         commonfun.loader();
 
@@ -538,7 +538,7 @@ export class AddWorkspaceComponent implements OnInit {
                             that.wsname = data.data[0].wsname;
 
                             if (data.data[0].wslogo !== "") {
-                                that.uploadPhotoDT.push({ "athurl": data.data[0].wslogo });
+                                that.uploadLogoDT.push({ "athurl": data.data[0].wslogo });
                             }
 
                             that.wsdesc = data.data[0].wsdesc;

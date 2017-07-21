@@ -25,6 +25,8 @@ export class ViewDriverComponent implements OnInit {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
+    emptymsg: string = "";
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _driverservice: DriverService) {
         this.loginUser = this._loginservice.getUser();
@@ -105,6 +107,9 @@ export class ViewDriverComponent implements OnInit {
             that.entityname = Cookie.get('_enttnm_');
             that.getDriverDetails();
         }
+        else {
+            that.emptymsg = "Search Entity";
+        }
     }
 
     getDriverDetails() {
@@ -117,7 +122,13 @@ export class ViewDriverComponent implements OnInit {
             "enttid": that.entityid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.driverDT = data.data;
+                if (data.data.length > 0) {
+                    that.driverDT = data.data;
+                }
+                else {
+                    that.driverDT = [];
+                    that.emptymsg = "No records found";
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

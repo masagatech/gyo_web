@@ -5833,6 +5833,9 @@ button.ui-button.ui-state-active,
 
 .ui-panel.ui-widget .ui-panel-titlebar {
     border-width: 0 0 1px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .ui-panel.ui-widget .ui-panel-titlebar-icon span {

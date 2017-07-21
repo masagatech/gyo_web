@@ -57,19 +57,21 @@
                     <template let-row pTemplate="item">
                         <div style="padding:3px" class="ui-g-12 ui-md-3">
                             <p-panel [header]="row.studentname" [style]="{'text-align':'center'}">
+                                <!-- <span class="material-icons reject" *ngIf="!row.isactive">close</span> -->
                                 <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
                                 <div class="car-detail"><b>Standard :</b> {{row.standard + " - " + row.division}}</div>
                                 <hr class="ui-widget-content" style="border-top:0">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
+                                ({{mode}})
                             </p-panel>
                         </div>
                     </template>
                 </p-dataGrid>
             </div>
-            <div class="col-md-12" *ngIf="!passengerDT.length">
-                No records found
+            <div class="col-md-12 empty-message" *ngIf="!passengerDT.length">
+                {{emptymsg}}
             </div>
         </div>
         <div class="row clearfix" *ngIf="isShowList">

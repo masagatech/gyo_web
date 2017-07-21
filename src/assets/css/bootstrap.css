@@ -2011,8 +2011,10 @@ pre code {
 }
 
 .container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
+    /* padding-right: 15px;
+    padding-left: 15px; */
+    padding-right: 5px;
+    padding-left: 5px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -4179,6 +4181,14 @@ fieldset[disabled] .btn-link:focus {
 
 .btn-block+.btn-block {
     margin-top: 5px;
+}
+
+.reject {
+    padding: 0;
+    margin: -180px -120px;
+    font-size: 25em!important;
+    color: #fb483a;
+    position: absolute;
 }
 
 input[type="submit"].btn-block,

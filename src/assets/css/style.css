@@ -10417,14 +10417,14 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .pickbutnotdrop {
-    background: -webkit-linear-gradient(#E91E63, #8BC34A);
+    background: -webkit-linear-gradient(#8BC34A 50%, #E91E63 50%);
     color: #FFFFFF;
     padding: 12px;
     text-align: center;
 }
 
 .dropbutnotpick {
-    background: -webkit-linear-gradient(#8BC34A, #E91E63);
+    background: -webkit-linear-gradient(#E91E63 50%, #8BC34A 50%);
     color: #FFFFFF;
     padding: 12px;
     text-align: center;
@@ -10455,7 +10455,8 @@ body.waitMe_body .waitMe_container.text>div {
 
 .PA,
 .AP {
-    background: -webkit-linear-gradient(#E91E63, #8BC34A);
+    /* background: -webkit-linear-gradient(#E91E63, #8BC34A); */
+    background: -webkit-linear-gradient(#E91E63 50%, #8BC34A 50%);
     color: #FFFFFF;
     padding: 6px;
     margin-left: -10px;
@@ -10463,7 +10464,7 @@ body.waitMe_body .waitMe_container.text>div {
 
 .DA,
 .AD {
-    background: -webkit-linear-gradient(#8BC34A, #E91E63);
+    background: -webkit-linear-gradient(#8BC34A 50%, #E91E63 50%);
     color: #FFFFFF;
     padding: 6px;
     margin-left: -10px;
@@ -10580,4 +10581,8 @@ td {
     border: solid 1px #eeeeee;
     width: 100%;
     text-align: left;
+}
+
+.empty-message {
+    margin: 12px;
 }

@@ -34,6 +34,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     psngrid: number = 0;
     psngrname: string = "";
 
+    emptymsg: string = "";
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
@@ -189,6 +191,9 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
             that.getPassengerDetails();
         }
+        else {
+            that.emptymsg = "Search Entity";
+        }
     }
 
     getPassengerDetails() {
@@ -213,7 +218,13 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         that._psngrservice.getPassengerDetails(params).subscribe(data => {
             try {
-                that.passengerDT = data.data;
+                if (data.data.length > 0) {
+                    that.passengerDT = data.data;
+                }
+                else {
+                    that.passengerDT = [];
+                    that.emptymsg = "No records found";
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
