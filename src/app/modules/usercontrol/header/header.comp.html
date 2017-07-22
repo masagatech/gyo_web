@@ -45,23 +45,23 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">
-                            <img alt="{{userfullname}}" src="uploads/{{uphoto}}" onerror="this.src='assets/img/default.gif';" class="pull-left" height="40px"> {{userfullname}}
+                            <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';" class="pull-left" height="40px"> {{ufullname + "(" + utype + ")"}}
                             <br /><small>{{wsname}}</small>
                         </li>
                         <li class="body">
                             <ul class="menu tasks">
-                                <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
-                                <li><a role="button" [routerLink]="['/aboutus']"><i class="fa fa-info"></i> About Us</a></li>
+                                <li><a role="button"><i class="fa fa-user fa-icon"></i> My Profile</a></li>
+                                <li><a role="button" [routerLink]="['/aboutus']"><i class="fa fa-info fa-icon"></i> About Us</a></li>
                                 <li *ngIf="this.loginUser.utype == 'admin'">
-                                    <a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a>
+                                    <a role="button" [routerLink]="['/setting']"><i class="fa fa-gear fa-icon"></i> Setting</a>
                                 </li>
                                 <li *ngIf="this.loginUser.issysadmin">
-                                    <a role="button" (click)="openWorkspaceForm()"><i class="fa fa-building-o"></i> Workspace</a>
+                                    <a role="button" (click)="openWorkspaceForm()"><i class="fa fa-building-o fa-icon"></i> Workspace</a>
                                 </li>
                                 <li *ngIf="this.loginUser.utype == 'admin' && !this.loginUser.issysadmin">
-                                    <a role="button" (click)="openWorkspaceForm()"><i class="fa fa-building-o"></i> My Workspace</a>
+                                    <a role="button" (click)="openWorkspaceForm()"><i class="fa fa-building-o fa-icon"></i> My Workspace</a>
                                 </li>
-                                <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                <li><a role="button" (click)="logout()"><i class="fa fa-power-off fa-icon"></i> Log Out</a></li>
                             </ul>
                         </li>
                     </ul>

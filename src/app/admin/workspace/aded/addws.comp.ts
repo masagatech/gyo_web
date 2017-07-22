@@ -520,7 +520,7 @@ export class AddWorkspaceComponent implements OnInit {
     getWorkspaceDetails() {
         var that = this;
         that.uploadLogoDT = [];
-        
+
         commonfun.loader();
 
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
@@ -538,7 +538,11 @@ export class AddWorkspaceComponent implements OnInit {
                             that.wsname = data.data[0].wsname;
 
                             if (data.data[0].wslogo !== "") {
+                                that.uploadLogoDT = [];
                                 that.uploadLogoDT.push({ "athurl": data.data[0].wslogo });
+                            }
+                            else {
+                                that.uploadLogoDT = [];
                             }
 
                             that.wsdesc = data.data[0].wsdesc;

@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { AuthenticationService } from '../_services/auth-service';
-import { LoginService } from '@services';
+import { LoginService, AuthenticationService } from '@services';
 import { LoginUserModel } from '@models';
 
 declare var $: any;

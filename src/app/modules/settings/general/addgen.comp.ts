@@ -12,8 +12,11 @@ import { GeneralService } from '@services/master';
 export class AddGeneralComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
 
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
+
     gensetDT: any = [];
-    mengsettype: string = "";
 
     gsetid: number = 0;
     gsettypid: number = 0;
@@ -32,14 +35,47 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         setTimeout(function () {
-            $(".gsettype input").focus();
+            $("#enttname input").focus();
         }, 100);
+    }
+
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Entity
+
+    selectEntityData(event) {
+        this.enttid = event.value;
+        this.enttname = event.label;
+
+        this.fillGenSetTypeDDL();
     }
 
     fillGenSetTypeDDL() {
         var that = this;
 
-        that._genservice.getGeneralSetting({ "flag": "dropdown" }).subscribe(data => {
+        that._genservice.getGeneralSetting({
+            "flag": "dropdown", "enttid": that.enttid, "wsautoid": that.loginUser.wsautoid
+        }).subscribe(data => {
             that.gensetDT = data.data;
         }, err => {
             that._msg.Show(messageType.error, 'Error', err);
@@ -49,22 +85,34 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
     }
 
     resetGeneralSetting() {
-        $("#gsettype").focus();
-        this.gsetid = 0;
-        this.gsettypid = 0;
-        this.gsetval = "";
+        $("#enttname input").focus();
+        this.enttid = 0;
+        this.enttname = "";
+        this.gensetDT = [];
     }
 
     saveGeneralSetting() {
         var that = this;
+        var gensetData = [];
 
-        if (that.gsettypid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Type");
-            $(".gsettype").focus();
+        for (var i = 0; i < that.gensetDT.length; i++) {
+            var gsetfield = that.gensetDT[i];
+
+            if (gsetfield.gsetval !== "") {
+                gensetData.push({
+                    "gsetid": gsetfield.gsetid, "gsettypid": gsetfield.gsettypid, "enttid": that.enttid,
+                    "gsetkey": gsetfield.gsetkey, "gsetval": gsetfield.gsetval, "gsetgrp": gsetfield.gsetgrp,
+                    "cuid": that.loginUser.ucode, "isactive": true, "wsautoid": that.loginUser.wsautoid
+                })
+            }
         }
-        else if (that.gsetval == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Value");
-            $(".gsetval").focus();
+
+        if (that.enttid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Entity");
+            $("#enttname input").focus();
+        }
+        else if (gensetData.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Fill Atleast 1 Row");
         }
         else {
             var savegenset = {
@@ -75,7 +123,7 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
                 "wsautoid": that._wsdetails.wsautoid
             }
 
-            that._genservice.saveGeneralSetting(savegenset).subscribe(data => {
+            that._genservice.saveGeneralSetting({ "gensetdata": gensetData }).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_generalsetting;
 

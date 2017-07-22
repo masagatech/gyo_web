@@ -9,93 +9,91 @@
             </li>
         </ul>
     </div>
-    <div class="body">
-        <div class="body table-responsive">
-            <div class="row clearfix">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">Entity</label>
-                            <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event, 1)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
-                            <span class="material-icons inputserachico">search</span>
-                        </div>
+    <div class="body table-responsive">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity</label>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event, 1)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
             </div>
-            <div class="row clearfix">
-                <div class="col-md-8">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th width="100px"></th>
-                                <th width="100px" align="center" style="display:none">Notification</th>
-                                <th align="center">SMS</th>
-                                <th align="center">Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Co-ordinator</td>
-                                <td align="center" style="display:none">
-                                    <span>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="100px"></th>
+                            <th width="100px" align="center" style="display:none">Notification</th>
+                            <th align="center">SMS</th>
+                            <th align="center">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Co-ordinator</td>
+                            <td align="center" style="display:none">
+                                <span>
                                         <input id="coordnot" type="checkbox" [(ngModel)]="iscoordnot" class="filled-in">
                                         <label for="coordnot"></label>
                                     </span>
-                                </td>
-                                <td align="center">
-                                    <span>
+                            </td>
+                            <td align="center">
+                                <span>
                                         <input id="coordmob" type="checkbox" [(ngModel)]="iscoordmob" class="filled-in">
                                         <label for="coordmob"></label>
                                     </span>
-                                </td>
-                                <td align="center">
-                                    <span>
+                            </td>
+                            <td align="center">
+                                <span>
                                         <input id="coordeml" type="checkbox" [(ngModel)]="iscoordeml" class="filled-in">
                                         <label for="coordeml"></label>
                                     </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Parents</td>
-                                <td align="center" style="display:none">
-                                    <span>
-                                        <input id="prntsnot" type="checkbox" [(ngModel)]="isprntsnot" class="filled-in">
-                                        <label for="prntsnot"></label>
-                                    </span>
-                                </td>
-                                <td align="center">
-                                    <span>
-                                        <input id="prntsmob" type="checkbox" [(ngModel)]="isprntsmob" class="filled-in">
-                                        <label for="prntsmob"></label>
-                                    </span>
-                                </td>
-                                <td align="center">
-                                    <span>
-                                        <input id="prntseml" type="checkbox" [(ngModel)]="isprntseml" class="filled-in">
-                                        <label for="prntseml"></label>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr *ngFor="let oth of otherData">
-                                <td>Others</td>
-                                <td style="display:none"></td>
-                                <td>
-                                    <input type="text" [(ngModel)]="oth.mobile" class="form-control" />
-                                </td>
-                                <td>
-                                    <input type="text" [(ngModel)]="oth.email" class="form-control" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <textarea [(ngModel)]="message" rows="4" class="form-control"></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-4">
-                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Parents</td>
+                            <td align="center" style="display:none">
+                                <span>
+                                    <input id="prntsnot" type="checkbox" [(ngModel)]="isprntsnot" class="filled-in">
+                                    <label for="prntsnot"></label>
+                                </span>
+                            </td>
+                            <td align="center">
+                                <span>
+                                    <input id="prntsmob" type="checkbox" [(ngModel)]="isprntsmob" class="filled-in">
+                                    <label for="prntsmob"></label>
+                                </span>
+                            </td>
+                            <td align="center">
+                                <span>
+                                    <input id="prntseml" type="checkbox" [(ngModel)]="isprntseml" class="filled-in">
+                                    <label for="prntseml"></label>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let oth of otherData">
+                            <td>Others</td>
+                            <td style="display:none"></td>
+                            <td>
+                                <input type="text" [(ngModel)]="oth.mobile" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" [(ngModel)]="oth.email" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <textarea [(ngModel)]="message" rows="4" class="form-control"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4">
             </div>
         </div>
     </div>

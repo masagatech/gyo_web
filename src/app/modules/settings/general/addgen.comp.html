@@ -1,36 +1,64 @@
 <div class="card">
     <div class="header">
         <h4>General Setting</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveGeneralSetting()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+        </ul>
     </div>
-    <div class="body">
+    <div class="body table-responsive">
         <div class="row clearfix">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Type</label>
-                        <select id="gsettype" name="gsettype" [(ngModel)]="gsettypid" class="form-control">
-                            <option value="0">-- Select Type --</option>
-                            <option *ngFor="let grow of gensetDT" [value]="grow.key">
-                                {{grow.val}}
-                            </option>
-                        </select>
+                        <label class="control-label">Entity</label>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event, 1)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Value</label>
-                        <input id="gsetval" name="gsetval" type="text" [(ngModel)]="gsetval" class="form-control" />
-                    </div>
-                </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="200px">Group</th>
+                            <th></th>
+                            <th width="300px">Key</th>
+                            <th width="300px">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let grow of gensetDT">
+                            <td width="200px">
+                                <b>{{grow.grpnm}}</b>
+                            </td>
+                            <td>
+                                <b>{{grow.gsettype}}</b>
+                            </td>
+                            <td width="300px">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="grow.gsetkey" class="form-control" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="300px">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="grow.gsetval" class="form-control" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-md-4">
-                <div class="form-group" style="padding-top: 20px;">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="saveGeneralSetting()">
-                        <i class="material-icons">save</i>
-                    </button>
-                </div>
             </div>
         </div>
     </div>

@@ -16,9 +16,12 @@ declare var loader: any;
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   _wsdetails: any = [];
+
+  ufullname: string = "";
+  utype: string = "";
+  uphoto: string = "";
   wsname: string = "";
   wslogo: string = "";
-  userfullname: string = "";
 
   mname: string = "";
 
@@ -55,7 +58,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loginUser = this._loginservice.getUser();
     this._wsdetails = Globals.getWSDetails();
 
-    this.userfullname = this.loginUser.fullname + " (" + this.loginUser.utypename + ")";
     this.getHeaderDetails();
     this.getChildMenuList();
 
@@ -79,6 +81,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getHeaderDetails() {
+    this.ufullname = this.loginUser.fullname;
+    this.utype = this.loginUser.utypename;
+    this.uphoto = this.global.uploadurl + this._wsdetails.uphoto;
     this.wsname = this._wsdetails.wsname;
     this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
   }

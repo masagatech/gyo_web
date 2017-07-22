@@ -92,7 +92,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $(".enttname input").focus();
         }, 100);
-
     }
 
     getDefaultMap() {
@@ -172,7 +171,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._autoservice.getDropDownData({ "flag": "vehicle", "id": that.enttid }).subscribe((data) => {
+        that._autoservice.getDropDownData({
+            "flag": "vehicle", "enttid": that.enttid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+        }).subscribe((data) => {
             try {
                 that.vehtypeDT = data.data;
             }
