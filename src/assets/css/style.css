@@ -10648,6 +10648,7 @@ td {
     border: solid 1px #eeeeee;
     width: 100%;
     text-align: left;
+    font-size: 12px;
 }
 
 .empty-message {
