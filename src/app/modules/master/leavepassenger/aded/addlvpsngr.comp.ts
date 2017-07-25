@@ -15,15 +15,11 @@ declare var commonfun: any;
 
 export class AddLeavePassengerComponent implements OnInit {
     loginUser: LoginUserModel;
-
     _wsdetails: any = [];
+    _enttdetails: any = [];
 
     slid: number = 0;
     remark: string = "";
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
 
     passengerDT: any = [];
     psngrid: number = 0;
@@ -44,6 +40,7 @@ export class AddLeavePassengerComponent implements OnInit {
         private _lvpsngrservice: LeavePassengerService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
     }
 
     public ngOnInit() {
@@ -53,38 +50,6 @@ export class AddLeavePassengerComponent implements OnInit {
 
         this.fillLeaveTypeDropDown();
         this.getLeavePassenger();
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-        this.getPassengerData(event);
-
-        $(".enttname input").focus();
     }
 
     // Auto Completed Passenger
@@ -99,7 +64,7 @@ export class AddLeavePassengerComponent implements OnInit {
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
-            "id": this.enttid,
+            "id": this._enttdetails.enttid,
             "search": query
         }).subscribe((data) => {
             this.passengerDT = data.data;
@@ -142,8 +107,6 @@ export class AddLeavePassengerComponent implements OnInit {
 
     resetLeavePassengerFields() {
         this.slid = 0;
-        this.enttid = 0;
-        this.enttname = "";
         this.psngrid = 0;
         this.psngrname = "";
         this.frmdt = "";
@@ -157,11 +120,7 @@ export class AddLeavePassengerComponent implements OnInit {
     saveLeavePassenger() {
         var that = this;
 
-        if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
-            $(".enttname input").focus();
-        }
-        else if (that.psngrid == 0) {
+        if (that.psngrid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
             $(".psngrname input").focus();
         }
@@ -178,7 +137,7 @@ export class AddLeavePassengerComponent implements OnInit {
 
             var savelvpsngr = {
                 "slid": that.slid,
-                "enttid": that.enttid,
+                "enttid": that._enttdetails.enttid,
                 "psngrid": that.psngrid,
                 "frmdt": that.frmdt,
                 "todt": that.todt,
@@ -242,8 +201,6 @@ export class AddLeavePassengerComponent implements OnInit {
                 }).subscribe(data => {
                     try {
                         that.slid = data.data[0].slid;
-                        that.enttid = data.data[0].enttid;
-                        that.enttname = data.data[0].enttname;
                         that.psngrid = data.data[0].psngrid;
                         that.psngrname = data.data[0].psngrname;
                         that.restype = data.data[0].restype;

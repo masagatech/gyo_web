@@ -3,49 +3,62 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
+import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
+declare var $: any;
+
 @Component({
-    templateUrl: 'rptpsngratt.comp.html',
-    providers: [CommonService, MenuService, ReportsService]
+    templateUrl: 'rpttrips.comp.html',
+    providers: [MenuService, CommonService]
 })
 
-export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
+export class TripsReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
     _enttdetails: any = [];
 
     monthDT: any = [];
-    standardDT: any = [];
-
-    attColumn: any = [];
-    attData: any = [];
+    tripsDT: any = [];
     
     monthname: string = "";
+
+    doc = new jsPDF();
+
+    specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    standardDT: any = [];
     standard: string = "";
 
-    @ViewChild('psngrattnd') psngrattnd: ElementRef;
+    autoPassengerDT: any = [];
+    psngrid: number = 0;
+    psngrname: string = "";
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
-        private _autoservice: CommonService) {
+    passengerDT: any = [];
+
+    @ViewChild('passenger') passenger: ElementRef;
+
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
         this.getDefaultMonth();
-        this.getAttendanceColumn();
+        this.getAttendanceReports();
     }
 
     public ngOnInit() {
-        var that = this;
-
         setTimeout(function () {
-            $(".enttname input").focus();
             commonfun.navistyle();
+            $(".enttname input").focus();
 
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -64,7 +77,7 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.attData, 'User Details', { "showLabels": true });
+        new Angular2Csv(this.passengerDT, 'PassengerReports', { "showLabels": true });
     }
 
     public exportToPDF() {
@@ -74,8 +87,8 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
 
-        pdf.addHTML(this.psngrattnd.nativeElement, 0, 0, options, () => {
-            pdf.save("PassengerAttendance.pdf");
+        pdf.addHTML(this.passenger.nativeElement, 0, 0, options, () => {
+            pdf.save("PassengerReports.pdf");
         });
     }
 
@@ -85,10 +98,9 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._rptservice.getAttendanceReports({ "flag": "filterddl" }).subscribe(data => {
+        that._rptservice.getAttendanceReports({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.monthDT = data.data.filter(a => a.group === "month");
-                that.standardDT = data.data.filter(a => a.group === "standard");
+                that.monthDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -105,23 +117,7 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Attendent Data
-
-    getAttendanceColumn() {
-        var that = this;
-
-        that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that._enttdetails.enttid
-        }).subscribe(data => {
-            if (data.data.length !== 0) {
-                that.attColumn = data.data;
-                that.getAttendanceReports();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-        })
-    }
+    // View Data Rights
 
     getAttendanceReports() {
         var that = this;
@@ -133,22 +129,22 @@ export class PassengerAttendanceReportsComponent implements OnInit, OnDestroy {
             commonfun.loader("#fltrpsngr");
 
             that._rptservice.getAttendanceReports({
-                "flag": "student", "monthname": that.monthname, "standard": that.standard, "schoolid": that._enttdetails.enttid
+                "flag": "trips", "monthname": that.monthname, "enttid": that._enttdetails.enttid
             }).subscribe(data => {
                 try {
                     if (data.data.length == 0) {
-                        that.attData = [];
+                        that.tripsDT = [];
                     }
                     else if (data.data.length == 1) {
                         if (data.data[0].stdnm !== null) {
-                            that.attData = data.data;
+                            that.tripsDT = data.data;
                         }
                         else {
-                            that.attData = [];
+                            that.tripsDT = [];
                         }
                     }
                     else {
-                        that.attData = data.data;
+                        that.tripsDT = data.data;
                     }
                 }
                 catch (e) {

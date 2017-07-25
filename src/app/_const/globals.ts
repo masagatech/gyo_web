@@ -23,4 +23,15 @@ export class Globals {
             return {};
         }
     }
+
+    public static getEntityDetails() {
+        let _enttdetails = Cookie.get("_enttdetails_");
+
+        if (_enttdetails !== null) {
+            return JSON.parse(_enttdetails);
+        }
+        else {
+            return {};
+        }
+    }
 }

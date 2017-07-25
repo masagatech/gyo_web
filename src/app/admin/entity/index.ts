@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
-import { AuthGuard } from '../../../_services/authguard-service';
+import { SharedComponentModule } from '../../_shared/sharedcomp.module';
+import { AuthGuard } from '../../_services/authguard-service';
 
 import { AddEntityComponent } from './aded/addentity.comp';
 import { ViewEntityComponent } from './view/viewentity.comp';
@@ -24,6 +24,11 @@ export const routes = [
       { path: 'add', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "add", "urlname": "/add" } },
       { path: 'details/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "edit", "urlname": "/edit" } },
       { path: 'edit/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "edit", "urlname": "/edit" } }
+
+      // { path: '', component: ViewEntityComponent },
+      // { path: 'add', component: AddEntityComponent },
+      // { path: 'details/:id', component: AddEntityComponent },
+      // { path: 'edit/:id', component: AddEntityComponent }
     ]
   },
 ];

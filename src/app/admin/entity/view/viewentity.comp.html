@@ -26,16 +26,16 @@
                     </div>
                     <p-dataGrid [value]="row.value" [paginator]="true" [rows]="8">
                         <template let-drow pTemplate="item">
-                            <div style="padding:3px" class="ui-g-12 ui-md-3">
+                            <div style="padding:3px" class="col-md-2">
                                 <p-panel [header]="drow.schoolname" [style]="{'text-align':'center'}">
                                     <span class="material-icons reject" *ngIf="!drow.isactive">close</span>
-                                    <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
-                                    <!-- <div class="car-detail"><b>Entity Type :</b> {{drow.entttype}}</div> -->
+                                    <a role="button" (click)="openMainForm(drow)">
+                                        <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
+                                    </a>
                                     <hr class="ui-widget-content" style="border-top:0">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(drow)">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <!-- ({{drow.mode}}) -->
                                 </p-panel>
                             </div>
                         </template>

@@ -14,14 +14,11 @@ import jsPDF from 'jspdf'
 })
 
 export class RouteReportsComponent implements OnInit, OnDestroy {
-    routeDT: any = [];
     loginUser: LoginUserModel;
-
     _wsdetails: any = [];
+    _enttdetails: any = [];
 
-    entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    routeDT: any = [];
 
     @ViewChild('route') route: ElementRef;
 
@@ -29,7 +26,9 @@ export class RouteReportsComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RouteService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-        this.viewrouteDataRights();
+        this._enttdetails = Globals.getEntityDetails();
+
+        this.getRouteDetails();
     }
 
     public ngOnInit() {
@@ -59,57 +58,13 @@ export class RouteReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Owners
-
-    selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
-
-        Cookie.set("_enttid_", this.entityid.toString());
-        Cookie.set("_enttnm_", this.entityname);
-
-        this.getRouteDetails();
-    }
-
-    public viewrouteDataRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            that.entityid = parseInt(Cookie.get('_enttid_'));
-            that.entityname = Cookie.get('_enttnm_');
-            that.getRouteDetails();
-        }
-    }
-
     getRouteDetails() {
         var that = this;
         commonfun.loader();
 
         that._rtservice.getStopsDetails({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "enttid": that.entityid, "wsautoid": that._wsdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin, "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.routeDT = data.data;

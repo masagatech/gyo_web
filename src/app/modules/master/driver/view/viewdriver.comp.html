@@ -1,23 +1,16 @@
 <div class="card">
     <div class="header">
-        <h4>Driver</h4>
         <div class="row clearfix">
             <div class="col-md-9 col-xs-9">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
+                <h4>Driver</h4>
             </div>
-            <div class="col-md-2 col-xs-2" align="right" style="padding-top: 20px">
+            <div class="col-md-2 col-xs-2" align="right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshDriver('grid')">
                     <i class="material-icons">apps</i></button>
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshDriver('list')">
                     <i class="material-icons">list</i></button>
             </div>
-            <div class="col-md-1 col-xs-1" align="right" style="padding-top: 20px">
+            <div class="col-md-1 col-xs-1" align="right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addDriverForm()">
                     <i class="material-icons">add</i></button>
             </div>

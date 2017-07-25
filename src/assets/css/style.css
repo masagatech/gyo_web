@@ -8605,6 +8605,10 @@ fieldset[disabled] .form-control {
     margin: -15px 0;
 }
 
+.dropdown-menu ul.menu li i {
+    font-size: 15px;
+}
+
 .dropdown-menu ul.menu li:last-child {
     border-bottom: none;
 }

@@ -1,17 +1,8 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-1">
+            <div class="col-md-10 col-xs-10">
                 <h4>Batch</h4>
-            </div>
-            <div class="col-md-9 col-xs-10">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
             </div>
             <div class="col-md-2 col-xs-2" align="right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addBatchForm()">

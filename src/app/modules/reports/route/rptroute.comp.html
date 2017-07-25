@@ -1,17 +1,8 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2 col-xs-2">
+            <div class="col-md-9 col-xs-9">
                 <h4>Route</h4>
-            </div>
-            <div class="col-md-7 col-xs-7">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
             </div>
             <div class="col-md-3" style="padding-top: 20px; text-align: right;">
                 <div class="btn-group" role="group">

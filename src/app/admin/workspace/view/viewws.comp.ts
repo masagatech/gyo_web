@@ -174,14 +174,16 @@ export class ViewWorkspaceComponent implements OnInit {
         this._router.navigate(['/']);
     }
 
-    public getMainForm(row) {
+    public openEntityForm(row) {
         Cookie.set("_wsdetails_", JSON.stringify(row));
+        this._router.navigate(['/entity']);
 
-        if (row.enttid !== 0) {
-            Cookie.set("_enttid_", row.enttid.toString());
-            Cookie.set("_enttnm_", row.enttnm);
-        }
-
-        this._router.navigate(['/']);
+        // if (row.enttid !== 0) {
+        //     Cookie.set("_wsdetails_", JSON.stringify(row));
+        //     this._router.navigate(['/entity']);
+        // }
+        // else {
+        //     this._router.navigate(['/entity/add']);
+        // }
     }
 }

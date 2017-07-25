@@ -15,10 +15,7 @@ import jsPDF from 'jspdf'
 export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _enttdetails: any = [];
 
     attColumn: any = [];
     attData: any = [];
@@ -30,8 +27,9 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
-        this.viewAttendanceReportsRights();
+        this.getAttendanceReports();
     }
 
     public ngOnInit() {
@@ -69,51 +67,6 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Owners
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        Cookie.set("_enttid_", this.enttid.toString());
-        Cookie.set("_enttnm_", this.enttname);
-
-        this.getAttendanceReports();
-    }
-
-    public viewAttendanceReportsRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            this.enttid = parseInt(Cookie.get('_enttid_'));
-            this.enttname = Cookie.get('_enttnm_');
-
-            that.getAttendanceReports();
-        }
-    }
-
     getAttendanceReports() {
         var that = this;
         var monthname = that.getDefaultMonth();
@@ -121,7 +74,7 @@ export class DailyAttendanceReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getAttendanceReports({
-            "flag": "daily", "monthname": monthname, "schoolid": that.enttid
+            "flag": "daily", "monthname": monthname, "schoolid": that._enttdetails.enttid
         }).subscribe(data => {
             try {
                 that.attData = data.data;

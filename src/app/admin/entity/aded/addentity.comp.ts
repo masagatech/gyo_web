@@ -687,6 +687,6 @@ export class AddEntityComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/entity']);
+        this._router.navigate(['/entity']);
     }
 }

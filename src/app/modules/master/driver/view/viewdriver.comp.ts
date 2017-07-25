@@ -12,15 +12,15 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 
 export class ViewDriverComponent implements OnInit {
-    driverDT: any = [];
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
+    _enttdetails: any = [];
 
     global = new Globals();
-    _wsdetails: any = [];
 
-    entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    driverDT: any = [];
+    enttid: number = 0;
+    enttname: string = "";
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
@@ -31,6 +31,8 @@ export class ViewDriverComponent implements OnInit {
         private _loginservice: LoginService, private _autoservice: CommonService, private _driverservice: DriverService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
+
         this.viewDriverDataRights();
     }
 
@@ -40,7 +42,7 @@ export class ViewDriverComponent implements OnInit {
 
         setTimeout(function () {
             commonfun.navistyle();
-            $(".entityname input").focus();
+            $(".enttname input").focus();
         }, 100);
     }
 
@@ -65,46 +67,12 @@ export class ViewDriverComponent implements OnInit {
         }, 0);
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Owners
-
-    selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
-
-        Cookie.set("_enttid_", this.entityid.toString());
-        Cookie.set("_enttnm_", this.entityname);
-
-        this.getDriverDetails();
-    }
-
     public viewDriverDataRights() {
         var that = this;
 
-        if (Cookie.get('_enttnm_') != null) {
-            that.entityid = parseInt(Cookie.get('_enttid_'));
-            that.entityname = Cookie.get('_enttnm_');
+        if (that._enttdetails.enttname != null) {
+            that.enttid = parseInt(this._enttdetails.enttid);
+            that.enttname = this._enttdetails.enttname;
             that.getDriverDetails();
         }
         else {
@@ -119,7 +87,7 @@ export class ViewDriverComponent implements OnInit {
 
         that._driverservice.getDriverDetails({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.entityid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "enttid": that.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {

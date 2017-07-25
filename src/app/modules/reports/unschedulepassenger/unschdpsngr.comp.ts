@@ -15,10 +15,7 @@ import jsPDF from 'jspdf'
 export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _enttdetails: any = [];
 
     passengerDT: any = [];
 
@@ -28,8 +25,9 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
-        this.viewUnscheduleReportsRights();
+        this.getUnschedulePassenger();
     }
 
     public ngOnInit() {
@@ -59,51 +57,6 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
         });
     }
 
-    public viewUnscheduleReportsRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
-
-            that.getUnschedulePassenger();
-        }
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        Cookie.set("_enttid_", this.enttid.toString());
-        Cookie.set("_enttnm_", this.enttname);
-
-        this.getUnschedulePassenger();
-    }
-
     // View Passenger List
 
     getUnschedulePassenger() {
@@ -112,7 +65,7 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "unschedule", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "unschedule", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {

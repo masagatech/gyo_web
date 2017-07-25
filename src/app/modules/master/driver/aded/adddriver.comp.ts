@@ -14,10 +14,8 @@ declare var google: any;
 
 export class AddDriverComponent implements OnInit {
     loginUser: LoginUserModel;
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _wsdetails: any = [];
+    _enttdetails: any = [];
 
     stateDT: any = [];
     cityDT: any = [];
@@ -53,13 +51,13 @@ export class AddDriverComponent implements OnInit {
     uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     uploaddocconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.getPhotoUploadConfig();
         this.getDocUploadConfig();
@@ -75,35 +73,6 @@ export class AddDriverComponent implements OnInit {
         }, 100);
 
         this.getDriverDetails();
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
     }
 
     // Get State DropDown
@@ -346,11 +315,7 @@ export class AddDriverComponent implements OnInit {
     saveDriverInfo() {
         var that = this;
 
-        if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Entity");
-            $(".enttid").focus();
-        }
-        else if (that.drivercode == "") {
+        if (that.drivercode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Driver Code");
             $(".drivercode").focus();
         }
@@ -392,10 +357,10 @@ export class AddDriverComponent implements OnInit {
                 "city": that.city,
                 "area": that.area,
                 "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
-                "enttid": that.enttid,
                 "attachdocs": that.attachDocsDT,
                 "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
+                "enttid": that._enttdetails.enttid,
                 "wsautoid": that._wsdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
@@ -476,8 +441,6 @@ export class AddDriverComponent implements OnInit {
                         that.fillAreaDropDown();
                         that.area = _driverdata[0].area;
                         that.pincode = _driverdata[0].pincode;
-                        that.enttid = _driverdata[0].enttid;
-                        that.enttname = _driverdata[0].enttname;
                         that.remark1 = _driverdata[0].remark1;
                         that.isactive = _driverdata[0].isactive;
                         that.mode = _driverdata[0].mode;
@@ -505,11 +468,6 @@ export class AddDriverComponent implements OnInit {
                 })
             }
             else {
-                if (Cookie.get('_enttnm_') != null) {
-                    that.enttid = parseInt(Cookie.get('_enttid_'));
-                    that.enttname = Cookie.get('_enttnm_');
-                }
-
                 that.resetDriverFields();
                 commonfun.loaderhide();
             }

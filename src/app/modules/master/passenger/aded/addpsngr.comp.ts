@@ -16,8 +16,8 @@ declare var adminloader: any;
 
 export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
-
     _wsdetails: any = [];
+    _enttdetails: any = [];
 
     standardDT: any = [];
     divisionDT: any = [];
@@ -28,10 +28,6 @@ export class AddPassengerComponent implements OnInit {
     droprouteDT: any = [];
     pickstopsDT: any = [];
     dropstopsDT: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
 
     psngrid: number = 0;
     psngrcode: string = "";
@@ -80,17 +76,11 @@ export class AddPassengerComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    /*config = {
-        server: this.global.serviceurl + "uploads",
-        method: "post",
-        maxFilesize: 50,
-        acceptedFiles: 'image/*'
-    };*/
-
     constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.getPhotoUploadConfig();
         this.fillDropDownList();
@@ -102,37 +92,6 @@ export class AddPassengerComponent implements OnInit {
         }, 1000);
 
         this.getPassengerDetails();
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        this.fillRoutesDDL();
     }
 
     // Fill Standard, Division, Gender, Pick Up Route and Drop Route DropDown
@@ -171,7 +130,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader("#pickrtid");
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterroute", "enttid": that.enttid }).subscribe(data => {
+        that._psngrservice.getPassengerDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.pickrouteDT = data.data;
                 that.droprouteDT = data.data;
@@ -527,12 +486,7 @@ export class AddPassengerComponent implements OnInit {
     isValidPassenger() {
         var that = this;
 
-        if (that.enttid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select Entity Name");
-            $(".enttname input").focus();
-            return false;
-        }
-        else if (that.psngrname === "") {
+        if (that.psngrname === "") {
             that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
             $(".psngrname").focus();
             return false;
@@ -629,7 +583,7 @@ export class AddPassengerComponent implements OnInit {
                 "studentcode": that.psngrid,
                 "studentname": that.psngrname,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
-                "schoolid": that.enttid,
+                "schoolid": that._enttdetails.enttid,
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
@@ -707,8 +661,6 @@ export class AddPassengerComponent implements OnInit {
                     try {
                         if (data.data.length > 0) {
                             that.psngrid = data.data[0].autoid;
-                            that.enttid = data.data[0].schoolid;
-                            that.enttname = data.data[0].schoolname;
                             that.psngrcode = data.data[0].studentcode;
                             that.psngrname = data.data[0].studentname;
 
@@ -790,12 +742,7 @@ export class AddPassengerComponent implements OnInit {
                 })
             }
             else {
-                if (Cookie.get('_enttnm_') != null) {
-                    this.enttid = parseInt(Cookie.get('_enttid_'));
-                    this.enttname = Cookie.get('_enttnm_');
-
-                    this.fillRoutesDDL();
-                }
+                this.fillRoutesDDL();
 
                 that.resetPassengerFields();
             }

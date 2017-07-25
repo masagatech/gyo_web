@@ -15,14 +15,12 @@ declare var commonfun: any;
 
 export class AddBatchComponent implements OnInit {
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
+    _enttdetails: any = [];
 
     batchid: number = 0;
     batchcode: string = "";
     batchname: string = "";
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
 
     fromtime: any = "";
     totime: any = "";
@@ -34,13 +32,13 @@ export class AddBatchComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
-    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _batchservice: BatchService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
     }
 
     public ngOnInit() {
@@ -57,43 +55,13 @@ export class AddBatchComponent implements OnInit {
     public onUploadSuccess(event) {
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Owners
-
-    selectEntityData(event, type) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-        this.getWeekList();
-    }
-
     getWeekList() {
         var that = this;
         commonfun.loader();
 
         that._batchservice.getBatchDetails({
             "flag": "dropdown",
-            "schid": that.enttid,
+            "schid": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -169,10 +137,6 @@ export class AddBatchComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Batch Name");
             $(".batchname").focus();
         }
-        else if (that.enttname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
-            $(".enttname input").focus();
-        }
         else if (that.fromtime == "") {
             that._msg.Show(messageType.error, "Error", "Enter From Time");
             $(".fromtime").focus();
@@ -191,7 +155,7 @@ export class AddBatchComponent implements OnInit {
                 "autoid": that.batchid,
                 "batchcode": that.batchcode,
                 "batchname": that.batchname,
-                "schoolid": that.enttid,
+                "schoolid": that._enttdetails.enttid,
                 "fromtime": that.fromtime,
                 "totime": that.totime,
                 "cuid": that.loginUser.ucode,
@@ -255,8 +219,6 @@ export class AddBatchComponent implements OnInit {
                         that.batchid = data.data[0].autoid;
                         that.batchcode = data.data[0].batchcode;
                         that.batchname = data.data[0].batchname;
-                        that.enttid = data.data[0].schoolid;
-                        that.enttname = data.data[0].schoolname;
                         that.getWeekList();
                         that.fromtime = data.data[0].fromtime;
                         that.totime = data.data[0].totime;
@@ -278,13 +240,7 @@ export class AddBatchComponent implements OnInit {
                 })
             }
             else {
-                if (Cookie.get('_enttnm_') != null) {
-                    this.enttid = parseInt(Cookie.get('_enttid_'));
-                    this.enttname = Cookie.get('_enttnm_');
-
-                    this.getWeekList();
-                }
-
+                that.getWeekList();
                 that.resetBatchFields();
             }
         });

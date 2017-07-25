@@ -16,6 +16,7 @@ declare var google: any;
 export class AddRouteComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
+    _enttdetails: any = [];
 
     marker: any;
     @ViewChild("gmap")
@@ -24,10 +25,6 @@ export class AddRouteComponent implements OnInit {
     private options: any;
     private overlays: any[];
     private map: any;
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
 
     routesDT: any = [];
     rtid: number = 0;
@@ -52,6 +49,7 @@ export class AddRouteComponent implements OnInit {
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
     }
 
     public ngOnInit() {
@@ -109,57 +107,20 @@ export class AddRouteComponent implements OnInit {
         this.marker.setPosition(latlng);
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        this.fillRoutesDropDown();
-    }
-
     // Open Popup For Saving Routes
 
     openRoutesPopup() {
         var that = this;
 
-        if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Entity Name");
-            $(".enttname").focus();
+        if (that.rtid !== 0) {
+            that.rtname = $("#ddlRoutes option:selected").text().trim();
         }
         else {
-            if (that.rtid !== 0) {
-                that.rtname = $("#ddlRoutes option:selected").text().trim();
-            }
-            else {
-                that.rtname = "";
-            }
-
-            $("#addRoutesModal").modal('show');
-            $(".rtname").focus();
+            that.rtname = "";
         }
+
+        $("#addRoutesModal").modal('show');
+        $(".rtname").focus();
     }
 
     // Save Stops Data
@@ -177,7 +138,7 @@ export class AddRouteComponent implements OnInit {
             var savert = {
                 "rtid": that.rtid,
                 "rtname": that.rtname,
-                "enttid": that.enttid,
+                "enttid": that._enttdetails.enttid,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._wsdetails.wsautoid
             }
@@ -219,7 +180,7 @@ export class AddRouteComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._rtservice.getStopsDetails({ "flag": "rtddl", "enttid": that.enttid }).subscribe(data => {
+        that._rtservice.getStopsDetails({ "flag": "rtddl", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.routesDT = data.data;
             }
@@ -252,8 +213,6 @@ export class AddRouteComponent implements OnInit {
                         var _routedata = data.data;
 
                         if (_routedata.length > 0) {
-                            that.enttid = _routedata[0].enttid;
-                            that.enttname = _routedata[0].enttname;
                             that.fillRoutesDropDown();
                             that.getStopsByRoute();
 
@@ -275,13 +234,7 @@ export class AddRouteComponent implements OnInit {
                 })
             }
             else {
-                if (Cookie.get('_enttnm_') != null) {
-                    that.enttid = parseInt(Cookie.get('_enttid_'));
-                    that.enttname = Cookie.get('_enttnm_');
-
-                    that.fillRoutesDropDown();
-                }
-
+                that.fillRoutesDropDown();
                 that.resetAllStopsFields();
             }
         });
@@ -327,8 +280,6 @@ export class AddRouteComponent implements OnInit {
     // Clear Fields
 
     resetAllStopsFields() {
-        this.enttid = 0;
-        this.enttname = "";
         this.rtid = 0;
         this.rtname = "";
 
@@ -484,11 +435,7 @@ export class AddRouteComponent implements OnInit {
         var that = this;
         var _stopsList = [];
 
-        if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Entity Name");
-            $(".enttname").focus();
-        }
-        else if (that.rtid == 0) {
+        if (that.rtid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Route Name");
             $(".rtname").focus();
         }

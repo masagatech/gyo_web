@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewentity.comp.html',
@@ -10,11 +11,12 @@ import { EntityService } from '@services/master';
 })
 
 export class ViewEntityComponent implements OnInit, OnDestroy {
-    entityDT: any = [];
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
 
     global = new Globals();
-    _wsdetails: any = [];
+
+    entityDT: any = [];
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
@@ -23,7 +25,11 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-        
+
+        if (this._wsdetails == null && this._wsdetails == undefined) {
+            this._router.navigate(['/workspace']);
+        }
+
         this.viewEntityDataRights();
     }
 
@@ -97,11 +103,16 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public addEntityForm() {
-        this._router.navigate(['/master/entity/add']);
+        this._router.navigate(['/entity/add']);
     }
 
     public editEntityForm(row) {
-        this._router.navigate(['/master/entity/edit', row.autoid]);
+        this._router.navigate(['/entity/edit', row.autoid]);
+    }
+
+    public openMainForm(row) {
+        Cookie.set("_enttdetails_", JSON.stringify(row));
+        this._router.navigate(['/']);
     }
 
     public ngOnDestroy() {

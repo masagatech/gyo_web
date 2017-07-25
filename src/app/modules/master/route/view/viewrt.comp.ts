@@ -14,10 +14,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class ViewRouteComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _enttdetails: any = [];
 
     stopsDT: any = [];
 
@@ -25,8 +22,9 @@ export class ViewRouteComponent implements OnInit {
         private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RouteService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
-        this.viewStopsDataRights();
+        this.getStopsDetails();
     }
 
     public ngOnInit() {
@@ -36,51 +34,6 @@ export class ViewRouteComponent implements OnInit {
         }, 100);
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        Cookie.set("_enttid_", this.enttid.toString());
-        Cookie.set("_enttnm_", this.enttname);
-
-        this.getStopsDetails();
-    }
-
-    public viewStopsDataRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
-
-            that.getStopsDetails();
-        }
-    }
-
     getStopsDetails() {
         var that = this;
 
@@ -88,7 +41,7 @@ export class ViewRouteComponent implements OnInit {
 
         that._rtservice.getStopsDetails({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "enttid": that._enttdetails.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.stopsDT = data.data;
