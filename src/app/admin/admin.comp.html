@@ -16,23 +16,12 @@
                         <li class="header">Menu</li>
                         <li class="body">
                             <ul class="menu tasks">
-                                <li><a role="button" (click)="openWorkspaceForm()"><i class="material-icons">home</i> Workspace</a></li>
-                                <li><a role="button" (click)="openEntityForm()"><i class="material-icons">school</i> Entity</a></li>
-                                <li><a role="button" (click)="openUserForm()"><i class="material-icons">person</i> User</a></li>
-                                <li><a role="button" (click)="openLocationForm()"><i class="material-icons">location_city</i> Location</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <!-- <ul class="dropdown-menu">
-                        <li class="header">Menu</li>
-                        <li class="body">
-                            <ul class="menu tasks">
                                 <li *ngFor="let row of mastersMenuDT">
-                                    <a role="button" [routerLink]="row.mlink"><i class="material-icons">{{row.micon}}</i> {{row.mname}}</a>
+                                    <a role="button" (click)="openForm(row)"><i class="material-icons">{{row.micon}}</i> {{row.mname}}</a>
                                 </li>
                             </ul>
                         </li>
-                    </ul> -->
+                    </ul>
                 </li>
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">

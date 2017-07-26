@@ -66,7 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
-    this.getEntityDetails();
     this.getHeaderDetails();
     this.getTopMenuList();
 
@@ -106,40 +105,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     loader.loadall();
   }
 
-  getEntityDetails() {
-    var that = this;
-    var params = {};
-
-    commonfun.loader();
-
-    params = {
-      "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-      "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
-    }
-
-    that._entityservice.getEntityDetails(params).subscribe(data => {
-      try {
-        that.entityDT = data.data;
-      }
-      catch (e) {
-        that._msg.Show(messageType.error, "Error", e);
-      }
-
-      commonfun.loaderhide();
-    }, err => {
-      that._msg.Show(messageType.error, "Error", err);
-      console.log(err);
-      commonfun.loaderhide();
-    }, () => {
-
-    })
-  }
-
-  public openMainForm(row) {
-    Cookie.set("_enttdetails_", JSON.stringify(row));
-    this._router.navigate(['/']);
-  }
-
   public getTopMenuList() {
     var that = this;
 
@@ -156,6 +121,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private changeSkin(theme: any) {
     loader.skinChanger(theme);
+  }
+
+  openForm(row) {
+    console.log(row);
+    
+    if (row.mcode == "ws") {
+      Cookie.delete("_enttdetails_");
+      Cookie.delete("_wsdetails_");
+    }
+    else if (row.mcode == "entt") {
+      Cookie.delete("_enttdetails_");
+    }
+
+    this._router.navigate(['/' + row.mlink]);
   }
 
   openWorkspaceForm() {

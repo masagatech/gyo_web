@@ -45,34 +45,22 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   }
 
-  openWorkspaceForm() {
-    Cookie.delete("_enttdetails_");
-    Cookie.delete("_wsdetails_");
-    this._router.navigate(['/workspace']);
+  public ngAfterViewInit() {
+    loader.loadall();
   }
 
-  openEntityForm() {
-    // if (this._wsdetails !== null && this._wsdetails !== undefined) {
-    //   this._router.navigate(['/entity']);
-    // }
+  openForm(row) {
+    console.log(row);
 
-    this._router.navigate(['/entity']);
-  }
+    if (row.mcode == "ws") {
+      Cookie.delete("_enttdetails_");
+      Cookie.delete("_wsdetails_");
+    }
+    else if (row.mcode == "entt") {
+      Cookie.delete("_enttdetails_");
+    }
 
-  openUserForm() {
-    // if (this._wsdetails !== null && this._wsdetails !== undefined) {
-    //   this._router.navigate(['/user']);
-    // }
-
-    this._router.navigate(['/user']);
-  }
-
-  openLocationForm() {
-    // if (this._wsdetails !== null && this._wsdetails !== undefined) {
-    //   this._router.navigate(['/location']);
-    // }
-
-    this._router.navigate(['/location']);
+    this._router.navigate(['/' + row.mlink]);
   }
 
   getHeaderDetails() {
@@ -91,10 +79,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       that._msg.Show(messageType.error, "Error", err);
     }, () => {
     })
-  }
-
-  public ngAfterViewInit() {
-    loader.loadall();
   }
 
   logout() {

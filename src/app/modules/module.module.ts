@@ -24,6 +24,9 @@ export const routes = [
                     // Schedule
                     { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
 
+                    // Entity
+                    { path: 'master', loadChildren: './entity#EntityModule' },
+
                     // Masters
                     { path: 'master', loadChildren: './master#MasterModule' },
 

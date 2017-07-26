@@ -16,7 +16,7 @@ export class ModuleComponent implements OnDestroy {
         }
 
         if (_wsdetails == null && _wsdetails == undefined) {
-            this._router.navigate(['/workspace']);
+            this._router.navigate(['/master/workspace']);
         }
     }
 
