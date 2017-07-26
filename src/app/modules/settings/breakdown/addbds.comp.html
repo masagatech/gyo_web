@@ -11,17 +11,6 @@
     </div>
     <div class="body table-responsive">
         <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity</label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event, 1)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row clearfix">
             <div class="col-md-8">
                 <table class="table table-bordered">
                     <thead>
@@ -37,21 +26,21 @@
                             <td>Co-ordinator</td>
                             <td align="center" style="display:none">
                                 <span>
-                                        <input id="coordnot" type="checkbox" [(ngModel)]="iscoordnot" class="filled-in">
-                                        <label for="coordnot"></label>
-                                    </span>
+                                    <input id="coordnot" type="checkbox" [(ngModel)]="iscoordnot" class="filled-in">
+                                    <label for="coordnot"></label>
+                                </span>
                             </td>
                             <td align="center">
                                 <span>
-                                        <input id="coordmob" type="checkbox" [(ngModel)]="iscoordmob" class="filled-in">
-                                        <label for="coordmob"></label>
-                                    </span>
+                                    <input id="coordmob" type="checkbox" [(ngModel)]="iscoordmob" class="filled-in">
+                                    <label for="coordmob"></label>
+                                </span>
                             </td>
                             <td align="center">
                                 <span>
-                                        <input id="coordeml" type="checkbox" [(ngModel)]="iscoordeml" class="filled-in">
-                                        <label for="coordeml"></label>
-                                    </span>
+                                    <input id="coordeml" type="checkbox" [(ngModel)]="iscoordeml" class="filled-in">
+                                    <label for="coordeml"></label>
+                                </span>
                             </td>
                         </tr>
                         <tr>

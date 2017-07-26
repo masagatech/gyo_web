@@ -13,6 +13,7 @@ declare var adminloader: any;
 
 export class AddUserComponent implements OnInit {
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
 
     utypeDT: any = [];
     utype: string = "";
@@ -40,8 +41,6 @@ export class AddUserComponent implements OnInit {
     isactive: boolean = false;
     mode: string = "";
     remark1: string = "";
-
-    _wsdetails: any = [];
 
     isAllEnttRights: boolean = true;
     entityDT: any = [];
@@ -569,11 +568,11 @@ export class AddUserComponent implements OnInit {
 
         commonfun.loader();
 
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.uid = params['id'];
+                that.uid = params['id'];
 
-                that._userservice.getUserDetails({ "flag": "edit", "id": this.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
+                that._userservice.getUserDetails({ "flag": "edit", "id": that.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
                     try {
                         that.uid = data.data[0].uid;
                         that.loginid = data.data[0].loginid;

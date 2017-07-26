@@ -21,11 +21,12 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     group: string = "";
     key: string = "";
     val: string = "";
+    isactive: boolean = true;
 
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
-        private _commonservice: CommonService, private _message: MessageService) {
+        private _commonservice: CommonService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this.getMOMGroup();
     }
@@ -38,7 +39,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
                 $('#group').prop('disabled', true);
                 $('#key').prop('disabled', true);
-                $('#val').prop('disabled', true);
+                $('#val').prop('disabled', false);
             }
             else {
                 setTimeout(function () {
@@ -52,13 +53,17 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         });
     }
 
+    resetMOMFields() {
+
+    }
+
     getMOMGroup() {
         var that = this;
 
         that._commonservice.getMOM({ "flag": "group" }).subscribe(data => {
             that.groupdt = data.data;
         }, err => {
-            that._message.Show(messageType.error, 'Error', err);
+            that._msg.Show(messageType.error, 'Error', err);
         }, () => {
             // console.log("Complete");
         })
@@ -66,17 +71,17 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
     isValidateFields() {
         if (this.group === "") {
-            this._message.Show(messageType.error, 'Error', "Please Select Group");
+            this._msg.Show(messageType.error, 'Error', "Please Select Group");
             $("#group").focus();
             return false;
         }
         if (this.key === "") {
-            this._message.Show(messageType.error, 'Error', "Please Enter Key");
+            this._msg.Show(messageType.error, 'Error', "Please Enter Key");
             $("#key").focus();
             return false;
         }
         if (this.val === "") {
-            this._message.Show(messageType.error, 'Error', "Please Enter Value");
+            this._msg.Show(messageType.error, 'Error', "Please Enter Value");
             $("#val").focus();
             return false;
         }
@@ -84,12 +89,12 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    saveMOMDetails() {
+    saveMOMInfo() {
         var that = this;
         that.validSuccess = that.isValidateFields()
 
         var saveMOM = {
-            "id": that.momid,
+            "autoid": that.momid,
             "group": that.group,
             "key": that.key,
             "val": that.val,
@@ -99,24 +104,29 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         if (that.validSuccess) {
             that._commonservice.saveMOM(saveMOM).subscribe(data => {
                 try {
-                    var dataResult = data.data;
+                    var dataResult = data.data[0].funsave_mom;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
-                    if (dataResult[0].funsave_mom.doc == "1") {
-                        that._message.Show(messageType.success, 'Confirmed', dataResult[0].funsave_mom.msg.toString());
-                        that._router.navigate(['/setting/masterofmaster']);
-                    }
-                    else if (dataResult[0].funsave_mom.doc == "-1") {
-                        that._message.Show(messageType.error, 'Error', dataResult[0].funsave_mom.msg.toString());
+                    if (msgid !== "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        if (msgid === "1") {
+                            that.resetMOMFields();
+                        }
+                        else {
+                            that.backViewData();
+                        }
                     }
                     else {
-                        that._message.Show(messageType.error, 'Error', dataResult[0].funsave_mom.msg.toString());
+                        that._msg.Show(messageType.error, "Error", "Error 101 : " + msg);
                     }
                 }
                 catch (e) {
-                    that._message.Show(messageType.error, 'Error', e.message);
+                    that._msg.Show(messageType.error, 'Error', e.message);
                 }
             }, err => {
-                that._message.Show(messageType.error, 'Error', err);
+                that._msg.Show(messageType.error, 'Error', err);
             }, () => {
                 // console.log("Complete");
             });
@@ -126,18 +136,24 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     // get mom by id
 
     getMOMByID(pmomid: number) {
-        this._commonservice.getMOM({ "flag": "id", "id": pmomid }).subscribe(data => {
+        this._commonservice.getMOM({ "flag": "id", "autoid": pmomid }).subscribe(data => {
             var dataresult = data.data;
 
-            this.momid = dataresult[0].id;
+            this.momid = dataresult[0].autoid;
             this.group = dataresult[0].group;
             this.key = dataresult[0].key;
             this.val = dataresult[0].val;
         }, err => {
-            this._message.Show(messageType.error, 'Error', err);
+            this._msg.Show(messageType.error, 'Error', err);
         }, () => {
             // console.log("Complete");
         })
+    }
+
+    // Back For View Data
+
+    backViewData() {
+        this._router.navigate(['/settings/masterofmaster']);
     }
 
     ngOnDestroy() {

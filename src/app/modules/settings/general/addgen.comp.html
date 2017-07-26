@@ -11,17 +11,6 @@
     </div>
     <div class="body table-responsive">
         <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity</label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event, 1)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row clearfix">
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>

@@ -11,10 +11,8 @@ import { UserVehicleMapService } from '@services/master';
 
 export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _wsdetails: any = [];
+    _enttdetails: any = [];
 
     usersDT: any = [];
     uid: number = 0;
@@ -26,7 +24,6 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     vehname: string = "";
     vehicleList: any = [];
 
-    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
@@ -34,6 +31,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
     }
 
     ngOnInit() {
@@ -52,35 +50,6 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehicleList = [];
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-    }
-
     // Auto Completed User
 
     getUserData(event) {
@@ -93,7 +62,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
-            "enttid": that.enttid,
+            "enttid": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid,
             "search": query
         }).subscribe(data => {
@@ -201,7 +170,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             }
             else {
                 var saveUR = {
-                    "enttid": that.enttid,
+                    "enttid": that._enttdetails.enttid,
                     "uid": that.uid,
                     "utype": that.utype,
                     "vehid": selectedVehicle,
@@ -237,7 +206,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._uvmservice.getUserVehicleMap({
-            "flag": "details", "enttid": that.enttid, "uid": that.uid, "utype": that.utype
+            "flag": "details", "enttid": that._enttdetails.enttid, "uid": that.uid, "utype": that.utype
         }).subscribe(data => {
             try {
                 that.vehicleList = data.data;
