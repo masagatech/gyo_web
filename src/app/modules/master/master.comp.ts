@@ -11,14 +11,14 @@ export class MasterComponent implements OnDestroy {
         let _wsdetails = Cookie.get("_wsdetails_");
         let _enttdetails = Cookie.get("_enttdetails_");
 
-        if (_wsdetails == null && _wsdetails == undefined) {
-            this._router.navigate(['/master/workspace']);
-        }
-        else {
-            if (_enttdetails == null && _enttdetails == undefined) {
-                this._router.navigate(['/master/entity']);
-            }
-        }
+        // if (_wsdetails == null && _wsdetails == undefined) {
+        //     this._router.navigate(['/master/workspace']);
+        // }
+        // else {
+        //     if (_enttdetails == null && _enttdetails == undefined) {
+        //         this._router.navigate(['/master/entity']);
+        //     }
+        // }
     }
 
     public ngOnInit() {

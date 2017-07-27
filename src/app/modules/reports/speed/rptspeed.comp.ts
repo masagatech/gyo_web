@@ -14,16 +14,13 @@ import jsPDF from 'jspdf'
 })
 
 export class SpeedReportsComponent implements OnInit, OnDestroy {
-    speedDT: any = [];
     loginUser: LoginUserModel;
-
     _wsdetails: any = [];
+    _enttdetails: any = [];
+
+    speedDT: any = [];
 
     viewedon: string = "30";
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
 
     driverDT: any = [];
     drvid: number = 0;
@@ -37,6 +34,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, private _autoservice: CommonService, private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
+
         this.viewSpeedDataRights();
     }
 
@@ -67,42 +66,6 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        Cookie.set("_enttid_", this.enttid.toString());
-        Cookie.set("_enttnm_", this.enttname);
-
-        this.getDriverData(event);
-        this.getLimitSpeedDriver();
-        this.getSpeedViolationReports();
-    }
-
     // Auto Completed Driver
 
     getDriverData(event) {
@@ -115,7 +78,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
-            "enttid": this.enttid,
+            "enttid": this._enttdetails.enttid,
             "search": query
         }).subscribe((data) => {
             this.driverDT = data.data;
@@ -141,10 +104,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     public viewSpeedDataRights() {
         var that = this;
 
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
-
+        if (Cookie.get('_drvnm_') != null) {
             that.drvid = parseInt(Cookie.get('_drvid_'));
             that.drvname = Cookie.get('_drvnm_');
 
@@ -158,7 +118,10 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         var params = {};
 
         commonfun.loader();
-        params = { "flag": "Top5", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid }
+        params = {
+            "flag": "Top5", "viewedon": that.viewedon, "enttid": that._enttdetails.enttid,
+            "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid
+        }
 
         that._rptservice.getSpeedViolationReports(params).subscribe(data => {
             try {
@@ -183,7 +146,10 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         var params = {};
 
         commonfun.loader();
-        params = { "flag": "all", "viewedon": that.viewedon, "enttid": that.enttid, "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid }
+        params = {
+            "flag": "all", "viewedon": that.viewedon, "enttid": that._enttdetails.enttid,
+            "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid
+        }
 
         that._rptservice.getSpeedViolationReports(params).subscribe(data => {
             try {

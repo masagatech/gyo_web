@@ -58,11 +58,11 @@
                                 <p-panel [header]="drow.fullname" [style]="{'text-align':'center'}">
                                     <span class="material-icons reject" *ngIf="!drow.isactive">close</span>
                                     <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
-                                    <!-- <div class="car-detail">{{drowrow.utypename}}</div>  -->
-                                    <hr class="ui-widget-content" style="border-top:0">
+                                    <hr class="hr ui-widget-content">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="editUserForm(drow)">
                                         <i class="material-icons">edit</i>
                                     </button>
+                                    {{drow.mode}}
                                 </p-panel>
                             </div>
                         </template>
