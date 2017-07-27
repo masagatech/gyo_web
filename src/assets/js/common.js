@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     $(".ui-radiobutton-box").find('span').hide();
 });
 
@@ -23,7 +23,7 @@ function findJSON(obj, key, val, brek) {
 }
 
 commonfun.addrequire = function addrequire() {
-    $("[validate]").each(function () {
+    $("[validate]").each(function() {
         $(this).siblings("label").remove("span").append("&nbsp;<span class='require'>*</span>");
     });
 }
@@ -32,7 +32,7 @@ commonfun.validate = function validate() {
     var valisValid = true;
     var result = [];
     var msglist = "";
-    $("[validate]").each(function () {
+    $("[validate]").each(function() {
         if ($(this).is("input") || $(this).is("textarea")) {
             if ($(this).val().trim() === "") {
                 valisValid = false;
@@ -51,7 +51,7 @@ commonfun.validate = function validate() {
     return { "status": valisValid, "data": result, "msglist": msglist };
 }
 
-commonfun.loader = function (name) {
+commonfun.loader = function(name) {
     if (!name) name = '.maincontent';
     $(name).waitMe({
         effect: 'bounce',
@@ -65,17 +65,17 @@ commonfun.loader = function (name) {
     });
 }
 
-commonfun.loaderhide = function (name) {
+commonfun.loaderhide = function(name) {
     if (!name) name = '.maincontent';
     $(name).waitMe('hide');
 }
 
-commonfun.openurl = function (url, target, options) {
+commonfun.openurl = function(url, target, options) {
     window.open(url, target, options);
     //"https://www.w3schools.com", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400"
 }
 
-commonfun.navistyle = function () {
+commonfun.navistyle = function() {
     $(".ui-paginator-first").addClass('btn-theme');
     $(".ui-paginator-prev").addClass('btn-theme');
     $(".ui-paginator-next").addClass('btn-theme');
@@ -87,21 +87,21 @@ commonfun.navistyle = function () {
     // $(".ui-paginator-last").addClass('btn-navigate').find('span').addClass('btn btn-sm material-icons').text("last_page");
 }
 
-commonfun.chevronstyle = function () {
+commonfun.chevronstyle = function() {
     $(".fc-prev-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
     $(".fc-next-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
 }
 
-commonfun.orderstyle = function () {
+commonfun.orderstyle = function() {
     $(".ui-orderlist").find('.ui-grid-col-2').removeAttr('class').addClass('ui-grid-col-1');
     $(".ui-orderlist").find('.ui-grid-col-10').removeAttr('class').addClass('ui-grid-col-11');
 }
 
-commonfun.rdbtnstyle = function () {
+commonfun.rdbtnstyle = function() {
     $(".ui-radiobutton-box").find('span').hide();
 }
 
-commonfun.setAdvanceControl = function () {
+commonfun.setAdvanceControl = function() {
     var $demoMaskedInput = $('.demo-masked-input');
 
     $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy', { placeholder: '__/__/____' });
@@ -110,7 +110,7 @@ commonfun.setAdvanceControl = function () {
     $demoMaskedInput.find('.mobile-number').inputmask('+99 (999) 999-99-99', { placeholder: '+__ (___) ___-__-__' });
 }
 
-commonfun.randomColor = function (brightness) {
+commonfun.randomColor = function(brightness) {
     function randomChannel(brightness) {
         var r = 255 - brightness;
         var n = 0 | ((Math.random() * r) + brightness);
@@ -126,23 +126,26 @@ function onSelection(me) {
 }
 
 var browserConf = {};
-browserConf.setTitle = function (title) {
+browserConf.setTitle = function(title) {
     document.title = title;
 }
 
-commonfun.chatinit = function () {
+commonfun.chatinit = function() {
     $('.chat_body').slideToggle('slow');
 
-    $('.chat_head').click(function () {
+    $('.chat_head').click(function() {
         $('.chat_body').slideToggle('slow');
     });
 
-    $('.close').click(function () {
+    $('.close').click(function() {
         $('.msg_box').hide();
     });
 }
 
-commonfun.getbearing = function (bearing) {
+commonfun.getbearing = function(bearing) {
+    if (bearing === undefined) {
+        return 0;
+    }
     if (bearing == 0) {
         return 0;
     } else if (bearing > 0 && bearing <= 45) {
@@ -161,21 +164,23 @@ commonfun.getbearing = function (bearing) {
         return 5;
     } else if (bearing < -135 && bearing >= -180) {
         return 0;
+    } else {
+        return 0;
     }
 }
 
 commonfun.map = {
     /**
-        * Calculate the bearing between two positions as a value from 0-360
-        *
-        * @param lat1 - The latitude of the first position
-        * @param lng1 - The longitude of the first position
-        * @param lat2 - The latitude of the second position
-        * @param lng2 - The longitude of the second position
-        *
-        * @return int - The bearing between 0 and 360
-        */
-    bearing: function (lat1, lng1, lat2, lng2) {
+     * Calculate the bearing between two positions as a value from 0-360
+     *
+     * @param lat1 - The latitude of the first position
+     * @param lng1 - The longitude of the first position
+     * @param lat2 - The latitude of the second position
+     * @param lng2 - The longitude of the second position
+     *
+     * @return int - The bearing between 0 and 360
+     */
+    bearing: function(lat1, lng1, lat2, lng2) {
         var dLon = (lng2 - lng1);
         var y = Math.sin(dLon) * Math.cos(lat2);
         var x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
@@ -184,13 +189,13 @@ commonfun.map = {
     },
 
     /**
-      * Since not all browsers implement this we have our own utility that will
-      * convert from degrees into radians
-      *
-      * @param deg - The degrees to be converted into radians
-      * @return radians
-      */
-    _toRad: function (deg) {
+     * Since not all browsers implement this we have our own utility that will
+     * convert from degrees into radians
+     *
+     * @param deg - The degrees to be converted into radians
+     * @return radians
+     */
+    _toRad: function(deg) {
         return deg * Math.PI / 180;
     },
 
@@ -201,7 +206,7 @@ commonfun.map = {
      * @param rad - The radians to be converted into degrees
      * @return degrees
      */
-    _toDeg: function (rad) {
+    _toDeg: function(rad) {
         return rad * 180 / Math.PI;
     }
 }

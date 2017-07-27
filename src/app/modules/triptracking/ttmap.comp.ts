@@ -453,13 +453,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (mrk !== undefined) {
             let bear = commonfun.getbearing(bearing);
-            mrk.setIcon({ url: 'assets/img/greencar_' + bear + '.png' })
+            mrk.setIcon({ url: 'assets/img/map/greencar_' + bear + '.png' })
             mrk.setPosition(new google.maps.LatLng(loc[0], loc[1]));
         }
     }
 
     //select for map show
     private onchange(e, vh) {
+        if (vh.isshow == false) { this._msg.Show(messageType.warn, "Hey", "No Updates found");  e.target.checked = false; return; }
         if (e.target.checked) {
             this.selectedVeh.push(vh.key);
             this.addmarker(vh);
@@ -476,11 +477,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private clickVehicle(vh) {
+        if (vh.isshow == false) {return; }
         this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]));
     }
 
     private addmarker(vh) {
-        let imagePath = 'assets/img/greencar_0.png';
+        let imagePath = 'assets/img/map/greencar_0.png';
         let image = {
             url: imagePath,
             origin: new google.maps.Point(0, 0),
