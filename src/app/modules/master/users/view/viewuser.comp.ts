@@ -172,10 +172,10 @@ export class ViewUserComponent implements OnInit {
     }
 
     public addUserForm() {
-        this._router.navigate(['/user/add']);
+        this._router.navigate(['/master/user/add']);
     }
 
     public editUserForm(row) {
-        this._router.navigate(['/user/edit', row.uid]);
+        this._router.navigate(['/master/user/edit', row.uid]);
     }
 }

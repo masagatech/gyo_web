@@ -632,6 +632,6 @@ export class AddUserComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/user']);
+        this._router.navigate(['/master/user']);
     }
 }
