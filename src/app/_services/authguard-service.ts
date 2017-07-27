@@ -6,6 +6,7 @@ import { GlobalSharedVariableService } from '../_services/sharedvariableglobal-s
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
@@ -36,7 +37,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
           if (e) {
             observer.next(true);
           } else {
-            that._router.navigate(['/no-page']);
+            that._router.navigate(['/']);
             observer.next(true);
           }
         })
@@ -47,7 +48,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
               if (e) {
                 observer.next(true);
               } else {
-                that._router.navigate(['/no-page']);
+                that._router.navigate(['/']);
                 observer.next(true);
               }
             });
@@ -66,11 +67,14 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   private checkMenuAccess(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, userdetails, callback) {
     var segments = state.url;
     var maindata = route.data;
+    var _enttdetails: any = Cookie.get("_enttdetails_");
 
     if (maindata.hasOwnProperty("submodule")) {
       var module1 = maindata["module"];
       var rights = maindata["rights"];
       var submodule = maindata["submodule"];
+
+      console.log(_enttdetails);
 
       var params = {
         "uid": userdetails.uid,
@@ -79,6 +83,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
         "issysadmin": userdetails.issysadmin,
         "ptype": "p",
         "mcode": submodule,
+        "psngrtype": _enttdetails.psngrtype,
         "actcd": rights,
         "sessionid": userdetails.sessiondetails.sessionid,
         "url": segments

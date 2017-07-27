@@ -1,17 +1,8 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2">
+            <div class="col-md-6">
                 <h4>Attendant Attendance</h4>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity Name</label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
@@ -52,33 +43,35 @@
         <div #attnatt class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="attData">
-                    <p-column field="attdname" header="Attendant Name" [style]="{'width': '165px', 'text-align': 'left'}"></p-column>
-                    <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width':'30px', 'text-align':'left'}">
+                    <p-column field="attdname" header="Attendant Name" [style]="{'width': '250px', 'text-align': 'left'}"></p-column>
+                    <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width':'25px', 'text-align':'center'}">
                         <template let-drow="rowData" pTemplate type="body">
-                        <span class="{{drow[atcol.day]}}">{{drow[atcol.day]}}</span>
-                    </template>
+                            <span class="{{drow[atcol.day]}}">
+                                {{drow[atcol.day] == 'DA' ? 'AD' : drow[atcol.day] == 'AP' ? 'PA' : drow[atcol.day]}}
+                            </span>
+                        </template>
                     </p-column>
-                    <p-column header="P" [styleClass]="'P'" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column header="P" [styleClass]="'P'" [style]="{'width': '25px', 'text-align': 'center'}">
                         <template let-drow="rowData" pTemplate type="body">
                             {{drow.P == null ? "0" : drow.P}}
                         </template>
                     </p-column>
-                    <p-column header="D" [styleClass]="'D'" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column header="D" [styleClass]="'D'" [style]="{'width': '25px', 'text-align': 'center'}">
                         <template let-drow="rowData" pTemplate type="body">
                             {{drow.D == null ? "0" : drow.D}}
                         </template>
                     </p-column>
-                    <p-column header="PD" [styleClass]="'PD'" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column header="PD" [styleClass]="'PD'" [style]="{'width': '25px', 'text-align': 'center'}">
                         <template let-drow="rowData" pTemplate type="body">
                             {{drow.PD == null ? "0" : drow.PD}}
                         </template>
                     </p-column>
-                    <p-column header="A" [styleClass]="'A'" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column header="A" [styleClass]="'A'" [style]="{'width': '25px', 'text-align': 'center'}">
                         <template let-drow="rowData" pTemplate type="body">
                             {{drow.A == null ? "0" : drow.A}}
                         </template>
                     </p-column>
-                    <p-column header="H" [styleClass]="'H'" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column header="H" [styleClass]="'H'" [style]="{'width': '25px', 'text-align': 'center'}">
                         <template let-drow="rowData" pTemplate type="body">
                             {{drow.H == null ? "0" : drow.H}}
                         </template>
@@ -90,38 +83,28 @@
 
     <div class="header" *ngIf="attData.length">
         <div class="row clearfix">
-            <div class="col-md-6">
+            <div class="col-md-7">
             </div>
-            <div class="col-md-6" align="right">
+            <div class="col-md-5" align="right">
                 <div class="small-box">
                     <div class="header">
                         Legends
                     </div>
                 </div>
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="small-box">
-                            <div class="apsent"></div>
-                            <div class="content">
-                                Absent
+                            <div class="pickdrop">
+                                P
                             </div>
-                        </div>
-                        <div class="small-box">
-                            <div class="holiday"></div>
-                            <div class="content">
-                                Holiday
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="small-box">
-                            <div class="pickdrop"></div>
                             <div class="content">
                                 Pick up
                             </div>
                         </div>
                         <div class="small-box">
-                            <div class="pickdrop"></div>
+                            <div class="pickdrop">
+                                D
+                            </div>
                             <div class="content">
                                 Drop
                             </div>
@@ -129,15 +112,55 @@
                     </div>
                     <div class="col-md-4">
                         <div class="small-box">
-                            <div class="pickbutnotdrop"></div>
+                            <div class="pickbutnotdrop">
+                                PA
+                            </div>
                             <div class="content">
                                 Pick up, but not Drop
                             </div>
                         </div>
                         <div class="small-box">
-                            <div class="dropbutnotpick"></div>
+                            <div class="dropbutnotpick">
+                                AD
+                            </div>
                             <div class="content">
                                 Not Pick up, but Drop
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="small-box">
+                            <div class="apsent">
+                                A
+                            </div>
+                            <div class="content">
+                                Absent
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="holiday">
+                                H
+                            </div>
+                            <div class="content">
+                                Holiday
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="small-box">
+                            <div class="leave">
+                                LV
+                            </div>
+                            <div class="content">
+                                Leave
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="closetrip">
+                                X
+                            </div>
+                            <div class="content">
+                                Close Trip
                             </div>
                         </div>
                     </div>

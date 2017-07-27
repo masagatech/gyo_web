@@ -16,8 +16,8 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: '', loadChildren: './workspace#WorkspaceModule' },
-                    // { path: 'no-page', component: NoPageComponent },
+                    { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
+                    { path: 'entity', loadChildren: './entity#EntityModule' },
                 ]
             }
         ]

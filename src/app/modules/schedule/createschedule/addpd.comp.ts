@@ -12,12 +12,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class CreateScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
-
     _wsdetails: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _enttdetails: any = [];
 
     attendantDT: any = [];
     pickattid: number = 0;
@@ -73,6 +69,8 @@ export class CreateScheduleComponent implements OnInit {
         public _menuservice: MenuService, private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
+
         this.viewScheduleDataRights();
     }
 
@@ -122,15 +120,10 @@ export class CreateScheduleComponent implements OnInit {
     public viewScheduleDataRights() {
         var that = this;
 
-        if (Cookie.get('_enttnm_') != null) {
-            this.enttid = parseInt(Cookie.get('_enttid_'));
-            this.enttname = Cookie.get('_enttnm_');
-
-            this.fillBatchDropDown();
-            this.fillDriverDropDown();
-            this.fillVehicleDropDown();
-            this.fillRouteDropDown();
-        }
+        this.fillBatchDropDown();
+        this.fillDriverDropDown();
+        this.fillVehicleDropDown();
+        this.fillRouteDropDown();
     }
 
     // Selected Calendar Date
@@ -158,28 +151,6 @@ export class CreateScheduleComponent implements OnInit {
 
         this.picktodate = this.formatDate(today.setFullYear(2018));
         this.droptodate = this.formatDate(today.setFullYear(2018));
-    }
-
-    // Auto Completed Co-ordinator / Attendent
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe(data => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
     }
 
     // Auto Completed Attendent
@@ -217,7 +188,7 @@ export class CreateScheduleComponent implements OnInit {
             "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._wsdetails.wsautoid,
             "search": query,
-            "id": this.enttid
+            "id": this._enttdetails.enttid
         }).subscribe(data => {
             this.passengerDT = data.data;
         }, err => {
@@ -251,8 +222,6 @@ export class CreateScheduleComponent implements OnInit {
             this.dropPassenger();
         }
         else {
-            this.enttid = event.value;
-            this.enttname = event.label;
             this.fillBatchDropDown();
             this.fillDriverDropDown();
             this.fillVehicleDropDown();
@@ -269,7 +238,7 @@ export class CreateScheduleComponent implements OnInit {
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown",
             "group": "batch",
-            "id": that.enttid,
+            "id": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid
         }).subscribe((data) => {
             try {
@@ -294,7 +263,7 @@ export class CreateScheduleComponent implements OnInit {
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown",
             "group": "driver",
-            "id": that.enttid,
+            "id": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid
         }).subscribe((data) => {
             try {
@@ -319,7 +288,7 @@ export class CreateScheduleComponent implements OnInit {
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown",
             "group": "vehicle",
-            "id": that.enttid,
+            "id": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid
         }).subscribe((data) => {
             try {
@@ -344,7 +313,7 @@ export class CreateScheduleComponent implements OnInit {
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown",
             "group": "route",
-            "id": that.enttid,
+            "id": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid
         }).subscribe((data) => {
             try {
@@ -394,7 +363,7 @@ export class CreateScheduleComponent implements OnInit {
             var field = that.pickPassengerDT[i];
 
             if (field.stdid == this.pickpassengerid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Passenger not Allowed");
+                this._msg.Show(messageType.error, "Error", "Duplicate " + that._enttdetails.psngrtype + " not Allowed");
                 return true;
             }
         }
@@ -460,7 +429,7 @@ export class CreateScheduleComponent implements OnInit {
             var field = that.dropPassengerDT[i];
 
             if (field.stdid == this.droppassengerid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Passenger not Allowed");
+                this._msg.Show(messageType.error, "Error", "Duplicate " + that._enttdetails.psngrtype + " not Allowed");
                 return true;
             }
         }
@@ -589,7 +558,7 @@ export class CreateScheduleComponent implements OnInit {
         var dropdata = [];
 
         this._pickdropservice.getPickDropDetails({
-            "flag": "view", "mode": "add", "schoolid": that.enttid, "batchid": that.batchid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "view", "mode": "add", "schoolid": that._enttdetails.enttid, "batchid": that.batchid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 var d = data.data;
@@ -694,12 +663,7 @@ export class CreateScheduleComponent implements OnInit {
     isValidationSchedule() {
         var that = this;
 
-        if (that.enttid === 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Entity");
-            $(".enttname input").focus();
-            return false;
-        }
-        else if (that.batchid === 0) {
+        if (that.batchid === 0) {
             that._msg.Show(messageType.error, "Error", "Select Batch");
             $(".batch").focus();
             return false;
@@ -790,8 +754,8 @@ export class CreateScheduleComponent implements OnInit {
 
                 _pickdrop.push({
                     "autoid": that.pickautoid,
-                    "schid": that.enttid,
-                    "schnm": that.enttname,
+                    "schid": that._enttdetails.enttid,
+                    "schnm": that._enttdetails.enttname,
                     "btchid": that.batchid,
                     "drvid": that.pickdriverid,
                     "vhclid": that.pickvehicleid.split('~')[0],
@@ -825,8 +789,8 @@ export class CreateScheduleComponent implements OnInit {
 
                 _pickdrop.push({
                     "autoid": that.dropautoid,
-                    "schid": that.enttid,
-                    "schnm": that.enttname,
+                    "schid": that._enttdetails.enttid,
+                    "schnm": that._enttdetails.enttname,
                     "btchid": that.batchid,
                     "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
                     "vhclid": that.dropvehicleid.split('~')[0],

@@ -56,10 +56,10 @@ export class ViewMarketUserComponent implements OnInit {
     }
 
     public addUserForm() {
-        this._router.navigate(['/market_user/add']);
+        this._router.navigate(['/marketing/user/add']);
     }
 
     public editUserForm(row) {
-        this._router.navigate(['/market_user/edit', row.uid]);
+        this._router.navigate(['/marketing/user/edit', row.uid]);
     }
 }

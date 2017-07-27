@@ -13,6 +13,8 @@ declare var $: any;
 export class LeftSideBarComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
+    _enttdetails: any = [];
+
     global = new Globals();
 
     ufullname: string = "";
@@ -28,6 +30,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.ufullname = this.loginUser.fullname;
         this.utype = this.loginUser.utype;
@@ -46,7 +49,8 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
+            "flag": "main", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin,
+            "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype
         }).subscribe(data => {
             that.mainMenuDT = data.data;
 
@@ -64,7 +68,8 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._menuservice.getMenuDetails({
-            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
+            "flag": "parent", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin,
+            "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype
         }).subscribe(data => {
             that.parentMenuDT = data.data;
         }, err => {

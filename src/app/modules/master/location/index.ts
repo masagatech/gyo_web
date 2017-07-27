@@ -14,9 +14,9 @@ import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
 export const routes = [
   {
     path: '', children: [
-      { path: 'view', component: ViewLocationComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "loc", "rights": "view", "urlname": "/location" } },
-      { path: '', component: AddLocationComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "loc", "rights": "view", "urlname": "/location" } },
-      { path: 'edit/:id', component: AddLocationComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "loc", "rights": "edit", "urlname": "/edit" } }
+      { path: 'view', component: ViewLocationComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "loc", "rights": "view", "urlname": "/location" } },
+      { path: '', component: AddLocationComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "loc", "rights": "view", "urlname": "/location" } },
+      { path: 'edit/:id', component: AddLocationComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "loc", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];

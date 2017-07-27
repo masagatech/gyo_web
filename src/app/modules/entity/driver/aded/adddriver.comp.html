@@ -1,0 +1,250 @@
+<div class="card">
+    <div class="header">
+        <h4>Driver</h4>
+        <ul class="header-dropdown m-r--5">
+            <li *ngIf="driverid !== 0">
+                <span class="switch">
+                    <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()"><span class="lever"></span></label>
+                </span>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveDriverInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Driver Code <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="drivercode" class="form-control drivercode" maxlength="10" tabindex="2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Password <strong>*</strong></label>
+                                <input type="password" [(ngModel)]="driverpwd" class="form-control driverpwd" maxlength="10" tabindex="3" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Driver Name <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="drivername" class="form-control drivername" maxlength="20" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">License No</label>
+                                <input type="text" [(ngModel)]="licenseno" class="form-control" maxlength="15" tabindex="5" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Aadhar No</label>
+                                <input type="text" [(ngModel)]="aadharno" class="form-control" maxlength="15" tabindex="6" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Remark</label>
+                                <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="7"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <p-fileUpload name="fileUploaded" url="{{uploadphotoconfig.server}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="auto">
+                            <template pTemplate type="content">
+                                <div *ngIf="uploadPhotoDT.length">
+                                    <div *ngFor="let file of uploadPhotoDT">
+                                        <div class="row clearfix">
+                                            <div class="col-md-9">
+                                                <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span *ngIf="!uploadPhotoDT.length">Upload Photo....</span>
+                            </template>
+                        </p-fileUpload>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Mobile (Login No) <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="8" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Alternate Mobile</label>
+                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="9" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Email</label>
+                                <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="10" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Alternate Email</label>
+                                <input type="text" [(ngModel)]="email2" class="form-control" tabindex="11" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Address <strong>*</strong></label>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="12"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Country <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="11" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">State <strong>*</strong></label>
+                                <select [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="15">
+                                    <option [value]="0">Select State</option>
+                                    <option *ngFor="let row of stateDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">City <strong>*</strong></label>
+                                <select [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="16">
+                                    <option [value]="0">Select City</option>
+                                    <option *ngFor="let row of cityDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Area <strong>*</strong></label>
+                                <select [(ngModel)]="area" class="form-control area" tabindex="17">
+                                    <option [value]="0">Select Area</option>
+                                    <option *ngFor="let row of areaDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Pin Code</label>
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="18" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <p-fileUpload name="fileUploaded" url="{{uploaddocconfig.server}}" (onUpload)="onDocUpload($event)" multiple="multiple" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="auto">
+                    <template pTemplate type="content">
+                        <div *ngIf="attachDocsDT.length">
+                            <div *ngFor="let file of attachDocsDT" class="box">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img src="{{uploaddocconfig.uploadurl + file.athurl}}" height="80px" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <b>Size : </b> {{formatSizeUnits(file.athsize)}}
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a role="button" (click)="removeDocUpload()"><i class="fa fa-remove"></i></a>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                        <span>Drag File Here....</span>
+                    </template>
+                </p-fileUpload>
+            </div>
+        </div>
+    </div>
+</div>

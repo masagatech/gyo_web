@@ -11,10 +11,8 @@ import { BreakDownService } from '@services/master';
 
 export class AddBreakDownComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _wsdetails: any = [];
+    _enttdetails: any = [];
 
     iscoordnot: boolean = false;
     iscoordmob: boolean = false;
@@ -31,7 +29,6 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     coordSMSData: any = [];
     coordEmailData: any = [];
 
-    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
@@ -39,49 +36,22 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
         private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
-        this.getOtherData();
+        // this.getBreakDown();
+
+        this.otherData.push({ "mobile": "", "email": "" });
+        this.otherData.push({ "mobile": "", "email": "" });
+        this.otherData.push({ "mobile": "", "email": "" });
+        this.otherData.push({ "mobile": "", "email": "" });
+        this.otherData.push({ "mobile": "", "email": "" });
     }
 
     ngOnInit() {
-        setTimeout(function () {
-            $(".uname input").focus();
-        }, 100);
-    }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
     }
 
     resetUserVehicleMap() {
-        $(".enttname").focus();
-        this.enttid = 0;
-        this.enttname = "";
         this.iscoordnot = false;
         this.iscoordmob = false;
         this.iscoordeml = false;
@@ -91,14 +61,6 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     }
 
     // Get Other Mobile No and Email ID
-
-    getOtherData() {
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-    }
 
     getMobiles() {
         var that = this;
@@ -123,64 +85,66 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     saveBreakDown() {
         var that = this;
 
-        if (that.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Entity");
-            $(".enttname input").focus();
+        var _mobiles: string[] = [];
+        var _emails: string[] = [];
+
+        // var _mobiles = that.getMobiles();
+        // var _emails = that.getEmails();
+
+        _mobiles = Object.keys(that.otherData).map(function (k) { return that.otherData[k].mobile !== "" ? that.otherData[k].mobile : "" });
+        _emails = Object.keys(that.otherData).map(function (k) { return that.otherData[k].email !== "" ? that.otherData[k].email : "" });
+
+        var saveBD = {
+            "enttid": that._enttdetails.enttid,
+            "iscoordnot": that.iscoordnot,
+            "iscoordmob": that.iscoordmob,
+            "iscoordeml": that.iscoordeml,
+            "isprntsnot": that.isprntsnot,
+            "isprntsmob": that.isprntsmob,
+            "isprntseml": that.isprntseml,
+            "mobiles": _mobiles,
+            "emails": _emails,
+            "message": that.message,
+            "cuid": that.loginUser.ucode,
+            "wsautoid": that._wsdetails.wsautoid
         }
-        else {
-            var _mobiles: string[] = [];
-            var _emails: string[] = [];
 
-            // var _mobiles = that.getMobiles();
-            // var _emails = that.getEmails();
+        that._bdsservice.saveBreakDownSet(saveBD).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_breakdownset;
 
-            _mobiles = Object.keys(that.otherData).map(function (k) { return that.otherData[k].mobile !== "" ? that.otherData[k].mobile : "" });
-            _emails = Object.keys(that.otherData).map(function (k) { return that.otherData[k].email !== "" ? that.otherData[k].email : "" });
+                if (dataResult.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult.msg);
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult.msg);
+                }
 
-            var saveBD = {
-                "enttid": that.enttid,
-                "iscoordnot": that.iscoordnot,
-                "iscoordmob": that.iscoordmob,
-                "iscoordeml": that.iscoordeml,
-                "isprntsnot": that.isprntsnot,
-                "isprntsmob": that.isprntsmob,
-                "isprntseml": that.isprntseml,
-                "mobiles": _mobiles,
-                "emails": _emails,
-                "message": that.message,
-                "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid
+                that.resetUserVehicleMap();
             }
-
-            that._bdsservice.saveBreakDownSet(saveBD).subscribe(data => {
-                try {
-                    var dataResult = data.data[0].funsave_breakdownset;
-
-                    if (dataResult.msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", dataResult.msg);
-                    }
-                    else {
-                        that._msg.Show(messageType.error, "Error", dataResult.msg);
-                    }
-
-                    that.resetUserVehicleMap();
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-            }, () => {
-            });
-        }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        });
     }
 
     getBreakDown() {
         var that = this;
 
-        that._bdsservice.getBreakDownSet({ "flag": "details", "enttid": that.enttid }).subscribe(data => {
+        that._bdsservice.getBreakDownSet({ "flag": "details", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.otherData = data.data;
+
+                if (this.otherData.length == 0) {
+                    this.otherData.push({ "mobile": "", "email": "" });
+                    this.otherData.push({ "mobile": "", "email": "" });
+                    this.otherData.push({ "mobile": "", "email": "" });
+                    this.otherData.push({ "mobile": "", "email": "" });
+                    this.otherData.push({ "mobile": "", "email": "" });
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

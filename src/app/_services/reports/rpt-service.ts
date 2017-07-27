@@ -17,4 +17,8 @@ export class ReportsService {
     getSpeedViolationReports(req: any) {
         return this._dataserver.post("getSpeedVialationReports", req)
     }
+
+    getTripReports(req: any) {
+        return this._dataserver.post("getTripReports", req)
+    }
 }

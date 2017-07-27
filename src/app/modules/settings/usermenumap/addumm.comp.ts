@@ -11,6 +11,8 @@ import { UserService } from '@services/master';
 
 export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
+    _enttdetails: any = [];
 
     usersDT: any = [];
     menuname: string = "";
@@ -27,13 +29,14 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     menudetails: any = [];
     selectedMenus: string[] = [];
 
-    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
         private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
+
         this.getMenuDetails();
     }
 
@@ -103,7 +106,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     getMenuDetails() {
         var that = this;
 
-        this._menuservice.getMenuDetails({ "flag": "all" }).subscribe(data => {
+        this._menuservice.getMenuDetails({ "flag": "all", "psngrtype": that._enttdetails.psngrtype }).subscribe(data => {
             this.menudetails = data.data;
             $("#menus").prop('checked', false);
         }, err => {

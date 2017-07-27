@@ -15,10 +15,7 @@ import jsPDF from 'jspdf'
 export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
+    _enttdetails: any = [];
 
     batchDT: any = [];
     batchid: number = 0;
@@ -39,8 +36,9 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
-        this.viewRouteWisePassengerReportsRights();
+        this.getRouteWisePassengerReports();
     }
 
     public ngOnInit() {
@@ -54,51 +52,6 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    public viewRouteWisePassengerReportsRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
-
-            that.getEntityWiseRoute();
-        }
-    }
-
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        Cookie.set("_enttid_", this.enttid.toString());
-        Cookie.set("_enttnm_", this.enttname);
-
-        this.getEntityWiseRoute();
-    }
-
     // Batch DropDown
 
     fillBatchDropDown() {
@@ -106,7 +59,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
 
         that._rptservice.getRouteWisePassengerReports({
             "flag": "batch",
-            "id": that.enttid,
+            "id": that._enttdetails.enttid,
             "wsautoid": that._wsdetails.wsautoid
         }).subscribe((data) => {
             try {
@@ -125,13 +78,13 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
 
     // View Route List
 
-    getEntityWiseRoute() {
+    getRouteWisePassengerReports() {
         var that = this;
 
         commonfun.loader();
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "route", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "route", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.routesDT = data.data;
@@ -221,7 +174,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         commonfun.loader("#exportemp");
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "export", "enttid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "export", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.exportData = data.data;
