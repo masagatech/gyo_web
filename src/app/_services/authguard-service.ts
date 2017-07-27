@@ -67,14 +67,11 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   private checkMenuAccess(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, userdetails, callback) {
     var segments = state.url;
     var maindata = route.data;
-    var _enttdetails: any = Cookie.get("_enttdetails_");
 
     if (maindata.hasOwnProperty("submodule")) {
       var module1 = maindata["module"];
       var rights = maindata["rights"];
       var submodule = maindata["submodule"];
-
-      console.log(_enttdetails);
 
       var params = {
         "uid": userdetails.uid,
@@ -83,7 +80,6 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
         "issysadmin": userdetails.issysadmin,
         "ptype": "p",
         "mcode": submodule,
-        "psngrtype": _enttdetails.psngrtype,
         "actcd": rights,
         "sessionid": userdetails.sessiondetails.sessionid,
         "url": segments
