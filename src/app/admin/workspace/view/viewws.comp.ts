@@ -147,11 +147,11 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public addWorkspaceForm() {
-        this._router.navigate(['/workspace/add']);
+        this._router.navigate(['/master/workspace/add']);
     }
 
     public editWorkspaceForm(row) {
-        this._router.navigate(['/workspace/edit', row.wsautoid]);
+        this._router.navigate(['/master/workspace/edit', row.wsautoid]);
     }
 
     public openForm() {

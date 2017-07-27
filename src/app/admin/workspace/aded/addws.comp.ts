@@ -608,6 +608,6 @@ export class AddWorkspaceComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/workspace']);
+        this._router.navigate(['/master/workspace']);
     }
 }

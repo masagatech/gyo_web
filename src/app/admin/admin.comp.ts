@@ -14,6 +14,7 @@ declare var loader: any;
 export class AdminComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   _wsdetails: any = [];
+  _enttdetails: any = [];
 
   wsname: string = "";
   wslogo: string = "";
@@ -32,13 +33,14 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     let sessionid = Cookie.get('_session_');
     this._wsdetails = Cookie.get("_wsdetails_");
+    this._enttdetails = Globals.getEntityDetails();
+
+    this.getHeaderDetails();
+    this.getTopMenuList();
 
     if (sessionid == null && sessionid == undefined) {
       this._router.navigate(['/login']);
     }
-
-    this.getHeaderDetails();
-    this.getTopMenuList();
   }
 
   ngOnInit() {
@@ -72,7 +74,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     var that = this;
 
     that._menuservice.getMenuDetails({
-      "flag": "topmenu", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin, "utype": that.loginUser.utype
+      "flag": "topmenu", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin,
+      "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype
     }).subscribe(data => {
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
     }, err => {

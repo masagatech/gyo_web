@@ -103,11 +103,11 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public addEntityForm() {
-        this._router.navigate(['/entity/add']);
+        this._router.navigate(['/master/entity/add']);
     }
 
     public editEntityForm(row) {
-        this._router.navigate(['/entity/edit', row.autoid]);
+        this._router.navigate(['/master/entity/edit', row.autoid]);
     }
 
     public openMainForm(row) {
