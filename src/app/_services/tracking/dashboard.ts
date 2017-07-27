@@ -10,4 +10,8 @@ export class TrackDashbord {
         return this._dataserver.post("tripapi/getvahicleupdates", req)
     }
 
+    gettrackboard(req: any) {
+        return this._dataserver.post("tripapi/gettrackboard", req)
+    }
+
 }
