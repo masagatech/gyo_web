@@ -121,7 +121,7 @@ export class AddLeavePassengerComponent implements OnInit {
         var that = this;
 
         if (that.psngrid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
+            that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
             $(".psngrname input").focus();
         }
         else if (that.frmdt == "") {
@@ -233,6 +233,6 @@ export class AddLeavePassengerComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/leavepassenger']);
+        this._router.navigate(['/master/leave' + this._enttdetails.smpsngrtype]);
     }
 }

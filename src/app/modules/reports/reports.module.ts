@@ -15,13 +15,23 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    // Passenger
+                    
                     { path: 'passengerattendance', loadChildren: './passengerattendance#PassengerAttendanceReportsModule' },
-                    { path: 'dailyattendance', loadChildren: './dailyattendance#DailyAttendanceReportsModule' },
-                    { path: 'driverattendance', loadChildren: './driverattendance#DriverAttendanceReportsModule' },
-                    { path: 'attendantattendance', loadChildren: './attendentattendance#AttendentAttendanceReportsModule' },
                     { path: 'routewisepassenger', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'directpassenger', loadChildren: './directpassenger#DirectPassengerModule' },
                     { path: 'unschedulepassenger', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
+                    
+                    // Student
+                    
+                    { path: 'studentattendance', loadChildren: './passengerattendance#PassengerAttendanceReportsModule' },
+                    { path: 'routewisestudent', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
+                    { path: 'directstudent', loadChildren: './directpassenger#DirectPassengerModule' },
+                    { path: 'unschedulestudent', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
+                    
+                    { path: 'dailyattendance', loadChildren: './dailyattendance#DailyAttendanceReportsModule' },
+                    { path: 'driverattendance', loadChildren: './driverattendance#DriverAttendanceReportsModule' },
+                    { path: 'attendantattendance', loadChildren: './attendentattendance#AttendentAttendanceReportsModule' },
                     
                     { path: 'speed', loadChildren: './speed#SpeedReportsModule' },
                     { path: 'trips', loadChildren: './trips#TripsReportsModule' },
@@ -33,6 +43,7 @@ export const routes = [
                     { path: 'batch', loadChildren: './batch#BatchReportsModule' },
                     { path: 'route', loadChildren: './route#RouteReportsModule' },
                     { path: 'passenger', loadChildren: './passenger#PassengerReportsModule' },
+                    { path: 'student', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'driver', loadChildren: './driver#DriverReportsModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
                     { path: 'holiday', loadChildren: './holiday#HolidayReportsModule' },

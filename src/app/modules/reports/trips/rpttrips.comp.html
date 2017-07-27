@@ -2,7 +2,7 @@
     <div class="header">
         <div class="row clearfix" id="fltrpsngr">
             <div class="col-md-5 col-xs-5">
-                <h4>Passenger</h4>
+                <h4>{{_enttdetails.psngrtype}}</h4>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
@@ -36,7 +36,7 @@
         <div #passenger class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="stdnm" header="Passenger Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="stdnm" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="trpdate" header="Trip Date" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="strtm" header="Start Time" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="endtm" header="End Time" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>

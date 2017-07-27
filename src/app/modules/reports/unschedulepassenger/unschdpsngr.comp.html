@@ -2,7 +2,7 @@
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-9 col-xs-9">
-                <h4>Unschedule Passenger</h4>
+                <h4>Unschedule {{_enttdetails.psngrtype}}</h4>
             </div>
             <div class="col-md-3 col-xs-3" style="padding-top: 20px; text-align: right;">
                 <div class="btn-group" role="group">
@@ -25,7 +25,7 @@
         <div #unschdpsngr class="row clearfix">
             <div class="col-md-12" *ngIf="passengerDT.length">
                 <p-dataTable [value]="passengerDT">
-                    <p-column field="psngrname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>
+                    <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>

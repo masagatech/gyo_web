@@ -23,7 +23,7 @@
         <div #dailyatt class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="attData">
-                    <p-column field="studsname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>
+                    <p-column field="studsname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="p" header="P" [style]="{'width': '30px', 'text-align': 'left'}">

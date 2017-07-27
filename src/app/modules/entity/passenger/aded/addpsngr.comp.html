@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4>Passenger</h4>
+        <h4>{{_enttdetails.psngrtype}}</h4>
         <ul class="header-dropdown m-r--5">
             <li *ngIf="psngrid !== 0">
                 <span class="switch">
@@ -25,7 +25,7 @@
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Passenger Name <strong>*</strong></label>
+                                <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
                                 <input type="text" name="psngrname" [(ngModel)]="psngrname" maxlength="50" class="form-control psngrname" tabindex="3" />
                             </div>
                         </div>

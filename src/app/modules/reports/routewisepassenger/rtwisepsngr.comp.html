@@ -2,7 +2,7 @@
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-9 col-xs-9">
-                <h4>Route Wise Passenger</h4>
+                <h4>Route Wise {{_enttdetails.psngrtype}}</h4>
             </div>
             <div class="col-md-3 col-xs-3" style="padding-top: 20px; text-align: right;">
                 <div class="btn-group" role="group">
@@ -33,7 +33,7 @@
                             <b>Batch :</b> {{drow.batchname}}
                             <br /> <b>Timing :</b> {{drow.batchtime}}
                             <br /> <b>Stops :</b> ({{drow.countstops}})
-                            <br /> <b>Passenger :</b> ({{drow.countstuds}})
+                            <br /> <b>{{_enttdetails.psngrtype}} :</b> ({{drow.countstuds}})
                         </div>
                         <div class="col-md-2" align="right">
                             <a href="javascript:void(0);" (click)="getRouteWiseStops(drow)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -63,7 +63,7 @@
             </div>
             <div class="modal-body" id="passenger">
                 <p-dataTable [value]="passengerDT">
-                    <p-column field="psngrname" header="Passenger Name" [style]="{'text-align': 'left'}"></p-column>
+                    <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>

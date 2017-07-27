@@ -75,11 +75,11 @@ export class ViewLeavePassengerComponent implements OnInit {
     }
 
     public addLeavePassenger() {
-        this._router.navigate(['/master/leavepassenger/add']);
+        this._router.navigate(['/master/leave' + this._enttdetails.smpsngrtype + '/add']);
     }
 
     public editLeavePassenger(row) {
-        this._router.navigate(['/master/leavepassenger/edit', row.slid]);
+        this._router.navigate(['/master/leave' + this._enttdetails.smpsngrtype + '/edit', row.slid]);
     }
 }
 

@@ -198,11 +198,11 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     }
 
     public addPassengerForm() {
-        this._router.navigate(['/master/passenger/add']);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/add']);
     }
 
     public editPassengerForm(row) {
-        this._router.navigate(['/master/passenger/edit', row.autoid]);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.autoid]);
     }
 
     public ngOnDestroy() {

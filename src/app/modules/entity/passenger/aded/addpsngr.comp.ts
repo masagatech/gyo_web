@@ -487,7 +487,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
 
         if (that.psngrname === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
+            that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
             $(".psngrname").focus();
             return false;
         }
@@ -752,6 +752,6 @@ export class AddPassengerComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/passenger']);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype]);
     }
 }

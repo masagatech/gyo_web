@@ -363,7 +363,7 @@ export class CreateScheduleComponent implements OnInit {
             var field = that.pickPassengerDT[i];
 
             if (field.stdid == this.pickpassengerid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Passenger not Allowed");
+                this._msg.Show(messageType.error, "Error", "Duplicate " + that._enttdetails.psngrtype + " not Allowed");
                 return true;
             }
         }
@@ -429,7 +429,7 @@ export class CreateScheduleComponent implements OnInit {
             var field = that.dropPassengerDT[i];
 
             if (field.stdid == this.droppassengerid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Passenger not Allowed");
+                this._msg.Show(messageType.error, "Error", "Duplicate " + that._enttdetails.psngrtype + " not Allowed");
                 return true;
             }
         }

@@ -19,9 +19,15 @@ export const routes = [
                     { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'driver', loadChildren: './driver#DriverModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
-                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'route', loadChildren: './route#RouteModule' },
+
+                    // Passenger
+                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'leavepassenger', loadChildren: './leavepassenger#LeavePassengerModule' },
+                    
+                    // student
+                    { path: 'student', loadChildren: './passenger#PassengerModule' },
+                    { path: 'leavestudent', loadChildren: './leavepassenger#LeavePassengerModule' },
                 ]
             }
         ]
