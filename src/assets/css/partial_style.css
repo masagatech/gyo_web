@@ -2149,6 +2149,13 @@ li.vehicle {
     float: left;
     height: 46px;
 }
+.vhchkbx img{
+    height:30px;
+    position: relative;
+    left: -8px;
+    top: -6px;
+}
+
 .vhtitle {
     
     display: block;
@@ -2208,18 +2215,23 @@ li.vehicle {
     color: #3f51b5;
     margin-right: 8px;
 }
+.vhwrapper span.shortdet {
+    color: #4e4e4e;
+    margin-right: 8px;
+}
 
-.vhwrapper .ol{
+
+.vhwrapper.ol{
     border: 2px solid #2b982b;
     opacity: 1;
 }
-.vhwrapper .of{
-    border: 2px solid #ff3939;
+.vhwrapper.of{
+    border: 2px solid orange;
     opacity: 0.8;
 }
-.vhwrapper .ou{
+.vhwrapper.ou{
   border: 2px solid #636363;
-    opacity: 0.8;
+    opacity: 0.5;
 }
 
 

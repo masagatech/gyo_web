@@ -16,14 +16,15 @@
     <div class="col-md-12 vehiclewrapper" id="style-15">
         <ul class="vehicles">
             <li class="vehicle" *ngFor="let row of vehtypeDT">
-                <div class="vhwrapper" (click)="clickVehicle(row)">
+                <div class="vhwrapper {{row.isshow ? row.min > 3 ? 'of' : 'ol' : 'ou'}}" (click)="clickVehicle(row)">
                     <div class="vhbody">
                         <div class="titlewrap">
                             <div>
 
                                 <div class="vhchkbx">
-                                    <input type="checkbox" id="{{row.key}}"  data-md-icheck (change)="onchange($event, row)" class="filled-in">
-                                    <label for="{{row.key}}"></label>
+                                    <input type="checkbox" id="{{row.vhid}}" data-md-icheck (change)="onchange($event, row)" class="filled-in">
+                                    <label for="{{row.vhid}}"></label>
+                                    <img src="assets/img/map/{{row.ico}}_0.png" height="40px" />
                                 </div>
                                 <span class="vhbatr pull-right" *ngIf="row.isshow">
                                     {{row.isempty}}
@@ -35,12 +36,14 @@
                                 </span>
 
                                 <div class="vhtitle">
-                                    {{row.val}}
+                                    {{row.vno}}
+                                </div>
 
+                                <div class="vhsubtitle">
+                                    <div><span class="shortdet">{{row.vrg}}&nbsp;&nbsp;&nbsp;{{row.vmodl}}</span></div>
                                 </div>
                                 <div class="vhsubtitle">
                                     <div *ngIf="row.isshow"><span class="time">{{row.sertm | timeAgo}}</span><span class="speed pull-right">{{row.speed | _currency:{'decimals':3, 'currsym': '' } }} km/h</span>                                        </div>
-
                                     <span *ngIf="!row.isshow">No updates found</span>
 
                                 </div>
@@ -50,9 +53,9 @@
                     </div>
                     <div class="vhfooter">
                         <div class="btn-group btn-group-xs btn-group-justified" role="group" aria-label="Justified button group">
-                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">TRACK</a>
-                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">HISTORY</a>
                             <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">INFO</a>
+                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">PASSENGERS</a>
+                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">HISTORY</a>
                         </div>
                     </div>
                 </div>
