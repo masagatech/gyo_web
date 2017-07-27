@@ -1471,6 +1471,11 @@ hr {
     border-top: 1px solid #eee;
 }
 
+.hr {
+    margin: 10px!important;
+    border-top: 0!important;
+}
+
 br {
     margin: 5px;
     border: 0;
@@ -4185,8 +4190,8 @@ fieldset[disabled] .btn-link:focus {
 
 .reject {
     padding: 0;
-    margin: -180px -120px;
-    font-size: 25em!important;
+    /* margin: -180px -120px;
+    font-size: 25em!important; */
     color: #fb483a;
     position: absolute;
 }
