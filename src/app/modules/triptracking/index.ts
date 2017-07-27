@@ -9,6 +9,8 @@ import { AuthGuard } from '../../_services/authguard-service';
 import { TripTrackingComponent } from './ttmap.comp';
 import { TTMapService } from '@services/master';
 import { Globals } from '@models';
+import { TimeAgoPipe } from '@pipe/timeago'
+
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule } from 'primeng/primeng';
 
@@ -29,7 +31,8 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    TripTrackingComponent
+    TripTrackingComponent,
+    TimeAgoPipe
   ],
 
   imports: [

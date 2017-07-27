@@ -1,104 +1,74 @@
-<div class="card">
-    <div class="body">
+<div class="col-md-3 card" id="sidepanel" style="height: calc(100vh - 50px);overflow: auto;margin-bottom:0px;border-right: 1px solid #ddd;background-color: #fcfcfc;">
+    <div class="body" style="height:55px;">
         <div class="row clearfix">
-            <div class="col-md-4 border">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Entity</label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-10">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Vehicle</label>
-                                <select [(ngModel)]="vehtypeid" class="form-control" tabindex="2">
-                                    <option [value]="0">Select Vehicle</option>
-                                    <option *ngFor="let row of vehtypeDT" [value]="row.key">	
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        <button type="button" (click)="getTripData()" class="btn btn-theme btn-xs">
-                            <span class="material-icons">subdirectory_arrow_right</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div *ngFor="let row of tripDT" class="def-box" onclick="onSelection(this);" (click)="getTTMap(row)">
-                            <div class="row clearfix">
-                                <div class="col-md-11">
-                                    <b>{{row.nm}}</b>
-                                    <br />
-                                    <b>Batch : </b>{{row.btch}}
-                                </div>
-                                <div class="col-md-1" align="right">
-                                    <span class="material-icons {{row.sts}}">
-                                        {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-3">
-                                    <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
-                                        {{row.pd == "p" ? "Pickup" : "Drop"}}
-                                    </span>
-                                </div>
-                                <div class="col-md-9">
-                                    {{row.date}} - {{row.time}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-group">
+                <div class="form-line">
+                    <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)"
+                        [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30"
+                        class="form-controlAutoComplete enttname" placeholder="Search for entity"></p-autoComplete>
+                    <span class="material-icons inputserachico" style="top:4px;">search</span>
                 </div>
             </div>
-            <div class="col-md-8">
-                <a *ngIf="!isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-play"></span></a>
-                <a *ngIf="isPlay" role="button" class="btn btn-theme btn-xs" (click)="togglePlayPause()"><span class="fa fa-pause"></span></a>
 
-                <div class="form-group">
-                    <p-gmap #gmap [style]="{'width':'100%','height':'500px'}" [options]="options" [overlays]="overlays"></p-gmap>
-                </div>
-                <div class="row clearfix" *ngIf="sel_tripid !== 0">
-                    <div class="col-md-7">
-                        <p class="font-bold col-teal"> {{connectmsg}}</p>
-                    </div>
-                    <div class="col-md-2" align="right">
-                        <button type="button" (click)="sendMessage()" class="btn btn-theme btn-xs">Track</button>
-                    </div>
-                    <div class="col-md-3" align="right">
-                        <button type="button" (click)="showPassengerList()" class="btn btn-theme btn-xs">Show Passenger</button>
-                    </div>
-                </div>
-                <div *ngFor="let row of psngrDT" class="def-box">
-                    <div class="row clearfix">
-                        <div class="col-md-11">
-                            <b>{{row.stdnm}}</b>
-                        </div>
-                        <div class="col-md-1" align="right">
-                            <span class="material-icons {{row.stsi == '0' ? 'pending' : row.stsi == '1' ? 'started' : 'stopped'}}">
-                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "done" : "warning"}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-md-12">
-                            {{row.addr}}
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-md-12">
-                            <b>Mobile : </b>{{row.fthrmob}}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+
+    <div class="col-md-12 vehiclewrapper" id="style-15">
+        <ul class="vehicles">
+            <li class="vehicle" *ngFor="let row of vehtypeDT">
+                <div class="vhwrapper" (click)="clickVehicle(row)">
+                    <div class="vhbody">
+                        <div class="titlewrap">
+                            <div>
+
+                                <div class="vhchkbx">
+                                    <input type="checkbox" id="{{row.key}}"  data-md-icheck (change)="onchange($event, row)" class="filled-in">
+                                    <label for="{{row.key}}"></label>
+                                </div>
+                                <span class="vhbatr pull-right" *ngIf="row.isshow">
+                                    {{row.isempty}}
+                                <span class="vhbtrper">{{row.btr | _currency:{'decimals':0, 'currsym': '' }  }}%</span>
+                                <span class="btr">
+										<span class="btr-line" title="{{row.btr}}%" [ngStyle]="{'width': row.btr+'%'}"></span>
+                                </span>
+
+                                </span>
+
+                                <div class="vhtitle">
+                                    {{row.val}}
+
+                                </div>
+                                <div class="vhsubtitle">
+                                    <div *ngIf="row.isshow"><span class="time">{{row.sertm | timeAgo}}</span><span class="speed pull-right">{{row.speed | _currency:{'decimals':3, 'currsym': '' } }} km/h</span>                                        </div>
+
+                                    <span *ngIf="!row.isshow">No updates found</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="vhfooter">
+                        <div class="btn-group btn-group-xs btn-group-justified" role="group" aria-label="Justified button group">
+                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">TRACK</a>
+                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">HISTORY</a>
+                            <a href="javascript:void(0);" class="btn bg-info waves-effect" role="button">INFO</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div class="col-md-9" id="map" style="margin-bottom:0px;padding:0px!important">
+    <div class="col-md-12" style="    height: 40px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fcfcfc;">
+
+    </div>
+
+    <div style="left: 0px;z-index: 1;position: absolute;top:113px;background:#ffffff;height:40px;"><a role="button" (click)="closesidepanel()"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a></div>
+    <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 92px)', 'position': 'relative', 'overflow': 'hidden'}"
+        [options]="options" [overlays]="overlays"></p-gmap>
 </div>
