@@ -149,7 +149,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }).subscribe((data) => {
             try {
                 that.vehtypeDT = data.data;
-                for (var k = 0; k < that.vehtypeDT.length - 1; k++) {
+                for (var k = 0; k < that.vehtypeDT.length; k++) {
                     var el = that.vehtypeDT[k];
                     that.vehtypeIds.push(el.vhid);
                     //    that.carmarkers.push(new google.);
@@ -367,10 +367,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // get vehicle last data and subscribe for socket{}
     private getLastUpdateAndSubscribe(data) {
+         
         if (data !== null && data.length === 0) return;
         this._trackDashbord.getvahicleupdates({
             "vhids": data == null ? this.vehtypeIds : data
         }).subscribe(_d => {
+           
             this.refreshdata(_d.data);
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
@@ -381,9 +383,9 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private refreshdata(data) {
-        for (let i = 0; i < this.vehtypeDT.length - 1; i++) {
+        for (let i = 0; i < this.vehtypeDT.length; i++) {
             let el = this.vehtypeDT[i];
-            let d = data.find(f => f.vhid == el.vhid);
+            let d = data.find(f => f.vhid === el.vhid);
             if (d !== undefined) {
                 el.tripid = d.tripid;
                 el.speed = d.speed;
