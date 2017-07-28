@@ -11,6 +11,12 @@ import { TTMapService } from '@services/master';
 import { Globals } from '@models';
 import { TimeAgoPipe } from '@pipe/timeago'
 
+//child components
+import { ADHOST } from '@directives';
+
+import { PSGComponent } from './passengers/psg.comp'
+import { INFOComponent } from './info/info.comp'
+
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule } from 'primeng/primeng';
 
@@ -32,9 +38,12 @@ export const routes = [
 @NgModule({
   declarations: [
     TripTrackingComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    PSGComponent,
+    INFOComponent,
+    ADHOST
   ],
-
+  entryComponents: [PSGComponent, INFOComponent],
   imports: [
     CommonModule, FormsModule, SharedComponentModule, SocketIoModule.forRoot(config),
     RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule

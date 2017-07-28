@@ -15,6 +15,7 @@ import { HomeComponent } from './home';
 import { SharedModule, GlobalShared } from './_shared/shared.module';
 import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
 import { LoginComponent } from './login/login.comp';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -49,7 +50,8 @@ type StoreType = {
     SharedModule.forRoot(),
     GlobalShared.forRoot(),
     GrowlModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
@@ -67,7 +69,7 @@ export class AppModule {
 
     // set state
     this.appState._state = store.state;
-    
+
     // set input values
     if ('restoreInputValues' in store) {
       let restoreInputValues = store.restoreInputValues;

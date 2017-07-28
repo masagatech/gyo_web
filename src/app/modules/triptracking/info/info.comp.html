@@ -1,0 +1,35 @@
+<ul class="nav nav-tabs tab-nav-right" role="tablist">
+    <li role="presentation"><a href="#vhinfo" data-toggle="tab">Vehicle Info</a></li>
+    <li role="presentation" class="active"><a href="#todaytrp" data-toggle="tab">Today's Trips</a></li>
+</ul>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="vhinfo">
+        <h4>Vehicle Info appear here!</h4>
+    </div>
+    <div role="tabpanel" class="tab-pane fade in active" id="todaytrp">
+        <div *ngFor="let row of tripDT" class="def-box">
+            <div class="row clearfix">
+                <div class="col-md-11">
+                    <b>{{row.nm}}</b>
+                    <br />
+                    <b>Batch : </b>{{row.btch}}
+                </div>
+                <div class="col-md-1" align="right">
+                    <span class="material-icons {{row.sts}}">
+                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                            </span>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-3">
+                    <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
+                                {{row.pd == "p" ? "Pickup" : "Drop"}}
+                            </span>
+                </div>
+                <div class="col-md-9">
+                    {{row.date}} - {{row.time}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import {
+    Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation,
+    AfterViewInit, ComponentFactoryResolver, forwardRef
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService, SocketService, TrackDashbord } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -6,6 +9,11 @@ import { TTMapService } from '@services/master';
 import { LazyLoadEvent, DataTable } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SelectItem, GMap } from 'primeng/primeng';
+import { ADHOST } from '@directives';
+import { HOSTComponent } from '@interface';
+
+import { PSGComponent } from './passengers/psg.comp'
+import { INFOComponent } from './info/info.comp'
 declare var google: any;
 
 @Component({
@@ -13,7 +21,12 @@ declare var google: any;
     providers: [CommonService, SocketService, TrackDashbord]
 })
 
+
 export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
+    //chid component
+    @ViewChild(ADHOST)
+    private _Host: ADHOST;
+
     loginUser: LoginUserModel;
     _wsdetails: any = [];
     _enttdetails: any = [];
@@ -36,6 +49,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     vehtypeIds: any = [];
     vehtypeid: number = 0;
     selectedVeh: any = [];
+    selectedSVh: any = {};
 
     tripDT: any = [];
     messageDT: any = [];
@@ -56,16 +70,30 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dbcaller: any = [];
 
-    constructor(public _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
+    //side bar
+    sidebarTitle = "Title";
+
+    constructor(private _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _socketservice: SocketService,
-        private _trackDashbord: TrackDashbord) {
+        private _trackDashbord: TrackDashbord,
+        private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.enttid = this._enttdetails.enttid;
+        // this.enttname = this._enttdetails.enttname;
         this.getMessage();
 
-
         //this.getTripType();
+    }
+
+    private loadComponent(component, data) {
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+        let viewContainerRef = this._Host.viewContainerRef;
+        viewContainerRef.clear();
+        let componentRef = viewContainerRef.createComponent(componentFactory);
+        (<HOSTComponent>componentRef.instance).data = data;
     }
 
     ngOnInit() {
@@ -79,12 +107,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
 
-        this.enttid = this._enttdetails.enttid;
-        this.enttname = this._enttdetails.enttname;
+
         this.fillVehicleDropDown();
     }
 
     public ngAfterViewInit() {
+        //this.loadComponent(PSGComponent, { "a": "asdsadsadasa" });
         this.map = this._gmap.getMap();
         SlidingMarker.initializeGlobally();
     }
@@ -168,42 +196,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         })
     }
-
-
-
-    // Show Passenger Data By vehicle, Trip
-
-    showPassengerList() {
-        var that = this;
-        commonfun.loader();
-
-        this._ttmapservice.showPassengerList({ "vehtypeid": that.vehtypeid, "tripid": that.sel_tripid, "msttripid": that.sel_msttripid }).subscribe(data => {
-            that.psngrDT = data.data;
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-        });
-    }
-
-    // Get Today's Trip
-
-    getTripData() {
-        var that = this;
-        commonfun.loader();
-
-        this._ttmapservice.getTripData({ "flag": "vh", "vehid": that.vehtypeid }).subscribe(data => {
-            that.sel_tripid = 0;
-            that.tripDT = data.data;
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-        });
-    }
-
     // Get Selected Trip ID for get Map Data
 
     getTTMap(row) {
@@ -264,62 +256,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    togglePlayPause() {
-        this.isPlay = !this.isPlay;
-
-        if (this.isPlay) {
-            this.mapMove(this.lastlat, this.lastlon, 0);
-        }
-    }
-
-    mapMove(lat: any, lon: any, bearng: any) {
-        if (this.isPlay) {
-            var latlng = new google.maps.LatLng(lat, lon);
-            this.marker.setPosition(latlng);
-            this._gmap.map.setCenter(latlng);
-        }
-        else {
-
-        }
-    }
-
-    sendMessage() {
-        this._socketservice.close();
-        this.getLastLocation();
-        this.connectmsg = "Connecting...";
-        this._socketservice.connect();
-    }
-
-    getLastLocation() {
-        var that = this;
-        commonfun.loader();
-
-        that._ttmapservice.getLastLocation({ "tripid": that.sel_tripid }).subscribe(data => {
-            if (that.overlays.length == 0) {
-                this.overlays.push(this.marker);
-            }
-
-            var geoloc = data.data[0].loc;
-            var bearng = data.data[0].bearng;
-
-            that.mapMove(geoloc[0], geoloc[1], bearng);
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-        });
-    }
-
-    // Zoon In, Out, Clear and Reset
-
-    zoomIn(map) {
-        map.setZoom(map.getZoom() + 1);
-    }
-
-    zoomOut(map) {
-        map.setZoom(map.getZoom() - 1);
-    }
     // private get timeinterval
     private setLiveBeatsOn() {
         if (this.vehtypeIds.length > 0) {
@@ -367,12 +303,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // get vehicle last data and subscribe for socket{}
     private getLastUpdateAndSubscribe(data) {
-         
+
         if (data !== null && data.length === 0) return;
         this._trackDashbord.getvahicleupdates({
             "vhids": data == null ? this.vehtypeIds : data
         }).subscribe(_d => {
-           
+
             this.refreshdata(_d.data);
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
@@ -483,6 +419,45 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
+    private info_click(vh, event) {
+        if (vh.isshow === undefined || vh.isshow === false)
+        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
+        this.sidebarTitle = "Info";
+        this.selectedSVh = vh;
+        this.loadComponent(INFOComponent, { "vhid": vh.vhid });
+        commonfun.loader("#loaderbody", "pulse", 'Loading Vehicle Info...')
+        $.AdminBSB.rightSideBar.Open();
+        event.stopPropagation();
+    }
+
+    private passenger_click(vh, event) {
+        if (vh.isshow === undefined || vh.isshow === false)
+        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
+        this.sidebarTitle = "Passengers";
+        this.selectedSVh = vh;
+        this.loadComponent(PSGComponent, { "tripid": vh.tripid });
+        commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...')
+        $.AdminBSB.rightSideBar.Open();
+
+        event.stopPropagation();
+    }
+
+    private history_click(vh, event) {
+        if (vh.isshow === undefined || vh.isshow === false)
+        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
+        //else
+        this.sidebarTitle = "History";
+        this.selectedSVh = vh;
+        commonfun.loader("#loaderbody", "timer", 'Loading History...')
+        $.AdminBSB.rightSideBar.Open();
+        event.stopPropagation();
+    }
+
+    private close_sidebar() {
+        commonfun.loaderhide("#loaderbody")
+        $.AdminBSB.rightSideBar.Close();
+    }
+
     clear() {
         // this.overlays = [];
     }
@@ -502,6 +477,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             google.maps.event.trigger(this.map, 'resize');
         }
     }
+
 
     public ngOnDestroy() {
         if (this.dbcaller !== undefined) {

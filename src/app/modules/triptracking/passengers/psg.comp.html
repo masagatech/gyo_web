@@ -1,0 +1,23 @@
+<div *ngFor="let row of psngrDT" class="def-box">
+    <div class="imgProf">
+        <img src="{{global.uploadurl + row.ico}}" onerror="this.src='assets/img/no.jpg';" />
+    </div>
+    <div class="detailBlock">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <b>{{row.stdnm}}</b>
+            </div>
+            <div class="col-md-12 leftmar">
+                <span class="material-icons ico-specify">phone</span><a href="tel:{{row.fthrmob}}">{{row.fthrmob}}</a>
+            </div>
+            <div class="col-md-12 leftmar">
+                <span class="material-icons ico-specify">place</span>{{row.addr}}
+            </div>
+        </div>
+    </div>
+    <div class="statusicon" align="right">
+        <span class="material-icons {{row.stsi == '0' ? 'pending' : row.stsi == '1' ? 'started' : 'stopped'}}">
+                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "done" : "warning"}}
+                            </span>
+    </div>
+</div>

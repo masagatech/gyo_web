@@ -63,6 +63,7 @@ declare var System: SystemJS;
 declare var $: any;
 declare var commonfun: any;
 declare var SlidingMarker: any;
+declare var moment: any;
 
 interface SystemJS {
   import: (path?: string) => Promise<any>;

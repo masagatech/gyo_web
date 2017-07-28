@@ -11,7 +11,7 @@
     <!-- JS -->
 
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/bootstrap-select.js"></script>
     <script src="assets/js/moment.min.js"></script>
@@ -34,6 +34,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/vendor/markerAnimate.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js"></script>
+
+    <script src="assets/js/audio/audio.min.js"></script>
+
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
     <% if (webpackConfig.htmlElements.headTags) { %>
@@ -41,6 +44,12 @@
             <% } %>
 
                 <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+
+                <script type="text/javascript">
+                    audiojs.events.ready(function () {
+                        var as = audiojs.createAll();
+                    });
+                </script>
 </head>
 
 <body class="theme-green">

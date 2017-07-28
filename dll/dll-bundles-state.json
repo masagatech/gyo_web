@@ -5,35 +5,35 @@
   },
   "zone.js": {
     "bundle": "polyfills",
-    "version": "0.7.6"
+    "version": "0.8.14"
   },
   "@angular/platform-browser": {
     "bundle": "vendor",
-    "version": "2.4.6"
+    "version": "4.3.2"
   },
   "@angular/platform-browser-dynamic": {
     "bundle": "vendor",
-    "version": "2.4.6"
+    "version": "4.3.2"
   },
   "@angular/core": {
     "bundle": "vendor",
-    "version": "2.4.6"
+    "version": "4.3.2"
   },
   "@angular/common": {
     "bundle": "vendor",
-    "version": "2.4.6"
+    "version": "4.3.2"
   },
   "@angular/forms": {
     "bundle": "vendor",
-    "version": "2.4.6"
+    "version": "4.3.2"
   },
   "@angular/http": {
     "bundle": "vendor",
-    "version": "2.4.6"
+    "version": "4.3.2"
   },
   "@angular/router": {
     "bundle": "vendor",
-    "version": "3.4.6"
+    "version": "4.3.2"
   },
   "@angularclass/hmr": {
     "bundle": "vendor",
