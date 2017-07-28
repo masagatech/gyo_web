@@ -13,7 +13,7 @@
  * Will not prefix the publicPath on href (href attributes are added by default
  *
  */
-var cssver = 11;
+var cssver = 14;
 var conf = {
     link: [
         /** <link> tags for 'apple-touch-icon' (AKA Web Clips). **/

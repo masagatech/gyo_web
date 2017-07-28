@@ -51,9 +51,13 @@ export class AdminComponent implements OnInit, OnDestroy {
     loader.loadall();
   }
 
-  openForm(row) {
-    console.log(row);
+  openWorkspaceForm() {
+    Cookie.delete("_enttdetails_");
+    Cookie.delete("_wsdetails_");
+    this._router.navigate(['/master/workspace']);
+  }
 
+  openForm(row) {
     if (row.mcode == "ws") {
       Cookie.delete("_enttdetails_");
       Cookie.delete("_wsdetails_");
