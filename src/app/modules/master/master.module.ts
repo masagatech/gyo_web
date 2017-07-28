@@ -17,6 +17,7 @@ export const routes = [
                 children: [
                     { path: 'user', loadChildren: './users#UserModule' },
                     { path: 'location', loadChildren: './location#LocationModule' },
+                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                 ]
             }
         ]

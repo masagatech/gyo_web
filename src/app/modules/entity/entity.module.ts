@@ -16,7 +16,6 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'batch', loadChildren: './batch#BatchModule' },
-                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'driver', loadChildren: './driver#DriverModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
                     { path: 'route', loadChildren: './route#RouteModule' },
