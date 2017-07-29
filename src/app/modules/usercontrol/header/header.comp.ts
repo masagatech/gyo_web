@@ -124,25 +124,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
     loader.skinChanger(theme);
   }
 
-  openForm(row) {
-    console.log(row);
-    
-    if (row.mcode == "ws") {
-      Cookie.delete("_enttdetails_");
-      Cookie.delete("_wsdetails_");
-    }
-    else if (row.mcode == "entt") {
-      Cookie.delete("_enttdetails_");
-    }
+  // openForm(row) {
+  //   if (row.mcode == "ws") {
+  //     Cookie.delete("_enttdetails_");
+  //     Cookie.delete("_wsdetails_");
+  //   }
+  //   else if (row.mcode == "entt") {
+  //     Cookie.delete("_enttdetails_");
+  //   }
 
-    this._router.navigate(['/' + row.mlink]);
-  }
+  //   this._router.navigate(['/' + row.mlink]);
+  // }
 
-  openWorkspaceForm() {
-    Cookie.delete("_enttdetails_");
-    Cookie.delete("_wsdetails_");
-    this._router.navigate(['/workspace']);
-  }
+  // openWorkspaceForm() {
+  //   Cookie.delete("_enttdetails_");
+  //   Cookie.delete("_wsdetails_");
+  //   this._router.navigate(['/workspace']);
+  // }
 
   logout() {
     this._authservice.logout();

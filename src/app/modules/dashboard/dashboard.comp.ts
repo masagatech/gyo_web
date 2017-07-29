@@ -10,15 +10,18 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 
 export class DashboardComponent implements OnInit, OnDestroy {
-    dashboardDT: any = [];
     loginUser: LoginUserModel;
-
     _wsdetails: any = [];
+    _enttdetails: any = [];
+
+    dashboardDT: any = [];
 
     constructor(private _autoservice: CommonService, private _loginservice: LoginService, private _routeParams: ActivatedRoute,
         private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
+
         this.getDashboard();
     }
 
@@ -30,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         var dbparams = {
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "enttid": that._enttdetails.enttid
         }
 
         that._autoservice.getDashboard(dbparams).subscribe(data => {

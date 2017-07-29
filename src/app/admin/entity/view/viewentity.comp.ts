@@ -111,6 +111,10 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public openMainForm(row) {
+        Cookie.delete("_enttdetails_");
+        
+        console.log(row);
+        
         Cookie.set("_enttdetails_", JSON.stringify(row));
         this._router.navigate(['/']);
     }

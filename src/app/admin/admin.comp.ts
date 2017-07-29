@@ -51,23 +51,23 @@ export class AdminComponent implements OnInit, OnDestroy {
     loader.loadall();
   }
 
-  openWorkspaceForm() {
-    Cookie.delete("_enttdetails_");
-    Cookie.delete("_wsdetails_");
-    this._router.navigate(['/master/workspace']);
-  }
+  // openWorkspaceForm() {
+  //   Cookie.delete("_enttdetails_");
+  //   Cookie.delete("_wsdetails_");
+  //   this._router.navigate(['/master/workspace']);
+  // }
 
-  openForm(row) {
-    if (row.mcode == "ws") {
-      Cookie.delete("_enttdetails_");
-      Cookie.delete("_wsdetails_");
-    }
-    else if (row.mcode == "entt") {
-      Cookie.delete("_enttdetails_");
-    }
+  // openForm(row) {
+  //   if (row.mcode == "ws") {
+  //     Cookie.delete("_enttdetails_");
+  //     Cookie.delete("_wsdetails_");
+  //   }
+  //   else if (row.mcode == "entt") {
+  //     Cookie.delete("_enttdetails_");
+  //   }
 
-    this._router.navigate(['/' + row.mlink]);
-  }
+  //   this._router.navigate(['/' + row.mlink]);
+  // }
 
   getHeaderDetails() {
     this.wsname = this.loginUser.wsname;

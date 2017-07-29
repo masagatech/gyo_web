@@ -1,7 +1,7 @@
 <nav class="navbar">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a role="button" class="navbar-brand" (click)="openWorkspaceForm()">
+            <a role="button" class="navbar-brand" [routerLink]="['/master/workspace']">
                 <img class="logo pull-left" src="{{wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px">
                 <span class="title pull-left">{{wsname}}</span>
             </a>
@@ -17,7 +17,7 @@
                         <li class="body">
                             <ul class="menu tasks">
                                 <li *ngFor="let row of mastersMenuDT">
-                                    <a role="button" (click)="openForm(row)"><i class="material-icons">{{row.micon}}</i> {{row.mname}}</a>
+                                    <a role="button" [routerLink]="row.mlink"><i class="material-icons">{{row.micon}}</i> {{row.mname}}</a>
                                 </li>
                             </ul>
                         </li>

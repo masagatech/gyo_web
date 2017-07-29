@@ -169,7 +169,10 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public openEntityForm(row) {
+        Cookie.delete("_wsdetails_");
         Cookie.set("_wsdetails_", JSON.stringify(row));
+
+        console.log(row);
         
         if (row.countentity !== "0") {
             this._router.navigate(['/master/entity']);
