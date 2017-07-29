@@ -1937,6 +1937,9 @@ select.selectpicker {
     border: 1px solid rgb(199, 199, 199);
     border-bottom: 0px;
 }
+.form-group .form-control-bordered {
+    border: 1px solid rgb(199, 199, 199);
+}
 
 .form-group .form-control:focus {
     /*border: 1px solid #efefef!important;
@@ -2111,7 +2114,8 @@ select.selectpicker {
 /* all vehicles */
 .vehiclewrapper{
     background-color: #ccc;
-    height: calc(100% - 59px);
+    /* height: calc(100% - 59px); */
+     height: calc(100% - 0px);
     overflow-y: scroll;
 }
 

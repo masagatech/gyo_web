@@ -179,6 +179,8 @@ $.AdminBSB.rightSideBar = {
 
         //Close sidebar
         $(window).click(function (e) {
+
+            if (!_this.closeonwindow) return;
             var $target = $(e.target);
             if (e.target.nodeName.toLowerCase() === 'i') { $target = $(e.target).parent(); }
 
@@ -196,29 +198,30 @@ $.AdminBSB.rightSideBar = {
     isOpen: function () {
         return $('.right-sidebar').hasClass('open');
     },
-    openClose:function () {           
+    openClose: function () {
         var $sidebar = $('#rightsidebar');
         var $overlay = $('.overlay');
         $sidebar.toggleClass('open');
         if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
     },
-     Open:function () {
-         
+    Open: function () {
+
         var $sidebar = $('#rightsidebar');
         var $overlay = $('.overlay');
-        setTimeout(function() {
-             $sidebar.addClass('open');
-        if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
+        setTimeout(function () {
+            $sidebar.addClass('open');
+            if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
         }, 50);
-       
-    }, Close:function () {
-           
+
+    }, Close: function () {
+
         var $sidebar = $('#rightsidebar');
         var $overlay = $('.overlay');
-        
+
         $sidebar.removeClass('open');
         if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
-    }
+    },
+    closeonwindow: true
 }
 //==========================================================================================================================
 
@@ -326,8 +329,8 @@ $.AdminBSB.select = {
     activate: function () {
         if ($.fn.selectpicker) { $('select:not(.ms)').selectpicker(); }
     },
-     refresh: function (id) {
-        $('#' + id).selectpicker('refresh'); 
+    refresh: function (id) {
+        $('#' + id).selectpicker('refresh');
     }
 }
 //==========================================================================================================================

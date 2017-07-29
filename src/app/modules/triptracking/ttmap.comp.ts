@@ -14,6 +14,8 @@ import { HOSTComponent } from '@interface';
 
 import { PSGComponent } from './passengers/psg.comp'
 import { INFOComponent } from './info/info.comp'
+import { HISTORYComponent } from './history/history.comp'
+
 declare var google: any;
 
 @Component({
@@ -73,6 +75,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     //side bar
     sidebarTitle = "Title";
 
+    markerOptions = {
+        showinfo: false
+    }
+
     constructor(private _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _socketservice: SocketService,
         private _trackDashbord: TrackDashbord,
@@ -103,6 +109,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.closeonwindow = false;//do not close right bar on window click
             $(".enttname input").focus();
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
@@ -213,12 +220,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         that.connectmsg = "Registering...";
         this._socketservice.getMessage().subscribe(data => {
             var _d = data;
-
             if (_d["evt"] == "regreq") {
-                // if (that.sel_tripid !== 0) {
-                //     that.connectmsg = "Registering...";
-                //     that._socketservice.sendMessage("register", that.sel_tripid.toString());
-                // }
+                if (that.vehtypeIds.length > 0) {
+                    that._socketservice.sendMessage("reg_v", that.vehtypeIds.join(','));
+                }
             }
             else if (_d["evt"] == "registered") {
                 that.connectmsg = "Registered...";
@@ -231,7 +236,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 try {
                     var geoloc = _d["data"];
                     let el = that.vehtypeDT.find(a => a.vhid === parseInt(geoloc.vhid));
-                    console.log(el)
+                    //console.log(el)
                     if (el !== undefined) {
                         el.tripid = geoloc.tripid;
                         el.speed = geoloc.speed;
@@ -258,6 +263,9 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // private get timeinterval
     private setLiveBeatsOn() {
+        if (this.dbcaller !== undefined) {
+            clearInterval(this.dbcaller);
+        }
         if (this.vehtypeIds.length > 0) {
             let that = this;
             this.dbcaller = setInterval(
@@ -265,10 +273,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     that.logicLiveBeat();
                 }, 30000);
             that._socketservice.close();
-            setTimeout(function () {
-                that._socketservice.connect();
-                that._socketservice.sendMessage("reg_v", that.vehtypeIds.join(','));
-            }, 1000);
+            //setTimeout(function () {
+            that._socketservice.connect();
+            //that._socketservice.sendMessage("reg_v", that.vehtypeIds.join(','));
+            //}, 1000);
 
         }
     }
@@ -332,7 +340,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 el.min = this.getTimeDiff(d.sertm);
                 el.isshow = true;
                 el.ju = false;
-                console.log(el.loc);
+                //console.log(el.loc);
                 this.moveMarker([el.loc[1], el.loc[0]], el.vhid, el.bearing);
             } else if (el.ju) {
                 // just updated from socket
@@ -348,7 +356,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (mrk !== undefined) {
             let bear = commonfun.getbearing(bearing);
-            console.log(loc);
+            // console.log(loc);
             let _ico = mrk.getIcon().ico;
             mrk.setIcon({ url: 'assets/img/map/' + _ico + '_' + bear + '.png', ico: _ico })
             mrk.setPosition(new google.maps.LatLng(loc[0], loc[1]));
@@ -365,7 +373,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.selectedVeh.push(vh.vhid);
                 this.addmarker(vh);
                 this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]))
-                console.log(vh);
+                //console.log(vh);
             } else {
                 let i = this.selectedVeh.indexOf(vh.vhid);
                 if (i > -1)
@@ -375,6 +383,19 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         // this.selectedVeh.push(vh);
         e.preventDefault();
+    }
+
+    private showinfowindow() {
+        for (let i = 0; i < this.selectedVeh.length; i++) {
+            let el = this.selectedVeh[i];
+            let mr = this.vhmarkers[el];
+            if (this.markerOptions.showinfo) {
+                mr.info.open(this.map, mr);
+            } else {
+                mr.info.close();
+            }
+        }
+
     }
 
     private clickVehicle(vh) {
@@ -387,8 +408,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         let imagePath = 'assets/img/map/' + vh.ico + '_' + bearing + '.png';
         let image = {
             url: imagePath,
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(20, 0),
             ico: vh.ico
         };
 
@@ -396,22 +415,30 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             position: {
                 lat: vh.loc[1]
                 , lng: vh.loc[0]
-            }, title: "",
+            },
             strokeColor: 'red',
             strokeWeight: 3,
             scale: 6,
-            icon: image
+            icon: image,
+            title: vh.vno + ' (' + vh.vrg + ')',
         }
         );
+        vhmarker.info = new google.maps.InfoWindow({
+            content: vhmarker.title
+        });
+
+        if (this.markerOptions.showinfo) {
+            vhmarker.info.open(this.map, vhmarker);
+        }
 
         vhmarker.setMap(this.map);
         this.vhmarkers[vh.vhid] = vhmarker;
-        console.log(vhmarker);
+        //console.log(vhmarker);
     }
 
     private removemarker(vhid) {
         let mrkr = this.vhmarkers[vhid];
-        console.log(mrkr);
+        //console.log(mrkr);
         if (mrkr != null) {
             mrkr.setMap(null);
             delete this.vhmarkers[vhid];
@@ -424,7 +451,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         this.sidebarTitle = "Info";
         this.selectedSVh = vh;
-        this.loadComponent(INFOComponent, { "vhid": vh.vhid });
+        this.loadComponent(INFOComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
         commonfun.loader("#loaderbody", "pulse", 'Loading Vehicle Info...')
         $.AdminBSB.rightSideBar.Open();
         event.stopPropagation();
@@ -435,7 +462,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         this.sidebarTitle = "Passengers";
         this.selectedSVh = vh;
-        this.loadComponent(PSGComponent, { "tripid": vh.tripid });
+        this.loadComponent(PSGComponent, { "tripid": vh.tripid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
         commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...')
         $.AdminBSB.rightSideBar.Open();
 
@@ -446,6 +473,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (vh.isshow === undefined || vh.isshow === false)
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         //else
+        this.loadComponent(HISTORYComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
         this.sidebarTitle = "History";
         this.selectedSVh = vh;
         commonfun.loader("#loaderbody", "timer", 'Loading History...')
@@ -484,8 +512,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             clearInterval(this.dbcaller);
         }
         $.AdminBSB.islocked = false;
+        $.AdminBSB.rightSideBar.closeonwindow = true;//do not close right bar on window click
         $.AdminBSB.leftSideBar.Open();
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
+        this._socketservice.close();
     }
 
 
