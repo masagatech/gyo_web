@@ -1,6 +1,6 @@
 <div class="col-md-3 card" id="sidepanel" style="height: calc(100vh - 50px);overflow: auto;margin-bottom:0px;border-right: 1px solid #ddd;background-color: #fcfcfc;">
-    <div class="body" style="height:55px;">
-        <div class="row clearfix">
+    <div class="body hide" style="height:55px;">
+        <div class="row clearfix ">
             <div class="form-group">
                 <div class="form-line">
                     <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="1" (onSelect)="selectEntityData($event)"
@@ -65,10 +65,16 @@
     </div>
 </div>
 <div class="col-md-9" id="map" style="margin-bottom:0px;padding:0px!important">
-    <div class="col-md-12" style="height: 40px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;"></div>
+    <div class="col-md-12" style="height: 30px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;">
+        <div>
+            <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="markerOptions.showinfo" (ngModelChange)="showinfowindow()"
+                class="chk-col-blue-grey" checked="">
+            <label for="md_checkbox_chktitle">{{markerOptions.showinfo === true ? 'Hide Titles' : 'Show Titles' }}</label>
+        </div>
+    </div>
     <div style="left: 0px;z-index: 1;position: absolute;top:113px;background:#ffffff;height:40px;"><a role="button" (click)="closesidepanel()"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a></div>
-      <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 92px)', 'position': 'relative', 'overflow': 'hidden'}"
-        [options]="options" [overlays]="overlays"></p-gmap>  
+    <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 80px)', 'position': 'relative', 'overflow': 'hidden'}"
+        [options]="options" [overlays]="overlays"></p-gmap>
 
 </div>
 
@@ -99,7 +105,12 @@
                     </li>
                 </ul>
             </div>
-            <div class="body" id="loaderbody" style="height: calc(100% - 55px);overflow: auto;font-size: 12px;">
+            <div class="btn-group btn-group-xs btn-group-justified" role="group" aria-label="Justified button group">
+                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="info_click(selectedSVh,$event); false" role="button">INFO</a>
+                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="passenger_click(selectedSVh,$event); false" role="button">PASSENGERS</a>
+                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="history_click(selectedSVh,$event); false" role="button">HISTORY</a>
+            </div>
+            <div class="body" id="loaderbody" style="height: calc(100% - 75px);overflow: auto;font-size: 12px;">
                 <ng-template ADHOST></ng-template>
                 <!-- <ng-container #test *ngComponentOutlet="detailcomp"></ng-container> -->
             </div>

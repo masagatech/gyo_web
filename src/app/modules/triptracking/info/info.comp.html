@@ -1,10 +1,42 @@
 <ul class="nav nav-tabs tab-nav-right" role="tablist">
-    <li role="presentation"><a href="#vhinfo" data-toggle="tab">Vehicle Info</a></li>
+    <li role="presentation"><a href="#vhinfo" data-toggle="tab" (click)="getVHInfo()">Vehicle Info</a></li>
     <li role="presentation" class="active"><a href="#todaytrp" data-toggle="tab">Today's Trips</a></li>
 </ul>
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane" id="vhinfo">
-        <h4>Vehicle Info appear here!</h4>
+        <div class="font-bold m-b--35">
+            <img src="assets/img/map/{{vhinfo.ico}}_0.png" height="48px" />
+        </div>
+        <ul class="dashboard-stat-list">
+            <li>
+                <b>Vehicle Id</b>
+                <span class="pull-right">{{vhinfo.vhid}}</span>
+            </li>
+            <li>
+                <b>Nubmber/Name</b>
+                <span class="pull-right">{{vhinfo.vhno}}</span>
+            </li>
+            <li>
+                <b>Registration No.</b>
+                <span class="pull-right">{{vhinfo.vrg}}</span>
+            </li>
+            <li>
+                <b>Model</b>
+                <span class="pull-right">{{vhinfo.vmodl}}</span>
+            </li>
+            <li>
+                <b>Condition</b>
+                <span class="pull-right">{{vhinfo.vhcnd}}</span>
+            </li>
+            <li>
+                <b>Capacity</b>
+                <span class="pull-right">{{vhinfo.vhcap}}</span>
+            </li>
+            <li>
+                <b>Facilities</b>
+                <span class="pull-right">{{vhinfo.vhfac}}</span>
+            </li>
+        </ul>
     </div>
     <div role="tabpanel" class="tab-pane fade in active" id="todaytrp">
         <div *ngFor="let row of tripDT" class="def-box">
