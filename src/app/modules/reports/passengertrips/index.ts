@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { AuthGuard } from '../../../_services/authguard-service';
 
-import { TripsReportsComponent } from './rpttrips.comp';
+import { PassengerTripsReportsComponent } from './rptpsngrtrp.comp';
 import { ReportsService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
@@ -14,8 +14,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: TripsReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rpttrp", "rights": "view", "urlname": "/passenger" }
+        path: '', component: PassengerTripsReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptpsngrtrp", "rights": "view", "urlname": "/passengertrips" }
       }
     ]
   },
@@ -23,7 +23,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    TripsReportsComponent
+    PassengerTripsReportsComponent
   ],
 
   imports: [
@@ -33,6 +33,6 @@ export const routes = [
   providers: [AuthGuard, ReportsService]
 })
 
-export class TripsReportsModule {
+export class PassengerTripsReportsModule {
   public static routes = routes;
 }

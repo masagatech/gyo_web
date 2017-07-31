@@ -8,7 +8,7 @@
                 <div class="form-group form-float">
                     <div class="form-line">
                         <label class="control-label">User Type <strong>*</strong></label>
-                        <select [(ngModel)]="srcutype" class="form-control utype" tabindex="5" (ngModelChange)="getUserDetails()">
+                        <select id="srcutype" [(ngModel)]="srcutype" class="form-control utype" tabindex="5" (ngModelChange)="getUserDetails()">
                             <option [value]="''">Select Type</option>
                             <option *ngFor="let row of utypeDT" [value]="row.key">
                                 {{row.val}}

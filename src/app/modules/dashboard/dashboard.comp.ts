@@ -22,6 +22,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
+        let _schwsdetails = Cookie.get("_schwsdetails_");
+        let _schenttdetails = Cookie.get("_schenttdetails_");
+
+        if (_schwsdetails == null && _schwsdetails == undefined) {
+            this._router.navigate(['/master/workspace']);
+        }
+        else {
+            if (_schenttdetails == null && _schenttdetails == undefined) {
+                this._router.navigate(['/master/entity']);
+            }
+        }
+
         this.getDashboard();
     }
 
@@ -33,7 +45,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         var dbparams = {
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "enttid": that._enttdetails.enttid
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid,
+            "enttid": that._enttdetails.enttid, "psngrtype": that._enttdetails.psngrtype
         }
 
         that._autoservice.getDashboard(dbparams).subscribe(data => {
@@ -61,9 +74,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (row.dbtype == "user") {
-            console.log(row.dbcode);
             Cookie.delete('_srcutype_');
             Cookie.set("_srcutype_", row.dbcode);
+        }
+        else if(row.dbtype == "entity") {
+            Cookie.delete('_entttype_');
+            Cookie.set("_entttype_", row.dbcode);
         }
 
         that._router.navigate([row.dblink]);
