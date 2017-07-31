@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
                                 that._router.navigate(['/master/workspace']);
                             }
                             else {
-                                Cookie.set("_wsdetails_", JSON.stringify(userDetails));
+                                Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
                                 that._router.navigate(['/master/entity']);
                             }
                         } else {

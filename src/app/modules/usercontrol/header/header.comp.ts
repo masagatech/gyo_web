@@ -126,19 +126,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // openForm(row) {
   //   if (row.mcode == "ws") {
-  //     Cookie.delete("_enttdetails_");
-  //     Cookie.delete("_wsdetails_");
+  //     Cookie.delete("_schenttdetails_");
+  //     Cookie.delete("_schwsdetails_");
   //   }
   //   else if (row.mcode == "entt") {
-  //     Cookie.delete("_enttdetails_");
+  //     Cookie.delete("_schenttdetails_");
   //   }
 
   //   this._router.navigate(['/' + row.mlink]);
   // }
 
   // openWorkspaceForm() {
-  //   Cookie.delete("_enttdetails_");
-  //   Cookie.delete("_wsdetails_");
+  //   Cookie.delete("_schenttdetails_");
+  //   Cookie.delete("_schwsdetails_");
   //   this._router.navigate(['/workspace']);
   // }
 

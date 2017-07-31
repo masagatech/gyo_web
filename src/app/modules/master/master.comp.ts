@@ -8,8 +8,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class MasterComponent implements OnDestroy {
     constructor(private _router: Router) {
-        let _wsdetails = Cookie.get("_wsdetails_");
-        let _enttdetails = Cookie.get("_enttdetails_");
+        let _wsdetails = Cookie.get("_schwsdetails_");
+        let _enttdetails = Cookie.get("_schenttdetails_");
 
         // if (_wsdetails == null && _wsdetails == undefined) {
         //     this._router.navigate(['/master/workspace']);

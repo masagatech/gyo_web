@@ -31,8 +31,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.loginUser = this._loginservice.getUser();
     this.dispname = this.loginUser.dispname;
 
-    let sessionid = Cookie.get('_session_');
-    this._wsdetails = Cookie.get("_wsdetails_");
+    let sessionid = Cookie.get('_schsession_');
+    this._wsdetails = Cookie.get("_schwsdetails_");
     this._enttdetails = Globals.getEntityDetails();
 
     this.getHeaderDetails();
@@ -52,18 +52,18 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   // openWorkspaceForm() {
-  //   Cookie.delete("_enttdetails_");
-  //   Cookie.delete("_wsdetails_");
+  //   Cookie.delete("_schenttdetails_");
+  //   Cookie.delete("_schwsdetails_");
   //   this._router.navigate(['/master/workspace']);
   // }
 
   // openForm(row) {
   //   if (row.mcode == "ws") {
-  //     Cookie.delete("_enttdetails_");
-  //     Cookie.delete("_wsdetails_");
+  //     Cookie.delete("_schenttdetails_");
+  //     Cookie.delete("_schwsdetails_");
   //   }
   //   else if (row.mcode == "entt") {
-  //     Cookie.delete("_enttdetails_");
+  //     Cookie.delete("_schenttdetails_");
   //   }
 
   //   this._router.navigate(['/' + row.mlink]);

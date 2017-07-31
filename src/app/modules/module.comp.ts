@@ -8,8 +8,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class ModuleComponent implements OnDestroy {
     constructor(private _router: Router) {
-        let sessionid = Cookie.get('_session_');
-        let _wsdetails = Cookie.get("_wsdetails_");
+        let sessionid = Cookie.get('_schsession_');
+        let _wsdetails = Cookie.get("_schwsdetails_");
 
         if (sessionid == null && sessionid == undefined) {
             this._router.navigate(['/login']);

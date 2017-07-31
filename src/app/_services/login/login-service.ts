@@ -12,7 +12,7 @@ export class LoginService {
 
     getUser() {
         if (this.loginUser === undefined) {
-            let usr = Cookie.get('_session_');
+            let usr = Cookie.get('_schsession_');
 
             if (usr) {
                 //this._router.navigate(['login']);
@@ -34,8 +34,8 @@ export class LoginService {
         this.loginUser = userDetails;
         if (userDetails != null) {
             this.loginUser.login = this.loginUser.uid.toString() + ":" + this.loginUser.ucode;
-            Cookie.delete('_session_');
-            Cookie.set("_session_", this.loginUser.sessiondetails.sessionid.toString());
+            Cookie.delete('_schsession_');
+            Cookie.set("_schsession_", this.loginUser.sessiondetails.sessionid.toString());
         }
         return this.loginUser;
     }
