@@ -49,7 +49,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Leave Type <strong>*</strong></label>
-                                <select [(ngModel)]="restype" class="form-control restype" tabindex="5">
+                                <select id="restype" [(ngModel)]="restype" class="form-control restype" tabindex="5">
                                     <option [value]="''">Select Type</option>
                                     <option *ngFor="let row of leavetypeDT" [value]="row.key">
                                         {{row.val}}

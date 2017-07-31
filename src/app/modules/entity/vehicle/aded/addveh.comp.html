@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Vehicle Type <strong>*</strong></label>
-                                <select name="vehtype" [(ngModel)]="vehtype" class="form-control vehtype" tabindex="2">
+                                <select id="vehtype" name="vehtype" [(ngModel)]="vehtype" class="form-control vehtype" tabindex="2">
                                     <option [value]="''">Select Vehicle Type</option>
                                     <option *ngFor="let row of vehtypeDT" [value]="row.key">	
                                         {{row.val}}

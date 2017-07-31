@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Batch Name</label>
-                        <select [(ngModel)]="batchid" class="form-control batch" tabindex="2" (ngModelChange)="getPickDropInfo()">
+                        <select id="batchid" [(ngModel)]="batchid" class="form-control batch" tabindex="2" (ngModelChange)="getPickDropInfo()">
                             <option [value]="0">Select Batch</option>
                             <option *ngFor="let row of batchDT" [value]="row.key">
                                 {{row.val}}
@@ -57,7 +57,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="pickdriverid" class="form-control pdrv" tabindex="5" (ngModelChange)="setDropDriver()">
+                        <select id="pickdriverid" [(ngModel)]="pickdriverid" class="form-control pdrv" tabindex="5" (ngModelChange)="setDropDriver()">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">
                                 {{row.val}}
@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle Name</label>
-                        <select [(ngModel)]="pickvehicleid" class="form-control pveh" tabindex="6" (ngModelChange)="setDropVehicle()">
+                        <select id="pickvehicleid" [(ngModel)]="pickvehicleid" class="form-control pveh" tabindex="6" (ngModelChange)="setDropVehicle()">
                             <option [value]="''">Select Vehicle</option>
                             <option *ngFor="let row of vehicleDT" [value]="row.key">
                                 {{row.val}}
@@ -79,7 +79,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
-                        <select [(ngModel)]="pickpsngrtype" class="form-control pickpsngrtype" tabindex="7" (ngModelChange)="setDropPsngrType();">
+                        <select id="pickpsngrtype" [(ngModel)]="pickpsngrtype" class="form-control pickpsngrtype" tabindex="7" (ngModelChange)="setDropPsngrType();">
                             <option [value]="'bypsngr'">By {{_enttdetails.psngrtype}}</option>
                             <option [value]="'byrt'">By Route</option>
                         </select>
@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Route Name</label>
-                                <select [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="8" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
+                                <select id="pickrtid" [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="8" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
                                     <option [value]="0">Select Route</option>
                                     <option *ngFor="let row of routeDT" [value]="row.key">
                                         {{row.val}}
@@ -162,7 +162,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Driver Name</label>
-                        <select [(ngModel)]="dropdriverid" class="form-control ddrv" tabindex="12">
+                        <select id="dropdriverid" [(ngModel)]="dropdriverid" class="form-control ddrv" tabindex="12">
                             <option [value]="0">Select Driver</option>
                             <option *ngFor="let row of driverDT" [value]="row.key">
                                 {{row.val}}
@@ -173,7 +173,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle Name</label>
-                        <select [(ngModel)]="dropvehicleid" class="form-control dveh" tabindex="13">
+                        <select id="dropvehicleid" [(ngModel)]="dropvehicleid" class="form-control dveh" tabindex="13">
                             <option [value]="''">Select Vehicle</option>
                             <option *ngFor="let row of vehicleDT" [value]="row.key">
                                 {{row.val}}
@@ -184,7 +184,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
-                        <select [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="14">
+                        <select id="droppsngrtype" [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="14">
                             <option [value]="'bypsngr'">By Passenger</option>
                             <option [value]="'byrt'">By Route</option>
                         </select>
@@ -195,7 +195,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Route Name</label>
-                                <select [(ngModel)]="droprtid" class="form-control droprtname" tabindex="15" (ngModelChange)="dropPassengerByRoute()">
+                                <select id="droprtid" [(ngModel)]="droprtid" class="form-control droprtname" tabindex="15" (ngModelChange)="dropPassengerByRoute()">
                                     <option [value]="0">Select Route</option>
                                     <option *ngFor="let row of routeDT" [value]="row.key">
                                         {{row.val}}

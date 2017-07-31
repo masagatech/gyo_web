@@ -122,6 +122,7 @@ export class DirectPassengerComponent implements OnInit, OnDestroy {
         }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('batchid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

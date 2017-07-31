@@ -103,10 +103,16 @@ export class AddPassengerComponent implements OnInit {
         that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.standardDT = data.data.filter(a => a.group === "standard");
+                setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
+
                 that.divisionDT = data.data.filter(a => a.group === "division");
+                setTimeout(function () { $.AdminBSB.select.refresh('division'); }, 100);
+
                 that.genderDT = data.data.filter(a => a.group === "gender");
+                setTimeout(function () { $.AdminBSB.select.refresh('gender'); }, 100);
 
                 that.alertDT = data.data.filter(a => a.group === "alert");
+                setTimeout(function () { $.AdminBSB.select.refresh('alert'); }, 100);
                 that.alert = that.alertDT.filter(a => a.isselected === true)[0].key;
             }
             catch (e) {
@@ -133,7 +139,10 @@ export class AddPassengerComponent implements OnInit {
         that._psngrservice.getPassengerDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.pickrouteDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('pickrtid'); }, 100);
+
                 that.droprouteDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('droprtid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -164,6 +173,7 @@ export class AddPassengerComponent implements OnInit {
         that._psngrservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
             try {
                 that.pickstopsDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('pickstpid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -189,6 +199,7 @@ export class AddPassengerComponent implements OnInit {
         that._psngrservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
             try {
                 that.dropstopsDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('dropstpid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

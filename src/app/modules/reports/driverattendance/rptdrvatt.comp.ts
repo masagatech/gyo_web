@@ -116,6 +116,7 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
         that._rptservice.getAttendanceReports({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.monthDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('monthname'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

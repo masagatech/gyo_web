@@ -76,6 +76,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
         that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
             that.utypeDT = data.data;
+            setTimeout(function () { $.AdminBSB.select.refresh('srcutype'); }, 100);
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
