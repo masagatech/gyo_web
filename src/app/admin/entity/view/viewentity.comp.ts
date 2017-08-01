@@ -38,7 +38,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         }
 
         this.fillDropDownList();
-        this.viewEntityDataRights();
     }
 
     public ngOnInit() {
@@ -68,7 +67,15 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
                 }
                 else {
                     that.entttypeDT.splice(0, 0, { "key": "", "val": "Select Entity Type" });
-                    that.entttype = "";
+
+                    if (Cookie.get('_entttype_') != null) {
+                        that.entttype = Cookie.get('_entttype_');
+                    }
+                    else {
+                        that.entttype = "";
+                    }
+
+                    that.getEntityDetails();
                 }
             }
             catch (e) {
@@ -140,22 +147,12 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         this.getEntityDetails();
     }
 
-    public viewEntityDataRights() {
-        var that = this;
-
-        if (Cookie.get('_entttype_') != null) {
-            that.entttype = Cookie.get('_entttype_');
-        }
-
-        that.getEntityDetails();
-    }
-
     getEntityDetails() {
         var that = this;
         var params = {};
 
-        Cookie.set("_entttype_", that.entttype);
-        that.entttype = Cookie.get('_entttype_');
+        Cookie.set("_entttype_", this.entttype);
+        this.entttype = Cookie.get('_entttype_');
 
         commonfun.loader();
 
