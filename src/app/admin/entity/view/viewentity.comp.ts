@@ -25,6 +25,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     entityDT: any = [];
 
+    isSelectWS: boolean = false;
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
@@ -32,10 +33,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-
-        if (this._wsdetails == null && this._wsdetails == undefined) {
-            this._router.navigate(['/workspace']);
-        }
 
         this.fillDropDownList();
     }

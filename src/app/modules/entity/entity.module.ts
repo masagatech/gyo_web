@@ -24,6 +24,9 @@ export const routes = [
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'leavepassenger', loadChildren: './leavepassenger#LeavePassengerModule' },
                     
+                    // Passenger
+                    { path: 'schedule', loadChildren: './passenger#PassengerModule' },
+                    
                     // student
                     { path: 'student', loadChildren: './passenger#PassengerModule' },
                     { path: 'leavestudent', loadChildren: './leavepassenger#LeavePassengerModule' },

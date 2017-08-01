@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '../../../_services/authguard-service';
 
-import { ChangeScheduleComponent } from './viewpd.comp';
+import { AddScheduleComponent } from './addschd.comp';
 import { PickDropService, EntityService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, OrderListModule, ScheduleModule } from 'primeng/primeng';
@@ -13,16 +13,16 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ChangeScheduleComponent, canActivate: [AuthGuard],
-        data: { "module": "schd", "submodule": "esch", "rights": "edit", "urlname": "/changeschedule" }
-      }
+        path: '', component: AddScheduleComponent, canActivate: [AuthGuard],
+        data: { "module": "schd", "submodule": "asch", "rights": "add", "urlname": "/createschedule" }
+      },
     ]
   },
 ];
 
 @NgModule({
   declarations: [
-    ChangeScheduleComponent
+    AddScheduleComponent
   ],
 
   imports: [
@@ -33,6 +33,6 @@ export const routes = [
   providers: [AuthGuard, PickDropService, EntityService]
 })
 
-export class ChangeScheduleModule {
+export class AddScheduleModule {
   public static routes = routes;
 }

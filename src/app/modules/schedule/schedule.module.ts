@@ -15,8 +15,8 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'create', loadChildren: './createschedule#CreateScheduleModule' },
-                    { path: 'edit', loadChildren: './changeschedule#ChangeScheduleModule' }
+                    { path: 'create', loadChildren: './add#AddScheduleModule' },
+                    { path: 'edit', loadChildren: './edit#EditScheduleModule' }
                 ]
             }
         ]
