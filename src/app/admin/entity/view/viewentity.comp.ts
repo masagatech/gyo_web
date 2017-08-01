@@ -35,6 +35,15 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         this._wsdetails = Globals.getWSDetails();
 
         this.fillDropDownList();
+
+        if (Cookie.get('_entttype_') != null) {
+            this.entttype = Cookie.get('_entttype_');
+        }
+        else {
+            this.entttype = "";
+        }
+
+        this.getEntityDetails();
     }
 
     public ngOnInit() {
@@ -64,15 +73,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
                 }
                 else {
                     that.entttypeDT.splice(0, 0, { "key": "", "val": "Select Entity Type" });
-
-                    if (Cookie.get('_entttype_') != null) {
-                        that.entttype = Cookie.get('_entttype_');
-                    }
-                    else {
-                        that.entttype = "";
-                    }
-
-                    that.getEntityDetails();
                 }
             }
             catch (e) {
