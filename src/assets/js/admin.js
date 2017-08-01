@@ -194,14 +194,6 @@ $.AdminBSB.rightSideBar = {
             $sidebar.toggleClass('open');
             if (_this.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
         });
-
-        $('.righthandle').on('click', function () {
-            $('.righthandle').hide();
-            $sidebar.toggleClass('open');
-            if (_this.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
-
-        });
-
     },
 
 
@@ -246,6 +238,15 @@ $.AdminBSB.rightSideBar = {
             }, 500);
 
 
+        }
+        if ($('.righthandle').data('clicked') === undefined) {
+            $('.righthandle').on('click', function () {
+                $(this).data('clicked', true);
+                $('.righthandle').hide();
+                $sidebar.toggleClass('open');
+                if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
+
+            });
         }
     },
     closeonwindow: true
