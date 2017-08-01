@@ -76,7 +76,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     sidebarTitle = "Title";
 
     markerOptions = {
-        showinfo: false
+        showinfo: false,
+        hidelive: false
     }
 
     constructor(private _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
@@ -100,6 +101,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         viewContainerRef.clear();
         let componentRef = viewContainerRef.createComponent(componentFactory);
         (<HOSTComponent>componentRef.instance).data = data;
+
     }
 
     ngOnInit() {
@@ -355,10 +357,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         let mrk = this.vhmarkers[vhid];
 
         if (mrk !== undefined) {
-            let bear = commonfun.getbearing(bearing);
+            let bear = 0;// commonfun.getbearing(bearing);
             // console.log(loc);
             let _ico = mrk.getIcon().ico;
-            mrk.setIcon({ url: 'assets/img/map/' + _ico + '_' + bear + '.png', ico: _ico })
+            mrk.setIcon({ url: 'assets/img/map/' + _ico + '_' + bear + '.png?v=1', ico: _ico })
             mrk.setPosition(new google.maps.LatLng(loc[0], loc[1]));
         }
     }
@@ -398,14 +400,27 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
 
+    private hidelives() {
+        for (let i = 0; i < this.selectedVeh.length; i++) {
+            let el = this.selectedVeh[i];
+            let mr = this.vhmarkers[el];
+            if (this.markerOptions.hidelive) {
+                mr.setMap(null);
+            } else {
+                mr.setMap(this.map);
+            }
+
+        }
+    }
+
     private clickVehicle(vh) {
         if (vh.isshow === undefined || vh.isshow === false) { return; }
         this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]));
     }
 
     private addmarker(vh) {
-        let bearing = commonfun.getbearing((vh.bearing || 0));
-        let imagePath = 'assets/img/map/' + vh.ico + '_' + bearing + '.png';
+        let bearing = 0;//commonfun.getbearing((vh.bearing || 0));
+        let imagePath = 'assets/img/map/' + vh.ico + '_' + bearing + '.png?v=1';
         let image = {
             url: imagePath,
             ico: vh.ico
@@ -420,6 +435,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             strokeWeight: 3,
             scale: 6,
             icon: image,
+            animation: google.maps.Animation.BOUNCE,
             title: vh.vno + ' (' + vh.vrg + ')',
         }
         );
@@ -473,7 +489,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (vh.isshow === undefined || vh.isshow === false)
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         //else
-        this.loadComponent(HISTORYComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
+        this.loadComponent(HISTORYComponent, {
+            "vhid": vh.vhid,
+            loginUser: this.loginUser, _wsdetails: this._wsdetails, map: this.map
+        });
         this.sidebarTitle = "History";
         this.selectedSVh = vh;
         commonfun.loader("#loaderbody", "timer", 'Loading History...')

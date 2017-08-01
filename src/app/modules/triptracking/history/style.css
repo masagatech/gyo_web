@@ -1,0 +1,69 @@
+.trptype span {
+    color: #fff;
+    font-size: 19px;
+    position: relative;
+    font-weight: bold;
+    top: 2px;
+    text-transform: capitalize;
+}
+
+
+.trptype{    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: #ff9900;
+    float: left;
+    margin-left: -5px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    border-radius: 50%;
+    overflow: hidden;
+    text-align: center;
+}
+
+
+.detailBlock{
+    margin-left: 35px;
+}
+span.material-icons.ico-specify {
+   font-size: 14px;
+    color: #329e05;
+    margin-top: 1px;
+    position: absolute;
+    left: -9px;
+    top: -3px;
+}
+.statusicon{
+    position: absolute;
+    left: -2px;
+    top: 5px;
+}
+.statusicon .material-icons{
+    font-size: 15px;
+    font-weight: bold;
+    color: teal;
+}
+.leftmar{
+    margin-left: 3px;
+}
+.slideright{
+    position: absolute;
+    right: 0px;
+    z-index: 111;
+}
+.backholder {
+    background-color: #fff;
+    margin-top: -4px;
+}
+.backarrow{
+        position: relative;
+    display: block;
+    background-color: #607d8b;
+    color: #fff;
+}
+.backarrow span {
+    font-size: 14px;
+    top: 8px;
+    position: absolute;
+}

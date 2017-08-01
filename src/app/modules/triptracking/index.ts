@@ -10,6 +10,7 @@ import { TripTrackingComponent } from './ttmap.comp';
 import { TTMapService } from '@services/master';
 import { Globals } from '@models';
 import { TimeAgoPipe } from '@pipe/timeago'
+import { format } from '@pipe/format'
 //child components
 import { ADHOST } from '@directives';
 
@@ -19,7 +20,7 @@ import { HISTORYComponent } from './history/history.comp'
 
 
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,CalendarModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,CalendarModule,SliderModule } from 'primeng/primeng';
 
 export const config: SocketIoConfig = {
   url: Globals.socketurl, options: {}
@@ -43,13 +44,14 @@ export const routes = [
     PSGComponent,
     INFOComponent,
     ADHOST,
-    HISTORYComponent
+    HISTORYComponent,
+    format
   ],
   entryComponents: [PSGComponent, INFOComponent,HISTORYComponent],
   imports: [
     CommonModule, FormsModule, SharedComponentModule, SocketIoModule.forRoot(config),
     RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,
-    CalendarModule
+    CalendarModule,SliderModule
   ],
 
   providers: [AuthGuard, TTMapService]
