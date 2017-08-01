@@ -1674,6 +1674,7 @@ select.selectpicker {
 
 .bootstrap-select.btn-group .dropdown-menu li {
     position: relative;
+    padding: 0;
 }
 
 .bootstrap-select.btn-group .dropdown-menu li.active small {

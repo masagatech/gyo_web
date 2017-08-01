@@ -66,9 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
-    this.getHeaderDetails();
-    this.getTopMenuList();
-
     _router.events.forEach((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {
         commonfun.loader();
@@ -92,13 +89,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.ufullname = this.loginUser.fullname;
     this.utype = this.loginUser.utypename;
     this.uphoto = this.global.uploadurl + this._wsdetails.uphoto;
-    this.wsname = this._wsdetails.wsname;
-    this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
+    this.wsname = this._wsdetails.wsname == null ? this.loginUser.wsname : this._wsdetails.wsname;
+    this.wslogo = this.global.uploadurl + (this._wsdetails.wslogo == null ? this.loginUser.wslogo : this._wsdetails.wslogo);
     this.enttname = this._enttdetails.enttname;
   }
 
   ngOnInit() {
-
+    this.getHeaderDetails();
+    this.getTopMenuList();
   }
 
   public ngAfterViewInit() {

@@ -6,11 +6,11 @@ import { PickDropService, EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'addpd.comp.html',
+    templateUrl: 'addschd.comp.html',
     providers: [MenuService, CommonService]
 })
 
-export class CreateScheduleComponent implements OnInit {
+export class AddScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
     _enttdetails: any = [];
