@@ -194,6 +194,15 @@ $.AdminBSB.rightSideBar = {
             $sidebar.toggleClass('open');
             if (_this.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
         });
+
+        $('.righthandle').on('click', function () {
+            $('.righthandle').hide();
+            $sidebar.toggleClass('open');
+            if (_this.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
+
+        });
+
+
     },
     isOpen: function () {
         return $('.right-sidebar').hasClass('open');
@@ -212,6 +221,7 @@ $.AdminBSB.rightSideBar = {
             $sidebar.addClass('open');
             if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
         }, 50);
+        $('.righthandle').hide();
 
     }, Close: function () {
 
@@ -219,7 +229,17 @@ $.AdminBSB.rightSideBar = {
         var $overlay = $('.overlay');
 
         $sidebar.removeClass('open');
-        if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
+        if ($.AdminBSB.rightSideBar.isOpen()) {
+            $overlay.fadeIn();
+
+        } else {
+            $overlay.fadeOut();
+            setTimeout(function () {
+                $('.righthandle').fadeIn('slow');
+            }, 500);
+
+
+        }
     },
     closeonwindow: true
 }

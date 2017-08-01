@@ -24,7 +24,7 @@
                                 <div class="vhchkbx">
                                     <input type="checkbox" id="{{row.vhid}}" data-md-icheck (change)="onchange($event, row)" class="filled-in">
                                     <label for="{{row.vhid}}"></label>
-                                    <img src="assets/img/map/{{row.ico}}_0.png" height="40px" />
+                                    <img src="assets/img/map/{{row.ico}}_0.png?v=1" height="40px" />
                                 </div>
                                 <span class="vhbatr pull-right" *ngIf="row.isshow">
                                     {{row.isempty}}
@@ -66,10 +66,15 @@
 </div>
 <div class="col-md-9" id="map" style="margin-bottom:0px;padding:0px!important">
     <div class="col-md-12" style="height: 30px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;">
-        <div>
+        <div class="pull-left">
             <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="markerOptions.showinfo" (ngModelChange)="showinfowindow()"
                 class="chk-col-blue-grey" checked="">
             <label for="md_checkbox_chktitle">{{markerOptions.showinfo === true ? 'Hide Titles' : 'Show Titles' }}</label>
+        </div>
+        <div class="pull-left">
+            <input type="checkbox" id="md_checkbox_chlives" [(ngModel)]="markerOptions.hidelive" (ngModelChange)="hidelives()"
+                class="chk-col-orange" checked="">
+            <label for="md_checkbox_chlives">{{markerOptions.hidelive === true ? 'Show Live' : 'Hide Live' }}</label>
         </div>
     </div>
     <div style="left: 0px;z-index: 1;position: absolute;top:113px;background:#ffffff;height:40px;"><a role="button" (click)="closesidepanel()"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a></div>
@@ -79,6 +84,7 @@
 </div>
 
 <section>
+    <div class="righthandle" style="display:none;right: 0px;z-index: 999999999999;position: absolute;top:113px;background:#ffffff;height:40px;"><a role="button"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a></div>
     <aside id="rightsidebar" class="right-sidebar">
         <div class="card" style="height: 100%;">
             <div class="header bg-blue-grey">
