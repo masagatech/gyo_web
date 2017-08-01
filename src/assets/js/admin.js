@@ -203,8 +203,8 @@ $.AdminBSB.rightSideBar = {
         });
 
     },
-   
-   
+
+
     isOpen: function () {
         return $('.right-sidebar').hasClass('open');
     },
@@ -233,8 +233,9 @@ $.AdminBSB.rightSideBar = {
 
     },
     Close: function () {
-
+        var $sidebar = $('#rightsidebar');
         $sidebar.removeClass('open');
+        var $overlay = $('.overlay');
         if ($.AdminBSB.rightSideBar.isOpen()) {
             $overlay.fadeIn();
 
