@@ -1,0 +1,137 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix" id="fltrpsngr">
+            <div class="col-md-4 col-xs-4">
+                <h4>{{_enttdetails.psngrtype}} Trips</h4>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">From Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" [tabindex]="1" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">To Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="todt" class="form-control date frmdt" [tabindex]="2" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2" style="padding-top:20px;">
+                <button type="button" class="btn btn-theme" (click)="getPassengerTripReports()">Get</button>
+            </div>
+            <div class="col-md-2 col-xs-2" style="padding-top: 20px; text-align: right;">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <!-- <li>
+                            <a role="button" (click)="exportToExcel($event, 'tblpsngrtrprpt', 'Passenger Trips Reports')">
+                                <i class="fa fa-file-excel-o"></i> Excel</a>
+                        </li> -->
+
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div *ngFor="let ctrow of hscityDT; let i = index;">
+        <div class="block-header">
+            <a role="button" (click)="expandHotspotList(ctrow)">
+                <i class="{{ctrow.issh == 0 ? 'fa fa-plus-square' : 'fa fa-minus-square'}}"></i> {{ctrow.ctname}}
+            </a>
+        </div>
+        <div id="cths{{ctrow.ctid}}" [style.display]="ctrow.issh == 0?'none':''">
+            <div id="draghslist" *ngFor="let hsrow of ctrow.hsrow">
+                <input id="hs{{hsrow.hsid}}" [(ngModel)]="hsrow.isselhs" type="checkbox" class="filled-in" (ngModelChange)="getHotspotRights()" />
+                <label for="hs{{hsrow.hsid}}">{{hsrow.hsname}}</label>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="body no-padding table-responsinve">
+        <table id="tblpsngrtrprpt" class="table table-bordered">
+            <tr>
+                <th></th>
+                <th>Trip Date</th>
+                <th>Batch Name</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            <tbody *ngFor="let row of passengerTripsDT">
+                <tr style="font-weight: bold;">
+                    <td>
+                        <a role="button" (click)="expanTripDetails(row)">
+                            <i class="{{row.issh == 0 ? 'fa fa-plus-square' : 'fa fa-minus-square'}}"></i>
+                        </a>
+                    </td>
+                    <td>
+                        {{row.trpdate}}
+                    </td>
+                    <td>
+                        {{row.batchname}}
+                    </td>
+                    <td>
+                        {{row.drivername}}
+                    </td>
+                    <td>
+                        {{row.pdtype}}
+                    </td>
+                    <td>
+                        {{row.strtm}}
+                    </td>
+                    <td>
+                        {{row.endtm}}
+                    </td>
+                </tr>
+                <tr [style.display]="row.issh == 0?'none':''" *ngFor="let drow of row.details let i=index;">
+                    <td></td>
+                    <td></td>
+                    <td>
+                        {{i+1}}
+                    </td>
+                    <td>
+                        {{drow.stdnm}}
+                    </td>
+                    <td>
+                        {{drow.pdtype}}
+                    </td>
+                    <td>
+                        {{drow.pdtime}}
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div class="body no-padding">
+        <div id="psngrtrprpt" class="row clearfix">
+            <div id="divReports" class="col-md-12">
+                <p-dataTable [value]="tripsDT">
+                    <p-column field="stdnm" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="trpdate" header="Trip Date" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="strtm" header="Start Time" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="endtm" header="End Time" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pktm" header="Pick Time" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="drptm" header="Drop Time" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pklat" header="Pick Latitude" [style]="{'width': '125px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pklng" header="Pick Longitude" [style]="{'width': '125px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="drplat" header="Drop Latitude" [style]="{'width': '125px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="drplng" header="Drop Longitude" [style]="{'width': '125px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="pdtype" header="Type" styleClass="{{pdtype}}" [style]="{'width': '50px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div> -->
+</div>

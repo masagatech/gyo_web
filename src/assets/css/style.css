@@ -3178,7 +3178,8 @@ section.content {
 }
 
 .card .body ul li {
-    padding: 0 0 10px;
+    padding: 0;
+    /*0 10px;*/
     list-style: none;
 }
 
@@ -5558,8 +5559,7 @@ section.content {
 
 .table-bordered tbody tr td,
 .table-bordered tbody tr th {
-    /* padding: 10px; */
-    padding: 10px 10px 0 10px;
+    padding: 10px;
     border: 1px solid #eee;
 }
 

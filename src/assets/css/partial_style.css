@@ -1937,6 +1937,7 @@ select.selectpicker {
     border: 1px solid rgb(199, 199, 199);
     border-bottom: 0px;
 }
+
 .form-group .form-control-bordered {
     border: 1px solid rgb(199, 199, 199);
 }
@@ -2111,11 +2112,13 @@ select.selectpicker {
     width: auto!important;
 }
 
+
 /* all vehicles */
-.vehiclewrapper{
+
+.vehiclewrapper {
     background-color: #ccc;
     /* height: calc(100% - 59px); */
-     height: calc(100% - 0px);
+    height: calc(100% - 0px);
     overflow-y: scroll;
 }
 
@@ -2124,10 +2127,12 @@ ul.vehicles {
     height: calc(100% - 15px);
     padding: 0px;
 }
+
 li.vehicle {
     /* margin-bottom: 7px; */
     padding: 4px 4px;
 }
+
 .vhwrapper {
     background-color: #fff;
     border-radius: 4px;
@@ -2135,7 +2140,8 @@ li.vehicle {
     border: 2px solid #636363;
     opacity: 0.8;
 }
-.vhwrapper:hover{
+
+.vhwrapper:hover {
     opacity: 1;
 }
 
@@ -2161,20 +2167,18 @@ li.vehicle {
 }
 
 .vhtitle {
-    
     display: block;
     font-size: 12px;
     font-weight: bold;
     margin-left: 29px;
 }
 
-.vhsubtitle{
-      margin-left: 29px;
-   display: block;
+.vhsubtitle {
+    margin-left: 29px;
+    display: block;
     font-size: 11px;
     color: #8c8c8c;
 }
-
 
 .vhbatr .btr {
     position: relative;
@@ -2200,12 +2204,12 @@ li.vehicle {
     height: 50%;
     width: 2px;
     background-color: #9c9c9c;
-    -webkit-transform: translate(0,-50%);
-    transform: translate(0,-50%);
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
 }
 
-.vhbtrper{
-        top: -1px;
+.vhbtrper {
+    top: -1px;
     position: relative;
     left: 1px;
     font-size: 9px;
@@ -2219,56 +2223,47 @@ li.vehicle {
     color: #3f51b5;
     margin-right: 8px;
 }
+
 .vhwrapper span.shortdet {
     color: #4e4e4e;
     margin-right: 8px;
 }
 
-
-.vhwrapper.ol{
+.vhwrapper.ol {
     border: 2px solid #2b982b;
     opacity: 1;
 }
-.vhwrapper.of{
+
+.vhwrapper.of {
     border: 2px solid orange;
     opacity: 0.8;
 }
-.vhwrapper.ou{
-  border: 2px solid #636363;
+
+.vhwrapper.ou {
+    border: 2px solid #636363;
     opacity: 0.5;
 }
 
-
-::-webkit-scrollbar-track
-{
--webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
 }
 
-::-webkit-scrollbar
-{
-	width: 10px;
-	background-color: #F5F5F5;
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
 }
 
-::-webkit-scrollbar-thumb
-{
-	background-color: #F90;	
-	background-image: -webkit-linear-gradient(45deg,
-	                                          rgba(255, 255, 255, .2) 25%,
-											  transparent 25%,
-											  transparent 50%,
-											  rgba(255, 255, 255, .2) 50%,
-											  rgba(255, 255, 255, .2) 75%,
-											  transparent 75%,
-                                              transparent)
+::-webkit-scrollbar-thumb {
+    background-color: #F90;
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
 }
 
-.card .body{
-   padding: 5px;
+.card .body {
+    padding: 5px;
 }
 
-.imgProf{
+.imgProf {
     background-image: url('../../assets/img/no.jpg')
 }
 

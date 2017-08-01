@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SharedComponentModule } from '../../_shared/sharedcomp.module';
 
 import { DashboardComponent } from './dashboard.comp';
 
@@ -20,7 +21,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes)
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ]
 })
 

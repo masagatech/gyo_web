@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
-                        <select name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getAttendanceColumn()">
+                        <select id="monthname" name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getAttendanceColumn()">
                             <option [value]="''">Select Month</option>
                             <option *ngFor="let row of monthDT" [value]="row.key">
                                 {{row.val}}
@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Standard</label>
-                        <select name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getAttendanceColumn()">
+                        <select id="standard" name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getAttendanceColumn()">
                             <option [value]="''">All</option>
                             <option *ngFor="let row of standardDT" [value]="row.key">
                                 {{row.val}}

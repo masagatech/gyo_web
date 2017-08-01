@@ -164,12 +164,15 @@ export class ViewWorkspaceComponent implements OnInit {
             "issysadmin": this.issysadmin
         }
 
-        Cookie.set("_wsdetails_", JSON.stringify(_wsdetails));
+        Cookie.set("_schwsdetails_", JSON.stringify(_wsdetails));
         this._router.navigate(['/master/entity']);
     }
 
     public openEntityForm(row) {
-        Cookie.set("_wsdetails_", JSON.stringify(row));
+        Cookie.delete("_schwsdetails_");
+        Cookie.set("_schwsdetails_", JSON.stringify(row));
+
+        console.log(row);
         
         if (row.countentity !== "0") {
             this._router.navigate(['/master/entity']);

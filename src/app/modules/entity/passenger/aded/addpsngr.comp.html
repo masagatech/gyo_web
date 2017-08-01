@@ -45,7 +45,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Standard <strong>*</strong></label>
-                                <select name="standard" [(ngModel)]="standard" class="form-control standard" tabindex="5">
+                                <select id="standard" name="standard" [(ngModel)]="standard" class="form-control standard" tabindex="5">
                                     <option [value]="''">Select Standard</option>
                                     <option *ngFor="let row of standardDT" [value]="row.key">	
                                         {{row.val}}
@@ -58,7 +58,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Division <strong>*</strong></label>
-                                <select name="division" [(ngModel)]="division" class="form-control division" tabindex="5">
+                                <select id="division" name="division" [(ngModel)]="division" class="form-control division" tabindex="5">
                                     <option [value]="''">Select Division</option>
                                     <option *ngFor="let row of divisionDT" [value]="row.key">	
                                         {{row.val}}
@@ -82,7 +82,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Gender</label>
-                                <select name="gender" [(ngModel)]="gender" class="form-control" tabindex="7">
+                                <select id="gender" name="gender" [(ngModel)]="gender" class="form-control" tabindex="7">
                                     <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">
                                         {{row.val}}
@@ -182,7 +182,7 @@
                 <div class="form-group form-float">
                     <div class="form-line">
                         <label class="control-label">Alert</label>
-                        <select name="alert" [(ngModel)]="alert" class="form-control" tabindex="14">
+                        <select id="alert" name="alert" [(ngModel)]="alert" class="form-control" tabindex="14">
                             <option [value]="''">Select Alert</option>
                             <option *ngFor="let row of alertDT" [value]="row.key">
                                 {{row.val}}

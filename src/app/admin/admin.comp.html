@@ -1,46 +1,4 @@
-<nav class="navbar">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a role="button" class="navbar-brand" (click)="openWorkspaceForm()">
-                <img class="logo pull-left" src="{{wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px">
-                <span class="title pull-left">{{wsname}}</span>
-            </a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" *ngIf="mastersMenuDT.length">
-                        Masters <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">Menu</li>
-                        <li class="body">
-                            <ul class="menu tasks">
-                                <li *ngFor="let row of mastersMenuDT">
-                                    <a role="button" (click)="openForm(row)"><i class="material-icons">{{row.micon}}</i> {{row.mname}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        <i class="material-icons">person</i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">{{dispname}}</li>
-                        <li class="body">
-                            <ul class="menu tasks">
-                                <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
-                                <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<app-head></app-head>
 
 <section class="full-content maincontent">
     <div class="container-fluid">

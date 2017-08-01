@@ -202,8 +202,9 @@ $.AdminBSB.rightSideBar = {
 
         });
 
-
     },
+   
+   
     isOpen: function () {
         return $('.right-sidebar').hasClass('open');
     },
@@ -223,10 +224,15 @@ $.AdminBSB.rightSideBar = {
         }, 50);
         $('.righthandle').hide();
 
-    }, Close: function () {
-
         var $sidebar = $('#rightsidebar');
         var $overlay = $('.overlay');
+        setTimeout(function () {
+            $sidebar.addClass('open');
+            if ($.AdminBSB.rightSideBar.isOpen()) { $overlay.fadeIn(); } else { $overlay.fadeOut(); }
+        }, 50);
+
+    },
+    Close: function () {
 
         $sidebar.removeClass('open');
         if ($.AdminBSB.rightSideBar.isOpen()) {
@@ -516,6 +522,3 @@ adminloader.loadall = function () {
 
     setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);
 }
-
-
-

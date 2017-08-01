@@ -8,7 +8,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class ReportsComponent implements OnDestroy {
     constructor(private _router: Router) {
-        let _enttdetails = Cookie.get("_enttdetails_");
+        let _enttdetails = Cookie.get("_schenttdetails_");
 
         if (_enttdetails == null && _enttdetails == undefined) {
             this._router.navigate(['/master/entity']);

@@ -164,7 +164,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">State <strong>*</strong></label>
-                                    <select [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="14">
+                                    <select id="state" [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="14">
                                         <option [value]="0">Select State</option>
                                         <option *ngFor="let row of stateDT" [value]="row.key">
                                             {{row.val}}
@@ -180,7 +180,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">City <strong>*</strong></label>
-                                    <select [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="15">
+                                    <select id="city" [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="15">
                                         <option [value]="0">Select City</option>
                                         <option *ngFor="let row of cityDT" [value]="row.key">
                                             {{row.val}}

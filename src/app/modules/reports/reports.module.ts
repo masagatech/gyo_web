@@ -17,6 +17,7 @@ export const routes = [
                 children: [
                     // Passenger
                     
+                    { path: 'passengertrips', loadChildren: './passengertrips#PassengerTripsReportsModule' },
                     { path: 'passengerattendance', loadChildren: './passengerattendance#PassengerAttendanceReportsModule' },
                     { path: 'routewisepassenger', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'directpassenger', loadChildren: './directpassenger#DirectPassengerModule' },
@@ -24,6 +25,7 @@ export const routes = [
                     
                     // Student
                     
+                    { path: 'studenttrips', loadChildren: './passengertrips#PassengerTripsReportsModule' },
                     { path: 'studentattendance', loadChildren: './passengerattendance#PassengerAttendanceReportsModule' },
                     { path: 'routewisestudent', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'directstudent', loadChildren: './directpassenger#DirectPassengerModule' },
@@ -34,7 +36,6 @@ export const routes = [
                     { path: 'attendantattendance', loadChildren: './attendentattendance#AttendentAttendanceReportsModule' },
                     
                     { path: 'speed', loadChildren: './speed#SpeedReportsModule' },
-                    { path: 'trips', loadChildren: './trips#TripsReportsModule' },
 
                     { path: 'entity', loadChildren: './entity#EntityReportsModule' },
                     { path: 'users', loadChildren: './users#UserReportsModule' },

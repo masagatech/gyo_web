@@ -58,6 +58,7 @@ export class AddVehicleComponent implements OnInit {
         that._vehservice.getVehicleDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.vehtypeDT = data.data;
+                setTimeout(function () { $.AdminBSB.select.refresh('vehtype'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

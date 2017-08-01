@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
-                        <select name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getPieChart();getBarChart();">
+                        <select id="monthname" name="monthname" [(ngModel)]="monthname" class="form-control" (ngModelChange)="getPieChart();getBarChart();">
                             <option [value]="''">Select Month</option>
                             <option *ngFor="let row of monthDT" [value]="row.month">
                                 {{row.month}}

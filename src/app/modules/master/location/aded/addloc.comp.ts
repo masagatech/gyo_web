@@ -60,7 +60,7 @@ export class AddLocationComponent implements OnInit, AfterViewInit {
         that._locservice.getLocationDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.stateDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('ddlstate'); }, 100)
+                setTimeout(function () { $.AdminBSB.select.refresh('ddlstate'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

@@ -15,7 +15,7 @@ export class AuthenticationService {
     var usr: LoginUserModel = this._loginservice.getUser();
 
     this._dataserver.post("getLogout", { "sessionid": usr.sessiondetails.sessionid }).subscribe(r => {
-      Cookie.delete('_session_');
+      Cookie.delete('_schsession_');
       this._loginservice.setUsers(null);
 
       if (callback) {
@@ -281,7 +281,7 @@ export class AuthenticationService {
   }
 
   public checkCredentials(): any {
-    var sessionid = Cookie.get('_session_');
+    var sessionid = Cookie.get('_schsession_');
     var usr: LoginUserModel = this._loginservice.getUser();
 
     if (usr !== null) { //check user is locally present in memory

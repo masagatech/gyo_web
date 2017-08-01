@@ -124,6 +124,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.standardDT = data.data.filter(a => a.group === "standard");
+                setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
