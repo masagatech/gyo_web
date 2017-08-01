@@ -66,7 +66,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
             try {
                 that.entttypeDT = data.data.filter(a => a.group === "workspace");
-                setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
 
                 if (that.entttypeDT.length == 1) {
                     that.entttype = that.entttypeDT[0].key;
@@ -74,6 +73,8 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
                 else {
                     that.entttypeDT.splice(0, 0, { "key": "", "val": "Select Entity Type" });
                 }
+                
+                setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
