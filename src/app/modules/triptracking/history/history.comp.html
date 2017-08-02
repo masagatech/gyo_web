@@ -27,9 +27,36 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <ng-template ADHOST></ng-template>
 
+                <div class="qa-message-list">
+                    <div class="message-item" *ngFor="let l of psngrDT">
+                        <div class="message-inner">
+                            <div class="message-head clearfix">
+                                <i class="material-icons status {{'stat'+l.st}}">{{ l.st == 0 ? 'access_time' : l.st == 1 ? 'beenhere' : 'do_not_disturb_alt' }}</i>
+                                <span class="status textstatus {{'stat'+l.st}}">{{ l.st == 0 ? 'no action' : l.st == 1 ? (l.pd === 'p' ? 'picked up': 'dropped') : 'absent' }}</span>
+                                <div class="avatar pull-left"><img  src="{{global.uploadurl + l.ico}}" onerror="this.src='assets/img/no.jpg';"></div>
+                                <div class="user-detail">
+                                    <div class="post-meta">
+                                        <div class="asker-meta">
+                                            <span class="qa-message-what">{{l.stnm}}</span>
+                                            <span class="qa-message-when">
+												<span class="qa-message-when-data">{{l.pdtime ? (l.pdtime | format :{'format':'DD-MMM-YYYY
+                            hh:mm:ss A'}) : 'No Action Taken'}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- <div class="message-item small" *ngFor="let l of timeline">
+                        <div class="line"></div>
+                        <div>{{l.sertm | format :{'format':'hh:mm:ss A'} }} <i class="material-icons">pin_drop</i></div>
+                    </div> -->
+                   
+
+                </div>
             </div>
         </div>
 
@@ -66,10 +93,10 @@
                     <a class="slideright" (click)="showPlayer(row);" role="button">  <i class="material-icons"> chevron_right</i></a>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <b>{{  row.stdt | format :{'format':'DD-MMM-YYYY hh:mm A'} : '' }}</b>
+                            <b>{{  row.stdt | format :{'format':'DD-MMM-YYYY hh:mm A'} }}</b>
                         </div>
                         <div class="col-md-12 leftmar">
-                            <span class="material-icons ico-specify">pin_drop</span>{{ row.stpdt ? (row.stpdt | format :{'format':'DD-MMM-YYYY
+                            <span class="material-icons ico-specify"></span>{{ row.stpdt ? (row.stpdt | format :{'format':'DD-MMM-YYYY
                             hh:mm A'}) : 'Trip In Progress' }}
                         </div>
                         <div class="col-md-12 leftmar">

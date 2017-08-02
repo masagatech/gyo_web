@@ -4,21 +4,27 @@ import { MessageService, messageType } from '@services';
 import { Globals } from '@models';
 
 @Component({
+    selector: 'pessangers',
     templateUrl: './psg.comp.html',
     styleUrls: ['./style.css']
 })
 export class PSGComponent implements OnInit {
     @Input() data: any;
+    @Input() isload: any;
 
     psngrDT: any = [];
     global = new Globals();
-    constructor(private _msg: MessageService, private _ttmapservice: TTMapService) { }
+    constructor(private _msg: MessageService, private _ttmapservice: TTMapService) {
 
+    }
     ngOnInit() {
-        this.showPassengerList(this.data.tripid);
+        if (!this.isload)
+            this.showPassengerList(this.data.tripid);
+
+
     }
 
-    showPassengerList(tripid: any) {
+    public showPassengerList(tripid: any) {
         var that = this;
 
         this._ttmapservice.showPassengerList({

@@ -74,10 +74,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //side bar
     sidebarTitle = "Title";
+    trafficLayer: any = new google.maps.TrafficLayer();
 
     markerOptions = {
         showinfo: false,
-        hidelive: false
+        hidelive: false,
+        showtrafic: false
     }
 
     constructor(private _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
@@ -124,11 +126,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.loadComponent(PSGComponent, { "a": "asdsadsadasa" });
         this.map = this._gmap.getMap();
         SlidingMarker.initializeGlobally();
+       
     }
     getDefaultMap() {
         this.options = {
             center: { lat: 22.861639, lng: 78.257621 },
-            zoom: 5
+            zoom: 5,
+            styles: [{"stylers": [{ "saturation": -100 }]}]
         };
     }
 
@@ -410,6 +414,15 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 mr.setMap(this.map);
             }
 
+        }
+    }
+
+
+    private showHidetraffic() {
+        if (this.markerOptions.showtrafic) {
+            this.trafficLayer.setMap(this.map);
+        } else {
+            this.trafficLayer.setMap(null);
         }
     }
 

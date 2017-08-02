@@ -4,20 +4,21 @@ import { MessageService, messageType, TrackDashbord } from '@services';
 import { HOSTComponent } from '@interface';
 import { ADHOST } from '@directives';
 import { PSGComponent } from '../passengers/psg.comp'
+import { Globals } from '@models';
 
 declare var google: any;
+declare var MarkerClusterer: any;
 
 @Component({
     templateUrl: './history.comp.html',
     providers: [TrackDashbord],
-    styleUrls: ['./style.css']
+    styleUrls: ['./style.css', '../../../../assets/css/b1njTimeline.css']
 
 })
 export class HISTORYComponent implements OnInit, OnDestroy {
-    @ViewChild(ADHOST)
-    private _Host: ADHOST;
-
     @Input() data: any;
+
+    global = new Globals();
     tripDT: any = [];
     map: any;
     dateFromValue: any;
@@ -28,6 +29,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     index = 0;
     poly: any;
     HistoryMarker: any = {};
+    PassengersMarker: any = [];
+
     slideValCt = 0;
     tripLength = 0;
     isplay = false;
@@ -52,7 +55,14 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     hasTripData: any = false;
     historyDt: any = [];
     isplayerShow: boolean = false;
+    //pessangers
+    psngrDT: any = [];
+    markerCluster: any;
+    options = {
+        imagePath: './assets/img/cluster/m'
+    };
 
+    timeline: any = [];
     constructor(private _msg: MessageService, private _ttmapservice: TTMapService,
         private _trackboard: TrackDashbord, private componentFactoryResolver: ComponentFactoryResolver) { }
 
@@ -62,6 +72,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
         commonfun.loaderhide("#loaderbody");
         this.map = this.data.map;
+        //create marker cluster
+        this.markerCluster = new MarkerClusterer(this.map, [], this.options);
 
         this.marker = new SlidingMarker({
             position: {
@@ -83,6 +95,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         this.initPoly();
         this.addStartStop()
 
+
     }
 
     // Get Today's Trip
@@ -101,6 +114,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 return;
             }
             that.tripDT = data.data;
+            that.timeline = data.data;
             that.maxrange = that.tripDT.length - 1;
             that.drawPath();
             that.setStartEnd();
@@ -112,8 +126,78 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             commonfun.loaderhide("#loaderbody");
         }, () => {
         });
-        this.data.tripid = tripid;
-       // this.loadComponent(PSGComponent, this.data);
+        // this.data.tripid = tripid;
+        // this.loadComponent(PSGComponent, this.data);
+        // this._PSG.showPassengerList(this.PGDATA.tripid);
+        this.getPassengers(tripid);
+    }
+
+    private getPassengers(tripid) {
+
+        var that = this;
+        commonfun.loader("#loaderbody", "timer", 'Passengers...');
+        this._trackboard.gettrackboard({
+            "flag": "tripdetails",
+            "tripid": tripid,
+            "uid": this.data.loginUser.uid,
+            "utype": this.data.loginUser.utype,
+            "issysadmin": this.data.loginUser.issysadmin,
+            "wsautoid": this.data._wsdetails.wsautoid
+        }).subscribe((data) => {
+            try {
+                //console.log(data.data);
+                //that.historyDt = data.data;
+                that.psngrDT = data.data;
+                that.drawPassengers();
+                // for (var i = 0; i < pessangers.length; i++) {
+                //     var el = pessangers[i];
+                //     //stdid,stnm,pdloc,pdtime,pdtype,ico
+
+                //     //that.PassengersMarker[el]
+
+                // }
+
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+            commonfun.loaderhide("#loaderbody");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide("#loaderbody");
+        }, () => {
+
+        })
+    }
+
+    private clearPassengers() {
+        this.markerCluster.clearMarkers();
+        this.PassengersMarker = [];
+    }
+
+    private drawPassengers() {
+        this.clearPassengers();
+        for (var index = 0; index < this.psngrDT.length; index++) {
+            var el = this.psngrDT[index];
+            if (el.pdloc) {
+                let latlon = new google.maps.LatLng(el.pdloc.x, el.pdloc.y);
+
+                let marker = new google.maps.Marker({
+                    position: latlon,
+                    icon: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png'
+                });
+                marker.info = new google.maps.InfoWindow({
+                    content: el.stnm
+                });
+
+                marker.info.open(this.map, marker)
+                this.PassengersMarker.push(marker);
+            }
+            this.markerCluster.addMarkers(this.PassengersMarker)
+
+
+        }
+
     }
 
     private resetTrips() {
@@ -124,6 +208,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         this.marker.setMap(null);
         if (this.HistoryMarker["start"]) this.HistoryMarker["start"].setMap(null);
         if (this.HistoryMarker["stop"]) this.HistoryMarker["stop"].setMap(null);
+        this.clearPassengers();
     }
 
 
@@ -366,6 +451,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     }
 
     private clearAll() {
+        this.clearPassengers();
         this.isplay = false;
         if (this.timer) clearTimeout(this.timer);
         this.marker.setMap(null);
@@ -376,14 +462,15 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     }
     //injecter service
-    private loadComponent(component, data) {
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-        let viewContainerRef = this._Host.viewContainerRef;
-        viewContainerRef.clear();
-        let componentRef = viewContainerRef.createComponent(componentFactory);
-        (<HOSTComponent>componentRef.instance).data = data;
+    // private loadComponent(component, data) {
+    //     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    //     let viewContainerRef = this._Host.viewContainerRef;
+    //     viewContainerRef.clear();
+    //     let componentRef = viewContainerRef.createComponent(componentFactory);
+    //     (<HOSTComponent>componentRef.instance).data = data;
 
-    }
+    // }
+
 
 
     ngOnDestroy() {

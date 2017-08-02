@@ -27,12 +27,16 @@
     margin-left: 35px;
 }
 span.material-icons.ico-specify {
-   font-size: 14px;
+      font-size: 14px;
     color: #329e05;
     margin-top: 1px;
     position: absolute;
     left: -9px;
     top: -3px;
+    height: 15px;
+    width: 15px;
+    background-size: cover;
+    background-image: url('../../../../assets/img/redflag.png');
 }
 .statusicon{
     position: absolute;
@@ -66,4 +70,33 @@ span.material-icons.ico-specify {
     font-size: 14px;
     top: 8px;
     position: absolute;
+}
+
+
+i.material-icons.status {
+    font-size: 14px;
+    position: absolute;
+       top: -5px;
+    left: 2px;
+}
+
+.stat0{
+       color: orange;
+}
+
+.stat1{
+       color: green;
+}
+.stat2{
+       color: red;
+}
+    
+.textstatus{
+        position: absolute;
+    bottom: -1px;
+    text-transform: uppercase;
+    font-size: 10px;
+    right: 2px;
+    font-weight: bold;
+
 }

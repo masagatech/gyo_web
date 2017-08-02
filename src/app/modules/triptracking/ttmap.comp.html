@@ -72,9 +72,14 @@
             <label for="md_checkbox_chktitle">{{markerOptions.showinfo === true ? 'Hide Titles' : 'Show Titles' }}</label>
         </div>
         <div class="pull-left">
-            <input type="checkbox" id="md_checkbox_chlives" [(ngModel)]="markerOptions.hidelive" (ngModelChange)="hidelives()"
-                class="chk-col-orange" checked="">
+            <input type="checkbox" id="md_checkbox_chlives" [(ngModel)]="markerOptions.hidelive" (ngModelChange)="hidelives()" class="chk-col-orange"
+                checked="">
             <label for="md_checkbox_chlives">{{markerOptions.hidelive === true ? 'Show Live' : 'Hide Live' }}</label>
+        </div>
+        <div class="pull-left">
+            <input type="checkbox" id="md_checkbox_showtrafic" [(ngModel)]="markerOptions.showtrafic" (ngModelChange)="showHidetraffic()" class="chk-col-orange"
+                checked="">
+            <label for="md_checkbox_showtrafic">{{markerOptions.showtrafic === true ? 'Hide Traffic' : 'Show Traffic' }}</label>
         </div>
     </div>
     <div style="left: 0px;z-index: 1;position: absolute;top:113px;background:#ffffff;height:40px;"><a role="button" (click)="closesidepanel()"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a></div>
