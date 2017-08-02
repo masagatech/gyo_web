@@ -45,14 +45,14 @@ export class AddUserComponent implements OnInit {
     isAllEnttRights: boolean = true;
     entityDT: any = [];
     entityList: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: any = [];
 
     isAllVehRights: boolean = true;
     vehtypeDT: any = [];
     vehtypeList: any = [];
     vehtypeid: number = 0;
-    vehtypename: string = "";
+    vehtypename: any = [];
 
     private subscribeParameters: any;
 
@@ -220,11 +220,10 @@ export class AddUserComponent implements OnInit {
     // Selected Entity
 
     selectEntityData(event, type) {
-        this.entityid = event.value;
-        this.entityname = event.label;
+        this.enttid = event.value;
 
         this.addEntityList();
-        $(".entityname input").focus();
+        $(".enttname input").focus();
     }
 
     // Check Duplicate Entity
@@ -235,7 +234,7 @@ export class AddUserComponent implements OnInit {
         for (var i = 0; i < that.entityList.length; i++) {
             var field = that.entityList[i];
 
-            if (field.schid == this.entityid) {
+            if (field.schid == this.enttid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate Entity not Allowed");
                 return true;
             }
@@ -252,12 +251,12 @@ export class AddUserComponent implements OnInit {
 
         if (!duplicateEntity) {
             that.entityList.push({
-                "schid": that.entityid, "schnm": that.entityname
+                "schid": that.enttname.value, "schnm": that.enttname.label
             });
         }
 
-        that.entityid = 0;
-        that.entityname = "";
+        that.enttid = 0;
+        that.enttname = [];
     }
 
     deleteEntity(row) {
@@ -300,7 +299,6 @@ export class AddUserComponent implements OnInit {
 
     selectVehicleData(event, type) {
         this.vehtypeid = event.value;
-        this.vehtypename = event.label;
 
         this.addVehicleList();
         $(".vehtypename input").focus();
@@ -331,12 +329,12 @@ export class AddUserComponent implements OnInit {
 
         if (!duplicateVehicle) {
             that.vehtypeList.push({
-                "vehtypeid": that.vehtypeid, "vehtypename": that.vehtypename
+                "vehtypeid": that.vehtypename.value, "vehtypename": that.vehtypename.label
             });
         }
 
         that.vehtypeid = 0;
-        that.vehtypename = "";
+        that.vehtypename = [];
     }
 
     deleteVehicle(row) {

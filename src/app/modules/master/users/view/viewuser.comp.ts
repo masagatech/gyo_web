@@ -17,7 +17,7 @@ export class ViewUserComponent implements OnInit {
     autoUserDT: any = [];
 
     autouid: number = 0;
-    autouname: string = "";
+    autouname: any = [];
 
     utypeDT: any = [];
     srcutype: string = "";
@@ -113,12 +113,8 @@ export class ViewUserComponent implements OnInit {
     // Selected User
 
     selectAutoUsers(event, arg) {
-        var that = this;
-
-        that.autouid = event.uid;
-        that.autouname = event.uname;
-
-        that.getUserDetails();
+        this.autouid = event.uid;
+        this.getUserDetails();
     }
 
     public viewUserDataRights() {
@@ -168,7 +164,7 @@ export class ViewUserComponent implements OnInit {
         Cookie.delete('_srcutype_');
         this.srcutype = "";
         this.autouid = 0;
-        this.autouname = "";
+        this.autouname = [];
         this.getUserDetails();
     }
 

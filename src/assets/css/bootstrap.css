@@ -7791,6 +7791,12 @@ button.close {
     float: left !important;
 }
 
+.img-left {
+    float: left !important;
+    width: 60px;
+    padding: 0 5px;
+}
+
 .hide {
     display: none !important;
 }

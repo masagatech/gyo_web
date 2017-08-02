@@ -3097,7 +3097,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-orderlist .ui-orderlist-caption {
-    width: 200px
+    width: 450px;
 }
 
 .ui-orderlist .ui-orderlist-list {
@@ -3106,12 +3106,21 @@ button.ui-button::-moz-focus-inner {
     padding: 0;
     overflow: auto;
     height: 200px;
-    width: 200px
+    width: 450px;
 }
 
 .ui-orderlist .ui-orderlist-list li {
     margin: 1px;
     padding: 2px
+}
+
+.ui-orderlist-controls {
+    float: left;
+}
+
+.ui-orderlist-list-container {
+    float: left;
+    padding-left: 10px;
 }
 
 .ui-orderlist .ui-button {

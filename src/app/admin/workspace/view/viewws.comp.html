@@ -103,6 +103,7 @@
             <div class="header">
                 <h2 class="title">
                     <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
+
                     <a role="button" (click)="openEntityForm(row)">{{row.wsname}}</a>
                     <small>{{row.wstype}}</small>
                 </h2>

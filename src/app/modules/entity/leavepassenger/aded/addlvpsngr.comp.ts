@@ -23,7 +23,7 @@ export class AddLeavePassengerComponent implements OnInit {
 
     passengerDT: any = [];
     psngrid: number = 0;
-    psngrname: string = "";
+    psngrname: any = [];
 
     frmdt: any = "";
     todt: any = "";
@@ -79,10 +79,9 @@ export class AddLeavePassengerComponent implements OnInit {
 
     selectPassengerData(event) {
         this.psngrid = event.value;
-        this.psngrname = event.label;
 
-        Cookie.set("_psngrid_", this.psngrid.toString());
-        Cookie.set("_psngrnm_", this.psngrname);
+        Cookie.set("_psngrid_", event.value);
+        Cookie.set("_psngrnm_", event.label);
     }
 
     // Leave Type
@@ -109,7 +108,7 @@ export class AddLeavePassengerComponent implements OnInit {
     resetLeavePassengerFields() {
         this.slid = 0;
         this.psngrid = 0;
-        this.psngrname = "";
+        this.psngrname = [];
         this.frmdt = "";
         this.todt = "";
         this.restype = "";
@@ -203,7 +202,8 @@ export class AddLeavePassengerComponent implements OnInit {
                     try {
                         that.slid = data.data[0].slid;
                         that.psngrid = data.data[0].psngrid;
-                        that.psngrname = data.data[0].psngrname;
+                        that.psngrname.value = data.data[0].psngrid;
+                        that.psngrname.label = data.data[0].psngrname;
                         that.restype = data.data[0].restype;
                         that.remark = data.data[0].resdesc;
                         that.frmdt = data.data[0].frmdt;

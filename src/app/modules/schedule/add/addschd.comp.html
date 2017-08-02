@@ -110,23 +110,24 @@
                 <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
-                        <p-autoComplete id="pickpassengername" name="pickpassengername" [(ngModel)]="pickpassengername" [tabindex]="9" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
-                            [size]="30" class="form-controlAutoComplete pickpassengername"></p-autoComplete>
+                        <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrname" [tabindex]="9" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete pickpsngrname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
 
-                <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
-                    <template let-passenger pTemplate="editor">
+                <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" [header]="_enttdetails.psngrtype">
+                    <template let-pkrow pTemplate="item">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="ui-helper-clearfix">
-                                    {{passenger.stdnm}}
+                                    {{pkrow.stdnm}}
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(pkrow)">
+                                        <i class="material-icons">delete</i></button>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +186,7 @@
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
                         <select id="droppsngrtype" [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="14">
-                            <option [value]="'bypsngr'">By Passenger</option>
+                            <option [value]="'bypsngr'">By {{_enttdetails.psngrtype}}</option>
                             <option [value]="'byrt'">By Route</option>
                         </select>
                     </div>
@@ -215,23 +216,24 @@
                 <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
-                        <p-autoComplete id="droppassengername" name="droppassengername" [(ngModel)]="droppassengername" [tabindex]="16" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
-                            [size]="30" class="form-controlAutoComplete droppassengername"></p-autoComplete>
+                        <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrname" [tabindex]="16" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
+                            [size]="30" class="form-controlAutoComplete droppsngrname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
 
-                <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
-                    <template let-passenger pTemplate="item">
+                <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" [header]="_enttdetails.psngrtype">
+                    <template let-drprow pTemplate="item">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="ui-helper-clearfix">
-                                    {{passenger.stdnm}}
+                                    {{drprow.stdnm}}
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(drprow)">
+                                        <i class="material-icons">delete</i></button>
                                 </div>
                             </div>
                         </div>

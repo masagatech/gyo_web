@@ -29,7 +29,7 @@ export class AddHolidayComponent implements OnInit {
     entityDT: any = [];
     entityList: any = [];
     enttid: number = 0;
-    enttname: string = "";
+    enttname: any = [];
 
     mode: string = "";
     isactive: boolean = true;
@@ -76,7 +76,6 @@ export class AddHolidayComponent implements OnInit {
 
     selectEntityData(event) {
         this.enttid = event.value;
-        this.enttname = event.label;
 
         this.addEntityList();
         $(".enttname input").focus();
@@ -88,11 +87,11 @@ export class AddHolidayComponent implements OnInit {
         var that = this;
 
         that.entityList.push({
-            "schid": that.enttid, "schnm": that.enttname
+            "schid": that.enttname.value, "schnm": that.enttname.label
         });
 
         that.enttid = 0;
-        that.enttname = "";
+        that.enttname = [];
     }
 
     deleteEntity(row) {
@@ -141,7 +140,7 @@ export class AddHolidayComponent implements OnInit {
         this.hldnm = "";
         this.hlddesc = "";
         this.enttid = 0;
-        this.enttname = "";
+        this.enttname = [];
 
         this.entityList = [];
     }

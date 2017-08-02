@@ -83,7 +83,7 @@
                                     <label for="allenttrights" class="control-label">All Entity Rights</label>
                                     <div class="row clearfix" *ngIf="!isAllEnttRights">
                                         <div class="col-md-10">
-                                            <p-autoComplete id="entityname" name="entityname" [(ngModel)]="entityname" [tabindex]="6" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete entityname"></p-autoComplete>
+                                            <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="6" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                                         </div>
                                         <div class="col-md-2" align="right">
                                             <span class="material-icons">search</span>

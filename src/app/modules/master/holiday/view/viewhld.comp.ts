@@ -15,8 +15,8 @@ export class ViewHolidayComponent implements OnInit {
     _wsdetails: any = [];
 
     entityDT: any = [];
-    entityid: number = 0;
-    entityname: string = "";
+    enttid: number = 0;
+    enttname: any = [];
 
     holidayDT: any = [];
 
@@ -42,7 +42,7 @@ export class ViewHolidayComponent implements OnInit {
         that.refreshButtons();
 
         setTimeout(function () {
-            $(".entityname input").focus();
+            $(".enttname input").focus();
         }, 100);
 
         that.header = {
@@ -103,11 +103,10 @@ export class ViewHolidayComponent implements OnInit {
     // Selected Owners
 
     selectEntityData(event) {
-        this.entityid = event.value;
-        this.entityname = event.label;
+        this.enttid = event.value;
 
-        Cookie.set("_enttid_", this.entityid.toString());
-        Cookie.set("_enttnm_", this.entityname);
+        Cookie.set("_enttid_", event.value);
+        Cookie.set("_enttnm_", event.label);
 
         this.getHolidayGrid();
     }
@@ -116,8 +115,8 @@ export class ViewHolidayComponent implements OnInit {
         var that = this;
 
         if (Cookie.get('_enttnm_') != null) {
-            that.entityid = parseInt(Cookie.get('_enttid_'));
-            that.entityname = Cookie.get('_enttnm_');
+            that.enttname.value = parseInt(Cookie.get('_enttid_'));
+            that.enttname.label = Cookie.get('_enttnm_');
             that.getHolidayGrid();
         }
     }
@@ -129,7 +128,7 @@ export class ViewHolidayComponent implements OnInit {
 
         that._holidayervice.getHoliday({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "schid": that.entityid, "wsautoid": that._wsdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin, "schid": that.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.holidayDT = data.data;

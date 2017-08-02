@@ -18,7 +18,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     autoEntityDT: any = [];
     enttid: number = 0;
-    enttname: string = "";
+    enttname: any = [];
 
     entttypeDT: any = [];
     entttype: string = "";
@@ -140,8 +140,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     selectEntityData(event) {
         this.enttid = event.value;
-        this.enttname = event.label;
-
         this.getEntityDetails();
     }
 
@@ -183,7 +181,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         Cookie.delete('_entttype_');
         this.entttype = "";
         this.enttid = 0;
-        this.enttname = "";
+        this.enttname = [];
         this.getEntityDetails();
     }
 

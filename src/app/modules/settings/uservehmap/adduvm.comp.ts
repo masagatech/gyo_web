@@ -16,12 +16,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     usersDT: any = [];
     uid: number = 0;
-    uname: string = "";
+    uname: any = [];
     utype: string = "";
 
     vehicleDT: any = [];
     vehid: number = 0;
-    vehname: string = "";
+    vehname: any = [];
     vehicleList: any = [];
 
     private subscribeParameters: any;
@@ -43,10 +43,10 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     resetUserVehicleMap() {
         $(".enttname input").focus();
         this.uid = 0;
-        this.uname = "";
+        this.uname = [];
         this.utype = "";
         this.vehid = 0;
-        this.vehname = "";
+        this.vehname = [];
         this.vehicleList = [];
     }
 
@@ -80,7 +80,6 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.uid = event.uid;
-        that.uname = event.uname;
         that.utype = event.utype;
 
         that.getUserVehicleMap();
@@ -112,12 +111,8 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     // Selected Vehicle
 
     selectVehicleData(event, arg) {
-        var that = this;
-
-        that.vehid = event.value;
-        that.vehname = event.label;
-
-        that.addVehicleList();
+        this.vehid = event.value;
+        this.addVehicleList();
     }
 
     // Check Duplicate Vehicle
@@ -146,7 +141,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         }
 
         that.vehid = 0;
-        that.vehname = "";
+        that.vehname = [];
         $(".vehname input").focus();
     }
 

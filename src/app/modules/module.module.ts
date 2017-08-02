@@ -21,9 +21,6 @@ export const routes = [
                     // Trip Tracking
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
 
-                    // Schedule
-                    { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
-
                     // Entity
                     { path: 'master', loadChildren: './entity#EntityModule' },
 
@@ -35,6 +32,9 @@ export const routes = [
 
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },
+
+                    // Schedule
+                    { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
 
                     // Marketing
                     { path: 'marketing', loadChildren: './marketing#MarketingModule' },

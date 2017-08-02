@@ -20,7 +20,7 @@ export class ViewWorkspaceComponent implements OnInit {
 
     autoWorkspaceDT: any = [];
     autowsid: number = 0;
-    autowsname: string = "";
+    autowsname: any = [];
 
     wsautoid: number = 0;
     wscode: string = "";
@@ -46,8 +46,8 @@ export class ViewWorkspaceComponent implements OnInit {
         this.getUploadConfig();
 
         if (Cookie.get('_autowsnm_') != null) {
-            this.autowsid = parseInt(Cookie.get('_autowsid_'));
-            this.autowsname = Cookie.get('_autowsnm_');
+            this.autowsname.value = parseInt(Cookie.get('_autowsid_'));
+            this.autowsname.label = Cookie.get('_autowsnm_');
         }
 
         this.getWorkspaceDetails();
@@ -84,16 +84,15 @@ export class ViewWorkspaceComponent implements OnInit {
 
     selectAutoWorkspaceData(event) {
         this.autowsid = event.value;
-        this.autowsname = event.label;
 
-        Cookie.set("_autowsid_", this.autowsid.toString());
-        Cookie.set("_autowsnm_", this.autowsname);
+        Cookie.set("_autowsid_", event.value);
+        Cookie.set("_autowsnm_", event.label);
 
         this.getWorkspaceDetails();
     }
 
     getUploadConfig() {
-        this.uploadconfig.uploadurl = this.global.uploadurl
+        this.uploadconfig.uploadurl = this.global.uploadurl;
     }
 
     getWorkspaceDetails() {
@@ -139,7 +138,7 @@ export class ViewWorkspaceComponent implements OnInit {
 
     resetWorkspaceDetails() {
         this.autowsid = 0;
-        this.autowsname = "";
+        this.autowsname = [];
         Cookie.delete("_autowsid_");
         Cookie.delete("_autowsnm_");
 

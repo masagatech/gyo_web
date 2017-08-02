@@ -33,7 +33,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
 
     autoPassengerDT: any = [];
     psngrid: number = 0;
-    psngrname: string = "";
+    psngrname: any = [];
 
     passengerDT: any = [];
 
@@ -110,10 +110,9 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
 
     selectPassengerData(event) {
         this.psngrid = event.value;
-        this.psngrname = event.label;
 
-        Cookie.set("_psngrid_", this.psngrid.toString());
-        Cookie.set("_psngrnm_", this.psngrname);
+        Cookie.set("_psngrid_", event.value);
+        Cookie.set("_psngrnm_", event.label);
 
         this.getPassengerDetails();
     }
@@ -150,8 +149,8 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (Cookie.get('_psngrnm_') != null) {
-            that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname = Cookie.get('_psngrnm_');
+            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
+            that.psngrname.label = Cookie.get('_psngrnm_');
 
             that.getPassengerDetails();
         }
@@ -163,12 +162,12 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader("#fltrpsngr");
 
-        if (that.psngrname == "") {
+        if (that.psngrid == 0) {
             Cookie.set("_psngrid_", "0");
             Cookie.set("_psngrnm_", "");
 
-            that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname = Cookie.get('_psngrnm_');
+            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
+            that.psngrname.label = Cookie.get('_psngrnm_');
         }
 
         params = {

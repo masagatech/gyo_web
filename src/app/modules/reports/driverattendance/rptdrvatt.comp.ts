@@ -15,14 +15,12 @@ import jsPDF from 'jspdf'
 export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
+    _enttdetails: any = [];
 
     monthDT: any = [];
 
     attColumn: any = [];
     attData: any = [];
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
     monthname: string = "";
 
     @ViewChild('drvatt') drvatt: ElementRef;
@@ -32,15 +30,15 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
         this.getDefaultMonth();
-        this.viewAttendanceReportsRights();
+        this.getAttendanceColumn();
     }
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".enttname input").focus();
             commonfun.navistyle();
 
             $.AdminBSB.islocked = true;
@@ -73,40 +71,6 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Owners
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        Cookie.set("_enttid_", this.enttid.toString());
-        Cookie.set("_enttnm_", this.enttname);
-
-        this.getAttendanceColumn();
-    }
-
     // Fill Entity, Division, Gender DropDown
 
     fillDropDownList() {
@@ -135,22 +99,11 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
 
     // Get Attendent Data
 
-    public viewAttendanceReportsRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
-
-            that.getAttendanceColumn();
-        }
-    }
-
     getAttendanceColumn() {
         var that = this;
 
         that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that.enttid
+            "flag": "column", "monthname": that.monthname, "schoolid": that._enttdetails.enttid
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
@@ -165,17 +118,14 @@ export class DriverAttendanceReportsComponent implements OnInit, OnDestroy {
     getAttendanceReports() {
         var that = this;
 
-        if (that.enttname === "") {
-            that._msg.Show(messageType.warn, "Warning", "Search Entity");
-        }
-        else if (that.monthname === "") {
+        if (that.monthname === "") {
             that._msg.Show(messageType.warn, "Warning", "Select Month");
         }
         else {
             commonfun.loader();
 
             that._rptservice.getAttendanceReports({
-                "flag": "driver", "monthname": that.monthname, "schoolid": that.enttid
+                "flag": "driver", "monthname": that.monthname, "schoolid": that._enttdetails.enttid
             }).subscribe(data => {
                 try {
                     if (data.data.length == 0) {

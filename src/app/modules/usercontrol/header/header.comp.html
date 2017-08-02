@@ -4,7 +4,9 @@
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
             <a class="navbar-brand" [routerLink]="['/']">
-                <img class="logo pull-left" src="{{wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px">
+                <div class="img-left">
+                    <img class="logo" src="{{wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px">
+                </div>
                 <span class="title pull-left">{{wsname}}
                 <br /><small>{{enttname}}</small></span>
             </a>

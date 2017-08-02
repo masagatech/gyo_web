@@ -24,18 +24,18 @@ export class EditScheduleComponent implements OnInit {
 
     attendantDT: any = [];
     pickattid: number = 0;
-    pickattname: string = "";
+    pickattname: any = [];
     dropattid: number = 0;
-    dropattname: string = "";
+    dropattname: any = [];
 
     passengerDT: any = [];
     counter: number = 0;
 
-    pickpassengerid: number = 0;
-    pickpassengername: string = "";
+    pickpsngrid: number = 0;
+    pickpsngrname: any = [];
 
-    droppassengerid: number = 0;
-    droppassengername: string = "";
+    droppsngrid: number = 0;
+    droppsngrname: any = [];
 
     pickAttList: any = [];
     dropAttList: any = [];
@@ -255,22 +255,18 @@ export class EditScheduleComponent implements OnInit {
     selectAutoData(event, type) {
         if (type === "pickatt") {
             this.pickattid = event.uid;
-            this.pickattname = event.uname;
             this.addPickAttData();
         }
         else if (type === "dropatt") {
             this.dropattid = event.uid;
-            this.dropattname = event.uname;
             this.addDropAttData();
         }
         else if (type === "pickstuds") {
-            this.pickpassengerid = event.value;
-            this.pickpassengername = event.label;
+            this.pickpsngrid = event.value;
             this.pickupPassenger();
         }
         else if (type === "dropstuds") {
-            this.droppassengerid = event.value;
-            this.droppassengername = event.label;
+            this.droppsngrid = event.value;
             this.dropPassenger();
         }
         else {
@@ -415,7 +411,7 @@ export class EditScheduleComponent implements OnInit {
         for (var i = 0; i < that.pickPassengerDT.length; i++) {
             var field = that.pickPassengerDT[i];
 
-            if (field.stdid == this.pickpassengerid) {
+            if (field.stdid == this.pickpsngrid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate " + that._enttdetails.psngrtype + " not Allowed");
                 return true;
             }
@@ -433,18 +429,18 @@ export class EditScheduleComponent implements OnInit {
         if (!duplicatepassenger) {
             that.pickPassengerDT.push({
                 "counter": that.counter++,
-                "stdid": that.pickpassengerid,
-                "stdnm": that.pickpassengername,
+                "stdid": that.pickpsngrname.value,
+                "stdnm": that.pickpsngrname.label,
             });
 
             that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
         }
 
-        that.pickpassengerid = 0;
-        that.pickpassengername = "";
+        that.pickpsngrid = 0;
+        that.pickpsngrname = [];
 
-        that.droppassengerid = 0;
-        that.droppassengername = "";
+        that.droppsngrid = 0;
+        that.droppsngrname = [];
     }
 
     // Pick Up Passenger By Route
@@ -479,7 +475,7 @@ export class EditScheduleComponent implements OnInit {
         for (var i = 0; i < that.dropPassengerDT.length; i++) {
             var field = that.dropPassengerDT[i];
 
-            if (field.stdid == this.droppassengerid) {
+            if (field.stdid == this.droppsngrid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate " + that._enttdetails.psngrtype + " not Allowed");
                 return true;
             }
@@ -497,13 +493,13 @@ export class EditScheduleComponent implements OnInit {
         if (!duplicatepassenger) {
             that.dropPassengerDT.push({
                 "counter": that.counter++,
-                "stdid": that.droppassengerid,
-                "stdnm": that.droppassengername,
+                "stdid": that.droppsngrname.value,
+                "stdnm": that.droppsngrname.label,
             });
         }
 
-        that.droppassengerid = 0;
-        that.droppassengername = "";
+        that.droppsngrid = 0;
+        that.droppsngrname = [];
     }
 
     // Drop Passenger By Route
@@ -551,12 +547,12 @@ export class EditScheduleComponent implements OnInit {
 
         that.pickAttList.push({
             "counter": that.counter++,
-            "attid": that.pickattid,
-            "attnm": that.pickattname,
+            "attid": that.pickattname.uid,
+            "attnm": that.pickattname.uname,
         });
 
         that.pickattid = 0;
-        that.pickattname = "";
+        that.pickattname = [];
     }
 
     // Add Pick Attendent Data
@@ -566,12 +562,12 @@ export class EditScheduleComponent implements OnInit {
 
         that.dropAttList.push({
             "counter": that.counter++,
-            "attid": that.dropattid,
-            "attnm": that.dropattname,
+            "attid": that.dropattname.value,
+            "attnm": that.dropattname.label,
         });
 
         that.dropattid = 0;
-        that.dropattname = "";
+        that.dropattname = [];
     }
 
     // Delete Pick Up Passenger
@@ -747,12 +743,12 @@ export class EditScheduleComponent implements OnInit {
         }
         else if (that.pickPassengerDT.length === 0) {
             that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up Passenger");
-            $(".pickpassengername").focus();
+            $(".pickpsngrname input").focus();
             return false;
         }
         else if (that.dropPassengerDT.length === 0) {
             that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop Passenger");
-            $(".droppassengername").focus();
+            $(".droppsngrname input").focus();
             return false;
         }
         /*else if (that.dropdriverid === 0) {
@@ -772,7 +768,7 @@ export class EditScheduleComponent implements OnInit {
         }*/
         else if (that.ispickup == false && that.isdrop == false) {
             that._msg.Show(messageType.error, "Error", "Please Select atleast 1 Pick up / Drop Checkbox");
-            $(".droppassengername").focus();
+            $(".droppsngrname input").focus();
             return false;
         }
 
