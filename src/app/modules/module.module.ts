@@ -22,10 +22,7 @@ export const routes = [
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
 
                     // Entity
-                    { path: 'master', loadChildren: './entity#EntityModule' },
-
-                    // Masters
-                    // { path: 'master', loadChildren: './master#MasterModule' },
+                    { path: 'master', loadChildren: './master#MasterModule' },
 
                     // Reports
                     { path: 'reports', loadChildren: './reports#ReportsModule' },

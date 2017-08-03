@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { EntityComponent } from '../entity/entity.comp';
+import { MasterComponent } from '../master/master.comp';
 import { AuthGuard } from '../../_services/authguard-service';
 
 import { FormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 export const routes = [
     {
         path: '',
-        component: EntityComponent,
+        component: MasterComponent,
         canActivate: [AuthGuard],
         children: [
             {
@@ -39,11 +39,11 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        EntityComponent
+        MasterComponent
     ],
     providers: [AuthGuard]
 })
 
-export class EntityModule {
+export class MasterModule {
 
 }

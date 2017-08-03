@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'entity.comp.html'
+    templateUrl: 'master.comp.html'
 })
 
-export class EntityComponent implements OnDestroy {
+export class MasterComponent implements OnDestroy {
     constructor(private _router: Router) {
         let _enttdetails = Cookie.get("_schenttdetails_");
 
