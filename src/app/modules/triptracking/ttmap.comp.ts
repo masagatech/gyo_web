@@ -20,7 +20,8 @@ declare var google: any;
 
 @Component({
     templateUrl: 'ttmap.comp.html',
-    providers: [CommonService, SocketService, TrackDashbord]
+    providers: [CommonService, SocketService, TrackDashbord],
+    styleUrls: ['./style.css']
 })
 
 
@@ -126,13 +127,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.loadComponent(PSGComponent, { "a": "asdsadsadasa" });
         this.map = this._gmap.getMap();
         SlidingMarker.initializeGlobally();
-       
+
     }
     getDefaultMap() {
         this.options = {
             center: { lat: 22.861639, lng: 78.257621 },
             zoom: 5,
-            styles: [{"stylers": [{ "saturation": -100 }]}]
+            styles: [{ "stylers": [{ "saturation": -100 }] }]
         };
     }
 
@@ -241,6 +242,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             else if (_d["evt"] == "data") {
                 try {
                     var geoloc = _d["data"];
+                    console.log(geoloc)
                     let el = that.vehtypeDT.find(a => a.vhid === parseInt(geoloc.vhid));
                     //console.log(el)
                     if (el !== undefined) {
@@ -252,7 +254,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                         el.sertm = geoloc.sertm;
                         el.isshow = true;
                         el.min = 0;
+                        el.flag = geoloc.flag;
                         el.ju = true;
+                        $("#vh" + geoloc.vhid).removeClass('swing animated');
+
+                        setTimeout(function () {
+                            $("#vh" + geoloc.vhid).addClass('swing animated');
+                        }, 100);
+
                     }
                     this.moveMarker([geoloc.lat, geoloc.lon], geoloc.vhid, geoloc.bearing);
                 } catch (error) {
@@ -346,6 +355,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 el.min = this.getTimeDiff(d.sertm);
                 el.isshow = true;
                 el.ju = false;
+                el.flag = d.flag;
                 //console.log(el.loc);
                 this.moveMarker([el.loc[1], el.loc[0]], el.vhid, el.bearing);
             } else if (el.ju) {

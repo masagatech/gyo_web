@@ -16,15 +16,15 @@
     <div class="col-md-12 vehiclewrapper" id="style-15">
         <ul class="vehicles">
             <li class="vehicle" *ngFor="let row of vehtypeDT">
-                <div class="vhwrapper {{row.isshow ? row.min > 3 ? 'of' : 'ol' : 'ou'}}" (click)="clickVehicle(row)">
+                <div class="vhwrapper {{row.isshow ? row.min > 3 ? 'of' : 'ol' : 'ou'}}"  (click)="clickVehicle(row)">
                     <div class="vhbody">
                         <div class="titlewrap">
                             <div>
 
                                 <div class="vhchkbx">
-                                    <input type="checkbox" id="{{row.vhid}}" data-md-icheck (change)="onchange($event, row)" class="filled-in">
+                                    <input type="checkbox" id="{{row.vhid}}" data-md-icheck (change)="onchange($event, row)" class="small filled-in">
                                     <label for="{{row.vhid}}"></label>
-                                    <img src="assets/img/map/{{row.ico}}_0.png?v=1" height="40px" />
+                                    <img id="{{'vh'+ row.vhid}}" src="assets/img/map/{{row.ico}}_0.png?v=1" height="40px" />
                                 </div>
                                 <span class="vhbatr pull-right" *ngIf="row.isshow">
                                     {{row.isempty}}
@@ -40,10 +40,10 @@
                                 </div>
 
                                 <div class="vhsubtitle">
-                                    <div><span class="shortdet">{{row.vrg}}&nbsp;&nbsp;&nbsp;{{row.vmodl}}</span></div>
+                                    <div><span class="shortdet">{{row.vrg}}&nbsp;&nbsp;&nbsp;{{row.vmodl}}</span><span class="tripstatus pull-right">{{row.flag == 'inprog' ? 'TRIP IN PROGRESS' : (row.flag == 'start' ? 'TRIP STARTED' : 'TRIP STOPPED')  }}</span></div>
                                 </div>
                                 <div class="vhsubtitle">
-                                    <div *ngIf="row.isshow"><span class="time" title="{{row.sertm}}">{{row.sertm | timeAgo}}</span><span class="speed pull-right">{{row.speed | _currency:{'decimals':3, 'currsym': '' } }} km/h</span>                                        </div>
+                                    <div *ngIf="row.isshow"><span class="time" title="{{row.sertm}}">{{row.sertm | timeAgo}}</span><span class="speed pull-right">{{row.speed | _currency:{'decimals':3, 'currsym': '' } }} km/h</span></div>
                                     <span *ngIf="!row.isshow">No updates found</span>
 
                                 </div>
@@ -77,8 +77,8 @@
             <label for="md_checkbox_chlives">{{markerOptions.hidelive === true ? 'Show Live' : 'Hide Live' }}</label>
         </div>
         <div class="pull-left">
-            <input type="checkbox" id="md_checkbox_showtrafic" [(ngModel)]="markerOptions.showtrafic" (ngModelChange)="showHidetraffic()" class="chk-col-orange"
-                checked="">
+            <input type="checkbox" id="md_checkbox_showtrafic" [(ngModel)]="markerOptions.showtrafic" (ngModelChange)="showHidetraffic()"
+                class="chk-col-orange" checked="">
             <label for="md_checkbox_showtrafic">{{markerOptions.showtrafic === true ? 'Hide Traffic' : 'Show Traffic' }}</label>
         </div>
     </div>

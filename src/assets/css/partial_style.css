@@ -2113,74 +2113,49 @@ select.selectpicker {
     width: auto!important;
 }
 
-
-/* all vehicles */
-
-.vehiclewrapper {
-    background-color: #ccc;
-    /* height: calc(100% - 59px); */
-    height: calc(100% - 0px);
-    overflow-y: scroll;
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
 }
 
-ul.vehicles {
-    list-style-type: none;
-    height: calc(100% - 15px);
-    padding: 0px;
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
 }
 
-li.vehicle {
-    /* margin-bottom: 7px; */
-    padding: 4px 4px;
+::-webkit-scrollbar-thumb {
+    background-color: #F90;
+    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
 }
 
-.vhwrapper {
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
-    border: 2px solid #636363;
-    opacity: 0.8;
+.ui-datepicker.ui-widget .ui-datepicker-calendar thead th {
+    padding: 0!important;
 }
 
-.vhwrapper:hover {
-    opacity: 1;
+
+/*small check box*/
+[type="checkbox"].small + label {
+    height: 13px!important;
 }
 
-.vhbody {
-    display: block;
-    /* padding: 4px 8px; */
-    padding-top: 5px;
-    padding-bottom: 15px;
-    padding-left: 4px;
-    padding-right: 10px;
+[type="checkbox"].small:checked+label:before{
+
+    top: -5px!important;
+    left: 0px!important;
+    width: 6px!important;
+    height: 13px!important;
+}
+[type="checkbox"].small:checked+label:after{
+    width: 13px!important;
+    height: 13px!important;
 }
 
-.vhchkbx {
-    width: 10%;
-    float: left;
-    height: 46px;
+[type="checkbox"].small:not(:checked) + label:after{
+    height: 13px;
+    width: 13px;
 }
 
-.vhchkbx img {
-    height: 30px;
-    position: relative;
-    left: -1px;
-    top: -3px;
-}
 
-.vhtitle {
-    display: block;
-    font-size: 12px;
-    font-weight: bold;
-    margin-left: 29px;
-}
-
-.vhsubtitle {
-    margin-left: 29px;
-    display: block;
-    font-size: 11px;
-    color: #8c8c8c;
-}
 
 .vhbatr .btr {
     position: relative;
@@ -2215,120 +2190,4 @@ li.vehicle {
     position: relative;
     left: 1px;
     font-size: 9px;
-}
-
-.vhwrapper span.speed {
-    color: #af2020;
-}
-
-.vhwrapper span.time {
-    color: #3f51b5;
-    margin-right: 8px;
-}
-
-.vhwrapper span.shortdet {
-    color: #4e4e4e;
-    margin-right: 8px;
-}
-
-.vhwrapper.ol {
-    border: 2px solid #2b982b;
-    opacity: 1;
-}
-
-.vhwrapper.of {
-    border: 2px solid orange;
-    opacity: 0.8;
-}
-
-.vhwrapper.ou {
-    border: 2px solid #636363;
-    opacity: 0.5;
-}
-
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #F5F5F5;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-    background-color: #F5F5F5;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #F90;
-    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
-}
-
-.card .body {
-    padding: 5px;
-}
-
-.imgProf {
-    background-image: url('../../assets/img/no.jpg')
-}
-
-.player {
-    margin-top: 2px;
-    border: 1px solid #d6a963;
-    background-color: #000;
-    background: rgba(243, 226, 199, 1);
-    background: -moz-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(243, 226, 199, 1)), color-stop(50%, rgba(193, 158, 103, 1)), color-stop(51%, rgba(182, 141, 76, 1)), color-stop(100%, rgba(233, 212, 179, 1)));
-    background: -webkit-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: -o-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: linear-gradient(to bottom, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f3e2c7', endColorstr='#e9d4b3', GradientType=0);
-}
-
-.player .material-icons {
-    color: #000;
-}
-
-.player .timer {
-    color: black;
-    font-size: 11px;
-    margin-top: 16px;
-    position: absolute;
-    font-weight: bold;
-}
-
-.player .playholder {
-    width: 55px;
-    float: left;
-    height: 47px;
-    position: relative;
-}
-
-.player .play {
-    margin-top: -5px;
-    position: absolute;
-    left: 13px;
-}
-
-.player .vhbatr {
-    position: absolute;
-    right: 10px;
-    top: 29px;
-    color: #000;
-}
-
-.player .speed {
-    margin-top: 20px;
-    position: absolute;
-    width: 61px;
-    right: 40px;
-}
-
-.player .speedtext {
-    position: absolute;
-    right: 6px;
-    top: 28px;
-    color: #000;
-}
-
-.ui-datepicker.ui-widget .ui-datepicker-calendar thead th {
-    padding: 0!important;
 }
