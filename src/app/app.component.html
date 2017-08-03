@@ -33,5 +33,5 @@
 
 <router-outlet></router-outlet>
 
-<p-growl [class]="'zin2000'" [value]="messagestack"></p-growl>
+<p-growl [class]="'zin2000'" [immutable]= "false" life="3000" [(value)]="messagestack"></p-growl>
 <p-confirmDialog width="425"></p-confirmDialog>
