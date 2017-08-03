@@ -1,0 +1,58 @@
+<section>
+    <aside id="leftsidebar" class="sidebar">
+        <div class="user-info">
+            <div class="info-container">
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';" height="40px">
+                    <span class="left-title">
+                        {{ufullname}}
+                        <br />
+                        <small class="title">{{wsname}}</small>
+                    </span>
+                </div>
+                <div class="btn-group user-helper-dropdown">
+                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a role="button"><i class="fa fa-user"></i> My Profile</a></li>
+                        <li role="seperator" class="divider"></li>
+                        <li *ngIf="loginUser.ucode === 'admin'"><a role="button" [routerLink]="['/setting']"><i class="fa fa-gear"></i> Setting</a></li>
+                        <li><a role="button" (click)="logout()"><i class="fa fa-power-off"></i> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li class="header">Menu</li>
+                <li *ngFor="let row of dashboardDT" routerLinkActive="active">
+                    <a href="javascript:void(0);" (click)="openForm(row)">
+                        <i class="material-icons">{{row.dbicon}}</i>
+                        <span>{{row.dbhead + " (" + row.dbvalue + ")"}}</span>
+                    </a>
+                    <!-- <ul class="ml-menu">
+                        <li *ngFor="let mrow of row.pMenuDT" routerLinkActive="active">
+                            <a [routerLink]="mrow.mlink">
+                                <i class="material-icons">{{mrow.micon}}</i>
+                                <span>{{mrow.mname}}</span>
+                            </a>
+                        </li>
+                    </ul> -->
+                </li>
+            </ul>
+        </div>
+        <!-- #Menu -->
+
+        <!-- Footer -->
+        <div class="legal">
+            <div class="copyright">
+                <a href="javascript:void(0);">Goyo Technologies Pvt. Ltd.</a>.
+            </div>
+            <div class="version">
+                <b>V</b> 1.0
+            </div>
+        </div>
+        <!-- #Footer -->
+    </aside>
+</section>
