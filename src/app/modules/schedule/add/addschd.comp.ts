@@ -17,18 +17,23 @@ export class AddScheduleComponent implements OnInit {
 
     attendantDT: any = [];
     pickattid: number = 0;
-    pickattname: any = [];
+    pickattname: string = "";
+    pickattdata: any = [];
+
     dropattid: number = 0;
-    dropattname: any = [];
+    dropattname: string = "";
+    dropattdata: any = [];
 
     passengerDT: any = [];
     counter: number = 0;
 
     pickpsngrid: number = 0;
-    pickpsngrname: any = [];
+    pickpsngrname: string = "";
+    pickpsngrdata: any = [];
 
     droppsngrid: number = 0;
-    droppsngrname: any = [];
+    droppsngrname: string = "";
+    droppsngrdata: any = [];
 
     pickAttList: any = [];
     dropAttList: any = [];
@@ -203,18 +208,22 @@ export class AddScheduleComponent implements OnInit {
     selectAutoData(event, type) {
         if (type === "pickatt") {
             this.pickattid = event.uid;
+            this.pickattname = event.uname;
             this.addPickAttData();
         }
         else if (type === "dropatt") {
             this.dropattid = event.uid;
+            this.dropattname = event.uname;
             this.addDropAttData();
         }
         else if (type === "pickstuds") {
             this.pickpsngrid = event.value;
+            this.pickpsngrname = event.label;
             this.pickupPassenger();
         }
         else if (type === "dropstuds") {
             this.droppsngrid = event.value;
+            this.droppsngrname = event.label;
             this.dropPassenger();
         }
         else {
@@ -382,22 +391,21 @@ export class AddScheduleComponent implements OnInit {
 
         if (!duplicatepassenger) {
             that.pickPassengerDT.push({
-                "counter": that.counter++,
-                "stdid": that.pickpsngrname.value,
-                "stdnm": that.pickpsngrname.label,
+                "stdid": that.pickpsngrdata.value,
+                "stdnm": that.pickpsngrdata.label,
             });
 
             that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
+            that.pickPassengerDT = that.reverseArr(that.dropPassengerDT);
         }
 
-        console.log(that.pickPassengerDT);
-        console.log(that.dropPassengerDT);
-
         that.pickpsngrid = 0;
-        that.pickpsngrname = [];
+        that.pickpsngrname = "";
+        that.pickpsngrdata = [];
 
         that.droppsngrid = 0;
-        that.droppsngrname = [];
+        that.droppsngrname = "";
+        that.droppsngrdata = [];
     }
 
     // Pick Up Passenger By Route
@@ -452,13 +460,17 @@ export class AddScheduleComponent implements OnInit {
         if (!duplicatepassenger) {
             that.dropPassengerDT.push({
                 "counter": that.counter++,
-                "stdid": that.droppsngrname.value,
-                "stdnm": that.droppsngrname.label,
+                "stdid": that.droppsngrdata.value,
+                "stdnm": that.droppsngrdata.label,
             });
+
+            that.dropPassengerDT = that.reverseArr(that.dropPassengerDT);
+            that.dropPassengerDT = that.reverseArr(that.dropPassengerDT);
         }
 
         that.droppsngrid = 0;
-        that.droppsngrname = [];
+        that.droppsngrname = "";
+        that.droppsngrdata = [];
     }
 
     // Drop Passenger By Route
@@ -507,12 +519,13 @@ export class AddScheduleComponent implements OnInit {
 
         that.pickAttList.push({
             "counter": that.counter++,
-            "attid": that.pickattname.uid,
-            "attnm": that.pickattname.uname,
+            "attid": that.pickattdata.uid,
+            "attnm": that.pickattdata.uname,
         });
 
         that.pickattid = 0;
-        that.pickattname = [];
+        that.pickattname = "";
+        that.pickattdata = [];
     }
 
     // Add Pick Attendent Data
@@ -522,12 +535,13 @@ export class AddScheduleComponent implements OnInit {
 
         that.dropAttList.push({
             "counter": that.counter++,
-            "attid": that.dropattname.uid,
-            "attnm": that.dropattname.uname,
+            "attid": that.dropattdata.uid,
+            "attnm": that.dropattdata.uname,
         });
 
         that.dropattid = 0;
-        that.dropattname = [];
+        that.dropattname = "";
+        that.dropattdata = [];
     }
 
     // Delete Pick Up Passenger
