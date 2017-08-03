@@ -49,11 +49,11 @@ export class LoginComponent implements OnInit {
                             that._loginservice.setUsers(userDetails);
 
                             if (userDetails.issysadmin) {
-                                that._router.navigate(['/master/workspace']);
+                                that._router.navigate(['/admin/workspace']);
                             }
                             else {
                                 Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
-                                that._router.navigate(['/master/entity']);
+                                that._router.navigate(['/workspace/entity']);
                             }
                         } else {
                             that._msg.Show(messageType.error, "Error", userDetails.errmsg);

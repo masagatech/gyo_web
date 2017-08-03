@@ -5,10 +5,10 @@ import { LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 
 @Component({
-    templateUrl: 'module.comp.html'
+    templateUrl: 'workspace.comp.html'
 })
 
-export class ModuleComponent implements OnDestroy {
+export class WorkspaceComponent implements OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
     _enttdetails: any = [];
@@ -22,7 +22,6 @@ export class ModuleComponent implements OnDestroy {
     constructor(private _router: Router, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-        this._enttdetails = Globals.getEntityDetails();
 
         if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {
             this._router.navigate(['/login']);
@@ -30,10 +29,6 @@ export class ModuleComponent implements OnDestroy {
 
         if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
             this._router.navigate(['/admin/workspace']);
-        }
-
-        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
-            this._router.navigate(['/workspace/entity']);
         }
 
         this.getHeaderDetails();
@@ -44,10 +39,10 @@ export class ModuleComponent implements OnDestroy {
     }
 
     getHeaderDetails() {
-        if (Cookie.get('_schenttdetails_') != null) {
-            this.wsname = this._enttdetails.enttname;
-            this.wslogo = this.global.uploadurl + this._enttdetails.schlogo;
-            this.enttname = this._wsdetails.wsname;
+        if (Cookie.get('_schwsdetails_') != null) {
+            this.wsname = this._wsdetails.wsname;
+            this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
+            this.enttname = "";
         }
     }
 

@@ -26,7 +26,7 @@
                                     <a role="button" [routerLink]="row.mlink"><i class="fa fa-user fa-icon"></i> {{row.mname}}</a>
                                 </li>
                                 <li *ngIf="this.loginUser.utype == 'admin' && !this.loginUser.issysadmin">
-                                    <a role="button" [routerLink]="['/master/workspace']"><i class="fa fa-building-o fa-icon"></i> My Workspace</a>
+                                    <a role="button" [routerLink]="['/admin/workspace']"><i class="fa fa-building-o fa-icon"></i> My Workspace</a>
                                 </li>
                             </ul>
                         </li>
@@ -65,7 +65,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">
-                            <img alt="{{ufullname}}" src="{{wslogo}}" onerror="this.src='assets/img/default.gif';" class="pull-left" height="40px"> {{ufullname + "(" + utype + ")"}}
+                            <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';" class="pull-left" height="40px"> {{ufullname + "(" + utype + ")"}}
                             <br /><small>{{wsname}}</small>
                         </li>
                         <li class="body">

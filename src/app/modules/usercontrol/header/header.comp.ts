@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService, AuthenticationService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -25,9 +25,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ufullname: string = "";
   utype: string = "";
   uphoto: string = "";
-  wsname: string = "";
-  wslogo: string = "";
-  enttname: string = "";
+
+  @Input() wsname: string = "";
+  @Input() wslogo: string = "";
+  @Input() enttname: string = "";
 
   mname: string = "";
 
@@ -66,6 +67,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
+    this.getHeaderDetails();
+    this.getTopMenuList();
+
     _router.events.forEach((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {
         commonfun.loader();
@@ -85,22 +89,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  getHeaderDetails() {
-    this.ufullname = this.loginUser.fullname;
-    this.utype = this.loginUser.utypename;
-    this.uphoto = this.global.uploadurl + this._wsdetails.uphoto;
-    this.wsname = this._wsdetails.wsname == null ? this.loginUser.wsname : this._wsdetails.wsname;
-    this.wslogo = this.global.uploadurl + (this._wsdetails.wslogo == null ? this.loginUser.wslogo : this._wsdetails.wslogo);
-    this.enttname = this._enttdetails.enttname;
-  }
-
   ngOnInit() {
-    this.getHeaderDetails();
-    this.getTopMenuList();
   }
 
   public ngAfterViewInit() {
     loader.loadall();
+  }
+
+  getHeaderDetails() {
+    this.ufullname = this.loginUser.fullname;
+    this.utype = this.loginUser.utypename;
+    this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
   }
 
   public getTopMenuList() {
@@ -121,24 +120,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private changeSkin(theme: any) {
     loader.skinChanger(theme);
   }
-
-  // openForm(row) {
-  //   if (row.mcode == "ws") {
-  //     Cookie.delete("_schenttdetails_");
-  //     Cookie.delete("_schwsdetails_");
-  //   }
-  //   else if (row.mcode == "entt") {
-  //     Cookie.delete("_schenttdetails_");
-  //   }
-
-  //   this._router.navigate(['/' + row.mlink]);
-  // }
-
-  // openWorkspaceForm() {
-  //   Cookie.delete("_schenttdetails_");
-  //   Cookie.delete("_schwsdetails_");
-  //   this._router.navigate(['/workspace']);
-  // }
 
   logout() {
     this._authservice.logout();

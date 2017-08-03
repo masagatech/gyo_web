@@ -3,24 +3,17 @@
         <h4>Dashboard</h4>
     </div>
 
-    <div *ngFor="let row of dashboardDT | groupBy: 'dbgroup'">
-        <div class="block-header">
-            <h4>{{row.key}}</h4>
-        </div>
-        <div>
-            <div class="row clearfix">
-                <div *ngFor="let drow of row.value" class="col-md-4">
-                    <div class="info-box {{drow.dbcss}} hover-expand-effect">
-                        <div class="icon">
-                            <a role="button" (click)="openForm(drow)">
-                                <i class="material-icons">{{drow.dbicon}}</i>
-                            </a>
-                        </div>
-                        <div class="content">
-                            <div class="text">{{drow.dbhead}}</div>
-                            <div class="number count-to" data-from="0" data-to="drow.dbvalue" data-speed="15" data-fresh-interval="20">{{drow.dbvalue}}</div>
-                        </div>
-                    </div>
+    <div class="row clearfix">
+        <div *ngFor="let row of dashboardDT" class="col-md-4">
+            <div class="info-box {{row.dbcss}} hover-expand-effect">
+                <div class="icon">
+                    <a role="button" (click)="openForm(row)">
+                        <i class="material-icons">{{row.dbicon}}</i>
+                    </a>
+                </div>
+                <div class="content">
+                    <div class="text">{{row.dbhead}}</div>
+                    <div class="number count-to" data-from="0" data-to="row.dbvalue" data-speed="15" data-fresh-interval="20">{{row.dbvalue}}</div>
                 </div>
             </div>
         </div>

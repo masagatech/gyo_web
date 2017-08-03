@@ -25,7 +25,7 @@ export const routes = [
                     { path: 'master', loadChildren: './entity#EntityModule' },
 
                     // Masters
-                    { path: 'master', loadChildren: './master#MasterModule' },
+                    // { path: 'master', loadChildren: './master#MasterModule' },
 
                     // Reports
                     { path: 'reports', loadChildren: './reports#ReportsModule' },

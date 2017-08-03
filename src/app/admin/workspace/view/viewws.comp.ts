@@ -146,11 +146,18 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public addWorkspaceForm() {
-        this._router.navigate(['/master/workspace/add']);
+        this._router.navigate(['/admin/workspace/add']);
     }
 
     public editWorkspaceForm(row) {
-        this._router.navigate(['/master/workspace/edit', row.wsautoid]);
+        this._router.navigate(['/admin/workspace/edit', row.wsautoid]);
+    }
+
+    public openDashboardForm(row) {
+        Cookie.delete("_schwsdetails_");
+        Cookie.set("_schwsdetails_", JSON.stringify(row));
+
+        this._router.navigate(['/workspace']);
     }
 
     public openForm() {
@@ -164,20 +171,18 @@ export class ViewWorkspaceComponent implements OnInit {
         }
 
         Cookie.set("_schwsdetails_", JSON.stringify(_wsdetails));
-        this._router.navigate(['/master/entity']);
+        this._router.navigate(['/workspace/entity']);
     }
 
     public openEntityForm(row) {
         Cookie.delete("_schwsdetails_");
         Cookie.set("_schwsdetails_", JSON.stringify(row));
 
-        console.log(row);
-        
         if (row.countentity !== "0") {
-            this._router.navigate(['/master/entity']);
+            this._router.navigate(['/workspace/entity']);
         }
         else {
-            this._router.navigate(['/master/entity/add']);
+            this._router.navigate(['/workspace/entity/add']);
         }
     }
 }

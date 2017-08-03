@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AdminComponent } from '../admin/admin.comp';
+import { WorkspaceComponent } from '../workspace/workspace.comp';
 import { AuthGuard } from '../_services/authguard-service';
 import { SharedComponentModule } from '../_shared/sharedcomp.module';
 
@@ -10,13 +10,17 @@ import { CommonModule } from '@angular/common';
 export const routes = [
     {
         path: '',
-        component: AdminComponent,
+        component: WorkspaceComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 children: [
-                    { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
+                    { path: '', loadChildren: './dashboard#DashboardModule' },
+                    { path: 'entity', loadChildren: './entity#EntityModule' },
+                    { path: 'user', loadChildren: './users#UserModule' },
+                    { path: 'location', loadChildren: './location#LocationModule' },
+                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                 ]
             }
         ]
@@ -30,12 +34,11 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        AdminComponent,
-        // NoPageComponent,
+        WorkspaceComponent
     ],
     providers: [AuthGuard]
 })
 
-export class AdminModule {
+export class WorkspaceModule {
 
 }

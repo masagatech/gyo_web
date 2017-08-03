@@ -11,7 +11,7 @@ export class SettingsComponent implements OnDestroy {
         let _enttdetails = Cookie.get("_schenttdetails_");
 
         if (_enttdetails == null && _enttdetails == undefined) {
-            this._router.navigate(['/master/entity']);
+            this._router.navigate(['/workspace/entity']);
         }
 
     }

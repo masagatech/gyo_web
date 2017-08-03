@@ -1,27 +1,44 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { LoginService } from '@services';
+import { LoginUserModel, Globals } from '@models';
 
 @Component({
   templateUrl: 'admin.comp.html'
 })
 
 export class AdminComponent implements OnInit, OnDestroy {
-  constructor(private _router: Router) {
-    let sessionid = Cookie.get('_schsession_');
-    let _wsdetails = Cookie.get("_schwsdetails_");
+  loginUser: LoginUserModel;
+  _wsdetails: any = [];
+  _enttdetails: any = [];
 
-    if (sessionid == null && sessionid == undefined) {
+  wsname: string = "";
+  wslogo: string = "";
+  enttname: string = "";
+
+  global = new Globals();
+
+  constructor(private _router: Router, private _loginservice: LoginService) {
+    this.loginUser = this._loginservice.getUser();
+
+    if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {
       this._router.navigate(['/login']);
     }
 
-    if (_wsdetails == null && _wsdetails == undefined) {
-      this._router.navigate(['/master/workspace']);
-    }
+    this.getHeaderDetails();
   }
 
   ngOnInit() {
 
+  }
+
+  getHeaderDetails() {
+    if (Cookie.get('_schsession_') != null) {
+      this.wsname = this.loginUser.wsname;
+      this.wslogo = this.global.uploadurl + this.loginUser.wslogo;
+      this.enttname = "";
+    }
   }
 
   ngOnDestroy() {
