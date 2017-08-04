@@ -8,12 +8,12 @@ import { GroupByPipe } from '../_pipe/groupby.pipe';
 import { HeaderComponent } from '../modules/usercontrol/header/header.comp';
 import { LeftSideBarComponent } from '../modules/usercontrol/leftsidebar/leftsidebar.comp';
 import { LeftDashboardComponent } from '../modules/usercontrol/leftdashboard/leftdb.comp';
-// import { NoPageComponent } from '../no-page';
+import { OnlyNumber } from '@directives';
 
 @NgModule({
     imports: [RouterModule, FormsModule, CommonModule],
-    declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent, LeftDashboardComponent],
-    exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent, LeftDashboardComponent]
+    declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent, LeftDashboardComponent, OnlyNumber],
+    exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent, LeftDashboardComponent, OnlyNumber]
 })
 
 export class SharedComponentModule { }
