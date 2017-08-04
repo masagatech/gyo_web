@@ -38,13 +38,7 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
-        // this.getBreakDown();
-
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
-        this.otherData.push({ "mobile": "", "email": "" });
+        this.getBreakDown();
     }
 
     ngOnInit() {
@@ -119,8 +113,6 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
                 else {
                     that._msg.Show(messageType.error, "Error", dataResult.msg);
                 }
-
-                that.resetUserVehicleMap();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -134,16 +126,33 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     getBreakDown() {
         var that = this;
 
-        that._bdsservice.getBreakDownSet({ "flag": "details", "enttid": that._enttdetails.enttid }).subscribe(data => {
+        that._bdsservice.getBreakDownSet({ "flag": "details", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
             try {
-                that.otherData = data.data;
+                var _otherData = data.data;
 
-                if (this.otherData.length == 0) {
-                    this.otherData.push({ "mobile": "", "email": "" });
-                    this.otherData.push({ "mobile": "", "email": "" });
-                    this.otherData.push({ "mobile": "", "email": "" });
-                    this.otherData.push({ "mobile": "", "email": "" });
-                    this.otherData.push({ "mobile": "", "email": "" });
+                if (_otherData.length == 0) {
+                    that.iscoordmob = false;
+                    that.iscoordeml = false;
+                    that.isprntsmob = false;
+                    that.isprntseml = false;
+
+                    that.otherData.push({ "mobile": "", "email": "" });
+                    that.otherData.push({ "mobile": "", "email": "" });
+                    that.otherData.push({ "mobile": "", "email": "" });
+                    that.otherData.push({ "mobile": "", "email": "" });
+                    that.otherData.push({ "mobile": "", "email": "" });
+                }
+                else {
+                    that.iscoordmob = _otherData[0].iscoordmob;
+                    that.iscoordeml = _otherData[0].iscoordeml;
+                    that.isprntsmob = _otherData[0].isprntsmob;
+                    that.isprntseml = _otherData[0].isprntseml;
+
+                    that.otherData.push({ "mobile": _otherData[0].mobile1, "email": _otherData[0].email1 });
+                    that.otherData.push({ "mobile": _otherData[0].mobile2, "email": _otherData[0].email2 });
+                    that.otherData.push({ "mobile": _otherData[0].mobile3, "email": _otherData[0].email3 });
+                    that.otherData.push({ "mobile": _otherData[0].mobile4, "email": _otherData[0].email4 });
+                    that.otherData.push({ "mobile": _otherData[0].mobile5, "email": _otherData[0].email5 });
                 }
             }
             catch (e) {
