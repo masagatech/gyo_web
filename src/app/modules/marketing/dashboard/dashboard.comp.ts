@@ -63,7 +63,7 @@ export class MarkeingDashboardComponent implements OnInit, OnDestroy {
         that._dbservice.getMarketingDB({ "flag": "dropdown" }).subscribe(data => {
             try {
                 that.monthDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('monthname'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('monthname'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

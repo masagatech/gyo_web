@@ -248,7 +248,7 @@ export class AddScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('batchid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('batchid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -274,8 +274,8 @@ export class AddScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.driverDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('pickdriverid'); }, 100);
-                setTimeout(function () { $.AdminBSB.select.refresh('dropdriverid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('pickdriverid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('dropdriverid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -301,8 +301,8 @@ export class AddScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.vehicleDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('pickvehicleid'); }, 100);
-                setTimeout(function () { $.AdminBSB.select.refresh('dropvehicleid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('pickvehicleid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('dropvehicleid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -328,8 +328,8 @@ export class AddScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.routeDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('pickrtid'); }, 100);
-                setTimeout(function () { $.AdminBSB.select.refresh('droprtid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('pickrtid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('droprtid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

@@ -21,4 +21,8 @@ export class MenuService {
     saveUserRights(req: any) {
         return this._dataserver.post("SaveUserRights", req)
     }
+
+    getMenuLog(req: any) {
+        return this._dataserver.post("getMenuLog", req)
+    }
 }

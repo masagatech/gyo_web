@@ -62,7 +62,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
         that._commonservice.getMOM({ "flag": "group" }).subscribe(data => {
             that.groupdt = data.data;
-            setTimeout(function () { $.AdminBSB.select.refresh('group'); }, 100);
+            // setTimeout(function () { $.AdminBSB.select.refresh('group'); }, 100);
         }, err => {
             that._msg.Show(messageType.error, 'Error', err);
         }, () => {

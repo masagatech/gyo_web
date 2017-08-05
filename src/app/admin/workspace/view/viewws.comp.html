@@ -9,7 +9,7 @@
                     <h4 class="pull-left"><a role="button" (click)="getMainForm(row)">{{row.wsname}}</a></h4>
                     <span class="pull-left" style="padding: 5px 10px;">
                         <button type="button" class="btn btn-theme btn-xs" (click)="getMainForm(row)">
-                        <i class="material-icons">arrow_forward</i></button>
+                            <i class="material-icons">arrow_forward</i></button>
                     </span>
                 </div>
             </div>
@@ -63,7 +63,7 @@
 <div class="card" *ngIf="loginUser.issysadmin">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-4">
+            <div class="col-md-4 col-xs-12">
                 <h4>
                     <a role="button" (click)="openForm()">{{headertitle}}</a>
                     <a role="button" class="btn btn-theme btn-xs" (click)="openForm()">
@@ -71,7 +71,7 @@
                     </a>
                 </h4>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Search Workspace Name : </label>
@@ -81,49 +81,98 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1" style="padding-top: 10px;">
-                <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
-                    <span class="material-icons">restore</span>
-                </button>
+            <div class="col-md-1 col-xs-2" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
             </div>
-            <div class="col-md-2" align="right" style="padding-top: 10px;">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
-                   <span class="material-icons">add</span>
-                </button>
+            <div id="divShow" class="col-md-1 col-xs-2" align="right" style="padding-top: 20px">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('grid')">
+                        <span class="material-icons">apps</span></button>
+                    <button type="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('list')">
+                        <span class="material-icons">list</span></button>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-2" align="right" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
+                        <span class="material-icons">add</span></button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row clearfix" *ngIf="loginUser.issysadmin">
-    <div *ngFor="let row of workspaceDT" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="card" style="height: 200px;">
-            <div class="header">
-                <h2 class="title">
-                    <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
+<div *ngIf="loginUser.issysadmin">
+    <div class="row clearfix" *ngIf="isShowGrid">
+        <div *ngFor="let row of workspaceDT" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="card" style="height: 200px;">
+                <div class="header">
+                    <h2 class="title">
+                        <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
 
-                    <a role="button" (click)="openEntityForm(row)">{{row.wsname}}</a>
-                    <small>{{row.wstype}}</small>
-                </h2>
-                <ul class="header-dropdown m-r--5" style="top:20px">
-                    <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">more_vert</i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a role="button" (click)="openEntityForm(row)"><i class="material-icons">arrow_forward</i> Go</a></li>
-                            <li><a role="button" (click)="editWorkspaceForm(row)"><i class="material-icons">edit</i> Edit</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                        <a role="button" (click)="openEntityForm(row)">{{row.wsname}}</a>
+                        <small>{{row.wstype}}</small>
+                    </h2>
+                    <ul class="header-dropdown m-r--5" style="top:20px">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a role="button" (click)="openEntityForm(row)"><i class="material-icons">arrow_forward</i> Go</a></li>
+                                <li><a role="button" (click)="editWorkspaceForm(row)"><i class="material-icons">edit</i> Edit</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <ul>
+                        <li>Total Entity : {{row.countentity}}</li>
+                        <li>{{row.name}} ({{row.mobileno1}})</li>
+                        <li>{{row.email1}}</li>
+                    </ul>
+                </div>
             </div>
-            <div class="body">
-                <ul>
-                    <li>Total Entity : {{row.countentity}}</li>
-                    <li>{{row.name}} ({{row.mobileno1}})</li>
-                    <li>{{row.email1}}</li>
-                </ul>
-            </div>
+        </div>
+    </div>
+    <div class="row clearfix" *ngIf="isShowList">
+        <div class="col-md-12">
+            <p-dataTable [value]="workspaceDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
+                    <template let-row="rowData" pTemplate type="body">
+                    <img alt="{{row.wsname}}" src="{{global.uploadurl + row.wslogo}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                </template>
+                </p-column>
+                <p-column field="wscode" header="Code" [style]="{'width': '90px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                <p-column field="wsname" header="Name" [style]="{'width': '270px', 'text-align': 'left', 'vertical-align':'top'}">
+                    <template let-row="rowData" pTemplate type="body">
+                        {{row.wsname}}<br/>
+                        <b>({{row.wstype}})</b>
+                    </template>
+                </p-column>
+                <p-column field="name" header="Contact Name" [style]="{'width': '150px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
+                    <template let-row="rowData" pTemplate type="body">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="editWorkspaceForm(row)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </template>
+                </p-column>
+                <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
+                    <template let-row="rowData" pTemplate type="body">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="openEntityForm(row)">
+                            <i class="material-icons">arrow_forward</i>
+                        </button>
+                    </template>
+                </p-column>
+            </p-dataTable>
         </div>
     </div>
 </div>

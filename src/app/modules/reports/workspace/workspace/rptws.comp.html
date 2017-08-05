@@ -1,0 +1,65 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-1 col-xs-2">
+                <h4>Workspace</h4>
+            </div>
+            <div class="col-md-5 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Search Workspace Name : </label>
+                        <p-autoComplete id="autowsname" name="autowsname" [(ngModel)]="autowsname" [tabindex]="1" (onSelect)="selectAutoWorkspaceData($event)" [suggestions]="autoWorkspaceDT" (completeMethod)="getAutoWorkspaceData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete autowsname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-2" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="workspaceDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <img alt="{{row.wsname}}" src="{{global.uploadurl + row.wslogo}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                        </template>
+                    </p-column>
+                    <p-column field="wscode" header="Code" [style]="{'width': '90px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="wsname" header="Name" [style]="{'width': '270px', 'text-align': 'left', 'vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            {{row.wsname}}<br/>
+                            <b>({{row.wstype}})</b>
+                        </template>
+                    </p-column>
+                    <p-column field="name" header="Contact Name" [style]="{'width': '150px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editWorkspaceForm(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </template>
+                    </p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
+                        <template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="openEntityForm(row)">
+                                <i class="material-icons">arrow_forward</i>
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>
