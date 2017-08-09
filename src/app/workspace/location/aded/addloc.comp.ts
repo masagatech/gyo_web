@@ -179,6 +179,8 @@ export class AddLocationComponent implements OnInit, AfterViewInit {
         }
     }
 
+    // Get Area DropDown
+
     fillAreaDropDown() {
         let that = this;
         commonfun.loader("#card");
