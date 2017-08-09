@@ -1,63 +1,69 @@
-.qa-message-list{
+.qa-message-list {
     height: calc(100vh - 224px);
     overflow: auto;
     margin-top: 10px;
     padding-right: 5px;
 }
+
 .message-item {
-margin-bottom: 5px;
-margin-left: 29px;
-position: relative;
+    margin-bottom: 5px;
+    margin-left: 29px;
+    position: relative;
 }
+
 .message-item .message-inner {
-background: #fff;
-border: 1px solid #ddd;
-border-radius: 3px;
-padding: 3px;
-position: relative;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 3px;
+    position: relative;
 }
+
 .message-item .message-inner:before {
-border-right: 10px solid #ddd;
-border-style: solid;
-border-width: 10px;
-color: rgba(0,0,0,0);
-content: "";
-display: block;
-height: 0;
-position: absolute;
-left: -20px;
-top: 6px;
-width: 0;
+    border-right: 10px solid #ddd;
+    border-style: solid;
+    border-width: 10px;
+    color: rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    height: 0;
+    position: absolute;
+    left: -20px;
+    top: 6px;
+    width: 0;
 }
+
 .message-item .message-inner:after {
-border-right: 10px solid #fff;
-border-style: solid;
-border-width: 10px;
-color: rgba(0,0,0,0);
-content: "";
-display: block;
-height: 0;
-position: absolute;
-left: -18px;
-top: 6px;
-width: 0;
+    border-right: 10px solid #fff;
+    border-style: solid;
+    border-width: 10px;
+    color: rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    height: 0;
+    position: absolute;
+    left: -18px;
+    top: 6px;
+    width: 0;
 }
+
 .message-item:before {
-       background: #607d8b;
+    background: #607d8b;
     border-radius: 2px;
     bottom: -24px;
-    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     content: "";
     height: 100%;
     left: -21px;
     position: absolute;
     width: 3px;
 }
+
 .message-item:after {
-background: rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
     border: 2px solid #607d8b;
     border-radius: 50%;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     content: "";
     height: 15px;
     left: -27px;
@@ -65,8 +71,8 @@ background: rgb(255, 255, 255);
     top: 10px;
     width: 15px;
 }
-.message-item.small{
 
+.message-item.small {
     margin-bottom: 17px;
 }
 
@@ -75,13 +81,13 @@ background: rgb(255, 255, 255);
     left: -32px;
     width: 8px;
 }
+
 .message-item.small:before {
- bottom: -22px;
+    bottom: -22px;
 }
 
-.message-item.small div {
- 
-}
+.message-item.small div {}
+
 .message-item.small i.material-icons {
     position: absolute;
     top: -2px;
@@ -90,54 +96,66 @@ background: rgb(255, 255, 255);
     color: #00baf9;
 }
 
-.clearfix:before, .clearfix:after {
-content: " ";
-display: table;
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
 }
+
+
 /* .message-item .message-head {
 border-bottom: 1px solid #eee;
 margin-bottom: 8px;
 padding-bottom: 8px;
 } */
+
 .message-item .message-head .avatar {
-margin-right: 7px;
+    margin-right: 7px;
 }
+
 .message-item .message-head .user-detail {
-overflow: hidden;
+    overflow: hidden;
 }
+
 .message-item .message-head .user-detail h5 {
-font-size: 16px;
-font-weight: bold;
-margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
 }
+
 .message-item .message-head .post-meta {
-float: left;
-padding: 0 0px 0 0;
+    float: left;
+    padding: 0 0px 0 0;
 }
-.message-item .message-head .post-meta >div {
-color: #333;
-font-weight: bold;
-text-align: left;
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: left;
 }
-.post-meta > div {
-color: #777;
-font-size: 12px;
-line-height: 22px;
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
 }
-.message-item .message-head .post-meta >div {
-color: #333;
-font-weight: bold;
-text-align: left;
+
+.message-item .message-head .post-meta>div {
+    color: #333;
+    font-weight: bold;
+    text-align: left;
 }
-.post-meta > div {
-color: #777;
-font-size: 12px;
-line-height: 22px;
+
+.post-meta>div {
+    color: #777;
+    font-size: 12px;
+    line-height: 22px;
 }
+
 img {
- height: 35px;
- width: 35px;
-  border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
 }
 
 .line {
@@ -148,8 +166,8 @@ img {
     top: 13px;
 }
 
-.qa-message-when{
+.qa-message-when {
     display: block;
     font-size: 11px;
     font-weight: normal;
-    }
+}
