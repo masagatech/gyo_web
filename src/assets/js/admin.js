@@ -240,6 +240,7 @@ $.AdminBSB.rightSideBar = {
 
         }
         if ($('.righthandle').data('clicked') === undefined) {
+           
             $('.righthandle').on('click', function () {
                 $(this).data('clicked', true);
                 $('.righthandle').hide();

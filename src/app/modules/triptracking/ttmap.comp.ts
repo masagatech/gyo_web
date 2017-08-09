@@ -53,6 +53,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     vehtypeid: number = 0;
     selectedVeh: any = [];
     selectedSVh: any = {};
+    selectedFlwVh: any = {};
 
     tripDT: any = [];
     messageDT: any = [];
@@ -127,7 +128,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.loadComponent(PSGComponent, { "a": "asdsadsadasa" });
         this.map = this._gmap.getMap();
         SlidingMarker.initializeGlobally();
+        let that = this;
+        if (this.map !== undefined) {
+            setTimeout(function () {
+                google.maps.event.trigger(that.map, 'resize');
 
+            }, 1000)
+        }
     }
     getDefaultMap() {
         this.options = {
@@ -193,6 +200,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 that.vehtypeDT = data.data;
                 for (var k = 0; k < that.vehtypeDT.length; k++) {
                     var el = that.vehtypeDT[k];
+                    el.isfollow = false;
+                    el.sel = false;
                     that.vehtypeIds.push(el.vhid);
                     //    that.carmarkers.push(new google.);
                 }
@@ -376,6 +385,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             let _ico = mrk.getIcon().ico;
             mrk.setIcon({ url: 'assets/img/map/' + _ico + '_' + bear + '.png?v=1', ico: _ico })
             mrk.setPosition(new google.maps.LatLng(loc[0], loc[1]));
+            if (this.selectedFlwVh.vhid !== undefined && this.selectedFlwVh.vhid == vhid) {
+                this.map.setCenter(new google.maps.LatLng(loc[0], loc[1]))
+            }
+
         }
     }
 
@@ -388,17 +401,40 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 this.selectedVeh.push(vh.vhid);
                 this.addmarker(vh);
-                this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]))
+                //this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]))
+                this.boundtomap()
                 //console.log(vh);
             } else {
                 let i = this.selectedVeh.indexOf(vh.vhid);
-                if (i > -1)
+                if (i > -1) {
                     this.selectedVeh.splice(i, 1);
+                }
+
+                if (this.selectedVeh.length > 0) {
+                    this.boundtomap();
+                } else {
+                    this.map.setZoom(5);
+                    this.map.setCenter(new google.maps.LatLng(this.options.center.lat, this.options.center.lng))
+                }
                 this.removemarker(vh.vhid);
             }
         }
         // this.selectedVeh.push(vh);
         e.preventDefault();
+    }
+
+    //get bound
+    private boundtomap() {
+        if (this.selectedVeh.length <= 0) {
+            return;
+        }
+        var bounds = new google.maps.LatLngBounds();
+        for (let i = 0; i < this.selectedVeh.length; i++) {
+            let el = this.selectedVeh[i];
+            let mr = this.vhmarkers[el];
+            bounds.extend(mr.getPosition());
+        }
+        this.map.fitBounds(bounds);
     }
 
     private showinfowindow() {
@@ -437,9 +473,24 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private clickVehicle(vh) {
+
+        if (!vh.sel) { return; }
         if (vh.isshow === undefined || vh.isshow === false) { return; }
-        this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]));
+        vh.isfollow = !vh.isfollow;
+
+        if (this.selectedFlwVh.isfollow !== undefined) {
+            if (vh.vhid !== this.selectedFlwVh.vhid)
+                this.selectedFlwVh.isfollow = false;
+        }
+        if (vh.isfollow && vh.vhid !== this.selectedFlwVh.vhid) {
+            this.map.setCenter(new google.maps.LatLng(vh.loc[1], vh.loc[0]));
+            this.selectedFlwVh = vh;
+            this.map.setZoom(17);
+        } else {
+            this.selectedFlwVh = {};
+        }
     }
+
 
     private addmarker(vh) {
         let bearing = 0;//commonfun.getbearing((vh.bearing || 0));
@@ -486,12 +537,15 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     private info_click(vh, event) {
+
         if (vh.isshow === undefined || vh.isshow === false)
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
-        this.sidebarTitle = "Info";
-        this.selectedSVh = vh;
-        this.loadComponent(INFOComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
-        commonfun.loader("#loaderbody", "pulse", 'Loading Vehicle Info...')
+        if (this.sidebarTitle !== "Info" || this.selectedSVh.vhid !== vh.vhid) {
+            this.sidebarTitle = "Info";
+            this.selectedSVh = vh;
+            this.loadComponent(INFOComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
+            commonfun.loader("#loaderbody", "pulse", 'Loading Vehicle Info...')
+        }
         $.AdminBSB.rightSideBar.Open();
         event.stopPropagation();
     }
@@ -499,12 +553,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     private passenger_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false)
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
-        this.sidebarTitle = "Passengers";
-        this.selectedSVh = vh;
-        this.loadComponent(PSGComponent, { "tripid": vh.tripid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
-        commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...')
+        if (this.sidebarTitle !== "Passengers" || this.selectedSVh.vhid !== vh.vhid) {
+            this.sidebarTitle = "Passengers";
+            this.selectedSVh = vh;
+            this.loadComponent(PSGComponent, { "tripid": vh.tripid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
+            commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...');
+        }
         $.AdminBSB.rightSideBar.Open();
-
         event.stopPropagation();
     }
 
@@ -512,13 +567,15 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (vh.isshow === undefined || vh.isshow === false)
         { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         //else
-        this.loadComponent(HISTORYComponent, {
-            "vhid": vh.vhid,
-            loginUser: this.loginUser, _wsdetails: this._wsdetails, map: this.map
-        });
-        this.sidebarTitle = "History";
-        this.selectedSVh = vh;
-        commonfun.loader("#loaderbody", "timer", 'Loading History...')
+        if (this.sidebarTitle !== "History" || this.selectedSVh.vhid !== vh.vhid) {
+            this.loadComponent(HISTORYComponent, {
+                "vhid": vh.vhid,
+                loginUser: this.loginUser, _wsdetails: this._wsdetails, map: this.map
+            });
+            this.sidebarTitle = "History";
+            this.selectedSVh = vh;
+            commonfun.loader("#loaderbody", "timer", 'Loading History...');
+        }
         $.AdminBSB.rightSideBar.Open();
         event.stopPropagation();
     }
