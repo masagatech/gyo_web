@@ -14,13 +14,17 @@ declare var $: any;
 })
 
 export class ViewUserComponent implements OnInit {
+    entityDT: any = [];
+    enttid: number = 0;
+    enttname: any = [];
+
+    utypeDT: any = [];
+    srcutype: string = "";
+
     autoUserDT: any = [];
 
     autouid: number = 0;
     autouname: any = [];
-
-    utypeDT: any = [];
-    srcutype: string = "";
 
     usersDT: any = [];
     loginUser: LoginUserModel;
@@ -69,13 +73,46 @@ export class ViewUserComponent implements OnInit {
         }, 0);
     }
 
+    // Auto Completed Entity
+
+    getEntityData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "entity",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._wsdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.entityDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Owners
+
+    selectEntityData(event) {
+        this.enttid = event.value;
+
+        Cookie.set("_enttid_", event.value);
+        Cookie.set("_enttnm_", event.label);
+
+        this.getUserDetails();
+    }
+
     fillUserTypeDropDown() {
         var that = this;
         commonfun.loader();
 
         that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
             that.utypeDT = data.data;
-            setTimeout(function () { $.AdminBSB.select.refresh('srcutype'); }, 100);
+            // setTimeout(function () { $.AdminBSB.select.refresh('srcutype'); }, 100);
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -124,6 +161,13 @@ export class ViewUserComponent implements OnInit {
             that.srcutype = Cookie.get('_srcutype_');
         }
 
+        if (Cookie.get('_enttnm_') != null) {
+            that.enttid = parseInt(Cookie.get('_enttid_'));
+
+            that.enttname.value = parseInt(Cookie.get('_enttid_'));
+            that.enttname.label = Cookie.get('_enttnm_');
+        }
+
         that.getUserDetails();
     }
 
@@ -138,8 +182,8 @@ export class ViewUserComponent implements OnInit {
 
         uparams = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "srcutype": that.srcutype,
-            "srcuid": that.autouid
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "enttid": that.enttid,
+            "srcutype": that.srcutype, "srcuid": that.autouid
         };
 
         that._userservice.getUserDetails(uparams).subscribe(data => {
@@ -161,10 +205,19 @@ export class ViewUserComponent implements OnInit {
     }
 
     resetUserDetails() {
+        Cookie.delete('_enttid_');
+        Cookie.delete('_enttnm_');
         Cookie.delete('_srcutype_');
-        this.srcutype = "";
+
+        this.enttid = 0;
+        this.enttname = [];
+        this.srcutype = "all";
+        Cookie.set("_srcutype_", this.srcutype);
+        this.srcutype = Cookie.get('_srcutype_');
+
         this.autouid = 0;
         this.autouname = [];
+
         this.getUserDetails();
     }
 

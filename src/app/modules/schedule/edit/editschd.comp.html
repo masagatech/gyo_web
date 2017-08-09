@@ -132,7 +132,7 @@
                     <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
-                            <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrname" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
+                            <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrdata" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
                                 [size]="30" class="form-controlAutoComplete pickpsngrname"></p-autoComplete>
                             <span class="material-icons inputserachico">search</span>
                         </div>
@@ -236,7 +236,7 @@
                     <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
-                            <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrname" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
+                            <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrdata" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
                                 [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
                             <span class="material-icons inputserachico">search</span>
                         </div>
@@ -266,7 +266,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Pickup Attendent Name</label>
-                            <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattname" [tabindex]="18" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="attendantDT" (completeMethod)="getAttendantData($event)" field="uname" [minLength]="1" [size]="30"
+                            <p-autoComplete id="pickattname" name="pickattname" [(ngModel)]="pickattdata" [tabindex]="18" (onSelect)="selectAutoData($event, 'pickatt')" [suggestions]="attendantDT" (completeMethod)="getAttendantData($event)" field="uname" [minLength]="1" [size]="30"
                                 class="form-controlAutoComplete pickattname"></p-autoComplete>
                             <span class="material-icons inputserachico">search</span>
                         </div>
@@ -285,7 +285,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Drop Attendent Name</label>
-                            <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattname" [tabindex]="19" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="attendantDT" (completeMethod)="getAttendantData($event)" field="uname" [minLength]="1" [size]="30"
+                            <p-autoComplete id="dropattname" name="dropattname" [(ngModel)]="dropattdata" [tabindex]="19" (onSelect)="selectAutoData($event, 'dropatt')" [suggestions]="attendantDT" (completeMethod)="getAttendantData($event)" field="uname" [minLength]="1" [size]="30"
                                 class="form-controlAutoComplete dropattname"></p-autoComplete>
                             <span class="material-icons inputserachico">search</span>
                         </div>

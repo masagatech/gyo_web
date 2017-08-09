@@ -135,7 +135,7 @@ export class AddEntityComponent implements OnInit {
         that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
             try {
                 that.entttypeDT = data.data.filter(a => a.group === "workspace");
-                setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
 
                 if (that.entttypeDT.length == 1) {
                     that.entttype = that.entttypeDT[0].key;
@@ -221,7 +221,7 @@ export class AddEntityComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
             try {
                 that.stateDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('state'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('state'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -252,7 +252,7 @@ export class AddEntityComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
             try {
                 that.cityDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('city'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('city'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -281,7 +281,7 @@ export class AddEntityComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
             try {
                 that.areaDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('area'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('area'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

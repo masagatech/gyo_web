@@ -6261,7 +6261,7 @@ section.content {
     -ms-border-radius: 0;
     border-radius: 0;
     padding-left: 5px;
-    height: 25px;
+    height: 27px;
     padding: 2px;
     font-size: 12px;
 }
@@ -10605,7 +10605,7 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .form-group .material-icons {
-    font-size: 16px!important;
+    font-size: 18px!important;
 }
 
 #bodyofcards {

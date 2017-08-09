@@ -83,10 +83,6 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
             Cookie.delete('_srcutype_');
             Cookie.set("_srcutype_", row.dbcode);
         }
-        else if (row.dbtype == "entity") {
-            Cookie.delete('_entttype_');
-            Cookie.set("_entttype_", row.dbcode);
-        }
 
         that._router.navigate([row.dblink]);
     }

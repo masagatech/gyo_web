@@ -25,20 +25,12 @@
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-                <li class="header">Menu</li>
+                <li class="header">Dashboard</li>
                 <li *ngFor="let row of dashboardDT" routerLinkActive="active">
                     <a href="javascript:void(0);" (click)="openForm(row)">
                         <i class="material-icons">{{row.dbicon}}</i>
                         <span>{{row.dbhead + " (" + row.dbvalue + ")"}}</span>
                     </a>
-                    <!-- <ul class="ml-menu">
-                        <li *ngFor="let mrow of row.pMenuDT" routerLinkActive="active">
-                            <a [routerLink]="mrow.mlink">
-                                <i class="material-icons">{{mrow.micon}}</i>
-                                <span>{{mrow.mname}}</span>
-                            </a>
-                        </li>
-                    </ul> -->
                 </li>
             </ul>
         </div>

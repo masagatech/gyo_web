@@ -183,7 +183,7 @@ export class AddRouteComponent implements OnInit {
         that._rtservice.getStopsDetails({ "flag": "rtddl", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.routesDT = data.data;
-                setTimeout(function () { $.AdminBSB.select.refresh('rtid'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('rtid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

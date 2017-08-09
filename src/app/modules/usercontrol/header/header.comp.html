@@ -3,7 +3,7 @@
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" [routerLink]="['/']">
+            <a class="navbar-brand" [routerLink]="homeurl">
                 <div class="img-left">
                     <img class="logo" src="{{wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px">
                 </div>
@@ -13,7 +13,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a role="button" [routerLink]="['/']" class="js-search" data-close="true"><i class="material-icons">home</i></a></li>
+                <li><a role="button" [routerLink]="homeurl" class="js-search" data-close="true"><i class="material-icons">home</i></a></li>
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" *ngIf="mastersMenuDT.length">
                         Masters <b class="caret"></b>

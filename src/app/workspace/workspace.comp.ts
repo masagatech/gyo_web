@@ -22,6 +22,7 @@ export class WorkspaceComponent implements OnDestroy {
     constructor(private _router: Router, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {
             this._router.navigate(['/login']);
@@ -42,7 +43,7 @@ export class WorkspaceComponent implements OnDestroy {
         if (Cookie.get('_schwsdetails_') != null) {
             this.wsname = this._wsdetails.wsname;
             this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
-            this.enttname = "";
+            this.enttname = Cookie.get('_schenttdetails_') != null ? this._enttdetails.enttname : "";
         }
     }
 

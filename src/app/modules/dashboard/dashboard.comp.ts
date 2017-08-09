@@ -75,9 +75,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         if (row.dbtype == "user") {
             Cookie.delete('_srcutype_');
+            Cookie.delete('_enttid_');
+            Cookie.delete('_enttnm_');
+
             Cookie.set("_srcutype_", row.dbcode);
+            Cookie.set("_enttid_", that._enttdetails.enttid);
+            Cookie.set("_enttnm_", that._enttdetails.enttname);
         }
-        else if(row.dbtype == "entity") {
+        else if (row.dbtype == "entity") {
             Cookie.delete('_entttype_');
             Cookie.set("_entttype_", row.dbcode);
         }

@@ -10,8 +10,6 @@ import { ViewEntityComponent } from './view/viewentity.comp';
 
 import { EntityService } from '@services/master';
 
-import { OnlyNumber } from '@directives';
-
 import {
   LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
   AutoCompleteModule, FileUploadModule
@@ -31,8 +29,7 @@ export const routes = [
 @NgModule({
   declarations: [
     AddEntityComponent,
-    ViewEntityComponent,
-    OnlyNumber
+    ViewEntityComponent
   ],
 
   imports: [

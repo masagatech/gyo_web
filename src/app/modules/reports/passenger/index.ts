@@ -1,38 +1,40 @@
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
 import { AuthGuard } from '../../../_services/authguard-service';
 
-import { PassengerReportsComponent } from './rptpsngr.comp';
-import { PassengerService } from '@services/master';
-
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 export const routes = [
-  {
-    path: '', children: [
-      {
-        path: '', component: PassengerReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptpsngr", "rights": "view", "urlname": "/passenger" }
-      }
-    ]
-  },
+    {
+        path: '',
+        canActivate: [AuthGuard],
+        children: [
+            {
+                path: '',
+                children: [
+                    { path: '', loadChildren: './passenger#PassengerReportsModule' },
+
+                    // Student
+                    
+                    { path: 'trips', loadChildren: './passengertrips#PassengerTripsReportsModule' },
+                    { path: 'routewise', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
+                    { path: 'direct', loadChildren: './directpassenger#DirectPassengerModule' },
+                    { path: 'unschedule', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
+                ]
+            }
+        ]
+    },
 ];
 
 @NgModule({
-  declarations: [
-    PassengerReportsComponent
-  ],
-
-  imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
-  ],
-
-  providers: [AuthGuard, PassengerService]
+    imports: [RouterModule.forChild(routes),
+        FormsModule,
+        CommonModule,
+    ],
+    providers: [AuthGuard]
 })
 
 export class PassengerReportsModule {
-  public static routes = routes;
+
 }

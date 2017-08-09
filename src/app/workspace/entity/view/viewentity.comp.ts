@@ -49,12 +49,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         var that = this;
         that.refreshButtons();
-
-        // setTimeout(function () {
-        //     $.AdminBSB.islocked = true;
-        //     $.AdminBSB.leftSideBar.Close();
-        //     $.AdminBSB.rightSideBar.activate();
-        // }, 0);
     }
 
     // Entity Type DropDown
@@ -74,7 +68,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
                     that.entttypeDT.splice(0, 0, { "key": "", "val": "All" });
                 }
                 
-                setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
+                // setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -203,7 +197,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        // $.AdminBSB.islocked = false;
-        // $.AdminBSB.leftSideBar.Open();
+        
     }
 }

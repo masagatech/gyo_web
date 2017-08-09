@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() wsname: string = "";
   @Input() wslogo: string = "";
   @Input() enttname: string = "";
+  @Input() homeurl: string = "";
 
   mname: string = "";
 
