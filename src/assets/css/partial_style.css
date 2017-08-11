@@ -1,3 +1,13 @@
+.backgroundImg {
+    background: url(../../assets/img/bg.png) no-repeat center center fixed;
+    background-size: contain;
+    background-color: #f58d3d;
+}
+
+.login-card {
+    border: solid 1px red;
+}
+
 .slim>thead>tr>th,
 .slim>tbody>tr>td {
     padding: 3px 2px 2px 2px;
@@ -2134,28 +2144,27 @@ select.selectpicker {
 
 
 /*small check box*/
-[type="checkbox"].small + label {
+
+[type="checkbox"].small+label {
     height: 13px!important;
 }
 
-[type="checkbox"].small:checked+label:before{
-
+[type="checkbox"].small:checked+label:before {
     top: -5px!important;
     left: 0px!important;
     width: 6px!important;
     height: 13px!important;
 }
-[type="checkbox"].small:checked+label:after{
+
+[type="checkbox"].small:checked+label:after {
     width: 13px!important;
     height: 13px!important;
 }
 
-[type="checkbox"].small:not(:checked) + label:after{
+[type="checkbox"].small:not(:checked)+label:after {
     height: 13px;
     width: 13px;
 }
-
-
 
 .vhbatr .btr {
     position: relative;

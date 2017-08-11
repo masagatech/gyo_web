@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../_services/auth-service'
 import { LoginService } from '../_services/login/login-service';
 import { MessageService, messageType } from '../_services/messages/message-service';
@@ -11,7 +11,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     providers: [AuthenticationService]
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
     public errorMsg = '';
     public btnLoginText = 'Login';
     _user = new UserReq("", "");
@@ -75,6 +75,10 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        $('body').addClass('backgroundImg');
+    }
 
+    ngOnDestroy(){
+         $('body').removeClass('backgroundImg');
     }
 }
