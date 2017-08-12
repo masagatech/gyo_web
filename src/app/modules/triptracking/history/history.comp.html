@@ -76,7 +76,7 @@
                     <a class="slideright" (click)="showPlayer(row);" role="button"> <i class="material-icons"> chevron_right</i></a>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <b>{{row.stdt | format :{'format':'DD-MMM-YYYY hh:mm A'}}}</b>
+                            <b>{{row.stdt | format :{'format':'DD-MMM-YYYY hh:mm A'} }}</b>
                         </div>
                         <div class="col-md-12 leftmar">
                             <span class="material-icons ico-specify"></span>{{ row.stpdt ? (row.stpdt | format :{'format':'DD-MMM-YYYY hh:mm A'}) : 'Trip In Progress' }}

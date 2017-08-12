@@ -8,7 +8,6 @@
                     <span class="material-icons inputserachico" style="top:4px;">search</span>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -18,36 +17,30 @@
                 <div class="vhwrapper {{row.isshow ? row.min > 3 ? 'of' : 'ol' : 'ou'}}">
                     <div class="vhbody">
                         <div class="titlewrap">
-                            <div>
+                            <div class="vhchkbx">
+                                <input type="checkbox" id="{{row.vhid}}" [(ngModel)]="row.sel" data-md-icheck (change)="onchange($event, row)" class="small filled-in">
+                                <label for="{{row.vhid}}"></label>
+                                <img id="{{'vh'+ row.vhid}}" src="assets/img/map/{{row.ico}}_0.png?v=1" height="40px" />
+                            </div>
+                            <span class="vhbatr pull-right" *ngIf="row.isshow">
+                                {{row.isempty}}
+                            <span class="vhbtrper">{{row.btr | _currency:{'decimals':0, 'currsym': '' }  }}%</span>
+                            <span class="btr">
+								<span class="btr-line" title="{{row.btr}}%" [ngStyle]="{'width': row.btr+'%'}"></span>
+                            </span>
+                            </span>
 
-                                <div class="vhchkbx">
-                                    <input type="checkbox" id="{{row.vhid}}" [(ngModel)]="row.sel" data-md-icheck (change)="onchange($event, row)" class="small filled-in">
-                                    <label for="{{row.vhid}}"></label>
-                                    <img id="{{'vh'+ row.vhid}}" src="assets/img/map/{{row.ico}}_0.png?v=1" height="40px" />
-                                </div>
-                                <span class="vhbatr pull-right" *ngIf="row.isshow">
-                                    {{row.isempty}}
-                                <span class="vhbtrper">{{row.btr | _currency:{'decimals':0, 'currsym': '' }  }}%</span>
-                                <span class="btr">
-										<span class="btr-line" title="{{row.btr}}%" [ngStyle]="{'width': row.btr+'%'}"></span>
-                                </span>
-
-                                </span>
-
-                                <div class="vhtitle">
-                                    {{row.vno}}
-                                </div>
-
-                                <div class="vhsubtitle">
-                                    <div><span class="shortdet">{{row.vrg}}&nbsp;&nbsp;&nbsp;{{row.vmodl}}</span><span class="tripstatus pull-right">{{row.flag == 'inprog' ? 'TRIP IN PROGRESS' : (row.flag == 'start' ? 'TRIP STARTED' : 'TRIP STOPPED')  }}</span></div>
-                                </div>
-                                <div class="vhsubtitle">
-                                    <div *ngIf="row.isshow"><span class="time" title="{{row.sertm}}">{{row.sertm | timeAgo}}</span><span class="speed pull-right">{{row.speed | _currency:{'decimals':3, 'currsym': '' } }} km/h</span></div>
-                                    <span *ngIf="!row.isshow">No updates found</span>
-
-                                </div>
+                            <div class="vhtitle">
+                                {{row.vno}}
                             </div>
 
+                            <div class="vhsubtitle">
+                                <div><span class="shortdet">{{row.vrg}}&nbsp;&nbsp;&nbsp;{{row.vmodl}}</span><span class="tripstatus pull-right">{{row.flag == 'inprog' ? 'TRIP IN PROGRESS' : (row.flag == 'start' ? 'TRIP STARTED' : 'TRIP STOPPED')  }}</span></div>
+                            </div>
+                            <div class="vhsubtitle">
+                                <div *ngIf="row.isshow"><span class="time" title="{{row.sertm}}">{{row.sertm | timeAgo}}</span><span class="speed pull-right">{{row.speed | _currency:{'decimals':3, 'currsym': '' } }} km/h</span></div>
+                                <span *ngIf="!row.isshow">No updates found</span>
+                            </div>
                         </div>
                     </div>
                     <div class="vhfooter">
@@ -56,14 +49,10 @@
                             <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="passenger_click(row,$event); false" role="button">PASSENGERS</a>
                             <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="history_click(row,$event); false" role="button">HISTORY</a>
                             <a href="javascript:void(0);" class="btn {{row.isfollow ? 'btn-info' : 'bg-info'}} waves-effect" (click)="clickVehicle(row,$event); false" role="button">{{row.isfollow ? 'UNFOLLOW' : 'FOLLOW'}}</a>
-
                         </div>
                     </div>
-
                 </div>
-
             </li>
-
         </ul>
     </div>
 </div>
@@ -89,12 +78,10 @@
         <a role="button" (click)="closesidepanel()"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a>
     </div>
     <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 80px)', 'position': 'relative', 'overflow': 'hidden'}" [options]="options" [overlays]="overlays"></p-gmap>
-
 </div>
 
 <section>
-    <div class="righthandle" style="display:none;right: 0px; border: 3px solid #000;
-    border-right: 0;z-index: 999999999999;position: absolute;top:113px;background:#ffffff;height:40px;">
+    <div class="righthandle" style="display:none;right: 0px; border: 3px solid #000; border-right: 0;z-index: 999999999999;position: absolute;top:113px;background:#ffffff;height:40px;">
         <a role="button"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a>
     </div>
     <aside id="rightsidebar" class="right-sidebar">
@@ -105,7 +92,6 @@
                 </h2>
 
                 <ul class="header-dropdown m-r--5" style="top: 0px;">
-
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">more_vert</i>
