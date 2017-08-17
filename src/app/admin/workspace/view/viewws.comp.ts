@@ -61,8 +61,7 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public ngOnInit() {
-        var that = this;
-        that.refreshButtons();
+        this.refreshButtons();
     }
  
     isshWorkspace(viewtype) {
