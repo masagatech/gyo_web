@@ -144,25 +144,23 @@
                 </div>
 
                 <div class="form-group">
-                    <p-fileUpload name="fileUploaded" url="{{uploadphotoconfig.server}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="auto">
-                        <template pTemplate type="content">
-                            <div *ngIf="uploadPhotoDT.length">
-                                <div *ngFor="let file of uploadPhotoDT">
-                                    <div class="row clearfix">
-                                        <div class="col-md-9">
-                                            <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                        </div>
-                                    </div>
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadPhotoDT.length">
+                        <div *ngFor="let file of uploadPhotoDT">
+                            <div class="row clearfix">
+                                <div class="col-md-9">
+                                    <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                        <i class="material-icons">delete</i>
+                                    </button>
                                 </div>
                             </div>
-                            <span *ngIf="!uploadPhotoDT.length">Upload Photo....</span>
-                        </template>
-                    </p-fileUpload>
+                        </div>
+                    </div>
+                    <span *ngIf="!uploadPhotoDT.length">Upload Photo....</span>
                 </div>
             </div>
             <div class="col-md-6">

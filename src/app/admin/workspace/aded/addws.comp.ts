@@ -216,9 +216,11 @@ export class AddWorkspaceComponent implements OnInit {
 
         imgfile = JSON.parse(event.xhr.response);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.uploadLogoDT.push({ "athurl": imgfile[i].path.replace(that.uploadlogoconfig.filepath, "") })
-        }
+        setTimeout(function () {
+            for (var i = 0; i < imgfile.length; i++) {
+                that.uploadLogoDT.push({ "athurl": imgfile[i].path.replace(that.uploadlogoconfig.filepath, "") })
+            }
+        }, 1000);
     }
 
     // Get File Size

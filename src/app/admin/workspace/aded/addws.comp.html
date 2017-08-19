@@ -197,13 +197,15 @@
 
             <div class="row clearfix">
                 <div class="col-md-6">
-                    <p-fileUpload name="fileUploaded" url="{{uploadlogoconfig.server}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}" auto="auto">
-                        <template pTemplate type="content">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server + '?width=150'}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                    <div class="row clearfix">
+                        <div class="col-md-12">
                             <div *ngIf="uploadLogoDT.length">
                                 <div *ngFor="let file of uploadLogoDT" class="box">
                                     <div class="row clearfix">
                                         <div class="col-md-9">
-                                            <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
+                                            <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" height="40px" />
                                         </div>
                                         <div class="col-md-3">
                                             <button type="button" class="btn btn-danger btn-xs" (click)="removeLogoUpload()">
@@ -213,9 +215,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <span *ngIf="!uploadLogoDT.length">Upload {{entttype}} Logo Here....</span>
-                        </template>
-                    </p-fileUpload>
+                            <span *ngIf="!uploadLogoDT.length">Upload Logo Here....</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <table cellspacing="3" cellpadding="3" class="ui-datatable" width="100%">

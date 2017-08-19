@@ -83,25 +83,23 @@
 
                 <div class="row clearfix">
                     <div class="col-md-12">
-                        <p-fileUpload name="fileUploaded" url="{{uploadphotoconfig.server}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="auto">
-                            <template pTemplate type="content">
-                                <div *ngIf="uploadPhotoDT.length">
-                                    <div *ngFor="let file of uploadPhotoDT">
-                                        <div class="row clearfix">
-                                            <div class="col-md-9">
-                                                <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                        <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                        <div *ngIf="uploadPhotoDT.length">
+                            <div *ngFor="let file of uploadPhotoDT">
+                                <div class="row clearfix">
+                                    <div class="col-md-9">
+                                        <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
                                                     <i class="material-icons">delete</i>
                                                 </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <span *ngIf="!uploadPhotoDT.length">Upload Photo....</span>
-                            </template>
-                        </p-fileUpload>
+                            </div>
+                        </div>
+                        <span *ngIf="!uploadPhotoDT.length">Upload Photo....</span>
                     </div>
                 </div>
             </div>
@@ -223,27 +221,25 @@
 
         <div class="row clearfix">
             <div class="col-md-8">
-                <p-fileUpload name="fileUploaded" url="{{uploaddocconfig.server}}" (onUpload)="onDocUpload($event)" multiple="multiple" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="auto">
-                    <template pTemplate type="content">
-                        <div *ngIf="attachDocsDT.length">
-                            <div *ngFor="let file of attachDocsDT" class="box">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <img src="{{uploaddocconfig.uploadurl + file.athurl}}" height="80px" />
-                                    </div>
-                                    <div class="col-md-8">
-                                        <b>Size : </b> {{formatSizeUnits(file.athsize)}}
-                                    </div>
-                                    <div class="col-md-1">
-                                        <a role="button" (click)="removeDocUpload()"><i class="fa fa-remove"></i></a>
-                                    </div>
-                                </div>
-                                <hr />
+                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server}}" (onUpload)="onDocUpload($event)" multiple="multiple" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                <div *ngIf="attachDocsDT.length">
+                    <div *ngFor="let file of attachDocsDT" class="box">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="{{uploaddocconfig.uploadurl + file.athurl}}" height="80px" />
+                            </div>
+                            <div class="col-md-8">
+                                <b>Size : </b> {{formatSizeUnits(file.athsize)}}
+                            </div>
+                            <div class="col-md-1">
+                                <a role="button" (click)="removeDocUpload()"><i class="fa fa-remove"></i></a>
                             </div>
                         </div>
-                        <span>Drag File Here....</span>
-                    </template>
-                </p-fileUpload>
+                        <hr />
+                    </div>
+                </div>
+                <span *ngIf="!attachDocsDT.length">Drag File Here....</span>
             </div>
         </div>
     </div>
