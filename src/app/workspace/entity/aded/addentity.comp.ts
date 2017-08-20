@@ -14,6 +14,7 @@ declare var google: any;
 
 export class AddEntityComponent implements OnInit {
     loginUser: LoginUserModel;
+    _wsdetails: any = [];
 
     marker: any;
     @ViewChild("gmap")
@@ -64,8 +65,8 @@ export class AddEntityComponent implements OnInit {
     uploadLogoDT: any = [];
     global = new Globals();
     uploadlogoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    chooseLabel: string = "";
 
-    _wsdetails: any = [];
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService,
@@ -389,9 +390,11 @@ export class AddEntityComponent implements OnInit {
 
         console.log(imgfile);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.uploadLogoDT.push({ "athurl": imgfile[i].path.replace(that.uploadlogoconfig.filepath, "") })
-        }
+        setTimeout(function () {
+            for (var i = 0; i < imgfile.length; i++) {
+                that.uploadLogoDT.push({ "athurl": imgfile[i].path.replace(that.uploadlogoconfig.filepath, "") })
+            }
+        }, 1000);
     }
 
     // Get File Size
@@ -445,6 +448,7 @@ export class AddEntityComponent implements OnInit {
         that.pincode = 0;
         that.isactive = true;
         that.mode = "";
+        that.chooseLabel = "Upload Logo";
     }
 
     // Active / Deactive Data
@@ -632,9 +636,11 @@ export class AddEntityComponent implements OnInit {
 
                         if (data.data[0].schlogo !== "") {
                             that.uploadLogoDT.push({ "athurl": data.data[0].schlogo });
+                            that.chooseLabel = "Change Logo";
                         }
                         else {
                             that.uploadLogoDT = [];
+                            that.chooseLabel = "Upload Logo";
                         }
 
                         that.lat = data.data[0].lat;

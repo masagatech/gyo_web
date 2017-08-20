@@ -67,9 +67,9 @@ export class AddPassengerComponent implements OnInit {
     remark1: string = "";
 
     uploadPhotoDT: any = [];
-
     global = new Globals();
     uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    chooseLabel: string = "";
 
     mode: string = "";
     isactive: boolean = true;
@@ -420,6 +420,7 @@ export class AddPassengerComponent implements OnInit {
         that.otherinfo = "";
 
         that.uploadPhotoDT = [];
+        that.chooseLabel = "Upload Photo";
     }
 
     // User Photo Upload
@@ -448,9 +449,11 @@ export class AddPassengerComponent implements OnInit {
 
         imgfile = JSON.parse(event.xhr.response);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
-        }
+        setTimeout(function () {
+            for (var i = 0; i < imgfile.length; i++) {
+                that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
+            }
+        }, 1000);
     }
 
     removePhotoUpload() {
@@ -730,9 +733,11 @@ export class AddPassengerComponent implements OnInit {
 
                             if (data.data[0].FilePath !== "") {
                                 that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
+                                that.chooseLabel = "Change Photo";
                             }
                             else {
                                 that.uploadPhotoDT = [];
+                                that.chooseLabel = "Upload Photo";
                             }
                         }
                         else {

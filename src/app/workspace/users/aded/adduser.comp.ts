@@ -57,9 +57,9 @@ export class AddUserComponent implements OnInit {
     private subscribeParameters: any;
 
     uploadPhotoDT: any = [];
-
     global = new Globals();
     uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    chooseLabel: string = "";
 
     constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService,
         private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
@@ -367,9 +367,11 @@ export class AddUserComponent implements OnInit {
 
         imgfile = JSON.parse(event.xhr.response);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
-        }
+        setTimeout(function () {
+            for (var i = 0; i < imgfile.length; i++) {
+                that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
+            }
+        }, 1000);
     }
 
     removePhotoUpload() {
@@ -440,7 +442,9 @@ export class AddUserComponent implements OnInit {
 
         that.entityList = [];
         that.vehtypeList = [];
+
         that.uploadPhotoDT = [];
+        that.chooseLabel = "Upload Photo";
     }
 
     // Save Data
@@ -606,9 +610,11 @@ export class AddUserComponent implements OnInit {
 
                         if (data.data[0].FilePath !== "") {
                             that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
+                            that.chooseLabel = "Change Photo";
                         }
                         else {
                             that.uploadPhotoDT = [];
+                            that.chooseLabel = "Upload Photo";
                         }
                     }
                     catch (e) {

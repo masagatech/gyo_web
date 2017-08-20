@@ -81,7 +81,8 @@
                 </div>
 
                 <div class="form-group">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}" auto="true">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}"
+                        auto="true">
                         <template pTemplate type="content">
                             <div *ngIf="uploadLogoDT.length">
                                 <div *ngFor="let file of uploadLogoDT" class="box">
@@ -97,7 +98,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <span *ngIf="!uploadLogoDT.length">Upload {{entttype}} Logo Here....</span>
                         </template>
                     </p-fileUpload>
                 </div>

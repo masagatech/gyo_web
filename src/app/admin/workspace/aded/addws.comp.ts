@@ -52,9 +52,9 @@ export class AddWorkspaceComponent implements OnInit {
     mode: string = "";
 
     uploadLogoDT: any = [];
-
     global = new Globals();
     uploadlogoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    chooseLabel: string = "";
 
     private subscribeParameters: any;
 
@@ -69,7 +69,7 @@ export class AddWorkspaceComponent implements OnInit {
         this.fillAreaDropDown();
 
         if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
-            this._router.navigate(['/']);
+            this._router.navigate(['/workspace/entity']);
         }
     }
 
@@ -287,6 +287,7 @@ export class AddWorkspaceComponent implements OnInit {
         that.schenttmaxno = 0;
 
         that.uploadLogoDT = [];
+        that.chooseLabel = "Upload Logo";
     }
 
     // Active / Deactive Data
@@ -543,11 +544,11 @@ export class AddWorkspaceComponent implements OnInit {
                             that.wsname = data.data[0].wsname;
 
                             if (data.data[0].wslogo !== "") {
-                                that.uploadLogoDT = [];
                                 that.uploadLogoDT.push({ "athurl": data.data[0].wslogo });
+                                that.chooseLabel = "Change Logo";
                             }
                             else {
-                                that.uploadLogoDT = [];
+                                that.chooseLabel = "Upload Logo";
                             }
 
                             that.wsdesc = data.data[0].wsdesc;
