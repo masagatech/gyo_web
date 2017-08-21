@@ -70,14 +70,14 @@
                     <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
                     <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
                     <p-column header="P" [style]="{'width': '30px', 'text-align': 'left'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="material-icons {{drow.pdtype.p === 'check' ? 'act-green' : 'act-red'}}">{{drow.pdtype.p == null ? 'cancel' : drow.pdtype.p}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="D" [style]="{'width': '30px', 'text-align': 'left'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="material-icons {{drow.pdtype.d === 'check' ? 'act-green' : 'act-red'}}">{{drow.pdtype.d == null ? 'cancel' : drow.pdtype.d}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

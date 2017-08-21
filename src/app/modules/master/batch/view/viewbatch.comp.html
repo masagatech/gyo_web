@@ -20,11 +20,11 @@
                         <p-column field="weekname" header="Working Days" [style]="{'text-align':'left', 'vertical-align': 'top'}"></p-column>
                         <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left', 'vertical-align': 'top'}"></p-column>
                         <p-column [style]="{'width': '60px', 'text-align': 'left'}">
-                            <template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editBatchForm(row)">
+                            <ng-template let-row="rowData" pTemplate type="body">
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editBatchForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
-                        </template>
+                            </ng-template>
                         </p-column>
                     </p-dataTable>
                 </div>

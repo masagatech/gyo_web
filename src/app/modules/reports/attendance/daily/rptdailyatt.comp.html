@@ -27,14 +27,14 @@
                     <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
                     <p-column field="p" header="P" [style]="{'width': '30px', 'text-align': 'left'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="material-icons {{drow.p === 'check' ? 'act-green' : 'act-red'}}">{{drow.p}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column field="d" header="D" [style]="{'width': '30px', 'text-align': 'left'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="material-icons {{drow.d === 'check' ? 'act-green' : 'act-red'}}">{{drow.d}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

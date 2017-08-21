@@ -38,11 +38,11 @@
                     <p-column field="todt" header="To Date" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editHolidayGrid(row)">
                                 <i class="material-icons">edit</i>
                             </button>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

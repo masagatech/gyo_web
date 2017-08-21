@@ -21,7 +21,7 @@
         <div class="row clearfix" *ngIf="isShowGrid">
             <div class="col-md-12" *ngIf="driverDT.length">
                 <p-dataGrid [value]="driverDT" [paginator]="true" [rows]="20">
-                    <template let-row pTemplate="item">
+                    <ng-template let-row pTemplate="item">
                         <div style="padding:3px" class="ui-g-12 ui-md-3">
                             <p-panel [header]="row.drivername" [style]="{'text-align':'center'}">
                                 <span class="material-icons reject" *ngIf="!row.isactive">close</span>
@@ -33,20 +33,17 @@
                                 </button>
                             </p-panel>
                         </div>
-                    </template>
+                    </ng-template>
                 </p-dataGrid>
-            </div>
-            <div class="col-md-12 empty-message" *ngIf="!driverDT.length">
-                {{emptymsg}}
             </div>
         </div>
         <div class="row clearfix" *ngIf="isShowList">
             <div class="col-md-12">
                 <p-dataTable [value]="driverDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <img alt="{{row.drivername}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column field="drivername" header="Driver Name" [style]="{'width':'200px','text-align':'left'}"></p-column>
                     <p-column field="aadharno" header="Aadhar No" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
@@ -54,11 +51,11 @@
                     <p-column field="mobileno1" header="Mobile" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editDriverForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

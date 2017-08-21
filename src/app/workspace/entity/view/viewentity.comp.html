@@ -52,7 +52,7 @@
                         <b>{{row.key}}</b>
                     </div>
                     <p-dataGrid [value]="row.value" [paginator]="true" [rows]="8">
-                        <template let-drow pTemplate="item">
+                        <ng-template let-drow pTemplate="item">
                             <div style="padding:3px" class="col-md-3">
                                 <p-panel [header]="drow.schoolname" [style]="{'text-align':'center'}">
                                     <a role="button" (click)="openMainForm(drow)">
@@ -64,11 +64,10 @@
                                     </button>
                                     <button type="button" class="btn btn-theme btn-xs" (click)="openMainForm(drow)">
                                         <i class="material-icons">arrow_forward</i>
-                                    </button>
-                                    {{drow.mode}}
+                                    </button> {{drow.mode}}
                                 </p-panel>
                             </div>
-                        </template>
+                        </ng-template>
                     </p-dataGrid>
                 </div>
             </div>
@@ -80,9 +79,9 @@
             <div class="col-md-12">
                 <p-dataTable [value]="entityDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <img alt="{{row.studentname}}" src="{{global.uploadurl + row.schlogo}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column field="schoolcode" header="Code" [style]="{'width': '80px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="schoolname" header="Name" [style]="{'width': '220px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
@@ -95,11 +94,11 @@
                     <p-column field="entttype" header="Type" [style]="{'width':'70px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'70px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

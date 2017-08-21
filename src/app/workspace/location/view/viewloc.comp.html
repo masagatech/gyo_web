@@ -18,11 +18,11 @@
                     <p-column field="loccode" header="Location Code" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="locname" header="Location Name" [style]="{'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editLocationForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

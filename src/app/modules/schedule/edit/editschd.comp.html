@@ -139,7 +139,7 @@
                     </div>
 
                     <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
-                        <template let-passenger pTemplate="editor">
+                        <ng-template let-passenger pTemplate="editor">
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="ui-helper-clearfix">
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </template>
+                        </ng-template>
                     </p-orderList>
                 </div>
                 <div class="col-md-6">
@@ -243,20 +243,20 @@
                     </div>
 
                     <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
-                        <template let-passenger pTemplate="item">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="ui-helper-clearfix">
-                                    {{passenger.stdnm}}
+                        <ng-template let-passenger pTemplate="item">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="ui-helper-clearfix">
+                                        {{passenger.stdnm}}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="ui-helper-clearfix">
+                                        <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                        </ng-template>
                     </p-orderList>
                 </div>
             </div>

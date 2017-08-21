@@ -19,13 +19,9 @@ export class ViewDriverComponent implements OnInit {
     global = new Globals();
 
     driverDT: any = [];
-    enttid: number = 0;
-    enttname: string = "";
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
-
-    emptymsg: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _driverservice: DriverService) {
@@ -33,7 +29,7 @@ export class ViewDriverComponent implements OnInit {
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.viewDriverDataRights();
+        this.getDriverDetails();
     }
 
     public ngOnInit() {
@@ -67,19 +63,6 @@ export class ViewDriverComponent implements OnInit {
         }, 0);
     }
 
-    public viewDriverDataRights() {
-        var that = this;
-
-        if (that._enttdetails.enttname != null) {
-            that.enttid = parseInt(this._enttdetails.enttid);
-            that.enttname = this._enttdetails.enttname;
-            that.getDriverDetails();
-        }
-        else {
-            that.emptymsg = "Search Entity";
-        }
-    }
-
     getDriverDetails() {
         var that = this;
 
@@ -87,16 +70,10 @@ export class ViewDriverComponent implements OnInit {
 
         that._driverservice.getDriverDetails({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "enttid": that._enttdetails.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
-                if (data.data.length > 0) {
-                    that.driverDT = data.data;
-                }
-                else {
-                    that.driverDT = [];
-                    that.emptymsg = "No records found";
-                }
+                that.driverDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

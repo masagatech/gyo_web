@@ -32,9 +32,9 @@
                     <p-column field="email" header="Primary Email" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="address" header="Address 1" [style]="{'width': '200px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Address 2" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             {{row.area}}<span *ngIf="row.city !== ''">{{" " + row.city}}</span><span *ngIf="row.state !== ''">{{" " + row.state}}</span><span *ngIf="row.country !== ''">{{", " + row.country}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column field="entttype" header="Entity Type" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>

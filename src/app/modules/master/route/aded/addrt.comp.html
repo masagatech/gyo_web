@@ -108,7 +108,7 @@
         <div class="row clearfix" *ngIf="stopsList.length">
             <div class="col-md-12">
                 <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [listStyle]="{'height':'auto'}" [responsive]="true" header="Stops">
-                    <template let-stops pTemplate="editor">
+                    <ng-template let-stops pTemplate="editor">
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="ui-helper-clearfix">
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
                         </div>
-                    </template>
+                    </ng-template>
                 </p-orderList>
             </div>
         </div>

@@ -43,7 +43,7 @@
         <div class="row clearfix" *ngIf="isShowGrid">
             <div class="col-md-12" *ngIf="passengerDT.length">
                 <p-dataGrid [value]="passengerDT" [paginator]="true" [rows]="20">
-                    <template let-row pTemplate="item">
+                    <ng-template let-row pTemplate="item">
                         <div style="padding:3px" class="ui-g-12 ui-md-3">
                             <p-panel [header]="row.studentname" [style]="{'text-align':'center'}">
                                 <span class="material-icons reject" *ngIf="!row.isactive">close</span>
@@ -55,20 +55,17 @@
                                 </button>
                             </p-panel>
                         </div>
-                    </template>
+                    </ng-template>
                 </p-dataGrid>
-            </div>
-            <div class="col-md-12 empty-message" *ngIf="!passengerDT.length">
-                {{emptymsg}}
             </div>
         </div>
         <div class="row clearfix" *ngIf="isShowList">
             <div class="col-md-12">
                 <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column field="studentname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -76,22 +73,22 @@
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="Email" [style]="{'width':'250px','text-align':'left','vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

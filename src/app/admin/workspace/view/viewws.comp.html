@@ -149,34 +149,34 @@
                 <div class="body">
                     <p-dataTable [value]="workspaceDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                         <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
-                            <template let-row="rowData" pTemplate type="body">
+                            <ng-template let-row="rowData" pTemplate type="body">
                                 <img alt="{{row.wsname}}" src="{{global.uploadurl + row.wslogo}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                            </template>
+                            </ng-template>
                         </p-column>
                         <p-column field="wscode" header="Code" [style]="{'width': '90px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                         <p-column field="wsname" header="Name" [style]="{'width': '270px', 'text-align': 'left', 'vertical-align':'top'}">
-                            <template let-row="rowData" pTemplate type="body">
+                            <ng-template let-row="rowData" pTemplate type="body">
                                 {{row.wsname}}<br/>
                                 <b>({{row.wstype}})</b>
-                            </template>
+                            </ng-template>
                         </p-column>
                         <p-column field="name" header="Contact Name" [style]="{'width': '150px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                         <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                         <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                         <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
-                            <template let-row="rowData" pTemplate type="body">
+                            <ng-template let-row="rowData" pTemplate type="body">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="editWorkspaceForm(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
-                            </template>
+                            </ng-template>
                         </p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
-                            <template let-row="rowData" pTemplate type="body">
+                            <ng-template let-row="rowData" pTemplate type="body">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="openEntityForm(row)">
                                     <i class="material-icons">arrow_forward</i>
                                 </button>
-                            </template>
+                            </ng-template>
                         </p-column>
                     </p-dataTable>
                 </div>

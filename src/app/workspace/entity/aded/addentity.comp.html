@@ -82,24 +82,22 @@
 
                 <div class="form-group">
                     <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}"
-                        auto="true">
-                        <template pTemplate type="content">
-                            <div *ngIf="uploadLogoDT.length">
-                                <div *ngFor="let file of uploadLogoDT" class="box">
-                                    <div class="row clearfix">
-                                        <div class="col-md-9">
-                                            <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeLogoUpload()">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                        </div>
-                                    </div>
+                        auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadLogoDT.length">
+                        <div *ngFor="let file of uploadLogoDT" class="box">
+                            <div class="row clearfix">
+                                <div class="col-md-9">
+                                    <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeLogoUpload()">
+                                        <i class="material-icons">delete</i>
+                                    </button>
                                 </div>
                             </div>
-                        </template>
-                    </p-fileUpload>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -250,17 +248,17 @@
         <div class="body" *ngIf="contactDT.length">
             <p-dataTable #dt [value]="contactDT" [lazy]="true">
                 <p-column header="#" [style]="{'width':'50px','text-align':'center'}">
-                    <template let-i="rowIndex" pTemplate="body">
+                    <ng-template let-i="rowIndex" pTemplate="body">
                         {{i + 1}}
-                    </template>
+                    </ng-template>
                 </p-column>
                 <p-column header="Name" field="cpname" [style]="{'text-align':'left'}"></p-column>
                 <p-column header="Contact No" field="cpcontactno" [style]="{'width':'250px','text-align':'left'}"></p-column>
                 <p-column header="Email" field="cpemail" [style]="{'width':'250px','text-align':'left'}"></p-column>
                 <p-column [style]="{'width':'50px','text-align':'center'}">
-                    <template let-col let-row="rowData" pTemplate="body">
+                    <ng-template let-col let-row="rowData" pTemplate="body">
                         <button class="btn btn-danger btn-xs" (click)="deleteCPRow(row)"><i class="material-icons">delete</i></button>
-                    </template>
+                    </ng-template>
                 </p-column>
             </p-dataTable>
         </div>

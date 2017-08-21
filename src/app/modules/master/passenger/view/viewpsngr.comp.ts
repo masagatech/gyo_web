@@ -31,7 +31,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     psngrname: any = [];
 
     passengerDT: any = [];
-    emptymsg: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
@@ -144,6 +143,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (Cookie.get('_psngrnm_') != null) {
+            that.psngrid = parseInt(Cookie.get('_psngrid_'));
             that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
             that.psngrname.label = Cookie.get('_psngrnm_');
         }
@@ -173,13 +173,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         that._psngrservice.getPassengerDetails(params).subscribe(data => {
             try {
-                if (data.data.length > 0) {
-                    that.passengerDT = data.data;
-                }
-                else {
-                    that.passengerDT = [];
-                    that.emptymsg = "No records found";
-                }
+                that.passengerDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

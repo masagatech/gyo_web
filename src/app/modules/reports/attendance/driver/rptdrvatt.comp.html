@@ -45,36 +45,36 @@
                 <p-dataTable [value]="attData">
                     <p-column field="drivername" header="Driver Name" [style]="{'width': '250px', 'text-align': 'left'}"></p-column>
                     <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width':'25px','text-align':'center'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="{{drow[atcol.day]}}">
                                 {{drow[atcol.day] == 'DA' ? 'AD' : drow[atcol.day] == 'AP' ? 'PA' : drow[atcol.day]}}
                             </span>
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="P" [styleClass]="'P'" [style]="{'width': '25px', 'text-align': 'center'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             {{drow.P == null ? "0" : drow.P}}
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="D" [styleClass]="'D'" [style]="{'width': '25px', 'text-align': 'center'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             {{drow.D == null ? "0" : drow.D}}
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="PD" [styleClass]="'PD'" [style]="{'width': '25px', 'text-align': 'center'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             {{drow.PD == null ? "0" : drow.PD}}
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="A" [styleClass]="'A'" [style]="{'width': '25px', 'text-align': 'center'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             {{drow.A == null ? "0" : drow.A}}
-                        </template>
+                        </ng-template>
                     </p-column>
                     <p-column header="H" [styleClass]="'H'" [style]="{'width': '25px', 'text-align': 'center'}">
-                        <template let-drow="rowData" pTemplate type="body">
+                        <ng-template let-drow="rowData" pTemplate type="body">
                             {{drow.H == null ? "0" : drow.H}}
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>

@@ -117,7 +117,7 @@
                 </div>
 
                 <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" [header]="_enttdetails.psngrtype">
-                    <template let-pkrow pTemplate="item">
+                    <ng-template let-pkrow pTemplate="item">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="ui-helper-clearfix">
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                         </div>
-                    </template>
+                    </ng-template>
                 </p-orderList>
             </div>
 
@@ -223,7 +223,7 @@
                 </div>
 
                 <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" [header]="_enttdetails.psngrtype">
-                    <template let-drprow pTemplate="item">
+                    <ng-template let-drprow pTemplate="item">
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="ui-helper-clearfix">
@@ -237,7 +237,7 @@
                                 </div>
                             </div>
                         </div>
-                    </template>
+                    </ng-template>
                 </p-orderList>
             </div>
         </div>

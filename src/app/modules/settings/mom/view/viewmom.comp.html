@@ -35,11 +35,11 @@
                     <p-column field="key" header="Key" [style]="{'width':'150px','text-align':'left'}"></p-column>
                     <p-column field="val" header="Value" [style]="{'text-align':'left'}"></p-column>
                     <p-column styleClass="col-button" [style]="{'width':'60px','text-align':'left'}">
-                        <template let-row="rowData" pTemplate type="body">
+                        <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" (click)="editMOMForm(row)" class="btn btn-theme btn-xs">
                                 <span class="material-icons">edit</span>
                             </button>
-                        </template>
+                        </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>
