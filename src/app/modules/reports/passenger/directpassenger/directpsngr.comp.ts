@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, MenuService, CommonService }
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 @Component({
@@ -49,7 +48,7 @@ export class DirectPassengerComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.passengerDT, 'DirectPassenger', { "showLabels": true });
+        this._autoservice.exportToCSV(this.passengerDT, "Direct Passenger Details");
     }
 
     public exportToPDF() {

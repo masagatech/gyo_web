@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, MenuService, CommonService }
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 @Component({
@@ -27,8 +26,6 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     rtname: string = "";
     stpname: string = "";
     batchname: string = "";
-
-    exportData: any = [];
 
     @ViewChild('rtwisepsngr') rtwisepsngr: ElementRef;
 
@@ -177,8 +174,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
             "flag": "export", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.exportData = data.data;
-                new Angular2Csv(that.exportData, 'RouteWisePassenger', { "showLabels": true });
+                this._autoservice.exportToCSV(data.data, "Unscheduled Passenger Details");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

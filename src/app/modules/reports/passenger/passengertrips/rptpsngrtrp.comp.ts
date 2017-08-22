@@ -5,7 +5,6 @@ import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 declare var $: any;
@@ -31,7 +30,7 @@ export class PassengerTripsReportsComponent implements OnInit, OnDestroy {
     @ViewChild('passenger') passenger: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _rptservice: ReportsService) {
+        private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
@@ -169,7 +168,7 @@ export class PassengerTripsReportsComponent implements OnInit, OnDestroy {
                 else if (data.data.length == 1) {
                     if (data.data[0].stdnm !== null) {
                         that.exportPassengerTripsDT = data.data;
-                        new Angular2Csv(that.exportPassengerTripsDT, that._enttdetails.psngrtype + ' Trips Reports', { "showLabels": true });
+                        that._autoservice.exportToCSV(that.exportPassengerTripsDT, "Passenger Trip Details");
                     }
                     else {
                         that.exportPassengerTripsDT = [];
@@ -177,7 +176,7 @@ export class PassengerTripsReportsComponent implements OnInit, OnDestroy {
                 }
                 else {
                     that.exportPassengerTripsDT = data.data;
-                    new Angular2Csv(that.exportPassengerTripsDT, that._enttdetails.psngrtype + ' Trips Reports', { "showLabels": true });
+                    that._autoservice.exportToCSV(that.exportPassengerTripsDT, "Passenger Trip Details");
                 }
             }
             catch (e) {

@@ -5,7 +5,6 @@ import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { LazyLoadEvent } from 'primeng/primeng';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 declare var $: any;
@@ -55,7 +54,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.usersDT, 'UserReports', { "showLabels": true });
+        this._autoservice.exportToCSV(this.usersDT, "User Details");
     }
 
     public exportToPDF() {

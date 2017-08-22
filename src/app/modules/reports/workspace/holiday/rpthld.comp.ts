@@ -4,7 +4,6 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { HolidayService } from '@services/master';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 @Component({
@@ -47,7 +46,7 @@ export class HolidayReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.holidayDT, 'User Details', { "showLabels": true });
+        this._autoservice.exportToCSV(this.holidayDT, "Holiday Details");
     }
 
     public exportToPDF() {

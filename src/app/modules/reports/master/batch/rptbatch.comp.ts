@@ -5,7 +5,7 @@ import { MessageService, messageType, LoginService, MenuService, CommonService }
 import { Globals, LoginUserModel } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { BatchService } from '@services/master';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+
 import jsPDF from 'jspdf'
 
 @Component({
@@ -45,7 +45,7 @@ export class BatchReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.batchDT, 'BatchReports', { "showLabels": true });
+        this._autoservice.exportToCSV(this.batchDT, "Batch Details");
     }
 
     public exportToPDF() {

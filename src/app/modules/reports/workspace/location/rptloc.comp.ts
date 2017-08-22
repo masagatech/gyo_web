@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService } from '@services';
+import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
 import { LocationService } from '@services/master';
 import { LoginUserModel } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptloc.comp.html',
-    providers: [MenuService]
+    providers: [MenuService, CommonService]
 })
 
 export class LocationReportsComponent implements OnInit, OnDestroy {
@@ -19,7 +18,7 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
     @ViewChild('location') location: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
-        private _loginservice: LoginService, private _locservice: LocationService) {
+        private _loginservice: LoginService, private _locservice: LocationService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this.viewLocationDataRights();
     }
@@ -37,7 +36,7 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.locationDT, 'LocationReports', { "showLabels": true });
+        this._autoservice.exportToCSV(this.locationDT, "Location Details");
     }
 
     public exportToPDF() {

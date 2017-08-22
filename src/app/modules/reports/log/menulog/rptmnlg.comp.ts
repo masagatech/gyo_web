@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService } from '@services';
+import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptmnlg.comp.html',
-    providers: [MenuService]
+    providers: [MenuService, CommonService]
 })
 
 export class MenuLogReportsComponent implements OnInit, OnDestroy {
@@ -23,7 +22,8 @@ export class MenuLogReportsComponent implements OnInit, OnDestroy {
     @ViewChild('menulog') menulog: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService) {
+        public _menuservice: MenuService, private _loginservice: LoginService,
+        private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
@@ -95,7 +95,7 @@ export class MenuLogReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.menulogDT, 'MenuLogDetails', { "showLabels": true });
+        this._autoservice.exportToCSV(this.menulogDT, "Menu Log Details");
     }
 
     public exportToPDF() {

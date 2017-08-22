@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService } from '@services';
+import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptentity.comp.html',
-    providers: [MenuService]
+    providers: [MenuService, CommonService]
 })
 
 export class EntityReportsComponent implements OnInit, OnDestroy {
@@ -19,8 +18,8 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
 
     @ViewChild('entity') entity: ElementRef;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _entityservice: EntityService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+        private _loginservice: LoginService, private _entityservice: EntityService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
 
         this._wsdetails = Globals.getWSDetails();
@@ -40,7 +39,7 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        new Angular2Csv(this.entityDT, 'EntityDetials', { "showLabels": true });
+        this._autoservice.exportToCSV(this.entityDT, "Entity Details");
     }
 
     public exportToPDF() {

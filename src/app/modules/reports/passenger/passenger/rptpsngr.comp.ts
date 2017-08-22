@@ -5,7 +5,6 @@ import { LoginUserModel, Globals } from '@models';
 import { PassengerService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import jsPDF from 'jspdf'
 
 declare var $: any;
@@ -61,7 +60,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
     }
 
     public exportToCSV() {
-        new Angular2Csv(this.passengerDT, 'PassengerReports', { "showLabels": true });
+        this._autoservice.exportToCSV(this.passengerDT, "Passenger Details");
     }
 
     public exportToPDF() {
@@ -151,9 +150,9 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         if (Cookie.get('_psngrnm_') != null) {
             that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
             that.psngrname.label = Cookie.get('_psngrnm_');
-
-            that.getPassengerDetails();
         }
+
+        that.getPassengerDetails();
     }
 
     getPassengerDetails() {
