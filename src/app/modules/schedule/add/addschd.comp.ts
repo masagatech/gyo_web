@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
 import { PickDropService, EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'addschd.comp.html',
-    providers: [MenuService, CommonService]
+    providers: [CommonService]
 })
 
 export class AddScheduleComponent implements OnInit {
@@ -71,7 +71,7 @@ export class AddScheduleComponent implements OnInit {
     isdrop: boolean = true;
 
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();

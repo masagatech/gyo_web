@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { BreakDownService } from '@services/master';
 
 @Component({
     templateUrl: 'addbds.comp.html',
-    providers: [MenuService, CommonService]
+    providers: [CommonService]
 })
 
 export class AddBreakDownComponent implements OnInit, OnDestroy {
@@ -32,7 +32,7 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
-        private _bdsservice: BreakDownService, private _loginservice: LoginService, public _menuservice: MenuService,
+        private _bdsservice: BreakDownService, private _loginservice: LoginService,
         private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();

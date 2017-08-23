@@ -45,6 +45,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     overlays: any = [];
 
     entityDT: any = [];
+    enttdata: any = [];
     enttid: number = 0;
     enttname: string = "";
 
@@ -93,7 +94,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.enttid = this._enttdetails.enttid;
-        // this.enttname = this._enttdetails.enttname;
+        this.enttname = this._enttdetails.enttname;
         this.getMessage();
 
         //this.getTripType();
@@ -188,6 +189,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         commonfun.loader();
         this.vehtypeDT = [];
         this.vehtypeIds = [];
+        
         that._trackDashbord.gettrackboard({
             "flag": "vehicle",
             "enttid": that.enttid,

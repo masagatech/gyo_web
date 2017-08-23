@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LocationService } from '@services/master';
 import { LoginUserModel } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -8,7 +8,7 @@ import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptloc.comp.html',
-    providers: [MenuService, CommonService]
+    providers: [CommonService]
 })
 
 export class LocationReportsComponent implements OnInit, OnDestroy {
@@ -17,7 +17,7 @@ export class LocationReportsComponent implements OnInit, OnDestroy {
 
     @ViewChild('location') location: ElementRef;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _locservice: LocationService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this.viewLocationDataRights();

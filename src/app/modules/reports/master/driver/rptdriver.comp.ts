@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { DriverService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -9,7 +9,7 @@ import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptdriver.comp.html',
-    providers: [MenuService, CommonService]
+    providers: [CommonService]
 })
 
 export class DriverReportsComponent implements OnInit, OnDestroy {
@@ -20,7 +20,7 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
     driverDT: any = [];
     @ViewChild('driver') driver: ElementRef;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, public _menuservice: MenuService,
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _driverservice: DriverService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();

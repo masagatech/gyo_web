@@ -12,7 +12,7 @@ declare var loader: any;
 @Component({
   selector: '<app-head></app-head>',
   templateUrl: 'header.comp.html',
-  providers: [EntityService]
+  providers: [EntityService, MenuService]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {

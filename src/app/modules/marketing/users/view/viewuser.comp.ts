@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, MenuService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel } from '@models';
 import { UserService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -16,20 +16,15 @@ export class ViewMarketUserComponent implements OnInit {
     loginUser: LoginUserModel;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _userervice: UserService) {
+        private _loginservice: LoginService, private _userervice: UserService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewUserDataRights();
+        this.getUserDetails();
     }
 
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
         }, 0);
-    }
-
-    public viewUserDataRights() {
-        var that = this;
-        that.getUserDetails();
     }
 
     getUserDetails() {

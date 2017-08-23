@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
 import { GMap } from 'primeng/primeng';
@@ -9,7 +9,7 @@ declare var google: any;
 
 @Component({
     templateUrl: 'addentity.comp.html',
-    providers: [MenuService, CommonService]
+    providers: [CommonService]
 })
 
 export class AddEntityComponent implements OnInit {

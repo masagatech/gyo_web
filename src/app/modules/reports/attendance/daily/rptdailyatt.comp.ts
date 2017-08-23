@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -8,7 +8,7 @@ import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptdailyatt.comp.html',
-    providers: [MenuService, ReportsService, CommonService]
+    providers: [ReportsService, CommonService]
 })
 
 export class DailyAttendanceComponent implements OnInit, OnDestroy {
@@ -22,7 +22,7 @@ export class DailyAttendanceComponent implements OnInit, OnDestroy {
     @ViewChild('dailyatt') dailyatt: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService, private _rptservice: ReportsService,
+        private _loginservice: LoginService, private _rptservice: ReportsService,
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();

@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, AuthenticationService, CommonService } from '@services';
+import { MessageService, messageType, MenuService, LoginService, AuthenticationService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 
 declare var $: any;
 
 @Component({
     selector: '<leftsidebar></leftsidebar>',
-    templateUrl: 'leftsidebar.comp.html'
+    templateUrl: 'leftsidebar.comp.html',
+  providers: [MenuService]
 })
 
 export class LeftSideBarComponent implements OnInit, OnDestroy {
