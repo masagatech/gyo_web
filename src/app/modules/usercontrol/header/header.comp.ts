@@ -31,12 +31,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() enttname: string = "";
   @Input() homeurl: string = "";
 
+  @Input() ismstmenu: boolean = false;
+  @Input() isrptmenu: boolean = false;
+
   mname: string = "";
 
   global = new Globals();
   uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
   mastersMenuDT: any = [];
+  settingsMenuDT: any = [];
   reportsMenuDT: any = [];
 
   private themes: any = [
@@ -107,10 +111,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     var that = this;
 
     that._menuservice.getMenuDetails({
-      "flag": "topmenu", "uid": that.loginUser.uid, "issysadmin": that.loginUser.issysadmin,
-      "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype
+      "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+      "psngrtype": that._enttdetails.psngrtype
     }).subscribe(data => {
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
+      that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
     }, err => {
       that._msg.Show(messageType.error, "Error", err);

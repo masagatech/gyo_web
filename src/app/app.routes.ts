@@ -10,8 +10,6 @@ export const ROUTES: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: '', loadChildren: './modules#ModuleModule' },
-  { path: 'admin', loadChildren: './admin#AdminModule' },
-  { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
   
   { path: '**', component: NoContentComponent },
 ];

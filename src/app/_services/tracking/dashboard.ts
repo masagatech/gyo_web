@@ -13,5 +13,4 @@ export class TrackDashbord {
     gettrackboard(req: any) {
         return this._dataserver.post("tripapi/gettrackboard", req)
     }
-
 }

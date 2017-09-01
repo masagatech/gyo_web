@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '../../../_shared/sharedcomp.module';
-import { AuthGuard } from '../../../_services/authguard-service';
+import { SharedComponentModule } from '@services';
+import { AuthGuard } from '@services';
 
 import { ViewMOMComponent } from './view/viewmom.comp';
 import { AddMOMComponent } from './aded/addmom.comp';

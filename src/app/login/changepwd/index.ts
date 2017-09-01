@@ -1,6 +1,6 @@
 import { NgModule, Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '../../_services/authguard-service';
+import { AuthGuard } from '@services';
 import { LoginService } from '../../_services/login/login-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
