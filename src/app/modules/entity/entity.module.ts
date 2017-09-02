@@ -24,6 +24,9 @@ export const routes = [
                     // Entity
                     { path: 'master', loadChildren: './master#MasterModule' },
 
+                    // Setting
+                    { path: 'settings', loadChildren: './settings#SettingsModule' },
+
                     // Schedule
                     { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
 

@@ -15,7 +15,11 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'userworkspacemap', loadChildren: './userworkspacemap#UserWorkspaceMapModule' },
+                    { path: 'masterofmaster', loadChildren: './mom#MOMModule' },
+                    { path: 'usermenumap', loadChildren: './usermenumap#UserMenuMapModule' },
+                    { path: 'uservehiclemap', loadChildren: './uservehmap#UserVehicleMapModule' },
+                    { path: 'breakdown', loadChildren: './breakdown#BreakDownModule' },
+                    { path: 'general', loadChildren: './general#GeneralModule' },
                 ]
             }
         ]

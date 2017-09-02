@@ -17,13 +17,14 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     usersDT: any = [];
     menuname: string = "";
 
+    userdata: any = [];
     uid: number = 0;
-    uname: any = [];
+    uname: string = "";
     utype: string = "";
-    ufullname: string = "";
 
+    refuserdata: any = [];
     refuid: number = 0;
-    refuname: any = [];
+    refuname: string = "";
     refutype: string = "";
 
     menudetails: any = [];
@@ -48,10 +49,14 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
     resetUserRights() {
         $("#uname input").focus();
+        
         this.uid = 0;
-        this.uname = [];
+        this.uname = "";
+        this.userdata = [];
+
         this.refuid = 0;
-        this.refuname = [];
+        this.refuname = "";
+        this.refuserdata = [];
     }
 
     // Auto Completed User
@@ -61,7 +66,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         that._autoservice.getAutoData({
-            "flag": "users",
+            "flag": "formapuser",
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,

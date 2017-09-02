@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name <strong>*</strong></label>
-                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttdata" [tabindex]="9" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -29,6 +29,7 @@
                     <div class="form-line">
                         <label class="control-label">User Type <strong>*</strong></label>
                         <select id="srcutype" [(ngModel)]="srcutype" class="form-control utype" tabindex="5" (ngModelChange)="getUserDetails()">
+                            <option [value]="'all'">All</option>
                             <option *ngFor="let row of utypeDT" [value]="row.key">
                                 {{row.val}}
                             </option>
@@ -66,12 +67,21 @@
                         <ng-template let-drow pTemplate="item">
                             <div style="padding:3px" class="ui-g-12 ui-md-3">
                                 <p-panel [header]="drow.fullname" [style]="{'text-align':'center'}">
-                                    <span class="material-icons reject" *ngIf="!drow.isactive">close</span>
-                                    <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
-                                    <hr class="hr ui-widget-content">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editUserForm(drow)">
-                                        <i class="material-icons">edit</i>
-                                    </button> {{drow.mode}}
+                                    <div class="row clearfix">
+                                        <div class="col-md-12" align="center">
+                                            <a class="navbar-brand" (click)="viewUserProfile(drow)">
+                                                <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <hr class="hr ui-widget-content">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-theme btn-xs" (click)="editUserForm(drow)">
+                                                <i class="material-icons">edit</i>
+                                            </button> {{drow.mode}}
+                                        </div>
+                                    </div>
                                 </p-panel>
                             </div>
                         </ng-template>

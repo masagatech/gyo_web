@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">User Name</label>
-                        <p-autoComplete id="uname" name="uname" [(ngModel)]="uname" [tabindex]="1" (onSelect)="selectAutoUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
+                        <p-autoComplete id="uname" name="uname" [(ngModel)]="userdata" [tabindex]="1" (onSelect)="selectAutoUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Reference User Name</label>
-                        <p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuname" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete refuname"></p-autoComplete>
+                        <p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuserdata" [tabindex]="2" (onSelect)="selectAutoRefUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete refuname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -49,18 +49,24 @@
             <div class="block-header">
                 <h4>{{mrow.key}}</h4>
             </div>
-            <div class="row clearfix allcheckboxes" *ngFor="let actrow of mrow.value">
-                <div class="col-md-3">
-                    <input id="{{actrow.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{actrow.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(actrow)" class="filled-in" />
-                    <label for="{{actrow.mid}}">{{actrow.mname}}</label>
+            <div class="allcheckboxes" *ngFor="let drow of mrow.value | groupBy:'mpname';" style="padding-left:20px;">
+                <div class="block-header">
+                    <h5>{{drow.key}}</h5>
                 </div>
-                <div class="col-md-9" id="M{{actrow.mid}}">
-                    <span style="margin-right:5px;" *ngFor="let item of getMenuRights(actrow.maction) let i = index">
-						<input type="checkbox" id="{{actrow.mid}}{{item}}" value="{{item}}" name="menuitem{{i + 1}}" data-menuid="actrow.mid" data-right="item"
-							class="actrights filled-in" />
-						<label for="{{actrow.mid}}{{item}}">{{item}}</label>
-					</span>
+                <div class="row clearfix" *ngFor="let actrow of drow.value">
+                    <div class="col-md-3">
+                        <input id="{{actrow.mid}}" name="menu{{i + 1}}" type="checkbox" value="{{actrow.mid}}" (change)="selectAndDeselectMenuWiseCheckboxes(actrow)" class="filled-in" />
+                        <label for="{{actrow.mid}}">{{actrow.mname}}</label>
+                    </div>
+                    <div class="col-md-9" id="M{{actrow.mid}}">
+                        <span style="margin-right:5px;" *ngFor="let item of getMenuRights(actrow.maction) let i = index">
+                            <input type="checkbox" id="{{actrow.mid}}{{item}}" value="{{item}}" name="menuitem{{i + 1}}" data-menuid="actrow.mid" data-right="item"
+                                class="actrights filled-in" />
+                            <label for="{{actrow.mid}}{{item}}">{{item}}</label>
+                        </span>
+                    </div>
                 </div>
+                <hr />
             </div>
         </div>
     </div>

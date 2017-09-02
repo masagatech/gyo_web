@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@services';
 
+import { MarketingDashboardComponent } from './dashboard.comp';
 import { DashboardService } from '@services/master';
-import { MarkeingDashboardComponent } from './dashboard.comp';
 
 import { LazyLoadEvent, DataTableModule, ChartModule } from 'primeng/primeng';
 
@@ -13,7 +13,7 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: MarkeingDashboardComponent, canActivate: [AuthGuard],
+        path: '', component: MarketingDashboardComponent, canActivate: [AuthGuard],
         data: { "module": "mrktn", "submodule": "mrktndb", "rights": "view", "urlname": "/dashboard" }
       },
     ]
@@ -22,7 +22,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    MarkeingDashboardComponent
+    MarketingDashboardComponent
   ],
 
   imports: [

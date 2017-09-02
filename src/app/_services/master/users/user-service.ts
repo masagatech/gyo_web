@@ -14,6 +14,10 @@ export class UserService {
         return this._dataserver.post("saveUserInfo", req)
     }
 
+    updateUserInfo(req: any) {
+        return this._dataserver.post("updateUserInfo", req)
+    }
+
     getUserRights(req: any) {
         return this._dataserver.post("getUserRights", req)
     }

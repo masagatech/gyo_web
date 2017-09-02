@@ -1,23 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SettingsComponent } from '../settings/settings.comp';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { MyWorkspaceComponent } from './myws.comp';
+
+import { UserService } from '@services/master';
+
 export const routes = [
     {
         path: '',
-        component: SettingsComponent,
+        component: MyWorkspaceComponent,
         canActivate: [AuthGuard],
         children: [
-            {
-                path: '',
-                children: [
-                    { path: 'userworkspacemap', loadChildren: './userworkspacemap#UserWorkspaceMapModule' },
-                ]
-            }
+            { path: '', component: MyWorkspaceComponent, canActivate: [AuthGuard] },
         ]
     },
 ];
@@ -29,11 +27,11 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        SettingsComponent
+        MyWorkspaceComponent
     ],
-    providers: [AuthGuard]
+    providers: [AuthGuard, UserService]
 })
 
-export class SettingsModule {
+export class MyWorkspaceModule {
 
 }

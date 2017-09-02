@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
-    templateUrl: 'marketing.comp.html'
+    templateUrl: 'settings.comp.html'
 })
 
-export class MarketingComponent implements OnDestroy {
+export class SettingsComponent implements OnDestroy {
     constructor() {
         
     }

@@ -8,9 +8,7 @@
 
     <title>GOYO Admin</title>
 
-    <!-- JS -->
-
-    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery-2.2.4.min.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/bootstrap-select.js"></script>
     <script src="assets/js/moment.min.js"></script>
@@ -22,7 +20,6 @@
     <script src="assets/js/waves.js"></script>
     <script src="assets/js/script.js"></script>
     <script src="assets/js/jquery.countTo.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA82-J9f4u3b0uYLEHHQ_MwoQXUCGGGqys" type="text/javascript"></script>
     <script src="assets/js/form-validation.js"></script>
     <script src="assets/js/chart.js"></script>
     <script src="assets/js/fullcalendar.min.js"></script>
@@ -32,25 +29,16 @@
     <script src="assets/js/common.js?v=6"></script>
     <script src="assets/js/markerclusterer.min.js?v=6"></script>
 
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA82-J9f4u3b0uYLEHHQ_MwoQXUCGGGqys" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/vendor/markerAnimate.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js"></script>
 
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
     <% if (webpackConfig.htmlElements.headTags) { %>
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
-
                 <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
-
-                <!-- <script type="text/javascript">
-                    audiojs.events.ready(function () {
-                        var as = audiojs.createAll();
-                    });
-                </script> -->
 </head>
 
 <body class="theme-teal">

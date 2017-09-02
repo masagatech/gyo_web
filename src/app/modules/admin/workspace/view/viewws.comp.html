@@ -20,41 +20,6 @@
                 <div class="col-md-3">
                     <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="215px">
                 </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label>Total Entity : </label> {{row.countentity}}
-                    </div>
-
-                    <div class="form-group">
-                        <label>Workspace Type : </label> {{row.wstype}}
-                    </div>
-
-                    <div class="form-group">
-                        <label>Workspace Code : </label> {{row.lgcode + "." + row.wscode}}
-                    </div>
-
-                    <div class="form-group">
-                        <label>Description : </label> {{row.wsdesc}}
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact Person : </label> {{row.cpname}}
-                    </div>
-
-                    <div class="form-group">
-                        <label>Mobile : </label> {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email : </label> {{row.email1}}
-                        <span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Address : </label>
-                        <span *ngIf="row.address !== ''">{{row.address}}</span><span *ngIf="row.city !== ''">{{", " + row.city}}</span><span *ngIf="row.state !== ''">{{", " + row.state}}</span><span *ngIf="row.country !== ''">{{", " + row.country}}</span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

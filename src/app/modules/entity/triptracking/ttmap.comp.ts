@@ -1,7 +1,4 @@
-import {
-    Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation,
-    AfterViewInit, ComponentFactoryResolver, forwardRef
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, AfterViewInit, ComponentFactoryResolver, forwardRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService, SocketService, TrackDashbord } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -24,15 +21,13 @@ declare var google: any;
     styleUrls: ['./style.css']
 })
 
-
 export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
-    //chid component
-    @ViewChild(ADHOST)
-    private _Host: ADHOST;
-
     loginUser: LoginUserModel;
     _wsdetails: any = [];
     _enttdetails: any = [];
+
+    @ViewChild(ADHOST)
+    private _Host: ADHOST;
 
     selectedTripType: number = 0;
     triptype: SelectItem[];
@@ -112,11 +107,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
-            $.AdminBSB.rightSideBar.closeonwindow = false;//do not close right bar on window click
+            $.AdminBSB.rightSideBar.closeonwindow = false; //do not close right bar on window click
             $(".enttname input").focus();
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
-
 
         this.fillVehicleDropDown();
     }
@@ -133,6 +127,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             }, 1000)
         }
     }
+
     getDefaultMap() {
         this.options = {
             center: { lat: 22.861639, lng: 78.257621 },
@@ -185,7 +180,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         commonfun.loader();
         this.vehtypeDT = [];
         this.vehtypeIds = [];
-        
+
         that._trackDashbord.gettrackboard({
             "flag": "vehicle",
             "enttid": that.enttid,

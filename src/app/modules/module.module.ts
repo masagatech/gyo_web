@@ -18,7 +18,7 @@ export const routes = [
                 children: [
                     // Admin
                     { path: 'admin', loadChildren: './admin#AdminModule' },
-                    
+
                     // Workspace
                     { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
 
@@ -43,8 +43,7 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        ModuleComponent,
-        // NoPageComponent,
+        ModuleComponent
     ],
     providers: [AuthGuard]
 })

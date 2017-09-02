@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="header">
+        <h4>User Workspace Mapping</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveUserWorkspaceMapping()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">User Name</label>
+                        <p-autoComplete id="uname" name="uname" [(ngModel)]="userdata" [tabindex]="1" (onSelect)="selectAutoUsers($event, 1)" [suggestions]="usersDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" style="padding-top:20px">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getUserRightsById()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix" *ngIf="workspaceDT.length">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                    <label for="selectall">Select All</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="allcheckboxes">
+                    <div class="row clearfix">
+                        <div class="col-md-4" *ngFor="let row of workspaceDT; let i = index;">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
+
+                                    <span id="ws{{row.wsautoid}}">
+                                        <input id="{{row.wsautoid}}" name="ws{{i + 1}}" type="checkbox" value="{{row.wsautoid}}" class="filled-in" />
+                                        <label for="{{row.wsautoid}}">{{row.wsname}}</label>
+                                        <br />
+                                        <small>{{row.ucode}}</small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

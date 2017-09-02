@@ -10,7 +10,7 @@ import { UIChart } from 'primeng/primeng';
     templateUrl: 'report.comp.html'
 })
 
-export class ReportsComponent implements OnInit, OnDestroy {
+export class MarketingReportsComponent implements OnInit, OnDestroy {
     monthDT: any = [];
     monthname: string = "";
     currday: number = 0;

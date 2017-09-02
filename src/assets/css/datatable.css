@@ -4392,6 +4392,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-widget-content a {
     color: #222222;
+    cursor: pointer;
 }
 
 .ui-widget-header {

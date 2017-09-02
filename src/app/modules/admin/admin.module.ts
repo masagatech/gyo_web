@@ -15,7 +15,11 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    // Workspace
                     { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
+
+                    // My Workspace
+                    { path: 'myworkspace', loadChildren: './myworkspace#MyWorkspaceModule' },
                 ]
             }
         ]
@@ -29,8 +33,7 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        AdminComponent,
-        // NoPageComponent,
+        AdminComponent
     ],
     providers: [AuthGuard]
 })

@@ -21,19 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
-
-        let _schwsdetails = Cookie.get("_schwsdetails_");
-        let _schenttdetails = Cookie.get("_schenttdetails_");
-
-        if (_schwsdetails == null && _schwsdetails == undefined) {
-            this._router.navigate(['/admin/workspace']);
-        }
-        else {
-            if (_schenttdetails == null && _schenttdetails == undefined) {
-                this._router.navigate(['/workspace/entity']);
-            }
-        }
-
+        
         this.getDashboard();
     }
 

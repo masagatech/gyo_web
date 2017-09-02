@@ -14,12 +14,19 @@ declare var $: any;
 })
 
 export class ViewUserComponent implements OnInit {
+    loginUser: LoginUserModel;
+    _wsdetails: any = [];
+    _enttdetails: any = [];
+
+    global = new Globals();
+
     entityDT: any = [];
+    enttdata: any = [];
     enttid: number = 0;
-    enttname: any = [];
+    enttname: string = "";
 
     utypeDT: any = [];
-    srcutype: string = "";
+    srcutype: string = "all";
 
     autoUserDT: any = [];
 
@@ -27,10 +34,6 @@ export class ViewUserComponent implements OnInit {
     autouname: any = [];
 
     usersDT: any = [];
-    loginUser: LoginUserModel;
-
-    global = new Globals();
-    _wsdetails: any = [];
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
@@ -39,6 +42,7 @@ export class ViewUserComponent implements OnInit {
         private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.fillUserTypeDropDown();
         this.viewUserDataRights();
@@ -160,13 +164,21 @@ export class ViewUserComponent implements OnInit {
         if (Cookie.get('_srcutype_') != null) {
             that.srcutype = Cookie.get('_srcutype_');
         }
+        else {
+            that.srcutype = "all";
+        }
 
         if (Cookie.get('_enttnm_') != null) {
             that.enttid = parseInt(Cookie.get('_enttid_'));
-
-            that.enttname.value = parseInt(Cookie.get('_enttid_'));
-            that.enttname.label = Cookie.get('_enttnm_');
+            that.enttname = Cookie.get('_enttnm_');
         }
+        else {
+            that.enttid = that._enttdetails.enttid;
+            that.enttname = that._enttdetails.enttname;
+        }
+
+        that.enttdata.value = that.enttid;
+        that.enttdata.label = that.enttname;
 
         that.getUserDetails();
     }
@@ -210,7 +222,8 @@ export class ViewUserComponent implements OnInit {
         Cookie.delete('_srcutype_');
 
         this.enttid = 0;
-        this.enttname = [];
+        this.enttname = "";
+        this.enttdata = [];
         this.srcutype = "all";
         Cookie.set("_srcutype_", this.srcutype);
         this.srcutype = Cookie.get('_srcutype_');
@@ -227,5 +240,9 @@ export class ViewUserComponent implements OnInit {
 
     public editUserForm(row) {
         this._router.navigate(['/workspace/user/edit', row.uid]);
+    }
+
+    public viewUserProfile(row) {
+        this._router.navigate(['/workspace/user/profile', row.uid]);
     }
 }
