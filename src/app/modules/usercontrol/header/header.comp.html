@@ -36,9 +36,6 @@
                                 <li *ngFor="let row of mastersMenuDT">
                                     <a role="button" [routerLink]="row.mlink"><i class="fa fa-user fa-icon"></i> {{row.mname}}</a>
                                 </li>
-                                <li *ngIf="this.loginUser.utype == 'admin' && !this.loginUser.issysadmin">
-                                    <a role="button" [routerLink]="['/admin/workspace']"><i class="fa fa-building-o fa-icon"></i> My Workspace</a>
-                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -81,11 +78,9 @@
                         </li>
                         <li class="body">
                             <ul class="menu tasks">
+                                <li><a role="button" [routerLink]="['/admin/myworkspace']"><i class="fa fa-building-o fa-icon"></i> My Workspace</a></li>
                                 <li><a role="button" [routerLink]="['/admin/myprofile']"><i class="fa fa-user fa-icon"></i> My Profile</a></li>
                                 <li><a role="button" [routerLink]="['/aboutus']"><i class="fa fa-info fa-icon"></i> About Us</a></li>
-                                <li *ngIf="this.loginUser.utype == 'admin'">
-                                    <a role="button" [routerLink]="['/setting']"><i class="fa fa-gear fa-icon"></i> Setting</a>
-                                </li>
                                 <li><a role="button" (click)="logout()"><i class="fa fa-power-off fa-icon"></i> Log Out</a></li>
                             </ul>
                         </li>

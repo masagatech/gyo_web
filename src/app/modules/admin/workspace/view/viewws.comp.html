@@ -1,33 +1,4 @@
-<!--For Workspace Admin-->
-
-<div class="card" *ngIf="!loginUser.issysadmin">
-    <div class="header">
-        <h4>My Workspace</h4>
-    </div>
-    <div class="body">
-        <div *ngFor="let row of workspaceDT">
-            <div class="form-group">
-                <div class="row clearfix">
-                    <h4 class="pull-left"><a role="button" (click)="openEntityForm(row)">{{row.wsname}}</a></h4>
-                    <span class="pull-left" style="padding: 5px 10px;">
-                        <button type="button" class="btn btn-theme btn-xs" (click)="openEntityForm(row)">
-                            <i class="material-icons">arrow_forward</i></button>
-                    </span>
-                </div>
-            </div>
-
-            <div class="row clearfix">
-                <div class="col-md-3">
-                    <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="215px">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--For System Admin-->
-
-<div class="card" *ngIf="loginUser.issysadmin">
+<div class="card">
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-4 col-xs-12">

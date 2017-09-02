@@ -2213,6 +2213,11 @@ select.selectpicker {
 
 /* profile */
 
+.cover-img {
+    width: 100%;
+    height: 200px;
+}
+
 
 /*.card {
     padding-top: 20px;
@@ -2231,19 +2236,19 @@ select.selectpicker {
     box-sizing: border-box;
 }*/
 
-.card .card-heading {
+.card-heading {
     padding: 0 20px;
     margin: 0;
 }
 
-.card .card-heading.simple {
+.card-heading.simple {
     font-size: 20px;
     font-weight: 300;
     color: #777;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.card .card-heading.image img {
+.card-heading.image img {
     display: inline-block;
     width: 46px;
     height: 46px;
@@ -2255,57 +2260,57 @@ select.selectpicker {
     border-radius: 50%;
 }
 
-.card .card-heading.image .card-heading-header {
+.card-heading.image .card-heading-header {
     display: inline-block;
     vertical-align: top;
 }
 
-.card .card-heading.image .card-heading-header h3 {
+.card-heading.image .card-heading-header h3 {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
     color: #262626;
 }
 
-.card .card-heading.image .card-heading-header span {
+.card-heading.image .card-heading-header span {
     font-size: 12px;
     color: #999999;
 }
 
-.card .card-body {
+.card-body {
     padding: 0 20px;
     margin-top: 20px;
 }
 
-.card .card-media {
+.card-media {
     padding: 0 20px;
     margin: 0 -14px;
 }
 
-.card .card-media img {
+.card-media img {
     max-width: 100%;
     max-height: 100%;
 }
 
-.card .card-actions {
+.card-actions {
     min-height: 30px;
     padding: 0 20px 20px 20px;
     margin: 20px 0 0 0;
 }
 
-.card .card-comments {
+.card-comments {
     padding: 20px;
     margin: 0;
     background-color: #f8f8f8;
 }
 
-.card .card-comments .comments-collapse-toggle {
+.card-comments .comments-collapse-toggle {
     padding: 0;
     margin: 0 20px 12px 20px;
 }
 
-.card .card-comments .comments-collapse-toggle a,
-.card .card-comments .comments-collapse-toggle span {
+.card-comments .comments-collapse-toggle a,
+.card-comments .comments-collapse-toggle span {
     padding-right: 5px;
     overflow: hidden;
     font-size: 12px;
@@ -2319,7 +2324,7 @@ select.selectpicker {
     font-weight: bold;
 }
 
-.card.people {
+.people {
     position: relative;
     display: inline-block;
     width: 170px;
@@ -2330,11 +2335,11 @@ select.selectpicker {
     vertical-align: top;
 }
 
-.card.people:first-child {
+.people:first-child {
     margin-left: 0;
 }
 
-.card.people .card-top {
+.people .card-top {
     position: absolute;
     top: 0;
     left: 0;
@@ -2344,15 +2349,15 @@ select.selectpicker {
     background-color: #ffffff;
 }
 
-.card.people .card-top.green {
+.people .card-top.green {
     background-color: #53a93f;
 }
 
-.card.people .card-top.blue {
+.people .card-top.blue {
     background-color: #427fed;
 }
 
-.card.people .card-info {
+.people .card-info {
     position: absolute;
     top: 150px;
     display: inline-block;
@@ -2365,7 +2370,7 @@ select.selectpicker {
     box-sizing: border-box;
 }
 
-.card.people .card-info .title {
+.people .card-info .title {
     display: block;
     margin: 8px 14px 0 14px;
     overflow: hidden;
@@ -2375,7 +2380,7 @@ select.selectpicker {
     color: #404040;
 }
 
-.card.people .card-info .desc {
+.people .card-info .desc {
     display: block;
     margin: 8px 14px 0 14px;
     overflow: hidden;
@@ -2385,7 +2390,7 @@ select.selectpicker {
     text-overflow: ellipsis;
 }
 
-.card.people .card-bottom {
+.people .card-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -2399,12 +2404,7 @@ select.selectpicker {
     box-sizing: border-box;
 }
 
-.cover-img {
-    width: 100%;
-    height: 200px;
-}
-
-.card.hovercard {
+.hovercard {
     position: relative;
     padding-top: 0;
     overflow: hidden;
@@ -2412,19 +2412,19 @@ select.selectpicker {
     background-color: rgba(214, 224, 226, 0.2);
 }
 
-.card.hovercard .cardheader {
+.hovercard .cardheader {
     background: url("http://lorempixel.com/850/280/nature/4/");
     background-size: cover;
     height: 135px;
 }
 
-.card.hovercard .avatar {
+.hovercard .avatar {
     position: relative;
     top: -50px;
     margin-bottom: -50px;
 }
 
-.card.hovercard .avatar img {
+.hovercard .avatar img {
     width: 100px;
     height: 100px;
     max-width: 100px;
@@ -2435,12 +2435,12 @@ select.selectpicker {
     border: 5px solid rgba(255, 255, 255, 0.5);
 }
 
-.card.hovercard .info {
+.hovercard .info {
     padding: 4px 8px 10px;
     text-align: left;
 }
 
-.card.hovercard .title {
+.hovercard .title {
     margin-bottom: 4px;
     font-size: 24px;
     line-height: 1;
@@ -2448,7 +2448,7 @@ select.selectpicker {
     vertical-align: middle;
 }
 
-.card.hovercard .info .desc {
+.hovercard .info .desc {
     overflow: hidden;
     font-size: 12px;
     line-height: 20px;
@@ -2456,7 +2456,7 @@ select.selectpicker {
     text-overflow: ellipsis;
 }
 
-.card.hovercard .bottom {
+.hovercard .bottom {
     padding: 0 20px;
     margin-bottom: 17px;
 }

@@ -5,17 +5,17 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { MyWorkspaceComponent } from './myws.comp';
+import { MyProfileComponent } from './myprofile.comp';
 
-import { WorkspaceService } from '@services/master';
+import { UserService } from '@services/master';
 
 export const routes = [
     {
         path: '',
-        component: MyWorkspaceComponent,
+        component: MyProfileComponent,
         canActivate: [AuthGuard],
         children: [
-            { path: '', component: MyWorkspaceComponent, canActivate: [AuthGuard] },
+            { path: '', component: MyProfileComponent, canActivate: [AuthGuard] },
         ]
     },
 ];
@@ -27,11 +27,11 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        MyWorkspaceComponent
+        MyProfileComponent
     ],
-    providers: [AuthGuard, WorkspaceService]
+    providers: [AuthGuard, UserService]
 })
 
-export class MyWorkspaceModule {
+export class MyProfileModule {
 
 }

@@ -20,6 +20,9 @@ export const routes = [
 
                     // My Workspace
                     { path: 'myworkspace', loadChildren: './myworkspace#MyWorkspaceModule' },
+
+                    // My Profile
+                    { path: 'myprofile', loadChildren: './myprofile#MyProfileModule' },
                 ]
             }
         ]
