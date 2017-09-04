@@ -19,17 +19,27 @@ export class AddLeavePassengerComponent implements OnInit {
     _enttdetails: any = [];
 
     slid: number = 0;
-    remark: string = "";
 
     passengerDT: any = [];
+    psngrdata: any = [];
     psngrid: number = 0;
-    psngrname: any = [];
+    psngrname: string = "";
 
+    currdate: any = "";
+    currtime: any = "";
     frmdt: any = "";
+    frmtm: any = "";
     todt: any = "";
+    totm: any = "";
 
     leavetypeDT: string = "";
-    restype: string = "";
+    lvtype: string = "";
+    reason: string = "";
+
+    mode: string = "";
+    isactive: boolean = true;
+
+    countlvdays: number = 0;
 
     ispickup: boolean = false;
     isdrop: boolean = false;
@@ -41,6 +51,9 @@ export class AddLeavePassengerComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.setAppliedLVDate();
+        this.fillLeaveTypeDropDown();
     }
 
     public ngOnInit() {
@@ -48,8 +61,46 @@ export class AddLeavePassengerComponent implements OnInit {
             $(".enttname input").focus();
         }, 100);
 
-        this.fillLeaveTypeDropDown();
         this.getLeavePassenger();
+    }
+
+    // Format Date Time
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    formatTime(date) {
+        var d = new Date(date),
+            h = '' + d.getHours(),
+            m = '' + d.getMinutes();
+
+        if (h.length < 2) h = '0' + h;
+        if (m.length < 2) m = '0' + m;
+
+        return h + ':' + m;
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var _currdate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+
+        this.currdate = this.formatDate(_currdate);
+        this.currtime = this.formatDate(date);
+
+        this.frmdt = this.formatDate(_currdate);
+        this.todt = this.formatDate(_currdate);
+
+        this.frmtm = this.formatTime(date);
+        this.totm = this.formatTime(date);
     }
 
     // Auto Completed Passenger
@@ -92,7 +143,7 @@ export class AddLeavePassengerComponent implements OnInit {
 
         that._lvpsngrservice.getLeavePassenger({ "flag": "dropdown" }).subscribe(data => {
             that.leavetypeDT = data.data;
-            // setTimeout(function () { $.AdminBSB.select.refresh('restype'); }, 100);
+            // setTimeout(function () { $.AdminBSB.select.refresh('lvtype'); }, 100);
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -108,31 +159,107 @@ export class AddLeavePassengerComponent implements OnInit {
     resetLeavePassengerFields() {
         this.slid = 0;
         this.psngrid = 0;
-        this.psngrname = [];
-        this.frmdt = "";
-        this.todt = "";
-        this.restype = "";
-        this.remark = "";
+        this.psngrname = "";
+        this.psngrdata = [];
+        this.setFromDateAndToDate();
+        this.lvtype = "";
+        this.reason = "";
+    }
+
+    // Validation For Save
+
+    setAppliedLVDate() {
+        var that = this;
+
+        that._lvpsngrservice.getLeavePassenger({
+            "flag": "lvbeforelimit",
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            if (data.data.length > 0) {
+                that.countlvdays = parseInt(data.data[0].val);
+            }
+            else {
+                that.countlvdays = 1;
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    isValidationForSave() {
+        var that = this;
+
+        var date = new Date();
+        var today = that.formatDate(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
+        var currtime = this.formatTime(date);
+        var lvappldate = that.formatDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() + that.countlvdays));
+
+        if (that.psngrid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Passenger Name");
+            $(".psngrname input").focus();
+            return false;
+        }
+        else if (that.lvtype == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Leave Type");
+            $(".lvtype").focus();
+            return false;
+        }
+        else if (that.frmdt == "") {
+            that._msg.Show(messageType.error, "Error", "Enter From Date");
+            $(".frmdt").focus();
+            return false;
+        }
+        else if (today > that.frmdt) {
+            that._msg.Show(messageType.error, "Error", "Sholuld Be From Date Greater Than Current Date");
+            $(".frmdt").focus();
+            return false;
+        }
+        else if (lvappldate > that.frmdt) {
+            that._msg.Show(messageType.error, "Error", "Sholuld Be Leave Date After " + that.countlvdays + " Days");
+            $(".frmdt").focus();
+            return false;
+        }
+        else if (that.todt == "") {
+            that._msg.Show(messageType.error, "Error", "Enter To Date");
+            $(".todt").focus();
+            return false;
+        }
+        else if (today > that.todt) {
+            that._msg.Show(messageType.error, "Error", "Sholuld Be To Date Greater Than Current Date");
+            $(".todt").focus();
+            return false;
+        }
+        else if (that.frmdt > that.todt) {
+            that._msg.Show(messageType.error, "Error", "Sholul Be To Date Greater Than From Date");
+            $(".todt").focus();
+            return false;
+        }
+        else if (currtime > that.frmtm) {
+            that._msg.Show(messageType.error, "Error", "Sholuld Be From Time Greater Than Current Time");
+            $(".frmtm").focus();
+            return false;
+        }
+        else if (that.reason == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Reason");
+            $(".reason").focus();
+            return false;
+        }
+
+        return true;
     }
 
     // Save Data
 
     saveLeavePassenger() {
         var that = this;
+        var isvalid = that.isValidationForSave();
 
-        if (that.psngrid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
-            $(".psngrname input").focus();
-        }
-        else if (that.frmdt == "") {
-            that._msg.Show(messageType.error, "Error", "Enter From Date");
-            $(".frmdt").focus();
-        }
-        else if (that.todt == "") {
-            that._msg.Show(messageType.error, "Error", "Enter To Date");
-            $(".todt").focus();
-        }
-        else {
+        if (isvalid) {
             commonfun.loader();
 
             var savelvpsngr = {
@@ -140,11 +267,11 @@ export class AddLeavePassengerComponent implements OnInit {
                 "enttid": that._enttdetails.enttid,
                 "psngrid": that.psngrid,
                 "frmdt": that.frmdt,
+                "frmtm": that.frmtm,
                 "todt": that.todt,
-                "ispickup": that.ispickup,
-                "isdrop": that.isdrop,
-                "restype": that.restype,
-                "remark": that.remark,
+                "totm": that.totm,
+                "lvtype": that.lvtype,
+                "remark": that.reason,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._wsdetails.wsautoid
             }
@@ -202,10 +329,11 @@ export class AddLeavePassengerComponent implements OnInit {
                     try {
                         that.slid = data.data[0].slid;
                         that.psngrid = data.data[0].psngrid;
-                        that.psngrname.value = data.data[0].psngrid;
-                        that.psngrname.label = data.data[0].psngrname;
-                        that.restype = data.data[0].restype;
-                        that.remark = data.data[0].resdesc;
+                        that.psngrname = data.data[0].psngrname;
+                        that.psngrdata.value = that.psngrid;
+                        that.psngrdata.label = that.psngrname;
+                        that.lvtype = data.data[0].lvtype;
+                        that.reason = data.data[0].reason;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
                         that.ispickup = data.data[0].ispickup;
