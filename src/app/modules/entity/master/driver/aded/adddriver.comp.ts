@@ -14,7 +14,6 @@ declare var google: any;
 
 export class AddDriverComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     stateDT: any = [];
@@ -55,7 +54,6 @@ export class AddDriverComponent implements OnInit {
     constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.getPhotoUploadConfig();
@@ -369,7 +367,7 @@ export class AddDriverComponent implements OnInit {
                 "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
-                "wsautoid": that._wsdetails.wsautoid,
+                "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -424,7 +422,7 @@ export class AddDriverComponent implements OnInit {
                 that._driverservice.getDriverDetails({
                     "flag": "edit",
                     "id": that.driverid,
-                    "wsautoid": that._wsdetails.wsautoid
+                    "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
                         var _driverdata = data.data[0]._driverdata;

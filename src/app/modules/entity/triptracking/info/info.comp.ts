@@ -25,7 +25,7 @@ export class INFOComponent implements OnInit {
             "uid": this.data.loginUser.uid,
             "utype": this.data.loginUser.utype,
             "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._wsdetails.wsautoid
+            "wsautoid": this.data._enttdetails.wsautoid
         }).subscribe(data => {
             that.tripDT = data.data;
             commonfun.loaderhide("#loaderbody");
@@ -46,7 +46,7 @@ export class INFOComponent implements OnInit {
             "uid": this.data.loginUser.uid,
             "utype": this.data.loginUser.utype,
             "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._wsdetails.wsautoid
+            "wsautoid": this.data._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.vhinfo = data.data[0];

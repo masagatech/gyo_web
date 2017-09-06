@@ -15,7 +15,6 @@ declare var commonfun: any;
 
 export class AddBatchComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     batchid: number = 0;
@@ -37,7 +36,6 @@ export class AddBatchComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
         private _loginservice: LoginService, private _batchservice: BatchService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
     }
 
@@ -62,7 +60,7 @@ export class AddBatchComponent implements OnInit {
         that._batchservice.getBatchDetails({
             "flag": "dropdown",
             "schid": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.weekDT = data.data;
@@ -159,7 +157,7 @@ export class AddBatchComponent implements OnInit {
                 "fromtime": that.fromtime,
                 "totime": that.totime,
                 "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid,
+                "wsautoid": that._enttdetails.wsautoid,
                 "instruction": that.instruction,
                 "weekallow": that.selectedWeek,
                 "isactive": that.isactive,
@@ -213,7 +211,7 @@ export class AddBatchComponent implements OnInit {
                 that._batchservice.getBatchDetails({
                     "flag": "edit",
                     "id": that.batchid,
-                    "wsautoid": that._wsdetails.wsautoid
+                    "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
                         that.batchid = data.data[0].autoid;

@@ -13,7 +13,6 @@ declare var $: any;
 
 export class LeftSideBarComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     global = new Globals();
@@ -30,7 +29,6 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
     constructor(private _authservice: AuthenticationService, public _menuservice: MenuService, private _loginservice: LoginService,
         private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.ufullname = this.loginUser.fullname;

@@ -17,7 +17,6 @@ declare var loader: any;
 
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
-  _wsdetails: any = [];
   _enttdetails: any = [];
 
   entityDT: any = [];
@@ -69,7 +68,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private _authservice: AuthenticationService, public _menuservice: MenuService, private _loginservice: LoginService,
     private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService) {
     this.loginUser = this._loginservice.getUser();
-    this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
     this.getHeaderDetails();

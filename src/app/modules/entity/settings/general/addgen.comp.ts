@@ -11,7 +11,6 @@ import { GeneralService } from '@services/master';
 
 export class AddGeneralComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     generalsetting: any = [];
@@ -27,7 +26,6 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _genservice: GeneralService,
         private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillGenSetTypeDDL();
@@ -43,7 +41,7 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._genservice.getGeneralSetting({
-            "flag": "all", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "all", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             that.generalsetting = data.data;
         }, err => {
@@ -59,7 +57,7 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "dropdown", "enttid": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid, "cuid": that.loginUser.ucode
+            "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode
         }
 
         that._genservice.getGeneralSetting(params).subscribe(data => {
@@ -83,14 +81,6 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
 
         for (var i = 0; i < that.gensetDT.length; i++) {
             gsetfield = that.gensetDT[i];
-
-            // if (gsetfield.gsetval !== "") {
-            //     gensetData.push({
-            //         "gsetid": gsetfield.gsetid, "gsettypid": gsetfield.gsettypid, "enttid": that._enttdetails.enttid,
-            //         "gsetkey": gsetfield.gsetkey, "gsetval": gsetfield.gsetval, "gsetgrp": gsetfield.gsetgrp,
-            //         "cuid": that.loginUser.ucode, "isactive": true, "wsautoid": that._wsdetails.wsautoid
-            //     })
-            // }
         }
 
         if (that._enttdetails.enttid == 0) {

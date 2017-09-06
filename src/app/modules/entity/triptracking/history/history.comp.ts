@@ -64,7 +64,9 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     timeline: any = [];
     constructor(private _msg: MessageService, private _ttmapservice: TTMapService,
-        private _trackboard: TrackDashbord, private componentFactoryResolver: ComponentFactoryResolver) { }
+        private _trackboard: TrackDashbord, private componentFactoryResolver: ComponentFactoryResolver) {
+
+    }
 
     ngOnInit() {
 
@@ -142,7 +144,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             "uid": this.data.loginUser.uid,
             "utype": this.data.loginUser.utype,
             "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._wsdetails.wsautoid
+            "wsautoid": this.data._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 //console.log(data.data);
@@ -420,7 +422,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             "uid": this.data.loginUser.uid,
             "utype": this.data.loginUser.utype,
             "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._wsdetails.wsautoid,
+            "wsautoid": this.data._enttdetails.wsautoid,
             "frmdt": this.dateFromValue,
             "todt": this.dateToValue
         }).subscribe((data) => {

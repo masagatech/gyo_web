@@ -1,10 +1,10 @@
 <div class="hovercard" *ngFor="let row of workspaceDT">
     <div class="card">
         <div class="body">
-            <img src="http://lorempixel.com/850/280/nature/4/" onerror="this.src='assets/img/default.gif';" class="cover-img">
+            <img src="assets/img/coverphoto.png" onerror="this.src='assets/img/nologo.gif';" class="cover-img">
 
             <div class="avatar">
-                <img alt="{{row.wsname}}" src="{{global.uploadurl + row.wslogo}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                <img alt="{{row.wsname}}" src="{{global.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
                 <div class="title">
                     {{row.wsname}}
                 </div>

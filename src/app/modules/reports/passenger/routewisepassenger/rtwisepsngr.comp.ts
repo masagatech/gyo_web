@@ -13,7 +13,6 @@ import jsPDF from 'jspdf'
 
 export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     batchDT: any = [];
@@ -32,7 +31,6 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.getRouteWisePassengerReports();
@@ -57,7 +55,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         that._rptservice.getRouteWisePassengerReports({
             "flag": "batch",
             "id": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
@@ -81,7 +79,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "route", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "route", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.routesDT = data.data;
@@ -109,7 +107,8 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         commonfun.loader("#ddlstops");
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "stops", "enttid": row.enttid, "rtid": row.rtid, "batchid": row.batchid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "stops", "enttid": row.enttid, "rtid": row.rtid,
+            "batchid": row.batchid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 row.stopsDT = data.data;
@@ -140,7 +139,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
 
         that._rptservice.getRouteWisePassengerReports({
             "flag": "rtwise", "stpid": row.stpid, "enttid": row.schoolid, "rtid": row.rtid,
-            "batchid": row.batchid, "wsautoid": that._wsdetails.wsautoid
+            "batchid": row.batchid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
@@ -171,7 +170,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
         commonfun.loader("#exportemp");
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "export", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "export", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 this._autoservice.exportToCSV(data.data, "Unscheduled Passenger Details");

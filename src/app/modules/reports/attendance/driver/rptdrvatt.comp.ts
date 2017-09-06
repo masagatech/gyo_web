@@ -13,7 +13,6 @@ import jsPDF from 'jspdf'
 
 export class DriverAttendanceComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     monthDT: any = [];
@@ -28,7 +27,6 @@ export class DriverAttendanceComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, private _rptservice: ReportsService,
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();

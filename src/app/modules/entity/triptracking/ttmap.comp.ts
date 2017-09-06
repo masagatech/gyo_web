@@ -23,7 +23,6 @@ declare var google: any;
 
 export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     @ViewChild(ADHOST)
@@ -84,7 +83,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         private _loginservice: LoginService, private _socketservice: SocketService, private _trackDashbord: TrackDashbord,
         private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.enttid = this._enttdetails.enttid;
@@ -154,7 +152,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
+            "wsautoid": this._enttdetails.wsautoid,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;
@@ -187,7 +185,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             "uid": that.loginUser.uid,
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.vehtypeDT = data.data;
@@ -537,7 +535,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.sidebarTitle !== "Info" || this.selectedSVh.vhid !== vh.vhid) {
             this.sidebarTitle = "Info";
             this.selectedSVh = vh;
-            this.loadComponent(INFOComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
+            this.loadComponent(INFOComponent, { "vhid": vh.vhid, loginUser: this.loginUser, _enttdetails: this._enttdetails });
             commonfun.loader("#loaderbody", "pulse", 'Loading Vehicle Info...')
         }
         $.AdminBSB.rightSideBar.Open();
@@ -550,7 +548,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.sidebarTitle !== "Passengers" || this.selectedSVh.vhid !== vh.vhid) {
             this.sidebarTitle = "Passengers";
             this.selectedSVh = vh;
-            this.loadComponent(PSGComponent, { "tripid": vh.tripid, loginUser: this.loginUser, _wsdetails: this._wsdetails });
+            this.loadComponent(PSGComponent, { "tripid": vh.tripid, loginUser: this.loginUser, _enttdetails: this._enttdetails });
             commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...');
         }
         $.AdminBSB.rightSideBar.Open();
@@ -564,7 +562,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.sidebarTitle !== "History" || this.selectedSVh.vhid !== vh.vhid) {
             this.loadComponent(HISTORYComponent, {
                 "vhid": vh.vhid,
-                loginUser: this.loginUser, _wsdetails: this._wsdetails, map: this.map
+                loginUser: this.loginUser, _enttdetails: this._enttdetails, map: this.map
             });
             this.sidebarTitle = "History";
             this.selectedSVh = vh;

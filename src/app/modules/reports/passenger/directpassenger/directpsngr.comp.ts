@@ -13,7 +13,6 @@ import jsPDF from 'jspdf'
 
 export class DirectPassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     batchDT: any = [];
@@ -29,7 +28,6 @@ export class DirectPassengerComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillBatchDropDown();
@@ -69,7 +67,7 @@ export class DirectPassengerComponent implements OnInit, OnDestroy {
         that._rptservice.getRouteWisePassengerReports({
             "flag": "batch",
             "id": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
@@ -93,7 +91,7 @@ export class DirectPassengerComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "nortwise", "enttid": that._enttdetails.enttid, "batchid": that.batchid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "nortwise", "enttid": that._enttdetails.enttid, "batchid": that.batchid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {

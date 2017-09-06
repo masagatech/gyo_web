@@ -11,7 +11,6 @@ import { BreakDownService } from '@services/master';
 
 export class AddBreakDownComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     iscoordnot: boolean = false;
@@ -35,7 +34,6 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
         private _bdsservice: BreakDownService, private _loginservice: LoginService,
         private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.getBreakDown();
@@ -100,7 +98,7 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
             "emails": _emails,
             "message": that.message,
             "cuid": that.loginUser.ucode,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }
 
         that._bdsservice.saveBreakDownSet(saveBD).subscribe(data => {
@@ -126,7 +124,9 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     getBreakDown() {
         var that = this;
 
-        that._bdsservice.getBreakDownSet({ "flag": "details", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
+        that._bdsservice.getBreakDownSet({
+            "flag": "details", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid }
+        ).subscribe(data => {
             try {
                 var _otherData = data.data;
 

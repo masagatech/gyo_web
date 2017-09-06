@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
-import { SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { AddRouteComponent } from './aded/addrt.comp';
 import { ViewRouteComponent } from './view/viewrt.comp';

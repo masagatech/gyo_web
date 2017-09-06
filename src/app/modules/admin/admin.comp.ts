@@ -16,6 +16,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   wsname: string = "";
   wslogo: string = "";
   enttname: string = "";
+  homeurl: string = "";
 
   global = new Globals();
 
@@ -40,6 +41,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.wsname = this.loginUser.wsname;
       this.wslogo = this.global.uploadurl + this.loginUser.wslogo;
       this.enttname = Cookie.get('_schwsdetails_') != null ? this._wsdetails.wsname : "";
+
+      if (this.loginUser.issysadmin) {
+        this.homeurl = "/admin/workspace";
+      }
+      else {
+        this.homeurl = "/workspace/entity";
+      }
     }
   }
 

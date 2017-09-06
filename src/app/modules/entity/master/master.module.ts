@@ -23,11 +23,11 @@ export const routes = [
 
                     // Passenger
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
-                    { path: 'leavepassenger', loadChildren: './leavepassenger#LeavePassengerModule' },
+                    { path: 'passengerleave', loadChildren: './passengerleave#PassengerLeaveModule' },
                     
                     // Student
                     { path: 'student', loadChildren: './passenger#PassengerModule' },
-                    { path: 'leavestudent', loadChildren: './leavepassenger#LeavePassengerModule' },
+                    { path: 'studentleave', loadChildren: './passengerleave#PassengerLeaveModule' },
                 ]
             }
         ]

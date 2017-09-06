@@ -12,7 +12,6 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class EditScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     events: any = [];
@@ -82,7 +81,6 @@ export class EditScheduleComponent implements OnInit {
         private _loginservice: LoginService, private _entityservice: EntityService, private _router: Router,
         private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.viewScheduleDataRights();
@@ -221,7 +219,7 @@ export class EditScheduleComponent implements OnInit {
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
+            "wsautoid": this._enttdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             this.attendantDT = data.data;
@@ -242,10 +240,10 @@ export class EditScheduleComponent implements OnInit {
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query,
-            "id": this._enttdetails.enttid
+            "search": query
         }).subscribe((data) => {
             this.passengerDT = data.data;
         }, err => {
@@ -292,7 +290,7 @@ export class EditScheduleComponent implements OnInit {
             "flag": "dropdown",
             "group": "batch",
             "id": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
@@ -316,7 +314,7 @@ export class EditScheduleComponent implements OnInit {
 
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown", "group": "driver", "id": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.driverDT = data.data;
@@ -341,7 +339,7 @@ export class EditScheduleComponent implements OnInit {
 
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown", "group": "vehicle", "id": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.vehicleDT = data.data;
@@ -366,7 +364,7 @@ export class EditScheduleComponent implements OnInit {
 
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown", "group": "route", "id": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.routeDT = data.data;
@@ -458,7 +456,7 @@ export class EditScheduleComponent implements OnInit {
 
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown", "group": "pickpsngr", "id": that.pickrtid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.pickPassengerDT = data.data;
@@ -522,7 +520,7 @@ export class EditScheduleComponent implements OnInit {
 
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown", "group": "droppsngr", "id": that.droprtid,
-            "wsautoid": that._wsdetails.wsautoid
+            "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.dropPassengerDT = data.data;
@@ -619,7 +617,7 @@ export class EditScheduleComponent implements OnInit {
 
         this._pickdropservice.getPickDropDetails({
             "flag": "view", "mode": "edit", "schoolid": that._enttdetails.enttid, "batchid": that.batchid,
-            "wsautoid": that._wsdetails.wsautoid, "frmdt": event.calEvent.start, "todt": event.calEvent.end
+            "wsautoid": that._enttdetails.wsautoid, "frmdt": event.calEvent.start, "todt": event.calEvent.end
         }).subscribe(data => {
             try {
                 that.pddata = data.data;
@@ -840,7 +838,7 @@ export class EditScheduleComponent implements OnInit {
                     "todt": that.picktodate,
                     "typ": "p",
                     "psngrtype": that.pickpsngrtype,
-                    "wsautoid": that._wsdetails.wsautoid,
+                    "wsautoid": that._enttdetails.wsautoid,
                     "isactive": that.ispickup
                 });
             }
@@ -875,7 +873,7 @@ export class EditScheduleComponent implements OnInit {
                     "todt": that.droptodate,
                     "typ": "d",
                     "psngrtype": that.droppsngrtype,
-                    "wsautoid": that._wsdetails.wsautoid,
+                    "wsautoid": that._enttdetails.wsautoid,
                     "isactive": that.isdrop
                 });
             }

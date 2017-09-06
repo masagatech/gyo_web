@@ -13,7 +13,6 @@ import jsPDF from 'jspdf'
 
 export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     passengerDT: any = [];
@@ -23,7 +22,6 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _rptservice: ReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.getUnschedulePassenger();
@@ -64,7 +62,7 @@ export class UnschedulePassengerComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getRouteWisePassengerReports({
-            "flag": "unschedule", "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "unschedule", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {

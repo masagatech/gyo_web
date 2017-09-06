@@ -2878,6 +2878,7 @@ th {
 
 .table-bordered {
     border: 1px solid #ddd;
+    margin: -1px 0;
 }
 
 .table-bordered>thead>tr>th,
@@ -4177,6 +4178,10 @@ fieldset[disabled] .btn-link:focus {
 .btn-xs,
 .btn-group-xs>.btn {
     padding: 1px 5px!important;
+}
+
+.btn-xs-sm i {
+    font-size: 14px!important;
 }
 
 .btn-block {

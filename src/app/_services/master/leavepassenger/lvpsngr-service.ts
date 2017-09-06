@@ -3,14 +3,18 @@ import { DataService } from '../../dataconnect';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class LeavePassengerService {
+export class PassengerLeaveService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getLeavePassenger(req: any) {
-        return this._dataserver.post("getLeavePassenger", req)
+    getPassengerLeave(req: any) {
+        return this._dataserver.post("getPassengerLeave", req)
     }
 
-    saveLeavePassenger(req: any) {
-        return this._dataserver.post("saveLeavePassenger", req)
+    savePassengerLeave(req: any) {
+        return this._dataserver.post("savePassengerLeave", req)
+    }
+
+    savePassengerLeaveApproval(req: any) {
+        return this._dataserver.post("savePassengerLeaveApproval", req)
     }
 }

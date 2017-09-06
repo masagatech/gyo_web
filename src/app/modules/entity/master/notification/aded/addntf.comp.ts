@@ -14,7 +14,6 @@ declare var google: any;
 
 export class AddNotificationComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     ntfid: number = 0;
@@ -33,7 +32,6 @@ export class AddNotificationComponent implements OnInit {
     constructor(private _ntfservice: NotificationService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
     }
 
@@ -57,7 +55,7 @@ export class AddNotificationComponent implements OnInit {
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
-            "wsautoid": that._wsdetails.wsautoid,
+            "wsautoid": that._enttdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             that.toUsersDT = data.data;

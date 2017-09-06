@@ -5558,13 +5558,25 @@ section.content {
 
 .table-bordered tbody tr td,
 .table-bordered tbody tr th {
-    padding: 10px;
+    padding: 6px 10px;
     border: 1px solid #eee;
 }
 
 .table-bordered thead tr th {
-    padding: 10px;
+    padding: 6px 10px;
     border: 1px solid #eee;
+}
+
+.nested-table thead tr th {
+    padding: 6px!important;
+    background-color: #eeeeee!important;
+    color: #000000!important;
+}
+
+.table-bordered tbody tr.tr-table th {
+    padding: 5px 10px!important;
+    background-color: #eeeeee!important;
+    color: #000000!important;
 }
 
 
@@ -8772,7 +8784,7 @@ fieldset[disabled] .form-control {
 }
 
 .sidebar .user-info {
-    padding: 10px 15px 10px 5px;
+    padding: 6px 15px 10px 5px;
     white-space: nowrap;
     position: relative;
     border-bottom: 1px solid #e9e9e9;
@@ -8839,7 +8851,8 @@ fieldset[disabled] .form-control {
 
 .sidebar .menu .list {
     list-style: none;
-    padding-left: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .sidebar .menu .list li.active> :first-child span {
@@ -10472,13 +10485,28 @@ body.waitMe_body .waitMe_container.text>div {
 
 .reports {}
 
+.reports tbody tr.tr-table th {
+    font-size: 12px;
+    padding: 4px!important;
+}
+
 .reports th {
     font-size: 11px;
     padding: 4px!important;
 }
 
 .reports td {
+    font-size: 11px;
     padding: 4px!important;
+}
+
+.reports td a {
+    font-size: 13px;
+    padding: 0 4px!important;
+}
+
+.reports td span {
+    font-size: 10px;
 }
 
 .P,
@@ -10571,6 +10599,20 @@ body.waitMe_body .waitMe_container.text>div {
 .ui-datatable-tablewrapper .strong {
     background: #ebedf0;
     border-color: #d9d9d9;
+}
+
+.lv-pend {
+    background: #FFFFFF;
+}
+
+.lv-accept {
+    background: #398a18;
+    color: #FFFFFF;
+}
+
+.lv-reject {
+    background: #F44336;
+    color: #FFFFFF;
 }
 
 .pending {

@@ -20,7 +20,8 @@ export const routes = [
                     { path: 'trips', loadChildren: './passengertrips#PassengerTripsReportsModule' },
                     { path: 'routewise', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'direct', loadChildren: './directpassenger#DirectPassengerModule' },
-                    { path: 'unschedule', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },
+                    { path: 'unschedule', loadChildren: './unschedulepassenger#UnschedulePassengerModule' },   
+                    { path: 'leave', loadChildren: './passengerleave#PassengerLeaveModule' },
                 ]
             }
         ]

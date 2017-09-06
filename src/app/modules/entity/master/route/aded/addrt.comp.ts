@@ -15,7 +15,6 @@ declare var google: any;
 
 export class AddRouteComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     marker: any;
@@ -48,7 +47,6 @@ export class AddRouteComponent implements OnInit {
     constructor(private _rtservice: RouteService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
     }
 
@@ -140,7 +138,7 @@ export class AddRouteComponent implements OnInit {
                 "rtname": that.rtname,
                 "enttid": that._enttdetails.enttid,
                 "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid
+                "wsautoid": that._enttdetails.wsautoid
             }
 
             this._rtservice.saveRoutesInfo(savert).subscribe(data => {
@@ -457,7 +455,7 @@ export class AddRouteComponent implements OnInit {
                     "rtid": _slrow.rtid,
                     "cuid": that.loginUser.ucode,
                     "ordno": i + 1,
-                    "wsautoid": that._wsdetails.wsautoid,
+                    "wsautoid": that._enttdetails.wsautoid,
                     "isactive": _slrow.isactive
                 })
             }

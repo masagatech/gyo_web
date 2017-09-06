@@ -14,7 +14,6 @@ import jsPDF from 'jspdf'
 
 export class SpeedReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     speedDT: any = [];
@@ -32,7 +31,6 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.viewSpeedDataRights();
@@ -76,7 +74,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
+            "wsautoid": this._enttdetails.wsautoid,
             "enttid": this._enttdetails.enttid,
             "search": query
         }).subscribe((data) => {
@@ -116,7 +114,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
         params = {
             "flag": "Top5", "viewedon": that.viewedon, "enttid": that._enttdetails.enttid,
-            "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid
+            "drvid": that.drvid, "wsautoid": that._enttdetails.wsautoid
         }
 
         that._rptservice.getSpeedViolationReports(params).subscribe(data => {
@@ -145,7 +143,7 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "viewedon": that.viewedon, "enttid": that._enttdetails.enttid,
-            "drvid": that.drvid, "wsautoid": that._wsdetails.wsautoid
+            "drvid": that.drvid, "wsautoid": that._enttdetails.wsautoid
         }
 
         that._rptservice.getSpeedViolationReports(params).subscribe(data => {

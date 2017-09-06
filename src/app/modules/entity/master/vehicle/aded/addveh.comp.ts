@@ -12,7 +12,6 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class AddVehicleComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     vehtypeDT: any = [];
@@ -35,7 +34,6 @@ export class AddVehicleComponent implements OnInit {
     constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
         private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
@@ -156,7 +154,7 @@ export class AddVehicleComponent implements OnInit {
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
                 "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid,
+                "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -208,7 +206,7 @@ export class AddVehicleComponent implements OnInit {
                 that._vehservice.getVehicleDetails({
                     "flag": "edit",
                     "id": that.vehid,
-                    "wsautoid": that._wsdetails.wsautoid
+                    "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
                         var _vehicledata = data.data;

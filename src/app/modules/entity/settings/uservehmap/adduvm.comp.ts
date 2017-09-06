@@ -11,7 +11,6 @@ import { UserVehicleMapService } from '@services/master';
 
 export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     usersDT: any = [];
@@ -30,7 +29,6 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         private _uvmservice: UserVehicleMapService, private _loginservice: LoginService,
         private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
     }
 
@@ -63,7 +61,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
             "enttid": that._enttdetails.enttid,
-            "wsautoid": that._wsdetails.wsautoid,
+            "wsautoid": that._enttdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -97,7 +95,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
-            "wsautoid": that._wsdetails.wsautoid,
+            "wsautoid": that._enttdetails.wsautoid,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -170,7 +168,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
                     "utype": that.utype,
                     "vehid": selectedVehicle,
                     "cuid": that.loginUser.ucode,
-                    "wsid": that._wsdetails.wsautoid
+                    "wsid": that._enttdetails.wsautoid
                 }
 
                 that._uvmservice.saveUserVehicleMap(saveUR).subscribe(data => {

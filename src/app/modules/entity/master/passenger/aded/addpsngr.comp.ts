@@ -16,7 +16,6 @@ declare var adminloader: any;
 
 export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     standardDT: any = [];
@@ -79,7 +78,6 @@ export class AddPassengerComponent implements OnInit {
     constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.getPhotoUploadConfig();
@@ -615,7 +613,7 @@ export class AddPassengerComponent implements OnInit {
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
                 "aadharno": that.aadharno,
                 "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid,
+                "wsautoid": that._enttdetails.wsautoid,
                 "remark1": that.remark1,
                 "isactive": that.isactive,
                 "mode": ""
@@ -670,7 +668,7 @@ export class AddPassengerComponent implements OnInit {
                 that._psngrservice.getPassengerDetails({
                     "flag": "edit",
                     "id": that.psngrid,
-                    "wsautoid": that._wsdetails.wsautoid
+                    "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
                         if (data.data.length > 0) {

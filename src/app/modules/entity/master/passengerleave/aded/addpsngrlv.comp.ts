@@ -2,20 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { LeavePassengerService } from '@services/master';
+import { PassengerLeaveService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addlvpsngr.comp.html',
+    templateUrl: 'addpsngrlv.comp.html',
     providers: [CommonService]
 })
 
-export class AddLeavePassengerComponent implements OnInit {
+export class AddPassengerLeaveComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     slid: number = 0;
@@ -47,9 +46,8 @@ export class AddLeavePassengerComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _lvpsngrservice: LeavePassengerService, private _autoservice: CommonService) {
+        private _lvpsngrservice: PassengerLeaveService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.setAppliedLVDate();
@@ -61,7 +59,7 @@ export class AddLeavePassengerComponent implements OnInit {
             $(".enttname input").focus();
         }, 100);
 
-        this.getLeavePassenger();
+        this.getPassengerLeave();
     }
 
     // Format Date Time
@@ -113,9 +111,9 @@ export class AddLeavePassengerComponent implements OnInit {
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "id": this._enttdetails.enttid,
             "search": query
         }).subscribe((data) => {
             this.passengerDT = data.data;
@@ -141,7 +139,7 @@ export class AddLeavePassengerComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._lvpsngrservice.getLeavePassenger({ "flag": "dropdown" }).subscribe(data => {
+        that._lvpsngrservice.getPassengerLeave({ "flag": "dropdown" }).subscribe(data => {
             that.leavetypeDT = data.data;
             // setTimeout(function () { $.AdminBSB.select.refresh('lvtype'); }, 100);
             commonfun.loaderhide();
@@ -156,7 +154,7 @@ export class AddLeavePassengerComponent implements OnInit {
 
     // Clear Fields
 
-    resetLeavePassengerFields() {
+    resetPassengerLeaveFields() {
         this.slid = 0;
         this.psngrid = 0;
         this.psngrname = "";
@@ -171,7 +169,7 @@ export class AddLeavePassengerComponent implements OnInit {
     setAppliedLVDate() {
         var that = this;
 
-        that._lvpsngrservice.getLeavePassenger({
+        that._lvpsngrservice.getPassengerLeave({
             "flag": "lvbeforelimit",
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
@@ -255,7 +253,7 @@ export class AddLeavePassengerComponent implements OnInit {
 
     // Save Data
 
-    saveLeavePassenger() {
+    savePassengerLeave() {
         var that = this;
         var isvalid = that.isValidationForSave();
 
@@ -273,10 +271,10 @@ export class AddLeavePassengerComponent implements OnInit {
                 "lvtype": that.lvtype,
                 "remark": that.reason,
                 "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid
+                "wsautoid": that._enttdetails.wsautoid
             }
 
-            that._lvpsngrservice.saveLeavePassenger(savelvpsngr).subscribe(data => {
+            that._lvpsngrservice.savePassengerLeave(savelvpsngr).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_studentleave;
                     var msg = dataResult.msg;
@@ -286,7 +284,7 @@ export class AddLeavePassengerComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid == "1") {
-                            that.resetLeavePassengerFields();
+                            that.resetPassengerLeaveFields();
                         }
                         else {
                             that.backViewData();
@@ -313,7 +311,7 @@ export class AddLeavePassengerComponent implements OnInit {
 
     // Get Leave Passenger Data
 
-    getLeavePassenger() {
+    getPassengerLeave() {
         var that = this;
         commonfun.loader();
 
@@ -321,10 +319,10 @@ export class AddLeavePassengerComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.slid = params['id'];
 
-                that._lvpsngrservice.getLeavePassenger({
+                that._lvpsngrservice.getPassengerLeave({
                     "flag": "edit",
                     "id": that.slid,
-                    "wsautoid": that._wsdetails.wsautoid
+                    "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
                         that.slid = data.data[0].slid;
@@ -336,6 +334,7 @@ export class AddLeavePassengerComponent implements OnInit {
                         that.reason = data.data[0].reason;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
+                        that.frmtm = data.data[0].frmtm;
                         that.ispickup = data.data[0].ispickup;
                         that.isdrop = data.data[0].isdrop;
                     }
@@ -353,7 +352,7 @@ export class AddLeavePassengerComponent implements OnInit {
                 })
             }
             else {
-                that.resetLeavePassengerFields();
+                that.resetPassengerLeaveFields();
                 commonfun.loaderhide();
             }
         });
@@ -362,6 +361,6 @@ export class AddLeavePassengerComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/leave' + this._enttdetails.smpsngrtype]);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + 'leave']);
     }
 }

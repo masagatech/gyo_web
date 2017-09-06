@@ -15,7 +15,6 @@ declare var $: any;
 
 export class ViewPassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     global = new Globals();
@@ -27,15 +26,15 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     standard: string = "";
 
     autoPassengerDT: any = [];
+    psngrdata: any = [];
     psngrid: number = 0;
-    psngrname: any = [];
+    psngrname: string = "";
 
     passengerDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
@@ -89,9 +88,9 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "id": this._enttdetails.enttid,
             "search": query
         }).subscribe((data) => {
             this.autoPassengerDT = data.data;
@@ -144,8 +143,10 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         if (Cookie.get('_psngrnm_') != null) {
             that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrnm_');
+            that.psngrname = Cookie.get('_psngrnm_');
+            
+            that.psngrdata.value = that.psngrid;
+            that.psngrdata.label = that.psngrname;
         }
 
         that.getPassengerDetails();
@@ -161,14 +162,14 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
             Cookie.set("_psngrid_", "0");
             Cookie.set("_psngrnm_", "");
 
-            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrnm_');
+            that.psngrdata.value = parseInt(Cookie.get('_psngrid_'));
+            that.psngrdata.label = Cookie.get('_psngrnm_');
         }
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "schid": that._enttdetails.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 
         that._psngrservice.getPassengerDetails(params).subscribe(data => {
