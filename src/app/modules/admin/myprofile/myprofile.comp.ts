@@ -22,6 +22,7 @@ export class MyProfileComponent implements OnInit {
 
     uid: number = 0;
     usersDT: any = [];
+    entityDT: any = [];
 
     private subscribeParameters: any;
 
@@ -32,6 +33,7 @@ export class MyProfileComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.getUserDetails();
+        this.getUserEntity();
     }
 
     public ngOnInit() {
@@ -66,11 +68,48 @@ export class MyProfileComponent implements OnInit {
         })
     }
 
+    // Get User Entity
+
+    getUserEntity() {
+        var that = this;
+        var uparams = {};
+
+        commonfun.loader();
+
+        uparams = {
+            "flag": "userentity", "id": that.loginUser.loginid
+        };
+
+        that._userservice.getUserDetails(uparams).subscribe(data => {
+            try {
+                that.entityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide("#users");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide("#users");
+        }, () => {
+
+        })
+    }
+
     public addUserForm() {
         this._router.navigate(['/workspace/user/add']);
     }
 
     public editUserForm(row) {
         this._router.navigate(['/workspace/user/edit', row.uid]);
+    }
+
+    public openMainForm(row) {
+        Cookie.delete("_schenttdetails_");
+
+        Cookie.set("_schenttdetails_", JSON.stringify(row));
+        this._router.navigate(['/']);
     }
 }

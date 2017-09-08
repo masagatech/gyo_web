@@ -10,35 +10,66 @@
                 </div>
             </div>
             <div class="info">
-                <div class="desc">
-                    <b>Role : </b>{{row.utypename}}
-                </div>
-                <div class="desc">
-                    <b>Mobile : </b>{{row.mobile}}
-                </div>
-                <div class="desc" *ngIf="row.altmobile !== ''">
-                    <b>Alternate Mobile : </b>{{row.altmobile}}
-                </div>
-                <div class="desc">
-                    <b>Email : </b>{{row.email}}
-                </div>
-                <div class="desc" *ngIf="row.altemail !== ''">
-                    <b>Alternate Email : </b>{{row.altemail}}
-                </div>
-                <div class="desc" *ngIf="row.address !== ''">
-                    <b>Address : </b>{{row.address}}
-                </div>
-                <div class="desc" *ngIf="row.country !== ''">
-                    <b>Country : </b>{{row.country}}
-                </div>
-                <div class="desc" *ngIf="row.state !== ''">
-                    <b>State : </b>{{row.state}}
-                </div>
-                <div class="desc" *ngIf="row.city !== ''">
-                    <b>City : </b>{{row.city}}
-                </div>
-                <div class="desc" *ngIf="row.area !== ''">
-                    <b>Area : </b>{{row.area}}
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="desc">
+                            <b>Role : </b>{{row.utypename}}
+                        </div>
+                        <div class="desc">
+                            <b>Mobile : </b>{{row.mobile}}
+                        </div>
+                        <div class="desc" *ngIf="row.altmobile !== ''">
+                            <b>Alternate Mobile : </b>{{row.altmobile}}
+                        </div>
+                        <div class="desc">
+                            <b>Email : </b>{{row.email}}
+                        </div>
+                        <div class="desc" *ngIf="row.altemail !== ''">
+                            <b>Alternate Email : </b>{{row.altemail}}
+                        </div>
+                        <div class="desc" *ngIf="row.address !== ''">
+                            <b>Address : </b>{{row.address}}
+                        </div>
+                        <div class="desc" *ngIf="row.country !== ''">
+                            <b>Country : </b>{{row.country}}
+                        </div>
+                        <div class="desc" *ngIf="row.state !== ''">
+                            <b>State : </b>{{row.state}}
+                        </div>
+                        <div class="desc" *ngIf="row.city !== ''">
+                            <b>City : </b>{{row.city}}
+                        </div>
+                        <div class="desc" *ngIf="row.area !== ''">
+                            <b>Area : </b>{{row.area}}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="header">
+                            Entity Mapping
+                        </div>
+                        <div *ngIf="entityDT.length">
+                            <div *ngFor="let row of entityDT | groupBy: 'entttype'">
+                                <div class="header">
+                                    <b>{{row.key}}</b>
+                                </div>
+                                <p-dataGrid [value]="row.value" [paginator]="true" [rows]="8">
+                                    <ng-template let-drow pTemplate="item">
+                                        <div style="padding:3px" class="col-md-3">
+                                            <p-panel [header]="drow.enttname" [style]="{'text-align':'center'}">
+                                                <a role="button" (click)="openMainForm(drow)">
+                                                    <img alt="{{drow.enttname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
+                                                </a>
+                                                <hr class="hr ui-widget-content">
+                                                <button type="button" class="btn btn-theme btn-xs" (click)="openMainForm(drow)">
+                                                    <i class="material-icons">arrow_forward</i>
+                                                </button> {{drow.mode}}
+                                            </p-panel>
+                                        </div>
+                                    </ng-template>
+                                </p-dataGrid>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

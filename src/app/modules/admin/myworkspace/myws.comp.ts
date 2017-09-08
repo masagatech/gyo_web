@@ -22,6 +22,7 @@ export class MyWorkspaceComponent implements OnInit {
 
     uid: number = 0;
     workspaceDT: any = [];
+    entityDT: any = [];
 
     private subscribeParameters: any;
 
@@ -32,6 +33,7 @@ export class MyWorkspaceComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.getWorkspaceDetails();
+        this.getWorkspaceEntity();
     }
 
     public ngOnInit() {
@@ -40,13 +42,16 @@ export class MyWorkspaceComponent implements OnInit {
 
     getWorkspaceDetails() {
         var that = this;
+        var wsparams = {};
 
         commonfun.loader();
 
-        that._wsservice.getWorkspaceDetails({
+        wsparams = {
             "flag": "userwise", "uid": that.loginUser.wsautoid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "wsautoid": that.loginUser.wsautoid, "srcwsid": that.loginUser.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
+        };
+
+        that._wsservice.getWorkspaceDetails(wsparams).subscribe(data => {
             try {
                 that.workspaceDT = data.data;
             }
@@ -64,6 +69,36 @@ export class MyWorkspaceComponent implements OnInit {
         })
     }
 
+    // Get User Entity
+
+    getWorkspaceEntity() {
+        var that = this;
+        var wsparams = {};
+
+        commonfun.loader();
+
+        wsparams = {
+            "flag": "wsentity", "wsautoid": that.loginUser.wsautoid
+        };
+
+        that._wsservice.getWorkspaceDetails(wsparams).subscribe(data => {
+            try {
+                that.entityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide("#users");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide("#users");
+        }, () => {
+
+        })
+    }
+
     public openEntityForm(row) {
         Cookie.delete("_schwsdetails_");
         Cookie.set("_schwsdetails_", JSON.stringify(row));
@@ -74,6 +109,13 @@ export class MyWorkspaceComponent implements OnInit {
         else {
             this._router.navigate(['/workspace/entity/add']);
         }
+    }
+
+    public openMainForm(row) {
+        Cookie.delete("_schenttdetails_");
+
+        Cookie.set("_schenttdetails_", JSON.stringify(row));
+        this._router.navigate(['/']);
     }
 
     public addUserForm() {

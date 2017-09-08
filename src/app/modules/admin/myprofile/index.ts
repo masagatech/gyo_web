@@ -6,8 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { MyProfileComponent } from './myprofile.comp';
-
 import { UserService } from '@services/master';
+
+import { DataGridModule, PanelModule } from 'primeng/primeng';
 
 export const routes = [
     {
@@ -22,13 +23,13 @@ export const routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(routes),
-        SharedComponentModule,
-        FormsModule,
-        CommonModule,
+        SharedComponentModule, FormsModule, CommonModule, DataGridModule, PanelModule
     ],
+
     declarations: [
         MyProfileComponent
     ],
+    
     providers: [AuthGuard, UserService]
 })
 
