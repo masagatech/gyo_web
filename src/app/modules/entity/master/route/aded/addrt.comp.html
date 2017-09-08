@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="form-group" id="address">
+                        <div id="address" class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Address <strong>*</strong></label>
                                 <textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4" (keydown.tab)="getLatAndLong()"></textarea>
@@ -82,8 +82,8 @@
                         <div *ngIf="!isedit">
                             <div class="form-group" align="right">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="addStopsList()">
-                                        <span class="material-icons">add</span>
-                                    </button>
+                                    <span class="material-icons">add</span>
+                                </button>
                             </div>
                         </div>
                         <div *ngIf="isedit">

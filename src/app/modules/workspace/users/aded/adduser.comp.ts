@@ -48,6 +48,8 @@ export class AddUserComponent implements OnInit {
     enttid: number = 0;
     enttname: any = [];
 
+    workspaceList: any = [];
+
     isAllVehRights: boolean = true;
     vehtypeDT: any = [];
     vehtypeList: any = [];
@@ -65,8 +67,8 @@ export class AddUserComponent implements OnInit {
         private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
-        this.getPhotoUploadConfig();
 
+        this.getPhotoUploadConfig();
         this.fillUserTypeDropDown();
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -487,12 +489,26 @@ export class AddUserComponent implements OnInit {
         else {
             commonfun.loader();
 
+            var _wslist: string[] = [];
             var _enttlist: string[] = [];
+            var _vehlist: string[] = [];
 
             if (that.utype == "admin" || that.utype == "user") {
+                _wslist = ["0"];
                 _enttlist = ["0"];
             }
             else {
+                if (that.workspaceList.length !== 0) {
+                    _wslist = Object.keys(that.workspaceList).map(function (k) { return that.workspaceList[k].wsautoid });
+                }
+                else {
+                    that.workspaceList.push({
+                        "wsautoid": that._wsdetails.wsautoid, "wsname": that._wsdetails.wsname
+                    });
+
+                    _wslist = Object.keys(that.workspaceList).map(function (k) { return that.workspaceList[k].wsautoid });
+                }
+
                 if (that.isAllEnttRights) {
                     _enttlist = ["0"];
                 }
@@ -501,7 +517,6 @@ export class AddUserComponent implements OnInit {
                 }
             }
 
-            var _vehlist: string[] = [];
             _vehlist = that.isAllVehRights ? ["0"] : Object.keys(that.vehtypeList).map(function (k) { return that.vehtypeList[k].vehtypeid });
 
             var saveuser = {
@@ -512,6 +527,7 @@ export class AddUserComponent implements OnInit {
                 "fname": that.fname,
                 "lname": that.lname,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
+                "wsrights": _wslist,
                 "school": _enttlist,
                 "vehicle": _vehlist,
                 "mobileno1": that.mobileno1,
@@ -561,7 +577,7 @@ export class AddUserComponent implements OnInit {
                 that._msg.Show(messageType.error, "Error", "Error 103 : " + err);
                 commonfun.loaderhide();
             }, () => {
-
+                // console.log("Complete");
             });
         }
     }
@@ -587,7 +603,7 @@ export class AddUserComponent implements OnInit {
                         that.fname = data.data[0].fname;
                         that.lname = data.data[0].lname;
                         that.utype = data.data[0].utype;
-                        that.utype = data.data[0].utype;
+                        that.workspaceList = data.data[0].workspace !== null ? data.data[0].workspace : [];
                         that.isAllEnttRights = data.data[0].isallenttrights;
                         that.entityList = data.data[0].school !== null ? data.data[0].school : [];
                         that.isAllVehRights = data.data[0].isallvehrights;

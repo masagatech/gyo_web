@@ -269,7 +269,7 @@ export class AddPassengerLeaveComponent implements OnInit {
                 "todt": that.todt,
                 "totm": that.totm,
                 "lvtype": that.lvtype,
-                "remark": that.reason,
+                "reason": that.reason,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid
             }
