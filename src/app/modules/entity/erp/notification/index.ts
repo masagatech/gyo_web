@@ -7,7 +7,7 @@ import { AuthGuard } from '@services';
 import { AddNotificationComponent } from './aded/addntf.comp';
 import { ViewNotificationComponent } from './view/viewntf.comp';
 
-import { NotificationService } from '@services/master';
+import { NotificationService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 

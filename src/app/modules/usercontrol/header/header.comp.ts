@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() enttname: string = "";
   @Input() homeurl: string = "";
 
+  @Input() iserpmenu: boolean = false;
   @Input() ismstmenu: boolean = false;
   @Input() isrptmenu: boolean = false;
 
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   mastersMenuDT: any = [];
   settingsMenuDT: any = [];
+  erpMenuDT: any = [];
   reportsMenuDT: any = [];
 
   private themes: any = [
@@ -114,6 +116,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }).subscribe(data => {
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
       that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
+      that.erpMenuDT = data.data.filter(a => a.mptype === "erp");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
     }, err => {
       that._msg.Show(messageType.error, "Error", err);

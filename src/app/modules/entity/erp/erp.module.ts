@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ERPComponent } from '../erp/erp.comp';
 import { AuthGuard } from '@services';
 
 import { FormsModule } from '@angular/forms';
@@ -8,15 +9,14 @@ import { CommonModule } from '@angular/common';
 export const routes = [
     {
         path: '',
+        component: ERPComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 children: [
-                    { path: 'batch', loadChildren: './batch#BatchReportsModule' },
-                    { path: 'route', loadChildren: './route#RouteReportsModule' },
-                    { path: 'driver', loadChildren: './driver#DriverReportsModule' },
-                    { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
+                    { path: 'notification', loadChildren: './notification#NotificationModule' },
+                    { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
                 ]
             }
         ]
@@ -28,9 +28,12 @@ export const routes = [
         FormsModule,
         CommonModule,
     ],
+    declarations: [
+        ERPComponent
+    ],
     providers: [AuthGuard]
 })
 
-export class MasterReportsModule {
+export class ERPModule {
 
 }

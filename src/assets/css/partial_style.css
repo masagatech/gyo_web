@@ -2081,7 +2081,21 @@ select.selectpicker {
     white-space: normal;
 }
 
+.dropdown-small {
+    right: 80px!important;
+    width: auto!important;
+}
+
 .dropdown-small>li>ul>li>a {
+    padding: 3px 0!important;
+}
+
+.dropdown-auto {
+    right: 80px!important;
+    width: 600px!important;
+}
+
+.dropdown-auto>li>ul>li>a {
     padding: 3px 0!important;
 }
 

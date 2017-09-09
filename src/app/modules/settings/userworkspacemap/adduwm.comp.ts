@@ -147,10 +147,6 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         })
     }
 
-    getMenuRights(rights) {
-        return rights.split(',');
-    }
-
     getUserRights() {
         var wsitem = null;
 

@@ -13,10 +13,7 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'batch', loadChildren: './batch#BatchReportsModule' },
-                    { path: 'route', loadChildren: './route#RouteReportsModule' },
-                    { path: 'driver', loadChildren: './driver#DriverReportsModule' },
-                    { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
+                    { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
                 ]
             }
         ]
@@ -31,6 +28,6 @@ export const routes = [
     providers: [AuthGuard]
 })
 
-export class MasterReportsModule {
+export class ERPReportsModule {
 
 }

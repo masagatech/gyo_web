@@ -6,7 +6,7 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { NotificationReportsComponent } from './rptntf.comp';
-import { NotificationService } from '@services/master';
+import { NotificationService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 

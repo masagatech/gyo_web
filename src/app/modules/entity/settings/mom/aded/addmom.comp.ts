@@ -54,7 +54,9 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     }
 
     resetMOMFields() {
-
+        this.momid = 0;
+        this.key = "";
+        this.val = "";
     }
 
     getMOMGroup() {
