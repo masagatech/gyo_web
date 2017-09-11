@@ -1,0 +1,52 @@
+<div id="employee" class="hovercard" *ngFor="let row of employeeDT">
+    <div class="card">
+        <div class="body">
+            <img src="assets/img/coverphoto.png" onerror="this.src='assets/img/default.gif';" class="cover-img">
+
+            <div class="avatar">
+                <img alt="{{row.empname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                <div class="title">
+                    {{row.empname}}
+                </div>
+
+                <div class="bottom">
+                    <a class="btn btn-primary btn-twitter btn-sm" (click)="editEmployeeForm(row)">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </div>
+            </div>
+            <div class="info">
+                <div class="desc">
+                    <b>Role : </b>{{row.utypename}}
+                </div>
+                <div class="desc">
+                    <b>Mobile : </b>{{row.mobileno1}}
+                </div>
+                <div class="desc" *ngIf="row.altmobile !== ''">
+                    <b>Alternate Mobile : </b>{{row.mobileno2}}
+                </div>
+                <div class="desc">
+                    <b>Email : </b>{{row.email1}}
+                </div>
+                <div class="desc" *ngIf="row.altemail !== ''">
+                    <b>Alternate Email : </b>{{row.email2}}
+                </div>
+                <div class="desc" *ngIf="row.address !== ''">
+                    <b>Address : </b>{{row.address}}
+                </div>
+                <div class="desc" *ngIf="row.country !== ''">
+                    <b>Country : </b>{{row.country}}
+                </div>
+                <div class="desc" *ngIf="row.state !== ''">
+                    <b>State : </b>{{row.state}}
+                </div>
+                <div class="desc" *ngIf="row.city !== ''">
+                    <b>City : </b>{{row.city}}
+                </div>
+                <div class="desc" *ngIf="row.area !== ''">
+                    <b>Area : </b>{{row.area}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

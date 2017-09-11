@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ERPComponent } from '../erp/erp.comp';
-import { AuthGuard } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,8 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: 'employee', loadChildren: './employee#EmployeeModule' },
+                    { path: 'books', loadChildren: './books#BooksModule' },
                     { path: 'notification', loadChildren: './notification#NotificationModule' },
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
                 ]
@@ -25,6 +27,7 @@ export const routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(routes),
+        SharedComponentModule,
         FormsModule,
         CommonModule,
     ],

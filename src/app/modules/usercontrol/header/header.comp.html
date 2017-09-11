@@ -31,7 +31,17 @@
                 <li class="dropdown dropdown-large" *ngIf="iserpmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="erpMenuDT.length">ERP <b class="caret"></b></a>
                     <ul class="dropdown-menu dropdown-menu-large row">
-                        <li>
+                        <li class="col-md-3" *ngFor="let row of erpMenuDT | groupBy: 'pname'">
+                            <ul>
+                                <li class="dropdown-header">{{row.key}}</li>
+                                <li class="divider"></li>
+                                <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
+                                    <a [routerLink]="mrow.mlink">{{mrow.mname}}</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- <li>
                             <ul>
                                 <li class="col-md-3" *ngFor="let row of erpMenuDT">
                                     <a role="button" [routerLink]="row.mlink">
@@ -39,7 +49,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="ismstmenu == true">

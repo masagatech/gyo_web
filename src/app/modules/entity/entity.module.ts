@@ -32,9 +32,6 @@ export const routes = [
 
                     // Marketing
                     { path: 'marketing', loadChildren: './marketing#MarketingModule' },
-
-                    // ERP
-                    { path: 'erp', loadChildren: './erp#ERPModule' },
                 ]
             }
         ]
