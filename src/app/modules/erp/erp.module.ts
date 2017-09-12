@@ -16,9 +16,16 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'employee', loadChildren: './employee#EmployeeModule' },
+                    { path: 'class', loadChildren: './class#ClassModule' },
                     { path: 'books', loadChildren: './books#BooksModule' },
+                    { path: 'activity', loadChildren: './activity#ActivityModule' },
+                    { path: 'assignment', loadChildren: './assignment#AssignmentModule' },
                     { path: 'notification', loadChildren: './notification#NotificationModule' },
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
+                    
+                    { path: 'holiday', loadChildren: '../reports/workspace/holiday#HolidayReportsModule' },
+                    { path: 'leave', loadChildren: '../reports/passenger/passengerleave#PassengerLeaveModule' },
+                    { path: 'attendance', loadChildren: '../reports/attendance/passenger#PassengerAttendanceModule' },
                 ]
             }
         ]

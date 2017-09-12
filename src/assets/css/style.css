@@ -10698,6 +10698,11 @@ td {
     font-size: 12px;
 }
 
+.sm-font {
+    font-size: 15px;
+    color: #ffffff;
+}
+
 .empty-message {
     margin: 12px;
 }

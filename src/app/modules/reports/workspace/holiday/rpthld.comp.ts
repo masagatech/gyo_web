@@ -16,6 +16,7 @@ export class HolidayReportsComponent implements OnInit, OnDestroy {
     _wsdetails: any = [];
 
     entityDT: any = [];
+    enttdata: any = [];
     enttid: number = 0;
     enttname: string = "";
 
@@ -81,7 +82,7 @@ export class HolidayReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Owners
+    // Selected Entity
 
     selectEntityData(event) {
         this.enttid = event.value;
@@ -99,6 +100,10 @@ export class HolidayReportsComponent implements OnInit, OnDestroy {
         if (Cookie.get('_enttnm_') != null) {
             that.enttid = parseInt(Cookie.get('_enttid_'));
             that.enttname = Cookie.get('_enttnm_');
+
+            that.enttdata.value = that.enttid;
+            that.enttdata.label = that.enttname;
+
             that.getHolidayGrid();
         }
     }

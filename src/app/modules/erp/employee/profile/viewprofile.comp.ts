@@ -74,10 +74,10 @@ export class ViewProfileComponent implements OnInit {
     }
 
     public addEmployeeForm() {
-        this._router.navigate(['/master/employee/add']);
+        this._router.navigate(['/erp/employee/add']);
     }
 
     public editEmployeeForm(row) {
-        this._router.navigate(['/master/employee/edit', row.empid]);
+        this._router.navigate(['/erp/employee/edit', row.empid]);
     }
 }

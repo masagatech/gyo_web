@@ -121,7 +121,7 @@ export class AddEmployeeComponent implements OnInit {
         });
     }
 
-    // Get Gender DropDown
+    // Fill DropDown List
 
     fillDropDownList() {
         var that = this;
@@ -264,7 +264,7 @@ export class AddEmployeeComponent implements OnInit {
         });
     }
 
-    // File upload
+    // File Upload
 
     getUploadConfig() {
         var that = this;
@@ -363,12 +363,16 @@ export class AddEmployeeComponent implements OnInit {
         var that = this;
 
         if (that.empcode == "") {
-            that._msg.Show(messageType.error, "Error", "Enter emp Code");
+            that._msg.Show(messageType.error, "Error", "Enter Employee Code");
             $(".empcode").focus();
         }
         else if (that.emppwd == "") {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".emppwd").focus();
+        }
+        else if (that.emptype == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Employee Type");
+            $(".emptype").focus();
         }
         else if (that.empname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Employee Name");
@@ -381,6 +385,10 @@ export class AddEmployeeComponent implements OnInit {
         else if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
+        }
+        else if (that.email1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Email ID");
+            $(".email1").focus();
         }
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
@@ -458,7 +466,7 @@ export class AddEmployeeComponent implements OnInit {
         }
     }
 
-    // Get emp Data
+    // Get Employee Data
 
     getEmployeeDetails() {
         var that = this;
@@ -544,6 +552,6 @@ export class AddEmployeeComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/employee']);
+        this._router.navigate(['/erp/employee']);
     }
 }

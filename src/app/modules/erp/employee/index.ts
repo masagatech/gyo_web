@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { AddEmployeeComponent } from './aded/addemp.comp';
 import { ViewEmployeeComponent } from './view/viewemp.comp';
@@ -31,7 +31,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
+    DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule
   ],
 
   providers: [AuthGuard, EmployeeService]

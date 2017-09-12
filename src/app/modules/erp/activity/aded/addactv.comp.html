@@ -1,0 +1,71 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Activity</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveActivityInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Activity Type <strong>*</strong></label>
+                                <select id="actytype" name="actytype" [(ngModel)]="typeid" class="form-control actytype" tabindex="1">
+                                    <option [value]="0">Select Activity Type</option>
+                                    <option *ngFor="let row of actvtypeDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Activity Name <strong>*</strong></label>
+                                <input [(ngModel)]="actvname" class="form-control actvname" maxlength="100" tabindex="2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description</label>
+                        <textarea [(ngModel)]="actvdesc" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Activity Head</label>
+                        <p-autoComplete id="headid" name="headname" [(ngModel)]="headDT" [tabindex]="4" (onSelect)="selectActivityHeadData($event)" [suggestions]="actvheadDT" (completeMethod)="getActivityHeadData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete headname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div *ngIf="actvheadList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let row of actvheadList">
+                                {{row.headname}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteActivityHead(row)">
+                                    <i class="material-icons">delete</i></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

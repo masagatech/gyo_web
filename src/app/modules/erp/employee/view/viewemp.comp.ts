@@ -15,6 +15,9 @@ export class ViewEmployeeComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    emptypeDT: any = [];
+    emptype: string = "";
+
     employeeDT: any = [];
 
     isShowGrid: boolean = true;
@@ -30,11 +33,36 @@ export class ViewEmployeeComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.fillDropDownList();
         this.getEmployeeDetails();
     }
 
     public ngOnInit() {
         
+    }
+
+    // Fill DropDown List
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._empservice.getEmployeeDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.emptypeDT = data.data.filter(a => a.group == "emptype");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     isshEmployee(viewtype) {
@@ -68,7 +96,7 @@ export class ViewEmployeeComponent implements OnInit {
         commonfun.loader();
 
         params = {
-            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "emptype": that.emptype,
             "enttid": that._enttdetails.enttid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         }
 
