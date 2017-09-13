@@ -22,8 +22,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
-    standardDT: any = [];
-    standard: string = "";
+    classDT: any = [];
+    classid: number = 0;
 
     autoPassengerDT: any = [];
     psngrdata: any = [];
@@ -116,10 +116,11 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._psngrservice.getPassengerDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
-                that.standardDT = data.data.filter(a => a.group === "standard");
-                // setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
+                that.classDT = data.data.filter(a => a.group === "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -144,7 +145,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         if (Cookie.get('_psngrnm_') != null) {
             that.psngrid = parseInt(Cookie.get('_psngrid_'));
             that.psngrname = Cookie.get('_psngrnm_');
-            
+
             that.psngrdata.value = that.psngrid;
             that.psngrdata.label = that.psngrname;
         }
@@ -168,7 +169,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "schid": that._enttdetails.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
+            "enttid": that._enttdetails.enttid, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "classid": that.classid,
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 

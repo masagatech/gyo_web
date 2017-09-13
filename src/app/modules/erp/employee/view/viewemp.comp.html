@@ -56,23 +56,27 @@
                                     </p-header>
                                     <div class="row clearfix">
                                         <div class="col-md-4 border">
-                                            <a role="button" (click)="viewEmployeeProfile(drow)">
-                                                <img alt="{{drow.empname}}" src="{{global.uploadurl + drow.empphoto}}" onerror="this.src='assets/img/default.gif';" height="80px">
-                                            </a>
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <a role="button" (click)="viewEmployeeProfile(drow)">
+                                                        <img alt="{{drow.empname}}" src="{{global.uploadurl + drow.empphoto}}" onerror="this.src='assets/img/default.gif';" height="80px">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-12" *ngIf="drow.gender != ''">
+                                                    {{drow.gender}}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-8" align="left">
                                             <div class="row clearfix">
-                                                <div class="col-md-12" *ngIf="drow.gender != ''">
-                                                    <b>Gender : </b> {{drow.gender}}
-                                                </div>
                                                 <div class="col-md-12" *ngIf="drow.dob != ''">
-                                                    <b>DOB : </b> {{drow.dob}}
+                                                    <span class="material-icons sm-font">date_range</span> {{drow.dob}}
                                                 </div>
                                                 <div class="col-md-12" *ngIf="drow.mobileno1 != ''">
-                                                    <b>Mobile : </b> {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
+                                                    <span class="material-icons sm-font">phone_iphone</span> {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
                                                 </div>
                                                 <div class="col-md-12" *ngIf="drow.email1 != ''">
-                                                    <b>Email : </b> {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
+                                                    <span class="material-icons sm-font">email</span> {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -11,13 +11,22 @@ import { AddMOMComponent } from './aded/addmom.comp';
 import { LazyLoadEvent, DataTableModule, DataListModule } from 'primeng/primeng';
 
 export const routes = [
-    {
-        path: '', children: [
-            { path: '', component: ViewMOMComponent, canActivateChid: [AuthGuard], data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/masterofmaster" } },
-            { path: 'add', component: AddMOMComponent, canActivateChid: [AuthGuard], data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" } },
-            { path: 'edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard], data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" } },
-        ]
-    }
+  {
+    path: '', children: [
+      {
+        path: '', component: ViewMOMComponent, canActivateChid: [AuthGuard],
+        data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/masterofmaster" }
+      },
+      {
+        path: 'add', component: AddMOMComponent, canActivateChid: [AuthGuard],
+        data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
+      },
+      {
+        path: 'edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
+        data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
+      },
+    ]
+  }
 ]
 
 @NgModule({

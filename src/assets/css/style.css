@@ -10700,7 +10700,9 @@ td {
 
 .sm-font {
     font-size: 15px;
+    padding: 0 4px;
     color: #ffffff;
+    background: #009688!important;
 }
 
 .empty-message {

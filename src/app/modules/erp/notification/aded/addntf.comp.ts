@@ -235,7 +235,11 @@ export class AddNotificationComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._ntfservice.getNotification({ "flag": "dropdown" }).subscribe(data => {
+        that._ntfservice.getNotification({
+            "flag": "dropdown",
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.groupDT = data.data.filter(a => a.group == "ntfgrp");
                 that.standardDT = data.data.filter(a => a.group == "standard");

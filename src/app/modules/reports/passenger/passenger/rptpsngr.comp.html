@@ -7,10 +7,10 @@
             <div class="col-md-2 col-xs-2">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Standard</label>
-                        <select id="standard" name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getPassengerDetails()">
-                            <option [value]="''">All</option>
-                            <option *ngFor="let row of standardDT" [value]="row.key">
+                        <label class="control-label">Class</label>
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getPassengerDetails()">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -54,8 +54,7 @@
                     </p-column>
                     <p-column field="studentname" header="{{_enttdetails.psngrtype}} Name" [style]="{'width': '130px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="gender" header="Gender" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="fathername" header="Father Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">

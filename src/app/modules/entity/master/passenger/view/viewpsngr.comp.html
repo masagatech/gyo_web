@@ -7,10 +7,10 @@
             <div class="col-md-2 col-xs-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Standard</label>
-                        <select id="standard" name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getPassengerDetails()">
-                            <option [value]="''">All</option>
-                            <option *ngFor="let row of standardDT" [value]="row.key">
+                        <label class="control-label">Class</label>
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getPassengerDetails()">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -45,14 +45,57 @@
                 <p-dataGrid [value]="passengerDT" [paginator]="true" [rows]="20">
                     <ng-template let-row pTemplate="item">
                         <div style="padding:3px" class="ui-g-12 ui-md-3">
-                            <p-panel [header]="row.studentname" [style]="{'text-align':'center'}">
-                                <span class="material-icons reject" *ngIf="!row.isactive">close</span>
+                            <p-panel [style]="{'text-align':'center'}">
+                                <p-header>
+                                    <div class="row clearfix">
+                                        <div class="col-md-1">
+                                            <i class="material-icons sm-font">{{row.isactive ? 'done' : ''}}</i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            {{row.studentname}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a role="button" (click)="editPassengerForm(row)"><i class="material-icons sm-font">edit</i></a>
+                                        </div>
+                                    </div>
+                                </p-header>
+                                <div class="row clearfix">
+                                    <div class="col-md-4 border">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12">
+                                                <a role="button" (click)="viewStudentProfile(row)">
+                                                    <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="80px">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.gender != ''">
+                                                {{row.gender}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8" align="left">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12" *ngIf="row.classname != ''">
+                                                <b>Standard :</b> {{row.classname}}
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.dob != ''">
+                                                <span class="material-icons sm-font">date_range</span> {{row.dob}}
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.mobileno1 != ''">
+                                                <span class="material-icons sm-font">phone_iphone</span> {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.email1 != ''">
+                                                <span class="material-icons sm-font">email</span> {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <span class="material-icons reject" *ngIf="!row.isactive">close</span>
                                 <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
-                                <div class="car-detail"><b>Standard :</b> {{row.standard + " - " + row.division}}</div>
+                                <div class="car-detail"><b>Standard :</b> {{row.classname}}</div>
                                 <hr class="ui-widget-content" style="border-top:0">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
                                     <i class="material-icons">edit</i>
-                                </button>
+                                </button> -->
                             </p-panel>
                         </div>
                     </ng-template>
@@ -68,8 +111,7 @@
                         </ng-template>
                     </p-column>
                     <p-column field="studentname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="classname" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">

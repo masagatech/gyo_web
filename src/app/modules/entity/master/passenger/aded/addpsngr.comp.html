@@ -44,23 +44,10 @@
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Standard <strong>*</strong></label>
-                                <select id="standard" name="standard" [(ngModel)]="standard" class="form-control standard" tabindex="5">
-                                    <option [value]="''">Select Standard</option>
-                                    <option *ngFor="let row of standardDT" [value]="row.key">	
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Division <strong>*</strong></label>
-                                <select id="division" name="division" [(ngModel)]="division" class="form-control division" tabindex="5">
-                                    <option [value]="''">Select Division</option>
-                                    <option *ngFor="let row of divisionDT" [value]="row.key">	
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="classid" name="classid" [(ngModel)]="classid" class="form-control class" tabindex="5">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.key">	
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -73,16 +60,16 @@
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Date of Birth</label>
-                                <input type="date" name="dob" [(ngModel)]="dob" class="form-control date" tabindex="6">
+                                <label class="control-label">Date of Birth <strong>*</strong></label>
+                                <input type="date" name="dob" [(ngModel)]="dob" class="form-control dob" tabindex="6">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Gender</label>
-                                <select id="gender" name="gender" [(ngModel)]="gender" class="form-control" tabindex="7">
+                                <label class="control-label">Gender <strong>*</strong></label>
+                                <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="7">
                                     <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">
                                         {{row.val}}

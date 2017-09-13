@@ -17,16 +17,16 @@ export class AddAssignmentComponent implements OnInit {
     _enttdetails: any = [];
 
     assnmid: number = 0;
-    assnmtitle: string = "";
+    title: string = "";
     assnmupload: string = "";
     subid: number = 0;
-    stdid: number = 0;
-    assnmmsg: string = "";
+    clsid: number = 0;
+    msg: string = "";
     frmdt: any = "";
     todt: any = "";
 
     subjectDT: any = [];
-    standardDT: string = "";
+    classDT: string = "";
 
     uploadAssignmentDT: any = [];
     global = new Globals();
@@ -47,16 +47,18 @@ export class AddAssignmentComponent implements OnInit {
         this.getAssignmentDetails();
     }
 
-    // Fill Subject And Standard Drop Down
+    // Fill Subject And Class Drop Down
 
     fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._assnmservice.getAssignmentDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._assnmservice.getAssignmentDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.subjectDT = data.data.filter(a => a.group == "subject");
-                that.standardDT = data.data.filter(a => a.group == "standard");
+                that.classDT = data.data.filter(a => a.group == "standard");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -81,7 +83,7 @@ export class AddAssignmentComponent implements OnInit {
         that.uploadconfig.serverpath = that.global.serviceurl;
         that.uploadconfig.uploadurl = that.global.uploadurl;
         that.uploadconfig.filepath = that.global.filepath;
-        
+
         that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
             that.uploadconfig.maxFilesize = data.data[0]._filesize;
             that.uploadconfig.acceptedFiles = data.data[0]._filetype;
@@ -140,12 +142,12 @@ export class AddAssignmentComponent implements OnInit {
     resetAssignmentFields() {
         var that = this;
 
-        that.assnmtitle = "";
-        that.assnmmsg = "";
+        that.title = "";
+        that.msg = "";
         that.frmdt = "";
         that.todt = "";
         that.subid = 0;
-        that.stdid = 0;
+        that.clsid = 0;
     }
 
     // Save Assignment
@@ -153,7 +155,7 @@ export class AddAssignmentComponent implements OnInit {
     saveAssignment() {
         var that = this;
 
-        if (that.assnmtitle == "") {
+        if (that.title == "") {
             that._msg.Show(messageType.error, "Error", "Enter Title");
             $(".title").focus();
         }
@@ -161,13 +163,13 @@ export class AddAssignmentComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Subject");
             $(".subject").focus();
         }
-        else if (that.stdid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Standard");
-            $(".standard").focus();
+        else if (that.clsid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Class");
+            $(".class").focus();
         }
-        else if (that.assnmmsg == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Description");
-            $(".desc").focus();
+        else if (that.msg == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Message");
+            $(".msg").focus();
         }
         else if (that.frmdt == "") {
             that._msg.Show(messageType.error, "Error", "Enter From Time");
@@ -182,10 +184,12 @@ export class AddAssignmentComponent implements OnInit {
 
             var saveassignment = {
                 "assnmid": that.assnmid,
-                "assnmtitle": that.assnmtitle,
+                "title": that.title,
                 "subid": that.subid,
-                "stdid": that.stdid,
-                "assnmmsg": that.assnmmsg,
+                "clsid": that.clsid,
+                "toid": that.clsid,
+                "assnmby": that.loginUser.loginid,
+                "msg": that.msg,
                 "frmdt": that.frmdt,
                 "todt": that.todt,
                 "cuid": that.loginUser.ucode,
@@ -195,7 +199,7 @@ export class AddAssignmentComponent implements OnInit {
 
             this._assnmservice.saveAssignmentInfo(saveassignment).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_sssignment;
+                    var dataResult = data.data[0].funsave_assignmentinfo;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
 
@@ -234,10 +238,6 @@ export class AddAssignmentComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        var _assnmdata = [];
-        var _stddata = [];
-        var _tagdata = [];
-
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 that.assnmid = params['id'];
@@ -247,15 +247,13 @@ export class AddAssignmentComponent implements OnInit {
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }).subscribe(data => {
                     try {
-                        _assnmdata = data.data[0]._assnmdata;
-
-                        that.assnmid = _assnmdata[0].assnmid;
-                        that.assnmtitle = _assnmdata[0].assnmtitle;
-                        that.stdid = _assnmdata[0].stdid;
-                        that.subid = _assnmdata[0].subid;
-                        that.assnmmsg = _assnmdata[0].assnmmsg;
-                        that.frmdt = _assnmdata[0].frmdt;
-                        that.todt = _assnmdata[0].todt;
+                        that.assnmid = data.data[0].assnmid;
+                        that.title = data.data[0].title;
+                        that.subid = data.data[0].subid;
+                        that.clsid = data.data[0].clsid;
+                        that.msg = data.data[0].msg;
+                        that.frmdt = data.data[0].frmdt;
+                        that.todt = data.data[0].todt;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
@@ -280,6 +278,6 @@ export class AddAssignmentComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/transaction/assignment']);
+        this._router.navigate(['/erp/assignment']);
     }
 }

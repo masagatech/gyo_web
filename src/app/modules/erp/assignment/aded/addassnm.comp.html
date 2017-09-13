@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Title <strong>*</strong></label>
-                        <input type="text" [(ngModel)]="assnmtitle" class="form-control" tabindex="1">
+                        <input type="text" [(ngModel)]="title" class="form-control" tabindex="1">
                     </div>
                 </div>
 
@@ -46,8 +46,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Subjects <strong>*</strong></label>
-                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subname" tabindex="2">
+                                <label class="control-label">Subject <strong>*</strong></label>
+                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subject" tabindex="1">
                                     <option [value]="0">Select Subject</option>
                                     <option *ngFor="let row of subjectDT" [value]="row.id">
                                         {{row.val}}
@@ -59,10 +59,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Standard <strong>*</strong></label>
-                                <select id="standard" name="standard" [(ngModel)]="standard" class="form-control standard" tabindex="2">
-                                    <option [value]="0">Select Standard</option>
-                                    <option *ngFor="let row of standardDT" [value]="row.id">
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="clsid" name="clsname" [(ngModel)]="clsid" class="form-control class" tabindex="2">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.id">
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Message <strong>*</strong></label>
-                        <textarea [(ngModel)]="assnmmsg" rows="5" class="form-control no-resize auto-growth assnmmsg" maxlength="500" tabindex="2"></textarea>
+                        <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="3"></textarea>
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@
                         <div class="form-group">
                             <label class="control-label">From Date <strong>*</strong></label>
                             <div class="form-line">
-                                <input type="date" [(ngModel)]="frmdt" class="form-control" tabindex="3">
+                                <input type="date" [(ngModel)]="frmdt" class="form-control frmdt" tabindex="4">
                             </div>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <div class="form-group">
                             <label class="control-label">To Date <strong>*</strong></label>
                             <div class="form-line">
-                                <input type="date" [(ngModel)]="todt" class="form-control" tabindex="4">
+                                <input type="date" [(ngModel)]="todt" class="form-control todt" tabindex="5">
                             </div>
                         </div>
                     </div>

@@ -13,9 +13,15 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
     momGroupDT: any = [];
     momDT: any = [];
     headertitle: string = "";
+    selectedGroup: any = [];
 
     constructor(private _router: Router, private _commonservice: CommonService, private _msg: MessageService) {
         this.fillMOMGroup();
+        
+        if (Cookie.get('_groupdt_') != null) {
+            this.selectedGroup = JSON.parse(Cookie.get('_groupdt_'));
+            this.BindMOMGrid(this.selectedGroup);
+        }
     }
 
     ngOnInit() {
@@ -40,30 +46,31 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
 
     BindMOMGrid(row) {
         var that = this;
-        that._commonservice.getMOM({
-            "flag": "grid", "group": row.grpcd
-        }).subscribe(data => {
-            try {
-                Cookie.set("_grpnm_", row.grpnm);
+        Cookie.set("_groupdt_", JSON.stringify(row));
 
-                if (Cookie.get('_grpnm_') != null) {
-                    that.headertitle = Cookie.get('_grpnm_');
+        if (Cookie.get('_groupdt_') != null) {
+            that.selectedGroup = JSON.parse(Cookie.get('_groupdt_'));
+
+            that._commonservice.getMOM({
+                "flag": "grid", "group": that.selectedGroup.grpcd
+            }).subscribe(data => {
+                try {
+                    that.headertitle = that.selectedGroup.grpnm;
+                    that.momDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
                 }
 
-                that.momDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
+            })
+        }
     }
 
     public addMOMForm() {

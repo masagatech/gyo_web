@@ -18,8 +18,7 @@ export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    standardDT: any = [];
-    divisionDT: any = [];
+    classDT: any = [];
     genderDT: any = [];
     alertDT: any = [];
 
@@ -31,11 +30,10 @@ export class AddPassengerComponent implements OnInit {
     psngrid: number = 0;
     psngrcode: string = "";
     psngrname: string = "";
+    classid: number = 0;
     gender: string = "";
     alert: string = "";
     dob: any = "";
-    standard: string = "";
-    division: string = "";
     aadharno: any = "";
 
     mothername: string = "";
@@ -98,19 +96,14 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._psngrservice.getPassengerDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
-                that.standardDT = data.data.filter(a => a.group === "standard");
-                // setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
-
-                that.divisionDT = data.data.filter(a => a.group === "division");
-                // setTimeout(function () { $.AdminBSB.select.refresh('division'); }, 100);
-
+                that.classDT = data.data.filter(a => a.group === "class");
                 that.genderDT = data.data.filter(a => a.group === "gender");
-                // setTimeout(function () { $.AdminBSB.select.refresh('gender'); }, 100);
-
                 that.alertDT = data.data.filter(a => a.group === "alert");
-                // setTimeout(function () { $.AdminBSB.select.refresh('alert'); }, 100);
+
                 that.alert = that.alertDT.filter(a => a.isselected === true)[0].key;
             }
             catch (e) {
@@ -388,9 +381,9 @@ export class AddPassengerComponent implements OnInit {
         that.psngrcode = "";
         that.psngrname = "";
 
-        that.dob = "";
-        that.division = "";
         that.aadharno = "";
+        that.classid = 0;
+        that.dob = "";
         that.gender = "";
         that.fathername = "";
         that.mothername = "";
@@ -503,14 +496,19 @@ export class AddPassengerComponent implements OnInit {
             $(".psngrname").focus();
             return false;
         }
-        else if (that.standard === "") {
-            that._msg.Show(messageType.error, "Error", "Select Standard");
-            $(".standard").focus();
+        else if (that.classid === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Class");
+            $(".class").focus();
             return false;
         }
-        else if (that.division === "") {
-            that._msg.Show(messageType.error, "Error", "Select Division");
-            $(".division").focus();
+        else if (that.dob === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Date Of Birth");
+            $(".dob").focus();
+            return false;
+        }
+        else if (that.gender === "") {
+            that._msg.Show(messageType.error, "Error", "Select Gender");
+            $(".gender").focus();
             return false;
         }
         else if (that.primaryemail === "") {
@@ -586,7 +584,6 @@ export class AddPassengerComponent implements OnInit {
             var passengerprofiledata = {};
 
             passengerprofiledata = {
-                "gender": that.gender, "dob": that.dob, "standard": that.standard, "division": that.division,
                 "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
             }
 
@@ -594,8 +591,12 @@ export class AddPassengerComponent implements OnInit {
                 "autoid": that.psngrid,
                 "studentcode": that.psngrid,
                 "studentname": that.psngrname,
-                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
+                "aadharno": that.aadharno,
                 "schoolid": that._enttdetails.enttid,
+                "classid": that.classid,
+                "dob": that.dob,
+                "gender": that.gender,
+                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
@@ -611,7 +612,6 @@ export class AddPassengerComponent implements OnInit {
                 "studentprofiledata": passengerprofiledata,
                 "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
                 "pickdowngeoloc": that.droplet + "," + that.droplong,
-                "aadharno": that.aadharno,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
                 "remark1": that.remark1,
@@ -675,8 +675,11 @@ export class AddPassengerComponent implements OnInit {
                             that.psngrid = data.data[0].autoid;
                             that.psngrcode = data.data[0].studentcode;
                             that.psngrname = data.data[0].studentname;
-
                             that.aadharno = data.data[0].aadharno;
+                            that.classid = data.data[0].classid;
+                            that.dob = data.data[0].dob;
+                            that.gender = data.data[0].gender;
+
                             that.mothername = data.data[0].mothername;
                             that.primarymobile = data.data[0].mobileno1;
                             that.primaryemail = data.data[0].email1;
@@ -711,19 +714,11 @@ export class AddPassengerComponent implements OnInit {
                             var passengerprofiledata = data.data[0].passengerprofiledata;
 
                             if (passengerprofiledata !== null) {
-                                that.gender = data.data[0].gender;
-                                that.dob = data.data[0].dob;
-                                that.standard = data.data[0].standard;
-                                that.division = data.data[0].division;
                                 that.pickupaddr = data.data[0].pickupaddr;
                                 that.dropaddr = data.data[0].dropaddr;
                                 that.otherinfo = data.data[0].otherinfo;
                             }
                             else {
-                                that.gender = "";
-                                that.dob = "";
-                                that.standard = "";
-                                that.division = "";
                                 that.pickupaddr = "";
                                 that.dropaddr = "";
                                 that.otherinfo = "";

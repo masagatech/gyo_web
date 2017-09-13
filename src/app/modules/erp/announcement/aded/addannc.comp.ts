@@ -247,7 +247,11 @@ export class AddAnnouncementComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._ntfservice.getAnnouncement({ "flag": "dropdown" }).subscribe(data => {
+        that._ntfservice.getAnnouncement({
+            "flag": "dropdown",
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.groupDT = data.data.filter(a => a.group == "anncgrp");
                 that.standardDT = data.data.filter(a => a.group == "standard");
