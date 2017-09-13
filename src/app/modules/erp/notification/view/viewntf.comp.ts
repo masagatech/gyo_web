@@ -36,7 +36,8 @@ export class ViewNotificationComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getNotification({
-            "flag": "all", "wsautoid": that._enttdetails.wsautoid, "enttid": that._enttdetails.enttid, "ntftype":"standard"
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.notificationDT = data.data;

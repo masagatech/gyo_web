@@ -36,7 +36,8 @@ export class ViewAnnouncementComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getAnnouncement({
-            "flag": "all", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "ntftype":"standard"
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.announcementDT = data.data;
