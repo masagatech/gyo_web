@@ -1,0 +1,84 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Class</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Standard <strong>*</strong></label>
+                                <select id="stdid" name="stdname" [(ngModel)]="stdid" class="form-control stdname" tabindex="1">
+                                    <option [value]="0">Select Standard</option>
+                                    <option *ngFor="let row of standardDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Division <strong>*</strong></label>
+                                <select id="divid" name="divname" [(ngModel)]="divid" class="form-control divname" tabindex="2">
+                                    <option [value]="0">Select Division</option>
+                                    <option *ngFor="let row of divisionDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class Teacher</label>
+                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="4" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix" *ngIf="subjectDT.length">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <label for="selectall">Select All</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="allcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of subjectDT; let i = index;">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <span id="sub{{row.id}}">
+                                                <input id="{{row.id}}" name="sub{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <label for="{{row.id}}">{{row.val}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

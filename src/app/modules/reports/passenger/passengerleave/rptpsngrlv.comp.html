@@ -102,7 +102,7 @@
                     <tbody *ngFor="let row of lvpsngrDT | groupBy:'idwithname'">
                         <tr class="tr-table">
                             <th colspan="9">
-                                {{row.key.split('~')[1]}} - <small>Standard : {{row.key.split('~')[2] + " (" + row.key.split('~')[3] + ")"}}</small>
+                                {{row.key.split('~')[1]}} - <small>Standard : {{row.key.split('~')[2]}}</small>
                             </th>
                         </tr>
                         <tr *ngFor="let eldrow of row.value" class="{{eldrow.color}}">

@@ -30,9 +30,6 @@ export const routes = [
 
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },
-
-                    // ERP
-                    { path: 'erp', loadChildren: './erp#ERPModule' },
                 ]
             }
         ]

@@ -15,18 +15,21 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: 'employee', loadChildren: './employee#EmployeeModule' },
                     { path: 'batch', loadChildren: './batch#BatchModule' },
-                    { path: 'driver', loadChildren: './driver#DriverModule' },
-                    { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
-                    { path: 'route', loadChildren: './route#RouteModule' },
+                    { path: 'class', loadChildren: './class#ClassModule' },
+                    { path: 'books', loadChildren: './books#BooksModule' },
 
                     // Passenger
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
-                    { path: 'passengerleave', loadChildren: './passengerleave#PassengerLeaveModule' },
-                    
+
                     // Student
                     { path: 'student', loadChildren: './passenger#PassengerModule' },
-                    { path: 'studentleave', loadChildren: './passengerleave#PassengerLeaveModule' },
+
+                    { path: 'activity', loadChildren: './activity#ActivityModule' },
+                    { path: 'driver', loadChildren: './driver#DriverModule' },
+                    { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
+                    { path: 'route', loadChildren: './route#RouteModule' },
                 ]
             }
         ]

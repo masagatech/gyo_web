@@ -24,6 +24,9 @@ export const routes = [
                     // Entity
                     { path: 'master', loadChildren: './master#MasterModule' },
 
+                    // ERP
+                    { path: 'erp', loadChildren: './erp#ERPModule' },
+
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },
 

@@ -6,7 +6,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 
 import { PassengerLeaveReportsComponent } from './rptpsngrlv.comp';
 
-import { PassengerLeaveService } from '@services/master';
+import { PassengerLeaveService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 

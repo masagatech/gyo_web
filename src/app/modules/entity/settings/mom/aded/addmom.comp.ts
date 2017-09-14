@@ -32,6 +32,12 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
+
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 this.momid = params['id'];
@@ -46,7 +52,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                     $("#Group").focus();
                 }, 0);
 
-                $('#group').prop('disabled', false);
+                $('#group').prop('disabled', true);
                 $('#key').prop('disabled', false);
                 $('#val').prop('disabled', false);
             }
@@ -62,9 +68,14 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     getMOMGroup() {
         var that = this;
 
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['grpcd'] !== undefined) {
+                that.group = params['grpcd'];
+            }
+        });
+
         that._commonservice.getMOM({ "flag": "group" }).subscribe(data => {
             that.groupdt = data.data;
-            // setTimeout(function () { $.AdminBSB.select.refresh('group'); }, 100);
         }, err => {
             that._msg.Show(messageType.error, 'Error', err);
         }, () => {
@@ -156,10 +167,13 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/settings/masterofmaster']);
+        this._router.navigate(['/settings/masterofmaster/group', this.group]);
     }
 
     ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
+        
         this.subscribeParameters.unsubscribe();
     }
 }

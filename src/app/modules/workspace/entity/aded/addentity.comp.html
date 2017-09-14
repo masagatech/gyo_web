@@ -246,7 +246,7 @@
             </div>
         </div>
         <div class="body" *ngIf="contactDT.length">
-            <p-dataTable #dt [value]="contactDT" [lazy]="true">
+            <p-dataTable [value]="contactDT">
                 <p-column header="#" [style]="{'width':'50px','text-align':'center'}">
                     <ng-template let-i="rowIndex" pTemplate="body">
                         {{i + 1}}

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType, CommonService } from '@services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent, DataTable } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -10,18 +10,15 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 
 export class ViewMOMComponent implements OnInit, OnDestroy {
-    momGroupDT: any = [];
     momDT: any = [];
+    grpcd: string = "";
     headertitle: string = "";
     selectedGroup: any = [];
 
-    constructor(private _router: Router, private _commonservice: CommonService, private _msg: MessageService) {
-        this.fillMOMGroup();
-        
-        if (Cookie.get('_groupdt_') != null) {
-            this.selectedGroup = JSON.parse(Cookie.get('_groupdt_'));
-            this.BindMOMGrid(this.selectedGroup);
-        }
+    private subscribeParameters: any;
+    
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _commonservice: CommonService, private _msg: MessageService) {
+        this.getMOMDetails();
     }
 
     ngOnInit() {
@@ -32,57 +29,48 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    fillMOMGroup() {
+    getMOMDetails() {
         var that = this;
 
-        that._commonservice.getMOM({ "flag": "group" }).subscribe(data => {
-            that.momGroupDT = data.data;
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-            // console.log("Complete");
-        })
-    }
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['grpcd'] !== undefined) {
+                that.grpcd = params['grpcd'];
 
-    BindMOMGrid(row) {
-        var that = this;
-        Cookie.set("_groupdt_", JSON.stringify(row));
+                that._commonservice.getMOM({
+                    "flag": "grid", "group": that.grpcd
+                }).subscribe(data => {
+                    try {
+                        that.momDT = data.data;
+                        that.headertitle = data.data[0].groupname;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
 
-        if (Cookie.get('_groupdt_') != null) {
-            that.selectedGroup = JSON.parse(Cookie.get('_groupdt_'));
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
 
-            that._commonservice.getMOM({
-                "flag": "grid", "group": that.selectedGroup.grpcd
-            }).subscribe(data => {
-                try {
-                    that.headertitle = that.selectedGroup.grpnm;
-                    that.momDT = data.data;
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            })
-        }
+                })
+            }
+        });
     }
 
     public addMOMForm() {
-        this._router.navigate(['/settings/masterofmaster/add']);
+        this._router.navigate(['/settings/masterofmaster/group', this.grpcd, 'add']);
     }
 
     public editMOMForm(row) {
-        this._router.navigate(['/settings/masterofmaster/edit', row.autoid]);
+        this._router.navigate(['/settings/masterofmaster/group', this.grpcd, 'edit', row.autoid]);
     }
 
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

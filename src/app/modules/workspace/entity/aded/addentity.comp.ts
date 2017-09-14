@@ -85,17 +85,8 @@ export class AddEntityComponent implements OnInit {
         setTimeout(function () {
             $(".schcd").focus();
         }, 100);
-
-        $.AdminBSB.input.activate();
+        
         this.getEntityDetails();
-
-        this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.lon }, title: "", draggable: true });
-        this.overlays = [this.marker];
-    }
-
-    private ovrldrag(e) {
-        this.lat = this.marker.position.lat();
-        this.lon = this.marker.position.lng();
     }
 
     // get lat and long by address form google map
@@ -120,13 +111,6 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
-    handleMapClick(e) {
-        this.lat = e.latLng.lat();
-        this.lon = e.latLng.lng();
-        var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
-        this.marker.setPosition(latlng);
-    }
-
     // Entity Type DropDown
 
     fillDropDownList() {
@@ -136,7 +120,6 @@ export class AddEntityComponent implements OnInit {
         that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
             try {
                 that.entttypeDT = data.data.filter(a => a.group === "workspace");
-                // setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
 
                 if (that.entttypeDT.length == 1) {
                     that.entttype = that.entttypeDT[0].key;
@@ -617,7 +600,6 @@ export class AddEntityComponent implements OnInit {
 
     getEntityDetails() {
         var that = this;
-        commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
@@ -676,12 +658,8 @@ export class AddEntityComponent implements OnInit {
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
                     }
-
-                    commonfun.loaderhide();
                 }, err => {
                     that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
                 }, () => {
 
                 })
@@ -689,7 +667,6 @@ export class AddEntityComponent implements OnInit {
             else {
                 that.getValidEntity();
                 that.resetEntityFields();
-                commonfun.loaderhide();
             }
         });
     }
