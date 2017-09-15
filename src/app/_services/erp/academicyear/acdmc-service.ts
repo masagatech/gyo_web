@@ -4,14 +4,14 @@ import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class ClassRosterService {
+export class AcademicYearService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getClassRoster(req: any) {
-        return this._dataserver.post(Globals.erproute + "getClassRoster", req)
+    getAcademicYear(req: any) {
+        return this._dataserver.post(Globals.erproute + "getAcademicYear", req)
     }
 
-    saveClassRoster(req: any) {
-        return this._dataserver.post(Globals.erproute + "saveClassRoster", req)
+    saveAcademicYear(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveAcademicYear", req)
     }
 }

@@ -4,18 +4,23 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@services';
 
-import { ClassRosterComponent } from './viewcr.comp';
+import { AddClassRosterComponent } from './aded/addcr.comp';
+import { ViewClassRosterComponent } from './view/viewcr.comp';
 
-import { AssignmentService } from '@services/erp';
+import { ClassRosterService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
+import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule, DialogModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ClassRosterComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "tskal", "rights": "view", "urlname": "/class" }
+        path: '', component: ViewClassRosterComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "clsrst", "rights": "view", "urlname": "/classroster" }
+      },
+      {
+        path: 'add', component: AddClassRosterComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "clsrst", "rights": "add", "urlname": "/add" }
       },
     ]
   },
@@ -23,14 +28,15 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    ClassRosterComponent
+    AddClassRosterComponent,
+    ViewClassRosterComponent
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, ScheduleModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, ScheduleModule, DialogModule
   ],
 
-  providers: [AuthGuard, AssignmentService]
+  providers: [AuthGuard, ClassRosterService]
 })
 
 export class ClassRosterModule {

@@ -1,0 +1,86 @@
+<div class="card">
+    <div class="header">
+        <h4>Class Roster</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addNewClassRoster()">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassRoster();">
+                            <option [value]="0">Select Academic year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown();getClassRoster();">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div #psngrattnd class="row clearfix">
+            <div class="col-md-12">
+                <p-schedule [events]="classRosterDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
+
+                <!-- <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [contentStyle]="{'overflow':'visible'}" [style]="{'overflow':'visible'}" [resizable]="false">
+                    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="event">
+                        <div class="ui-grid-row">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Instrunction</label>
+                                    <textarea [(ngModel)]="instrunction" rows="5" class="form-control no-resize auto-growth" tabindex="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="col-md-4"><label for="start">Start</label></div>
+                            <div class="col-md-8">
+                                <p-calendar [(ngModel)]="event.start" dateFormat="yy-mm-dd" dataType="string"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="col-md-4"><label for="end">End</label></div>
+                            <div class="col-md-8">
+                                <p-calendar [(ngModel)]="event.end" dateFormat="yy-mm-dd" dataType="string"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="col-md-4"><label for="allday">All Day</label></div>
+                            <div class="col-md-8">
+                                <p-checkbox [(ngModel)]="event.allDay" binary="checkbox"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <p-footer>
+                        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-close" (click)="deleteEvent()" label="Delete" [disabled]="!event?.id"></button>
+                            <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Save" [disabled]="!event?.start"></button>
+                        </div>
+                    </p-footer>
+                </p-dialog> -->
+            </div>
+        </div>
+    </div>
+</div>

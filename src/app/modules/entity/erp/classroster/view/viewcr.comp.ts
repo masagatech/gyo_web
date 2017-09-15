@@ -9,9 +9,17 @@ import { ClassRosterService } from '@services/erp';
     providers: [CommonService]
 })
 
-export class ClassRosterComponent implements OnInit, OnDestroy {
+export class ViewClassRosterComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
+
+    clsrstid: number = 0;
+
+    ayDT: any = [];
+    ayid: number = 0;
+
+    classDT: any = [];
+    classid: number = 0;
 
     events: any = [];
     header: any;
@@ -19,23 +27,16 @@ export class ClassRosterComponent implements OnInit, OnDestroy {
     defaultDate: string = "";
 
     subjectDT: any = [];
-    classDT: any = [];
-    subid: number = 0;
-    clsid: number = 0;
-
-    weekColumn: any = [];
-    weekData: any = [];
     
-    classRouteDT: any = [];
+    classRosterDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillClassDropDown();
+        this.fillDropDownList();
         this.fillSubjectDropDown();
-        this.getWeekData();
         this.getDefaultDate();
     }
 
@@ -54,8 +55,8 @@ export class ClassRosterComponent implements OnInit, OnDestroy {
 
         that.header = {
             left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
         };
 
         that.refreshButtons();
@@ -89,15 +90,16 @@ export class ClassRosterComponent implements OnInit, OnDestroy {
 
     // Fill Class Drop Down
 
-    fillClassDropDown() {
+    fillDropDownList() {
         var that = this;
         commonfun.loader();
 
         that._clsrstservice.getClassRoster({
-            "flag": "classddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.classDT = data.data;
+                that.ayDT = data.data.filter(a => a.group == "ay");
+                that.classDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -120,7 +122,7 @@ export class ClassRosterComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassRoster({
-            "flag": "subjectddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "subjectddl", "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.subjectDT = data.data;
@@ -139,21 +141,35 @@ export class ClassRosterComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Week Data
+    // Get Class Roster
 
-    getWeekData() {
+    getClassRoster() {
         var that = this;
+        commonfun.loader();
 
         that._clsrstservice.getClassRoster({
-            "flag": "weekddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "calendar", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
-            if (data.data.length !== 0) {
-                that.weekColumn = data.data;
+            try {
+                that.classRosterDT = data.data;
             }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
         }, () => {
+
         })
+    }
+
+    addNewClassRoster() {
+        this._router.navigate(['/erp/classroster/add']);
     }
 
     public ngOnDestroy() {

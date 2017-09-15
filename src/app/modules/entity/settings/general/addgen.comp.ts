@@ -83,30 +83,24 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
             gsetfield = that.gensetDT[i];
         }
 
-        if (that._enttdetails.enttid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Entity");
-            $("#enttname input").focus();
-        }
-        else {
-            that._genservice.saveGeneralSetting({ "gensetdata": that.gensetDT }).subscribe(data => {
-                try {
-                    var dataResult = data.data[0].funsave_generalsetting;
+        that._genservice.saveGeneralSetting({ "gensetdata": that.gensetDT }).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_generalsetting;
 
-                    if (dataResult.msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", dataResult.msg);
-                    }
-                    else {
-                        that._msg.Show(messageType.error, "Error", dataResult.msg);
-                    }
+                if (dataResult.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult.msg);
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult.msg);
                 }
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-            }, () => {
-            });
-        }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        });
     }
 
     ngOnDestroy() {
