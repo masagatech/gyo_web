@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -24,19 +24,20 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     events: any = [];
     header: any;
     event: MyEvent;
+    dialogVisible: boolean = false;
+    idGen: number = 100;
     defaultDate: string = "";
 
     subjectDT: any = [];
     
     classRosterDT: any = [];
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cd: ChangeDetectorRef,
         private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.fillSubjectDropDown();
         this.getDefaultDate();
     }
 
@@ -168,6 +169,75 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         })
     }
 
+    // handleDayClick(event) {
+    //     this.event = new MyEvent();
+    //     this.event.start = event.date.format();
+    //     this.dialogVisible = true;
+        
+    //     //trigger detection manually as somehow only moving the mouse quickly after click triggers the automatic detection
+    //     this.cd.detectChanges();
+    // }
+    
+    handleEventClick(e) {
+        this.event = new MyEvent();
+        this.event.title = e.calEvent.title;
+        
+        let start = e.calEvent.start;
+        let end = e.calEvent.end;
+        if(e.view.name === 'month') {
+            start.stripTime();
+        }
+        
+        if(end) {
+            end.stripTime();
+            this.event.end = end.format();
+        }
+
+        this.event.id = e.calEvent.id;
+        this.event.start = start.format();
+        this.dialogVisible = true;
+    }
+    
+    saveEvent() {
+        //update
+        if(this.event.id) {
+            let index: number = this.findEventIndexById(this.event.id);
+            if(index >= 0) {
+                this.events[index] = this.event;
+            }
+        }
+
+        //new
+        else {
+            this.event.id = this.idGen++;
+            this.events.push(this.event);
+            this.event = null;
+        }
+        
+        this.dialogVisible = false;
+    }
+    
+    findEventIndexById(id: number) {
+        let index = -1;
+
+        for(let i = 0; i < this.events.length; i++) {
+            if(id == this.events[i].id) {
+                index = i;
+                break;
+            }
+        }
+        
+        return index;
+    }
+    
+    deleteEvent() {
+        let index: number = this.findEventIndexById(this.event.id);
+        if(index >= 0) {
+            this.events.splice(index, 1);
+        }
+        this.dialogVisible = false;
+    }
+
     addNewClassRoster() {
         this._router.navigate(['/erp/classroster/add']);
     }
@@ -183,5 +253,4 @@ export class MyEvent {
     title: string;
     start: string;
     end: string;
-    allDay: boolean = true;
 }
