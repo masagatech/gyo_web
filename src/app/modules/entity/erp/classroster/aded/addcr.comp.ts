@@ -581,7 +581,7 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Add Class Roster
+    // Validate Class Roster
 
     isValidClassRoster() {
         var that = this;
@@ -772,13 +772,7 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
 
     saveClassRoster() {
         var that = this;
-        var gensetData = [];
-        var gsetfield = null;
-
-        for (var i = 0; i < that.classRosterDT.length; i++) {
-            gsetfield = that.classRosterDT[i];
-        }
-
+        
         that._clsrstservice.saveClassRoster({ "classroster": that.classRosterDT }).subscribe(data => {
             try {
                 var dataResult = data.data[0].funsave_classroster;

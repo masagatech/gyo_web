@@ -29,8 +29,12 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     defaultDate: string = "";
 
     subjectDT: any = [];
-    
     classRosterDT: any = [];
+
+    id: number = 0;
+    subid: number = 0;
+    strtm: any = "";
+    endtm: any = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cd: ChangeDetectorRef,
         private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
@@ -169,39 +173,28 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         })
     }
 
-    // handleDayClick(event) {
-    //     this.event = new MyEvent();
-    //     this.event.start = event.date.format();
-    //     this.dialogVisible = true;
-        
-    //     //trigger detection manually as somehow only moving the mouse quickly after click triggers the automatic detection
-    //     this.cd.detectChanges();
-    // }
+    handleDayClick(event) {
+        this.id = 0;
+        this.subid = 0;
+        this.strtm = "";
+        this.endtm = "";
+
+        this.dialogVisible = true;
+    }
     
     handleEventClick(e) {
-        this.event = new MyEvent();
-        this.event.title = e.calEvent.title;
-        
-        let start = e.calEvent.start;
-        let end = e.calEvent.end;
-        if(e.view.name === 'month') {
-            start.stripTime();
-        }
-        
-        if(end) {
-            end.stripTime();
-            this.event.end = end.format();
-        }
+        this.id = e.calEvent.id;
+        this.subid = e.calEvent.subid;
+        this.strtm = e.calEvent.strtm;
+        this.endtm = e.calEvent.endtm;
 
-        this.event.id = e.calEvent.id;
-        this.event.start = start.format();
         this.dialogVisible = true;
     }
     
     saveEvent() {
         //update
-        if(this.event.id) {
-            let index: number = this.findEventIndexById(this.event.id);
+        if(this.event.subid) {
+            let index: number = this.findEventIndexById(this.event.subid);
             if(index >= 0) {
                 this.events[index] = this.event;
             }
@@ -209,7 +202,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
         //new
         else {
-            this.event.id = this.idGen++;
+            this.event.subid = this.idGen++;
             this.events.push(this.event);
             this.event = null;
         }
@@ -231,7 +224,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     }
     
     deleteEvent() {
-        let index: number = this.findEventIndexById(this.event.id);
+        let index: number = this.findEventIndexById(this.event.subid);
         if(index >= 0) {
             this.events.splice(index, 1);
         }
@@ -250,7 +243,10 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
 export class MyEvent {
     id: number;
+    subid: number;
     title: string;
     start: string;
     end: string;
+    strtm: string;
+    endtm: string;
 }

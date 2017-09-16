@@ -45,11 +45,11 @@
                 <p-schedule [events]="classRosterDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
 
                 <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [contentStyle]="{'overflow':'visible'}" [style]="{'overflow':'visible'}" [resizable]="false">
-                    <div class="col-md-12" *ngIf="event">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Subject</label>
-                                <select id="sunsubid" name="sunsubname" [(ngModel)]="event.id" class="form-control subname" tabindex="3">
+                                <select id="sunsubid" name="sunsubname" [(ngModel)]="subid" class="form-control subname" tabindex="3">
                                     <option [value]="0">Select Subject</option>
                                     <option *ngFor="let row of subjectDT" [value]="row.subid">
                                         {{row.subname}}
@@ -60,13 +60,13 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From Time</label>
-                                <input type="time" [(ngModel)]="event.strtm" class="form-control" tabindex="4">
+                                <input type="time" [(ngModel)]="strtm" class="form-control" tabindex="4">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To Time</label>
-                                <input type="time" [(ngModel)]="event.endtm" class="form-control" tabindex="5">
+                                <input type="time" [(ngModel)]="endtm" class="form-control" tabindex="5">
                             </div>
                         </div>
                         <div class="form-group">

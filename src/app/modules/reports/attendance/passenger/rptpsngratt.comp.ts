@@ -16,13 +16,13 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
     _enttdetails: any = [];
 
     monthDT: any = [];
-    standardDT: any = [];
+    monthname: string = "";
+
+    classDT: any = [];
+    classid: number = 0;
 
     attColumn: any = [];
     attData: any = [];
-    
-    monthname: string = "";
-    standard: string = "";
 
     @ViewChild('psngrattnd') psngrattnd: ElementRef;
 
@@ -76,19 +76,19 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Fill Entity, Standard, Month DropDown
+    // Fill Entity, Class, Month DropDown
 
     fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._rptservice.getAttendanceReports({ "flag": "filterddl" }).subscribe(data => {
+        that._rptservice.getAttendanceReports({ "flag": "filterddl", "schoolid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.monthDT = data.data.filter(a => a.group === "month");
                 // setTimeout(function () { $.AdminBSB.select.refresh('monthname'); }, 100);
 
-                that.standardDT = data.data.filter(a => a.group === "standard");
-                // setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
+                that.classDT = data.data.filter(a => a.group === "class");
+                // setTimeout(function () { $.AdminBSB.select.refresh('class'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -133,7 +133,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
             commonfun.loader("#fltrpsngr");
 
             that._rptservice.getAttendanceReports({
-                "flag": "student", "monthname": that.monthname, "standard": that.standard, "schoolid": that._enttdetails.enttid
+                "flag": "student", "monthname": that.monthname, "classid": that.classid, "schoolid": that._enttdetails.enttid
             }).subscribe(data => {
                 try {
                     if (data.data.length == 0) {
