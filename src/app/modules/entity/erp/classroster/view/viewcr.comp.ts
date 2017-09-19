@@ -21,7 +21,6 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    events: any = [];
     header: any;
     event: MyEvent;
     dialogVisible: boolean = false;
@@ -32,9 +31,13 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     classRosterDT: any = [];
 
     id: number = 0;
+    ttid: number = 0;
     subid: number = 0;
+    strdt: any = "";
+    enddt: any = "";
     strtm: any = "";
     endtm: any = "";
+    rsttyp: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cd: ChangeDetectorRef,
         private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
@@ -60,8 +63,8 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
         that.header = {
             left: 'prev,next today',
-			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
         };
 
         that.refreshButtons();
@@ -176,58 +179,65 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     handleDayClick(event) {
         this.id = 0;
         this.subid = 0;
+        this.strdt = event.date.format();
+        this.enddt = event.date.format();
         this.strtm = "";
         this.endtm = "";
+        this.rsttyp = "";
 
         this.dialogVisible = true;
     }
-    
+
     handleEventClick(e) {
-        this.id = e.calEvent.id;
-        this.subid = e.calEvent.subid;
-        this.strtm = e.calEvent.strtm;
-        this.endtm = e.calEvent.endtm;
+        if (e.calEvent.subid != 0) {
+            this.id = e.calEvent.id;
+            this.ttid = e.calEvent.ttid;
+            this.subid = e.calEvent.subid;
+            this.strdt = e.calEvent.start;
+            this.enddt = e.calEvent.end;
+            this.strtm = e.calEvent.strtm;
+            this.endtm = e.calEvent.endtm;
+            this.rsttyp = e.calEvent.rsttyp;
 
-        this.dialogVisible = true;
+            this.dialogVisible = true;
+        }
     }
-    
-    saveEvent() {
-        //update
-        if(this.event.subid) {
-            let index: number = this.findEventIndexById(this.event.subid);
-            if(index >= 0) {
-                this.events[index] = this.event;
+
+    saveTimeTable() {
+        var that = this;
+        var params = {};
+
+        params = {
+            "ttid": that.ttid, "ayid": that.ayid, "classid": that.classid, "frmdt": that.strdt, "todt": that.enddt,
+            "frmtm": that.strtm, "totm": that.endtm, "subid": that.subid, "rsttyp": that.rsttyp,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode
+        }
+
+        that._clsrstservice.saveTimeTable(params).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_timetable;
+                var msgid = dataResult.msgid;
+                var msg = dataResult.msg;
+
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+                    that.getClassRoster();
+                    that.dialogVisible = false;
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
             }
-        }
-
-        //new
-        else {
-            this.event.subid = this.idGen++;
-            this.events.push(this.event);
-            this.event = null;
-        }
-        
-        this.dialogVisible = false;
-    }
-    
-    findEventIndexById(id: number) {
-        let index = -1;
-
-        for(let i = 0; i < this.events.length; i++) {
-            if(id == this.events[i].id) {
-                index = i;
-                break;
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
-        }
-        
-        return index;
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        });
     }
-    
+
     deleteEvent() {
-        let index: number = this.findEventIndexById(this.event.subid);
-        if(index >= 0) {
-            this.events.splice(index, 1);
-        }
         this.dialogVisible = false;
     }
 
@@ -243,10 +253,12 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
 export class MyEvent {
     id: number;
+    ttid: number;
     subid: number;
     title: string;
     start: string;
     end: string;
     strtm: string;
     endtm: string;
+    rsttyp: string;
 }

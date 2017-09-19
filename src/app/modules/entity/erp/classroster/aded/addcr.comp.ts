@@ -867,6 +867,12 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         this.resetClassRoster();
     }
 
+    // Back For View Data
+
+    backViewData() {
+        this._router.navigate(['/erp/classroster']);
+    }
+
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

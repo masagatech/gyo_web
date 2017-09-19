@@ -40,12 +40,19 @@
             </div>
         </div>
 
-        <div #psngrattnd class="row clearfix">
+        <div class="row clearfix" *ngIf="classRosterDT.length">
             <div class="col-md-12">
                 <p-schedule [events]="classRosterDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
 
                 <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [contentStyle]="{'overflow':'visible'}" [style]="{'overflow':'visible'}" [resizable]="false">
                     <div class="col-md-12">
+                        <!-- <div class="form-group">
+                            From Date : {{strdt}}
+                        </div>
+                        <div class="form-group">
+                            To Date : {{enddt}}
+                        </div> -->
+
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Subject</label>
@@ -70,8 +77,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="button" icon="fa-close" class="btn btn-danger btn-xs" (click)="deleteEvent()" [disabled]="!event?.id">Delete</button>
-                            <button type="button" icon="fa-check" class="btn btn-theme btn-xs" (click)="saveEvent()" [disabled]="!event?.start">Save</button>
+                            <button type="button" class="btn btn-theme btn-xs" (click)="saveTimeTable()">
+                               <span class="material-icons">save</span></button>
                         </div>
                     </div>
                 </p-dialog>

@@ -7,11 +7,15 @@ import { Router } from '@angular/router';
 export class ClassRosterService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
+    saveClassRoster(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveClassRoster", req)
+    }
+
     getClassRoster(req: any) {
         return this._dataserver.post(Globals.erproute + "getClassRoster", req)
     }
 
-    saveClassRoster(req: any) {
-        return this._dataserver.post(Globals.erproute + "saveClassRoster", req)
+    saveTimeTable(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveTimeTable", req)
     }
 }
