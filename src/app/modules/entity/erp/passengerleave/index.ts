@@ -30,11 +30,11 @@ export const routes = [
       },
       {
         path: 'pending', component: PendingPassengerLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "psngrlvappr", "rights": "view", "urlname": "/pending" }
+        data: { "module": "pentt", "submodule": "lvpsngrappr", "rights": "view", "urlname": "/pending" }
       },
       {
         path: 'approval/:psngrid', component: ApprovalPassengerLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "psngrlvappr", "rights": "view", "urlname": "/approval" }
+        data: { "module": "pentt", "submodule": "lvpsngrappr", "rights": "view", "urlname": "/approval" }
       },
     ]
   },

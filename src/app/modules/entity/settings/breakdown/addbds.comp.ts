@@ -31,8 +31,7 @@ export class AddBreakDownComponent implements OnInit, OnDestroy {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
-        private _bdsservice: BreakDownService, private _loginservice: LoginService,
-        private _msg: MessageService) {
+        private _bdsservice: BreakDownService, private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

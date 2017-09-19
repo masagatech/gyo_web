@@ -26,11 +26,14 @@ export interface LoginUserModel {
   wsname: string;
   schenttmaxno: number;
   cmpenttmaxno: number;
+  psngrtype: string;
+  smpsngrtype: string;
   wslogo: string;
   lgcode: string;
   login: string,
   status: boolean,
   issysadmin: boolean,
+  isemp: boolean,
   errcode: string,
   errmsg: string,
   sessiondetails: any;

@@ -39,25 +39,49 @@ export class AddAssignmentComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
+        this.fillClassDropDown();
+        this.fillSubjectDropDown();
     }
 
     public ngOnInit() {
         this.getAssignmentDetails();
     }
 
-    // Fill Subject And Class Drop Down
+    // Fill Class And Subject Drop Down
 
-    fillDropDownList() {
+    fillClassDropDown() {
         var that = this;
         commonfun.loader();
 
         that._assnmservice.getAssignmentDetails({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "classddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.subjectDT = data.data.filter(a => a.group == "subject");
-                that.classDT = data.data.filter(a => a.group == "standard");
+                that.classDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    fillSubjectDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._assnmservice.getAssignmentDetails({
+            "flag": "subjectddl", "classid": that.clsid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.subjectDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -100,11 +124,11 @@ export class AddAssignmentComponent implements OnInit {
 
         imgfile = JSON.parse(event.xhr.response);
 
-        setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadAssignmentDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
-            }
-        }, 1000);
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadAssignmentDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
+        }
+
+        console.log(that.uploadAssignmentDT);
     }
 
     // Get File Size

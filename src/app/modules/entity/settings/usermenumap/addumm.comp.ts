@@ -20,11 +20,13 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     uid: number = 0;
     uname: string = "";
     utype: string = "";
+    isempuser: boolean = false;
 
     refuserdata: any = [];
     refuid: number = 0;
     refuname: string = "";
     refutype: string = "";
+    isemprefuser: boolean = false;
 
     menudetails: any = [];
     selectedMenus: string[] = [];
@@ -35,8 +37,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
-
-        this.getMenuDetails();
     }
 
     ngOnInit() {
@@ -86,11 +86,21 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.uid = event.uid;
+        that.uname = event.uname;
         that.utype = event.utype;
+        that.isempuser = event.isemp;
 
         that.refuid = event.uid;
+        that.refuname = event.uname;
         that.refutype = event.utype;
+        that.isemprefuser = event.isemp;
 
+        that.refuserdata.uid = that.refuid;
+        that.refuserdata.uname = that.refuname;
+        that.refuserdata.utype = that.refutype;
+        that.refuserdata.isemp = that.isemprefuser;
+
+        that.getMenuDetails();
         that.getUserRightsById(that.refuid, that.refutype);
     }
 
@@ -100,13 +110,18 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.refuid = event.uid;
+        that.refuname = event.uname;
         that.refutype = event.utype;
+        that.isemprefuser = event.isemp;
+
+        that.getMenuDetails();
+        that.getUserRightsById(that.refuid, that.refutype);
     }
 
     getMenuDetails() {
         var that = this;
 
-        this._menuservice.getMenuDetails({ "flag": "all", "psngrtype": that._enttdetails.psngrtype }).subscribe(data => {
+        this._menuservice.getMenuDetails({ "flag": "all", "psngrtype": that._enttdetails.psngrtype, "isemp": that.isemprefuser }).subscribe(data => {
             this.menudetails = data.data;
             $("#menus").prop('checked', false);
         }, err => {

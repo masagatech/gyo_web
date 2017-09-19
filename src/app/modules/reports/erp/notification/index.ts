@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: NotificationReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "notification", "submodule": "rptstp", "rights": "view", "urlname": "/Notification" }
+        data: { "module": "notification", "submodule": "rpterpntf", "rights": "view", "urlname": "/Notification" }
       }
     ]
   },

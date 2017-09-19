@@ -16,15 +16,15 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewClassComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "tskal", "rights": "view", "urlname": "/class" }
+        data: { "module": "erp", "submodule": "cls", "rights": "view", "urlname": "/class" }
       },
       {
         path: 'add', component: AddClassComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "tskal", "rights": "add", "urlname": "/add" }
+        data: { "module": "erp", "submodule": "cls", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'edit/:id', component: AddClassComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "tskal", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "erp", "submodule": "cls", "rights": "edit", "urlname": "/edit" }
       }
     ]
   },

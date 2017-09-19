@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MessageService, messageType, CommonService } from '@services';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { LoginUserModel, Globals } from '@models';
 import { LazyLoadEvent, DataTable } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewMOM.comp.html',
@@ -10,14 +10,20 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 
 export class ViewMOMComponent implements OnInit, OnDestroy {
+    loginUser: LoginUserModel;
+    _enttdetails: any = [];
+
     momDT: any = [];
     grpcd: string = "";
     headertitle: string = "";
     selectedGroup: any = [];
 
     private subscribeParameters: any;
-    
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _commonservice: CommonService, private _msg: MessageService) {
+
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
+        private _commonservice: CommonService, private _msg: MessageService) {
+        this.loginUser = this._loginservice.getUser();
+        this._enttdetails = Globals.getEntityDetails();
         this.getMOMDetails();
     }
 
@@ -37,11 +43,17 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
                 that.grpcd = params['grpcd'];
 
                 that._commonservice.getMOM({
-                    "flag": "grid", "group": that.grpcd
+                    "flag": "grid", "group": that.grpcd, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        that.momDT = data.data;
-                        that.headertitle = data.data[0].groupname;
+                        if (data.data.length > 0) {
+                            that.momDT = data.data;
+                            that.headertitle = data.data[0].groupname;
+                        }
+                        else{
+                            that.momDT = [];
+                            that.headertitle = "";
+                        }
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
@@ -70,7 +82,7 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-        
+
         this.subscribeParameters.unsubscribe();
     }
 }

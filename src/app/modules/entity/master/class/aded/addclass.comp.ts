@@ -19,6 +19,7 @@ export class AddClassComponent implements OnInit {
     clsid: number = 0;
     stdid: number = 0;
     divid: number = 0;
+    strength: number = 0;
 
     teacherDT: any = [];
     tchrdata: any = [];
@@ -55,6 +56,7 @@ export class AddClassComponent implements OnInit {
 
         that.stdid = 0;
         that.divid = 0;
+        that.strength = 0;
         that.tchrid = 0;
         that.tchrname = "";
         that.tchrdata = [];
@@ -66,7 +68,9 @@ export class AddClassComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._clsservice.getClassDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._clsservice.getClassDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.standardDT = data.data.filter(a => a.group == "standard");
                 that.divisionDT = data.data.filter(a => a.group == "division");
@@ -173,6 +177,10 @@ export class AddClassComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Subject");
             $(".subject").focus();
         }
+        else if (that.strength == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Strength");
+            $(".strength").focus();
+        }
         else if (that.tchrid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Class Teacher");
             $(".tchrname input").focus();
@@ -184,6 +192,7 @@ export class AddClassComponent implements OnInit {
                 "clsid": that.clsid,
                 "stdid": that.stdid,
                 "divid": that.divid,
+                "strength": that.strength,
                 "tchrid": that.tchrid,
                 "subid": "{" + _subrights + "}",
                 "cuid": that.loginUser.ucode,
@@ -243,9 +252,11 @@ export class AddClassComponent implements OnInit {
                         that.clsid = data.data[0].clsid;
                         that.stdid = data.data[0].stdid;
                         that.divid = data.data[0].divid;
+                        that.strength = data.data[0].strength;
 
                         that.tchrid = data.data[0].tchrid;
                         that.tchrname = data.data[0].tchrname;
+
                         that.tchrdata.value = that.tchrid;
                         that.tchrdata.label = that.tchrname;
 

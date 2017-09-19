@@ -46,10 +46,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Subject <strong>*</strong></label>
-                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subject" tabindex="1">
-                                    <option [value]="0">Select Subject</option>
-                                    <option *ngFor="let row of subjectDT" [value]="row.id">
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillSubjectDropDown()" class="form-control class" tabindex="1">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.id">
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -59,10 +59,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Class <strong>*</strong></label>
-                                <select id="clsid" name="clsname" [(ngModel)]="clsid" class="form-control class" tabindex="2">
-                                    <option [value]="0">Select Class</option>
-                                    <option *ngFor="let row of classDT" [value]="row.id">
+                                <label class="control-label">Subject <strong>*</strong></label>
+                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subject" tabindex="2">
+                                    <option [value]="0">Select Subject</option>
+                                    <option *ngFor="let row of subjectDT" [value]="row.id">
                                         {{row.val}}
                                     </option>
                                 </select>

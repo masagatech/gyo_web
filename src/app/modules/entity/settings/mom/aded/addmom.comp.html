@@ -24,6 +24,20 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
+                                <label class="control-label">Type</label>
+                                <select id="typ" name="typ" [(ngModel)]="typ" class="form-control">
+                                    <option value="all">All</option>
+                                    <option value="wswise">Workspace Wise</option>
+                                    <option value="enttwise">Entity Wise</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
                                 <label class="control-label">Group</label>
                                 <select id="group" name="group" [(ngModel)]="group" class="form-control">
                                     <option value="">-- Select Group --</option>

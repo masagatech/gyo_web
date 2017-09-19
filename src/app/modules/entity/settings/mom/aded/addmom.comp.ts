@@ -12,6 +12,7 @@ declare var $: any;
 
 export class AddMOMComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
+    _enttdetails: any = [];
 
     title: any;
     validSuccess: Boolean = true;
@@ -21,6 +22,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     group: string = "";
     key: string = "";
     val: string = "";
+    typ: string = "all";
     isactive: boolean = true;
 
     private subscribeParameters: any;
@@ -28,6 +30,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
         private _commonservice: CommonService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        this._enttdetails = Globals.getEntityDetails();
         this.getMOMGroup();
     }
 
@@ -112,6 +115,9 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             "group": that.group,
             "key": that.key,
             "val": that.val,
+            "typ": that.typ,
+            "enttid": that.typ == "enttwise" ? that._enttdetails.enttid : 0,
+            "wsautoid": that.typ == "wswise" ? that._enttdetails.wsautoid : that.typ == "enttwise" ? that._enttdetails.wsautoid : 0,
             "uidcode": that.loginUser.login
         }
 
@@ -157,6 +163,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             this.group = dataresult[0].group;
             this.key = dataresult[0].key;
             this.val = dataresult[0].val;
+            this.typ = dataresult[0].typ;
         }, err => {
             this._msg.Show(messageType.error, 'Error', err);
         }, () => {
@@ -173,7 +180,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-        
+
         this.subscribeParameters.unsubscribe();
     }
 }

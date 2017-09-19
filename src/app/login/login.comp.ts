@@ -52,8 +52,14 @@ export class LoginComponent implements OnInit,OnDestroy {
                                 that._router.navigate(['/admin/workspace']);
                             }
                             else {
-                                Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
-                                that._router.navigate(['/workspace/entity']);
+                                if (userDetails.isemp) {
+                                    Cookie.set("_schenttdetails_", JSON.stringify(userDetails));
+                                    that._router.navigate(['/']);
+                                }
+                                else {
+                                    Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
+                                    that._router.navigate(['/workspace/entity']);
+                                }
                             }
                         } else {
                             that._msg.Show(messageType.error, "Error", userDetails.errmsg);

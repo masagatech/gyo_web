@@ -72,8 +72,6 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
             "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype
         }
 
-        console.log(params);
-
         that._menuservice.getMenuDetails(params).subscribe(data => {
             that.parentMenuDT = data.data;
         }, err => {
