@@ -26,10 +26,6 @@ export class ReportsComponent implements OnDestroy {
             this._router.navigate(['/login']);
         }
 
-        if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
-            this._router.navigate(['/admin/workspace']);
-        }
-
         if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
             this._router.navigate(['/workspace/entity']);
         }

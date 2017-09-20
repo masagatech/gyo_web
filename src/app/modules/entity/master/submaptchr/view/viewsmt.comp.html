@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-xs-6">
+                <h4>Subject Map To Teacher</h4>
+            </div>
+            <div class="col-md-6 col-xs-5" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addSubjectMapToTeacher()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="submaptchrDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="tchrname" header="Teacher Name" [style]="{'width':'250px','text-align':'left'}"></p-column>
+                    <p-column field="classname" header="Class Name" [style]="{'width':'250px', 'text-align':'left'}"></p-column>
+                    <p-column field="subject" header="Subject" [style]="{'text-align':'left'}"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editSubjectMapToTeacher(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

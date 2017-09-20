@@ -13,10 +13,11 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'batch', loadChildren: './batch#BatchReportsModule' },
+                    { path: 'class', loadChildren: './class#ClassReportsModule' },
                     { path: 'route', loadChildren: './route#RouteReportsModule' },
                     { path: 'driver', loadChildren: './driver#DriverReportsModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
+                    { path: 'batch', loadChildren: './batch#BatchReportsModule' },
                 ]
             }
         ]

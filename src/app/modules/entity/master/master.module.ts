@@ -19,6 +19,7 @@ export const routes = [
                     { path: 'batch', loadChildren: './batch#BatchModule' },
                     { path: 'class', loadChildren: './class#ClassModule' },
                     { path: 'books', loadChildren: './books#BooksModule' },
+                    { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
 
                     // Passenger
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },

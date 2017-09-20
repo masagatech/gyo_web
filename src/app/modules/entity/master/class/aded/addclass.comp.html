@@ -54,13 +54,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Class Type <strong>*</strong></label>
+                                <select id="clstypid" name="clstypname" [(ngModel)]="clstypid" class="form-control clstypname" tabindex="4">
+                                    <option [value]="0">Select Class Type</option>
+                                    <option *ngFor="let row of classTypeDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Class Teacher</label> {{tchrname}}
-                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="5" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                        <label class="control-label">Class Teacher</label> {{clstchrname}}
+                        <p-autoComplete id="clstchrid" name="clstchrname" [(ngModel)]="clstchrdata" [tabindex]="5" (onSelect)="selectClassTeacherData($event)" [suggestions]="classTeacherDT" (completeMethod)="getTeacherData($event, 'class')" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete clstchrname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Other Teacher</label>
+                        <p-autoComplete id="othtchrid" name="othtchrname" [(ngModel)]="othtchrdata" [tabindex]="6" (onSelect)="selectOtherTeacherData($event)" [suggestions]="otherTeacherDT" (completeMethod)="getTeacherData($event, 'other')" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete othtchrname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div *ngIf="otherTeacherList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let row of otherTeacherList">
+                                {{row.othtchrname}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteOtherTeacher(row)">
+                                    <i class="material-icons">delete</i></button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

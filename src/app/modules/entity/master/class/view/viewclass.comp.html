@@ -15,11 +15,12 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="classDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="stdname" header="Standard" [style]="{'width':'150px','text-align':'left'}"></p-column>
-                    <p-column field="divname" header="Division" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="stdname" header="Standard" [style]="{'width':'80px','text-align':'left'}"></p-column>
+                    <p-column field="divname" header="Division" [style]="{'width':'80px', 'text-align':'left'}"></p-column>
+                    <p-column field="clstypname" header="Class Type" [style]="{'width':'140px', 'text-align':'left'}"></p-column>
                     <p-column field="subject" header="Subjects" [style]="{'text-align':'left'}"></p-column>
                     <p-column field="strength" header="Strength" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="tchrname" header="Teacher" [style]="{'width':'200px', 'text-align':'left'}"></p-column>
+                    <p-column field="clstchrname" header="Teacher" [style]="{'width':'200px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editClass(row)">

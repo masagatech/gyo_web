@@ -71,7 +71,7 @@ export class DailyAttendanceComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getAttendanceReports({
-            "flag": "daily", "monthname": monthname, "schoolid": that._enttdetails.enttid
+            "flag": "daily", "monthname": monthname, "schoolid": that._enttdetails.enttid, "uid":"0"
         }).subscribe(data => {
             try {
                 that.attData = data.data;
