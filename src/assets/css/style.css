@@ -10577,6 +10577,16 @@ body.waitMe_body .waitMe_container.text>div {
     vertical-align: middle;
 }
 
+.period {
+    background-color: #FF9800;
+    color: #FFFFFF;
+}
+
+.off {
+    background-color: #E91E63;
+    color: #FFFFFF;
+}
+
 .act-red {
     background-color: #F44336;
     color: #FFFFFF;

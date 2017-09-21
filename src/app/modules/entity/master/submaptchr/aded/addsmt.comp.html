@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Class <strong>*</strong></label>
-                                <select id="clsid" name="clsname" [(ngModel)]="clsid" class="form-control clsname" (ngModelChange)="fillSubjectDropDown()" tabindex="1">
+                                <select id="clsid" name="clsname" [(ngModel)]="clsid" class="form-control clsname" (ngModelChange)="fillSubjectDropDown();onChangeClass();" tabindex="1">
                                     <option [value]="0">Select Class</option>
                                     <option *ngFor="let row of classDT" [value]="row.id">
                                         {{row.val}}

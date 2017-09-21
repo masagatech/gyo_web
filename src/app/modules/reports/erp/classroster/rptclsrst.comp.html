@@ -1,0 +1,116 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Class Roster</h4>
+            </div>
+            <div class="col-md-8" align="right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassRoster();">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="getClassRoster();">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Teacher</label>
+                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="5" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetClassRosterDetails()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div #class class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="150px">Date</th>
+                            <th width="150px">Time</th>
+                            <th width="100px">Week</th>
+                            <th width="100px">Class</th>
+                            <th>Teacher Name</th>
+                            <th width="150px">Subject</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of classRosterDT">
+                        <tr class="{{row.rsttyp}}">
+                            <td>
+                                {{row.caldate}}
+                            </td>
+                            <td>
+                                {{row.strtm + " - " + row.endtm}}
+                            </td>
+                            <td>
+                                {{row.week}}
+                            </td>
+                            <td>
+                                {{row.classname}}
+                            </td>
+                            <td>
+                                {{row.tchrname}}
+                            </td>
+                            <td>
+                                {{row.title}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- <p-dataTable [value]="classDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                <p-column field="classname" header="Class Name" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                <p-column field="clstchrname" header="Class Teacher" [style]="{'width':'300px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                <p-column field="strength" header="Strength" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                <p-column field="totstuds" header="Students" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                <p-column field="opening" header="Opening" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                <p-column field="subject" header="Subject" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+            </p-dataTable> -->
+        </div>
+    </div>
+</div>

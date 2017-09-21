@@ -41,8 +41,9 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
     public ngOnInit() {
         var that = this;
 
+        that.onEditMode();
+
         setTimeout(function () {
-            that.getSubjectMapToTeacher();
         }, 200);
     }
 
@@ -247,72 +248,86 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
 
     // Get Subject Map To Teacher
 
-    getSubjectMapToTeacher() {
+    onEditMode() {
         var that = this;
-        commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 that.smtid = params['id'];
-
-                that._smtservice.getSubjectMapToTeacher({
-                    "flag": "edit", "smtid": that.smtid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
-                }).subscribe(data => {
-                    try {
-                        that.tchrid = data.data[0].tchrid;
-                        that.tchrname = data.data[0].tchrname;
-                        that.tchrdata.value = that.tchrid;
-                        that.tchrdata.label = that.tchrname;
-
-                        that.fillClassDropDown();
-                        that.clsid = data.data[0].clsid;
-
-                        that.fillSubjectDropDown();
-
-                        var _subrights = null;
-                        var _subitem = null;
-
-                        if (data.data[0] != null) {
-                            _subrights = null;
-                            _subrights = data.data[0].subid;
-
-                            if (_subrights != null) {
-                                for (var i = 0; i < _subrights.length; i++) {
-                                    _subitem = null;
-                                    _subitem = _subrights[i];
-
-                                    if (_subitem != null) {
-                                        $("#selectall").prop('checked', true);
-                                        $("#sub" + _subitem).find("#" + _subitem).prop('checked', true);
-                                    }
-                                    else {
-                                        $("#selectall").prop('checked', false);
-                                    }
-                                }
-                            }
-                            else {
-                                $("#selectall").prop('checked', false);
-                            }
-                        }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                that.getSubjectMapToTeacher();
             }
             else {
                 that.resetClassFields();
                 commonfun.loaderhide();
             }
         });
+    }
+
+    onChangeClass() {
+        var that = this;
+
+        if (that.smtid == 0) {
+            that.getSubjectMapToTeacher();
+        }
+    }
+
+    getSubjectMapToTeacher() {
+        var that = this;
+        commonfun.loader();
+
+        that._smtservice.getSubjectMapToTeacher({
+            "flag": "edit", "smtid": that.smtid, "tchrid": that.tchrid, "clsid": that.clsid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.tchrid = data.data[0].tchrid;
+                that.tchrname = data.data[0].tchrname;
+                that.tchrdata.value = that.tchrid;
+                that.tchrdata.label = that.tchrname;
+
+                that.fillClassDropDown();
+                that.clsid = data.data[0].clsid;
+
+                that.fillSubjectDropDown();
+
+                var _subrights = null;
+                var _subitem = null;
+
+                if (data.data[0] != null) {
+                    _subrights = null;
+                    _subrights = data.data[0].subid;
+
+                    if (_subrights != null) {
+                        for (var i = 0; i < _subrights.length; i++) {
+                            _subitem = null;
+                            _subitem = _subrights[i];
+
+                            if (_subitem != null) {
+                                $("#selectall").prop('checked', true);
+                                $("#sub" + _subitem).find("#" + _subitem).prop('checked', true);
+                            }
+                            else {
+                                $("#selectall").prop('checked', false);
+                            }
+                        }
+                    }
+                    else {
+                        $("#selectall").prop('checked', false);
+                    }
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data

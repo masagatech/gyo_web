@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { PassengerLeaveService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
@@ -17,12 +16,13 @@ export class AddPassengerLeaveComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    slid: number = 0;
+    lvid: number = 0;
 
     passengerDT: any = [];
     psngrdata: any = [];
     psngrid: number = 0;
     psngrname: string = "";
+    psngrtype: string = "";
 
     currdate: any = "";
     currtime: any = "";
@@ -128,9 +128,7 @@ export class AddPassengerLeaveComponent implements OnInit {
 
     selectPassengerData(event) {
         this.psngrid = event.value;
-
-        Cookie.set("_psngrid_", event.value);
-        Cookie.set("_psngrnm_", event.label);
+        this.psngrname = event.label;
     }
 
     // Leave Type
@@ -155,7 +153,7 @@ export class AddPassengerLeaveComponent implements OnInit {
     // Clear Fields
 
     resetPassengerLeaveFields() {
-        this.slid = 0;
+        this.lvid = 0;
         this.psngrid = 0;
         this.psngrname = "";
         this.psngrdata = [];
@@ -261,7 +259,7 @@ export class AddPassengerLeaveComponent implements OnInit {
             commonfun.loader();
 
             var savelvpsngr = {
-                "slid": that.slid,
+                "lvid": that.lvid,
                 "enttid": that._enttdetails.enttid,
                 "psngrid": that.psngrid,
                 "frmdt": that.frmdt,
@@ -269,6 +267,7 @@ export class AddPassengerLeaveComponent implements OnInit {
                 "todt": that.todt,
                 "totm": that.totm,
                 "lvtype": that.lvtype,
+                "lvfor": that.psngrtype,
                 "reason": that.reason,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid
@@ -317,18 +316,19 @@ export class AddPassengerLeaveComponent implements OnInit {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.slid = params['id'];
+                that.lvid = params['id'];
 
                 that._lvpsngrservice.getPassengerLeave({
                     "flag": "edit",
-                    "id": that.slid,
+                    "id": that.lvid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        that.slid = data.data[0].slid;
+                        that.lvid = data.data[0].lvid;
                         that.psngrid = data.data[0].psngrid;
                         that.psngrname = data.data[0].psngrname;
                         that.psngrdata.value = that.psngrid;
+                        that.psngrdata.label = that.psngrname;
                         that.psngrdata.label = that.psngrname;
                         that.lvtype = data.data[0].lvtype;
                         that.reason = data.data[0].reason;

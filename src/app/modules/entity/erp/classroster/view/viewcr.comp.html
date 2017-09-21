@@ -15,9 +15,9 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Academic year <strong>*</strong></label>
+                        <label class="control-label">Academic Year <strong>*</strong></label>
                         <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassRoster();">
-                            <option [value]="0">Select Academic year</option>
+                            <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
                             </option>
@@ -53,6 +53,13 @@
                             To Date : {{enddt}}
                         </div> -->
 
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Teacher</label> {{tchrname}}
+                                <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="5" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                                <span class="material-icons inputserachico">search</span>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Subject</label>

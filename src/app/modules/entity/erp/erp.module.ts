@@ -21,8 +21,7 @@ export const routes = [
                     { path: 'notification', loadChildren: './notification#NotificationModule' },
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
                     
-                    { path: 'passengerleave', loadChildren: './passengerleave#PassengerLeaveModule' },
-                    { path: 'studentleave', loadChildren: './passengerleave#PassengerLeaveModule' },
+                    { path: 'leave', loadChildren: './passengerleave#PassengerLeaveModule' },
                 ]
             }
         ]

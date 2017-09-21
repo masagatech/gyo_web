@@ -21,6 +21,11 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
+    teacherDT: any = [];
+    tchrdata: any = [];
+    tchrid: number = 0;
+    tchrname: string = "";
+
     header: any;
     event: MyEvent;
     dialogVisible: boolean = false;
@@ -51,6 +56,8 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         var that = this;
 
+        that.refreshButtons();
+
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -66,12 +73,11 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         };
-
-        that.refreshButtons();
     }
 
     refreshButtons() {
         setTimeout(function () {
+            commonfun.navistyle();
             commonfun.chevronstyle();
         }, 0);
     }
@@ -149,6 +155,37 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Auto Completed Teacher
+
+    getTeacherData(event) {
+        let query = event.query;
+
+        this._autoservice.getERPAutoData({
+            "flag": "employee",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "emptype": "tchr",
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.teacherDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Teacher
+
+    selectTeacherData(event) {
+        this.tchrid = event.value;
+        this.tchrname = event.label;
+    }
+
     // Get Class Roster
 
     getClassRoster() {
@@ -156,7 +193,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassRoster({
-            "flag": "calendar", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -178,6 +215,9 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
     handleDayClick(event) {
         this.id = 0;
+        this.tchrid = 0;
+        this.tchrname = "";
+        this.tchrdata = [];
         this.subid = 0;
         this.strdt = event.date.format();
         this.enddt = event.date.format();
@@ -189,8 +229,12 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     }
 
     handleEventClick(e) {
-        if (e.calEvent.subid != 0) {
+        if (e.calEvent.id != 0 || e.calEvent.ttid != 0) {
             this.id = e.calEvent.id;
+            this.tchrid = e.calEvent.tchrid;
+            this.tchrname = e.calEvent.tchrname;
+            this.tchrdata.value = this.tchrid;
+            this.tchrdata.label = this.tchrname;
             this.ttid = e.calEvent.ttid;
             this.subid = e.calEvent.subid;
             this.strdt = e.calEvent.start;
@@ -209,7 +253,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
         params = {
             "ttid": that.ttid, "ayid": that.ayid, "classid": that.classid, "frmdt": that.strdt, "todt": that.enddt,
-            "frmtm": that.strtm, "totm": that.endtm, "subid": that.subid, "rsttyp": that.rsttyp,
+            "frmtm": that.strtm, "totm": that.endtm, "tchrid": that.tchrid, "subid": that.subid, "rsttyp": that.rsttyp,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode
         }
 

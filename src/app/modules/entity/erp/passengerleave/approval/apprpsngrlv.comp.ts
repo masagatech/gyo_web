@@ -25,7 +25,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
     psngrLeaveDetailsDT: any = [];
     selectedlvrow: any = [];
 
-    slid: number = 0;
+    lvid: number = 0;
     frmdt: any = "";
     todt: any = "";
     lvtype: string = "";
@@ -115,7 +115,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
                 that.psngrid = params['psngrid'];
 
                 params = {
-                    "flag": "bypsngr", "slid": row.slid, "psngrid": that.psngrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "flag": "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
                     "issysadmin": that.loginUser.issysadmin, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
 
@@ -124,7 +124,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
                         that.psngrLeaveDetailsDT = data.data;
 
                         if (that.psngrLeaveDetailsDT.length > 0) {
-                            that.slid = that.psngrLeaveDetailsDT[0].slid;
+                            that.lvid = that.psngrLeaveDetailsDT[0].lvid;
                             that.frmdt = that.psngrLeaveDetailsDT[0].frmdt;
                             that.todt = that.psngrLeaveDetailsDT[0].todt;
                             that.lvtype = that.psngrLeaveDetailsDT[0].lvtype;
@@ -166,7 +166,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             psngrlvapprdata = {
-                "slid": that.slid,
+                "lvid": that.lvid,
                 "enttid": that._enttdetails.enttid,
                 "psngrid": that.psngrid,
                 "apprvby": that.loginUser.loginid,

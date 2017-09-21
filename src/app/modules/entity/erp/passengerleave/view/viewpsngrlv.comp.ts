@@ -93,7 +93,7 @@ export class ViewPassengerLeaveComponent implements OnInit {
         commonfun.loader();
 
         that._lvpsngrservice.getPassengerLeave({
-            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "flag": "student", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "status": that.status
         }).subscribe(data => {
@@ -130,7 +130,7 @@ export class ViewPassengerLeaveComponent implements OnInit {
     }
 
     public editPassengerLeave(row) {
-        this._router.navigate(['/erp/' + this._enttdetails.smpsngrtype + 'leave/edit', row.slid]);
+        this._router.navigate(['/erp/' + this._enttdetails.smpsngrtype + 'leave/edit', row.lvid]);
     }
 
     public openApprovalLeave(row) {
