@@ -2,17 +2,15 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassRosterService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { PassengerLeaveService } from '@services/erp';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptclsrst.comp.html',
+    templateUrl: 'rptleave.comp.html',
     providers: [CommonService]
 })
 
-export class ClassRosterReportsComponent implements OnInit, OnDestroy {
+export class LeaveReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -22,12 +20,15 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    teacherDT: any = [];
-    tchrdata: any = [];
-    tchrid: number = 0;
-    tchrname: string = "";
+    header: any;
+    event: MyEvent;
+    dialogVisible: boolean = false;
+    idGen: number = 100;
+    defaultDate: string = "";
 
-    classRosterDT: any = [];
+    leaveDT: any = [];
+    leaveReportsDT: any = [];
+
     @ViewChild('class') class: ElementRef;
 
     gridTotal: any = {
@@ -35,12 +36,13 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
     };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _lvrptservice: PassengerLeaveService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
-        this.getClassRoster();
+        // this.fillDropDownList();
+        this.getDefaultDate();
+        this.getTeacherLeave();
     }
 
     public ngOnInit() {
@@ -54,13 +56,33 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
+    // Format Date
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    getDefaultDate() {
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        this.defaultDate = this.formatDate(today);
+    }
+
     // Fill Class Drop Down
 
     fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._lvrptservice.getTeacherLeave({
             "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -81,45 +103,13 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Auto Completed Teacher
-
-    getTeacherData(event) {
-        let query = event.query;
-
-        this._autoservice.getERPAutoData({
-            "flag": "employee",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "emptype": "tchr",
-            "enttid": this._enttdetails.enttid,
-            "wsautoid": this._enttdetails.wsautoid,
-            "issysadmin": this.loginUser.issysadmin,
-            "search": query
-        }).subscribe((data) => {
-            this.teacherDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Teacher
-
-    selectTeacherData(event) {
-        this.tchrid = event.value;
-        this.tchrname = event.label;
-        this.getClassRoster();
-    }
-
     // Export
 
     public exportToCSV() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._lvrptservice.getTeacherLeave({
             "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -150,17 +140,16 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    getClassRoster() {
+    getTeacherLeave() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
-            "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        that._lvrptservice.getTeacherLeave({
+            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": -1
         }).subscribe(data => {
             try {
-                that.classRosterDT = data.data;
-                that.grandTotal();
+                that.leaveDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -176,30 +165,39 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    grandTotal() {
+    handleEventClick(e) {
         var that = this;
-        that.gridTotal = {
-            strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-        };
+        commonfun.loader();
 
-        for (var i = 0; i < this.classDT.length; i++) {
-            var items = this.classDT[i];
+        that._lvrptservice.getTeacherLeave({
+            "flag": "reports", "tchrid": e.calEvent.tchrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.leaveReportsDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-            that.gridTotal.strenthTotal += parseFloat(items.strength);
-            that.gridTotal.studentsTotal += parseFloat(items.totstuds);
-            that.gridTotal.openingTotal += parseFloat(items.opening);
-        }
-    }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-    resetClassRosterDetails() {
-        this.tchrdata = [];
-        this.tchrid = 0;
-        this.tchrname = ""
-        this.getClassRoster();
+        })
     }
 
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
     }
+}
+
+export class MyEvent {
+    id: number;
+    title: string;
+    start: string;
+    end: string;
 }

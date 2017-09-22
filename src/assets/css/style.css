@@ -10582,8 +10582,14 @@ body.waitMe_body .waitMe_container.text>div {
     color: #FFFFFF;
 }
 
-.off {
+.off,
+.Off {
     background-color: #E91E63;
+    color: #FFFFFF;
+}
+
+.Holiday {
+    background-color: #03A9F4;
     color: #FFFFFF;
 }
 

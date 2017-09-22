@@ -17,6 +17,7 @@ export class PendingPassengerLeaveComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    lvfor: string = "emp";
     pendingPassengerLeaveDT: any = [];
 
     private subscribeParameters: any;
@@ -42,7 +43,7 @@ export class PendingPassengerLeaveComponent implements OnInit {
         commonfun.loader();
 
         params = {
-            "flag": "pending", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": that.lvfor == "emp" ? "pendemp" : "pendpsngr", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin
         }
@@ -66,6 +67,6 @@ export class PendingPassengerLeaveComponent implements OnInit {
     }
 
     public openApprovalForm(row) {
-        this._router.navigate(['/erp/passengerleave/approval/' + row.psngrid]);
+        this._router.navigate(['/erp/leave/approval/' + row.psngrid]);
     }
 }

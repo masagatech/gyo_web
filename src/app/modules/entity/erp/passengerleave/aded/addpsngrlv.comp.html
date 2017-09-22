@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4>Leave {{_enttdetails.psngrtype}}</h4>
+        <h4>Leave {{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</h4>
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="savePassengerLeave()">
@@ -22,7 +22,21 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
+                                <label class="control-label">Leave For</label>
+                                <select id="lvfor" [(ngModel)]="lvfor" class="form-control lvfor" tabindex="2">
+                                    <option [value]="'emp'">Employee</option>
+                                    <option [value]="_enttdetails.smpsngrtype">{{_enttdetails.psngrtype}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">{{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}} Name <strong>*</strong></label>
                                 <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
                                 <span class="material-icons inputserachico">search</span>
                             </div>

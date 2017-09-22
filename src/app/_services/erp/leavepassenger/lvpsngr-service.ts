@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../../dataconnect';
+import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -16,5 +17,9 @@ export class PassengerLeaveService {
 
     savePassengerLeaveApproval(req: any) {
         return this._dataserver.post("savePassengerLeaveApproval", req)
+    }
+
+    getTeacherLeave(req: any) {
+        return this._dataserver.post(Globals.erproute + "getTeacherLeave", req)
     }
 }

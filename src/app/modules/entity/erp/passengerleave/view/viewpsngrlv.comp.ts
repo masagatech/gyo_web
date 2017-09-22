@@ -14,6 +14,7 @@ export class ViewPassengerLeaveComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    lvfor: string = "emp";
     lvpsngrDT: any = [];
 
     passengerDT: any = [];
@@ -59,8 +60,8 @@ export class ViewPassengerLeaveComponent implements OnInit {
     getPassengerData(event) {
         let query = event.query;
 
-        this._autoservice.getAutoData({
-            "flag": "passenger",
+        this._autoservice.getERPAutoData({
+            "flag": this.lvfor == "emp" ? "employee" : "passenger",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -93,8 +94,8 @@ export class ViewPassengerLeaveComponent implements OnInit {
         commonfun.loader();
 
         that._lvpsngrservice.getPassengerLeave({
-            "flag": "student", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "flag": this.lvfor == "emp" ? "employee" : "passenger", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
+            "utype": that.loginUser.utype, "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "status": that.status
         }).subscribe(data => {
             try {
@@ -126,15 +127,15 @@ export class ViewPassengerLeaveComponent implements OnInit {
     }
 
     public addPassengerLeave() {
-        this._router.navigate(['/erp/' + this._enttdetails.smpsngrtype + 'leave/add']);
+        this._router.navigate(['/erp/leave/add']);
     }
 
     public editPassengerLeave(row) {
-        this._router.navigate(['/erp/' + this._enttdetails.smpsngrtype + 'leave/edit', row.lvid]);
+        this._router.navigate(['/erp/leave/edit', row.lvid]);
     }
 
     public openApprovalLeave(row) {
-        this._router.navigate(['/erp/' + this._enttdetails.smpsngrtype + 'leave/approval', row.key.split(':')[0]]);
+        this._router.navigate(['/erp/leave/approval', row.key.split(':')[0]]);
     }
 }
 

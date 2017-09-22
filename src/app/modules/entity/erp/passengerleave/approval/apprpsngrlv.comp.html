@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4>Passenger Leave Approval > {{psngrname}}</h4>
+        <h4>{{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}} Leave Approval > {{psngrname}}</h4>
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="savePassengerLeaveApproval()">

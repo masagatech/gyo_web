@@ -29,6 +29,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
     frmdt: any = "";
     todt: any = "";
     lvtype: string = "";
+    lvfor: string = "emp";
     reason: string = "";
     apprremark: string = "";
     status: number = 0;
@@ -67,8 +68,9 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
                 that.psngrid = params['psngrid'];
 
                 params = {
-                    "flag": "psngrleave", "psngrid": that.psngrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "issysadmin": that.loginUser.issysadmin, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                    "flag": that.lvfor == "emp" ? "empleave" : "psngrleave", "psngrid": that.psngrid,
+                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
 
                 that._psngrlvservice.getPassengerLeave(params).subscribe(data => {
@@ -115,8 +117,9 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
                 that.psngrid = params['psngrid'];
 
                 params = {
-                    "flag": "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "issysadmin": that.loginUser.issysadmin, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                    "flag": row.lvfor == "emp" ? "byemp" : "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid,
+                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
 
                 that._psngrlvservice.getPassengerLeave(params).subscribe(data => {
@@ -180,7 +183,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
 
             that._psngrlvservice.savePassengerLeaveApproval(psngrlvapprdata).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_studentleaveapproval;
+                    var dataResult = data.data[0].funsave_leaveapproval;
                     var msg = dataResult.confirmmsg;
                     var msgid = dataResult.msgid;
 
@@ -218,7 +221,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/passengerleave/pending']);
+        this._router.navigate(['/erp/leave/pending']);
     }
 
     public ngOnDestroy() {

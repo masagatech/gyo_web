@@ -64,39 +64,52 @@
         </div>
     </div>
 
-    <div class="body no-padding">
+    <div class="body">
         <div #class class="row clearfix">
             <div class="col-md-12">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive reports">
                     <thead>
                         <tr>
-                            <th width="150px">Date</th>
-                            <th width="150px">Time</th>
-                            <th width="100px">Week</th>
-                            <th width="100px">Class</th>
-                            <th>Teacher Name</th>
-                            <th width="150px">Subject</th>
+                            <th>Date / Time</th>
+                            <th width="150px">Monday</th>
+                            <th width="150px">Tuesday</th>
+                            <th width="150px">Wednesday</th>
+                            <th width="150px">Thursday</th>
+                            <th width="150px">Friday</th>
+                            <th width="150px">Saturday</th>
+                            <th width="150px">Sunday</th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of classRosterDT">
-                        <tr class="{{row.rsttyp}}">
+                    <tbody *ngFor="let row of classRosterDT | groupBy: 'caldate'">
+                        <tr class="tr-table">
+                            <th colspan="8">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
                             <td>
-                                {{row.caldate}}
+                                {{drow.caltime}}
                             </td>
-                            <td>
-                                {{row.strtm + " - " + row.endtm}}
+                            <td class="{{drow.mon}}">
+                                {{drow.mon}}
                             </td>
-                            <td>
-                                {{row.week}}
+                            <td class="{{drow.tue}}">
+                                {{drow.tue}}
                             </td>
-                            <td>
-                                {{row.classname}}
+                            <td class="{{drow.wed}}">
+                                {{drow.wed}}
                             </td>
-                            <td>
-                                {{row.tchrname}}
+                            <td class="{{drow.thu}}">
+                                {{drow.thu}}
                             </td>
-                            <td>
-                                {{row.title}}
+                            <td class="{{drow.fri}}">
+                                {{drow.fri}}
+                            </td>
+                            <td class="{{drow.sat}}">
+                                {{drow.sat}}
+                            </td>
+                            <td class="{{drow.sun}}">
+                                {{drow.sun}}
                             </td>
                         </tr>
                     </tbody>

@@ -18,11 +18,12 @@ export class AddPassengerLeaveComponent implements OnInit {
 
     lvid: number = 0;
 
+    lvfor: string = "emp";
+
     passengerDT: any = [];
     psngrdata: any = [];
     psngrid: number = 0;
     psngrname: string = "";
-    psngrtype: string = "";
 
     currdate: any = "";
     currtime: any = "";
@@ -106,8 +107,8 @@ export class AddPassengerLeaveComponent implements OnInit {
     getPassengerData(event) {
         let query = event.query;
 
-        this._autoservice.getAutoData({
-            "flag": "passenger",
+        this._autoservice.getERPAutoData({
+            "flag": this.lvfor == "emp" ? "employee" : "passenger",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -139,7 +140,6 @@ export class AddPassengerLeaveComponent implements OnInit {
 
         that._lvpsngrservice.getPassengerLeave({ "flag": "dropdown" }).subscribe(data => {
             that.leavetypeDT = data.data;
-            // setTimeout(function () { $.AdminBSB.select.refresh('lvtype'); }, 100);
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -260,22 +260,22 @@ export class AddPassengerLeaveComponent implements OnInit {
 
             var savelvpsngr = {
                 "lvid": that.lvid,
-                "enttid": that._enttdetails.enttid,
                 "psngrid": that.psngrid,
                 "frmdt": that.frmdt,
                 "frmtm": that.frmtm,
                 "todt": that.todt,
                 "totm": that.totm,
                 "lvtype": that.lvtype,
-                "lvfor": that.psngrtype,
+                "lvfor": that.lvfor,
                 "reason": that.reason,
                 "cuid": that.loginUser.ucode,
+                "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid
             }
 
             that._lvpsngrservice.savePassengerLeave(savelvpsngr).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_studentleave;
+                    var dataResult = data.data[0].funsave_leaveinfo;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
 
@@ -331,6 +331,7 @@ export class AddPassengerLeaveComponent implements OnInit {
                         that.psngrdata.label = that.psngrname;
                         that.psngrdata.label = that.psngrname;
                         that.lvtype = data.data[0].lvtype;
+                        that.lvfor = data.data[0].lvfor;
                         that.reason = data.data[0].reason;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
@@ -361,6 +362,6 @@ export class AddPassengerLeaveComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/' + this._enttdetails.smpsngrtype + 'leave']);
+        this._router.navigate(['/erp/leave']);
     }
 }
