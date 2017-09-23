@@ -61,7 +61,7 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassRoster({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "viewby": "portal"
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");

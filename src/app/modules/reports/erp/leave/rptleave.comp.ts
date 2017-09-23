@@ -40,7 +40,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        // this.fillDropDownList();
+        this.fillDropDownList();
         this.getDefaultDate();
         this.getTeacherLeave();
     }
@@ -83,7 +83,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._lvrptservice.getTeacherLeave({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "viewby": "portal"
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
