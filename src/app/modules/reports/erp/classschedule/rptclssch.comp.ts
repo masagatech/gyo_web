@@ -2,19 +2,21 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassRosterService } from '@services/erp';
+import { ClassScheduleService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptclsrst.comp.html',
+    templateUrl: 'rptclssch.comp.html',
     providers: [CommonService]
 })
 
-export class ClassRosterReportsComponent implements OnInit, OnDestroy {
+export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
+
+    schtype: string = "weekly";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -27,7 +29,8 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
     tchrid: number = 0;
     tchrname: string = "";
 
-    classRosterDT: any = [];
+    classScheduleColumn: any = [];
+    classScheduleDT: any = [];
     @ViewChild('class') class: ElementRef;
 
     gridTotal: any = {
@@ -35,12 +38,12 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
     };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getClassRoster();
+        this.getClassSchedule();
     }
 
     public ngOnInit() {
@@ -54,13 +57,13 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Fill Class Drop Down
+    // Fill Academic Year, Class Drop Down
 
     fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "viewby": "portal"
         }).subscribe(data => {
             try {
@@ -87,11 +90,12 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "employee",
+            "flag": "clswisetchr",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "emptype": "tchr",
+            "classid": this.classid,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -110,7 +114,7 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getClassRoster();
+        this.getClassSchedule();
     }
 
     // Export
@@ -119,12 +123,12 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
-            "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+        that._clsrstservice.getClassSchedule({
+            "flag": that.schtype, "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Class Roster");
+                that._autoservice.exportToCSV(data.data, "Class Schedule");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -146,20 +150,38 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
         pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Class Roster.pdf");
+            pdf.save("Class Schedule.pdf");
         });
     }
 
-    getClassRoster() {
+    // Get Class Scedule Data
+
+    getClassScheduleData() {
+        var that = this;
+
+        that._clsrstservice.getClassSchedule({
+            "flag": "column", "ayid": that.ayid
+        }).subscribe(data => {
+            if (data.data.length !== 0) {
+                that.classScheduleColumn = data.data;
+                that.getClassSchedule();
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        })
+    }
+
+    getClassSchedule() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
-            "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+        that._clsrstservice.getClassSchedule({
+            "flag": that.schtype, "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classRosterDT = data.data;
+                that.classScheduleDT = data.data;
                 that.grandTotal();
             }
             catch (e) {
@@ -191,11 +213,11 @@ export class ClassRosterReportsComponent implements OnInit, OnDestroy {
         }
     }
 
-    resetClassRosterDetails() {
+    resetClassScheduleDetails() {
         this.tchrdata = [];
         this.tchrid = 0;
         this.tchrname = ""
-        this.getClassRoster();
+        this.getClassSchedule();
     }
 
     public ngOnDestroy() {

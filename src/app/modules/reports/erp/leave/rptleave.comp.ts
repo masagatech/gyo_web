@@ -114,7 +114,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Class Roster");
+                that._autoservice.exportToCSV(data.data, "Leave");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -136,7 +136,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
         pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Class Roster.pdf");
+            pdf.save("Leave.pdf");
         });
     }
 

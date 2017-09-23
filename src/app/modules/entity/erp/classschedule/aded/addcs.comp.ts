@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassRosterService } from '@services/erp';
+import { ClassScheduleService } from '@services/erp';
 
 @Component({
-    templateUrl: 'addcr.comp.html',
+    templateUrl: 'addcs.comp.html',
     providers: [CommonService]
 })
 
-export class AddClassRosterComponent implements OnInit, OnDestroy {
+export class AddClassScheduleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -44,12 +44,12 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
     issat: boolean = false;
 
     weekDT: any = [];
-    classRosterDT: any = [];
-    selectedClassRosterRow: any = [];
-    isEditClassRoster: boolean = false;
+    classScheduleDT: any = [];
+    selectedClassScheduleRow: any = [];
+    isEditClassSchedule: boolean = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -107,7 +107,7 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -134,7 +134,7 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "subjectddl", "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -159,7 +159,7 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
     getWeekData() {
         var that = this;
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "week", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             var weekdata = data.data;
@@ -581,9 +581,9 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Validate Class Roster
+    // Validate Class Schedule
 
-    isValidClassRoster() {
+    isValidClassSchedule() {
         var that = this;
 
         if (that.frmtm == "") {
@@ -655,13 +655,13 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    // Check Duplicate Class Roster
+    // Check Duplicate Class Schedule
 
-    isDuplicateClassRoster() {
+    isDuplicateClassSchedule() {
         var that = this;
 
-        for (var i = 0; i < that.classRosterDT.length; i++) {
-            var field = that.classRosterDT[i];
+        for (var i = 0; i < that.classScheduleDT.length; i++) {
+            var field = that.classScheduleDT[i];
 
             // if (field.frmtm > that.frmtm || field.frmtm <= that.totm) {
             //     that._msg.Show(messageType.error, "Error", "From Time is Already Exists");
@@ -726,16 +726,16 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    // Add Class Roster
+    // Add Class Schedule
 
-    addClassRoster() {
+    addClassSchedule() {
         var that = this;
 
-        if (that.isValidClassRoster()) {
-            var duplicateClassRoster = that.isDuplicateClassRoster();
+        if (that.isValidClassSchedule()) {
+            var duplicateClassSchedule = that.isDuplicateClassSchedule();
 
-            if (!duplicateClassRoster) {
-                that.classRosterDT.push({
+            if (!duplicateClassSchedule) {
+                that.classScheduleDT.push({
                     "clsrstid": that.clsrstid, "ayid": that.ayid, "classid": that.classid, "frmtm": that.frmtm, "totm": that.totm,
                     "sunsubid": that.sunsubid, "sunsubname": $(".sunsubname option:selected").text().trim(),
                     "monsubid": that.monsubid, "monsubname": $(".monsubname option:selected").text().trim(),
@@ -747,12 +747,12 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode, "isactive": true
                 })
 
-                that.resetClassRoster();
+                that.resetClassSchedule();
             }
         }
     }
 
-    resetClassRoster(){
+    resetClassSchedule(){
         var that = this;
 
         $(".frmtm").focus();
@@ -768,14 +768,14 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         that.satsubid = 0;
     }
 
-    // Save Class Roster
+    // Save Class Schedule
 
-    saveClassRoster() {
+    saveClassSchedule() {
         var that = this;
         
-        that._clsrstservice.saveClassRoster({ "classroster": that.classRosterDT }).subscribe(data => {
+        that._clsrstservice.saveClassSchedule({ "classSchedule": that.classScheduleDT }).subscribe(data => {
             try {
-                var dataResult = data.data[0].funsave_classroster;
+                var dataResult = data.data[0].funsave_classSchedule;
                 var msgid = dataResult.msgid;
                 var msg = dataResult.msg;
 
@@ -795,16 +795,16 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         });
     }
 
-    getClassRoster() {
+    getClassSchedule() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "all", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classRosterDT = data.data;
+                that.classScheduleDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -820,9 +820,9 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         })
     }
 
-    editClassRoster(row) {
-        this.isEditClassRoster = true;
-        this.selectedClassRosterRow = row;
+    editClassSchedule(row) {
+        this.isEditClassSchedule = true;
+        this.selectedClassScheduleRow = row;
 
         this.frmtm = row.frmtm;
         this.totm = row.totm;
@@ -835,42 +835,42 @@ export class AddClassRosterComponent implements OnInit, OnDestroy {
         this.satsubid = row.satsubid;
     }
 
-    deleteClassRoster(row) {
+    deleteClassSchedule(row) {
         row.isactive = false;
     }
 
-    updateClassRoster() {
-        this.isEditClassRoster = false;
+    updateClassSchedule() {
+        this.isEditClassSchedule = false;
 
-        this.selectedClassRosterRow.frmtm = this.frmtm;
-        this.selectedClassRosterRow.totm = this.totm;
-        this.selectedClassRosterRow.sunsubid = this.sunsubid;
-        this.selectedClassRosterRow.sunsubname = $(".sunsubname option:selected").text().trim();
-        this.selectedClassRosterRow.monsubid = this.monsubid;
-        this.selectedClassRosterRow.monsubname = $(".monsubname option:selected").text().trim();
-        this.selectedClassRosterRow.tuessubid = this.tuessubid;
-        this.selectedClassRosterRow.tuessubname = $(".tuessubname option:selected").text().trim();
-        this.selectedClassRosterRow.wedsubid = this.wedsubid;
-        this.selectedClassRosterRow.wedsubname = $(".wedsubname option:selected").text().trim();
-        this.selectedClassRosterRow.thursubid = this.thursubid;
-        this.selectedClassRosterRow.thursubname = $(".thursubname option:selected").text().trim();
-        this.selectedClassRosterRow.frisubid = this.frisubid;
-        this.selectedClassRosterRow.frisubname = $(".frisubname option:selected").text().trim();
-        this.selectedClassRosterRow.satsubid = this.satsubid;
-        this.selectedClassRosterRow.satsubname = $(".satsubname option:selected").text().trim();
+        this.selectedClassScheduleRow.frmtm = this.frmtm;
+        this.selectedClassScheduleRow.totm = this.totm;
+        this.selectedClassScheduleRow.sunsubid = this.sunsubid;
+        this.selectedClassScheduleRow.sunsubname = $(".sunsubname option:selected").text().trim();
+        this.selectedClassScheduleRow.monsubid = this.monsubid;
+        this.selectedClassScheduleRow.monsubname = $(".monsubname option:selected").text().trim();
+        this.selectedClassScheduleRow.tuessubid = this.tuessubid;
+        this.selectedClassScheduleRow.tuessubname = $(".tuessubname option:selected").text().trim();
+        this.selectedClassScheduleRow.wedsubid = this.wedsubid;
+        this.selectedClassScheduleRow.wedsubname = $(".wedsubname option:selected").text().trim();
+        this.selectedClassScheduleRow.thursubid = this.thursubid;
+        this.selectedClassScheduleRow.thursubname = $(".thursubname option:selected").text().trim();
+        this.selectedClassScheduleRow.frisubid = this.frisubid;
+        this.selectedClassScheduleRow.frisubname = $(".frisubname option:selected").text().trim();
+        this.selectedClassScheduleRow.satsubid = this.satsubid;
+        this.selectedClassScheduleRow.satsubname = $(".satsubname option:selected").text().trim();
         
-        this.resetClassRoster();
+        this.resetClassSchedule();
     }
 
-    cancelClassRoster() {
-        this.isEditClassRoster = false;
-        this.resetClassRoster();
+    cancelClassSchedule() {
+        this.isEditClassSchedule = false;
+        this.resetClassSchedule();
     }
 
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/classroster']);
+        this._router.navigate(['/erp/classschedule']);
     }
 
     public ngOnDestroy() {

@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { ClassRosterReportsComponent } from './rptclsrst.comp';
-import { ClassRosterService } from '@services/erp';
+import { ClassScheduleReportsComponent } from './rptclssch.comp';
+import { ClassScheduleService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -13,8 +13,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ClassRosterReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptclsrst", "rights": "view", "urlname": "/classroster" }
+        path: '', component: ClassScheduleReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptclssch", "rights": "view", "urlname": "/classschedule" }
       }
     ]
   },
@@ -22,16 +22,16 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    ClassRosterReportsComponent
+    ClassScheduleReportsComponent
   ],
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, ClassRosterService]
+  providers: [AuthGuard, ClassScheduleService]
 })
 
-export class ClassRosterReportsModule {
+export class ClassScheduleReportsModule {
   public static routes = routes;
 }

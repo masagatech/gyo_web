@@ -1,9 +1,9 @@
 <div class="card">
     <div class="header">
-        <h4>Class Roster</h4>
+        <h4>Class Schedule</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassRoster()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassSchedule()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassRoster();">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassSchedule();">
                             <option [value]="0">Select Academic year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown();getClassRoster();">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown();getClassSchedule();">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -163,21 +163,21 @@
                                     </div>
                                 </div>
                             </td>
-                            <td *ngIf="!isEditClassRoster">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addClassRoster()">
+                            <td *ngIf="!isEditClassSchedule">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addClassSchedule()">
                                     <i class="material-icons">add</i>
                                 </button>
                             </td>
-                            <td *ngIf="isEditClassRoster">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateClassRoster()">
+                            <td *ngIf="isEditClassSchedule">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateClassSchedule()">
                                     <i class="material-icons">done</i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="cancelClassRoster()">
+                                <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="cancelClassSchedule()">
                                     <i class="material-icons">cancel</i>
                                 </button>
                             </td>
                         </tr>
-                        <tr *ngFor="let row of classRosterDT; let i = index;">
+                        <tr *ngFor="let row of classScheduleDT; let i = index;">
                             <td>
                                 {{i+1}}
                             </td>
@@ -209,7 +209,7 @@
                                 {{row.satsubname}}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editClassRoster(row)">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editClassSchedule(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </td>

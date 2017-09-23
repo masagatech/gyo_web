@@ -10577,7 +10577,8 @@ body.waitMe_body .waitMe_container.text>div {
     vertical-align: middle;
 }
 
-.period {
+.period,
+.Lunch {
     background-color: #FF9800;
     color: #FFFFFF;
 }
@@ -10586,11 +10587,23 @@ body.waitMe_body .waitMe_container.text>div {
 .Off {
     background-color: #E91E63;
     color: #FFFFFF;
+    width: 75px!important;
 }
 
+.holiday,
 .Holiday {
     background-color: #03A9F4;
     color: #FFFFFF;
+}
+
+.Total {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.Total td {
+    font-size: 15px!important;
+    font-weight: bold!important;
 }
 
 .act-red {

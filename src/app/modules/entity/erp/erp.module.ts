@@ -16,7 +16,8 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
-                    { path: 'classroster', loadChildren: './classroster#ClassRosterModule' },
+                    { path: 'classschedule', loadChildren: './classschedule#ClassScheduleModule' },
+                    { path: 'classfees', loadChildren: './classfees#ClassFeesModule' },
                     { path: 'assignment', loadChildren: './assignment#AssignmentModule' },
                     { path: 'notification', loadChildren: './notification#NotificationModule' },
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },

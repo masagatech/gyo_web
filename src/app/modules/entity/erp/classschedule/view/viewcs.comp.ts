@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassRosterService } from '@services/erp';
+import { ClassScheduleService } from '@services/erp';
 
 @Component({
-    templateUrl: 'viewcr.comp.html',
+    templateUrl: 'viewcs.comp.html',
     providers: [CommonService]
 })
 
-export class ViewClassRosterComponent implements OnInit, OnDestroy {
+export class ViewClassScheduleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -33,7 +33,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     defaultDate: string = "";
 
     subjectDT: any = [];
-    classRosterDT: any = [];
+    classScheduleDT: any = [];
 
     id: number = 0;
     ttid: number = 0;
@@ -45,7 +45,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
     rsttyp: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cd: ChangeDetectorRef,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassRosterService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -108,7 +108,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "viewby": "portal"
         }).subscribe(data => {
             try {
@@ -135,7 +135,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "subjectddl", "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -161,11 +161,12 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "employee",
+            "flag": "clswisetchr",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "emptype": "tchr",
+            "classid": this.classid,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -186,18 +187,18 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         this.tchrname = event.label;
     }
 
-    // Get Class Roster
+    // Get Class Schedule
 
-    getClassRoster() {
+    getClassSchedule() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassRoster({
+        that._clsrstservice.getClassSchedule({
             "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classRosterDT = data.data;
+                that.classScheduleDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -265,7 +266,7 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
-                    that.getClassRoster();
+                    that.getClassSchedule();
                     that.dialogVisible = false;
                 }
                 else {
@@ -285,8 +286,8 @@ export class ViewClassRosterComponent implements OnInit, OnDestroy {
         this.dialogVisible = false;
     }
 
-    addNewClassRoster() {
-        this._router.navigate(['/erp/classroster/add']);
+    addNewClassSchedule() {
+        this._router.navigate(['/erp/classschedule/add']);
     }
 
     public ngOnDestroy() {
