@@ -59,7 +59,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Teacher</label>
-                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="4" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="4" (onSelect)="selectTeacherData($event)"
+                            [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1"
+                            [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>
@@ -77,53 +79,60 @@
     <div class="body">
         <div #class class="row clearfix">
             <div class="col-md-12 reports" *ngIf="schtype == 'weekly'">
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr>
-                            <th width="200px">Date / Time</th>
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
-                            <th>Saturday</th>
-                            <th>Sunday</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let row of classScheduleDT | groupBy: 'caldate'">
-                        <tr class="tr-table">
-                            <th colspan="8">
-                                {{row.key}}
-                            </th>
-                        </tr>
-                        <tr *ngFor="let drow of row.value">
-                            <td>
-                                {{drow.caltime}}
-                            </td>
-                            <td class="{{drow.mon}}">
-                                {{drow.mon}}
-                            </td>
-                            <td class="{{drow.tue}}">
-                                {{drow.tue}}
-                            </td>
-                            <td class="{{drow.wed}}">
-                                {{drow.wed}}
-                            </td>
-                            <td class="{{drow.thu}}">
-                                {{drow.thu}}
-                            </td>
-                            <td class="{{drow.fri}}">
-                                {{drow.fri}}
-                            </td>
-                            <td class="{{drow.sat}}">
-                                {{drow.sat}}
-                            </td>
-                            <td class="{{drow.sun}}">
-                                {{drow.sun}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div *ngFor="let row of classScheduleDT | groupBy: 'classname'">
+                    <div class="header">
+                        <b>Class : {{row.key}}</b>
+                    </div>
+                    <div class="body">
+                        <table class="table table-bordered table-responsive">
+                            <thead>
+                                <tr>
+                                    <th width="200px">Date / Time</th>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                    <th>Saturday</th>
+                                    <th>Sunday</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let drow of row.value | groupBy: 'caldate'">
+                                <tr class="tr-table">
+                                    <th colspan="8">
+                                        {{drow.key}}
+                                    </th>
+                                </tr>
+                                <tr *ngFor="let mrow of drow.value">
+                                    <td>
+                                        {{mrow.caltime}}
+                                    </td>
+                                    <td class="{{mrow.mon}}">
+                                        {{mrow.mon}}
+                                    </td>
+                                    <td class="{{mrow.tue}}">
+                                        {{mrow.tue}}
+                                    </td>
+                                    <td class="{{mrow.wed}}">
+                                        {{mrow.wed}}
+                                    </td>
+                                    <td class="{{mrow.thu}}">
+                                        {{mrow.thu}}
+                                    </td>
+                                    <td class="{{mrow.fri}}">
+                                        {{mrow.fri}}
+                                    </td>
+                                    <td class="{{mrow.sat}}">
+                                        {{mrow.sat}}
+                                    </td>
+                                    <td class="{{mrow.sun}}">
+                                        {{mrow.sun}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-12 reports" *ngIf="schtype == 'monthly'">
@@ -137,16 +146,21 @@
                             <th width="100px" align="right">Total</th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of classScheduleDT">
-                        <tr class="{{row.class}}">
+                    <tbody *ngFor="let row of classScheduleDT | groupBy: 'classname'">
+                        <tr class="tr-table">
+                            <th colspan="14">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value" class="{{drow.class}}">
                             <td>
-                                {{row.subname}}
+                                {{drow.subname}}
                             </td>
                             <td *ngFor="let cscol of classScheduleColumn" align="right">
-                                {{row[cscol.monthname] == null ? 0 : row[cscol.monthname]}}
+                                {{drow[cscol.monthname] == null ? 0 : drow[cscol.monthname]}}
                             </td>
                             <td align="right">
-                                {{row.total}}
+                                {{drow.total}}
                             </td>
                         </tr>
                     </tbody>
