@@ -23,6 +23,7 @@ export const routes = [
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
                     
                     { path: 'leave', loadChildren: './passengerleave#PassengerLeaveModule' },
+                    { path: 'album', loadChildren: './album#AlbumModule' },
                 ]
             }
         ]

@@ -43,7 +43,7 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getClassSchedule();
+        this.getClassScheduleData();
     }
 
     public ngOnInit() {
@@ -114,7 +114,7 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getClassSchedule();
+        this.getClassScheduleData();
     }
 
     // Export
@@ -159,12 +159,23 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
     getClassScheduleData() {
         var that = this;
 
+        if (that.schtype == "weekly") {
+            that.getWeeklyClassSchedule();
+        }
+        else {
+            that.getMonthlyClassSchedule();
+        }
+    }
+
+    getMonthlyClassSchedule() {
+        var that = this;
+
         that._clsrstservice.getClassSchedule({
             "flag": "column", "ayid": that.ayid
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.classScheduleColumn = data.data;
-                that.getClassSchedule();
+                that.getWeeklyClassSchedule();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -172,13 +183,13 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getClassSchedule() {
+    getWeeklyClassSchedule() {
         var that = this;
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
             "flag": that.schtype, "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby":"portal"
         }).subscribe(data => {
             try {
                 that.classScheduleDT = data.data;
@@ -217,7 +228,7 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         this.tchrdata = [];
         this.tchrid = 0;
         this.tchrname = ""
-        this.getClassSchedule();
+        this.getClassScheduleData();
     }
 
     public ngOnDestroy() {

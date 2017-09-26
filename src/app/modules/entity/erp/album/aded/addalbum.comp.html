@@ -1,0 +1,120 @@
+<div class="card">
+    <div class="header">
+        <h4>Album</h4>
+        <ul class="header-dropdown m-r--5">
+            <li *ngIf="albumid !== 0">
+                <span class="switch">
+                    <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveAlbumInfo()"><span class="lever"></span></label>
+                </span>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveAlbumInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Academic Year <strong>*</strong></label>
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                                    <option [value]="0">Select Academic Year</option>
+                                    <option *ngFor="let row of ayDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="title" class="form-control title" maxlength="20" tabindex="2" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Description</label>
+                                <textarea [(ngModel)]="desc" rows="5" class="form-control no-resize auto-growth desc" maxlength="500" tabindex="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                <li role="presentation" class="active"><a href="#photo" data-toggle="tab">Photo</a></li>
+                <li role="presentation"><a href="#video" data-toggle="tab">Video</a></li>
+                <li role="presentation"><a href="#audio" data-toggle="tab">Audio</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="photo">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" chooseLabel="Upload Photos" (onUpload)="onPhotoUpload($event)" multiple="multiple" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadPhotosDT.length">
+                        <div *ngFor="let row of uploadPhotosDT" class="box">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img src="{{uploadphotoconfig.uploadurl + row.phurl}}" height="80px" />
+                                </div>
+                                <div class="col-md-3">
+                                    <b>Size : </b> {{formatSizeUnits(row.phsize)}}
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" [(ngModel)]="row.tagname" class="form-control tagname" maxlength="100" tabindex="4" (keydown.tab)="addPhotoTag(row)" (keydown.enter)="addPhotoTag(row)" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <span *ngFor="let trow of row.tagDT">
+                                            {{trow.tagname}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" align="right">
+                                    <a role="button" (click)="removePhotoUpload()"><i class="fa fa-remove"></i></a>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="video">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" [(ngModel)]="video" class="form-control video" maxlength="100" tabindex="5" />
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="audio">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="text" [(ngModel)]="audio" class="form-control audio" maxlength="100" tabindex="6" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
