@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="header">
+        <h4>Album</h4>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                    <li role="presentation" class="active"><a href="#photo" data-toggle="tab">Photo</a></li>
+                    <li role="presentation"><a href="#video" data-toggle="tab">Video</a></li>
+                    <li role="presentation"><a href="#audio" data-toggle="tab">Audio</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="photo">
+                        <div *ngIf="uploadPhotoDT.length">
+                            <div *ngFor="let row of uploadPhotoDT" class="box">
+                                <div class="col-md-3" align="center">
+                                    <img title="{{row.tagname}}" src="{{global.uploadurl + row.gurl}}" height="150px" />
+                                    <br />
+                                    <b>Size : </b> {{formatSizeUnits(row.gsize)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="video">
+                        <div *ngIf="uploadVideoDT.length">
+                            <div class="row clearfix">
+                                <div *ngFor="let row of uploadVideoDT" class="box">
+                                    <div class="col-md-3" align="center">
+                                        <img class="ythumb" src="http://img.youtube.com/vi/{{row.thumb}}/0.jpg" height="150px" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="audio">
+                        <div *ngIf="uploadAudioDT.length">
+                            <div class="row clearfix">
+                                <div *ngFor="let row of uploadAudioDT" class="box">
+                                    <div class="col-md-3">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

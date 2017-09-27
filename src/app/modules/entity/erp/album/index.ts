@@ -7,7 +7,7 @@ import { AuthGuard } from '@services';
 import { AddAlbumComponent } from './aded/addalbum.comp';
 import { ViewAlbumComponent } from './view/viewalbum.comp';
 
-import { AlbumService } from '@services/erp';
+import { GalleryService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
@@ -32,7 +32,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, AlbumService]
+  providers: [AuthGuard, GalleryService]
 })
 
 export class AlbumModule {

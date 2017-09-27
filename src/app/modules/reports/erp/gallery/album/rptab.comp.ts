@@ -7,11 +7,11 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewalbum.comp.html',
+    templateUrl: 'rptab.comp.html',
     providers: [CommonService]
 })
 
-export class ViewAlbumComponent implements OnInit {
+export class AlbumReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -27,7 +27,7 @@ export class ViewAlbumComponent implements OnInit {
     }
 
     public ngOnInit() {
-        
+
     }
 
     // Get File Size
@@ -81,50 +81,7 @@ export class ViewAlbumComponent implements OnInit {
         })
     }
 
-    totalPhotoCount() {
-        var that = this;
-        var totalph = 0;
-
-        for (var i = 0; i < that.albumDT.length; i++) {
-            var field = that.albumDT[i];
-
-            totalph += parseInt(field.countph);
-        }
-
-        return totalph;
-    }
-
-    totalVideoCount() {
-        var that = this;
-        var totalvd = 0;
-
-        for (var i = 0; i < that.albumDT.length; i++) {
-            var field = that.albumDT[i];
-
-            totalvd += parseInt(field.countvd);
-        }
-
-        return totalvd;
-    }
-
-    totalAudioCount() {
-        var that = this;
-        var totalad = 0;
-
-        for (var i = 0; i < that.albumDT.length; i++) {
-            var field = that.albumDT[i];
-
-            totalad += parseInt(field.countad);
-        }
-
-        return totalad;
-    }
-
-    public addAlbumForm() {
-        this._router.navigate(['/erp/album/add']);
-    }
-
-    public editAlbumForm(row) {
-        this._router.navigate(['/erp/album/edit', row.albumid]);
+    public openGalleryForm(row) {
+        this._router.navigate(['/reports/erp/gallery/album', row.albumid]);
     }
 }

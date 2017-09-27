@@ -10736,3 +10736,61 @@ td {
 .empty-message {
     margin: 12px;
 }
+
+.pic {
+    width: 400px;
+    height: 217px;
+    /* background: url(http://www.corelangs.com/css/box/img/tiger.png) no-repeat; */
+}
+
+.text {
+    width: 340px;
+    height: 217px;
+    background: #FFF;
+    opacity: 0;
+}
+
+.pic:hover .text {
+    opacity: 0.6;
+    text-align: justify;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Times New Roman", Times, serif;
+    padding: 30px;
+}
+
+
+/*.imageHolder {
+    position: relative;
+    width: 285px;
+    height: 175px;
+}
+
+.imageHolder .caption {
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    top: 40%;
+    left: 0px;
+    color: #ffffff;
+    background: green;
+    text-align: center;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+#wrapper {}
+
+#wrapper .text {
+    position: relative;
+    bottom: 30px;
+    left: 0px;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+
+#wrapper:hover .text {
+    visibility: visible;
+} */

@@ -22,7 +22,7 @@
         <div class="row clearfix">
             <div class="col-md-6 border">
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Academic Year <strong>*</strong></label>
@@ -35,24 +35,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Title <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="title" class="form-control title" maxlength="20" tabindex="2" />
+                                <label class="control-label">Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="date" class="form-control date" maxlength="20" tabindex="2" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Description</label>
-                                <textarea [(ngModel)]="desc" rows="5" class="form-control no-resize auto-growth desc" maxlength="500" tabindex="3"></textarea>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="title" class="form-control title" maxlength="20" tabindex="3" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadcoverconfig.server + '?width=150'}}" chooseLabel="{{chooseCoverLabel}}" (onUpload)="onCoverUpload($event)" accept="{{uploadcoverconfig.acceptedFiles}}" maxFileSize="{{uploadcoverconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadCoverDT.length">
+                        <div *ngFor="let file of uploadCoverDT" class="box">
+                            <div class="row clearfix">
+                                <div class="col-md-9">
+                                    <img src="{{uploadcoverconfig.uploadurl + file.coverph}}" onerror="this.src='assets/img/album.gif';" height="40px" />
+                                </div>
+                                <div class="col-md-3" align="right">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeCoverUpload()">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description</label>
+                        <textarea [(ngModel)]="desc" rows="5" class="form-control no-resize auto-growth desc" maxlength="500" tabindex="4"></textarea>
                     </div>
                 </div>
             </div>
@@ -67,22 +91,22 @@
 
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="photo">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" chooseLabel="Upload Photos" (onUpload)="onPhotoUpload($event)" multiple="multiple" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=250'}}" chooseLabel="Upload Photos" (onUpload)="onPhotoUpload($event)" multiple="multiple" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
 
-                    <div *ngIf="uploadPhotosDT.length">
-                        <div *ngFor="let row of uploadPhotosDT" class="box">
+                    <div *ngIf="uploadPhotoDT.length">
+                        <div *ngFor="let row of uploadPhotoDT" class="box">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img src="{{uploadphotoconfig.uploadurl + row.phurl}}" height="80px" />
+                                    <img src="{{uploadphotoconfig.uploadurl + row.gurl}}" height="80px" />
                                 </div>
                                 <div class="col-md-3">
-                                    <b>Size : </b> {{formatSizeUnits(row.phsize)}}
+                                    <b>Size : </b> {{formatSizeUnits(row.gsize)}}
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" [(ngModel)]="row.tagname" class="form-control tagname" maxlength="100" tabindex="4" (keydown.tab)="addPhotoTag(row)" (keydown.enter)="addPhotoTag(row)" />
+                                            <input type="text" [(ngModel)]="row.tagname" class="form-control tagname" maxlength="100" tabindex="5" (keydown.tab)="addPhotoTag(row)" (keydown.enter)="addPhotoTag(row)" />
                                         </div>
                                     </div>
 
@@ -93,7 +117,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2" align="right">
-                                    <a role="button" (click)="removePhotoUpload()"><i class="fa fa-remove"></i></a>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <hr />
@@ -101,18 +129,74 @@
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="video">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="text" [(ngModel)]="video" class="form-control video" maxlength="100" tabindex="5" />
-                        </div>
-                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="vdurl" placeholder="e.g. https://www.youtube.com/watch?v=RYMH3qrHFEM" class="form-control vdurl" maxlength="100" tabindex="6" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="addVideo()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of uploadVideoDT">
+                            <td>
+                                {{row.gurl}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editVideo()">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="cancelVideo()">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="audio">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="text" [(ngModel)]="audio" class="form-control audio" maxlength="100" tabindex="6" />
-                        </div>
-                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="adurl" class="form-control adurl" maxlength="100" tabindex="7" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="addAudio()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of uploadAudioDT">
+                            <td>
+                                {{row.gurl}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editAudio()">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="cancelAudio()">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

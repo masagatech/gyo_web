@@ -4,7 +4,7 @@ import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class AlbumService {
+export class GalleryService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     getAlbumDetails(req: any) {
@@ -13,5 +13,9 @@ export class AlbumService {
 
     saveAlbumInfo(req: any) {
         return this._dataserver.post(Globals.erproute + "saveAlbumInfo", req)
+    }
+
+    getGalleryDetails(req: any) {
+        return this._dataserver.post(Globals.erproute + "getGalleryDetails", req)
     }
 }

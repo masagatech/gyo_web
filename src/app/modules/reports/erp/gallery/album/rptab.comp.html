@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="header">
+        <h4>Album</h4>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataGrid [value]="albumDT" [paginator]="true" [rows]="20">
+                    <ng-template let-row pTemplate="item">
+                        <div style="padding:3px" class="col-md-4">
+                            <p-panel [style]="{'text-align':'center'}">
+                                <p-header>
+                                    <div class="row clearfix">
+                                        <div class="col-md-1">
+                                            <i class="material-icons sm-font">{{row.isactive ? 'done' : 'cancel'}}</i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            {{row.title}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a role="button" (click)="openGalleryForm(row)"><i class="material-icons sm-font">arrow_forward</i></a>
+                                        </div>
+                                    </div>
+                                </p-header>
+
+                                <div class="row clearfix">
+                                    <div class="col-md-4 border">
+                                        <a role="button" (click)="openGalleryForm(row)">
+                                            <img alt="{{row.title}}" src="{{global.uploadurl + row.coverph}}" onerror="this.src='assets/img/album.gif';" height="100px">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-8" align="left">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12">
+                                                <b>Count Photo : </b>{{row.countph}}
+                                                <br>
+                                                <b>Photo Size : </b>{{formatSizeUnits(row.phsize)}}
+                                            </div>
+                                            <div class="col-md-12">
+                                                <b>Count Video : </b>{{row.countvd}}
+                                            </div>
+                                            <div class="col-md-12">
+                                                <b>Count Audio : </b>{{row.countad}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-panel>
+                        </div>
+                    </ng-template>
+                </p-dataGrid>
+            </div>
+        </div>
+    </div>
+</div>

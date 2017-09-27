@@ -1,36 +1,113 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-9 col-xs-9">
-                <h4>Album</h4>
-            </div>
-            <div class="col-md-1 col-xs-1" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addAlbumForm()">
-                    <i class="material-icons">add</i></button>
-            </div>
-        </div>
+        <h4>Album</h4>
     </div>
 
     <div class="body no-padding">
         <div class="row clearfix">
-            <div class="col-md-12">
-                <p-dataTable [value]="albumDT">
-                    <p-column header="" [style]="{'width':'60px','text-align':'center'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.albumname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                        </ng-template>
-                    </p-column>
-                    <p-column field="title" header="Title" [style]="{'width':'200px','text-align':'left'}"></p-column>
-                    <p-column field="desc" header="Description" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editAlbumForm(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
-                </p-dataTable>
+            <div class="col-md-3">
             </div>
+            <div class="col-md-6">
+                <table class="table table-bordered" align="center">
+                    <tr>
+                        <th>
+                            New Album
+                        </th>
+                        <th>
+                            Photo
+                        </th>
+                        <td>
+                            {{totalPhotoCount()}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" rowspan="2">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="addAlbumForm()">
+                                <i class="material-icons">add</i></button>
+                        </td>
+                        <th>
+                            Video
+                        </th>
+                        <td>
+                            {{totalVideoCount()}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Audio
+                        </th>
+                        <td>
+                            {{totalAudioCount()}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataGrid [value]="albumDT" [paginator]="true" [rows]="20">
+                    <ng-template let-row pTemplate="item">
+                        <div style="padding:3px" class="col-md-4">
+                            <p-panel [style]="{'text-align':'center'}">
+                                <p-header>
+                                    <div class="row clearfix">
+                                        <div class="col-md-1">
+                                            <i class="material-icons sm-font">{{row.isactive ? 'done' : 'cancel'}}</i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            {{row.title}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a role="button" (click)="editAlbumForm(row)"><i class="material-icons sm-font">edit</i></a>
+                                        </div>
+                                    </div>
+                                </p-header>
+
+                                <div class="row clearfix">
+                                    <div class="col-md-4 border">
+                                        <img alt="{{row.title}}" src="{{global.uploadurl + row.coverph}}" onerror="this.src='assets/img/album.gif';" height="100px">
+                                    </div>
+                                    <div class="col-md-8" align="left">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12">
+                                                <b>Count Photo : </b>{{row.countph}}
+                                                <br>
+                                                <b>Photo Size : </b>{{formatSizeUnits(row.phsize)}}
+                                            </div>
+                                            <div class="col-md-12">
+                                                <b>Count Video : </b>{{row.countvd}}
+                                            </div>
+                                            <div class="col-md-12">
+                                                <b>Count Audio : </b>{{row.countad}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-panel>
+                        </div>
+                    </ng-template>
+                </p-dataGrid>
+            </div>
+
+            <!-- <p-dataTable [value]="albumDT">
+                <p-column header="" [style]="{'width':'60px','text-align':'center'}">
+                    <ng-template let-row="rowData" pTemplate type="body">
+                        <img alt="{{row.title}}" src="{{global.uploadurl + row.coverph}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                    </ng-template>
+                </p-column>
+                <p-column field="title" header="Title" [style]="{'width':'200px','text-align':'left'}"></p-column>
+                <p-column field="desc" header="Description" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                <p-column [style]="{'width': '50px', 'align': 'left'}">
+                    <ng-template let-row="rowData" pTemplate type="body">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="editAlbumForm(row)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </ng-template>
+                </p-column>
+            </p-dataTable> -->
         </div>
     </div>
 </div>
