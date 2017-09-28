@@ -184,7 +184,9 @@ export class AddClassFeesComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-
+                            that.fillFeesCategory();
+                            that.installmentDT = [];
+                            that.classid = 0;
                         }
                         else {
                             that.backViewData();
