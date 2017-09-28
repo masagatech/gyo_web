@@ -1934,6 +1934,12 @@ select.selectpicker {
     right: 0;
 }
 
+.inputinlineserachico {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .inputlinkico {
     position: absolute;
     top: 17px;

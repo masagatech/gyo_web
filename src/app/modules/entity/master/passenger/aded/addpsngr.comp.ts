@@ -338,9 +338,9 @@ export class AddPassengerComponent implements OnInit {
             else {
                 that._msg.Show(messageType.error, "Error", "Couldn't find your Location");
             }
-
-            commonfun.loaderhide();
         });
+
+        commonfun.loaderhide();
     }
 
     // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
@@ -576,7 +576,9 @@ export class AddPassengerComponent implements OnInit {
 
     savePassengerInfo() {
         var that = this;
-        var isvalid: boolean = that.isValidPassenger();
+        var isvalid: boolean = false;
+
+        isvalid = that.isValidPassenger();
 
         if (isvalid) {
             commonfun.loader();

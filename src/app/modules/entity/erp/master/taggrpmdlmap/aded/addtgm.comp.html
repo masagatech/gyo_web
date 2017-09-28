@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="header">
+        <h4>Tag Group Module Map</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveTagGroupModuleMap()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Module <strong>*</strong></label>
+                        <select id="mdlid" name="mdlname" [(ngModel)]="mdlcode" class="form-control mdlname" tabindex="5">
+                            <option [value]="''">Select Module</option>
+                            <option *ngFor="let row of moduleDT" [value]="row.id">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row clearfix" *ngIf="tagGroupDT.length">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <label for="selectall">Select All</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="allcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of tagGroupDT; let i = index;">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <span id="tag{{row.id}}">
+                                                <input id="{{row.id}}" name="tag{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <label for="{{row.id}}">{{row.val}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

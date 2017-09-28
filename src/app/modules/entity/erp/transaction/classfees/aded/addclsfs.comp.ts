@@ -17,11 +17,22 @@ export class AddClassFeesComponent implements OnInit {
 
     ayDT: any = [];
     classDT: any = [];
+    categoryDT: any = [];
+
+    feesDT: any = [];
+    cfid: number = 0;
+    catid: number = 0;
+    catfees: any = "";
+
     installmentDT: any = [];
+    instlid: number = 0;
+    instlfees: any = "";
+    duedate: any = "";
+    pnltyfees: any = "";
 
     ayid: number = 0;
     classid: number = 0;
-    
+
     private subscribeParameters: any;
 
     constructor(private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -30,6 +41,7 @@ export class AddClassFeesComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
+        this.fillFeesCategory();
     }
 
     public ngOnInit() {
@@ -48,7 +60,7 @@ export class AddClassFeesComponent implements OnInit {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
                 that.classDT = data.data.filter(a => a.group == "class");
-                that.installmentDT = data.data.filter(a => a.group == "feesplan");
+                // that.categoryDT = data.data.filter(a => a.group == "feescategory");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -62,6 +74,71 @@ export class AddClassFeesComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Fill Fees Category
+
+    fillFeesCategory() {
+        var that = this;
+        var _feesDT: any = [];
+        commonfun.loader();
+
+        that._feesservice.getClassFees({
+            "flag": "feescategory", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                _feesDT = data.data;
+
+                for (var i = 0; i < _feesDT.length; i++) {
+                    var field = _feesDT[i];
+
+                    that.feesDT.push({
+                        "cfid": that.cfid, "ayid": that.ayid, "clsid": that.classid, "catid": field.id, "catname": field.val, "catfees": "0",
+                        "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                        "isactive": true
+                    })
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Add Fees Installment
+
+    addFeesInstallment() {
+        var that = this;
+
+        if (that.instlfees == "") {
+            that._msg.Show(messageType.info, "Info", "Please Enter Fees");
+        }
+        else if (that.duedate == "") {
+            that._msg.Show(messageType.info, "Info", "Please Enter Due Date");
+        }
+        else if (that.pnltyfees == "") {
+            that._msg.Show(messageType.info, "Info", "Please Enter Panelty Fees");
+        }
+        else {
+            that.installmentDT.push({
+                "instlid": that.instlid, "ayid": that.ayid, "clsid": that.classid, "instlfees": that.instlfees, "duedate": that.duedate,
+                "pnltyfees": that.pnltyfees, "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "isactive": true
+            })
+
+            that.instlid = 0;
+            that.instlfees = "";
+            that.duedate = "";
+            that.pnltyfees = "";
+        }
     }
 
     // Save Class Fees
@@ -80,17 +157,26 @@ export class AddClassFeesComponent implements OnInit {
         else {
             commonfun.loader();
 
-            var saveassignment = {
-                "ayid": that.ayid,
-                "classid": that.classid,
-                "cuid": that.loginUser.ucode,
-                "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid
+            // if (field.catfees == "") {
+            //     that._msg.Show(messageType.info, "Info", "Please Enter Fees");
+            // }
+            // else {
+
+            // for (var i = 0; i < that.feesDT.length; i++) {
+            //     var _tagids: string[] = [];
+            //     _tagids = Object.keys(that.uploadPhotoDT[i].tagDT).map(function (k) { return (that.uploadPhotoDT[i].tagDT[k].tagid || 0) });
+
+            //     that.feesDT[i].catfees = _tagids;
+            // }
+
+            var saveclassfees = {
+                "classfees": that.feesDT,
+                "feesinstallment": that.installmentDT
             }
 
-            this._feesservice.saveClassFees(saveassignment).subscribe(data => {
+            this._feesservice.saveClassFees(saveclassfees).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_assignmentinfo;
+                    var dataResult = data.data[0].funsave_classfees;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
 
@@ -98,7 +184,7 @@ export class AddClassFeesComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            
+
                         }
                         else {
                             that.backViewData();

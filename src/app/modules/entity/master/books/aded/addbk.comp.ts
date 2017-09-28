@@ -16,6 +16,9 @@ export class AddBooksComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    classDT: any = [];
+    classid: number = 0;
+
     subjectDT: any = [];
     subid: number = 0;
 
@@ -35,7 +38,9 @@ export class AddBooksComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
+        this.fillClassDropDown();
+        this.fillSubjectDropDown();
+        this.fillBookTypeDropDown();
     }
 
     public ngOnInit() {
@@ -57,17 +62,98 @@ export class AddBooksComponent implements OnInit {
         that.bktypid = 0;
         that.athrname = "";
         that.publication = "";
+        that.classid = 0;
         that.subid = 0;
+    }
+
+    // Fill Class Drop Down
+
+    fillClassDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._bkservice.getBooksDetails({
+            "flag": "classddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.classDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Fill Subject Drop Down
+
+    fillSubjectDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._bkservice.getBooksDetails({
+            "flag": "subjectddl", "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.subjectDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Fill Book Type Drop Down
+
+    fillBookTypeDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._bkservice.getBooksDetails({ "flag": "bktypeddl" }).subscribe(data => {
+            try {
+                that.bktypeDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Save Books
 
     saveBooksInfo() {
         var that = this;
-        
-        if (that.subid == 0) {
+
+        if (that.classid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Class");
+            $(".classid").focus();
+        }
+        else if (that.subid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Subject");
-            $(".subname").focus();
+            $(".subid").focus();
         }
         else if (that.bktypid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Book Type");
@@ -86,6 +172,7 @@ export class AddBooksComponent implements OnInit {
                 "bkdesc": that.bkdesc,
                 "bktypid": that.bktypid,
                 "subid": that.subid,
+                "classid": that.classid,
                 "athrname": that.athrname,
                 "publication": that.publication,
                 "cuid": that.loginUser.ucode,
@@ -145,8 +232,10 @@ export class AddBooksComponent implements OnInit {
                         that.bkid = viewntf[0].bkid;
                         that.bkname = viewntf[0].bkname;
                         that.bkdesc = viewntf[0].bkdesc;
-                        that.bktypid = data.data[0].bktypid;
+                        that.classid = data.data[0].classid;
+                        that.fillSubjectDropDown();
                         that.subid = data.data[0].subid;
+                        that.bktypid = data.data[0].bktypid;
                         that.athrname = data.data[0].athrname;
                         that.publication = data.data[0].publication;
                     }
@@ -168,31 +257,6 @@ export class AddBooksComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
-    }
-
-    // Fill Group Drop Down and Checkbox List For Standard
-
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
-
-        that._bkservice.getBooksDetails({ "flag": "dropdown" }).subscribe(data => {
-            try {
-                that.subjectDT = data.data.filter(a => a.group == "subject");
-                that.bktypeDT = data.data.filter(a => a.group == "bktype");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     // Back For View Data

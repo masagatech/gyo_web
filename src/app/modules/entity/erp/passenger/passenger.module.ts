@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ERPComponent } from '../erp/erp.comp';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { ERPPassengerComponent } from '../passenger/passenger.comp';
+import { AuthGuard } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -9,15 +9,13 @@ import { CommonModule } from '@angular/common';
 export const routes = [
     {
         path: '',
-        component: ERPComponent,
+        component: ERPPassengerComponent,
         canActivate: [AuthGuard],
         children: [
             {
                 path: '',
                 children: [
-                    { path: 'master', loadChildren: './master#ERPMasterModule' },
-                    { path: 'transaction', loadChildren: './transaction#ERPTransactionModule' },
-                    { path: 'student', loadChildren: './passenger#ERPPassengerModule' },
+                    { path: 'birthday', loadChildren: './birthday#BirthdayModule' },
                 ]
             }
         ]
@@ -26,16 +24,15 @@ export const routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(routes),
-        SharedComponentModule,
         FormsModule,
         CommonModule,
     ],
     declarations: [
-        ERPComponent
+        ERPPassengerComponent
     ],
     providers: [AuthGuard]
 })
 
-export class ERPModule {
+export class ERPPassengerModule {
 
 }

@@ -1,0 +1,143 @@
+<div class="card">
+    <div class="header">
+        <h4>Class Fees</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassFees()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-5">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th width="100px">Category</th>
+                            <th width="100px">Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of feesDT">
+                        <tr>
+                            <td>
+                                {{row.catname}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="row.catfees" class="form-control text-right" tabindex="3">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th width="50px">Installment</th>
+                            <th width="100px">Fees</th>
+                            <th width="100px">Due Date</th>
+                            <th width="100px">Panalty Fees</th>
+                            <th width="50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#</td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="instlfees" class="form-control" tabindex="4">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="date" [(ngModel)]="duedate" class="form-control" tabindex="5">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="pnltyfees" class="form-control" tabindex="6">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="addFeesInstallment()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of installmentDT; let i = index;">
+                            <td>
+                                {{i + 1}}
+                            </td>
+                            <td>
+                                {{row.instlfees}}
+                            </td>
+                            <td>
+                                {{row.duedate}}
+                            </td>
+                            <td>
+                                {{row.pnltyfees}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editFeesInstallment">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteFeesInstallment">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

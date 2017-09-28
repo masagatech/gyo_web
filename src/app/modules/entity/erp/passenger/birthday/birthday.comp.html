@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="header">
+        <h4>
+            {{_enttdetails.psngrtype}} Birthday List
+        </h4>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="birthdayDT">
+                    <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                        </ng-template>
+                    </p-column>
+                    <p-column field="studentname" header="Student Name" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="gender" header="Gender" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="birthdate" header="Birth Date" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="age" header="Age" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

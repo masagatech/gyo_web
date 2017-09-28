@@ -17,9 +17,13 @@
                         <div *ngIf="uploadPhotoDT.length">
                             <div *ngFor="let row of uploadPhotoDT" class="box">
                                 <div class="col-md-3" align="center">
-                                    <img title="{{row.tagname}}" src="{{global.uploadurl + row.gurl}}" height="150px" />
-                                    <br />
-                                    <b>Size : </b> {{formatSizeUnits(row.gsize)}}
+                                    <div class="imageHolder">
+                                        <img title="{{row.tagname}}" src="{{global.uploadurl + row.gurl}}" height="150px" />
+                                        <div class="caption">
+                                            <b>Size : </b> {{formatSizeUnits(row.gsize)}}
+                                            <br /> {{row.tagname}}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +33,14 @@
                             <div class="row clearfix">
                                 <div *ngFor="let row of uploadVideoDT" class="box">
                                     <div class="col-md-3" align="center">
-                                        <img class="ythumb" src="http://img.youtube.com/vi/{{row.thumb}}/0.jpg" height="150px" />
+                                        <div class="videoHolder">
+                                            <a role="button" (click)="getGalleryVideo(row)">
+                                                <img class="ythumb" src="http://img.youtube.com/vi/{{row.thumb}}/0.jpg" height="150px" />
+                                                <div class="caption">
+                                                    <span class="material-icons">play_arrow</span>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -47,6 +58,24 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="galleryModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 1050px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Video
+                </h4>
+            </div>
+            <div class="modal-body" id="gallery">
+                <iframe id="ivideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { AddClassFeesComponent } from './aded/addclsfs.comp';
 
@@ -31,7 +31,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
+    DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
   providers: [AuthGuard, FeesService]

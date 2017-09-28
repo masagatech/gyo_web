@@ -38,6 +38,11 @@ export class AddAlbumComponent implements OnInit {
     selectedPhotos: any = [];
     uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
+    groupTagDT: any = [];
+    gtagdata: any = [];
+    gtagid: number = 0;
+    gtagnm: string = "";
+
     uploadVideoDT: any = [];
     vdid: number = 0;
     vdtitle: string = "";
@@ -103,7 +108,7 @@ export class AddAlbumComponent implements OnInit {
         that.uploadcoverconfig.serverpath = that.global.serviceurl;
         that.uploadcoverconfig.uploadurl = that.global.uploadurl;
         that.uploadcoverconfig.filepath = that.global.filepath;
-        
+
         that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
             that.uploadcoverconfig.maxFilesize = data.data[0]._filesize;
             that.uploadcoverconfig.acceptedFiles = data.data[0]._filetype;
@@ -196,17 +201,52 @@ export class AddAlbumComponent implements OnInit {
         return bytes;
     }
 
+    // Auto Completed Group Tag
+
+    getGroupTagData(event) {
+        let query = event.query;
+
+        this._glrservice.getAlbumDetails({
+            "flag": "grouptag",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.groupTagDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Group Tag
+
+    selectGroupTagData(event, row) {
+        row.gtagid = event.tagid;
+        row.gtagnm = event.tagnm;
+
+        row.gtagdata = [];
+
+        this.addPhotoTag(row);
+    }
+
     // Add Photo Tag
 
     addPhotoTag(row) {
         var that = this;
         var _uploadPhotoDT: any = [];
 
-        row.tagDT.push({ "tagname": row.tagname });
-        row.tagname = "";
+        row.tagDT.push({ "gtagid": row.gtagid, "gtagnm": row.gtagnm });
+        row.gtagid = 0;
+        row.gtagnm = "";
 
         // var _tags: string[] = [];
-        // _tags = Object.keys(row.tagDT).map(function (k) { return (row.tagDT[k].tagname || "") });
+        // _tags = Object.keys(row.tagDT).map(function (k) { return (row.tagDT[k].gtagnm || "") });
 
         // row.gtag = _tags;
     }
@@ -235,10 +275,12 @@ export class AddAlbumComponent implements OnInit {
             that.uploadVideoDT.push({
                 "gid": that.vdid,
                 "gtitle": "Video",
+                "gdesc": "Video",
                 "gurl": that.vdurl,
                 "gsize": 0,
                 "gtag": "{}",
                 "gtype": "youtube",
+                "remark3": "[]",
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode
@@ -268,6 +310,7 @@ export class AddAlbumComponent implements OnInit {
             that.uploadAudioDT.push({
                 "gid": that.adid,
                 "gtitle": "Audio",
+                "gdesc": "Audio",
                 "gurl": that.adurl,
                 "gsize": 0,
                 "gtag": "{}",
@@ -364,22 +407,10 @@ export class AddAlbumComponent implements OnInit {
             commonfun.loader();
 
             for (var i = 0; i < that.uploadPhotoDT.length; i++) {
-                var _tags: string[] = [];
-                _tags = Object.keys(that.uploadPhotoDT[i].tagDT).map(function (k) { return (that.uploadPhotoDT[i].tagDT[k].tagname || "") });
+                var _tagids: string[] = [];
+                _tagids = Object.keys(that.uploadPhotoDT[i].tagDT).map(function (k) { return (that.uploadPhotoDT[i].tagDT[k].tagid || 0) });
 
-                that.uploadPhotoDT[i].gtag = _tags;
-
-                // _uploadPhotoDT.push({
-                //     "gid": that.uploadPhotoDT[i].gid,
-                //     "gtitle": that.uploadPhotoDT[i].gtitle,
-                //     "gurl": that.uploadPhotoDT[i].gurl,
-                //     "gsize": that.uploadPhotoDT[i].gsize,
-                //     "gtag": _tags,
-                //     "gtype": that.uploadPhotoDT[i].gtype,
-                //     "enttid": that._enttdetails.enttid,
-                //     "wsautoid": that._enttdetails.wsautoid,
-                //     "cuid": that.loginUser.ucode
-                // })
+                that.uploadPhotoDT[i].gtagid = _tagids;
             }
 
             var savealbum = {
@@ -447,6 +478,7 @@ export class AddAlbumComponent implements OnInit {
                 that._glrservice.getAlbumDetails({
                     "flag": "edit",
                     "albumid": that.albumid,
+                    "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
@@ -472,6 +504,7 @@ export class AddAlbumComponent implements OnInit {
 
                         if (_photodata !== null) {
                             that.uploadPhotoDT = _photodata;
+                            console.log(that.uploadPhotoDT);
                         }
                         else {
                             that.uploadPhotoDT = [];
