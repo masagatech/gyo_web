@@ -13,10 +13,12 @@ export interface LoginUserModel {
   uid: number;
   ucode: string;
   utype: string;
+  utypename: string;
+  ctype: string;
+  ctypename: string;
   email: string;
   dispname: string;
   fullname: string;
-  utypename: string;
   uphoto: string;
   enttid: number;
   enttname: string;

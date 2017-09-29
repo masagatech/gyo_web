@@ -197,6 +197,6 @@ export class AddTagComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/tag']);
+        this._router.navigate(['/erp/master/tag']);
     }
 }

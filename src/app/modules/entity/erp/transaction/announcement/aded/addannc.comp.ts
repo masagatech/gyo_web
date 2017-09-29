@@ -273,6 +273,6 @@ export class AddAnnouncementComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/announcement']);
+        this._router.navigate(['/erp/transaction/announcement']);
     }
 }

@@ -83,7 +83,9 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._lvrptservice.getTeacherLeave({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "viewby": "portal"
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin,
+            "viewby": "portal"
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");

@@ -19,7 +19,11 @@ export const routes = [
       },
       {
         path: 'add', component: AddClassFeesComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "clsfees", "rights": "view", "urlname": "/classfees" }
+        data: { "module": "erp", "submodule": "clsfees", "rights": "add", "urlname": "/add" }
+      },
+      {
+        path: 'edit/:id', component: AddClassFeesComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "clsfees", "rights": "edit", "urlname": "/edit" }
       }
     ]
   },

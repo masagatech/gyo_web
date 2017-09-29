@@ -261,6 +261,6 @@ export class AddNotificationComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/notification']);
+        this._router.navigate(['/erp/transaction/notification']);
     }
 }

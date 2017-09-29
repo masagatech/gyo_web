@@ -108,7 +108,8 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
@@ -870,7 +871,7 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/classschedule']);
+        this._router.navigate(['/erp/transaction/classschedule']);
     }
 
     public ngOnDestroy() {

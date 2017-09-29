@@ -547,6 +547,6 @@ export class AddAlbumComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/album']);
+        this._router.navigate(['/erp/master/album']);
     }
 }

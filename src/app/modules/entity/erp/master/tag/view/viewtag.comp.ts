@@ -62,10 +62,10 @@ export class ViewTagComponent implements OnInit {
     }
 
     public addTagForm() {
-        this._router.navigate(['/erp/tag/add']);
+        this._router.navigate(['/erp/master/tag/add']);
     }
 
     public editTagForm(row) {
-        this._router.navigate(['/erp/tag/edit', row.tagid]);
+        this._router.navigate(['/erp/master/tag/edit', row.tagid]);
     }
 }

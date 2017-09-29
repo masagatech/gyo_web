@@ -362,6 +362,6 @@ export class AddPassengerLeaveComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/leave']);
+        this._router.navigate(['/erp/master/leave']);
     }
 }

@@ -57,10 +57,10 @@ export class ViewNotificationComponent implements OnInit {
     }
 
     public addNotification() {
-        this._router.navigate(['/erp/notification/add']);
+        this._router.navigate(['/erp/transaction/notification/add']);
     }
 
     public editNotification(row) {
-        this._router.navigate(['/erp/notification/edit', row.ntfid]);
+        this._router.navigate(['/erp/transaction/notification/edit', row.ntfid]);
     }
 }

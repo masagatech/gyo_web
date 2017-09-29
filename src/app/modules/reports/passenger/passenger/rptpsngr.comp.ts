@@ -121,7 +121,8 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._psngrservice.getPassengerDetails({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = data.data.filter(a => a.group === "class");

@@ -121,10 +121,10 @@ export class ViewAlbumComponent implements OnInit {
     }
 
     public addAlbumForm() {
-        this._router.navigate(['/erp/album/add']);
+        this._router.navigate(['/erp/master/album/add']);
     }
 
     public editAlbumForm(row) {
-        this._router.navigate(['/erp/album/edit', row.albumid]);
+        this._router.navigate(['/erp/master/album/edit', row.albumid]);
     }
 }

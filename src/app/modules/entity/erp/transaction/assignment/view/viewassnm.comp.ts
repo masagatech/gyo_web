@@ -55,10 +55,10 @@ export class ViewAssignmentComponent implements OnInit {
     }
 
     public addAssignment() {
-        this._router.navigate(['/erp/assignment/add']);
+        this._router.navigate(['/erp/transaction/assignment/add']);
     }
 
     public editAssignment(row) {
-        this._router.navigate(['/erp/assignment/edit', row.assnmid]);
+        this._router.navigate(['/erp/transaction/assignment/edit', row.assnmid]);
     }
 }

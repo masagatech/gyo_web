@@ -18,6 +18,7 @@ export const routes = [
                     { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
                     { path: 'tag', loadChildren: './tag#TagModule' },
                     { path: 'taggroupmodulemap', loadChildren: './taggrpmdlmap#TagGroupModuleMapModule' },
+                    { path: 'attendance', loadChildren: './attendance#AttendanceModule' },
                     { path: 'leave', loadChildren: './passengerleave#PassengerLeaveModule' },
                     { path: 'album', loadChildren: './album#AlbumModule' },
                 ]

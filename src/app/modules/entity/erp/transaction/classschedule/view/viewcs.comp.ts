@@ -109,7 +109,9 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "viewby": "portal"
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin,
+            "viewby": "portal"
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
@@ -195,7 +197,8 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
 
         that._clsrstservice.getClassSchedule({
             "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.classScheduleDT = data.data;
@@ -287,7 +290,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
     }
 
     addNewClassSchedule() {
-        this._router.navigate(['/erp/classschedule/add']);
+        this._router.navigate(['/erp/transaction/classschedule/add']);
     }
 
     public ngOnDestroy() {

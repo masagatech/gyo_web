@@ -25,6 +25,9 @@ export class AddClassFeesComponent implements OnInit {
     catfees: any = "";
 
     installmentDT: any = [];
+    selectedInstallmentFees: any = [];
+    iseditinstlfees: boolean = false;
+
     instlid: number = 0;
     instlfees: any = "";
     duedate: any = "";
@@ -45,7 +48,19 @@ export class AddClassFeesComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.getClassFees();
+        var that = this;
+        commonfun.loader();
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.classid = params['id'];
+                that.getClassFees();
+            }
+            else {
+                that.resetClassFees();
+                commonfun.loaderhide();
+            }
+        });
     }
 
     // Fill Academic Year, Class Drop Down
@@ -55,11 +70,12 @@ export class AddClassFeesComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getClassFees({
-            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
-                that.ayDT = data.data.filter(a => a.group == "ay");
-                that.classDT = data.data.filter(a => a.group == "class");
+                that.ayDT = data.data[0].filter(a => a.group == "ay");
+                that.classDT = data.data[0].filter(a => a.group == "class");
                 // that.categoryDT = data.data.filter(a => a.group == "feescategory");
             }
             catch (e) {
@@ -87,13 +103,13 @@ export class AddClassFeesComponent implements OnInit {
             "flag": "feescategory", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                _feesDT = data.data;
+                _feesDT = data.data[0];
 
                 for (var i = 0; i < _feesDT.length; i++) {
                     var field = _feesDT[i];
 
                     that.feesDT.push({
-                        "cfid": that.cfid, "ayid": that.ayid, "clsid": that.classid, "catid": field.id, "catname": field.val, "catfees": "0",
+                        "cfid": that.cfid, "ayid": 0, "clsid": 0, "catid": field.id, "catname": field.val, "catfees": "0",
                         "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                         "isactive": true
                     })
@@ -113,7 +129,62 @@ export class AddClassFeesComponent implements OnInit {
         })
     }
 
+    totalFeesCategory() {
+        var that = this;
+        var totalfees = 0;
+
+        for (var i = 0; i < that.feesDT.length; i++) {
+            var field = that.feesDT[i];
+
+            totalfees += parseInt(field.catfees);
+        }
+
+        return totalfees;
+    }
+
+    totalInstallmentFees() {
+        var that = this;
+        var totalinstlfees = 0;
+        var _installmentDT = [];
+        
+        _installmentDT = that.installmentDT.filter(a => a.isactive == true);
+
+        for (var i = 0; i < _installmentDT.length; i++) {
+            var field = _installmentDT[i];
+
+            totalinstlfees += parseInt(field.instlfees);
+        }
+
+        return totalinstlfees;
+    }
+
+    totalPenaltyFees() {
+        var that = this;
+        var totalpnltyfees = 0;
+        var _penaltyDT = [];
+        
+        _penaltyDT = that.installmentDT.filter(a => a.isactive == true);
+
+        for (var i = 0; i < _penaltyDT.length; i++) {
+            var field = _penaltyDT[i];
+
+            totalpnltyfees += parseInt(field.pnltyfees);
+        }
+
+        return totalpnltyfees;
+    }
+
     // Add Fees Installment
+
+    resetFeesInstallment() {
+        var that = this;
+
+        that.instlid = 0;
+        that.instlfees = "";
+        that.duedate = "";
+        that.pnltyfees = "";
+        that.iseditinstlfees = false;
+    }
 
     addFeesInstallment() {
         var that = this;
@@ -125,7 +196,7 @@ export class AddClassFeesComponent implements OnInit {
             that._msg.Show(messageType.info, "Info", "Please Enter Due Date");
         }
         else if (that.pnltyfees == "") {
-            that._msg.Show(messageType.info, "Info", "Please Enter Panelty Fees");
+            that._msg.Show(messageType.info, "Info", "Please Enter penalty Fees");
         }
         else {
             that.installmentDT.push({
@@ -134,47 +205,118 @@ export class AddClassFeesComponent implements OnInit {
                 "isactive": true
             })
 
-            that.instlid = 0;
-            that.instlfees = "";
-            that.duedate = "";
-            that.pnltyfees = "";
+            that.resetFeesInstallment();
         }
+    }
+
+    editFeesInstallment(row) {
+        var that = this;
+
+        that.selectedInstallmentFees = row;
+        that.iseditinstlfees = true;
+
+        that.instlid = row.instlid;
+        that.instlfees = row.instlfees;
+        that.duedate = row.editduedate;
+        that.pnltyfees = row.pnltyfees;
+    }
+
+    deleteFeesInstallment(row) {
+        row.isactive = false;
+    }
+
+    updateFeesInstallment() {
+        var that = this;
+
+        that.selectedInstallmentFees.instlfees = that.instlfees;
+        that.selectedInstallmentFees.duedate = that.duedate;
+        that.selectedInstallmentFees.pnltyfees = that.pnltyfees;
+
+        that.iseditinstlfees = false;
+        that.resetFeesInstallment();
+    }
+
+    // Reset Class Fees
+
+    resetClassFees() {
+        var that = this;
+
+        that.classid = 0;
+
+        for (var i = 0; i < that.feesDT.length; i++) {
+            var field = that.feesDT[i];
+
+            that.feesDT[i].catfees = 0;
+        }
+
+        that.installmentDT = [];
     }
 
     // Save Class Fees
 
-    saveClassFees() {
+    isValidClassFees() {
         var that = this;
 
+        var totalcatfees = that.totalFeesCategory();
+        var totalinstlfees = that.totalInstallmentFees();
+
         if (that.ayid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Academic Year");
+            that._msg.Show(messageType.info, "Info", "Select Academic Year");
             $(".ay").focus();
+            return false;
         }
-        else if (that.classid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Class");
+        if (that.classid == 0) {
+            that._msg.Show(messageType.info, "Info", "Select Class");
             $(".class").focus();
+            return false;
         }
-        else {
+
+        for (var i = 0; i < that.feesDT.length; i++) {
+            var field = that.feesDT[i];
+
+            if (field.catfees == "0") {
+                that._msg.Show(messageType.info, "Info", "Please Enter " + field.catname);
+                $("." + field.catname).focus();
+                return false;
+            }
+        }
+        
+        if (that.installmentDT.length == 0) {
+            that._msg.Show(messageType.info, "Info", "Fill atleast 1 Installment");
+            $(".class").focus();
+            return false;
+        }
+        if (totalcatfees != totalinstlfees) {
+            that._msg.Show(messageType.info, "Info", "Total Category Fees and Total Installment Fees Not Matched");
+            $(".class").focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    saveClassFees() {
+        var that = this;
+        var isvalid = false;
+
+        isvalid = that.isValidClassFees();
+
+        if (isvalid) {
             commonfun.loader();
 
-            // if (field.catfees == "") {
-            //     that._msg.Show(messageType.info, "Info", "Please Enter Fees");
-            // }
-            // else {
+            for (var i = 0; i < that.feesDT.length; i++) {
+                var field = that.feesDT[i];
 
-            // for (var i = 0; i < that.feesDT.length; i++) {
-            //     var _tagids: string[] = [];
-            //     _tagids = Object.keys(that.uploadPhotoDT[i].tagDT).map(function (k) { return (that.uploadPhotoDT[i].tagDT[k].tagid || 0) });
-
-            //     that.feesDT[i].catfees = _tagids;
-            // }
+                that.feesDT[i].ayid = that.ayid;
+                that.feesDT[i].clsid = that.classid;
+            }
 
             var saveclassfees = {
                 "classfees": that.feesDT,
                 "feesinstallment": that.installmentDT
             }
 
-            this._feesservice.saveClassFees(saveclassfees).subscribe(data => {
+            that._feesservice.saveClassFees(saveclassfees).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_classfees;
                     var msg = dataResult.msg;
@@ -184,9 +326,7 @@ export class AddClassFeesComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.fillFeesCategory();
-                            that.installmentDT = [];
-                            that.classid = 0;
+                            that.resetClassFees();
                         }
                         else {
                             that.backViewData();
@@ -217,40 +357,47 @@ export class AddClassFeesComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.classid = params['id'];
+        that._feesservice.getClassFees({
+            "flag": "edit", "ayid": that.ayid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                if (data.data[0].length > 0) {
+                    that.ayid = data.data[0][0].ayid;
+                    that.classid = data.data[0][0].clsid;
 
-                that._feesservice.getClassFees({
-                    "flag": "edit", "ayid": that.ayid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-                }).subscribe(data => {
-                    try {
-                        that.ayid = data.data[0].ayid;
-                        that.classid = data.data[0].classid;
+                    for (var i = 0; i < that.feesDT.length; i++) {
+                        var field = that.feesDT[i];
+                        that.feesDT[i].cfid = data.data[0][i].cfid;
+                        that.feesDT[i].catfees = data.data[0][i].catfees;
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                }
+                else {
+                    for (var i = 0; i < that.feesDT.length; i++) {
+                        var field = that.feesDT[i];
+                        that.feesDT[i].catfees = 0;
                     }
+                }
 
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
+                that.installmentDT = data.data[1];
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                })
-            }
-            else {
-                commonfun.loaderhide();
-            }
-        });
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/classfees']);
+        this._router.navigate(['/erp/transaction/classfees']);
     }
 }

@@ -65,10 +65,10 @@ export class ViewTagGroupModuleMapComponent implements OnInit {
     }
 
     public addTagGroupModuleMapForm() {
-        this._router.navigate(['/erp/taggroupmodulemap/add']);
+        this._router.navigate(['/erp/master/taggroupmodulemap/add']);
     }
 
     public editTagGroupModuleMapForm(row) {
-        this._router.navigate(['/erp/taggroupmodulemap/edit', row.tgmid]);
+        this._router.navigate(['/erp/master/taggroupmodulemap/edit', row.tgmid]);
     }
 }

@@ -56,10 +56,10 @@ export class ViewAcademicYearComponent implements OnInit {
     }
 
     public addAcademicYear() {
-        this._router.navigate(['/erp/academicyear/add']);
+        this._router.navigate(['/erp/master/academicyear/add']);
     }
 
     public editAcademicYear(row) {
-        this._router.navigate(['/erp/academicyear/edit', row.ayid]);
+        this._router.navigate(['/erp/master/academicyear/edit', row.ayid]);
     }
 }

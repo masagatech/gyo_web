@@ -54,7 +54,8 @@ export class AddAssignmentComponent implements OnInit {
         commonfun.loader();
 
         that._assnmservice.getAssignmentDetails({
-            "flag": "classddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "classddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = data.data;
@@ -301,6 +302,6 @@ export class AddAssignmentComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/assignment']);
+        this._router.navigate(['/erp/transaction/assignment']);
     }
 }

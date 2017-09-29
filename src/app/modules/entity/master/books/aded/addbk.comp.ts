@@ -73,7 +73,8 @@ export class AddBooksComponent implements OnInit {
         commonfun.loader();
 
         that._bkservice.getBooksDetails({
-            "flag": "classddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "classddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = data.data;

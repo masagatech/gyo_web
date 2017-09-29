@@ -243,6 +243,6 @@ export class AddTagGroupModuleMapComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/taggroupmodulemap']);
+        this._router.navigate(['/erp/master/taggroupmodulemap']);
     }
 }

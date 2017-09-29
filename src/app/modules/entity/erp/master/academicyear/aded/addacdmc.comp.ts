@@ -198,6 +198,6 @@ export class AddAcademicYearComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/academicyear']);
+        this._router.navigate(['/erp/master/academicyear']);
     }
 }

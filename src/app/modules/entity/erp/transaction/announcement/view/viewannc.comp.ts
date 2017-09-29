@@ -57,10 +57,10 @@ export class ViewAnnouncementComponent implements OnInit {
     }
 
     public addAnnouncement() {
-        this._router.navigate(['/erp/announcement/add']);
+        this._router.navigate(['/erp/transaction/announcement/add']);
     }
 
     public editAnnouncement(row) {
-        this._router.navigate(['/erp/announcement/edit', row.ntfid]);
+        this._router.navigate(['/erp/transaction/announcement/edit', row.ntfid]);
     }
 }

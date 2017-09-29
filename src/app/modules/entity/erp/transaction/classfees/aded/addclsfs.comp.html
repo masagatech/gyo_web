@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" (ngModelChange)="getClassFees()" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getClassFees()" tabindex="2">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -60,12 +60,24 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="row.catfees" class="form-control text-right" tabindex="3">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="row.catfees" class="form-control text-right {{row.catname}}" tabindex="3">
                                     </div>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <b>Total</b>
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    {{totalFeesCategory()}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <div class="col-md-7">
@@ -75,7 +87,7 @@
                             <th width="50px">Installment</th>
                             <th width="100px">Fees</th>
                             <th width="100px">Due Date</th>
-                            <th width="100px">Panalty Fees</th>
+                            <th width="100px">Penalty Fees</th>
                             <th width="50px"></th>
                         </tr>
                     </thead>
@@ -85,7 +97,7 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="instlfees" class="form-control" tabindex="4">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="instlfees" class="form-control text-right" tabindex="4">
                                     </div>
                                 </div>
                             </td>
@@ -99,43 +111,72 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="pnltyfees" class="form-control" tabindex="6">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="pnltyfees" class="form-control text-right" tabindex="6">
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group">
+                                <div class="form-group" *ngIf="!iseditinstlfees">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="addFeesInstallment()">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
+                                <div class="form-group" *ngIf="iseditinstlfees">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="updateFeesInstallment()">
+                                        <i class="material-icons">done</i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="resetFeesInstallment()">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
-                        <tr *ngFor="let row of installmentDT; let i = index;">
+                        <tr *ngFor="let row of installmentDT | filterBy: {'isactive': true}; let i = index">
                             <td>
                                 {{i + 1}}
                             </td>
-                            <td>
+                            <td align="right">
                                 {{row.instlfees}}
                             </td>
                             <td>
                                 {{row.duedate}}
                             </td>
-                            <td>
+                            <td align="right">
                                 {{row.pnltyfees}}
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editFeesInstallment">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editFeesInstallment(row)">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteFeesInstallment">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteFeesInstallment(row)">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <b>Total</b>
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    {{totalInstallmentFees()}}
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    {{totalPenaltyFees()}}
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

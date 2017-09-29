@@ -221,7 +221,7 @@ export class ApprovalPassengerLeaveComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/leave/pending']);
+        this._router.navigate(['/erp/master/leave/pending']);
     }
 
     public ngOnDestroy() {

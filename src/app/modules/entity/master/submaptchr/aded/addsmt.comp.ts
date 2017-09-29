@@ -94,7 +94,8 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         commonfun.loader();
 
         that._smtservice.getSubjectMapToTeacher({
-            "flag": "classddl", "tchrid": that.tchrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "classddl", "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = data.data;
@@ -280,20 +281,20 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.tchrid = data.data[0].tchrid;
-                that.tchrname = data.data[0].tchrname;
-                that.tchrdata.value = that.tchrid;
-                that.tchrdata.label = that.tchrname;
+                if (data.data.length > 0) {
+                    that.tchrid = data.data[0].tchrid;
+                    that.tchrname = data.data[0].tchrname;
+                    that.tchrdata.value = that.tchrid;
+                    that.tchrdata.label = that.tchrname;
 
-                that.fillClassDropDown();
-                that.clsid = data.data[0].clsid;
+                    that.fillClassDropDown();
+                    that.clsid = data.data[0].clsid;
 
-                that.fillSubjectDropDown();
+                    that.fillSubjectDropDown();
 
-                var _subrights = null;
-                var _subitem = null;
+                    var _subrights = null;
+                    var _subitem = null;
 
-                if (data.data[0] != null) {
                     _subrights = null;
                     _subrights = data.data[0].subid;
 

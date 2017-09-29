@@ -67,6 +67,6 @@ export class PendingPassengerLeaveComponent implements OnInit {
     }
 
     public openApprovalForm(row) {
-        this._router.navigate(['/erp/leave/approval/' + row.psngrid]);
+        this._router.navigate(['/erp/master/leave/approval/' + row.psngrid]);
     }
 }

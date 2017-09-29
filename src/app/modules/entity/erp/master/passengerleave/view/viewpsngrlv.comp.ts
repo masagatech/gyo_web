@@ -127,15 +127,15 @@ export class ViewPassengerLeaveComponent implements OnInit {
     }
 
     public addPassengerLeave() {
-        this._router.navigate(['/erp/leave/add']);
+        this._router.navigate(['/erp/master/leave/add']);
     }
 
     public editPassengerLeave(row) {
-        this._router.navigate(['/erp/leave/edit', row.lvid]);
+        this._router.navigate(['/erp/master/leave/edit', row.lvid]);
     }
 
     public openApprovalLeave(row) {
-        this._router.navigate(['/erp/leave/approval', row.key.split(':')[0]]);
+        this._router.navigate(['/erp/master/leave/approval', row.key.split(':')[0]]);
     }
 }
 

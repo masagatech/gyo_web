@@ -74,6 +74,7 @@ export class AddClassComponent implements OnInit {
         that.othtchrid = 0;
         that.othtchrname = "";
         that.othtchrdata = [];
+        that.otherTeacherDT = [];
     }
 
     // Fill Standard, Division and Subject Drop Down

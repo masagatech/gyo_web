@@ -82,13 +82,13 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._rptservice.getAttendanceReports({ "flag": "filterddl", "schoolid": that._enttdetails.enttid, "uid":"0" }).subscribe(data => {
+        that._rptservice.getAttendanceReports({
+            "flag": "filterddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin,
+        }).subscribe(data => {
             try {
                 that.monthDT = data.data.filter(a => a.group === "month");
-                // setTimeout(function () { $.AdminBSB.select.refresh('monthname'); }, 100);
-
                 that.classDT = data.data.filter(a => a.group === "class");
-                // setTimeout(function () { $.AdminBSB.select.refresh('class'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -111,7 +111,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that._enttdetails.enttid, "uid":"0"
+            "flag": "column", "monthname": that.monthname, "schoolid": that._enttdetails.enttid, "uid": "0"
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
@@ -133,7 +133,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
             commonfun.loader("#fltrpsngr");
 
             that._rptservice.getAttendanceReports({
-                "flag": "student", "monthname": that.monthname, "classid": that.classid, "schoolid": that._enttdetails.enttid, "uid":"0"
+                "flag": "student", "monthname": that.monthname, "classid": that.classid, "schoolid": that._enttdetails.enttid, "uid": "0"
             }).subscribe(data => {
                 try {
                     if (data.data.length == 0) {
