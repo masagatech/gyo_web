@@ -43,7 +43,7 @@ export class EntityComponent implements OnDestroy {
         if (Cookie.get('_schenttdetails_') != null) {
             this.wsname = this._enttdetails.enttname;
             this.wslogo = this.global.uploadurl + this._enttdetails.schlogo;
-            this.enttname = this._wsdetails.wsname;
+            this.enttname = this._enttdetails.wsname;
         }
         else {
             this.wsname = this.loginUser.enttname;

@@ -21,7 +21,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
     tchrid: number = 0;
     tchrname: string = "";
 
-    classDT: string = "";
+    classDT: any = [];
     subjectDT: any = [];
 
     smtid: number = 0;
@@ -61,11 +61,12 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "employee",
+            "flag": "teacher",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "emptype": "tchr",
+            "classid": 0,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -282,6 +283,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
+                    that.smtid = data.data[0].smtid;
                     that.tchrid = data.data[0].tchrid;
                     that.tchrname = data.data[0].tchrname;
                     that.tchrdata.value = that.tchrid;

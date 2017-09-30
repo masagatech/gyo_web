@@ -7799,8 +7799,13 @@ button.close {
 
 .img-left {
     float: left !important;
-    width: 60px;
-    padding: 0 5px;
+    width: 50px;
+    padding: 0;
+}
+
+.img-left img {
+    width: 42px;
+    height: 42px;
 }
 
 .hide {

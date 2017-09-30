@@ -15,6 +15,14 @@ export class ViewSubjectMapToTeacherComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    classDT: any = [];
+    classid: number = 0;
+    
+    teacherDT: any = [];
+    tchrdata: any = [];
+    tchrid: number = 0;
+    tchrname: string = "";
+
     submaptchrDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -22,6 +30,7 @@ export class ViewSubjectMapToTeacherComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.fillClassDropDown();
         this.getSubjectMapToTeacher();
     }
 
@@ -29,13 +38,73 @@ export class ViewSubjectMapToTeacherComponent implements OnInit {
 
     }
 
+    // Fill Class Drop Down
+
+    fillClassDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._smtservice.getSubjectMapToTeacher({
+            "flag": "classddl", "tchrid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+        }).subscribe(data => {
+            try {
+                that.classDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Auto Completed Teacher
+
+    getTeacherData(event) {
+        let query = event.query;
+
+        this._autoservice.getERPAutoData({
+            "flag": "teacher",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "emptype": "tchr",
+            "classid": 0,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.teacherDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Teacher
+
+    selectTeacherData(event) {
+        this.tchrid = event.value;
+        this.tchrname = event.label;
+        this.fillClassDropDown();
+    }
+
     getSubjectMapToTeacher() {
         var that = this;
         commonfun.loader();
 
         that._smtservice.getSubjectMapToTeacher({
-            "flag": "all", "enttid": that._enttdetails.enttid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "classid": that.classid,
+            "tchrid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.submaptchrDT = data.data;

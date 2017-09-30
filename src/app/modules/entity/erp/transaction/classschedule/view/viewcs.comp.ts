@@ -163,7 +163,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "clswisetchr",
+            "flag": "teacher",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

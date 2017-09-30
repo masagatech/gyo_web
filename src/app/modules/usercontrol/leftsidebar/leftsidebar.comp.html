@@ -3,12 +3,14 @@
         <div class="user-info">
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';" height="40px">
-                    <span class="left-title">
+                    <div class="img-left">
+                        <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';">
+                    </div>
+                    <div class="left-title">
                         {{ufullname}}
                         <br />
                         <small class="title">{{wsname}}</small>
-                    </span>
+                    </div>
                 </div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
