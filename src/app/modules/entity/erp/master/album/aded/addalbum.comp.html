@@ -115,7 +115,7 @@
 
                                     <div class="form-group">
                                         <span *ngFor="let trow of row.tagDT">
-                                            {{trow.gtagnm + " | "}}
+                                            {{trow.gtagnm == null ? "" : trow.gtagnm + " | "}}
                                         </span>
                                     </div>
                                 </div>

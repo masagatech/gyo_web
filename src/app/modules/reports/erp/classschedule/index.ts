@@ -4,7 +4,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { ClassScheduleReportsComponent } from './rptclssch.comp';
+import { MonthlyClassScheduleReportsComponent } from './monthly/rptmonclssch.comp';
+import { WeeklyClassScheduleReportsComponent } from './weekly/rptwkclssch.comp';
+import { PeriodClassScheduleReportsComponent } from './period/rptprdclssch.comp';
+
 import { ClassScheduleService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
@@ -13,8 +16,16 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ClassScheduleReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptclssch", "rights": "view", "urlname": "/classschedule" }
+        path: 'monthly', component: MonthlyClassScheduleReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptmonclssch", "rights": "view", "urlname": "/monthly" }
+      },
+      {
+        path: 'weekly', component: WeeklyClassScheduleReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptwkclssch", "rights": "view", "urlname": "/weekly" }
+      },
+      {
+        path: 'period', component: PeriodClassScheduleReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptprdclssch", "rights": "view", "urlname": "/period" }
       }
     ]
   },
@@ -22,7 +33,9 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    ClassScheduleReportsComponent
+    MonthlyClassScheduleReportsComponent,
+    WeeklyClassScheduleReportsComponent,
+    PeriodClassScheduleReportsComponent
   ],
 
   imports: [

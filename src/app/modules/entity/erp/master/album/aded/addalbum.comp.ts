@@ -227,12 +227,21 @@ export class AddAlbumComponent implements OnInit {
     // Selected Group Tag
 
     selectGroupTagData(event, row) {
-        row.gtagid = event.tagid;
-        row.gtagnm = event.tagnm;
+        var that = this;
+        var _uploadPhotoDT: any = [];
 
+        // row.gtagid = event.tagid;
+        // row.gtagnm = event.tagnm;
+
+        row.tagDT.push({ "gtagid": event.tagid, "gtagnm": event.tagnm });
         row.gtagdata = [];
 
-        this.addPhotoTag(row);
+        // var _tags: string[] = [];
+        // _tags = Object.keys(row.tagDT).map(function (k) { return (row.tagDT[k].gtagnm || "") });
+
+        // row.gtag = _tags;
+
+        // this.addPhotoTag(row);
     }
 
     // Add Photo Tag
@@ -241,7 +250,7 @@ export class AddAlbumComponent implements OnInit {
         var that = this;
         var _uploadPhotoDT: any = [];
 
-        row.tagDT.push({ "gtagid": row.gtagid, "gtagnm": row.gtagnm });
+        row.tagDT.push({ "tagid": row.gtagid, "tagnm": row.gtagnm });
         row.gtagid = 0;
         row.gtagnm = "";
 
@@ -408,7 +417,9 @@ export class AddAlbumComponent implements OnInit {
 
             for (var i = 0; i < that.uploadPhotoDT.length; i++) {
                 var _tagids: string[] = [];
-                _tagids = Object.keys(that.uploadPhotoDT[i].tagDT).map(function (k) { return (that.uploadPhotoDT[i].tagDT[k].tagid || 0) });
+                _tagids = Object.keys(that.uploadPhotoDT[i].tagDT).map(function (k) {
+                    return (that.uploadPhotoDT[i].tagDT[k].gtagid == null ? 0 : that.uploadPhotoDT[i].tagDT[k].gtagid)
+                });
 
                 that.uploadPhotoDT[i].gtagid = _tagids;
             }

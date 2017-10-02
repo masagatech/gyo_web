@@ -3,20 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassScheduleService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptclssch.comp.html',
+    templateUrl: 'rptmonclssch.comp.html',
     providers: [CommonService]
 })
 
-export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
+export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
-
-    schtype: string = "weekly";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -43,14 +39,11 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getClassScheduleData();
+        this.getMonthlyClassSchedule();
     }
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".entityname input").focus();
-            commonfun.navistyle();
-
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
@@ -116,7 +109,7 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getClassScheduleData();
+        this.getMonthlyClassSchedule();
     }
 
     // Export
@@ -126,11 +119,11 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
-            "flag": that.schtype, "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": "monthly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Class Schedule");
+                that._autoservice.exportToCSV(data.data, "Monthly Class Schedule");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -158,17 +151,6 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
 
     // Get Class Scedule Data
 
-    getClassScheduleData() {
-        var that = this;
-
-        if (that.schtype == "weekly") {
-            that.getWeeklyClassSchedule();
-        }
-        else {
-            that.getMonthlyClassSchedule();
-        }
-    }
-
     getMonthlyClassSchedule() {
         var that = this;
 
@@ -177,7 +159,7 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.classScheduleColumn = data.data;
-                that.getWeeklyClassSchedule();
+                that.getClassSchedule();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -185,12 +167,12 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getWeeklyClassSchedule() {
+    getClassSchedule() {
         var that = this;
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
-            "flag": that.schtype, "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": "monthly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
@@ -230,7 +212,7 @@ export class ClassScheduleReportsComponent implements OnInit, OnDestroy {
         this.tchrdata = [];
         this.tchrid = 0;
         this.tchrname = ""
-        this.getClassScheduleData();
+        this.getMonthlyClassSchedule();
     }
 
     public ngOnDestroy() {
