@@ -10490,16 +10490,21 @@ body.waitMe_body .waitMe_container.text>div {
     vertical-align: middle;
 }
 
-.reports {}
+.reports {
+    width: 100%;
+    overflow: auto;
+}
 
 .reports tbody tr.tr-table th {
     font-size: 12px;
     padding: 4px!important;
+    text-align: center;
 }
 
 .reports th {
     font-size: 11px;
     padding: 4px!important;
+    text-align: center;
 }
 
 .reports td {

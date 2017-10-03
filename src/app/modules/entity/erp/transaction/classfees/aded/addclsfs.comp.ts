@@ -75,6 +75,12 @@ export class AddClassFeesComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data[0].filter(a => a.group == "ay");
+                
+                if (that.ayDT.length > 0) {
+                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                    that.getClassFees();
+                }
+
                 that.classDT = data.data[0].filter(a => a.group == "class");
                 // that.categoryDT = data.data.filter(a => a.group == "feescategory");
             }

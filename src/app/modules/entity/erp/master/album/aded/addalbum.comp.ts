@@ -84,6 +84,10 @@ export class AddAlbumComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data;
+
+                if (that.ayDT.length > 0) {
+                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

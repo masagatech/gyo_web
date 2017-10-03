@@ -115,6 +115,12 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
+                
+                if (that.ayDT.length > 0) {
+                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                    that.getClassSchedule();
+                }
+
                 that.classDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {

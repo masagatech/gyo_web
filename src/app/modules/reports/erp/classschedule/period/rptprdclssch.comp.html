@@ -2,11 +2,11 @@
     <div class="header">
         <div class="row clearfix">
             <h4>Class Schedule</h4>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2 col-xs-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="2" (ngModelChange)="getWeeklyClassSchedule();">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getWeekPeriodData();">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -15,36 +15,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-1 col-xs-2" style="padding-top: 20px;">
                 <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="3" (ngModelChange)="getWeeklyClassSchedule();">
-                            <option [value]="0">Select Class</option>
-                            <option *ngFor="let row of classDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-xs-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Teacher</label>
-                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="4" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
-                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getWeekPeriodData()">
+                        <span class="material-icons">arrow_forward</span>
+                    </button>
+
                     <button type="button" class="btn btn-theme btn-xs" (click)="resetClassScheduleDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-3" style="padding-top: 20px;" align="right">
+            <div class="col-md-9 col-xs-6" style="padding-top: 20px;" align="right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
@@ -59,63 +41,213 @@
         </div>
     </div>
 
-    <div class="body">
-        <div #class class="row clearfix">
-            <div class="col-md-12 reports">
-                <div *ngFor="let row of classScheduleDT | groupBy: 'classname'">
-                    <div class="header">
-                        <b>Class : {{row.key}}</b>
-                    </div>
-                    <div class="body">
-                        <table class="table table-bordered table-responsive">
-                            <thead>
-                                <tr>
-                                    <th width="200px">Date / Time</th>
-                                    <th>Monday</th>
-                                    <th>Tuesday</th>
-                                    <th>Wednesday</th>
-                                    <th>Thursday</th>
-                                    <th>Friday</th>
-                                    <th>Saturday</th>
-                                    <th>Sunday</th>
-                                </tr>
-                            </thead>
-                            <tbody *ngFor="let drow of row.value | groupBy: 'caldate'">
-                                <tr class="tr-table">
-                                    <th colspan="8">
-                                        {{drow.key}}
-                                    </th>
-                                </tr>
-                                <tr *ngFor="let mrow of drow.value">
-                                    <td>
-                                        {{mrow.caltime}}
-                                    </td>
-                                    <td class="{{mrow.mon}}">
-                                        {{mrow.mon}}
-                                    </td>
-                                    <td class="{{mrow.tue}}">
-                                        {{mrow.tue}}
-                                    </td>
-                                    <td class="{{mrow.wed}}">
-                                        {{mrow.wed}}
-                                    </td>
-                                    <td class="{{mrow.thu}}">
-                                        {{mrow.thu}}
-                                    </td>
-                                    <td class="{{mrow.fri}}">
-                                        {{mrow.fri}}
-                                    </td>
-                                    <td class="{{mrow.sat}}">
-                                        {{mrow.sat}}
-                                    </td>
-                                    <td class="{{mrow.sun}}">
-                                        {{mrow.sun}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <div class="body" *ngIf="weekperiodDT.length">
+        <div class="row clearfix">
+            <div class="col-md-4 col-xs-4">
+                <div class="form-group" align="left">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="firstWeekPeriodData()">
+                        <span class="material-icons">first_page</span>
+                    </button>
+                    <button type="button" class="btn btn-theme btn-xs" (click)="previousWeekPeriodData()">
+                        <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
                 </div>
+            </div>
+            <div class="col-md-4 col-xs-4" align="center">
+                {{weekno}} - {{weekhead}}
+            </div>
+            <div class="col-md-4 col-xs-4" align="right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="nextWeekPeriodData()">
+                        <span class="material-icons">keyboard_arrow_right</span>
+                    </button>
+                    <button type="button" class="btn btn-theme btn-xs" (click)="lastWeekPeriodData()">
+                        <span class="material-icons">last_page</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12 reports">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="200px" align="center">Mon</th>
+                            <th width="200px" align="center">Tue</th>
+                            <th width="200px" align="center">Wed</th>
+                            <th width="200px" align="center">Thu</th>
+                            <th width="200px" align="center">Fri</th>
+                            <th width="200px" align="center">Sat</th>
+                            <th width="200px" align="center">Sun</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let wkrow of weekperiodDT">
+                            <td width="200px" class="{{wkrow.monperiod}}">
+                                {{wkrow.monperiod == 'study' ? '' : wkrow.monperiod}}
+                                <table *ngIf="wkrow.monperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let monrow of monweekcolumn">
+                                                {{monrow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let monrow of monweekcolumn" width="100px" class="{{row[monrow.period]}}">
+                                                {{row[monrow.period] == null ? '' : row[monrow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="200px" class="{{wkrow.tueperiod}}">
+                                {{wkrow.tueperiod == 'study' ? '' : wkrow.tueperiod}}
+                                <table *ngIf="wkrow.tueperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let tuerow of tueweekcolumn">
+                                                {{tuerow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let tuerow of tueweekcolumn" width="100px" class="{{row[tuerow.period]}}">
+                                                {{row[tuerow.period] == null ? '' : row[tuerow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="200px" class="{{wkrow.wedperiod}}">
+                                {{wkrow.wedperiod == 'study' ? '' : wkrow.wedperiod}}
+                                <table *ngIf="wkrow.wedperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let wedrow of wedweekcolumn">
+                                                {{wedrow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let wedrow of wedweekcolumn" width="100px" class="{{row[wedrow.period]}}">
+                                                {{row[wedrow.period] == null ? '' : row[wedrow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="200px" class="{{wkrow.thuperiod}}">
+                                {{wkrow.thuperiod == 'study' ? '' : wkrow.thuperiod}}
+                                <table *ngIf="wkrow.thuperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let thurow of thuweekcolumn">
+                                                {{thurow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let thurow of thuweekcolumn" width="100px" class="{{row[thurow.period]}}">
+                                                {{row[thurow.period] == null ? '' : row[thurow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="200px" class="{{wkrow.friperiod}}">
+                                {{wkrow.friperiod == 'study' ? '' : wkrow.friperiod}}
+                                <table *ngIf="wkrow.friperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let frirow of friweekcolumn">
+                                                {{frirow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let frirow of friweekcolumn" width="100px" class="{{row[frirow.period]}}">
+                                                {{row[frirow.period] == null ? '' : row[frirow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="200px" class="{{wkrow.satperiod}}">
+                                {{wkrow.satperiod == 'study' ? '' : wkrow.satperiod}}
+                                <table *ngIf="wkrow.satperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let satrow of satweekcolumn">
+                                                {{satrow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let satrow of satweekcolumn" width="100px" class="{{row[satrow.period]}}">
+                                                {{row[satrow.period] == null ? '' : row[satrow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td width="200px" class="{{wkrow.sunperiod}}">
+                                {{wkrow.sunperiod == 'study' ? '' : wkrow.sunperiod}}
+                                <table *ngIf="wkrow.sunperiod == 'study'" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <td *ngFor="let sunrow of sunweekcolumn">
+                                                {{sunrow.periodno}}
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of classScheduleDT">
+                                            <th>
+                                                {{row.classname}}
+                                            </th>
+                                            <td *ngFor="let sunrow of sunweekcolumn" width="100px" class="{{row[sunrow.period]}}">
+                                                {{row[sunrow.period] == null ? '' : row[sunrow.period]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
