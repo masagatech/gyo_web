@@ -21,6 +21,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
 
     fweek: number = 0;
     lweek: number = 0;
+    pageno: number = 1;
     weekno: number = 1;
     weekid: number = 0;
     weekhead: string = "";
@@ -32,6 +33,14 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
     friweekcolumn: any = [];
     satweekcolumn: any = [];
     sunweekcolumn: any = [];
+
+    mondate: string = "";
+    tuedate: string = "";
+    weddate: string = "";
+    thudate: string = "";
+    fridate: string = "";
+    satdate: string = "";
+    sundate: string = "";
 
     classScheduleDT: any = [];
     @ViewChild('class') class: ElementRef;
@@ -108,12 +117,28 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
                     that.lweek = data.data[0].lweek;
                     that.weekid = data.data[0].weekid;
                     that.weekhead = data.data[0].weekhead;
+
+                    that.mondate = data.data[0].mondate;
+                    that.tuedate = data.data[0].tuedate;
+                    that.weddate = data.data[0].weddate;
+                    that.thudate = data.data[0].thudate;
+                    that.fridate = data.data[0].fridate;
+                    that.satdate = data.data[0].satdate;
+                    that.sundate = data.data[0].sundate;
                 }
                 else {
                     that.fweek = 0;
                     that.lweek = 0;
                     that.weekid = 0;
                     that.weekhead = "";
+
+                    that.mondate = "";
+                    that.tuedate = "";
+                    that.weddate = "";
+                    that.thudate = "";
+                    that.fridate = "";
+                    that.satdate = "";
+                    that.sundate = "";
                 }
 
                 that.getWeekColumn();
@@ -195,9 +220,9 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
     // First Week
 
     firstWeekPeriodData() {
-        this.weekno = this.fweek;
-
-        if (this.fweek >= this.weekno) {
+        if (this.fweek != this.weekno) {
+            this.weekno = this.fweek;
+            this.pageno = this.fweek;
             this.getWeekPeriodData();
         }
     }
@@ -205,9 +230,28 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
     // Next Week
 
     nextWeekPeriodData() {
-        this.weekno = parseInt(this.weekno.toString()) + 1;
+        if (this.weekno != this.lweek) {
+            this.weekno = parseInt(this.weekno.toString()) + 1;
 
-        if (this.lweek >= this.weekno) {
+            if (this.lweek >= this.weekno) {
+                this.pageno = this.weekno;
+                this.getWeekPeriodData();
+            }
+        }
+    }
+
+    // Direct Week
+
+    directWeekPeriodData() {
+        if (this.weekno != this.pageno) {
+            if (this.pageno < this.fweek) {
+                this.pageno = this.fweek;
+            }
+            else if (this.pageno >= this.lweek) {
+                this.pageno = this.lweek;
+            }
+
+            this.weekno = this.pageno;
             this.getWeekPeriodData();
         }
     }
@@ -215,19 +259,22 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
     // Previous Week
 
     previousWeekPeriodData() {
-        this.weekno = parseInt(this.weekno.toString()) - 1;
+        if (this.weekno != this.fweek) {
+            this.weekno = parseInt(this.weekno.toString()) - 1;
 
-        if (this.weekno >= this.fweek) {
-            this.getWeekPeriodData();
+            if (this.weekno >= this.fweek) {
+                this.pageno = this.weekno;
+                this.getWeekPeriodData();
+            }
         }
     }
 
     // Last Week
 
     lastWeekPeriodData() {
-        this.weekno = this.lweek;
-
-        if (this.lweek >= this.weekno) {
+        if (this.lweek != this.weekno) {
+            this.weekno = this.lweek;
+            this.pageno = this.lweek;
             this.getWeekPeriodData();
         }
     }

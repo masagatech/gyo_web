@@ -47,7 +47,6 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".entityname input").focus();
             commonfun.navistyle();
 
             $.AdminBSB.islocked = true;

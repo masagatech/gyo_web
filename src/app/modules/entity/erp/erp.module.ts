@@ -15,6 +15,7 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: '', loadChildren: './dashboard#ERPDashboardModule' },
                     { path: 'master', loadChildren: './master#ERPMasterModule' },
                     { path: 'transaction', loadChildren: './transaction#ERPTransactionModule' },
                     { path: 'student', loadChildren: './passenger#ERPPassengerModule' },

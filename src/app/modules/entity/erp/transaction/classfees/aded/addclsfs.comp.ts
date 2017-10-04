@@ -381,6 +381,7 @@ export class AddClassFeesComponent implements OnInit {
                 else {
                     for (var i = 0; i < that.feesDT.length; i++) {
                         var field = that.feesDT[i];
+                        that.feesDT[i].cfid = 0;
                         that.feesDT[i].catfees = 0;
                     }
                 }
