@@ -13,13 +13,14 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    clsrstid: number = 0;
+    csid: number = 0;
 
     ayDT: any = [];
     ayid: number = 0;
 
     classDT: any = [];
     classid: number = 0;
+    cpclassid: number = 0;
 
     subjectDT: any = [];
 
@@ -54,7 +55,6 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.fillSubjectDropDown();
         this.getDefaultDate();
 
         this.getWeekData();
@@ -114,7 +114,7 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-                
+
                 if (that.ayDT.length > 0) {
                     that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
                     that.getWeekData();
@@ -138,12 +138,12 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
 
     // Fill Subject Drop Down
 
-    fillSubjectDropDown() {
+    fillSubjectDropDown(_classid) {
         var that = this;
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
-            "flag": "subjectddl", "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "subjectddl", "classid": _classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.subjectDT = data.data;
@@ -744,7 +744,7 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
 
             if (!duplicateClassSchedule) {
                 that.classScheduleDT.push({
-                    "clsrstid": that.clsrstid, "ayid": that.ayid, "classid": that.classid, "frmtm": that.frmtm, "totm": that.totm,
+                    "csid": that.csid, "ayid": that.ayid, "classid": that.classid, "frmtm": that.frmtm, "totm": that.totm,
                     "sunsubid": that.sunsubid, "sunsubname": $(".sunsubname option:selected").text().trim(),
                     "monsubid": that.monsubid, "monsubname": $(".monsubname option:selected").text().trim(),
                     "tuessubid": that.tuessubid, "tuessubname": $(".tuessubname option:selected").text().trim(),
@@ -760,7 +760,7 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         }
     }
 
-    resetClassSchedule(){
+    resetClassSchedule() {
         var that = this;
 
         $(".frmtm").focus();
@@ -780,10 +780,10 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
 
     saveClassSchedule() {
         var that = this;
-        
-        that._clsrstservice.saveClassSchedule({ "classSchedule": that.classScheduleDT }).subscribe(data => {
+
+        that._clsrstservice.saveClassSchedule({ "classschedule": that.classScheduleDT }).subscribe(data => {
             try {
-                var dataResult = data.data[0].funsave_classSchedule;
+                var dataResult = data.data[0].funsave_classschedule;
                 var msgid = dataResult.msgid;
                 var msg = dataResult.msg;
 
@@ -803,16 +803,23 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         });
     }
 
-    getClassSchedule() {
+    getClassSchedule(_classid, _type) {
         var that = this;
         commonfun.loader();
 
         that._clsrstservice.getClassSchedule({
-            "flag": "all", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": "all", "ayid": that.ayid, "classid": _classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.classScheduleDT = data.data;
+
+                if (_type == "copy") {
+                    for (var i = 0; i < that.classScheduleDT.length; i++) {
+                        that.classScheduleDT[i].csid = 0;
+                        that.classScheduleDT[i].classid = that.classid;
+                    }
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -866,7 +873,7 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         this.selectedClassScheduleRow.frisubname = $(".frisubname option:selected").text().trim();
         this.selectedClassScheduleRow.satsubid = this.satsubid;
         this.selectedClassScheduleRow.satsubname = $(".satsubname option:selected").text().trim();
-        
+
         this.resetClassSchedule();
     }
 

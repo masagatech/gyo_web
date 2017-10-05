@@ -96,7 +96,7 @@ export class AttendanceComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-                
+
                 if (that.ayDT.length > 0) {
                     that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
                     that.getPassengerDetails();
@@ -123,6 +123,14 @@ export class AttendanceComponent implements OnInit {
         var params = {};
 
         commonfun.loader();
+
+        if (that.psngrtype == "emp") {
+            that.classid = 0;
+            $(".class").prop("disabled", "disabled");
+        }
+        else {
+            $(".class").removeAttr("disabled");
+        }
 
         params = {
             "flag": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
@@ -159,7 +167,7 @@ export class AttendanceComponent implements OnInit {
         row.status = "p";
     }
 
-    saveAttendance() {
+    isValidation() {
         var that = this;
 
         if (that.ayid == 0) {
@@ -167,12 +175,23 @@ export class AttendanceComponent implements OnInit {
             $(".ay").focus();
             return false;
         }
-        else if (that.classid == 0) {
-            that._msg.Show(messageType.info, "Info", "Select Class");
-            $(".class").focus();
-            return false;
+        else if (that.psngrtype != "emp") {
+            if (that.classid == 0) {
+                that._msg.Show(messageType.info, "Info", "Select Class");
+                $(".class").focus();
+                return false;
+            }
         }
-        else {
+
+        return true;
+    }
+
+    saveAttendance() {
+        var that = this;
+
+        var isvalid = that.isValidation();
+
+        if (isvalid) {
             commonfun.loader();
 
             for (var i = 0; i < that.passengerDT.length; i++) {

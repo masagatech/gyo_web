@@ -4181,6 +4181,14 @@ fieldset[disabled] .btn-link:focus {
     padding: 1px 5px!important;
 }
 
+.btn-xs-sm {
+    padding: 0 3px!important;
+}
+
+.btn-xs-sm i.material-icons {
+    font-size: 14px!important;
+}
+
 .btn-xs-sm i {
     font-size: 14px!important;
 }

@@ -13,8 +13,6 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    clsrstid: number = 0;
-
     ayDT: any = [];
     ayid: number = 0;
 

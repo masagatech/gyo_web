@@ -112,6 +112,7 @@ export class AddPassengerLeaveComponent implements OnInit {
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "emptype": "",
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -321,6 +322,7 @@ export class AddPassengerLeaveComponent implements OnInit {
                 that._lvpsngrservice.getPassengerLeave({
                     "flag": "edit",
                     "id": that.lvid,
+                    "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
@@ -328,7 +330,6 @@ export class AddPassengerLeaveComponent implements OnInit {
                         that.psngrid = data.data[0].psngrid;
                         that.psngrname = data.data[0].psngrname;
                         that.psngrdata.value = that.psngrid;
-                        that.psngrdata.label = that.psngrname;
                         that.psngrdata.label = that.psngrname;
                         that.lvtype = data.data[0].lvtype;
                         that.lvfor = data.data[0].lvfor;
