@@ -24,214 +24,27 @@
 <div class="row clearfix">
     <div class="col-md-9">
         <div class="row clearfix">
-            <div class="col-md-7 col-xs-7">
+            <div class="col-md-9 col-xs-7">
                 <div class="card">
-                    <div class="header">
-                        <h6>Total Student and Opening Of Class</h6>
-                    </div>
-
                     <div class="body no-padding">
-                        <p-chart type="bar" [data]="classOpnChartDT"></p-chart>
+                        <p-chart type="bar" [data]="classStatusChartDT" height="100px"></p-chart>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 col-xs-6 hide">
+
                 <div class="card">
-                    <div class="header">
-                        <div class="row clearfix">
-                            <div class="col-md-8 col-xs-8">
-                                <h6>Class Student</h6>
-                            </div>
-                            <div class="col-md-4 col-xs-4" align="right">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="isshClassStudent('chart')">
-                                        <i class="material-icons">pie_chart</i></button>
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="isshClassStudent('grid')">
-                                        <i class="material-icons">apps</i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="body no-padding">
-                        <div *ngIf="isShowStudsChart">
-                            <p-chart type="pie" #piechart [data]="classStudsChartDT" height="300px"></p-chart>
-                        </div>
-
-                        <div *ngIf="isShowStudsGrid">
-                            <table class="table table-bordered reports">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Class
-                                        </th>
-                                        <th *ngFor="let divrow of divisionDT">
-                                            {{divrow.divname}}
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of classStudentDT">
-                                        <td>
-                                            {{row.classname}}
-                                        </td>
-                                        <td *ngFor="let divrow of divisionDT" align="right">
-                                            {{row[divrow.divname] == null ? 0 : row[divrow.divname]}}
-                                        </td>
-                                        <td>
-                                            {{row.totalcount}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-xs-6 hide">
-                <div class="card">
-                    <div class="header">
-                        <div class="row clearfix">
-                            <div class="col-md-8 col-xs-8">
-                                <h6>Class Vacancy</h6>
-                            </div>
-                            <div class="col-md-4 col-xs-4" align="right">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="isshClassOpening('chart')">
-                                        <i class="material-icons">pie_chart</i></button>
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="isshClassOpening('grid')">
-                                        <i class="material-icons">apps</i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="body no-padding">
-                        <div *ngIf="isShowOpenChart">
-                            <p-chart type="pie" #piechart [data]="classOpnChartDT" height="300px"></p-chart>
-                        </div>
-
-                        <div *ngIf="isShowOpenGrid">
-                            <table class="table table-bordered reports">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Class
-                                        </th>
-                                        <th *ngFor="let divrow of divisionDT">
-                                            {{divrow.divname}}
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of classOpeningDT">
-                                        <td>
-                                            {{row.classname}}
-                                        </td>
-                                        <td *ngFor="let divrow of divisionDT" align="right">
-                                            {{row[divrow.divname] == null ? 0 : row[divrow.divname]}}
-                                        </td>
-                                        <td align="right">
-                                            {{row.totalcount}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <p-chart type="bar" [data]="classFeesDT" height="100px"></p-chart>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 col-xs-5">
                 <div class="card">
                     <div class="header">
-                        <div class="row clearfix">
-                            <div class="col-md-9 col-xs-8">
-                                <h6>Today's Present Student</h6>
-                            </div>
-                            <div class="col-md-3 col-xs-4" align="right">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="isshClassAttendance('chart')">
-                                        <i class="material-icons">pie_chart</i></button>
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="isshClassAttendance('grid')">
-                                        <i class="material-icons">apps</i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="body no-padding">
-                        <div *ngIf="isShowAttndChart">
-                            <p-chart type="pie" #piechart [data]="classAttndChartDT"></p-chart>
-                        </div>
-
-                        <div *ngIf="isShowAttndGrid">
-                            <table class="table table-bordered reports">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Class
-                                        </th>
-                                        <th *ngFor="let divrow of divisionDT">
-                                            {{divrow.divname}}
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of classAttendanceDT">
-                                        <td>
-                                            {{row.classname}}
-                                        </td>
-                                        <td *ngFor="let divrow of divisionDT" align="right">
-                                            {{row[divrow.divname] == null ? 0 : row[divrow.divname]}}
-                                        </td>
-                                        <td>
-                                            {{row.totalcount}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-6">
-                <div class="card">
-                    <div class="header">
                         <h6>Today's Teacher Attendance</h6>
                     </div>
 
                     <div class="body no-padding">
-                        <p-chart type="pie" #piechart [data]="tchrattndDT"></p-chart>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row clearfix">
-            <div class="col-md-3 col-xs-3">
-                <div class="card">
-                    <div class="header">
-                        <h6>Class Fees</h6>
-                    </div>
-
-                    <div class="body no-padding">
-                        <p-chart type="pie" #piechart [data]="classFeesDT"></p-chart>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9 col-xs-9">
-                <div class="card">
-                    <div class="body no-padding">
-                        <p-chart type="horizontalBar" #catfeespiechart [data]="feesCategoryDT"></p-chart>
+                        <p-chart type="pie" #piechart [data]="tchrattndDT" height="150px"></p-chart>
                     </div>
                 </div>
             </div>

@@ -17,7 +17,7 @@ export class AddClassFeesComponent implements OnInit {
 
     ayDT: any = [];
     classDT: any = [];
-    categoryDT: any = [];
+    subCategoryDT: any = [];
 
     feesDT: any = [];
     cfid: number = 0;
@@ -63,7 +63,7 @@ export class AddClassFeesComponent implements OnInit {
         });
     }
 
-    // Fill Academic Year, Class Drop Down
+    // Fill Academic Year, Class, Sub Category Drop Down
 
     fillDropDownList() {
         var that = this;
@@ -75,14 +75,14 @@ export class AddClassFeesComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data[0].filter(a => a.group == "ay");
-                
+
                 if (that.ayDT.length > 0) {
                     that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
                     that.getClassFees();
                 }
 
                 that.classDT = data.data[0].filter(a => a.group == "class");
-                // that.categoryDT = data.data.filter(a => a.group == "feescategory");
+                that.subCategoryDT = data.data[0].filter(a => a.group == "feessubcategory");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -115,9 +115,9 @@ export class AddClassFeesComponent implements OnInit {
                     var field = _feesDT[i];
 
                     that.feesDT.push({
-                        "cfid": that.cfid, "ayid": 0, "clsid": 0, "catid": field.id, "catname": field.val, "catfees": "0",
-                        "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                        "isactive": true
+                        "cfid": that.cfid, "ayid": 0, "clsid": 0, "catid": field.id, "catname": field.val, "subcatid": 0,
+                        "catfees": "0", "totcatfees": "0", "subfeesDT": [], "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid,
+                        "wsautoid": that._enttdetails.wsautoid, "isactive": true
                     })
                 }
             }
@@ -135,6 +135,35 @@ export class AddClassFeesComponent implements OnInit {
         })
     }
 
+    addFeesSubCategory(row) {
+        var that = this;
+
+        if (row.subcatid == 0) {
+            that._msg.Show(messageType.info, "Info", "Please Select Sub Category");
+        }
+        else if (row.catfees == 0) {
+            that._msg.Show(messageType.info, "Info", "Please Enter Fees");
+        }
+        else {
+            row.subfeesDT.push({
+                "cfid": row.cfid, "ayid": row.ayid, "clsid": row.clsid, "catid": row.catid,
+                "subcatid": row.subcatid, "subcatname": $("." + row.catname + " option:selected").text().trim(),
+                "catfees": row.catfees, "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid, "isactive": true
+            })
+
+            row.subcatid = 0;
+            row.catfees = 0;
+            row.totcatfees = 0;
+
+            for (var i = 0; i < row.subfeesDT.length; i++) {
+                var subfield = row.subfeesDT[i];
+
+                row.totcatfees += parseFloat(subfield.catfees);
+            }
+        }
+    }
+
     totalFeesCategory() {
         var that = this;
         var totalfees = 0;
@@ -142,7 +171,7 @@ export class AddClassFeesComponent implements OnInit {
         for (var i = 0; i < that.feesDT.length; i++) {
             var field = that.feesDT[i];
 
-            totalfees += parseInt(field.catfees);
+            totalfees += parseFloat(field.catfees) + parseFloat(field.totcatfees);
         }
 
         return totalfees;
@@ -152,7 +181,7 @@ export class AddClassFeesComponent implements OnInit {
         var that = this;
         var totalinstlfees = 0;
         var _installmentDT = [];
-        
+
         _installmentDT = that.installmentDT.filter(a => a.isactive == true);
 
         for (var i = 0; i < _installmentDT.length; i++) {
@@ -168,7 +197,7 @@ export class AddClassFeesComponent implements OnInit {
         var that = this;
         var totalpnltyfees = 0;
         var _penaltyDT = [];
-        
+
         _penaltyDT = that.installmentDT.filter(a => a.isactive == true);
 
         for (var i = 0; i < _penaltyDT.length; i++) {
@@ -277,16 +306,16 @@ export class AddClassFeesComponent implements OnInit {
             return false;
         }
 
-        for (var i = 0; i < that.feesDT.length; i++) {
-            var field = that.feesDT[i];
+        // for (var i = 0; i < that.feesDT.length; i++) {
+        //     var field = that.feesDT[i];
 
-            if (field.catfees == "0") {
-                that._msg.Show(messageType.info, "Info", "Please Enter " + field.catname);
-                $("." + field.catname).focus();
-                return false;
-            }
-        }
-        
+        //     if (field.catfees == "0") {
+        //         that._msg.Show(messageType.info, "Info", "Please Enter " + field.catname);
+        //         $("." + field.catname).focus();
+        //         return false;
+        //     }
+        // }
+
         if (that.installmentDT.length == 0) {
             that._msg.Show(messageType.info, "Info", "Fill atleast 1 Installment");
             $(".class").focus();
@@ -305,20 +334,41 @@ export class AddClassFeesComponent implements OnInit {
         var that = this;
         var isvalid = false;
 
+        var field: any = [];
+        var subfield: any = [];
+
+        var saveclassfees = {};
+        var classfeesDT = [];
+
         isvalid = that.isValidClassFees();
 
         if (isvalid) {
             commonfun.loader();
 
             for (var i = 0; i < that.feesDT.length; i++) {
-                var field = that.feesDT[i];
+                field = that.feesDT[i];
 
-                that.feesDT[i].ayid = that.ayid;
-                that.feesDT[i].clsid = that.classid;
+                if (field.subfeesDT.length > 0) {
+                    for (var j = 0; j < field.subfeesDT.length; j++) {
+                        subfield = field.subfeesDT[j];
+
+                        field.subfeesDT[j].ayid = that.ayid;
+                        field.subfeesDT[j].clsid = that.classid;
+
+                        field.subfeesDT[j].subcatid = subfield.subcatid;
+                    }
+                }
+
+                field.subfeesDT[i].ayid = that.ayid;
+                field.subfeesDT[i].clsid = that.classid;
+
+                field.subfeesDT[i].subcatid = 0;
+
+                console.log(field.subfeesDT);
             }
 
-            var saveclassfees = {
-                "classfees": that.feesDT,
+            saveclassfees = {
+                "classfees": field.subfeesDT,
                 "feesinstallment": that.installmentDT
             }
 
@@ -373,16 +423,16 @@ export class AddClassFeesComponent implements OnInit {
                     that.classid = data.data[0][0].clsid;
 
                     for (var i = 0; i < that.feesDT.length; i++) {
-                        var field = that.feesDT[i];
                         that.feesDT[i].cfid = data.data[0][i].cfid;
                         that.feesDT[i].catfees = data.data[0][i].catfees;
+                        that.feesDT[i].subfeesDT = data.data[0][i].subfeesDT;
                     }
                 }
                 else {
                     for (var i = 0; i < that.feesDT.length; i++) {
-                        var field = that.feesDT[i];
                         that.feesDT[i].cfid = 0;
                         that.feesDT[i].catfees = 0;
+                        that.feesDT[i].subfeesDT = [];
                     }
                 }
 
