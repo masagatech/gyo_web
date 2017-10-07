@@ -61,12 +61,21 @@ export class AddClassFeesComponent implements OnInit {
                 that.getClassFees();
             }
             else {
-                that.classid = 0;
-                that.resetFeesDetails();
-                that.installmentDT = [];
+                that.resetAllFields();
                 commonfun.loaderhide();
             }
         });
+    }
+
+    // Reset Fees Details
+
+    resetAllFields() {
+        var that = this;
+
+        that.classid = 0;
+        that.resetFeesDetails();
+        that.feesDT = [];
+        that.installmentDT = [];
     }
 
     // Fill Academic Year, Class, Sub Category Drop Down
@@ -139,7 +148,7 @@ export class AddClassFeesComponent implements OnInit {
 
         that.catid = row.catid;
         that.subcatid = row.subcatid;
-        that.fees = row.fees;
+        that.fees = row.fees | that.loginUser.globsettings[0];
     }
 
     deleteFeesDetails(row) {
@@ -313,23 +322,13 @@ export class AddClassFeesComponent implements OnInit {
         var that = this;
         var isvalid = false;
 
-        var field: any = [];
-        var subfield: any = [];
-
         isvalid = that.isValidClassFees();
 
         if (isvalid) {
             commonfun.loader();
 
-            for (var i = 0; i < that.feesDT.length; i++) {
-                field = that.feesDT[i];
-
-                field.ayid = that.ayid;
-                field.clsid = that.classid;
-            }
-
             var saveclassfees = {
-                "classfees": field.subfeesDT,
+                "classfees": that.feesDT,
                 "feesinstallment": that.installmentDT
             }
 
@@ -343,9 +342,7 @@ export class AddClassFeesComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.classid = 0;
-                            that.resetFeesDetails();
-                            that.installmentDT = [];
+                            that.resetAllFields();
                         }
                         else {
                             that.backViewData();
