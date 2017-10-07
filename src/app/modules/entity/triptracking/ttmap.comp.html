@@ -1,4 +1,4 @@
-<div class="col-md-3 card" id="sidepanel" style="height: calc(100vh - 50px);overflow: auto;margin-bottom:0px;border-right: 1px solid #ddd;background-color: #fcfcfc;">
+<div class="col-md-3 card" id="sidepanel" style="height: calc(100vh - 50px);overflow: auto;padding: 0px!important;margin-bottom:0px;border-right: 1px solid #ddd;background-color: rgb(241, 242, 245);">
     <div class="body" style="height:55px;">
         <div class="row clearfix ">
             <div class="form-group">
@@ -12,6 +12,7 @@
     </div>
 
     <div class="col-md-12 vehiclewrapper" id="style-15">
+     
         <ul class="vehicles">
             <li class="vehicle" *ngFor="let row of vehtypeDT">
                 <div class="vhwrapper {{row.isshow ? row.min > 3 ? 'of' : 'ol' : 'ou'}}">

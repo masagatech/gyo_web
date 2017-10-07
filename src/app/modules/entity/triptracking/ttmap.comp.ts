@@ -112,6 +112,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.fillVehicleDropDown();
     }
+   
+
 
     public ngAfterViewInit() {
         let that = this;
@@ -387,8 +389,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     //select for map show
     private onchange(e, vh) {
 
-        if (vh.isshow === undefined || vh.isshow === false)
-        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); e.target.checked = false; return } else {
+        if (vh.isshow === undefined || vh.isshow === false) { this._msg.Show(messageType.warn, "Hey", "No Updates found"); e.target.checked = false; return } else {
             if (e.target.checked) {
 
                 this.selectedVeh.push(vh.vhid);
@@ -530,8 +531,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private info_click(vh, event) {
 
-        if (vh.isshow === undefined || vh.isshow === false)
-        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
+        if (vh.isshow === undefined || vh.isshow === false) { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         if (this.sidebarTitle !== "Info" || this.selectedSVh.vhid !== vh.vhid) {
             this.sidebarTitle = "Info";
             this.selectedSVh = vh;
@@ -543,8 +543,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private passenger_click(vh, event) {
-        if (vh.isshow === undefined || vh.isshow === false)
-        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
+        if (vh.isshow === undefined || vh.isshow === false) { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         if (this.sidebarTitle !== "Passengers" || this.selectedSVh.vhid !== vh.vhid) {
             this.sidebarTitle = "Passengers";
             this.selectedSVh = vh;
@@ -556,8 +555,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private history_click(vh, event) {
-        if (vh.isshow === undefined || vh.isshow === false)
-        { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
+        if (vh.isshow === undefined || vh.isshow === false) { this._msg.Show(messageType.warn, "Hey", "No Updates found"); return; }
         //else
         if (this.sidebarTitle !== "History" || this.selectedSVh.vhid !== vh.vhid) {
             this.loadComponent(HISTORYComponent, {
