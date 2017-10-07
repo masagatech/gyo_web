@@ -3,15 +3,15 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class Globals {
     static erproute: string = "erp/"
 
-    serviceurl: string = "http://localhost:8082/goyoapi/";
-    uploadurl: string = "http://localhost:8082/images/";
-    filepath: string = "www\\uploads\\";
-    static socketurl: string = "http://localhost:8082/";
+    // serviceurl: string = "http://localhost:8082/goyoapi/";
+    // uploadurl: string = "http://localhost:8082/images/";
+    // filepath: string = "www\\uploads\\";
+    // static socketurl: string = "http://localhost:8082/";
 
-    // serviceurl: string = "http://track.goyo.in:8082/goyoapi/";
-    // uploadurl: string = "http://track.goyo.in:8082/images/";
-    // filepath: string = "www/uploads/";
-    // static socketurl: string = "http://track.goyo.in:8082/";
+    serviceurl: string = "http://track.goyo.in:8082/goyoapi/";
+    uploadurl: string = "http://track.goyo.in:8082/images/";
+    filepath: string = "www/uploads/";
+    static socketurl: string = "http://track.goyo.in:8082/";
 
     otherurl: string = "http://35.154.27.42:8081/goyoapi/";
 
