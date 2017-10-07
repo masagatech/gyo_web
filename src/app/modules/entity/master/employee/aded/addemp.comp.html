@@ -70,7 +70,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Gender <strong>*</strong></label>
-                                <select id="gender" [(ngModel)]="gender" class="form-control gender" (ngModelChange)="fillGenderDropDown()" tabindex="4">
+                                <select id="gender" [(ngModel)]="gender" class="form-control gender" tabindex="4">
                                     <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">
                                         {{row.val}}

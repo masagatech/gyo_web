@@ -62,9 +62,8 @@ export class AddAnnouncementComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getAnnouncement({
-            "flag": "dropdown",
-            "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.groupDT = data.data.filter(a => a.group == "anncgrp");

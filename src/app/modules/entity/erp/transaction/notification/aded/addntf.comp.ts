@@ -118,6 +118,7 @@ export class AddNotificationComponent implements OnInit {
 
             var saventf = {
                 "ntfid": that.ntfid,
+                "ntftype": "standard",
                 "frmid": that.loginUser.loginid,
                 "toid": "{" + _stdrights + "}",
                 "title": that.title,
@@ -125,8 +126,7 @@ export class AddNotificationComponent implements OnInit {
                 "grpid": that.grpid,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid,
-                "ntftype": "standard"
+                "wsautoid": that._enttdetails.wsautoid
             }
 
             this._ntfservice.saveNotification(saventf).subscribe(data => {
@@ -236,9 +236,8 @@ export class AddNotificationComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getNotification({
-            "flag": "dropdown",
-            "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.groupDT = data.data.filter(a => a.group == "ntfgrp");
