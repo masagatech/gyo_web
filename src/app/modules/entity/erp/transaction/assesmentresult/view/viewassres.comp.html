@@ -1,0 +1,71 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-4">
+                <h4>Assesment Result</h4>
+            </div>
+            <div class="col-md-10 col-xs-8" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addAssesment()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Student Name
+                            </th>
+                            <th>
+                                Class Name
+                            </th>
+                            <th>
+                                Sub Heading
+                            </th>
+                            <th>
+                                Assesment Type
+                            </th>
+                            <th>
+                                Grade
+                            </th>
+                            <th>
+                                Remark
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of assesmentDT | groupBy: 'heading'">
+                        <tr class="tr-table">
+                            <th colspan="6">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.studentname}}
+                            </td>
+                            <td>
+                                {{drow.classname}}
+                            </td>
+                            <td>
+                                {{drow.subheading}}
+                            </td>
+                            <td>
+                                {{drow.asstyp + " - " + drow.asstypname}}
+                            </td>
+                            <td>
+                                {{drow.gradename}}
+                            </td>
+                            <td>
+                                {{drow.resremark}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

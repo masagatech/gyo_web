@@ -201,7 +201,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
         that._clsrstservice.getClassSchedule({
             "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "issysadmin": that.loginUser.issysadmin, "viewby":"portal"
         }).subscribe(data => {
             try {
                 that.classScheduleDT = data.data;

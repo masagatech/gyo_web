@@ -38,18 +38,50 @@
     <div class="body no-padding">
         <div class="row clearfix">
             <div class="col-md-12">
-                <p-dataTable [value]="submaptchrDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="classname" header="Class Name" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Teacher Name
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of submaptchrDT | groupBy:'classname'">
+                        <tr class="tr-table">
+                            <th colspan="3">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.tchrname}}
+                            </td>
+                            <td>
+                                {{drow.subject}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editSubjectMapToTeacher(row)">
+                                        <i class="material-icons">edit</i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <p-dataTable [value]="row.value" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="classname" header="" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="tchrname" header="Teacher Name" [style]="{'width':'250px','text-align':'left'}"></p-column>
                     <p-column field="subject" header="Subject" [style]="{'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editSubjectMapToTeacher(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
                         </ng-template>
                     </p-column>
-                </p-dataTable>
+                </p-dataTable> -->
             </div>
         </div>
     </div>

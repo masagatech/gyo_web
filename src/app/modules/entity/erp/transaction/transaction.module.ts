@@ -18,6 +18,8 @@ export const routes = [
                     { path: 'classschedule', loadChildren: './classschedule#ClassScheduleModule' },
                     { path: 'classfees', loadChildren: './classfees#ClassFeesModule' },
                     { path: 'assignment', loadChildren: './assignment#AssignmentModule' },
+                    { path: 'assesment', loadChildren: './assesment#AssesmentModule' },
+                    { path: 'assesmentresult', loadChildren: './assesmentresult#AssesmentResultModule' },
                     { path: 'notification', loadChildren: './notification#NotificationModule' },
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
                 ]
