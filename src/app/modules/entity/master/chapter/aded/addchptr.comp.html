@@ -1,0 +1,65 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Chapter</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveChapterInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="classid" name="classname" [(ngModel)]="classid" (ngModelChange)="fillSubjectDropDown()" class="form-control classid" tabindex="1">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.classid">
+                                        {{row.classname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Subjects <strong>*</strong></label>
+                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subid" tabindex="2">
+                                    <option [value]="0">Select Subject</option>
+                                    <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                        {{row.subname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Chapter Name <strong>*</strong></label>
+                        <input [(ngModel)]="chptrname" class="form-control chptrname" maxlength="100" tabindex="4" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description</label>
+                        <textarea [(ngModel)]="chptrdesc" rows="5" class="form-control no-resize auto-growth chptrdesc" maxlength="500" tabindex="5"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

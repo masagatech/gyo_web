@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { AddClassFeesComponent } from './aded/addclsfees.comp';
+import { AddFeesCollectionComponent } from './aded/addfeescoll.comp';
 
 import { FeesService } from '@services/erp';
 
@@ -14,16 +14,16 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: AddClassFeesComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "clsfees", "rights": "view", "urlname": "/classfees" }
+        path: '', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "feescoll", "rights": "view", "urlname": "/feescollection" }
       },
       {
-        path: 'add', component: AddClassFeesComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "clsfees", "rights": "add", "urlname": "/add" }
+        path: 'add', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "feescoll", "rights": "add", "urlname": "/add" }
       },
       {
-        path: 'edit/:id', component: AddClassFeesComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "clsfees", "rights": "edit", "urlname": "/edit" }
+        path: 'edit/:id', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "feescoll", "rights": "edit", "urlname": "/edit" }
       }
     ]
   },
@@ -31,7 +31,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddClassFeesComponent
+    AddFeesCollectionComponent
   ],
 
   imports: [
@@ -42,6 +42,6 @@ export const routes = [
   providers: [AuthGuard, FeesService]
 })
 
-export class ClassFeesModule {
+export class FeesCollectionModule {
   public static routes = routes;
 }

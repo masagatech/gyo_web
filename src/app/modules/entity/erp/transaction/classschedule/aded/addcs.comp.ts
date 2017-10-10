@@ -839,8 +839,8 @@ export class AddClassScheduleComponent implements OnInit, OnDestroy {
         this.isEditClassSchedule = true;
         this.selectedClassScheduleRow = row;
 
-        this.frmtm = row.frmtm;
-        this.totm = row.totm;
+        this.frmtm = row.strtm;
+        this.totm = row.endtm;
         this.sunsubid = row.sunsubid;
         this.monsubid = row.monsubid;
         this.tuessubid = row.tuessubid;

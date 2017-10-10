@@ -15,11 +15,11 @@ export class FeesService {
         return this._dataserver.post(Globals.erproute + "getClassFees", req)
     }
 
-    saveStudentFees(req: any) {
-        return this._dataserver.post(Globals.erproute + "saveStudentFees", req)
+    saveFeesCollection(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveFeesCollection", req)
     }
 
-    getStudentFees(req: any) {
-        return this._dataserver.post(Globals.erproute + "getStudentFees", req)
+    getFeesCollection(req: any) {
+        return this._dataserver.post(Globals.erproute + "getFeesCollection", req)
     }
 }

@@ -7,7 +7,7 @@ import { FeesService } from '@services/erp';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addclsfs.comp.html',
+    templateUrl: 'addclsfees.comp.html',
     providers: [CommonService]
 })
 
