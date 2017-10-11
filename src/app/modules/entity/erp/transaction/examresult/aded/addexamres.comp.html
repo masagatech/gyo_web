@@ -1,0 +1,128 @@
+<div class="card">
+    <div class="header">
+        <h4>Exam</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveExamResult()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Semester <strong>*</strong></label>
+                        <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" tabindex="2">
+                            <option [value]="0">Select Semester</option>
+                            <option *ngFor="let row of semesterDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="getExamResult();" class="form-control class" tabindex="3">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Student <strong>*</strong></label>
+                        <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="4" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <span class="material-icons inputlinkico"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group" style="padding-top: 20px;">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getExamResult()">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered reports">
+                    <thead>
+                        <tr>
+                            <th width="150px">
+                                Subject
+                            </th>
+                            <th width="100px">
+                                Passing Marks
+                            </th>
+                            <th width="100px">
+                                Marks
+                            </th>
+                            <th width="100px">
+                                Out Of Marks
+                            </th>
+                            <th>
+                                Remark
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of examList">
+                        <tr>
+                            <td>
+                                {{row.subname}}
+                            </td>
+                            <td>
+                                {{row.passmarks}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control msg" [(ngModel)]="row.marks">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {{row.outofmarks}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control msg" [(ngModel)]="row.resremark">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

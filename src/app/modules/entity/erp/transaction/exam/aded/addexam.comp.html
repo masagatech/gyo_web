@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4>examesment</h4>
+        <h4>Exam</h4>
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveExamInfo()">
@@ -74,21 +74,20 @@
                     </div>
                 </div>
 
-
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Out Of Marks <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="outofmarks" class="form-control" tabindex="5">
+                                <label class="control-label">Passing Marks <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="passmarks" class="form-control passmarks" tabindex="5">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Exam Date <strong>*</strong></label>
-                                <input type="date" [(ngModel)]="examdate" class="form-control examdate" tabindex="6">
+                                <label class="control-label">Out Of Marks <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="outofmarks" class="form-control outofmarks" tabindex="6">
                             </div>
                         </div>
                     </div>
@@ -98,16 +97,24 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">From Time <strong>*</strong></label>
-                                <input type="time" [(ngModel)]="frmtm" class="form-control frmtm" tabindex="7">
+                                <label class="control-label">Exam Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="examdate" class="form-control examdate" tabindex="7">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From Time <strong>*</strong></label>
+                                <input type="time" [(ngModel)]="frmtm" class="form-control frmtm" tabindex="8">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To Time <strong>*</strong></label>
-                                <input type="time" [(ngModel)]="totm" class="form-control totm" tabindex="8">
+                                <input type="time" [(ngModel)]="totm" class="form-control totm" tabindex="9">
                             </div>
                         </div>
                     </div>

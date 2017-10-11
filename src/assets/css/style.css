@@ -10607,6 +10607,12 @@ body.waitMe_body .waitMe_container.text>div {
     color: #FFFFFF;
 }
 
+.exam,
+.Exam {
+    background-color: #ffe821;
+    color: #000000;
+}
+
 .Total {
     background-color: #000000;
     color: #FFFFFF;

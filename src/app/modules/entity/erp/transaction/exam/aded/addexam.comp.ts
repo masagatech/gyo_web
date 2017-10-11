@@ -26,6 +26,7 @@ export class AddExamComponent implements OnInit {
     smstrid: number = 0;
     clsid: number = 0;
     subid: number = 0;
+    passmarks: number = 0;
     outofmarks: number = 0;
     chptrid: number = 0;
     examdate: any = "";
@@ -46,7 +47,7 @@ export class AddExamComponent implements OnInit {
         this.editExamDetails();
     }
 
-    // Fill Semester, Class And Chapter Drop Down
+    // Fill Academic Year, Semester And Class Down
 
     fillDropDownList() {
         var that = this;
@@ -57,9 +58,14 @@ export class AddExamComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
+                that.ayDT = data.data.filter(a => a.group == "ay");
+
+                if (that.ayDT.length > 0) {
+                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                }
+
                 that.semesterDT = data.data.filter(a => a.group == "semester");
                 that.classDT = data.data.filter(a => a.group == "class");
-                that.ayDT = data.data.filter(a => a.group == "ay");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -134,6 +140,7 @@ export class AddExamComponent implements OnInit {
         var that = this;
 
         that.subid = 0;
+        that.passmarks = 0;
         that.outofmarks = 0;
         that.examdate = "";
         that.frmtm = "";
@@ -177,13 +184,29 @@ export class AddExamComponent implements OnInit {
 
         _chapterrights = that.getSubjectChapterRights();
 
-        if (that.clsid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select class");
+        if (that.ayid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Academic Year");
+            $(".ayname").focus();
+        }
+        else if (that.smstrid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Semester");
+            $(".smstrname").focus();
+        }
+        else if (that.clsid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Class");
             $(".class").focus();
         }
         else if (that.subid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Subject");
             $(".subname").focus();
+        }
+        else if (that.passmarks == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Passing Masrks");
+            $(".passmarks").focus();
+        }
+        else if (that.outofmarks == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Out Of Marks");
+            $(".outofmarks").focus();
         }
         else if (that.examdate == "") {
             that._msg.Show(messageType.error, "Error", "Enter Exam Date");
@@ -206,6 +229,7 @@ export class AddExamComponent implements OnInit {
                 "smstrid": that.smstrid,
                 "clsid": that.clsid,
                 "subid": that.subid,
+                "passmarks": that.passmarks,
                 "outofmarks": that.outofmarks,
                 "examdate": that.examdate,
                 "frmtm": that.frmtm,
@@ -287,6 +311,7 @@ export class AddExamComponent implements OnInit {
                     that.fillSubjectDropDown();
                     that.subid = viewexam[0].subid;
                     that.fillChapterList();
+                    that.passmarks = viewexam[0].passmarks;
                     that.outofmarks = viewexam[0].outofmarks;
                     that.examdate = viewexam[0].examdate;
                     that.frmtm = viewexam[0].frmtm;

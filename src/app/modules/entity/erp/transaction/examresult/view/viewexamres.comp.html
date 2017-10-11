@@ -1,0 +1,71 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-4">
+                <h4>Exam Result</h4>
+            </div>
+            <div class="col-md-10 col-xs-8" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addExamResult()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Semester
+                            </th>
+                            <th>
+                                Class Name
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+                            <th>
+                                Marks
+                            </th>
+                            <th>
+                                Out Of Marks
+                            </th>
+                            <th>
+                                Remark
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of examDT | groupBy: 'studname'">
+                        <tr class="tr-table">
+                            <th colspan="6">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.smstrname}}
+                            </td>
+                            <td>
+                                {{drow.classname}}
+                            </td>
+                            <td>
+                                {{drow.subname}}
+                            </td>
+                            <td>
+                                {{drow.marks}}
+                            </td>
+                            <td>
+                                {{drow.outofmarks}}
+                            </td>
+                            <td>
+                                {{drow.resremark}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
