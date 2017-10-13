@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@services';
 
-import { BirthdayComponent } from './birthday.comp';
+import { PassengerBirthdayComponent } from './psngrbirth.comp';
 
 import { PassengerService } from '@services/master';
 
@@ -14,7 +14,7 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: BirthdayComponent, canActivate: [AuthGuard],
+        path: '', component: PassengerBirthdayComponent, canActivate: [AuthGuard],
         data: { "module": "erppsngr", "submodule": "dob", "rights": "view", "urlname": "/birthday" }
       },
     ]
@@ -23,7 +23,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    BirthdayComponent
+    PassengerBirthdayComponent
   ],
 
   imports: [
@@ -33,6 +33,6 @@ export const routes = [
   providers: [AuthGuard, PassengerService]
 })
 
-export class BirthdayModule {
+export class PassengerBirthdayModule {
   public static routes = routes;
 }

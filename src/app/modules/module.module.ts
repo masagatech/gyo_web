@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ModuleComponent } from '../modules/module.comp';
-import { AuthGuard } from '@services';
-import { SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

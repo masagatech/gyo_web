@@ -62,7 +62,7 @@ export class AddAnnouncementComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getAnnouncement({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype": "standard", "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -104,6 +104,9 @@ export class AddAnnouncementComponent implements OnInit {
                 if (actrights != "") {
                     stdrights = actrights.slice(0, -1);
                 }
+                else {
+                    stdrights = null;
+                }
             }
         }
 
@@ -137,7 +140,7 @@ export class AddAnnouncementComponent implements OnInit {
         }
         else if (that.title == "") {
             that._msg.Show(messageType.error, "Error", "Enter Title");
-            $(".title").focus();
+            $(".annc-title").focus();
         }
         else if (that.desc == "") {
             that._msg.Show(messageType.error, "Error", "Enter Message");
@@ -146,6 +149,12 @@ export class AddAnnouncementComponent implements OnInit {
         else if (that.anncdate == "") {
             that._msg.Show(messageType.error, "Error", "Enter Date");
             $(".anncdate").focus();
+        }
+        else if (that.standardDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
+        }
+        else if (_stdrights == null) {
+            that._msg.Show(messageType.error, "Error", "Please Select Class");
         }
         else {
             commonfun.loader();

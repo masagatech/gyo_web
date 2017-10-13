@@ -79,11 +79,6 @@ export class AddAcademicYearComponent implements OnInit {
             $(".todt").focus();
             return false;
         }
-        else if (today > that.todt) {
-            that._msg.Show(messageType.error, "Error", "Sholuld Be To Date Greater Than Current Date");
-            $(".todt").focus();
-            return false;
-        }
         else if (that.frmdt > that.todt) {
             that._msg.Show(messageType.error, "Error", "Sholul Be To Date Greater Than From Date");
             $(".todt").focus();

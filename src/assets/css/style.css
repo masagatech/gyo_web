@@ -4788,7 +4788,7 @@ section.content {
 .nav-tabs>li {
     position: relative;
     top: 3px;
-    left: -2px;
+    left: 0;
 }
 
 .nav-tabs>li>a {
@@ -10427,7 +10427,7 @@ body.waitMe_body .waitMe_container.text>div {
     border-radius: 5px;
 }
 
-.apsent {
+.absent {
     background-color: #E91E63;
     color: #FFFFFF;
     padding: 5px 8px;

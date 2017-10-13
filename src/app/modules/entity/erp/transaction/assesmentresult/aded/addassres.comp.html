@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Academic Year <strong>*</strong></label>
-                            <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <select id="ayid" name="ayname" [(ngModel)]="ayid" (ngModelChange)="getAssesmentResult();" class="form-control ayname" tabindex="1">
                                 <option [value]="0">Select Academic Year</option>
                                 <option *ngFor="let row of ayDT" [value]="row.id">
                                     {{row.val}}
@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Class <strong>*</strong></label>
-                            <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillAssesmentTypeDropDown();getAssesmentResult();" class="form-control class" tabindex="1">
+                            <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillAssesmentTypeDropDown();getAssesmentResult();" class="form-control class" tabindex="2">
                                 <option [value]="0">Select Class</option>
                                 <option *ngFor="let row of classDT" [value]="row.id">
                                     {{row.val}}
@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Assesment Type <strong>*</strong></label>
-                            <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" (ngModelChange)="getAssesmentResult();" class="form-control asstype" tabindex="2">
+                            <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" (ngModelChange)="getAssesmentResult();" class="form-control asstype" tabindex="3">
                                 <option [value]="0">Select Assesment Type</option>
                                 <optgroup id="subject" label="Subject">
                                     <option *ngFor="let row of subjectDT" [value]="row.id">
@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Student <strong>*</strong></label>
-                            <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="3" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                            <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="4" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
                             <span class="material-icons inputlinkico"></span>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">From Date <strong>*</strong></label>
-                            <input type="date" class="form-control frmdt" [(ngModel)]="frmdt" [tabindex]="4">
+                            <input type="date" class="form-control frmdt" [(ngModel)]="frmdt" [tabindex]="5">
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">To Date <strong>*</strong></label>
-                            <input type="date" class="form-control todt" [(ngModel)]="todt">
+                            <input type="date" class="form-control todt" [(ngModel)]="todt" tabindex="6">
                         </div>
                     </div>
                 </div>
@@ -103,40 +103,45 @@
                 <thead>
                     <tr>
                         <th>
-                            {{heading}}
+                            Heading
                         </th>
                         <th width="100px">
                             Previous Grade
                         </th>
-                        <th width="350px">
+                        <th width="330px">
                             Previous Remark
                         </th>
-                        <th width="150px">
+                        <th width="120px">
                             Grade
                         </th>
-                        <th width="350px">
+                        <th width="330px">
                             Remark
                         </th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let row of assesmentList">
-                    <tr>
+                <tbody *ngFor="let row of assesmentList | groupBy: 'heading'">
+                    <tr class="tr-table">
+                        <th colspan="5">
+                            {{row.key}}
+                        </th>
+                    </tr>
+                    <tr *ngFor="let drow of row.value">
                         <td>
-                            {{row.subheading}}
+                            {{drow.subheading}}
                         </td>
                         <td>
-                            {{row.prevgrade}}
+                            {{drow.prevgrade}}
                         </td>
                         <td>
-                            {{row.prevresremark}}
+                            {{drow.prevresremark}}
                         </td>
                         <td>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <select id="gradeid" name="grade" [(ngModel)]="row.gradeid" class="form-control grade" tabindex="1">
+                                    <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control grade" tabindex="7">
                                         <option [value]="0">Select Grade</option>
-                                        <option *ngFor="let drow of row.gradelist" [value]="drow.gradeid">
-                                            {{drow.gradename}}
+                                        <option *ngFor="let mdrow of drow.gradelist" [value]="mdrow.gradeid">
+                                            {{mdrow.gradename}}
                                         </option>
                                     </select>
                                 </div>
@@ -145,7 +150,7 @@
                         <td>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control msg" [(ngModel)]="row.resremark">
+                                    <input type="text" class="form-control msg" [(ngModel)]="drow.resremark" tabindex="8">
                                 </div>
                             </div>
                         </td>
@@ -156,7 +161,7 @@
             <div class="form-group">
                 <div class="form-line">
                     <label class="control-label">Remark</label>
-                    <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="5"></textarea>
+                    <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
                 </div>
             </div>
         </div>

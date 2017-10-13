@@ -115,29 +115,61 @@ export class AddExamResultComponent implements OnInit {
         this.getExamResult();
     }
 
-    // Save exam Result
+    // Reset Student
 
-    saveExamResult() {
+    resetStudentData() {
+        this.studid = 0;
+        this.studname = "";
+    }
+
+    // Save Exam Result
+
+    isValidation() {
         var that = this;
-        var _examlist = null;
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
             $(".ayname").focus();
+            return false;
         }
         else if (that.smstrid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Semester");
             $(".smstrname").focus();
+            return false;
         }
         else if (that.clsid == 0) {
             that._msg.Show(messageType.error, "Error", "Select class");
             $(".class").focus();
+            return false;
         }
         else if (that.studid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Student Name");
             $(".studname input").focus();
+            return false;
         }
-        else {
+        else if (that.examList.length > 0) {
+            for (var i = 0; i < that.examList.length; i++) {
+                var _examlist = that.examList[i];
+
+                if (_examlist.marks == null || _examlist.marks == "") {
+                    that._msg.Show(messageType.error, "Error", "Enter " + _examlist.subname + " Marks");
+                    $(".marks" + _examlist.subid).focus();
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    saveExamResult() {
+        var that = this;
+        var _examlist = null;
+        var _isvalid: boolean = false;
+
+        _isvalid = that.isValidation();
+
+        if (_isvalid) {
             commonfun.loader();
 
             for (var i = 0; i < that.examList.length; i++) {

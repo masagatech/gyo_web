@@ -134,6 +134,19 @@ export class AddExamComponent implements OnInit {
         })
     }
 
+    private selectAndDeselectAllCheckboxes() {
+        if ($("#selectall").is(':checked')) {
+            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private clearcheckboxes() {
+        $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+    }
+
     // Clear Exam Fields
 
     resetExamFields() {
@@ -147,6 +160,7 @@ export class AddExamComponent implements OnInit {
         that.totm = "";
         that.chptrid = 0;
         that.chapterDT = [];
+        that.clearcheckboxes();
     }
 
     // Get Subject Shapter Rights
@@ -169,6 +183,9 @@ export class AddExamComponent implements OnInit {
 
                 if (actrights != "") {
                     chapterrights = actrights.slice(0, -1);
+                }
+                else {
+                    chapterrights = null;
                 }
             }
         }
@@ -219,6 +236,13 @@ export class AddExamComponent implements OnInit {
         else if (that.totm == "") {
             that._msg.Show(messageType.error, "Error", "Enter To Time");
             $(".totm").focus();
+        }
+        else if (that.chapterDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "No any Chapter Entry on this " + $(".subname option:selected").text().trim());
+            $(".totm").focus();
+        }
+        else if (_chapterrights == null) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Chapter");
         }
         else {
             commonfun.loader();

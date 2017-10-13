@@ -85,7 +85,7 @@ export class AddEntityComponent implements OnInit {
         setTimeout(function () {
             $(".schcd").focus();
         }, 100);
-        
+
         this.getEntityDetails();
     }
 

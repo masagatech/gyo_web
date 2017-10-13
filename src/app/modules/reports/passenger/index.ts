@@ -17,6 +17,7 @@ export const routes = [
 
                     // Student
                     
+                    { path: 'birthday', loadChildren: './passengerbirthday#PassengerBirthdayModule' },
                     { path: 'trips', loadChildren: './passengertrips#PassengerTripsReportsModule' },
                     { path: 'routewise', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'direct', loadChildren: './directpassenger#DirectPassengerModule' },

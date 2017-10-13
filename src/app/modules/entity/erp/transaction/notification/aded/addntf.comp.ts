@@ -51,6 +51,7 @@ export class AddNotificationComponent implements OnInit {
         that.grpid = 0;
         that.title = "";
         that.msg = "";
+        that.clearcheckboxes();
     }
 
     // Get Standard Rights
@@ -60,7 +61,7 @@ export class AddNotificationComponent implements OnInit {
         var stditem = null;
 
         var actrights = "";
-        var stdights = {};
+        var stdrights = null;
 
         for (var i = 0; i <= that.standardDT.length - 1; i++) {
             stditem = null;
@@ -72,12 +73,15 @@ export class AddNotificationComponent implements OnInit {
                 });
 
                 if (actrights != "") {
-                    stdights = actrights.slice(0, -1);
+                    stdrights = actrights.slice(0, -1);
+                }
+                else {
+                    stdrights = null;
                 }
             }
         }
 
-        return stdights;
+        return stdrights;
     }
 
     private selectAndDeselectAllCheckboxes() {
@@ -89,7 +93,7 @@ export class AddNotificationComponent implements OnInit {
         }
     }
 
-    private clearcheckboxes(): void {
+    private clearcheckboxes() {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
     }
 
@@ -107,11 +111,17 @@ export class AddNotificationComponent implements OnInit {
         }
         else if (that.title == "") {
             that._msg.Show(messageType.error, "Error", "Enter Title");
-            $(".title").focus();
+            $(".ntf-title").focus();
         }
         else if (that.msg == "") {
             that._msg.Show(messageType.error, "Error", "Enter Message");
             $(".msg").focus();
+        }
+        else if (that.standardDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
+        }
+        else if (_stdrights == null) {
+            that._msg.Show(messageType.error, "Error", "Please Select Class");
         }
         else {
             commonfun.loader();
@@ -236,7 +246,7 @@ export class AddNotificationComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getNotification({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype": "standard", "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {

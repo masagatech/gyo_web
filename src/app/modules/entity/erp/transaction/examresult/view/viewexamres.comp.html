@@ -4,9 +4,46 @@
             <div class="col-md-2 col-xs-4">
                 <h4>Exam Result</h4>
             </div>
-            <div class="col-md-10 col-xs-8" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addExamResult()">
-                    <i class="material-icons">add</i></button>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" (ngModelChange)="getExamResult();" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="getExamResult();" class="form-control class" tabindex="2">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Student <strong>*</strong></label>
+                        <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="4" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <span class="material-icons inputlinkico"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" style="padding-top: 20px; text-align: right;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addExamResult()">
+                        <i class="material-icons">add</i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -18,13 +55,10 @@
                     <thead>
                         <tr>
                             <th>
-                                Semester
-                            </th>
-                            <th>
-                                Class Name
-                            </th>
-                            <th>
                                 Subject
+                            </th>
+                            <th>
+                                Passing Marks
                             </th>
                             <th>
                                 Marks
@@ -33,31 +67,34 @@
                                 Out Of Marks
                             </th>
                             <th>
+                                Status
+                            </th>
+                            <th>
                                 Remark
                             </th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of examDT | groupBy: 'studname'">
+                    <tbody *ngFor="let row of examDT | groupBy: 'studshead'">
                         <tr class="tr-table">
-                            <th colspan="6">
+                            <th colspan="8">
                                 {{row.key}}
                             </th>
                         </tr>
                         <tr *ngFor="let drow of row.value">
                             <td>
-                                {{drow.smstrname}}
-                            </td>
-                            <td>
-                                {{drow.classname}}
-                            </td>
-                            <td>
                                 {{drow.subname}}
                             </td>
-                            <td>
+                            <td align="right">
+                                {{drow.passmarks}}
+                            </td>
+                            <td align="right">
                                 {{drow.marks}}
                             </td>
-                            <td>
+                            <td align="right">
                                 {{drow.outofmarks}}
+                            </td>
+                            <td>
+                                {{drow.status}}
                             </td>
                             <td>
                                 {{drow.resremark}}

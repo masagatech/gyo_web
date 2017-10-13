@@ -43,7 +43,7 @@ export class ViewTagGroupModuleMapComponent implements OnInit {
             "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin
+            "issysadmin": that.loginUser.issysadmin
         }
 
         that._tmservice.getTagGroupModuleMap(params).subscribe(data => {

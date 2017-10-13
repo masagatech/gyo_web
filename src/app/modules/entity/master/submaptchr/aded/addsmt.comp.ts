@@ -53,6 +53,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         var that = this;
 
         that.clsid = 0;
+        that.clearcheckboxes();
     }
 
     // Auto Completed Teacher
@@ -162,6 +163,9 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                 if (actrights != "") {
                     subrights = actrights.slice(0, -1);
                 }
+                else{
+                    subrights = null;
+                }
             }
         }
 
@@ -196,6 +200,9 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         else if (that.clsid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
             $(".clsname").focus();
+        }
+        else if (that.subjectDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "No any Subject on this " + $(".clsname option:selected").text().trim() +" Class");
         }
         else if (_subrights == null) {
             that._msg.Show(messageType.error, "Error", "Please Select atleast 1 Subject");

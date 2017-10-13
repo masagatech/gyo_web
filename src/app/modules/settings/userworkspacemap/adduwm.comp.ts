@@ -151,7 +151,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         var wsitem = null;
 
         var actrights = "";
-        var _wsights = {};
+        var _wsights = null;
 
         for (var i = 0; i <= this.workspaceDT.length - 1; i++) {
             wsitem = null;
@@ -165,6 +165,9 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
                 if (actrights != "") {
                     _wsights = actrights.slice(0, -1);
                 }
+                else {
+                    _wsights = null;
+                }
             }
         }
 
@@ -174,10 +177,13 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
     saveUserWorkspaceMapping() {
         var that = this;
         var _wsrights = null;
-        
+
         _wsrights = that.getUserRights();
 
-        if (_wsrights === {}) {
+        if (that.workspaceDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "No any Workspace");
+        }
+        else if (_wsrights == null) {
             that._msg.Show(messageType.error, "Error", "Select Atleast 1 Rights");
         }
         else {

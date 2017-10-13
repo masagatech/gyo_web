@@ -97,6 +97,9 @@ export class AddTagGroupModuleMapComponent implements OnInit {
                 if (actrights != "") {
                     tagights = actrights.slice(0, -1);
                 }
+                else {
+                    tagights = null;
+                }
             }
         }
 
@@ -127,6 +130,12 @@ export class AddTagGroupModuleMapComponent implements OnInit {
         if (that.mdlcode == "") {
             that._msg.Show(messageType.error, "Error", "Select Module");
             $(".mdlname").focus();
+        }
+        else if(that.tagGroupDT.length == 0){
+            that._msg.Show(messageType.error, "Error", "There is no any Tag here");
+        }
+        else if (_taggrprights == null) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Tag");
         }
         else {
             commonfun.loader();

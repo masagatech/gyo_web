@@ -74,7 +74,7 @@
                                     {{row.psngrname}} ({{row.classname}})
                                 </div>
                                 <div class="col-md-2" align="right">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="apsentPassenger(row)">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="absentPassenger(row)">
                                         <i class="material-icons">arrow_forward</i>
                                     </button>
                                 </div>
@@ -86,7 +86,7 @@
         </div>
         <div class="col-md-4">
             <div class="header">
-                <h2>Apsent {{psngrtype == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</h2>
+                <h2>Absent {{psngrtype == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</h2>
             </div>
             <div class="body no-padding">
                 <div *ngFor="let row of passengerDT | filterBy: {'status':'a'}">

@@ -112,11 +112,11 @@ export class AddClassComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "teacher",
+            "flag": "employee",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
-            "emptype": "tchr",
+            "emptype": this.loginUser.ctype,
             "classid": 0,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
@@ -266,8 +266,11 @@ export class AddClassComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Class Teacher");
             $(".clstchrname input").focus();
         }
-        else if(_subrights.length == 0){
-            that._msg.Show(messageType.error, "Error", "Please Select atleast 1 Subject");
+        else if(that.subjectDT.length == 0){
+            that._msg.Show(messageType.error, "Error", "No any Subject Entry on this " + that._enttdetails.enttname);
+        }
+        else if (_subrights == null) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Subject");
         }
         else {
             commonfun.loader();

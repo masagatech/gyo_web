@@ -108,7 +108,6 @@ export class AddAssesmentComponent implements OnInit {
     resetAssesmentFields() {
         var that = this;
 
-        that.clsid = 0;
         that.asstypid = 0;
         that.heading = "";
         that.subheadList = [];
@@ -184,6 +183,9 @@ export class AddAssesmentComponent implements OnInit {
                 if (actrights != "") {
                     graderights = actrights.slice(0, -1);
                 }
+                else {
+                    graderights = null;
+                }
             }
         }
 
@@ -213,6 +215,12 @@ export class AddAssesmentComponent implements OnInit {
         else if (that.subheadList == "") {
             that._msg.Show(messageType.error, "Error", "Please Atleast 1 Sub Heading");
             $(".subheadname").focus();
+        }
+        else if (that.gradeDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "No any Grade Entry on this " + that._enttdetails.enttname);
+        }
+        else if (_graderights == null) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Grade");
         }
         else {
             commonfun.loader();

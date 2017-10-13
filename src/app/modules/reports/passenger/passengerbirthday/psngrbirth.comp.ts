@@ -6,11 +6,11 @@ import { PassengerService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'birthday.comp.html',
+    templateUrl: 'psngrbirth.comp.html',
     providers: [CommonService]
 })
 
-export class BirthdayComponent implements OnInit {
+export class PassengerBirthdayComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 

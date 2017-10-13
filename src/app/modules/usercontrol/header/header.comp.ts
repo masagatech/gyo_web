@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   settingsMenuDT: any = [];
   erpMenuDT: any = [];
   reportsMenuDT: any = [];
+  erpReportsMenuDT: any = [];
 
   private themes: any = [
     { nm: 'red', disp: 'Red' },
@@ -118,6 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
       that.erpMenuDT = data.data.filter(a => a.mptype === "erp");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
+      that.erpReportsMenuDT = data.data.filter(a => a.mptype === "erprpt");
     }, err => {
       that._msg.Show(messageType.error, "Error", err);
     }, () => {

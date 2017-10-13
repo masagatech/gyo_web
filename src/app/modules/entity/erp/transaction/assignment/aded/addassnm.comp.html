@@ -62,8 +62,8 @@
                                 <label class="control-label">Subject <strong>*</strong></label>
                                 <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subject" tabindex="2">
                                     <option [value]="0">Select Subject</option>
-                                    <option *ngFor="let row of subjectDT" [value]="row.id">
-                                        {{row.val}}
+                                    <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                        {{row.subname}}
                                     </option>
                                 </select>
                             </div>

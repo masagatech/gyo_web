@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Class <strong>*</strong></label>
-                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillAssesmentTypeDropDown();getAssesmentDetails();" class="form-control class" tabindex="1">
+                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillAssesmentTypeDropDown();" class="form-control class" tabindex="1">
                                     <option [value]="0">Select Class</option>
                                     <option *ngFor="let row of classDT" [value]="row.id">
                                         {{row.val}}
@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Assesment Type <strong>*</strong></label>
-                                <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" (ngModelChange)="getAssesmentDetails();" class="form-control asstype" tabindex="2">
+                                <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" class="form-control asstype" tabindex="2">
                                     <option [value]="0">Select Assesment Type</option>
                                     <optgroup id="subject" label="Subject">
                                         <option *ngFor="let row of subjectDT" [value]="row.id">

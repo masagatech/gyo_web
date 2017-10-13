@@ -33,7 +33,6 @@ export class AddAssesmentResultComponent implements OnInit {
     studname: string = "";
     frmdt: any = "";
     todt: any = "";
-    heading: string = "";
 
     assesmentList: any = [];
     gradeList: any = [];
@@ -61,7 +60,7 @@ export class AddAssesmentResultComponent implements OnInit {
         // this.editAssesmentDetails();
     }
 
-    // Fill Class, Grade And Subject Drop Down
+    // Fill AY And Class Drop Down
 
     fillAYAndClassDropDown() {
         var that = this;
@@ -69,7 +68,7 @@ export class AddAssesmentResultComponent implements OnInit {
 
         that._assservice.getAssesmentDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
@@ -305,13 +304,10 @@ export class AddAssesmentResultComponent implements OnInit {
                         that.assid = that.assesmentList[0].assid;
                     }
 
-                    that.heading = that.assesmentList[0].heading;
                     that.gradeList = that.assesmentList[0].gradelist;
-
                     that.remark = that.assesmentList[0].remark;
                 }
                 else {
-                    that.heading = "";
                     that.remark = "";
                 }
             }

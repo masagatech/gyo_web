@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Group <strong>*</strong></label>
-                        <select id="grpid" name="grpname" [(ngModel)]="grpid" class="form-control grpname" tabindex="5">
+                        <select id="grpid" name="grpname" [(ngModel)]="grpid" class="form-control grpname" tabindex="1">
                             <option [value]="0">Select Group</option>
                             <option *ngFor="let row of groupDT" [value]="row.id">	
                                 {{row.val}}
@@ -30,13 +30,13 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Title <strong>*</strong></label>
-                        <input [(ngModel)]="title" class="form-control title" maxlength="500" tabindex="3" />
+                        <input [(ngModel)]="title" class="form-control ntf-title" tabindex="2" />
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Message <strong>*</strong></label>
-                        <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="4"></textarea>
+                        <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="3"></textarea>
                     </div>
                 </div>
             </div>
