@@ -19,7 +19,7 @@ export class AddPassengerComponent implements OnInit {
     _enttdetails: any = [];
 
     classDT: any = [];
-    genderDT: any = [];
+    ayDT: any = [];
     alertDT: any = [];
 
     pickrouteDT: any = [];
@@ -27,13 +27,12 @@ export class AddPassengerComponent implements OnInit {
     pickstopsDT: any = [];
     dropstopsDT: any = [];
 
+    ayid: number = 0;
     psngrid: number = 0;
     psngrcode: string = "";
     psngrname: string = "";
     classid: number = 0;
-    gender: string = "";
     alert: string = "";
-    dob: any = "";
     aadharno: any = "";
 
     mothername: string = "";
@@ -78,8 +77,8 @@ export class AddPassengerComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.getPhotoUploadConfig();
         this.fillDropDownList();
+        this.getPhotoUploadConfig();
     }
 
     public ngOnInit() {
@@ -101,11 +100,16 @@ export class AddPassengerComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
-                that.classDT = data.data.filter(a => a.group === "class");
-                that.genderDT = data.data.filter(a => a.group === "gender");
-                that.alertDT = data.data.filter(a => a.group === "alert");
+                that.ayDT = data.data.filter(a => a.group == "ay");
+                
+                if (that.ayDT.length > 0) {
+                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].key;
+                }
 
-                that.alert = that.alertDT.filter(a => a.isselected === true)[0].key;
+                that.classDT = data.data.filter(a => a.group == "class");
+                that.alertDT = data.data.filter(a => a.group == "alert");
+
+                that.alert = that.alertDT.filter(a => a.isselected == true)[0].key;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -384,8 +388,6 @@ export class AddPassengerComponent implements OnInit {
 
         that.aadharno = "";
         that.classid = 0;
-        that.dob = "";
-        that.gender = "";
         that.fathername = "";
         that.mothername = "";
         that.primaryemail = "";
@@ -492,80 +494,75 @@ export class AddPassengerComponent implements OnInit {
     isValidPassenger() {
         var that = this;
 
-        if (that.psngrname === "") {
+        if (that.ayid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Academic Year");
+            $(".ayname").focus();
+            return false;
+        }
+        else if (that.psngrname == "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
             $(".psngrname").focus();
             return false;
         }
-        else if (that.classid === 0) {
+        else if (that.classid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
             $(".class").focus();
             return false;
         }
-        else if (that.dob === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Date Of Birth");
-            $(".dob").focus();
-            return false;
-        }
-        else if (that.gender === "") {
-            that._msg.Show(messageType.error, "Error", "Select Gender");
-            $(".gender").focus();
-            return false;
-        }
-        else if (that.primaryemail === "") {
+        else if (that.primaryemail == "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Email");
             $(".primaryemail").focus();
             return false;
         }
-        else if (that.primarymobile === "") {
+        else if (that.primarymobile == "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Mobile");
             $(".primarymobile").focus();
             return false;
         }
-        else if (that.resiaddr === "") {
+        else if (that.resiaddr == "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Address");
             $(".resiaddr").focus();
             return false;
         }
-        else if (that.resilet === "") {
+        else if (that.resilet == "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Lat");
             $(".resilet").focus();
             return false;
         }
-        else if (that.resilong === "") {
+        else if (that.resilong == "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Long");
             $(".resilong").focus();
             return false;
         }
         else if (that.pickrtid == 0) {
-            if (that.pickupaddr === "") {
+            if (that.pickupaddr == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
                 $(".pickupaddr").focus();
                 return false;
             }
-            else if (that.pickuplet === "") {
+            else if (that.pickuplet == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Lat");
                 $(".pickuplet").focus();
                 return false;
             }
-            else if (that.pickuplong === "") {
+            else if (that.pickuplong == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Long");
                 $(".pickuplong").focus();
                 return false;
             }
         }
         else if (that.droprtid == 0) {
-            if (that.dropaddr === "") {
+            if (that.dropaddr == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Drop Address");
                 $(".dropaddr").focus();
                 return false;
             }
-            else if (that.droplet === "") {
+            else if (that.droplet == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Drop Lat");
                 $(".droplet").focus();
                 return false;
             }
-            else if (that.droplong === "") {
+            else if (that.droplong == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Drop Long");
                 $(".droplong").focus();
                 return false;
@@ -584,21 +581,12 @@ export class AddPassengerComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            var passengerprofiledata = {};
-
-            passengerprofiledata = {
-                "pickupaddr": that.pickupaddr, "dropaddr": that.dropaddr, "otherinfo": that.otherinfo
-            }
-
             var savePassenger = {
                 "autoid": that.psngrid,
-                "studentcode": that.psngrid,
+                "ayid": that.ayid,
                 "studentname": that.psngrname,
-                "aadharno": that.aadharno,
                 "schoolid": that._enttdetails.enttid,
                 "classid": that.classid,
-                "dob": that.dob,
-                "gender": that.gender,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
@@ -609,15 +597,17 @@ export class AddPassengerComponent implements OnInit {
                 "address": that.resiaddr,
                 "resgeoloc": that.resilet + "," + that.resilong,
                 "pickrtid": that.pickrtid,
-                "droprtid": that.droprtid,
                 "pickstpid": that.pickstpid,
+                "pickaddr": that.pickupaddr,
+                "pickgeoloc": that.pickuplet + "," + that.pickuplong,
+                "droprtid": that.droprtid,
                 "dropstpid": that.dropstpid,
-                "studentprofiledata": passengerprofiledata,
-                "pickupgeoloc": that.pickuplet + "," + that.pickuplong,
-                "pickdowngeoloc": that.droplet + "," + that.droplong,
+                "dropaddr": that.dropaddr,
+                "dropgeoloc": that.droplet + "," + that.droplong,
+                "otherinfo": that.otherinfo,
+                "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
-                "remark1": that.remark1,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -631,7 +621,7 @@ export class AddPassengerComponent implements OnInit {
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        if (msgid === "1") {
+                        if (msgid == "1") {
                             that.resetPassengerFields();
                         }
                         else {
@@ -676,6 +666,7 @@ export class AddPassengerComponent implements OnInit {
                     try {
                         if (data.data.length > 0) {
                             that.psngrid = data.data[0].autoid;
+                            that.ayid = data.data[0].ayid;
                             that.psngrcode = data.data[0].studentcode;
                             that.psngrname = data.data[0].studentname;
                             that.aadharno = data.data[0].aadharno;

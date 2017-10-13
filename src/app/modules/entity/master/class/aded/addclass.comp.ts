@@ -116,7 +116,7 @@ export class AddClassComponent implements OnInit {
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
-            "emptype": this.loginUser.ctype,
+            "emptype": "tchr",
             "classid": 0,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,

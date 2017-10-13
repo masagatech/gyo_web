@@ -53,7 +53,9 @@ export class AddActivityComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._actvservice.getActivityDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._actvservice.getActivityDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 that.actvtypeDT = data.data;
             }
