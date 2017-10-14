@@ -55,7 +55,7 @@ export class AddAssignmentComponent implements OnInit {
 
         that._assnmservice.getAssignmentDetails({
             "flag": "classddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = data.data;
@@ -108,7 +108,7 @@ export class AddAssignmentComponent implements OnInit {
         that.uploadconfig.uploadurl = that.global.uploadurl;
         that.uploadconfig.filepath = that.global.filepath;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadconfig.maxFilesize = data.data[0]._filesize;
             that.uploadconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {

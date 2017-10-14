@@ -195,7 +195,7 @@ export class AddWorkspaceComponent implements OnInit {
     getLogoUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadlogoconfig.server = that.global.serviceurl + "uploads";
             that.uploadlogoconfig.serverpath = that.global.serviceurl;
             that.uploadlogoconfig.uploadurl = that.global.uploadurl;

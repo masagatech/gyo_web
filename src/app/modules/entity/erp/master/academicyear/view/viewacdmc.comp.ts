@@ -36,7 +36,7 @@ export class ViewAcademicYearComponent implements OnInit {
 
         that._acdmcservice.getAcademicYear({
             "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.ayDT = data.data;

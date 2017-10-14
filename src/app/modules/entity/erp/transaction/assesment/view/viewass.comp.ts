@@ -34,7 +34,7 @@ export class ViewAssesmentComponent implements OnInit {
 
         that._assmservice.getAssesmentDetails({
             "flag": "all", "enttid": that._enttdetails.enttid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.assesmentDT = data.data;

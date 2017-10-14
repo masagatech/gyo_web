@@ -113,7 +113,7 @@ export class AddAlbumComponent implements OnInit {
         that.uploadcoverconfig.uploadurl = that.global.uploadurl;
         that.uploadcoverconfig.filepath = that.global.filepath;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadcoverconfig.maxFilesize = data.data[0]._filesize;
             that.uploadcoverconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {

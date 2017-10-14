@@ -2,6 +2,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 export class Globals {
     static erproute: string = "erp/"
+    photoid : 29;
 
     serviceurl: string = "http://localhost:8082/goyoapi/";
     uploadurl: string = "http://localhost:8082/images/";

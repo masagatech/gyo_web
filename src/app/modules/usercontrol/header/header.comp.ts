@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   global = new Globals();
   uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
+  adminMenuDT: any = [];
   mastersMenuDT: any = [];
   settingsMenuDT: any = [];
   erpMenuDT: any = [];
@@ -115,6 +116,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
       "psngrtype": that._enttdetails.psngrtype
     }).subscribe(data => {
+      that.adminMenuDT = data.data.filter(a => a.mptype === "admin");
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
       that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
       that.erpMenuDT = data.data.filter(a => a.mptype === "erp");

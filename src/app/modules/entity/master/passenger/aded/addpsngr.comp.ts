@@ -97,7 +97,7 @@ export class AddPassengerComponent implements OnInit {
 
         that._psngrservice.getPassengerDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
@@ -422,7 +422,7 @@ export class AddPassengerComponent implements OnInit {
     getPhotoUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
             that.uploadphotoconfig.serverpath = that.global.serviceurl;
             that.uploadphotoconfig.uploadurl = that.global.uploadurl;
@@ -671,8 +671,6 @@ export class AddPassengerComponent implements OnInit {
                             that.psngrname = data.data[0].studentname;
                             that.aadharno = data.data[0].aadharno;
                             that.classid = data.data[0].classid;
-                            that.dob = data.data[0].dob;
-                            that.gender = data.data[0].gender;
 
                             that.mothername = data.data[0].mothername;
                             that.primarymobile = data.data[0].mobileno1;

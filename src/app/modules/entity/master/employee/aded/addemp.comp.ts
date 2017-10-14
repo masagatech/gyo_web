@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EmployeeService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -274,7 +273,7 @@ export class AddEmployeeComponent implements OnInit {
         that.uploadconfig.uploadurl = that.global.uploadurl;
         that.uploadconfig.filepath = that.global.filepath;
         
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadconfig.maxFilesize = data.data[0]._filesize;
             that.uploadconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {

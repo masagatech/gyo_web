@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="header">
+        <h4>Qualification</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveQualification()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Group <strong>*</strong></label>
+                                <select id="qlfgrpid" [(ngModel)]="qlfgrpid" class="form-control qlfgrpname" tabindex="1">
+                                    <option [value]="0">Select Group</option>
+                                    <option *ngFor="let row of groupDT" [value]="row.qlfgrpid">
+                                        {{row.qlfgrpname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="qlftitle" class="form-control qlftitle" tabindex="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description</label>
+                        <textarea [(ngModel)]="qlfdesc" rows="4" class="form-control no-resize auto-growth" [tabindex]="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

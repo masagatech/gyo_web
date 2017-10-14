@@ -15,6 +15,7 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: 'admission', loadChildren: './admission#AdmissionModule' },
                     { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
                     { path: 'tag', loadChildren: './tag#TagModule' },
                     { path: 'taggroupmodulemap', loadChildren: './taggrpmdlmap#TagGroupModuleMapModule' },

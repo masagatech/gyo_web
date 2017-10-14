@@ -37,7 +37,7 @@ export class PassengerBirthdayComponent implements OnInit {
         commonfun.loader();
 
         params = {
-            "flag": "birthday", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
+            "flag": "birthday", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 

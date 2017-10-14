@@ -162,7 +162,7 @@ export class AddDriverComponent implements OnInit {
     getPhotoUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": "29" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
             that.uploadphotoconfig.serverpath = that.global.serviceurl;
             that.uploadphotoconfig.uploadurl = that.global.uploadurl;

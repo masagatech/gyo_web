@@ -18,9 +18,10 @@ import { PSGComponent } from './passengers/psg.comp'
 import { INFOComponent } from './info/info.comp'
 import { HISTORYComponent } from './history/history.comp'
 
-
-
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,CalendarModule,SliderModule } from 'primeng/primeng';
+import {
+  LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,
+  CalendarModule, SliderModule
+} from 'primeng/primeng';
 
 export const config: SocketIoConfig = {
   url: Globals.socketurl, options: {}
@@ -47,11 +48,11 @@ export const routes = [
     HISTORYComponent,
     format
   ],
-  entryComponents: [PSGComponent, INFOComponent,HISTORYComponent],
+  entryComponents: [PSGComponent, INFOComponent, HISTORYComponent],
   imports: [
     CommonModule, FormsModule, SharedComponentModule, SocketIoModule.forRoot(config),
     RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,
-    CalendarModule,SliderModule
+    CalendarModule, SliderModule
   ],
 
   providers: [AuthGuard, TTMapService]
