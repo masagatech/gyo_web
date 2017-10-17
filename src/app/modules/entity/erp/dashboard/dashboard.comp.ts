@@ -229,8 +229,8 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
                         _dbChartDT.datasets[1].label = "Present Student " + _presentstudent;
                     }
                     else if (dbtype == "tchrattnd") {
-                        that.colors[name] = that.colors[name] || commonfun.randomColor(5);
-                        _dbChartDT.datasets[0].backgroundColor.push(that.colors[name]);
+                        var color = _dashboardDT[i].color;
+                        _dbChartDT.datasets[0].backgroundColor.push(color);
 
                         _datasets.push(_dashboardDT[i].totalcount);
                     }
