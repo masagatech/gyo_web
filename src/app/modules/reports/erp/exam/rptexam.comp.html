@@ -1,0 +1,166 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-1">
+                <h4>Exam</h4>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Semester <strong>*</strong></label>
+                        <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getExamDetails()" tabindex="2">
+                            <option [value]="0">Select Semester</option>
+                            <option *ngFor="let row of semesterDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="getExamDetails()" class="form-control class" tabindex="3">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getExamDetails()">
+                        <i class="material-icons">arrow_forward</i></button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3" align="right" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addExam()">
+                        <i class="material-icons">add</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered reports">
+                    <thead>
+                        <tr>
+                            <th>
+                                Subject
+                            </th>
+                            <th width="100px">
+                                Exam Date
+                            </th>
+                            <th width="130px">
+                                Exam Time
+                            </th>
+                            <th width="100px">
+                                Out Of Marks
+                            </th>
+                            <th width="100px">
+                                Passing Marks
+                            </th>
+                            <th width="130px">
+                                Present Student
+                            </th>
+                            <th width="110px">
+                                Absent Student
+                            </th>
+                            <th width="110px">
+                                Passed Student
+                            </th>
+                            <th width="110px">
+                                Failed Student
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of examDT | groupBy: 'classname'">
+                        <tr class="tr-table">
+                            <th colspan="5" class="th-left">
+                                Class : {{row.key.split('~')[0]}}
+                            </th>
+                            <th colspan="4" class="th-right">
+                                Total Student : {{row.key.split('~')[1]}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.subname}}
+                            </td>
+                            <td>
+                                {{drow.examdate}}
+                            </td>
+                            <td>
+                                {{drow.examtime}}
+                            </td>
+                            <td align="right">
+                                {{drow.outofmarks}}
+                            </td>
+                            <td align="right">
+                                {{drow.passmarks}}
+                            </td>
+                            <td align="right">
+                                <a role="button" (click)="getStudentDetails(drow.presentstudids)">{{drow.presentstuds}}</a>
+                            </td>
+                            <td align="right">
+                                <a role="button" (click)="getStudentDetails(drow.absentstudids)">{{drow.absentstuds}}</a>
+                            </td>
+                            <td align="right">
+                                <a role="button" (click)="getStudentDetails(drow.passstudids)">{{drow.passstuds}}</a>
+                            </td>
+                            <td align="right">
+                                <a role="button" (click)="getStudentDetails(drow.failstudids)">{{drow.failstuds}}</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="studentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 95%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Student
+                </h4>
+            </div>
+            <div class="modal-body" id="student">
+                <p-dataTable [value]="studentDT">
+                    <p-column field="studentname" header="Student Name" [style]="{'width': '200px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="email1" header="Email" [style]="{'width': '200px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="mobileno2" header="Mobile" [style]="{'width': '120px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="email2" header="Email" [style]="{'width': '200px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                    <p-column field="address" header="Address" [style]="{'width': '200px', 'vertical-align':'top', 'text-align': 'left'}"></p-column>
+                </p-dataTable>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

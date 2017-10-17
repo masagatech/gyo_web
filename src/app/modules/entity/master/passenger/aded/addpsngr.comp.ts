@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
@@ -62,23 +62,17 @@ export class AddPassengerComponent implements OnInit {
     otherinfo: string = "";
     remark1: string = "";
 
-    uploadPhotoDT: any = [];
-    global = new Globals();
-    uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    chooseLabel: string = "";
-
     mode: string = "";
     isactive: boolean = true;
 
     private subscribeParameters: any;
 
-    constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+    constructor(private _admsnservice: AdmissionService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getPhotoUploadConfig();
     }
 
     public ngOnInit() {
@@ -95,7 +89,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._psngrservice.getPassengerDetails({
+        that._admsnservice.getPassengerDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -132,7 +126,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader("#pickrtid");
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
+        that._admsnservice.getPassengerDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.pickrouteDT = data.data;
                 // setTimeout(function () { $.AdminBSB.select.refresh('pickrtid'); }, 100);
@@ -166,7 +160,7 @@ export class AddPassengerComponent implements OnInit {
             that.fillDropStopsDDL();
         }
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
+        that._admsnservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
             try {
                 that.pickstopsDT = data.data;
                 // setTimeout(function () { $.AdminBSB.select.refresh('pickstpid'); }, 100);
@@ -192,7 +186,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader("#dropstpid");
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
+        that._admsnservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
             try {
                 that.dropstopsDT = data.data;
                 // setTimeout(function () { $.AdminBSB.select.refresh('dropstpid'); }, 100);
@@ -237,7 +231,7 @@ export class AddPassengerComponent implements OnInit {
 
             commonfun.loader();
 
-            that._psngrservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
+            that._admsnservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
                         that.pickupaddr = data.data[0].address;
@@ -287,7 +281,7 @@ export class AddPassengerComponent implements OnInit {
 
             commonfun.loader();
 
-            that._psngrservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
+            that._admsnservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
                         that.dropaddr = data.data[0].address;
@@ -412,46 +406,6 @@ export class AddPassengerComponent implements OnInit {
         that.droplong = "0.00";
         that.remark1 = "";
         that.otherinfo = "";
-
-        that.uploadPhotoDT = [];
-        that.chooseLabel = "Upload Photo";
-    }
-
-    // User Photo Upload
-
-    getPhotoUploadConfig() {
-        var that = this;
-
-        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
-            that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
-            that.uploadphotoconfig.serverpath = that.global.serviceurl;
-            that.uploadphotoconfig.uploadurl = that.global.uploadurl;
-            that.uploadphotoconfig.filepath = that.global.filepath;
-            that.uploadphotoconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadphotoconfig.acceptedFiles = data.data[0]._filetype;
-        }, err => {
-            console.log("Error");
-        }, () => {
-            console.log("Complete");
-        })
-    }
-
-    onPhotoUpload(event) {
-        var that = this;
-        var imgfile = [];
-        that.uploadPhotoDT = [];
-
-        imgfile = JSON.parse(event.xhr.response);
-
-        setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
-            }
-        }, 1000);
-    }
-
-    removePhotoUpload() {
-        this.uploadPhotoDT.splice(0, 1);
     }
 
     // Active / Deactive Data
@@ -465,7 +419,7 @@ export class AddPassengerComponent implements OnInit {
             "mode": that.mode
         }
 
-        that._psngrservice.savePassengerInfo(act_deactPassenger).subscribe(data => {
+        that._admsnservice.savePassengerInfo(act_deactPassenger).subscribe(data => {
             try {
                 var dataResult = data.data;
                 var msg = dataResult[0].funsave_studentinfo.msg;
@@ -587,7 +541,6 @@ export class AddPassengerComponent implements OnInit {
                 "studentname": that.psngrname,
                 "schoolid": that._enttdetails.enttid,
                 "classid": that.classid,
-                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
@@ -612,7 +565,7 @@ export class AddPassengerComponent implements OnInit {
                 "mode": ""
             }
 
-            that._psngrservice.savePassengerInfo(savePassenger).subscribe(data => {
+            that._admsnservice.savePassengerInfo(savePassenger).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_studentinfo.msg;
@@ -658,7 +611,7 @@ export class AddPassengerComponent implements OnInit {
             if (params['id'] !== undefined) {
                 that.psngrid = params['id'];
 
-                that._psngrservice.getPassengerDetails({
+                that._admsnservice.getPassengerDetails({
                     "flag": "edit",
                     "id": that.psngrid,
                     "wsautoid": that._enttdetails.wsautoid
@@ -714,15 +667,6 @@ export class AddPassengerComponent implements OnInit {
                                 that.pickupaddr = "";
                                 that.dropaddr = "";
                                 that.otherinfo = "";
-                            }
-
-                            if (data.data[0].FilePath !== "") {
-                                that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
-                                that.chooseLabel = "Change Photo";
-                            }
-                            else {
-                                that.uploadPhotoDT = [];
-                                that.chooseLabel = "Upload Photo";
                             }
                         }
                         else {

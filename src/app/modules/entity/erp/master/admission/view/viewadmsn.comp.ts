@@ -2,18 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
 @Component({
-    templateUrl: 'viewpsngr.comp.html',
+    templateUrl: 'viewadmsn.comp.html',
     providers: [CommonService]
 })
 
-export class ViewPassengerComponent implements OnInit, OnDestroy {
+export class ViewAdmissionComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -33,7 +33,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     passengerDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -116,7 +116,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._psngrservice.getPassengerDetails({
+        that._admsnservice.getPassengerDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -170,11 +170,11 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "classid": that.classid,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
+            "enttid": that._enttdetails.enttid, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid,
+            "classid": that.classid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 
-        that._psngrservice.getPassengerDetails(params).subscribe(data => {
+        that._admsnservice.getPassengerDetails(params).subscribe(data => {
             try {
                 that.passengerDT = data.data;
             }
@@ -192,12 +192,12 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         })
     }
 
-    public addPassengerForm() {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/add']);
+    public addAdmissionForm() {
+        this._router.navigate(['/erp/master/student/admission']);
     }
 
-    public editPassengerForm(row) {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.autoid]);
+    public editAdmissionForm(row) {
+        this._router.navigate(['/erp/master/student/edit', row.enrlmntid]);
     }
 
     public ngOnDestroy() {

@@ -34,8 +34,8 @@ export class AttendanceComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getPassengerDetails();
         this.getAttendanceDate();
+        this.getPassengerDetails();
         // this.hideWhenAttendance();
     }
 
@@ -133,8 +133,9 @@ export class AttendanceComponent implements OnInit {
         }
 
         params = {
-            "flag": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
         that._attndservice.getAttendance(params).subscribe(data => {
@@ -210,7 +211,7 @@ export class AttendanceComponent implements OnInit {
                 that.passengerDT[i].isactive = true;
             }
 
-            that._attndservice.saveAttendance({ "attendance": that.passengerDT }).subscribe(data => {
+            that._attndservice.saveAttendance({ "attendance": that.passengerDT.filter(a => a.status == "a") }).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_attendance;
                     var msg = dataResult.msg;

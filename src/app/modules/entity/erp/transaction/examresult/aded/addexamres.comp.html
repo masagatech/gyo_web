@@ -77,6 +77,9 @@
                 <table class="table table-bordered reports">
                     <thead>
                         <tr>
+                            <th width="100px">
+                                Date
+                            </th>
                             <th width="150px">
                                 Subject
                             </th>
@@ -96,6 +99,9 @@
                     </thead>
                     <tbody *ngFor="let row of examList">
                         <tr>
+                            <td>
+                                {{row.examdate}}
+                            </td>
                             <td>
                                 {{row.subname}}
                             </td>

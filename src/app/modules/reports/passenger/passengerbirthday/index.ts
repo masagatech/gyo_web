@@ -6,7 +6,7 @@ import { AuthGuard } from '@services';
 
 import { PassengerBirthdayComponent } from './psngrbirth.comp';
 
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -30,7 +30,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, PassengerService]
+  providers: [AuthGuard, AdmissionService]
 })
 
 export class PassengerBirthdayModule {

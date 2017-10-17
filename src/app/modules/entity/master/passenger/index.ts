@@ -6,9 +6,8 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { AddPassengerComponent } from './aded/addpsngr.comp';
-import { ViewPassengerComponent } from './view/viewpsngr.comp';
 
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 
 import {
   LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
@@ -18,10 +17,10 @@ import {
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "view", "urlname": "passenger" } },
-      { path: 'add', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "edit", "urlname": "/edit" } }
+      {
+        path: '', component: AddPassengerComponent, canActivate: [AuthGuard],
+        data: { "module": "pentt", "submodule": "psngr", "rights": "add", "urlname": "/add" }
+      }
     ]
   },
 ];
@@ -29,8 +28,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddPassengerComponent,
-    ViewPassengerComponent
+    AddPassengerComponent
   ],
 
   imports: [
@@ -38,7 +36,7 @@ export const routes = [
     CheckboxModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, PassengerService]
+  providers: [AuthGuard, AdmissionService]
 })
 
 export class PassengerModule {

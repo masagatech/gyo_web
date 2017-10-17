@@ -5,7 +5,8 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
-import { AdmissionComponent } from './admission.comp';
+import { AddAdmissionComponent } from './aded/addadmsn.comp';
+import { ViewAdmissionComponent } from './view/viewadmsn.comp';
 
 import { AdmissionService } from '@services/erp';
 
@@ -18,9 +19,17 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: AdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "admsn", "rights": "view", "urlname": "admission" }
+        path: '', component: ViewAdmissionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "admsn", "rights": "view", "urlname": "student" }
       },
+      {
+        path: 'admission', component: AddAdmissionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "admsn", "rights": "add", "urlname": "admission" }
+      },
+      {
+        path: 'edit/:id', component: AddAdmissionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "album", "rights": "edit", "urlname": "/edit" }
+      }
     ]
   },
 ];
@@ -28,7 +37,8 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AdmissionComponent
+    AddAdmissionComponent,
+    ViewAdmissionComponent
   ],
 
   imports: [

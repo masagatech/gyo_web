@@ -33,7 +33,7 @@
                     <i class="material-icons">apps</i></button>
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshPassenger('list')">
                     <i class="material-icons">list</i></button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="addPassengerForm()">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -55,7 +55,7 @@
                                             {{row.studentname}}
                                         </div>
                                         <div class="col-md-1">
-                                            <a role="button" (click)="editPassengerForm(row)"><i class="material-icons sm-font">edit</i></a>
+                                            <a role="button" (click)="editAdmissionForm(row)"><i class="material-icons sm-font">edit</i></a>
                                         </div>
                                     </div>
                                 </p-header>
@@ -89,13 +89,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <span class="material-icons reject" *ngIf="!row.isactive">close</span>
-                                <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
-                                <div class="car-detail"><b>Standard :</b> {{row.classname}}</div>
-                                <hr class="ui-widget-content" style="border-top:0">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
-                                    <i class="material-icons">edit</i>
-                                </button> -->
                             </p-panel>
                         </div>
                     </ng-template>
@@ -127,7 +120,7 @@
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editAdmissionForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

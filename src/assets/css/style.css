@@ -10496,15 +10496,23 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .reports tbody tr.tr-table th {
-    font-size: 11px;
+    font-size: 12px;
     padding: 4px!important;
     text-align: center;
 }
 
 .reports th {
-    font-size: 11px;
+    font-size: 12px;
     padding: 4px!important;
     text-align: center;
+}
+
+.reports tbody tr.tr-table th.th-left {
+    text-align: left;
+}
+
+.reports tbody tr.tr-table th.th-right {
+    text-align: right;
 }
 
 .reports td {

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
@@ -38,7 +38,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
     @ViewChild('passenger') passenger: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -120,7 +120,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._psngrservice.getPassengerDetails({
+        that._admsnservice.getPassengerDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -175,7 +175,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 
-        that._psngrservice.getPassengerDetails(params).subscribe(data => {
+        that._admsnservice.getPassengerDetails(params).subscribe(data => {
             try {
                 that.passengerDT = data.data;
             }

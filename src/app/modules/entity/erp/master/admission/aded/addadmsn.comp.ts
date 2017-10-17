@@ -9,11 +9,11 @@ declare var loader: any;
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'admission.comp.html',
+    templateUrl: 'addadmsn.comp.html',
     providers: [CommonService]
 })
 
-export class AdmissionComponent implements OnInit, OnDestroy {
+export class AddAdmissionComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -143,7 +143,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getAdmissionDetails({
+        that._admsnservice.getPassengerDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -262,7 +262,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getAdmissionDetails({ "flag": "qualification" }).subscribe(data => {
+        that._admsnservice.getPassengerDetails({ "flag": "qualification" }).subscribe(data => {
             try {
                 that.qualificationDT = data.data;
             }
@@ -468,7 +468,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
                     "isactive": true
                 })
 
-                that.reseSibling();
+                that.resetSibling();
             }
         }
     }
@@ -510,12 +510,12 @@ export class AdmissionComponent implements OnInit, OnDestroy {
         that.selectedSibling.sibenrlmntid = that.sibenrlmntid;
         that.iseditsibling = false;
 
-        that.reseSibling();
+        that.resetSibling();
     }
 
     // Reset Sibling
 
-    reseSibling() {
+    resetSibling() {
         var that = this;
 
         that.relation = "";
@@ -589,6 +589,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
     saveAdmissionInfo() {
         var that = this;
         var isvalid: boolean = false;
+        var parentDT: any = [];
 
         isvalid = that.isValidAdmission();
 
@@ -603,11 +604,11 @@ export class AdmissionComponent implements OnInit, OnDestroy {
                     "mobile": that.fthrmobile,
                     "email": that.fthremail,
                     "schoolid": that.fthrschoolid,
-                    "enrlmntid": that.sibschoolid == 0 ? 0 : that.sibenrlmntid,
+                    "enrlmntid": that.fthrschoolid == 0 ? 0 : that.fthrenrlmntid,
                     "schoolname": that.fthrschoolname,
                     "qlfid": that.fthrqlfid,
                     "occupation": that.fthrocptn,
-                    "salary": that.fthrsalary,
+                    "salary": that.fthrsalary == "" ? "0" : that.fthrsalary,
                     "cuid": that.loginUser.ucode,
                     "wsautoid": that._enttdetails.wsautoid
                 })
@@ -619,11 +620,11 @@ export class AdmissionComponent implements OnInit, OnDestroy {
                     "mobile": that.mthrmobile,
                     "email": that.mthremail,
                     "schoolid": that.mthrschoolid,
-                    "enrlmntid": that.sibschoolid == 0 ? 0 : that.sibenrlmntid,
+                    "enrlmntid": that.mthrschoolid == 0 ? 0 : that.mthrenrlmntid,
                     "schoolname": that.mthrschoolname,
                     "qlfid": that.mthrqlfid,
                     "occupation": that.mthrocptn,
-                    "salary": that.mthrsalary,
+                    "salary": that.mthrsalary == "" ? "0" : that.mthrsalary,
                     "cuid": that.loginUser.ucode,
                     "wsautoid": that._enttdetails.wsautoid
                 })
@@ -657,7 +658,9 @@ export class AdmissionComponent implements OnInit, OnDestroy {
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
 
-                "studentfamily": that.familyDT
+                "studentfamily": that.familyDT,
+                "fthrmobile": that.fthrmobile,
+                "mthrmobile": that.mthrmobile
             }
 
             that._admsnservice.saveAdmissionInfo(saveAdmission).subscribe(data => {
@@ -706,37 +709,52 @@ export class AdmissionComponent implements OnInit, OnDestroy {
             if (params['id'] !== undefined) {
                 that.enrlmntid = params['id'];
 
-                that._admsnservice.getAdmissionDetails({
+                that._admsnservice.getPassengerDetails({
                     "flag": "edit",
                     "id": that.enrlmntid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
-                            that.enrlmntid = data.data[0].autoid;
+                            that.enrlmntid = data.data[0].enrlmntid;
                             that.ayid = data.data[0].ayid;
                             that.fname = data.data[0].fname;
                             that.mname = data.data[0].mname;
                             that.lname = data.data[0].lname;
                             that.classid = data.data[0].classid;
                             that.dob = data.data[0].dob;
+                            that.birthplace = data.data[0].birthplace;
                             that.gender = data.data[0].gender;
-
-                            that.mthrname = data.data[0].mthrname;
-                            that.fthrmobile = data.data[0].mobileno1;
-                            that.fthremail = data.data[0].email1;
-                            that.mthrmobile = data.data[0].mobileno2;
-                            that.mthremail = data.data[0].email2;
-                            that.fthrname = data.data[0].fthrname;
 
                             that.address = data.data[0].address;
                             that.country = data.data[0].country;
                             that.state = data.data[0].state;
+                            that.fillCityDropDown();
                             that.city = data.data[0].city;
+                            that.fillAreaDropDown();
+                            that.area = data.data[0].area;
+                            that.pincode = data.data[0].pincode;
                             that.remark1 = data.data[0].remark1;
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;
                             that.otherinfo = data.data[0].otherinfo;
+
+                            that.mthrname = data.data[0].mothername;
+                            that.fthrname = data.data[0].fathername;
+                            that.mthrmobile = data.data[0].mobileno2;
+                            that.mthremail = data.data[0].email2;
+                            that.fthrmobile = data.data[0].mobileno1;
+                            that.fthremail = data.data[0].email1;
+                            that.mthrschoolid = data.data[0].mthrschid;
+                            that.fthrschoolid = data.data[0].fthrschid;
+                            that.mthrschoolname = data.data[0].mthrothschnm;
+                            that.fthrschoolname = data.data[0].fthrothschnm;
+                            that.mthrqlfid = data.data[0].mthrqlfid;
+                            that.fthrqlfid = data.data[0].fthrqlfid;
+                            that.mthrocptn = data.data[0].mthrocptn;
+                            that.fthrocptn = data.data[0].fthrocptn;
+                            that.mthrsalary = data.data[0].mthrsalary;
+                            that.fthrsalary = data.data[0].fthrsalary;
 
                             if (data.data[0].FilePath !== "" || data.data[0].FilePath !== null) {
                                 that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
@@ -748,7 +766,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
 
                             if (data.data[0].birthcrtfct !== "" || data.data[0].birthcrtfct !== null) {
                                 that.uploadDOBCertificate.push({ "athurl": data.data[0].birthcrtfct });
-                                that.chooseLabel = "Change Birth Certificate";
+                                that.chooseDOBLabel = "Change Birth Certificate";
                             }
                             else {
                                 that.uploadDOBCertificate = [];
@@ -756,7 +774,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
 
                             if (data.data[0].addrproof !== "" || data.data[0].addrproof !== null) {
                                 that.uploadAddrProof.push({ "athurl": data.data[0].addrproof });
-                                that.chooseLabel = "Change Address Proof";
+                                that.chooseAddrLabel = "Change Address Proof";
                             }
                             else {
                                 that.uploadAddrProof = [];
@@ -788,7 +806,7 @@ export class AdmissionComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/admission']);
+        this._router.navigate(['/erp/master/student']);
     }
 
     public ngOnDestroy() {
