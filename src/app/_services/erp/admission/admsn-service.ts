@@ -11,11 +11,15 @@ export class AdmissionService {
         return this._dataserver.post(Globals.erproute + "saveAdmissionInfo", req)
     }
 
-    savePassengerInfo(req: any) {
+    saveStudentInfo(req: any) {
         return this._dataserver.post("saveStudentInfo", req)
     }
 
-    getPassengerDetails(req: any) {
+    getStudentDetails(req: any) {
         return this._dataserver.post("getStudentDetails", req)
+    }
+
+    viewStudentDetails(req: any) {
+        return this._dataserver.post("viewStudentDetails", req)
     }
 }

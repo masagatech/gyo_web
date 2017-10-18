@@ -143,7 +143,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getPassengerDetails({
+        that._admsnservice.getStudentDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -262,7 +262,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getPassengerDetails({ "flag": "qualification" }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "qualification" }).subscribe(data => {
             try {
                 that.qualificationDT = data.data;
             }
@@ -709,7 +709,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             if (params['id'] !== undefined) {
                 that.enrlmntid = params['id'];
 
-                that._admsnservice.getPassengerDetails({
+                that._admsnservice.getStudentDetails({
                     "flag": "edit",
                     "id": that.enrlmntid,
                     "wsautoid": that._enttdetails.wsautoid

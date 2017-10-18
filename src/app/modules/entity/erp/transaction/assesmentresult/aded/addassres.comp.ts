@@ -126,7 +126,7 @@ export class AddAssesmentResultComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "passenger",
+            "flag": "student",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

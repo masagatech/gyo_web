@@ -24,7 +24,7 @@ export class AttendanceComponent implements OnInit {
 
     attnddate: any = "";
 
-    passengerDT: any = [];
+    attendanceDT: any = [];
 
     global = new Globals();
 
@@ -35,7 +35,7 @@ export class AttendanceComponent implements OnInit {
 
         this.fillDropDownList();
         this.getAttendanceDate();
-        this.getPassengerDetails();
+        this.getAttendance();
         // this.hideWhenAttendance();
     }
 
@@ -99,7 +99,7 @@ export class AttendanceComponent implements OnInit {
 
                 if (that.ayDT.length > 0) {
                     that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
-                    that.getPassengerDetails();
+                    that.getAttendance();
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
@@ -118,7 +118,7 @@ export class AttendanceComponent implements OnInit {
         })
     }
 
-    getPassengerDetails() {
+    getAttendance() {
         var that = this;
         var params = {};
 
@@ -140,7 +140,7 @@ export class AttendanceComponent implements OnInit {
 
         that._attndservice.getAttendance(params).subscribe(data => {
             try {
-                that.passengerDT = data.data;
+                that.attendanceDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -195,23 +195,23 @@ export class AttendanceComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            for (var i = 0; i < that.passengerDT.length; i++) {
-                var field = that.passengerDT[i];
+            for (var i = 0; i < that.attendanceDT.length; i++) {
+                var field = that.attendanceDT[i];
 
-                that.passengerDT[i].attndid = field.attndid;
-                that.passengerDT[i].psngrid = field.psngrid;
-                that.passengerDT[i].psngrtype = that.psngrtype;
-                that.passengerDT[i].attnddate = that.attnddate;
-                that.passengerDT[i].status = field.status;
-                that.passengerDT[i].ayid = that.ayid;
-                that.passengerDT[i].clsid = that.classid;
-                that.passengerDT[i].enttid = that._enttdetails.enttid;
-                that.passengerDT[i].wsautoid = that._enttdetails.wsautoid;
-                that.passengerDT[i].cuid = that.loginUser.uid;
-                that.passengerDT[i].isactive = true;
+                that.attendanceDT[i].attndid = field.attndid;
+                that.attendanceDT[i].psngrid = field.psngrid;
+                that.attendanceDT[i].psngrtype = that.psngrtype;
+                that.attendanceDT[i].attnddate = that.attnddate;
+                that.attendanceDT[i].status = field.status;
+                that.attendanceDT[i].ayid = that.ayid;
+                that.attendanceDT[i].clsid = that.classid;
+                that.attendanceDT[i].enttid = that._enttdetails.enttid;
+                that.attendanceDT[i].wsautoid = that._enttdetails.wsautoid;
+                that.attendanceDT[i].cuid = that.loginUser.uid;
+                that.attendanceDT[i].isactive = true;
             }
 
-            that._attndservice.saveAttendance({ "attendance": that.passengerDT.filter(a => a.status == "a") }).subscribe(data => {
+            that._attndservice.saveAttendance({ "attendance": that.attendanceDT.filter(a => a.status == "a") }).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_attendance;
                     var msg = dataResult.msg;

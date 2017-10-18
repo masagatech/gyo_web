@@ -13,11 +13,13 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: '', loadChildren: './passenger#PassengerReportsModule' },
-
                     // Student
                     
-                    { path: 'birthday', loadChildren: './passengerbirthday#PassengerBirthdayModule' },
+                    { path: '', loadChildren: './student#StudentReportsModule' },
+                    { path: 'birthday', loadChildren: './studentbirthday#StudentBirthdayModule' },
+
+                    // Passenger
+                    
                     { path: 'trips', loadChildren: './passengertrips#PassengerTripsReportsModule' },
                     { path: 'routewise', loadChildren: './routewisepassenger#RouteWisePassengerModule' },
                     { path: 'direct', loadChildren: './directpassenger#DirectPassengerModule' },

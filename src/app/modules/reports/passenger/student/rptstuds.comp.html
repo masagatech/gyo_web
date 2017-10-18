@@ -1,14 +1,14 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix" id="fltrpsngr">
+        <div class="row clearfix" id="fltrstud">
             <div class="col-md-5 col-xs-5">
-                <h4>{{_enttdetails.psngrtype}}</h4>
+                <h4>Student</h4>
             </div>
             <div class="col-md-2 col-xs-2">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class</label>
-                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getPassengerDetails()">
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getStudentDetails()">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
@@ -20,10 +20,10 @@
             <div class="col-md-3 col-xs-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
-                        <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <label class="control-label">Student Name <strong>*</strong></label>
+                        <p-autoComplete id="studname" name="studname" [(ngModel)]="studname" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
                         <span class="material-icons inputlinkico">
-                            <a role="button" (click)="getPassengerDetails()" class="btn btn-theme btn-search">search</a>
+                            <a role="button" (click)="getStudentDetails()" class="btn btn-theme btn-search">search</a>
                         </span>
                     </div>
                 </div>
@@ -44,15 +44,15 @@
     </div>
 
     <div class="body no-padding">
-        <div #passenger class="row clearfix">
+        <div #Student class="row clearfix">
             <div class="col-md-12">
-                <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                <p-dataTable [value]="studentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'50px','text-align':'center','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.studentname}}" src="uploads/passenger/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                            <img alt="{{row.studentname}}" src="uploads/Student/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
-                    <p-column field="studentname" header="{{_enttdetails.psngrtype}} Name" [style]="{'width': '130px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="studentname" header="Student Name" [style]="{'width': '130px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="gender" header="Gender" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -81,10 +81,10 @@
         </div>
 
         <div id="render_me" class="row clearfix" style="display: none;">
-            <div class="col-md-4" *ngFor="let row of passengerDT">
+            <div class="col-md-4" *ngFor="let row of studentDT">
                 <table>
                     <tr>
-                        <td>{{_enttdetails.psngrtype}} Name</td>
+                        <td>Student Name</td>
                         <td>{{row.studentname}}</td>
                     </tr>
                     <tr>

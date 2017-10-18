@@ -1,32 +1,28 @@
 <div class="card">
     <div class="header">
-        <h4>{{_enttdetails.psngrtype}}</h4>
+        <h4>Student</h4>
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="psngrid !== 0">
+            <li *ngIf="studid !== 0">
                 <span class="switch">
-                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactivePassengerInfo()"><span class="lever"></span></label>
+                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveStudentInfo()"><span class="lever"></span></label>
                 </span>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="savePassengerInfo()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveStudentInfo()">
                     <i class="material-icons">save</i></a>
-            </li>
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
     </div>
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-8">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Academic Year</label>
-                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getStudentDetails()" tabindex="1">
                                     <option [value]="0">Select Academic Year</option>
                                     <option *ngFor="let row of ayDT" [value]="row.key">	
                                         {{row.val}}
@@ -35,18 +31,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
-                                <input type="text" name="psngrname" [(ngModel)]="psngrname" maxlength="50" class="form-control psngrname" tabindex="2" />
+                                <label class="control-label">Student Name <strong>*</strong></label>
+                                <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                                <span class="material-icons inputlinkico"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Class <strong>*</strong></label>
@@ -59,78 +56,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Roll No <strong>*</strong></label>
-                                <input type="text" name="rollno" [(ngModel)]="rollno" maxlength="50" class="form-control rollno" tabindex="2" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Father Name</label> {{fathername}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Mother Name</label> {{mothername}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Primary Mobile <strong>*</strong></label> {{primarymobile}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Secondary Mobile</label> {{secondarymobile}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Primary Email <strong>*</strong></label> {{primaryemail}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Secondary Email</label> {{secondaryemail}}
+                                <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="rollno" maxlength="50" class="form-control rollno" tabindex="4" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <hr />
+    <hr />
 
+    <div class="header">
+        <h4>Vehicle Mapping</h4>
+    </div>
+    <div class="body">
         <div class="row clearfix">
             <div class="col-md-4 border">
                 <div class="form-group form-float">
                     <div class="form-line">
                         <label class="control-label">Alert</label>
-                        <select id="alert" name="alert" [(ngModel)]="alert" class="form-control" tabindex="10">
+                        <select id="alert" name="alert" [(ngModel)]="alert" class="form-control" tabindex="5">
                             <option [value]="''">Select Alert</option>
                             <option *ngFor="let row of alertDT" [value]="row.key">
                                 {{row.val}}
@@ -141,7 +91,7 @@
                 <div class="form-group form-float">
                     <div class="form-line">
                         <label class="control-label">Residental Address <strong>*</strong></label>
-                        <textarea name="resiaddr" [(ngModel)]="resiaddr" rows="4" class="form-control no-resize auto-growth resiaddr" (keydown.tab)="getLatAndLong('resiaddr')" tabindex="11"></textarea>
+                        <textarea name="resiaddr" [(ngModel)]="resiaddr" rows="4" class="form-control no-resize auto-growth resiaddr" (keydown.tab)="getLatAndLong('resiaddr')" tabindex="6"></textarea>
                     </div>
                 </div>
                 <div class="row clearfix">
@@ -149,7 +99,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Residental Lat <strong>*</strong></label>
-                                <input type="text" name="resilet" [(ngModel)]="resilet" maxlength="50" class="form-control resilet" tabindex="12" />
+                                <input type="text" name="resilet" [(ngModel)]="resilet" maxlength="50" class="form-control resilet" tabindex="7" />
                             </div>
                         </div>
                     </div>
@@ -157,7 +107,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Residental Long <strong>*</strong></label>
-                                <input type="text" name="resilong" [(ngModel)]="resilong" maxlength="50" class="form-control resilong" tabindex="13" />
+                                <input type="text" name="resilong" [(ngModel)]="resilong" maxlength="50" class="form-control resilong" tabindex="8" />
                             </div>
                         </div>
                     </div>
@@ -169,7 +119,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Pick Up Route</label>
-                                <select id="pickrtid" name="pickrtnm" [(ngModel)]="pickrtid" class="form-control" tabindex="14" (ngModelChange)="fillPickStopsDDL()">
+                                <select id="pickrtid" name="pickrtnm" [(ngModel)]="pickrtid" class="form-control" tabindex="9" (ngModelChange)="fillPickStopsDDL()">
                                     <option [value]="0">Select Route</option>
                                     <option *ngFor="let row of pickrouteDT" [value]="row.rtid">
                                         {{row.rtname}}
@@ -182,7 +132,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Pick Up Stops</label>
-                                <select id="pickstpid" name="pickstpnm" [(ngModel)]="pickstpid" class="form-control" tabindex="15" (ngModelChange)="getPickAddressLatLon()">
+                                <select id="pickstpid" name="pickstpnm" [(ngModel)]="pickstpid" class="form-control" tabindex="10" (ngModelChange)="getPickAddressLatLon()">
                                     <option [value]="0">Select Stops</option>
                                     <option *ngFor="let row of pickstopsDT" [value]="row.stpid">
                                         {{row.stpname}}
@@ -194,25 +144,25 @@
                 </div>
                 <div class="form-group form-float">
                     <div class="form-line">
-                        <input *ngIf="pickstpid == 0" id="pickupaddr" name="chkpickupaddr" type="checkbox" [(ngModel)]="isCopyPickupAddr" (change)="copyPDAddrAndLatLong('pickaddr')" class="filled-in">
-                        <label for="pickupaddr" class="control-label">Pick Up Address <strong>*</strong></label>
-                        <textarea name="pickupaddr" [(ngModel)]="pickupaddr" rows="4" class="form-control no-resize auto-growth pickupaddr" (keydown.tab)="getLatAndLong('pickupaddr')" tabindex="16"></textarea>
+                        <input *ngIf="pickstpid == 0" id="pickaddr" name="chkpickaddr" type="checkbox" [(ngModel)]="isCopyPickAddr" (change)="copyPDAddrAndLatLong('pickaddr')" class="filled-in">
+                        <label for="pickaddr" class="control-label">Pick Up Address <strong>*</strong></label>
+                        <textarea name="pickaddr" [(ngModel)]="pickaddr" rows="4" class="form-control no-resize auto-growth pickaddr" (keydown.tab)="getLatAndLong('pickaddr')" tabindex="11"></textarea>
                     </div>
                 </div>
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Pickup Lat <strong>*</strong></label>
-                                <input type="text" name="pickuplet" [(ngModel)]="pickuplet" maxlength="50" class="form-control pickuplet" tabindex="17" />
+                                <label class="control-label">Pick Lat <strong>*</strong></label>
+                                <input type="text" name="picklet" [(ngModel)]="picklet" maxlength="50" class="form-control picklet" tabindex="12" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Pickup Long <strong>*</strong></label>
-                                <input type="text" name="pickuplong" [(ngModel)]="pickuplong" maxlength="50" class="form-control pickuplong" tabindex="18" />
+                                <label class="control-label">Pick Long <strong>*</strong></label>
+                                <input type="text" name="picklong" [(ngModel)]="picklong" maxlength="50" class="form-control picklong" tabindex="13" />
                             </div>
                         </div>
                     </div>
@@ -224,7 +174,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Drop Route</label>
-                                <select id="droprtid" name="droprtnm" [(ngModel)]="droprtid" class="form-control" (ngModelChange)="fillDropStopsDDL()" tabindex="19">
+                                <select id="droprtid" name="droprtnm" [(ngModel)]="droprtid" class="form-control" (ngModelChange)="fillDropStopsDDL()" tabindex="14">
                                     <option [value]="0">Select Route</option>
                                     <option *ngFor="let row of droprouteDT" [value]="row.rtid">
                                         {{row.rtname}}
@@ -237,7 +187,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Drop Stops</label>
-                                <select id="dropstpid" name="dropstpnm" [(ngModel)]="dropstpid" class="form-control" (ngModelChange)="getDropAddressLatLon()" tabindex="20">
+                                <select id="dropstpid" name="dropstpnm" [(ngModel)]="dropstpid" class="form-control" (ngModelChange)="getDropAddressLatLon()" tabindex="15">
                                     <option [value]="0">Select Stops</option>
                                     <option *ngFor="let row of dropstopsDT" [value]="row.stpid">
                                         {{row.stpname}}
@@ -252,7 +202,7 @@
                     <div class="form-line">
                         <input *ngIf="dropstpid == 0" id="dropaddr" name="chkdropaddr" type="checkbox" [(ngModel)]="isCopyDropAddr" (change)="copyPDAddrAndLatLong('dropaddr')" class="filled-in">
                         <label for="dropaddr" class="control-label">Drop Address <strong>*</strong></label>
-                        <textarea name="dropaddr" [(ngModel)]="dropaddr" rows="4" class="form-control no-resize auto-growth dropaddr" (keydown.tab)="getLatAndLong('dropaddr')" tabindex="21"></textarea>
+                        <textarea name="dropaddr" [(ngModel)]="dropaddr" rows="4" class="form-control no-resize auto-growth dropaddr" (keydown.tab)="getLatAndLong('dropaddr')" tabindex="16"></textarea>
                     </div>
                 </div>
 
@@ -261,7 +211,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Drop Lat <strong>*</strong></label>
-                                <input type="text" name="droplet" [(ngModel)]="droplet" maxlength="50" class="form-control droplet" tabindex="22" />
+                                <input type="text" name="droplet" [(ngModel)]="droplet" maxlength="50" class="form-control droplet" tabindex="17" />
                             </div>
                         </div>
                     </div>
@@ -269,30 +219,9 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Drop Long <strong>*</strong></label>
-                                <input type="text" name="droplong" [(ngModel)]="droplong" maxlength="50" class="form-control droplong" tabindex="23" />
+                                <input type="text" name="droplong" [(ngModel)]="droplong" maxlength="50" class="form-control droplong" tabindex="18" />
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="form-group form-float">
-                    <div class="form-line">
-                        <label class="control-label">Other Info</label>
-                        <textarea name="otherinfo" [(ngModel)]="otherinfo" rows="4" class="form-control no-resize auto-growth" tabindex="24"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group form-float">
-                    <div class="form-line">
-                        <label class="control-label">Remark</label>
-                        <textarea name="remark1" [(ngModel)]="remark1" rows="4" class="form-control no-resize auto-growth" tabindex="25"></textarea>
                     </div>
                 </div>
             </div>

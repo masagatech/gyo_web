@@ -23,10 +23,10 @@ export const routes = [
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
 
                     // Passenger
-                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
+                    // { path: 'passenger', loadChildren: './passenger#PassengerModule' },
 
                     // Student
-                    { path: 'student', loadChildren: './passenger#PassengerModule' },
+                    { path: 'student', loadChildren: './student#StudentModule' },
 
                     { path: 'activity', loadChildren: './activity#ActivityModule' },
                     { path: 'driver', loadChildren: './driver#DriverModule' },

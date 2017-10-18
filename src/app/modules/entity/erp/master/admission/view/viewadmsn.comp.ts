@@ -25,12 +25,12 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    autoPassengerDT: any = [];
-    psngrdata: any = [];
-    psngrid: number = 0;
-    psngrname: string = "";
+    autoStudentDT: any = [];
+    studsdata: any = [];
+    studid: number = 0;
+    studname: string = "";
 
-    passengerDT: any = [];
+    studentDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
@@ -38,7 +38,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.viewPassengerDataRights();
+        this.viewStudentDataRights();
     }
 
     public ngOnInit() {
@@ -54,7 +54,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    isshPassenger(viewtype) {
+    isshStudent(viewtype) {
         var that = this;
         commonfun.loader("#divShow");
 
@@ -78,13 +78,13 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    // Auto Completed Passenger
+    // Auto Completed Student
 
-    getPassengerData(event) {
+    getStudentData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "passenger",
+            "flag": "Student",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -93,7 +93,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
+            this.autoStudentDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -101,13 +101,13 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Passenger
+    // Selected Student
 
-    selectPassengerData(event) {
-        Cookie.set("_psngrid_", event.value);
-        Cookie.set("_psngrnm_", event.label);
+    selectStudentData(event) {
+        Cookie.set("_studid_", event.value);
+        Cookie.set("_studnm_", event.label);
 
-        this.getPassengerDetails();
+        this.getStudentDetails();
     }
 
     // Fill Entity, Standard, Month DropDown
@@ -116,7 +116,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getPassengerDetails({
+        that._admsnservice.getStudentDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -140,53 +140,53 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     // View Data Rights
 
-    public viewPassengerDataRights() {
+    public viewStudentDataRights() {
         var that = this;
 
-        if (Cookie.get('_psngrnm_') != null) {
-            that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname = Cookie.get('_psngrnm_');
+        if (Cookie.get('_studnm_') != null) {
+            that.studid = parseInt(Cookie.get('_studid_'));
+            that.studname = Cookie.get('_studnm_');
 
-            that.psngrdata.value = that.psngrid;
-            that.psngrdata.label = that.psngrname;
+            that.studsdata.value = that.studid;
+            that.studsdata.label = that.studname;
         }
 
-        that.getPassengerDetails();
+        that.getStudentDetails();
     }
 
-    getPassengerDetails() {
+    getStudentDetails() {
         var that = this;
         var params = {};
 
-        commonfun.loader("#fltrpsngr");
+        commonfun.loader("#fltrstud");
 
-        if (that.psngrid == 0) {
-            Cookie.set("_psngrid_", "0");
-            Cookie.set("_psngrnm_", "");
+        if (that.studid == 0) {
+            Cookie.set("_studid_", "0");
+            Cookie.set("_studnm_", "");
 
-            that.psngrdata.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrdata.label = Cookie.get('_psngrnm_');
+            that.studsdata.value = parseInt(Cookie.get('_studid_'));
+            that.studsdata.label = Cookie.get('_studnm_');
         }
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid,
+            "enttid": that._enttdetails.enttid, "studid": that.studid.toString() == "" ? 0 : that.studid,
             "classid": that.classid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 
-        that._admsnservice.getPassengerDetails(params).subscribe(data => {
+        that._admsnservice.getStudentDetails(params).subscribe(data => {
             try {
-                that.passengerDT = data.data;
+                that.studentDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
-            commonfun.loaderhide("#fltrpsngr");
+            commonfun.loaderhide("#fltrstud");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide("#fltrpsngr");
+            commonfun.loaderhide("#fltrstud");
         }, () => {
 
         })

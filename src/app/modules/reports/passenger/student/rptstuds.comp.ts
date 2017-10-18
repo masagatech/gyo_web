@@ -10,11 +10,11 @@ import jsPDF from 'jspdf'
 declare var $: any;
 
 @Component({
-    templateUrl: 'rptpsngr.comp.html',
+    templateUrl: 'rptstuds.comp.html',
     providers: [CommonService]
 })
 
-export class PassengerReportsComponent implements OnInit, OnDestroy {
+export class StudentReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -29,13 +29,13 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    autoPassengerDT: any = [];
-    psngrid: number = 0;
-    psngrname: any = [];
+    autoStudentDT: any = [];
+    studid: number = 0;
+    studname: any = [];
 
-    passengerDT: any = [];
+    studentDT: any = [];
 
-    @ViewChild('passenger') passenger: ElementRef;
+    @ViewChild('Student') Student: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
@@ -43,7 +43,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.viewPassengerDataRights();
+        this.viewStudentDataRights();
     }
 
     public ngOnInit() {
@@ -58,7 +58,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
     }
 
     public exportToCSV() {
-        this._autoservice.exportToCSV(this.passengerDT, "Passenger Details");
+        this._autoservice.exportToCSV(this.studentDT, "Student Details");
     }
 
     public exportToPDF() {
@@ -68,21 +68,21 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
 
-        pdf.addHTML(this.passenger.nativeElement, 0, 0, options, () => {
-            pdf.save("PassengerReports.pdf");
+        pdf.addHTML(this.Student.nativeElement, 0, 0, options, () => {
+            pdf.save("StudentReports.pdf");
         });
 
-        // this.doc.fromHTML($('#passenger').get(0), 0, 0, {
+        // this.doc.fromHTML($('#Student').get(0), 0, 0, {
         //     'width': 500,
         //     'elementHandlers': this.specialElementHandlers
         // });
 
-        // this.doc.save('PassengerDetails.pdf');
+        // this.doc.save('StudentDetails.pdf');
     }
 
-    // Auto Completed Passenger
+    // Auto Completed Student
 
-    getPassengerData(event) {
+    getStudentData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
@@ -95,7 +95,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
             "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
+            this.autoStudentDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -103,15 +103,15 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Passenger
+    // Selected Student
 
-    selectPassengerData(event) {
-        this.psngrid = event.value;
+    selectStudentData(event) {
+        this.studid = event.value;
 
-        Cookie.set("_psngrid_", event.value);
-        Cookie.set("_psngrnm_", event.label);
+        Cookie.set("_studid_", event.value);
+        Cookie.set("_studnm_", event.label);
 
-        this.getPassengerDetails();
+        this.getStudentDetails();
     }
 
     // Fill Entity, Standard, Month DropDown
@@ -120,7 +120,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getPassengerDetails({
+        that._admsnservice.getStudentDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -144,50 +144,50 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
 
     // View Data Rights
 
-    public viewPassengerDataRights() {
+    public viewStudentDataRights() {
         var that = this;
 
-        if (Cookie.get('_psngrnm_') != null) {
-            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrnm_');
+        if (Cookie.get('_studnm_') != null) {
+            that.studname.value = parseInt(Cookie.get('_studid_'));
+            that.studname.label = Cookie.get('_studnm_');
         }
 
-        that.getPassengerDetails();
+        that.getStudentDetails();
     }
 
-    getPassengerDetails() {
+    getStudentDetails() {
         var that = this;
         var params = {};
 
-        commonfun.loader("#fltrpsngr");
+        commonfun.loader("#fltrstud");
 
-        if (that.psngrid == 0) {
-            Cookie.set("_psngrid_", "0");
-            Cookie.set("_psngrnm_", "");
+        if (that.studid == 0) {
+            Cookie.set("_studid_", "0");
+            Cookie.set("_studnm_", "");
 
-            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrnm_');
+            that.studname.value = parseInt(Cookie.get('_studid_'));
+            that.studname.label = Cookie.get('_studnm_');
         }
 
         params = {
             "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "studid": that.studid.toString() == "" ? 0 : that.studid, "classid": that.classid,
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 
-        that._admsnservice.getPassengerDetails(params).subscribe(data => {
+        that._admsnservice.getStudentDetails(params).subscribe(data => {
             try {
-                that.passengerDT = data.data;
+                that.studentDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
-            commonfun.loaderhide("#fltrpsngr");
+            commonfun.loaderhide("#fltrstud");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide("#fltrpsngr");
+            commonfun.loaderhide("#fltrstud");
         }, () => {
 
         })

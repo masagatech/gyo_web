@@ -3,52 +3,49 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 declare var loader: any;
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'addpsngr.comp.html',
+    templateUrl: 'addstuds.comp.html',
     providers: [CommonService]
 })
 
-export class AddPassengerComponent implements OnInit {
+export class AddStudentComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
+
+    autoStudentDT: any = [];
+    studsdata: any = [];
+    studid: number = 0;
+    studname: string = "";
 
     classDT: any = [];
     ayDT: any = [];
     alertDT: any = [];
+
+    autoid: number = 0;
+    ayid: number = 0;
+    classid: number = 0;
+    rollno: number = 0;
+    alert: string = "";
+
+    svhautoid: number = 0;
 
     pickrouteDT: any = [];
     droprouteDT: any = [];
     pickstopsDT: any = [];
     dropstopsDT: any = [];
 
-    ayid: number = 0;
-    psngrid: number = 0;
-    psngrcode: string = "";
-    psngrname: string = "";
-    classid: number = 0;
-    alert: string = "";
-    aadharno: any = "";
-
-    mothername: string = "";
-    secondarymobile: string = "";
-    secondaryemail: string = "";
-    fathername: string = "";
-    primarymobile: string = "";
-    primaryemail: string = "";
-
     resiaddr: string = "";
-    pickupaddr: string = "";
+    pickaddr: string = "";
     dropaddr: string = "";
     resilet: any = "0.00";
     resilong: any = "0.00";
-    pickuplet: any = "0.00";
-    pickuplong: any = "0.00";
+    picklet: any = "0.00";
+    picklong: any = "0.00";
     droplet: any = "0.00";
     droplong: any = "0.00";
     pickrtid: number = 0;
@@ -56,11 +53,8 @@ export class AddPassengerComponent implements OnInit {
     droprtid: number = 0;
     dropstpid: number = 0;
 
-    isCopyPickupAddr: boolean = false;
+    isCopyPickAddr: boolean = false;
     isCopyDropAddr: boolean = false;
-
-    otherinfo: string = "";
-    remark1: string = "";
 
     mode: string = "";
     isactive: boolean = true;
@@ -76,11 +70,39 @@ export class AddPassengerComponent implements OnInit {
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 1000);
+        this.editStudentDetails();
+    }
 
-        this.getPassengerDetails();
+    // Auto Completed Student
+
+    getStudentData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "student",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.autoStudentDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Student
+
+    selectStudentData(event) {
+        this.studid = event.value;
+        this.studname = event.label;
+
+        this.getStudentDetails();
     }
 
     // Fill Standard, Division, Gender, Pick Up Route and Drop Route DropDown
@@ -89,13 +111,13 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getPassengerDetails({
+        that._admsnservice.getStudentDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-                
+
                 if (that.ayDT.length > 0) {
                     that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].key;
                 }
@@ -126,13 +148,10 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader("#pickrtid");
 
-        that._admsnservice.getPassengerDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.pickrouteDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('pickrtid'); }, 100);
-
                 that.droprouteDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('droprtid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -160,10 +179,9 @@ export class AddPassengerComponent implements OnInit {
             that.fillDropStopsDDL();
         }
 
-        that._admsnservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
             try {
                 that.pickstopsDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('pickstpid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -186,7 +204,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader("#dropstpid");
 
-        that._admsnservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
             try {
                 that.dropstopsDT = data.data;
                 // setTimeout(function () { $.AdminBSB.select.refresh('dropstpid'); }, 100);
@@ -216,32 +234,32 @@ export class AddPassengerComponent implements OnInit {
         }
 
         if (that.pickrtid == 0) {
-            $(".pickupaddr").removeAttr("disabled");
-            $(".pickuplet").removeAttr("disabled");
-            $(".pickuplong").removeAttr("disabled");
+            $(".pickaddr").removeAttr("disabled");
+            $(".picklet").removeAttr("disabled");
+            $(".picklong").removeAttr("disabled");
 
-            that.pickupaddr = "";
-            that.pickuplet = "";
-            that.pickuplong = "";
+            that.pickaddr = "";
+            that.picklet = "";
+            that.picklong = "";
         }
         else {
-            $(".pickupaddr").attr("disabled", "disabled");
-            $(".pickuplet").attr("disabled", "disabled");
-            $(".pickuplong").attr("disabled", "disabled");
+            $(".pickaddr").attr("disabled", "disabled");
+            $(".picklet").attr("disabled", "disabled");
+            $(".picklong").attr("disabled", "disabled");
 
             commonfun.loader();
 
-            that._admsnservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
+            that._admsnservice.getStudentDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
-                        that.pickupaddr = data.data[0].address;
-                        that.pickuplet = data.data[0].lat;
-                        that.pickuplong = data.data[0].long;
+                        that.pickaddr = data.data[0].address;
+                        that.picklet = data.data[0].lat;
+                        that.picklong = data.data[0].long;
                     }
                     else {
-                        that.pickupaddr = "";
-                        that.pickuplet = "";
-                        that.pickuplong = "";
+                        that.pickaddr = "";
+                        that.picklet = "";
+                        that.picklong = "";
                     }
                 }
                 catch (e) {
@@ -281,7 +299,7 @@ export class AddPassengerComponent implements OnInit {
 
             commonfun.loader();
 
-            that._admsnservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
+            that._admsnservice.getStudentDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
                         that.dropaddr = data.data[0].address;
@@ -317,7 +335,7 @@ export class AddPassengerComponent implements OnInit {
         commonfun.loader();
 
         var geocoder = new google.maps.Geocoder();
-        var address = pdtype == "resiaddr" ? that.resiaddr : pdtype == "pickupaddr" ? that.pickupaddr : that.dropaddr; //"Chakkinaka, Kalyan (E)";
+        var address = pdtype == "resiaddr" ? that.resiaddr : pdtype == "pickaddr" ? that.pickaddr : that.dropaddr; //"Chakkinaka, Kalyan (E)";
 
         geocoder.geocode({ 'address': address }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
@@ -325,9 +343,9 @@ export class AddPassengerComponent implements OnInit {
                     that.resilet = results[0].geometry.location.lat();
                     that.resilong = results[0].geometry.location.lng();
                 }
-                else if (pdtype == "pickupaddr") {
-                    that.pickuplet = results[0].geometry.location.lat();
-                    that.pickuplong = results[0].geometry.location.lng();
+                else if (pdtype == "pickaddr") {
+                    that.picklet = results[0].geometry.location.lat();
+                    that.picklong = results[0].geometry.location.lng();
                 }
                 else {
                     that.droplet = results[0].geometry.location.lat();
@@ -346,15 +364,15 @@ export class AddPassengerComponent implements OnInit {
 
     copyPDAddrAndLatLong(pdtype) {
         if (pdtype == "pickaddr") {
-            if (this.isCopyPickupAddr) {
-                this.pickupaddr = this.resiaddr;
-                this.pickuplet = this.resilet;
-                this.pickuplong = this.resilong;
+            if (this.isCopyPickAddr) {
+                this.pickaddr = this.resiaddr;
+                this.picklet = this.resilet;
+                this.picklong = this.resilong;
             }
             else {
-                this.pickupaddr = "";
-                this.pickuplet = "";
-                this.pickuplong = "";
+                this.pickaddr = "";
+                this.picklet = "";
+                this.picklong = "";
             }
         }
         else {
@@ -373,21 +391,17 @@ export class AddPassengerComponent implements OnInit {
 
     // Clear Fields
 
-    resetPassengerFields() {
+    resetStudentFields() {
         var that = this;
 
-        that.psngrid = 0
-        that.psngrcode = "";
-        that.psngrname = "";
-
-        that.aadharno = "";
+        that.studid = 0;
+        that.studname = "";
         that.classid = 0;
-        that.fathername = "";
-        that.mothername = "";
-        that.primaryemail = "";
-        that.secondaryemail = "";
-        that.primarymobile = "";
-        that.secondarymobile = "";
+        that.rollno = 0;
+    }
+
+    resetVehicleFields() {
+        var that = this;
 
         that.resiaddr = "";
         that.resilet = "0.00";
@@ -395,31 +409,29 @@ export class AddPassengerComponent implements OnInit {
 
         that.pickrtid = 0;
         that.pickstpid = 0;
-        that.pickupaddr = "";
-        that.pickuplet = "0.00";
-        that.pickuplong = "0.00";
+        that.pickaddr = "";
+        that.picklet = "0.00";
+        that.picklong = "0.00";
 
         that.droprtid = 0;
         that.dropstpid = 0;
         that.dropaddr = "";
         that.droplet = "0.00";
         that.droplong = "0.00";
-        that.remark1 = "";
-        that.otherinfo = "";
     }
 
     // Active / Deactive Data
 
-    active_deactivePassengerInfo() {
+    active_deactiveStudentInfo() {
         var that = this;
 
-        var act_deactPassenger = {
-            "autoid": that.psngrid,
+        var act_deactStudent = {
+            "autoid": that.studid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        that._admsnservice.savePassengerInfo(act_deactPassenger).subscribe(data => {
+        that._admsnservice.saveStudentInfo(act_deactStudent).subscribe(data => {
             try {
                 var dataResult = data.data;
                 var msg = dataResult[0].funsave_studentinfo.msg;
@@ -427,7 +439,7 @@ export class AddPassengerComponent implements OnInit {
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
-                    that.getPassengerDetails();
+                    that.getStudentDetails();
                 }
                 else {
                     that._msg.Show(messageType.error, "Error", msg);
@@ -445,7 +457,7 @@ export class AddPassengerComponent implements OnInit {
 
     // Save Data
 
-    isValidPassenger() {
+    isValidStudent() {
         var that = this;
 
         if (that.ayid == 0) {
@@ -453,9 +465,9 @@ export class AddPassengerComponent implements OnInit {
             $(".ayname").focus();
             return false;
         }
-        else if (that.psngrname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
-            $(".psngrname").focus();
+        else if (that.studname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Student Name");
+            $(".studname").focus();
             return false;
         }
         else if (that.classid == 0) {
@@ -463,14 +475,9 @@ export class AddPassengerComponent implements OnInit {
             $(".class").focus();
             return false;
         }
-        else if (that.primaryemail == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Primary Email");
-            $(".primaryemail").focus();
-            return false;
-        }
-        else if (that.primarymobile == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Primary Mobile");
-            $(".primarymobile").focus();
+        else if (that.rollno == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Roll No");
+            $(".rollno").focus();
             return false;
         }
         else if (that.resiaddr == "") {
@@ -489,19 +496,19 @@ export class AddPassengerComponent implements OnInit {
             return false;
         }
         else if (that.pickrtid == 0) {
-            if (that.pickupaddr == "") {
+            if (that.pickaddr == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
-                $(".pickupaddr").focus();
+                $(".pickaddr").focus();
                 return false;
             }
-            else if (that.pickuplet == "") {
+            else if (that.picklet == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Lat");
-                $(".pickuplet").focus();
+                $(".picklet").focus();
                 return false;
             }
-            else if (that.pickuplong == "") {
+            else if (that.picklong == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Long");
-                $(".pickuplong").focus();
+                $(".picklong").focus();
                 return false;
             }
         }
@@ -526,46 +533,41 @@ export class AddPassengerComponent implements OnInit {
         return true;
     }
 
-    savePassengerInfo() {
+    saveStudentInfo() {
         var that = this;
         var isvalid: boolean = false;
 
-        isvalid = that.isValidPassenger();
+        isvalid = that.isValidStudent();
 
         if (isvalid) {
             commonfun.loader();
 
-            var savePassenger = {
-                "autoid": that.psngrid,
+            var saveStudent = {
+                "autoid": that.autoid,
                 "ayid": that.ayid,
-                "studentname": that.psngrname,
                 "schoolid": that._enttdetails.enttid,
+                "studentid": that.studid,
                 "classid": that.classid,
-                "name": that.mothername + ";" + that.fathername,
-                "mobileno1": that.primarymobile,
-                "mobileno2": that.secondarymobile,
-                "email1": that.primaryemail,
-                "email2": that.secondaryemail,
+                "rollno": that.rollno,
                 "alert": that.alert,
+                "svhautoid": that.svhautoid,
                 "address": that.resiaddr,
                 "resgeoloc": that.resilet + "," + that.resilong,
                 "pickrtid": that.pickrtid,
                 "pickstpid": that.pickstpid,
-                "pickaddr": that.pickupaddr,
-                "pickgeoloc": that.pickuplet + "," + that.pickuplong,
+                "pickaddr": that.pickaddr,
+                "pickgeoloc": that.picklet + "," + that.picklong,
                 "droprtid": that.droprtid,
                 "dropstpid": that.dropstpid,
                 "dropaddr": that.dropaddr,
                 "dropgeoloc": that.droplet + "," + that.droplong,
-                "otherinfo": that.otherinfo,
-                "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
 
-            that._admsnservice.savePassengerInfo(savePassenger).subscribe(data => {
+            that._admsnservice.saveStudentInfo(saveStudent).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_studentinfo.msg;
@@ -575,7 +577,8 @@ export class AddPassengerComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid == "1") {
-                            that.resetPassengerFields();
+                            that.resetStudentFields();
+                            that.resetVehicleFields();
                         }
                         else {
                             that.backViewData();
@@ -601,102 +604,105 @@ export class AddPassengerComponent implements OnInit {
         }
     }
 
-    // Get Passenger Data
+    // Get Student Data
 
-    getPassengerDetails() {
+    editStudentDetails() {
         var that = this;
-        commonfun.loader();
 
         that.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.psngrid = params['id'];
-
-                that._admsnservice.getPassengerDetails({
-                    "flag": "edit",
-                    "id": that.psngrid,
-                    "wsautoid": that._enttdetails.wsautoid
-                }).subscribe(data => {
-                    try {
-                        if (data.data.length > 0) {
-                            that.psngrid = data.data[0].autoid;
-                            that.ayid = data.data[0].ayid;
-                            that.psngrcode = data.data[0].studentcode;
-                            that.psngrname = data.data[0].studentname;
-                            that.aadharno = data.data[0].aadharno;
-                            that.classid = data.data[0].classid;
-
-                            that.mothername = data.data[0].mothername;
-                            that.primarymobile = data.data[0].mobileno1;
-                            that.primaryemail = data.data[0].email1;
-                            that.secondarymobile = data.data[0].mobileno2;
-                            that.secondaryemail = data.data[0].email2;
-                            that.fathername = data.data[0].fathername;
-
-                            that.alert = data.data[0].alert;
-                            that.resiaddr = data.data[0].address;
-                            that.resilet = data.data[0].resilat;
-                            that.resilong = data.data[0].resilon;
-
-                            that.fillRoutesDDL();
-                            that.pickrtid = data.data[0].pickrtid;
-                            that.fillPickStopsDDL();
-                            that.pickstpid = data.data[0].pickstpid;
-                            that.droprtid = data.data[0].droprtid;
-                            that.fillDropStopsDDL();
-                            that.dropstpid = data.data[0].dropstpid;
-
-                            that.getPickAddressLatLon();
-                            that.getDropAddressLatLon();
-
-                            that.pickuplet = data.data[0].pickuplat;
-                            that.pickuplong = data.data[0].pickuplon;
-                            that.droplet = data.data[0].droplat;
-                            that.droplong = data.data[0].droplon;
-                            that.remark1 = data.data[0].remark1;
-                            that.isactive = data.data[0].isactive;
-                            that.mode = data.data[0].mode;
-
-                            var passengerprofiledata = data.data[0].passengerprofiledata;
-
-                            if (passengerprofiledata !== null) {
-                                that.pickupaddr = data.data[0].pickupaddr;
-                                that.dropaddr = data.data[0].dropaddr;
-                                that.otherinfo = data.data[0].otherinfo;
-                            }
-                            else {
-                                that.pickupaddr = "";
-                                that.dropaddr = "";
-                                that.otherinfo = "";
-                            }
-                        }
-                        else {
-                            that.resetPassengerFields();
-                        }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                that.autoid = params['id'];
+                that.getStudentDetails();
             }
             else {
-                this.fillRoutesDDL();
-
-                that.resetPassengerFields();
+                that.autoid = 0;
+                that.fillRoutesDDL();
             }
         });
+    }
+
+    getStudentDetails() {
+        var that = this;
+        commonfun.loader();
+
+        that._admsnservice.viewStudentDetails({
+            "flag": "edit", "ayid": that.ayid, "studid": that.studid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                var _studsdata = data.data[0];
+                var _vhcldata = data.data[1];
+
+                if (_studsdata.length > 0) {
+                    // if (that.autoid != 0) {
+                    //     that.ayid = _studsdata[0].ayid;
+                    //     that.studid = _studsdata[0].studentid;
+                    //     that.studname = _studsdata[0].studentname;
+                    // }
+                    // else {
+                    //     that.autoid = _studsdata[0].autoid;
+                    // }
+
+                    that.autoid = _studsdata[0].autoid;
+                    that.classid = _studsdata[0].classid;
+                    that.rollno = _studsdata[0].rollno;
+                    
+                    that.resiaddr = _studsdata[0].address;
+
+                    that.isactive = _studsdata[0].isactive;
+                    that.mode = _studsdata[0].mode;
+                }
+                else {
+                    that.classid = 0;
+                    that.rollno = 0;
+                }
+
+                if (_vhcldata.length > 0) {
+                    that.svhautoid = _vhcldata[0].svhautoid;
+                    that.alert = _vhcldata[0].alert;
+
+                    that.resilet = _vhcldata[0].resilat;
+                    that.resilong = _vhcldata[0].resilon;
+
+                    that.fillRoutesDDL();
+                    that.pickrtid = _vhcldata[0].pickrtid;
+                    that.fillPickStopsDDL();
+                    that.pickstpid = _vhcldata[0].pickstpid;
+                    that.droprtid = _vhcldata[0].droprtid;
+                    that.fillDropStopsDDL();
+                    that.dropstpid = _vhcldata[0].dropstpid;
+
+                    that.getPickAddressLatLon();
+                    that.getDropAddressLatLon();
+
+                    that.pickaddr = _vhcldata[0].pickaddr;
+                    that.dropaddr = _vhcldata[0].dropaddr;
+
+                    that.picklet = _vhcldata[0].picklat;
+                    that.picklong = _vhcldata[0].picklon;
+                    that.droplet = _vhcldata[0].droplat;
+                    that.droplong = _vhcldata[0].droplon;
+                }
+                else {
+                    that.resetVehicleFields();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype]);
+        this._router.navigate(['/master/student']);
     }
 }

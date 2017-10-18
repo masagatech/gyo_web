@@ -6,11 +6,11 @@ import { AdmissionService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'psngrbirth.comp.html',
+    templateUrl: 'studsbirth.comp.html',
     providers: [CommonService]
 })
 
-export class PassengerBirthdayComponent implements OnInit {
+export class StudentBirthdayComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -41,7 +41,7 @@ export class PassengerBirthdayComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
-        that._admsnservice.getPassengerDetails(params).subscribe(data => {
+        that._admsnservice.getStudentDetails(params).subscribe(data => {
             try {
                 that.birthdayDT = data.data;
             }
