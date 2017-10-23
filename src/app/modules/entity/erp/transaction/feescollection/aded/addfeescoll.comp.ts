@@ -149,6 +149,18 @@ export class AddFeesCollectionComponent implements OnInit {
 
     // Fill Fees Collection
 
+    resetFeesCollFields(){
+        var that = this;
+
+        that.studid = 0;
+        that.fees = 0;
+        that.receivedate = "";
+        that.paymentmode = "";
+        that.chequeno = 0;
+        that.chequedate = "";
+        that.remark = "";
+    }
+
     addFeesCollection() {
         var that = this;
 
@@ -169,13 +181,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 "cuid": that.loginUser.ucode, "isactive": true
             })
 
-            that.studid = 0;
-            that.fees = 0;
-            that.receivedate = "";
-            that.paymentmode = "";
-            that.chequeno = 0;
-            that.chequedate = "";
-            that.remark = "";
+            that.resetFeesCollFields();
         }
     }
 
@@ -210,7 +216,7 @@ export class AddFeesCollectionComponent implements OnInit {
         that.selectedFeesColl.remark = that.remark;
 
         that.iseditfeescoll = false;
-        that.resetFeesCollection();
+        that.resetFeesCollFields();
     }
 
     totalFees() {
@@ -278,13 +284,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
-
-                        if (msgid === "1") {
-                            that.getFeesCollection();
-                        }
-                        else {
-                            that.backViewData();
-                        }
+                        that.getFeesCollection();
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -330,11 +330,5 @@ export class AddFeesCollectionComponent implements OnInit {
         }, () => {
 
         })
-    }
-
-    // Back For View Data
-
-    backViewData() {
-        this._router.navigate(['/erp/transaction/classfees']);
     }
 }
