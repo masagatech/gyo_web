@@ -475,7 +475,7 @@ export class AddLocationComponent implements OnInit, AfterViewInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/workspace/location']);
+        this._router.navigate(['/admin/location/view']);
     }
 
     public ngAfterViewInit() {

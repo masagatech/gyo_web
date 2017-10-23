@@ -21,7 +21,7 @@ export const routes = [
                     { path: 'books', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
-
+                    
                     // Passenger
                     // { path: 'passenger', loadChildren: './passenger#PassengerModule' },
 

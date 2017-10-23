@@ -15,20 +15,10 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a role="button" [routerLink]="homeurl" class="js-search" data-close="true"><i class="material-icons">home</i></a></li>
-                <li class="dropdown dropdown-large" *ngIf="iserpmenu == true">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="settingsMenuDT.length">
-                        <i class="material-icons">settings</i>
+                <li>
+                    <a role="button" [routerLink]="homeurl" class="js-search" data-close="true">
+                        <i class="material-icons">home</i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-large dropdown-small row">
-                        <li class="col-md-12">
-                            <ul>
-                                <li *ngFor="let row of settingsMenuDT">
-                                    <a role="button" [routerLink]="row.mlink">{{row.mname}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="iserpmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="erpMenuDT.length">ERP <b class="caret"></b></a>
@@ -97,12 +87,26 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-large" *ngIf="loginUser.issysadmin">
+                <li class="dropdown dropdown-large">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="adminMenuDT.length">Admin <b class="caret"></b></a>
+                    <ul class="dropdown-menu dropdown-menu-large row">
+                        <li class="col-md-4" *ngFor="let row of adminMenuDT">
+                            <ul>
+                                <li>
+                                    <a role="button" [routerLink]="row.mlink">{{row.mname}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-large" *ngIf="ismstmenu == true">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="settingsMenuDT.length">
+                        <i class="material-icons">settings</i>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-large dropdown-small row">
                         <li class="col-md-12">
                             <ul>
-                                <li *ngFor="let row of adminMenuDT">
+                                <li *ngFor="let row of settingsMenuDT">
                                     <a role="button" [routerLink]="row.mlink">{{row.mname}}</a>
                                 </li>
                             </ul>

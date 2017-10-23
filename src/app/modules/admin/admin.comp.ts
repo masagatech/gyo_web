@@ -43,10 +43,20 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.enttname = Cookie.get('_schwsdetails_') != null ? this._wsdetails.wsname : "";
 
       if (this.loginUser.issysadmin) {
-        this.homeurl = "/admin/workspace";
+        if (Cookie.get('_schenttdetails_') != null) {
+          this.homeurl = "/";
+        }
+        else {
+          this.homeurl = "/admin/workspace";
+        }
       }
       else {
-        this.homeurl = "/workspace/entity";
+        if (Cookie.get('_schenttdetails_') != null) {
+          this.homeurl = "/";
+        }
+        else {
+          this.homeurl = "/workspace/entity";
+        }
       }
     }
   }

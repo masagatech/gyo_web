@@ -16,7 +16,6 @@ export const routes = [
                     { path: '', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'entity', loadChildren: './entity#EntityReportsModule' },
                     { path: 'users', loadChildren: './users#UserReportsModule' },
-                    { path: 'location', loadChildren: './location#LocationReportsModule' },
                     { path: 'holiday', loadChildren: './holiday#HolidayReportsModule' },
                 ]
             }

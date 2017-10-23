@@ -626,7 +626,7 @@ export class AddStudentComponent implements OnInit {
         commonfun.loader();
 
         that._admsnservice.viewStudentDetails({
-            "flag": "edit", "ayid": that.ayid, "studid": that.studid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "editstuds", "ayid": that.ayid, "studid": that.studid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 var _studsdata = data.data[0];

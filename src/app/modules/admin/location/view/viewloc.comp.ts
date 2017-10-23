@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LocationService } from '@services/master';
@@ -9,25 +9,24 @@ import { LazyLoadEvent } from 'primeng/primeng';
     templateUrl: 'viewloc.comp.html'
 })
 
-export class ViewLocationComponent implements OnInit {
+export class ViewLocationComponent implements OnInit, OnDestroy {
     locationDT: any = [];
     loginUser: LoginUserModel;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _locservice: LocationService) {
         this.loginUser = this._loginservice.getUser();
-        this.viewLocationDataRights();
+        this.getLocationDetails();
     }
 
     public ngOnInit() {
         setTimeout(function () {
             commonfun.navistyle();
-        }, 0);
-    }
 
-    public viewLocationDataRights() {
-        let that = this;
-        
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 0);
     }
 
     getLocationDetails() {
@@ -54,11 +53,12 @@ export class ViewLocationComponent implements OnInit {
         })
     }
 
-    public addLocationForm() {
-        this._router.navigate(['/workspace/location/add']);
+    addLocation() {
+        this._router.navigate(['/admin/location']);
     }
 
-    public editLocationForm(row) {
-        this._router.navigate(['/workspace/location/edit', row.locid]);
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

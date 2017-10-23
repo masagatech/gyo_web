@@ -59,12 +59,12 @@
                     <p-column field="fathername" header="Father Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                            {{row.mobileno1}}<span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
                         </ng-template>
                     </p-column>
                     <p-column header="Email" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                            {{row.email1}}<span *ngIf="row.email1 !== '' && row.email2 !== ''">, </span>{{row.email2}}
                         </ng-template>
                     </p-column>
                     <p-column field="alert" header="Alert" [style]="{'width': '60px', 'text-align': 'left','vertical-align':'top'}"></p-column>

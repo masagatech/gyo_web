@@ -81,10 +81,12 @@
                                                 <span class="material-icons sm-font">date_range</span> {{row.dob}}
                                             </div>
                                             <div class="col-md-12" *ngIf="row.mobileno1 != ''">
-                                                <span class="material-icons sm-font">phone_iphone</span> {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                                                <span class="material-icons sm-font">phone_iphone</span> {{row.mobileno1}}
+                                                <span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
                                             </div>
                                             <div class="col-md-12" *ngIf="row.email1 != ''">
-                                                <span class="material-icons sm-font">email</span> {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                                                <span class="material-icons sm-font">email</span> {{row.email1}}
+                                                <span *ngIf="row.email1 != '' && row.email1 !== ''">, </span>{{row.email2}}
                                             </div>
                                         </div>
                                     </div>

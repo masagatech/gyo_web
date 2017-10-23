@@ -16,6 +16,7 @@ export class WorkspaceComponent implements OnDestroy {
     wsname: string = "";
     wslogo: string = "";
     enttname: string = "";
+    homeurl: string = "";
 
     global = new Globals();
 
@@ -40,10 +41,25 @@ export class WorkspaceComponent implements OnDestroy {
     }
 
     getHeaderDetails() {
-        if (Cookie.get('_schwsdetails_') != null) {
-            this.wsname = this._wsdetails.wsname;
-            this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
-            this.enttname = Cookie.get('_schenttdetails_') != null ? this._enttdetails.enttname : "";
+        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+            if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
+                this.wsname = this.loginUser.wsname;
+                this.enttname = "";
+                this.wslogo = this.global.uploadurl + this.loginUser.wslogo;
+                this.homeurl = "/admin/workspace";
+            }
+            else {
+                this.wsname = this._wsdetails.wsname;
+                this.enttname = this.loginUser.wsname;
+                this.wslogo = this.global.uploadurl + this._wsdetails.wslogo;
+                this.homeurl = "/workspace/entity";
+            }
+        }
+        else {
+            this.wsname = this._enttdetails.enttname;
+            this.enttname = this._enttdetails.wsname;
+            this.wslogo = this.global.uploadurl + this._enttdetails.wslogo;
+            this.homeurl = "/";
         }
     }
 

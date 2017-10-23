@@ -30,9 +30,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() enttname: string = "";
   @Input() homeurl: string = "";
 
-  @Input() iserpmenu: boolean = false;
-  @Input() ismstmenu: boolean = false;
-  @Input() isrptmenu: boolean = false;
+  iserpmenu: boolean = false;
+  ismstmenu: boolean = false;
+  isrptmenu: boolean = false;
 
   mname: string = "";
 
@@ -107,6 +107,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.ufullname = this.loginUser.fullname;
     this.utype = this.loginUser.utypename;
     this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
+
+    if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+      if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
+        this.ismstmenu = false;
+        this.iserpmenu = false;
+        this.isrptmenu = false;
+      }
+      else {
+        this.ismstmenu = true;
+        this.iserpmenu = false;
+        this.isrptmenu = false;
+      }
+    }
+    else {
+      this.ismstmenu = true;
+      this.iserpmenu = true;
+      this.isrptmenu = true;
+    }
   }
 
   public getTopMenuList() {

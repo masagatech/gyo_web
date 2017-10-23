@@ -21,6 +21,8 @@ export const routes = [
                     // Trip Tracking
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
 
+                    { path: 'master', loadChildren: '../admin/masterofmaster#MOMModule' },
+                    
                     // Entity
                     { path: 'master', loadChildren: './master#MasterModule' },
 
