@@ -21,11 +21,12 @@
                     </a>
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="iserpmenu == true">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="erpMenuDT.length">ERP <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="erpMenuDT.length">
+                        <i class="material-icons">add</i></a>
                     <ul class="dropdown-menu dropdown-menu-large row">
-                        <li class="col-md-4" *ngFor="let row of erpMenuDT | groupBy: 'pname'">
+                        <li class="col-md-3" *ngFor="let row of erpMenuDT | groupBy: 'pname'">
                             <ul>
-                                <li class="dropdown-header text-center">{{row.key}}</li>
+                                <li class="dropdown-header text-left">{{row.key}}</li>
                                 <li class="divider"></li>
                                 <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
                                     <a [routerLink]="mrow.mlink">{{mrow.mname}}</a>
@@ -77,11 +78,13 @@
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="ismstmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="mastersMenuDT.length">Masters <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-menu-large dropdown-small row">
-                        <li class="col-md-12">
+                    <ul class="dropdown-menu dropdown-menu-large row">
+                        <li class="col-md-4" *ngFor="let row of mastersMenuDT | groupBy: 'pname'">
                             <ul>
-                                <li *ngFor="let row of mastersMenuDT">
-                                    <a role="button" [routerLink]="row.mlink">{{row.mname}}</a>
+                                <li class="dropdown-header">{{row.key}}</li>
+                                <li class="divider"></li>
+                                <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
+                                    <a role="button" [routerLink]="mrow.mlink">{{mrow.mname}}</a>
                                 </li>
                             </ul>
                         </li>
