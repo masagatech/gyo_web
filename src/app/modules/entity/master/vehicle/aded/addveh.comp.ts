@@ -15,6 +15,7 @@ export class AddVehicleComponent implements OnInit {
     _enttdetails: any = [];
 
     vehtypeDT: any = [];
+    devtypeDT: any = [];
 
     vehid: number = 0;
     vehno: string = "";
@@ -59,7 +60,8 @@ export class AddVehicleComponent implements OnInit {
 
         that._vehservice.getVehicleDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.vehtypeDT = data.data;
+                that.vehtypeDT = data.data.filter(a => a.group == "vehtype");
+                that.devtypeDT = data.data.filter(a => a.group == "devtyp");;
                 // setTimeout(function () { $.AdminBSB.select.refresh('vehtype'); }, 100);
             }
             catch (e) {

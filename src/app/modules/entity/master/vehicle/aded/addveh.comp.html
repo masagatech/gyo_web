@@ -7,7 +7,7 @@
                     <label class="control-label">
                         <input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveVehicleInfo()">
                         <span class="lever"></span>
-                    </label>
+                </label>
                 </span>
             </li>
             <li>
@@ -128,7 +128,7 @@
                                 <label>
                                     <input type="checkbox"  tabindex="-1" [(ngModel)]="istrackenabled" >
                                     <span class="lever"></span>
-                                </label>
+                            </label>
                             </span>
                         </div>
                     </div>
@@ -136,12 +136,12 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="form-line">
-                            <label class="control-label">Vehicle Type
+                            <label class="control-label">Device Type
                                 <strong>*</strong>
                             </label>
                             <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
                                 <option [value]="''">GPS Device Type</option>
-                                <option *ngFor="let row of vehtypeDT" [value]="row.key">
+                                <option *ngFor="let row of devtypeDT" [value]="row.key">
                                     {{row.val}}
                                 </option>
                             </select>
