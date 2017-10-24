@@ -26,9 +26,13 @@ export class AddVehicleComponent implements OnInit {
     vehcond: string = "";
     vehfclt: string = "";
 
+    devtype: string = "";
+    simno: string = "";
+    imei: string = "";
+
     mode: string = "";
     isactive: boolean = true;
-
+    istrackenabled: boolean = false;
     private subscribeParameters: any;
 
     constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -116,6 +120,10 @@ export class AddVehicleComponent implements OnInit {
         this.capacity = 0;
         this.vehcond = "";
         this.vehfclt = "";
+        this.devtype = "";
+        this.simno = "";
+        this.imei = "";
+
     }
 
     // Save Data
@@ -156,7 +164,11 @@ export class AddVehicleComponent implements OnInit {
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
-                "mode": ""
+                "mode": "",
+                "istrack": this.istrackenabled,
+                "devtype": this.devtype,
+                "simno": this.simno,
+                "imei": this.imei
             }
 
             this._vehservice.saveVehicleInfo(savevehicle).subscribe(data => {
@@ -222,6 +234,10 @@ export class AddVehicleComponent implements OnInit {
                         that.vehfclt = _vehicledata[0].vehiclefacility;
                         that.isactive = _vehicledata[0].isactive;
                         that.mode = _vehicledata[0].mode;
+                        this.istrackenabled = _vehicledata[0].istrack;
+                        this.devtype = _vehicledata[0].devtype;
+                        this.simno = _vehicledata[0].simno;
+                        this.imei = _vehicledata[0].imei;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
