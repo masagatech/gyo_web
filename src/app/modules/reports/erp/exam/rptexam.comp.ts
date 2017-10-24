@@ -127,10 +127,10 @@ export class ExamReportsComponent implements OnInit {
     }
 
     public addExam() {
-        this._router.navigate(['/erp/transaction/exam/add']);
+        this._router.navigate(['/transaction/exam/add']);
     }
 
     public editExam(row) {
-        this._router.navigate(['/erp/transaction/exam/edit', row.examid]);
+        this._router.navigate(['/transaction/exam/edit', row.examid]);
     }
 }

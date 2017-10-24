@@ -1,0 +1,196 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Collection</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesCollection()">
+                    <i class="material-icons">save</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" (ngModelChange)="getFeesCollection()" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="fillStudentAndPaymentModeDropDown();getFeesCollection();" tabindex="2">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group" style="padding-top: 20px">
+                    Class Fees : {{classfees}}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" style="padding-top: 20px">
+                    Student Wise Class Fees : {{studentwiseclassfees}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th width="200px">Student</th>
+                            <th width="100px">Fees</th>
+                            <th width="150px">Receive Date</th>
+                            <th width="100px">Payment Mode</th>
+                            <th width="100px">Cheque No</th>
+                            <th width="150px">Cheque Date</th>
+                            <th>Remark</th>
+                            <th width="55px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="studid" name="studname" [(ngModel)]="studid" class="form-control studname" tabindex="3">
+                                            <option [value]="0">Select Student</option>
+                                            <option *ngFor="let srow of studentDT" [value]="srow.key">
+                                                {{srow.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="fees" class="form-control text-right fees" tabindex="4">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="date" [(ngModel)]="receivedate" class="form-control receivedate" tabindex="5">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="paymentmode" name="paymentmode" [(ngModel)]="paymentmode" class="form-control paymentmode" tabindex="6">
+                                            <option [value]="''">Select</option>
+                                            <option *ngFor="let pmrow of paymentmodeDT" [value]="pmrow.key">
+                                                {{pmrow.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="chequeno" class="form-control text-right chequeno" tabindex="7">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="date" [(ngModel)]="chequedate" class="form-control chequedate" tabindex="8">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="remark" class="form-control text-right remark" tabindex="9">
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="right">
+                                <div class="form-group" *ngIf="!iseditfeescoll">
+                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addFeesCollection()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                                <div class="form-group" *ngIf="iseditfeescoll">
+                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateFeesCollection()">
+                                        <i class="material-icons">done</i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="resetFeesCollection()">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of feesCollDT">
+                            <td>
+                                {{row.studname}}
+                            </td>
+                            <td align="right">
+                                {{row.fees | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <td>
+                                {{row.receivedate != '' ? (row.receivedate | format :{'format':'DD-MMM-YYYY'}) : '' }}
+                            </td>
+                            <td>
+                                {{row.paymentmodenm}}
+                            </td>
+                            <td>
+                                {{row.chequeno}}
+                            </td>
+                            <td>
+                                {{row.chequedate != '' ? (row.chequedate | format :{'format':'DD-MMM-YYYY'}) : ''}}
+                            </td>
+                            <td>
+                                {{row.remark}}
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editFeesCollection(row)">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="deleteFeesCollection(row)">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <b>Total</b>
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    {{totalFees() | _currency:loginUser.globsettings[0]}}
+                                </div>
+                            </td>
+                            <td colspan="6">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

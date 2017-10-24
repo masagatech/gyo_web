@@ -16,22 +16,23 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'employee', loadChildren: './employee#EmployeeModule' },
-                    { path: 'batch', loadChildren: './batch#BatchModule' },
                     { path: 'class', loadChildren: './class#ClassModule' },
                     { path: 'books', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
-                    
+
                     // Passenger
-                    // { path: 'passenger', loadChildren: './passenger#PassengerModule' },
+                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
 
                     // Student
-                    { path: 'student', loadChildren: './student#StudentModule' },
+                    { path: 'editstudent', loadChildren: './student#StudentModule' },
+
+                    { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
 
                     { path: 'activity', loadChildren: './activity#ActivityModule' },
-                    { path: 'driver', loadChildren: './driver#DriverModule' },
-                    { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
-                    { path: 'route', loadChildren: './route#RouteModule' },
+                    { path: 'tag', loadChildren: './tag#TagModule' },
+                    { path: 'taggroupmodulemap', loadChildren: './taggrpmdlmap#TagGroupModuleMapModule' },
+                    { path: 'album', loadChildren: './album#AlbumModule' },
                 ]
             }
         ]

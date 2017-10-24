@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerLeaveService } from '@services/erp';
+import { LeaveService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
@@ -31,7 +31,7 @@ export class PassengerLeaveReportsComponent implements OnInit, OnDestroy {
     lvpsngrDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _psngrlvservice: PassengerLeaveService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _lvservice: LeaveService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -120,7 +120,7 @@ export class PassengerLeaveReportsComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "status": that.status
         }
 
-        that._psngrlvservice.getPassengerLeave(params).subscribe(data => {
+        that._lvservice.getLeaveDetails(params).subscribe(data => {
             try {
                 that.lvpsngrDT = data.data;
             }
@@ -164,7 +164,7 @@ export class PassengerLeaveReportsComponent implements OnInit, OnDestroy {
             "status": that.status, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
-        that._psngrlvservice.getPassengerLeave(params).subscribe(data => {
+        that._lvservice.getLeaveDetails(params).subscribe(data => {
             try {
                 that._autoservice.exportToCSV(data.data, that._enttdetails.psngrtype + " Leave Details");
             }

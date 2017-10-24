@@ -16,10 +16,10 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: '', loadChildren: './erp#ERPReportsModule' },
                     { path: 'log', loadChildren: './log#LogReportsModule' },
                     { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'master', loadChildren: './master#MasterReportsModule' },
-                    { path: 'erp', loadChildren: './erp#ERPReportsModule' },
 
                     { path: 'student', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'passenger', loadChildren: './passenger#PassengerReportsModule' },

@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { AddStudentComponent } from './addstuds.comp';
 

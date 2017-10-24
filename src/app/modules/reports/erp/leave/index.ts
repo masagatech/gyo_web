@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { LeaveReportsComponent } from './rptleave.comp';
-import { PassengerLeaveService } from '@services/erp';
+import { LeaveService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
 
@@ -30,7 +30,7 @@ export const routes = [
     AutoCompleteModule, ScheduleModule
   ],
 
-  providers: [AuthGuard, PassengerLeaveService]
+  providers: [AuthGuard, LeaveService]
 })
 
 export class LeaveReportsModule {

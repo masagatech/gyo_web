@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <h4>Leave {{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</h4>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Leave For</label>
+                        <select id="lvfor" [(ngModel)]="lvfor" (ngModelChange)="getLeaveDetails()" class="form-control lvfor" tabindex="1">
+                            <option [value]="'emp'">Employee</option>
+                            <option [value]="_enttdetails.smpsngrtype">{{_enttdetails.psngrtype}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-4" *ngFor="let row of pendingPassengerLeaveDT">
+                <div class="info-box bg-blue hover-expand-effect">
+                    <div class="icon">
+                        <a role="button" (click)="openApprovalForm(row)">
+                            <i class="material-icons">warning</i>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="number count-to">
+                            {{row.psngrname + " (" + row.countlv + ")"}}
+                        </div>
+                        <div class="text">
+                            Days : {{row.totaldays}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,22 +18,21 @@ export const routes = [
                     // Dashboard
                     { path: '', loadChildren: './dashboard#DashboardModule' },
 
-                    // Trip Tracking
-                    { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
-
-                    { path: 'master', loadChildren: '../admin/masterofmaster#MOMModule' },
+                    // ERP
+                    { path: '', loadChildren: './erp#ERPModule' },
                     
                     // Entity
                     { path: 'master', loadChildren: './master#MasterModule' },
 
-                    // ERP
-                    { path: 'erp', loadChildren: './erp#ERPModule' },
-
+                    { path: 'master', loadChildren: '../admin/masterofmaster#MOMModule' },
+                    
+                    { path: 'transport', loadChildren: './transport#TransportModule' },
+                    
+                    // Trip Tracking
+                    { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
+                    
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },
-
-                    // Schedule
-                    { path: 'schedule', loadChildren: './schedule#ScheduleModule' },
 
                     // Marketing
                     { path: 'marketing', loadChildren: './marketing#MarketingModule' },

@@ -1,0 +1,123 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-2">
+                <h4>Leave {{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</h4>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Leave For</label>
+                        <select id="lvfor" [(ngModel)]="lvfor" (ngModelChange)="getLeaveDetails()" class="form-control lvfor" tabindex="1">
+                            <option [value]="'emp'">Employee</option>
+                            <option [value]="_enttdetails.smpsngrtype">{{_enttdetails.psngrtype}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-6">
+                <div class="form-group" id="divPassenger">
+                    <div class="form-line">
+                        <label class="control-label">{{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</label>
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Status</label>
+                        <select id="status" [(ngModel)]="status" class="form-control status" tabindex="3">
+                            <option [value]="-1">Select Status</option>
+                            <option [value]="0">Pending</option>
+                            <option [value]="1">Accept</option>
+                            <option [value]="2">Reject</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-1" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getLeaveDetails()">
+                        <span class="material-icons">subdirectory_arrow_right</span>
+                    </button>
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetLeaveDetails()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-1" align="right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addLeaveDetails()">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="250px">
+                                {{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}} Name / Applied Date
+                            </th>
+                            <th width="200px">
+                                From Date
+                            </th>
+                            <th width="200px">
+                                To Date
+                            </th>
+                            <th>
+                                Leave Type
+                            </th>
+                            <th width="100px">
+                                Status
+                            </th>
+                            <th width="50px">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of lvpsngrDT | groupBy:'idwithname'">
+                        <tr class="tr-table">
+                            <th colspan="5">
+                                {{row.key.split('~')[1]}} - <small *ngIf="lvfor !== 'emp'">Standard : {{row.key.split('~')[2] + " (" + row.key.split('~')[3] + ")"}}</small>
+                            </th>
+                            <th width="50px">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="openLeaveApproval(row)" *ngIf="row.key.split('~')[4] !== '0'">
+                                    <i class="material-icons">warning</i>
+                                </button>
+                            </th>
+                        </tr>
+                        <tr *ngFor="let eldrow of row.value" class="{{eldrow.color}}">
+                            <td width="250px">
+                                {{eldrow.appldt}}
+                            </td>
+                            <td width="200px">
+                                {{eldrow.frmdt}} {{eldrow.frmtm == null ? '' : eldrow.frmtm}}
+                            </td>
+                            <td width="200px">
+                                {{eldrow.todt}} {{eldrow.totm == null ? '' : eldrow.totm}}
+                            </td>
+                            <td>
+                                {{eldrow.lvtype}}
+                            </td>
+                            <td width="100px">
+                                {{eldrow.statusdesc}}
+                            </td>
+                            <td width="50px">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editLeaveDetails(eldrow)" *ngIf="eldrow.status == 0">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

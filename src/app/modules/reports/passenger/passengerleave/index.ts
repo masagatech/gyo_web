@@ -6,7 +6,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 
 import { PassengerLeaveReportsComponent } from './rptpsngrlv.comp';
 
-import { PassengerLeaveService } from '@services/erp';
+import { LeaveService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
@@ -30,7 +30,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule, DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, PassengerLeaveService]
+  providers: [AuthGuard, LeaveService]
 })
 
 export class PassengerLeaveModule {
