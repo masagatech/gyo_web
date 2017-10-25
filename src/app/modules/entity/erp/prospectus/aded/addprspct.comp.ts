@@ -19,6 +19,7 @@ export class AddProspectusComponent implements OnInit {
 
     prspctparamid: number = 0;
     prspctid: number = 0;
+    title: string = "";
     ayid: number = 0;
     frmno: number = 0;
     tono: number = 0;
@@ -99,6 +100,7 @@ export class AddProspectusComponent implements OnInit {
         var that = this;
 
         that.prspctid = 0;
+        that.title = "";
         that.frmno = 0;
         that.tono = 0;
         that.noofform = 0;
@@ -155,6 +157,10 @@ export class AddProspectusComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
             $(".ayname").focus();
         }
+        else if (that.title == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Title");
+            $(".title").focus();
+        }
         else if (that.frmno == 0) {
             that._msg.Show(messageType.error, "Error", "Enter From No");
             $(".frmno").focus();
@@ -168,7 +174,7 @@ export class AddProspectusComponent implements OnInit {
 
             var saveProspectus = {
                 "prspctid": that.prspctid,
-                "ayid": that.ayid,
+                "title": that.title,
                 "frmno": that.frmno,
                 "tono": that.tono,
                 "noofform": that.noofform,
@@ -176,6 +182,7 @@ export class AddProspectusComponent implements OnInit {
                 "uploadform": that.uploadFormDT.length > 0 ? that.uploadFormDT[0].athurl : "",
                 "remark": that.remark,
                 "cuid": that.loginUser.ucode,
+                "ayid": that.ayid,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid
             }
@@ -244,8 +251,8 @@ export class AddProspectusComponent implements OnInit {
                 var viewprspct = data.data;
 
                 if (viewprspct.length > 0) {
-                    that.ayid = viewprspct[0].ayid;
                     that.prspctid = viewprspct[0].prspctid;
+                    that.title = viewprspct[0].title;
 
                     that.frmno = viewprspct[0].frmno;
                     that.tono = viewprspct[0].tono;
@@ -262,6 +269,7 @@ export class AddProspectusComponent implements OnInit {
                     }
 
                     that.remark = viewprspct[0].remark;
+                    that.ayid = viewprspct[0].ayid;
                 }
                 else {
                     that.resetProspectusFields();

@@ -3,7 +3,7 @@
         <h4>Prospectus</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectus()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectusIssues()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
@@ -15,15 +15,15 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-8 border">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Class <strong>*</strong></label>
-                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillProspectusTypeDropDown();" class="form-control class" tabindex="1">
-                                    <option [value]="0">Select Class</option>
-                                    <option *ngFor="let row of classDT" [value]="row.id">
+                                <label class="control-label">Academic Year <strong>*</strong></label>
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                                    <option [value]="0">Select Academic Year</option>
+                                    <option *ngFor="let row of ayDT" [value]="row.key">
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -33,108 +33,163 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Prospectus Type <strong>*</strong></label>
-                                <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" class="form-control asstype" tabindex="2">
-                                    <option [value]="0">Select Prospectus Type</option>
-                                    <optgroup id="subject" label="Subject">
-                                        <option *ngFor="let row of subjectDT" [value]="row.id">
-                                            {{row.val}}
-                                        </option>
-                                    </optgroup>
-                                    <optgroup id="activity" label="Activity">
-                                        <option *ngFor="let row of activityDT" [value]="row.id">
-                                            {{row.val}}
-                                        </option>
-                                    </optgroup>
+                                <label class="control-label">Prospectus <strong>*</strong></label>
+                                <select id="prspctid" name="prspctname" [(ngModel)]="prspctid" (ngModelChange)="getFormNo()" class="form-control prspctname" tabindex="2">
+                                    <option [value]="0">Select Prospectus</option>
+                                    <option *ngFor="let row of prospectusDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Heading <strong>*</strong></label>
-                        <input type="text" [(ngModel)]="heading" class="form-control" tabindex="3">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Fees</label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="prspctfees" class="form-control prntmob" disabled>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Sub Heading <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="subheadname" class="form-control subheadname" tabindex="4">
+                                <label class="control-label">Parent Name <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="prntname" class="form-control prntname" tabindex="3">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2" align="right" style="padding-top: 20px;" *ngIf="!iseditsubhead">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <button type="button" (click)="addSubHeading()" class="btn btn-theme btn-xs">
-                                <i class="material-icons">add</i>
-                            </button>
+                            <div class="form-line">
+                                <label class="control-label">Mobile No <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="prntmob" class="form-control prntmob" tabindex="4">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-2" align="right" style="padding-top: 20px;" *ngIf="iseditsubhead">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <button type="button" (click)="updateSubHeading()" class="btn btn-theme btn-xs">
-                                <i class="material-icons">done</i>
-                            </button>
-                            <button type="button" (click)="resetSubHeading()" class="btn btn-danger btn-xs">
-                                <i class="material-icons">cancel</i>
-                            </button>
+                            <div class="form-line">
+                                <label class="control-label">Fees To Be Collect</label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="issuefees" class="form-control issuefees" tabindex="9">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row clearfix" *ngFor="let row of subheadList; let i = index;">
-                    <div class="col-md-10">
-                        {{row.subheadname}}
-                    </div>
-                    <div class="col-md-2" align="right">
-                        <div class="form-group">
-                            <button type="button" (click)="editSubHeading(row)" class="btn btn-theme btn-xs">
-                                <i class="material-icons">edit</i>
-                            </button>
-                            <button type="button" (click)="deleteSubHeading(row)" class="btn btn-danger btn-xs">
-                                <i class="material-icons">delete</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row clearfix" *ngIf="gradeDT.length">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
-                            <label for="selectall">Select All</label>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="allcheckboxes">
-                            <div class="row clearfix">
-                                <div class="col-md-4" *ngFor="let row of gradeDT; let i = index;">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <span id="grade{{row.id}}">
-                                                <input id="{{row.id}}" name="grade{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
-                                                <label for="{{row.id}}">{{row.val}}</label>
-                                            </span>
-                                        </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Child Name</th>
+                            <th>Gender</th>
+                            <th>Class</th>
+                            <th>Form No</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="childname" class="form-control childname" tabindex="5">
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="6">
+                                            <option [value]="''">Select Gender</option>
+                                            <option *ngFor="let row of genderDT" [value]="row.key">	
+                                                {{row.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control classname" tabindex="7">
+                                            <option [value]="0">Select Class</option>
+                                            <option *ngFor="let row of classDT" [value]="row.key">
+                                                {{row.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="formno" class="form-control text-right formno" tabindex="8">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" *ngIf="!iseditformno">
+                                    <button type="button" (click)="addChildData()" class="btn btn-theme btn-xs">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+
+                                <div class="form-group" *ngIf="iseditformno">
+                                    <button type="button" (click)="updateChildData()" class="btn btn-theme btn-xs">
+                                        <i class="material-icons">done</i>
+                                    </button>
+                                    <button type="button" (click)="resetChildData()" class="btn btn-danger btn-xs">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of prospectusIssuesDT | filterBy: {'isactive': ture}; let i = index;">
+                            <td>
+                                {{row.childname}}
+                            </td>
+                            <td>
+                                {{row.gndrnm}}
+                            </td>
+                            <td>
+                                {{row.classname}}
+                            </td>
+                            <td>
+                                {{row.formno}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" (click)="editChildData(row)" class="btn btn-theme btn-xs">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" (click)="deleteChildData(row)" class="btn btn-danger btn-xs">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="5"></textarea>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="10"></textarea>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <b>Form No</b>
+                    </li>
+                    <li class="col-md-2 list-group-item" *ngFor="let row of formnoDT">
+                        {{row.number}}
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

@@ -15,54 +15,67 @@ export class AddProspectusIssuesComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    ayDT: any = [];
+    prospectusDT: any = [];
+    formnoDT: any = [];
+
+    genderDT: any = [];
     classDT: any = [];
-    subjectDT: any = [];
-    activityDT: any = [];
 
-    assparamid: number = 0;
-    assid: number = 0;
-    clsid: number = 0;
-    asstypid: number = 0;
-    heading: string = "";
+    issuesparamid: number = 0;
+    issuesid: number = 0;
+    ayid: number = 0;
+    prspctid: number = 0;
+    prntname: string = "";
+    prntmob: string = "";
+    childname: string = "";
+    gender: string = "";
+    classid: number = 0;
+    prspctfees: any = "";
+    issuefees: any = "";
 
-    subheadList: any = [];
-    selectedSubHead: any = [];
-    subheadid: number = 0;
-    subheadname: string = "";
-    iseditsubhead: boolean = false;
-
-    gradeDT: any = [];
+    prospectusIssuesDT: any = [];
+    selectedChildData: any = [];
+    formno: number = 0;
+    iseditformno: boolean = false;
 
     remark: string = "";
 
     private subscribeParameters: any;
 
-    constructor(private _assservice: ProspectusService, private _routeParams: ActivatedRoute, private _router: Router,
+    constructor(private _prspctservice: ProspectusService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillClassAndGradeDropDown();
-        this.fillProspectusTypeDropDown();
+        this.fillDropDownList();
+        this.getFormNo();
     }
 
     public ngOnInit() {
-        this.editProspectusDetails();
+        this.editProspectusIssues();
     }
 
-    // Fill Class, Grade And Subject Drop Down
+    // Fill Academic Year, Prospectus, Gender, Class Drop Down
 
-    fillClassAndGradeDropDown() {
+    fillDropDownList() {
         var that = this;
         commonfun.loader();
 
-        that._assservice.getProspectusDetails({
+        that._prspctservice.getProspectusIssues({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
+                that.ayDT = data.data.filter(a => a.group == "ay");
+
+                if (that.ayDT.length > 0) {
+                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].key;
+                }
+
+                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
+                that.genderDT = data.data.filter(a => a.group == "gender");
                 that.classDT = data.data.filter(a => a.group == "class");
-                that.gradeDT = data.data.filter(a => a.group == "grade");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -78,16 +91,24 @@ export class AddProspectusIssuesComponent implements OnInit {
         })
     }
 
-    fillProspectusTypeDropDown() {
+    // Get Form No
+
+    getFormNo() {
         var that = this;
         commonfun.loader();
 
-        that._assservice.getProspectusDetails({
-            "flag": "asstypeddl", "classid": that.clsid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        that._prspctservice.getProspectusIssues({
+            "flag": "form", "prspctid": that.prspctid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.subjectDT = data.data.filter(a => a.subtype == "Subject");
-                that.activityDT = data.data.filter(a => a.subtype == "Activity");
+                that.formnoDT = data.data;
+
+                if (data.data.length > 0) {
+                    that.prspctfees = data.data[0].fees;
+                }
+                else {
+                    that.prspctfees = 0;
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -108,141 +129,176 @@ export class AddProspectusIssuesComponent implements OnInit {
     resetProspectusFields() {
         var that = this;
 
-        that.asstypid = 0;
-        that.heading = "";
-        that.subheadList = [];
+        that.ayid = 0;
+        that.prntname = "";
+        that.prospectusIssuesDT = [];
         that.remark = "";
     }
 
-    // Add Sub Heading
+    // Add From No
 
-    addSubHeading() {
+    isValidFromNo() {
         var that = this;
 
-        that.subheadList.push({ "subheadname": that.subheadname })
+        if (that.prspctid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Prospectus No");
+            return false;
+        }
+        else if (that.formno.toString() == "" && that.formno == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Form No");
+            return false;
+        }
 
-        that.resetSubHeading();
+        return true;
     }
 
-    // Edit Sub Heading
-
-    editSubHeading(row) {
+    addChildData() {
         var that = this;
+        var validmsg: string = "";
+        var isvalidfrom: boolean = false;
 
-        that.selectedSubHead = row;
-        that.subheadid = row.subheadid;
-        that.subheadname = row.subheadname;
-        that.iseditsubhead = true;
-    }
+        commonfun.loader();
 
-    // Delete Sub Heading
+        that._prspctservice.getProspectusIssues({
+            "flag": "validform", "formno": that.formno, "prspctid": that.prspctid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    validmsg = data.data[0].validmsg;
+                    isvalidfrom = that.isValidFromNo();
 
-    deleteSubHeading(row) {
-        this.subheadList.splice(this.subheadList.indexOf(row), 1);
-    }
+                    if (isvalidfrom) {
+                        if (validmsg == "success") {
+                            that.prospectusIssuesDT.push({
+                                "ayid": 0, "issuesid": 0, "prspctid": 0, "prntname": "", "prntmob": "", "childname": that.childname,
+                                "gender": that.gender, "gndrnm": $(".gender option:selected").text().trim(),
+                                "classid": that.classid, "classname": $(".classname option:selected").text().trim(),
+                                "formno": that.formno, "fees": 0, "remark": "", "cuid": "", "enttid": 0, "wsautoid": 0,
+                                "isactive": true
+                            });
 
-    // Update Sub Heading
-
-    updateSubHeading() {
-        var that = this;
-
-        that.selectedSubHead.subheadid = that.subheadid;
-        that.selectedSubHead.subheadname = that.subheadname;
-        that.iseditsubhead = false;
-
-        that.resetSubHeading();
-    }
-
-    // Reset Sub Heading
-
-    resetSubHeading() {
-        var that = this;
-        that.subheadid = 0;
-        that.subheadname = "";
-        that.iseditsubhead = false;
-    }
-
-    // Get Grade Rights
-
-    getGradeRights() {
-        var that = this;
-        var gradeitem = null;
-
-        var actrights = "";
-        var graderights = {};
-
-        for (var i = 0; i <= that.gradeDT.length - 1; i++) {
-            gradeitem = null;
-            gradeitem = that.gradeDT[i];
-
-            if (gradeitem !== null) {
-                $("#grade" + gradeitem.id).find("input[type=checkbox]").each(function () {
-                    actrights += (this.checked ? $(this).val() + "," : "");
-                });
-
-                if (actrights != "") {
-                    graderights = actrights.slice(0, -1);
+                            that.issuefees = that.prspctfees * that.prospectusIssuesDT.length;
+                            that.resetChildData();
+                        }
+                        else {
+                            that._msg.Show(messageType.error, "Error", validmsg);
+                        }
+                    }
                 }
                 else {
-                    graderights = null;
+                    that.prspctfees = 0;
                 }
             }
-        }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-        return graderights;
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
-    // Save Prospectus
+    // Edit Prospectus No
 
-    saveProspectus() {
+    editChildData(row) {
         var that = this;
-        var _graderights = null;
 
-        _graderights = that.getGradeRights();
+        that.selectedChildData = row;
+        that.childname = row.childname;
+        that.gender = row.gender;
+        that.classid = row.classid;
+        that.formno = row.formno;
+        that.iseditformno = true;
+    }
 
-        if (that.clsid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Class");
-            $(".class").focus();
+    // Delete Prospectus No
+
+    deleteChildData(row) {
+        row.isactive = false;
+    }
+
+    // Update Prospectus No
+
+    updateChildData() {
+        var that = this;
+        var isvalidfrom: boolean = false;
+
+        isvalidfrom = that.isValidFromNo();
+
+        if (isvalidfrom) {
+            that.selectedChildData.childname = that.childname;
+            that.selectedChildData.gender = that.gender;
+            that.selectedChildData.gndrnm = $(".gender option:selected").text().trim();
+            that.selectedChildData.classid = that.classid;
+            that.selectedChildData.classname = $(".classname option:selected").text().trim();
+            that.selectedChildData.formno = that.formno;
+            that.iseditformno = false;
+
+            that.resetChildData();
         }
-        else if (that.asstypid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Prospectus Type");
-            $(".asstype").focus();
+    }
+
+    // Reset Prospectus No
+
+    resetChildData() {
+        var that = this;
+
+        that.childname = "";
+        that.gender = "";
+        that.classid = 0;
+        that.formno = 0;
+        that.iseditformno = false;
+    }
+
+    // Save Prospectus Issues
+
+    saveProspectusIssues() {
+        var that = this;
+        var _prspctissues: any = [];
+
+        if (that.ayid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Academic Year");
+            $(".ayname").focus();
         }
-        else if (that.heading == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Heading");
-            $(".heading").focus();
+        else if (that.prspctid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Prospectus");
+            $(".prspctname").focus();
         }
-        else if (that.subheadList == "") {
-            that._msg.Show(messageType.error, "Error", "Please Atleast 1 Sub Heading");
-            $(".subheadname").focus();
+        else if (that.prntname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Parent Name");
+            $(".prntname").focus();
         }
-        else if (that.gradeDT.length == 0) {
-            that._msg.Show(messageType.error, "Error", "No any Grade Entry on this " + that._enttdetails.enttname);
+        else if (that.prntmob == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
+            $(".prntmob").focus();
         }
-        else if (_graderights == null) {
-            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Grade");
+        else if (that.prospectusIssuesDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Please Atleast 1 Prospectus No");
+            $(".formno").focus();
         }
         else {
             commonfun.loader();
 
-            var _subheadings: string[] = [];
-            _subheadings = Object.keys(that.subheadList).map(function (k) { return that.subheadList[k].subheadname });
-
-            var saveProspectus = {
-                "assid": that.assid,
-                "clsid": that.clsid,
-                "asstypid": that.asstypid,
-                "asstyp": $('.asstype :selected').parent().attr('id'),
-                "heading": that.heading,
-                "subheading": _subheadings,
-                "grdaply": "{" + _graderights + "}",
-                "remark": that.remark,
-                "cuid": that.loginUser.ucode,
-                "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid
+            for (var i = 0; i < that.prospectusIssuesDT.length; i++) {
+                that.prospectusIssuesDT[i].issuesid = that.issuesid;
+                that.prospectusIssuesDT[i].prspctid = that.prspctid;
+                that.prospectusIssuesDT[i].ayid = that.ayid;
+                that.prospectusIssuesDT[i].prntname = that.prntname;
+                that.prospectusIssuesDT[i].prntmob = that.prntmob;
+                that.prospectusIssuesDT[i].fees = that.issuefees;
+                that.prospectusIssuesDT[i].remark = that.remark;
+                that.prospectusIssuesDT[i].cuid = that.loginUser.ucode;
+                that.prospectusIssuesDT[i].enttid = that._enttdetails.enttid;
+                that.prospectusIssuesDT[i].wsautoid = that._enttdetails.wsautoid;
             }
 
-            this._assservice.saveProspectusInfo(saveProspectus).subscribe(data => {
+            this._prspctservice.saveProspectusIssues({ "prospectusissues": that.prospectusIssuesDT }).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_Prospectusinfo;
                     var msg = dataResult.msg;
@@ -279,14 +335,14 @@ export class AddProspectusIssuesComponent implements OnInit {
 
     // Get Prospectus
 
-    editProspectusDetails() {
+    editProspectusIssues() {
         var that = this;
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.assparamid = params['id'];
-                that.getProspectusDetails();
+                that.issuesparamid = params['id'];
+                that.getProspectusIssues();
             }
             else {
                 that.resetProspectusFields();
@@ -295,62 +351,31 @@ export class AddProspectusIssuesComponent implements OnInit {
         });
     }
 
-    getProspectusDetails() {
+    getProspectusIssues() {
         var that = this;
         commonfun.loader();
 
-        that._assservice.getProspectusDetails({
-            "flag": "edit", "assid": that.assparamid, "classid": that.clsid, "asstypid": that.asstypid,
+        that._prspctservice.getProspectusIssues({
+            "flag": "edit", "issuesid": that.issuesparamid, "clissuesid": that.classid, "ayid": that.ayid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 var viewass = data.data;
 
                 if (viewass.length > 0) {
-                    if (that.assparamid !== 0) {
-                        that.assid = that.assparamid;
-                        that.clsid = viewass[0].clsid;
-                        that.fillProspectusTypeDropDown();
-                        that.asstypid = viewass[0].asstypid;
-                    }
-                    else {
-                        that.assid = viewass[0].assid;
-                    }
+                    that.issuesid = that.issuesparamid;
+                    that.ayid = viewass[0].ayid;
+                    that.classid = viewass[0].classid;
 
-                    that.heading = viewass[0].heading;
-                    that.subheadList = viewass[0].subheadlist;
-
-                    var _graderights = null;
-                    var _gradeitem = null;
-
-                    if (viewass[0] != null) {
-                        _graderights = null;
-                        _graderights = viewass[0].grdaply;
-
-                        if (_graderights != null) {
-                            for (var i = 0; i < _graderights.length; i++) {
-                                _gradeitem = null;
-                                _gradeitem = _graderights[i];
-
-                                if (_gradeitem != null) {
-                                    $("#selectall").prop('checked', true);
-                                    $("#grade" + _gradeitem).find("#" + _gradeitem).prop('checked', true);
-                                }
-                                else {
-                                    $("#selectall").prop('checked', false);
-                                }
-                            }
-                        }
-                        else {
-                            $("#selectall").prop('checked', false);
-                        }
-                    }
+                    that.prntname = viewass[0].prntname;
+                    that.prntmob = viewass[0].prntmob;
+                    that.prospectusIssuesDT = viewass[0].formno;
 
                     that.remark = viewass[0].remark;
                 }
                 else {
-                    that.heading = "";
-                    that.subheadList = [];
+                    that.prntname = "";
+                    that.prospectusIssuesDT = [];
                     that.remark = "";
                 }
             }
@@ -371,6 +396,6 @@ export class AddProspectusIssuesComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/transaction/Prospectus']);
+        this._router.navigate(['/prospectus/issues']);
     }
 }

@@ -3,7 +3,7 @@
         <h4>Prospectus</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <button type="button" class="btn btn-theme btn-xs" (click)="addProspectus()">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addProspectusIssues()">
                     <i class="material-icons">add</i></button>
             </li>
         </ul>
@@ -11,17 +11,19 @@
         <div class="body no-padding">
             <div class="row clearfix">
                 <div class="col-md-12">
-                    <p-dataTable [value]="prospectusDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                        <p-column field="classname" header="Class" [style]="{'width':'60px', 'text-align':'left'}"></p-column>
-                        <p-column field="heading" header="Heading" [style]="{'width':'200px','text-align':'left'}"></p-column>
-                        <p-column field="subheading" header="Sub Heading" [style]="{'text-align':'left'}"></p-column>
-                        <p-column field="gradename" header="Grade" [style]="{'width':'200px','text-align':'left'}"></p-column>
-                        <p-column field="asstypehead" header="Prospectus Type" [style]="{'width':'200px','text-align':'left'}"></p-column>
+                    <p-dataTable [value]="prospectusIssuesDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                        <p-column field="prntname" header="Parent Name" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                        <p-column field="prntmob" header="Mobile No" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                        <p-column field="childname" header="Child Name" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                        <p-column field="gender" header="Gender" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                        <p-column field="classname" header="Class" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                        <p-column field="fees" header="Fees" [style]="{'width':'100px','text-align':'left'}"></p-column>
+                        <p-column field="prspctno" header="Prospectus No" [style]="{'text-align':'left'}"></p-column>
+                        <p-column field="issuesfees" header="Issues Fees" [style]="{'width':'200px','text-align':'left'}"></p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left'}">
                             <ng-template let-row="rowData" pTemplate type="body">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editProspectus(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editProspectusIssues(row)">
+                                    <i class="material-icons">edit</i></button>
                             </ng-template>
                         </p-column>
                     </p-dataTable>

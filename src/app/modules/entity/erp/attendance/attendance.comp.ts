@@ -23,11 +23,13 @@ export class AttendanceComponent implements OnInit {
     classDT: any = [];
     classid: number = 0;
 
+    currentdate: any = "";
     attnddate: any = "";
 
     attendanceDT: any = [];
 
     statusid: number = 0;
+    status: string = "";
     statusdesc: string = "";
 
     global = new Globals();
@@ -42,11 +44,10 @@ export class AttendanceComponent implements OnInit {
         this.fillDropDownList();
         this.getAttendanceDate();
         this.getAttendance();
-        // this.hideWhenAttendance();
     }
 
     public ngOnInit() {
-        var that = this;
+        
     }
 
     // Format Date
@@ -66,6 +67,7 @@ export class AttendanceComponent implements OnInit {
     getAttendanceDate() {
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        this.currentdate = this.formatDate(today);
         this.attnddate = this.formatDate(today);
     }
 
@@ -142,14 +144,16 @@ export class AttendanceComponent implements OnInit {
                         if (data.data.length > 0) {
                             that.attendanceDT = data.data;
                             that.statusid = data.data[0].statusid;
+                            that.status = data.data[0].status;
 
-                            if (that.statusid == 0) {
+                            if (that.statusid == 0 && that.status != "lv") {
                                 that.statusdesc = data.data[0].statusdesc;
                             }
                         }
                         else {
                             that.attendanceDT = [];
                             that.statusid = 0;
+                            that.status = "";
                             that.statusdesc = "";
                         }
                     }
@@ -205,60 +209,68 @@ export class AttendanceComponent implements OnInit {
 
     saveAttendance() {
         var that = this;
+        var _absentpsngr: any = [];
 
         var isvalid = that.isValidation();
 
+        _absentpsngr = that.attendanceDT.filter(a => a.status == "a");
+
         if (isvalid) {
-            commonfun.loader();
-
-            for (var i = 0; i < that.attendanceDT.length; i++) {
-                var field = that.attendanceDT[i];
-
-                that.attendanceDT[i].attndid = field.attndid;
-                that.attendanceDT[i].psngrid = field.psngrid;
-                that.attendanceDT[i].psngrtype = that.psngrtype;
-                that.attendanceDT[i].attnddate = that.attnddate;
-                that.attendanceDT[i].status = field.status;
-                that.attendanceDT[i].ayid = that.ayid;
-                that.attendanceDT[i].clsid = that.classid;
-                that.attendanceDT[i].enttid = that._enttdetails.enttid;
-                that.attendanceDT[i].wsautoid = that._enttdetails.wsautoid;
-                that.attendanceDT[i].cuid = that.loginUser.uid;
-                that.attendanceDT[i].isactive = true;
+            if (_absentpsngr.length == 0) {
+                that._msg.Show(messageType.error, "Error", "First Select Atleast Student For Absent");
             }
+            else {
+                commonfun.loader();
 
-            that._attndservice.saveAttendance({ "attendance": that.attendanceDT.filter(a => a.status == "a") }).subscribe(data => {
-                try {
-                    var dataResult = data.data[0].funsave_attendance;
-                    var msg = dataResult.msg;
-                    var msgid = dataResult.msgid;
+                for (var i = 0; i < _absentpsngr.length; i++) {
+                    var field = _absentpsngr[i];
 
-                    if (msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", msg);
+                    _absentpsngr[i].attndid = field.attndid;
+                    _absentpsngr[i].psngrid = field.psngrid;
+                    _absentpsngr[i].psngrtype = that.psngrtype;
+                    _absentpsngr[i].attnddate = that.attnddate;
+                    _absentpsngr[i].status = field.status;
+                    _absentpsngr[i].ayid = that.ayid;
+                    _absentpsngr[i].clsid = that.classid;
+                    _absentpsngr[i].enttid = that._enttdetails.enttid;
+                    _absentpsngr[i].wsautoid = that._enttdetails.wsautoid;
+                    _absentpsngr[i].cuid = that.loginUser.uid;
+                    _absentpsngr[i].isactive = true;
+                }
 
-                        if (msgid === "1") {
+                that._attndservice.saveAttendance({ "attendance": _absentpsngr }).subscribe(data => {
+                    try {
+                        var dataResult = data.data[0].funsave_attendance;
+                        var msg = dataResult.msg;
+                        var msgid = dataResult.msgid;
 
+                        if (msgid != "-1") {
+                            that._msg.Show(messageType.success, "Success", msg);
+
+                            if (msgid === "1") {
+
+                            }
+                            else {
+
+                            }
                         }
                         else {
-
+                            that._msg.Show(messageType.error, "Error", msg);
                         }
-                    }
-                    else {
-                        that._msg.Show(messageType.error, "Error", msg);
-                    }
 
+                        commonfun.loaderhide();
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
                     commonfun.loaderhide();
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-                // console.log("Complete");
-            });
+                }, () => {
+                    // console.log("Complete");
+                });
+            }
         }
     }
 }
