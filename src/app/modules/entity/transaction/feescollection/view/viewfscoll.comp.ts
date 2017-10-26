@@ -21,6 +21,7 @@ export class ViewFeesCollectionComponent implements OnInit {
     fclid: number = 0;
     ayid: number = 0;
     classid: number = 0;
+    classfees: any = "";
 
     feesCollDT: any = [];
 
@@ -96,11 +97,11 @@ export class ViewFeesCollectionComponent implements OnInit {
     // Add Fees Collection
 
     addFeesCollection(row) {
-        
+        this._router.navigate(['/transaction/feescollection/student', row.studid]);
     }
 
     viewFeesCollection(row) {
-        
+        this._router.navigate(['/transaction/feescollection/student', row.studid]);
     }
 
     totalFees() {
@@ -111,7 +112,7 @@ export class ViewFeesCollectionComponent implements OnInit {
 
         for (var i = 0; i < that.feesCollDT.length; i++) {
             field = that.feesCollDT[i];
-            totalfees += parseFloat(field.fees);
+            totalfees += parseFloat(field.feescoll);
         }
 
         return totalfees;
@@ -124,11 +125,18 @@ export class ViewFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "all", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": "all", "ayid": that.ayid, "classid": that.classid, "studid": -1, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.feesCollDT = data.data;
+                
+                if (data.data.length > 0) {
+                    that.classfees = data.data[0].classfees;
+                }
+                else {
+                    that.classfees = 0;
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

@@ -32,7 +32,7 @@ export class AddProspectusIssuesComponent implements OnInit {
     gender: string = "";
     classid: number = 0;
     prspctfees: any = "";
-    issuefees: any = "";
+    issuefees: any = "0";
 
     prospectusIssuesDT: any = [];
     selectedChildData: any = [];
@@ -137,7 +137,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
     // Add From No
 
-    isValidFromNo() {
+    isValidFormNo() {
         var that = this;
 
         if (that.prspctid == 0) {
@@ -148,6 +148,32 @@ export class AddProspectusIssuesComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Form No");
             return false;
         }
+        else {
+            if (that.iseditformno == false) {
+                for (var i = 0; i < that.prospectusIssuesDT.length; i++) {
+                    var issflds = that.prospectusIssuesDT[i];
+
+                    if (issflds.formno == that.formno) {
+                        that._msg.Show(messageType.error, "Error", "This Form No is Already Used");
+                        return false;
+                    }
+                }
+            }
+            else {
+                var _prspctissues = that.prospectusIssuesDT.filter(a => a.formno != that.formno);
+
+                if (_prspctissues.length != 0) {
+                    for (var i = 0; i < _prspctissues.length; i++) {
+                        var existsflds = _prspctissues[i];
+
+                        if (existsflds.formno == that.formno) {
+                            that._msg.Show(messageType.error, "Error", "This Form No is Already Used");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
 
         return true;
     }
@@ -155,7 +181,7 @@ export class AddProspectusIssuesComponent implements OnInit {
     addChildData() {
         var that = this;
         var validmsg: string = "";
-        var isvalidfrom: boolean = false;
+        var isvalidform: boolean = false;
 
         commonfun.loader();
 
@@ -166,9 +192,9 @@ export class AddProspectusIssuesComponent implements OnInit {
             try {
                 if (data.data.length > 0) {
                     validmsg = data.data[0].validmsg;
-                    isvalidfrom = that.isValidFromNo();
+                    isvalidform = that.isValidFormNo();
 
-                    if (isvalidfrom) {
+                    if (isvalidform) {
                         if (validmsg == "success") {
                             that.prospectusIssuesDT.push({
                                 "ayid": 0, "issuesid": 0, "prspctid": 0, "prntname": "", "prntmob": "", "childname": that.childname,
@@ -178,7 +204,7 @@ export class AddProspectusIssuesComponent implements OnInit {
                                 "isactive": true
                             });
 
-                            that.issuefees = that.prspctfees * that.prospectusIssuesDT.length;
+                            that.issuefees = that.prspctfees * that.prospectusIssuesDT.filter(a => a.isactive == true).length;
                             that.resetChildData();
                         }
                         else {
@@ -221,17 +247,18 @@ export class AddProspectusIssuesComponent implements OnInit {
 
     deleteChildData(row) {
         row.isactive = false;
+        this.issuefees = this.prspctfees * this.prospectusIssuesDT.filter(a => a.isactive == true).length;
     }
 
     // Update Prospectus No
 
     updateChildData() {
         var that = this;
-        var isvalidfrom: boolean = false;
+        var isvalidform: boolean = false;
 
-        isvalidfrom = that.isValidFromNo();
+        isvalidform = that.isValidFormNo();
 
-        if (isvalidfrom) {
+        if (isvalidform) {
             that.selectedChildData.childname = that.childname;
             that.selectedChildData.gender = that.gender;
             that.selectedChildData.gndrnm = $(".gender option:selected").text().trim();

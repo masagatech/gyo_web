@@ -26,6 +26,10 @@ export const routes = [
 
                     { path: 'master', loadChildren: '../admin/masterofmaster#MOMModule' },
                     
+                    // Transaction
+                    { path: 'transaction', loadChildren: './transaction#TransactionModule' },
+                    
+                    // Transport
                     { path: 'transport', loadChildren: './transport#TransportModule' },
                     
                     // Trip Tracking

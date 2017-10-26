@@ -102,6 +102,8 @@ export class AddNotificationComponent implements OnInit {
     saveNotification() {
         var that = this;
         var _stdrights = null;
+        var _parent = "";
+        var _teacher = "";
 
         _stdrights = that.getStandardRights();
 
@@ -126,9 +128,18 @@ export class AddNotificationComponent implements OnInit {
         else {
             commonfun.loader();
 
+            $("#prnt").find("input[type=checkbox]").each(function () {
+                _parent += (this.checked ? $(this).val() : "");
+            });
+
+            $("#tchr").find("input[type=checkbox]").each(function () {
+                _teacher += (this.checked ? $(this).val() : "");
+            });
+
             var saventf = {
                 "ntfid": that.ntfid,
                 "ntftype": "standard",
+                "sendtype": "{'" + _parent + "', '" + _teacher + "'}",
                 "frmid": that.loginUser.loginid,
                 "toid": "{" + _stdrights + "}",
                 "title": that.title,

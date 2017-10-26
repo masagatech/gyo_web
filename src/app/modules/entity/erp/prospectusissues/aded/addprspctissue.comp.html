@@ -70,24 +70,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Fees To Be Collect</label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="issuefees" class="form-control issuefees" tabindex="9">
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Child Name</th>
-                            <th>Gender</th>
-                            <th>Class</th>
-                            <th>Form No</th>
-                            <th></th>
+                            <th width="150px">Gender</th>
+                            <th width="150px">Class</th>
+                            <th width="100px">Form No</th>
+                            <th width="80px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,22 +124,22 @@
                             </td>
                             <td>
                                 <div class="form-group" *ngIf="!iseditformno">
-                                    <button type="button" (click)="addChildData()" class="btn btn-theme btn-xs">
+                                    <button type="button" (click)="addChildData()" class="btn btn-theme btn-xs btn-xs-sm">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
 
                                 <div class="form-group" *ngIf="iseditformno">
-                                    <button type="button" (click)="updateChildData()" class="btn btn-theme btn-xs">
+                                    <button type="button" (click)="updateChildData()" class="btn btn-theme btn-xs btn-xs-sm">
                                         <i class="material-icons">done</i>
                                     </button>
-                                    <button type="button" (click)="resetChildData()" class="btn btn-danger btn-xs">
+                                    <button type="button" (click)="resetChildData()" class="btn btn-danger btn-xs btn-xs-sm">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngFor="let row of prospectusIssuesDT | filterBy: {'isactive': ture}; let i = index;">
+                        <tr *ngFor="let row of prospectusIssuesDT | filterBy: {'isactive': true}; let i = index;">
                             <td>
                                 {{row.childname}}
                             </td>
@@ -157,19 +149,28 @@
                             <td>
                                 {{row.classname}}
                             </td>
-                            <td>
+                            <td align="right">
                                 {{row.formno}}
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" (click)="editChildData(row)" class="btn btn-theme btn-xs">
+                                    <button type="button" (click)="editChildData(row)" class="btn btn-theme btn-xs btn-xs-sm">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" (click)="deleteChildData(row)" class="btn btn-danger btn-xs">
+                                    <button type="button" (click)="deleteChildData(row)" class="btn btn-danger btn-xs btn-xs-sm">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>
                             </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" align="right">
+                                <b>Fees To Be Collect</b>
+                            </td>
+                            <td align="right">
+                                <b>{{issuefees}}</b>
+                            </td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -177,7 +178,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="10"></textarea>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
                     </div>
                 </div>
             </div>
@@ -187,7 +188,7 @@
                         <b>Form No</b>
                     </li>
                     <li class="col-md-2 list-group-item" *ngFor="let row of formnoDT">
-                        {{row.number}}
+                        {{row.formno}}
                     </li>
                 </ul>
             </div>

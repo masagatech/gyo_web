@@ -15,27 +15,36 @@ export class AddFeesCollectionComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    ayDT: any = [];
-    classDT: any = [];
-    studentDT: any = [];
+    global = new Globals();
+
+    categoryDT: any = [];
+    subCategoryDT: any = [];
     paymentmodeDT: any = [];
 
     fclid: number = 0;
-    ayid: number = 0;
-    classid: number = 0;
     classfees: any = "";
-    studentwiseclassfees: any = "";
+    ayid: number = 0;
+
     studid: number = 0;
+    studname: string = "";
+    studphoto: string = "";
+    classid: number = 0;
+    classname: string = "";
+    gender: string = "";
+    rollno: string = "";
+
+    catid: number = 0;
+    subcatid: number = 0;
+    catfees: any = "";
     fees: any = "";
     receivedate: any = "";
     paymentmode: string = "";
     chequeno: number = 0;
     chequedate: string = "";
     remark: string = "";
+    statusid: number = 0;
 
     feesCollDT: any = [];
-    selectedFeesColl: any = [];
-    iseditfeescoll: boolean = false;
 
     private subscribeParameters: any;
 
@@ -43,9 +52,6 @@ export class AddFeesCollectionComponent implements OnInit {
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
-
-        this.fillAYAndClassDropDown();
-        this.fillStudentAndPaymentModeDropDown();
     }
 
     public ngOnInit() {
@@ -54,45 +60,50 @@ export class AddFeesCollectionComponent implements OnInit {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.classid = params['id'];
+                that.studid = params['id'];
+                that.getStudentDetails();
                 that.getFeesCollection();
             }
             else {
-                that.resetAllFields();
+                that.resetFeesCollFields();
                 commonfun.loaderhide();
             }
         });
     }
 
-    // Reset Fees Details
+    // Get Student Details
 
-    resetAllFields() {
-        var that = this;
-
-        that.classid = 0;
-        that.resetFeesCollection();
-        that.feesCollDT = [];
-    }
-
-    // Fill Academic Year, Class
-
-    fillAYAndClassDropDown() {
+    getStudentDetails() {
         var that = this;
         commonfun.loader();
 
-        that._feesservice.getClassFees({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+        that._feesservice.getFeesCollection({
+            "flag": "all", "studid": that.studid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "classid": -1,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.ayDT = data.data[0].filter(a => a.group == "ay");
+                if (data.data.length > 0) {
+                    that.studname = data.data[0].studname;
+                    that.studphoto = data.data[0].studphoto;
+                    that.classid = data.data[0].classid;
+                    that.classname = data.data[0].classname;
+                    that.gender = data.data[0].gender;
+                    that.rollno = data.data[0].rollno;
+                    that.classfees = data.data[0].classfees;
+                    that.statusid = data.data[0].statusid;
 
-                if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
-                    that.getFeesCollection();
+                    that.fillCategoryAndPaymentModeDropDown();
                 }
-
-                that.classDT = data.data[0].filter(a => a.group == "class");
+                else {
+                    that.studname = "";
+                    that.studphoto = "";
+                    that.classid = 0;
+                    that.classname = "";
+                    that.gender = "";
+                    that.rollno = "";
+                    that.classfees = "";
+                    that.statusid = 0;
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -108,30 +119,80 @@ export class AddFeesCollectionComponent implements OnInit {
         })
     }
 
-    // Fill Student And Payment Mode
+    // Fill Cateogry And Payment Mode
 
-    fillStudentAndPaymentModeDropDown() {
+    fillCategoryAndPaymentModeDropDown() {
         var that = this;
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "dropdown", "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                var classFeesDT = data.data.filter(a => a.group == "classfees");
+                that.categoryDT = data.data.filter(a => a.group == "category");
+                that.paymentmodeDT = data.data.filter(a => a.group == "paymentmode");
+                that.subCategoryDT = data.data.filter(a => a.group == "subcategory");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                if (classFeesDT.length > 0) {
-                    that.classfees = classFeesDT[0].key;
-                    that.studentwiseclassfees = classFeesDT[0].val;
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Fill Sub Cateogry
+
+    fillSubCateogryDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._feesservice.getFeesCollection({
+            "flag": "subcategory", "catid": that.catid, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.subCategoryDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Class Fees
+
+    getClassFees() {
+        var that = this;
+        commonfun.loader();
+
+        that._feesservice.getFeesCollection({
+            "flag": "fees", "catid": that.catid, "subcatid": that.subcatid, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.catfees = data.data[0].fees;
+                    that.fees = data.data[0].fees;
                 }
                 else {
-                    that.classfees = "0";
-                    that.studentwiseclassfees = "0";
+                    that.fees = 0;
                 }
-
-                that.studentDT = data.data.filter(a => a.group == "student");
-                that.paymentmodeDT = data.data.filter(a => a.group == "paymentmode");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -149,97 +210,15 @@ export class AddFeesCollectionComponent implements OnInit {
 
     // Fill Fees Collection
 
-    resetFeesCollFields(){
+    resetFeesCollFields() {
         var that = this;
 
-        that.studid = 0;
-        that.fees = 0;
         that.receivedate = "";
         that.paymentmode = "";
         that.chequeno = 0;
         that.chequedate = "";
-        that.remark = "";
-    }
-
-    addFeesCollection() {
-        var that = this;
-
-        if (that.studid == 0) {
-            that._msg.Show(messageType.info, "Info", "Please Select Student");
-        }
-        else if (that.fees == 0) {
-            that._msg.Show(messageType.info, "Info", "Please Enter Fees");
-        }
-        else {
-            that.feesCollDT.push({
-                "fclid": that.fclid, "ayid": that.ayid, "clsid": that.classid,
-                "studid": that.studid, "studname": $(".studname option:selected").text().trim(),
-                "fees": that.fees, "receivedate": that.receivedate,
-                "paymentmode": that.paymentmode, "paymentmodenm": $(".paymentmode option:selected").text().trim(),
-                "chequeno": that.chequeno, "chequedate": that.chequedate,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "cuid": that.loginUser.ucode, "isactive": true
-            })
-
-            that.resetFeesCollFields();
-        }
-    }
-
-    editFeesCollection(row) {
-        var that = this;
-
-        that.selectedFeesColl = row;
-        that.iseditfeescoll = true;
-
-        that.studid = row.studid;
-        that.fees = row.fees | that.loginUser.globsettings[0];
-        that.receivedate = row.receivedate;
-        that.paymentmode = row.paymentmode;
-        that.chequeno = row.chequeno;
-        that.chequedate = row.chequedate;
-        that.remark = row.remark;
-    }
-
-    deleteFeesCollection(row) {
-        row.isactive = false;
-    }
-
-    updateFeesCollection() {
-        var that = this;
-
-        that.selectedFeesColl.studid = that.studid;
-        that.selectedFeesColl.fees = that.fees;
-        that.selectedFeesColl.receivedate = that.receivedate;
-        that.selectedFeesColl.paymentmode = that.paymentmode;
-        that.selectedFeesColl.chequeno = that.chequeno;
-        that.selectedFeesColl.chequedate = that.chequedate;
-        that.selectedFeesColl.remark = that.remark;
-
-        that.iseditfeescoll = false;
-        that.resetFeesCollFields();
-    }
-
-    totalFees() {
-        var that = this;
-        var field: any = [];
-
-        var totalfees = 0;
-
-        for (var i = 0; i < that.feesCollDT.length; i++) {
-            field = that.feesCollDT[i];
-            totalfees += parseFloat(field.fees);
-        }
-
-        return totalfees;
-    }
-
-    // Reset Fees Details
-
-    resetFeesCollection() {
-        var that = this;
-
-        that.studid = 0;
         that.fees = 0;
+        that.remark = "";
     }
 
     // Save Class Fees
@@ -247,17 +226,47 @@ export class AddFeesCollectionComponent implements OnInit {
     isValidClassFees() {
         var that = this;
 
-        var totalfees = that.totalFees();
-
-        if (that.ayid == 0) {
-            that._msg.Show(messageType.info, "Info", "Select Academic Year");
-            $(".ay").focus();
+        if (that.catid == 0) {
+            that._msg.Show(messageType.info, "Info", "Select Category");
+            $(".catname").focus();
             return false;
         }
-        else if (that.classid == 0) {
-            that._msg.Show(messageType.info, "Info", "Select Class");
-            $(".class").focus();
+
+        if (that.fees == "") {
+            that._msg.Show(messageType.info, "Info", "Enter Fees");
+            $(".fees").focus();
             return false;
+        }
+
+        if (that.catfees < that.fees) {
+            that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
+            $(".fees").focus();
+            return false;
+        }
+
+        if (that.receivedate == "") {
+            that._msg.Show(messageType.info, "Info", "Enter Receive Date");
+            $(".receivedate").focus();
+            return false;
+        }
+        
+        if (that.paymentmode == "") {
+            that._msg.Show(messageType.info, "Info", "Select Payment Mode");
+            $(".paymentmode").focus();
+            return false;
+        }
+
+        if (that.paymentmode == "cheque") {
+            if (that.chequeno == 0) {
+                that._msg.Show(messageType.info, "Info", "Enter Cheque No");
+                $(".chequeno").focus();
+                return false;
+            }
+            if (that.chequedate == "") {
+                that._msg.Show(messageType.info, "Info", "Enter Cheque Date");
+                $(".chequedate").focus();
+                return false;
+            }
         }
 
         return true;
@@ -273,7 +282,10 @@ export class AddFeesCollectionComponent implements OnInit {
             commonfun.loader();
 
             var savefeescoll = {
-                "feescollection": that.feesCollDT
+                "fclid": that.fclid, "ayid": that.ayid, "clsid": that.classid, "studid": that.studid,
+                "catid": that.catid, "subcatid": that.subcatid, "fees": that.fees, "receivedate": that.receivedate,
+                "paymentmode": that.paymentmode, "chequeno": that.chequeno, "chequedate": that.chequedate,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode, "isactive": true
             }
 
             that._feesservice.saveFeesCollection(savefeescoll).subscribe(data => {
@@ -284,6 +296,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
+                        that.getStudentDetails();
                         that.getFeesCollection();
                     }
                     else {
@@ -312,7 +325,7 @@ export class AddFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "edit", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "flag": "history", "studid": that.studid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -330,5 +343,25 @@ export class AddFeesCollectionComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    totalFees() {
+        var that = this;
+        var field: any = [];
+
+        var totalfees = 0;
+
+        for (var i = 0; i < that.feesCollDT.length; i++) {
+            field = that.feesCollDT[i];
+            totalfees += parseFloat(field.fees);
+        }
+
+        return totalfees;
+    }
+
+    // Back For View Data
+
+    backViewData() {
+        this._router.navigate(['/transaction/feescollection']);
     }
 }

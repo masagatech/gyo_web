@@ -39,6 +39,19 @@
                         <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="3"></textarea>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Send By <strong>*</strong></label><br />
+                        <span id="prnt">
+                            <input id="parents" name="parents" type="checkbox" value="parents" class="filled-in" />
+                            <label for="parents">Parents</label>
+                        </span>
+                        <span id="tchr">
+                            <input id="teacher" name="teacher" type="checkbox" value="teacher" class="filled-in" />
+                            <label for="teacher">Teacher</label>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="row clearfix" *ngIf="standardDT.length">

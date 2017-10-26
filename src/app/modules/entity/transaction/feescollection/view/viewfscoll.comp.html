@@ -37,14 +37,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2" *ngIf="classid != 0">
                 <div class="form-group" style="padding-top: 20px">
-                    Class Fees : {{classfees}}
+                    Class Fees : {{classfees | _currency:loginUser.globsettings[0]}}
                 </div>
             </div>
         </div>
 
-        <div class="row clearfix">
+        <div class="row clearfix" *ngIf="feesCollDT.length">
             <div class="col-md-12">
                 <table class="table table-bordered table-responsive reports">
                     <thead>
@@ -60,32 +60,28 @@
                                 {{row.studname}}
                             </td>
                             <td align="right">
-                                {{row.fees | _currency:loginUser.globsettings[0]}}
+                                {{row.feescoll | _currency:loginUser.globsettings[0]}}
                             </td>
                             <td align="right">
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addFeesCollection(row)">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="viewFeesCollection(row)">
-                                        <i class="material-icons">arrow_forward</i>
-                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="addFeesCollection(row)">
+                                        <i class="material-icons">shopping_cart</i></button>
+                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="viewFeesCollection(row)">
+                                        <i class="material-icons">arrow_forward</i></button>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td>
+                        <tr class="tr-table">
+                            <th>
                                 <b>Total</b>
-                            </td>
-                            <td align="right">
-                                <div class="form-group">
-                                    {{totalFees() | _currency:loginUser.globsettings[0]}}
-                                </div>
-                            </td>
-                            <td>
-                            </td>
+                            </th>
+                            <th align="right">
+                                <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
+                            </th>
+                            <th>
+                            </th>
                         </tr>
                     </tfoot>
                 </table>

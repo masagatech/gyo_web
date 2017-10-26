@@ -42,6 +42,6 @@ export const routes = [
     providers: [AuthGuard]
 })
 
-export class ERPTransactionModule {
+export class TransactionModule {
 
 }
