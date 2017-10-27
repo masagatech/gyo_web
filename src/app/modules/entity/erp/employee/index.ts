@@ -15,10 +15,10 @@ import { LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, AutoComple
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewEmployeeComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "emp", "rights": "view", "urlname": "/employee" } },
-      { path: 'profile/:id', component: ViewProfileComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "emp", "rights": "view", "urlname": "/employee" } },
-      { path: 'add', component: AddEmployeeComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "emp", "rights": "add", "urlname": "/add" } },
-      { path: 'edit/:id', component: AddEmployeeComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "emp", "rights": "edit", "urlname": "/edit" } }
+      { path: '', component: ViewEmployeeComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "psngrprof", "rights": "view", "urlname": "/employee" } },
+      { path: 'profile/:id', component: ViewProfileComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "psngrprof", "rights": "view", "urlname": "/employee" } },
+      { path: 'add', component: AddEmployeeComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "psngrprof", "rights": "add", "urlname": "/add" } },
+      { path: 'edit/:id', component: AddEmployeeComponent, canActivate: [AuthGuard], data: { "module": "erp", "submodule": "psngrprof", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];

@@ -13,11 +13,15 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'leave', loadChildren: './leave#LeaveReportsModule' },
-                    { path: 'classschedule', loadChildren: './classschedule#ClassScheduleReportsModule' },
-                    { path: 'gallery', loadChildren: './gallery#GalleryReportsModule' },
-                    { path: 'exam', loadChildren: './exam#ExamReportsModule' },
-                    { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
+                    // Passenger
+                    
+                    // { path: 'teacherleave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
+
+                    { path: ':psngrtype', loadChildren: './passenger#PassengerReportsModule' },
+                    { path: ':psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
+
+                    { path: ':psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
+                    { path: ':psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
                 ]
             }
         ]

@@ -1,8 +1,27 @@
-<div class="container-fluid">
-    <div class="block-header">
-        <h4>Dashboard</h4>
-    </div>
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-10">
+                <h4>Dashboard</h4>
+            </div>
 
+            <div class="col-md-2" align="right">
+                <div class="form-group">
+                    <div class="form-line">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getDashboardDetails();">
+                            <option [value]="0">Select Academic year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
     <div class="row clearfix">
         <div *ngFor="let row of dashboardDT" class="col-md-3">
             <div class="info-box {{row.dbcss}} hover-expand-effect">
@@ -15,6 +34,48 @@
                     <div class="text">{{row.dbhead}}</div>
                     <div class="number count-to" data-from="0" data-to="row.dbvalue" data-speed="15" data-fresh-interval="20">{{row.dbvalue}}</div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-9">
+        <div class="row clearfix">
+            <div class="col-md-8 col-xs-7">
+                <div class="card">
+                    <div class="body no-padding">
+                        <p-chart type="bar" [data]="classStatusChartDT" height="100px"></p-chart>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="body no-padding">
+                        <p-chart type="bar" [data]="classFeesDT" height="100px"></p-chart>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-5">
+                <div class="card">
+                    <div class="header">
+                        <h6>Today's Teacher Attendance</h6>
+                    </div>
+
+                    <div class="body no-padding">
+                        <p-chart type="pie" #piechart [data]="tchrattndDT" height="150px"></p-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="header">
+                <h4>Teacher Subject</h4>
+            </div>
+
+            <div class="body no-padding">
+                <p-chart type="pie" #piechart [data]="tchrSubDT"></p-chart>
             </div>
         </div>
     </div>

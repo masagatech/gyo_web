@@ -18,4 +18,8 @@ export class ClassScheduleService {
     saveTimeTable(req: any) {
         return this._dataserver.post(Globals.erproute + "saveTimeTable", req)
     }
+
+    getTimeTable(req: any) {
+        return this._dataserver.post(Globals.erproute + "getTimeTable", req)
+    }
 }

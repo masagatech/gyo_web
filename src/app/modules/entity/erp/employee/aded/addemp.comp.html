@@ -1,6 +1,6 @@
 <div class="card">
     <div class="header">
-        <h4>Employee</h4>
+        <h4>{{psngrtypenm}}</h4>
         <ul class="header-dropdown m-r--5">
             <li *ngIf="empid !== 0">
                 <span class="switch">
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-6" *ngIf="psngrtype != 'teacher'">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Employee Type <strong>*</strong></label>

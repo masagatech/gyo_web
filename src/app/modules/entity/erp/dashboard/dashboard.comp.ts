@@ -81,7 +81,7 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
                     that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
                 }
 
-                that.getDashboardDetails();
+                that.getERPDashboardDetails();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -165,15 +165,15 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
 
     // Dashboard Data
 
-    getDashboardDetails() {
+    getERPDashboardDetails() {
         this.getDivisionDetails();
-        this.getDashboardData("classstatus");
-        this.getDashboardData("tchrattnd");
-        this.getDashboardData("tchrsub");
-        this.getDashboardData("classfees");
+        this.getERPDashboardData("classstatus");
+        this.getERPDashboardData("tchrattnd");
+        this.getERPDashboardData("tchrsub");
+        this.getERPDashboardData("classfees");
     }
 
-    getDashboardData(dbtype) {
+    getERPDashboardData(dbtype) {
         var that = this;
         commonfun.loader();
 

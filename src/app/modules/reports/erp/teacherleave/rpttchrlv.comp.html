@@ -1,0 +1,86 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Leave</h4>
+            </div>
+            <div class="col-md-8" align="right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getTeacherLeave();">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="getTeacherLeave();">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div #class class="row clearfix">
+            <div class="col-md-8">
+                <p-schedule [events]="leaveDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
+            </div>
+            <div class="col-md-4">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th>Teacher Name</th>
+                            <th width="60px">Standard</th>
+                            <th width="100px">Division</th>
+                            <th width="80px">Period</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of leaveReportsDT">
+                        <tr>
+                            <td>
+                                {{row.tchrname}}
+                            </td>
+                            <td>
+                                {{row.classname}}
+                            </td>
+                            <td>
+                                {{row.subname}}
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

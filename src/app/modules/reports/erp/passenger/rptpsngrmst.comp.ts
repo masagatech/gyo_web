@@ -10,13 +10,15 @@ import jsPDF from 'jspdf'
 declare var $: any;
 
 @Component({
-    templateUrl: 'rptstuds.comp.html',
+    templateUrl: 'rptpsngrmst.comp.html',
     providers: [CommonService]
 })
 
-export class StudentReportsComponent implements OnInit, OnDestroy {
+export class PassengerMasterComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
+
+    global = new Globals();
 
     doc = new jsPDF();
 
@@ -29,13 +31,19 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    autoStudentDT: any = [];
-    studid: number = 0;
-    studname: any = [];
+    autoPassengerDT: any = [];
+    psngrdata: any = [];
+    psngrid: number = 0;
+    psngrname: string = "";
 
-    studentDT: any = [];
+    psngrtype: string = "";
+    psngrtypenm: any = "";
 
-    @ViewChild('Student') Student: ElementRef;
+    passengerDT: any = [];
+
+    private subscribeParameters: any;
+
+    @ViewChild('passenger') passenger: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
@@ -43,14 +51,11 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.viewStudentDataRights();
+        this.getPassengerDetails();
     }
 
     public ngOnInit() {
         setTimeout(function () {
-            commonfun.navistyle();
-            $(".enttname input").focus();
-
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
@@ -58,7 +63,7 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
     }
 
     public exportToCSV() {
-        this._autoservice.exportToCSV(this.studentDT, "Student Details");
+        this._autoservice.exportToCSV(this.passengerDT, this.psngrtypenm + " Details");
     }
 
     public exportToPDF() {
@@ -68,25 +73,18 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
 
-        pdf.addHTML(this.Student.nativeElement, 0, 0, options, () => {
-            pdf.save("StudentReports.pdf");
+        pdf.addHTML(this.passenger.nativeElement, 0, 0, options, () => {
+            pdf.save(this.psngrtypenm + " Reports.pdf");
         });
-
-        // this.doc.fromHTML($('#Student').get(0), 0, 0, {
-        //     'width': 500,
-        //     'elementHandlers': this.specialElementHandlers
-        // });
-
-        // this.doc.save('StudentDetails.pdf');
     }
 
-    // Auto Completed Student
+    // Auto Completed Passenger
 
-    getStudentData(event) {
+    getpassengerData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "passenger",
+            "flag": this.psngrtype,
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -95,7 +93,7 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
             "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoStudentDT = data.data;
+            this.autoPassengerDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -103,15 +101,13 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Student
+    // Selected passenger
 
-    selectStudentData(event) {
-        this.studid = event.value;
+    selectPassengerData(event) {
+        this.psngrid = event.value;
+        this.psngrname = event.label;
 
-        Cookie.set("_studid_", event.value);
-        Cookie.set("_studnm_", event.label);
-
-        this.getStudentDetails();
+        this.getPassengerDetails();
     }
 
     // Fill Entity, Standard, Month DropDown
@@ -120,7 +116,7 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getStudentDetails({
+        that._admsnservice.getPassengerDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -142,55 +138,52 @@ export class StudentReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // View Data Rights
-
-    public viewStudentDataRights() {
-        var that = this;
-
-        if (Cookie.get('_studnm_') != null) {
-            that.studname.value = parseInt(Cookie.get('_studid_'));
-            that.studname.label = Cookie.get('_studnm_');
-        }
-
-        that.getStudentDetails();
-    }
-
-    getStudentDetails() {
+    getPassengerDetails() {
         var that = this;
         var params = {};
 
         commonfun.loader("#fltrstud");
 
-        if (that.studid == 0) {
-            Cookie.set("_studid_", "0");
-            Cookie.set("_studnm_", "");
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
 
-            that.studname.value = parseInt(Cookie.get('_studid_'));
-            that.studname.label = Cookie.get('_studnm_');
-        }
+                if (that.psngrtype == "student") {
+                    that.psngrtypenm = 'Student';
+                }
+                else if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                    that.classid = 0;
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                    that.classid = 0;
+                }
 
-        params = {
-            "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "studid": that.studid.toString() == "" ? 0 : that.studid, "classid": that.classid,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
-        };
+                params = {
+                    "flag": that.psngrtype, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                    "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "classid": that.classid,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,  "issysadmin": that.loginUser.issysadmin
+                };
 
-        that._admsnservice.getStudentDetails(params).subscribe(data => {
-            try {
-                that.studentDT = data.data;
+                that._admsnservice.getPassengerDetails(params).subscribe(data => {
+                    try {
+                        that.passengerDT = data.data;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide("#fltrstud");
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide("#fltrstud");
+                }, () => {
+
+                })
             }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide("#fltrstud");
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide("#fltrstud");
-        }, () => {
-
-        })
+        });
     }
 
     public ngOnDestroy() {

@@ -28,6 +28,9 @@ export class AddEmployeeComponent implements OnInit {
     emptypeDT: any = [];
     emptype: string = "";
 
+    psngrtype: string = "";
+    psngrtypenm: string = "";
+
     genderDT: any = [];
     gender: string = "";
 
@@ -70,18 +73,29 @@ export class AddEmployeeComponent implements OnInit {
 
         this.getUploadConfig();
 
-        this.fillDropDownList();
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 100);
+        var that = this;
 
-        this.getEmployeeDetails();
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
+
+                if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                }
+
+                that.fillDropDownList();
+                that.getEmployeeDetails();
+            }
+        });
     }
 
     // Format Date Time
@@ -128,7 +142,10 @@ export class AddEmployeeComponent implements OnInit {
 
         that._empservice.getEmployeeDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.emptypeDT = data.data.filter(a => a.group == "emptype");
+                if (that.psngrtype == "employee") {
+                    that.emptypeDT = data.data.filter(a => a.group == "emptype").filter(a => a.key != "tchr");
+                }
+
                 that.genderDT = data.data.filter(a => a.group == "gender");
             }
             catch (e) {
@@ -272,7 +289,7 @@ export class AddEmployeeComponent implements OnInit {
         that.uploadconfig.serverpath = that.global.serviceurl;
         that.uploadconfig.uploadurl = that.global.uploadurl;
         that.uploadconfig.filepath = that.global.filepath;
-        
+
         that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
             that.uploadconfig.maxFilesize = data.data[0]._filesize;
             that.uploadconfig.acceptedFiles = data.data[0]._filetype;
@@ -335,7 +352,6 @@ export class AddEmployeeComponent implements OnInit {
         that.empcode = "";
         that.emppwd = "";
         that.empname = "";
-        that.emptype = "";
         that.gender = "";
         that.birthplace = "";
         that.nationality = "";
@@ -358,42 +374,60 @@ export class AddEmployeeComponent implements OnInit {
 
     // Save Data
 
-    saveEmployeeInfo() {
+    isValidEmployee() {
         var that = this;
 
         if (that.empcode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Employee Code");
             $(".empcode").focus();
+            return false;
         }
-        else if (that.emppwd == "") {
+        if (that.emppwd == "") {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".emppwd").focus();
+            return false;
         }
-        else if (that.emptype == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Employee Type");
-            $(".emptype").focus();
+        if (that.psngrtype == "employee") {
+            if (that.emptype == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Employee Type");
+                $(".emptype").focus();
+                return false;
+            }
         }
-        else if (that.empname == "") {
+        if (that.empname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Employee Name");
             $(".empname").focus();
+            return false;
         }
-        else if (that.gender == "") {
+        if (that.gender == "") {
             that._msg.Show(messageType.error, "Error", "Select Gender");
             $(".gender").focus();
+            return false;
         }
-        else if (that.mobileno1 == "") {
+        if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
+            return false;
         }
-        else if (that.email1 == "") {
+        if (that.email1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Email ID");
             $(".email1").focus();
+            return false;
         }
-        else if (that.address == "") {
+        if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
+            return false;
         }
-        else {
+        
+        return true;
+    }
+
+    saveEmployeeInfo() {
+        var that = this;
+        var isvalid = that.isValidEmployee();
+
+        if (isvalid) {
             commonfun.loader();
 
             var saveemp = {
@@ -402,7 +436,7 @@ export class AddEmployeeComponent implements OnInit {
                 "empcode": that.empcode,
                 "emppwd": that.emppwd,
                 "empname": that.empname,
-                "emptype": that.emptype,
+                "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype,
                 "gender": that.gender,
                 "birthplace": that.birthplace,
                 "nationality": that.nationality,
@@ -551,6 +585,6 @@ export class AddEmployeeComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/employee']);
+        this._router.navigate(['/' + this.psngrtype]);
     }
 }

@@ -1,44 +1,41 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { LeaveService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-
-declare var $: any;
-declare var commonfun: any;
+import { AdmissionService } from '@services/erp';
+import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'pendlv.comp.html',
+    templateUrl: 'rptpsngrbirth.comp.html',
     providers: [CommonService]
 })
 
-export class PendingLeaveComponent implements OnInit {
+export class PassengerBirthdayComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     psngrtype: any = "";
     psngrtypenm: any = "";
 
-    pendingPassengerLeaveDT: any = [];
+    birthdayDT: any = [];
+
+    global = new Globals();
 
     private subscribeParameters: any;
-
+    
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _lvservice: LeaveService, private _autoservice: CommonService) {
+        private _admsnservice: AdmissionService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.getLeaveDetails();
+        this.getBirthday();
     }
 
     public ngOnInit() {
 
     }
 
-    // View Data Rights
-
-    getLeaveDetails() {
+    getBirthday() {
         var that = this;
         var params = {};
 
@@ -59,14 +56,13 @@ export class PendingLeaveComponent implements OnInit {
                 }
 
                 params = {
-                    "flag": that.psngrtype == "employee" ? "pendemp" : "pendpsngr", "psngrtype": that.psngrtype,
-                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+                    "flag": "birthday", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
 
-                that._lvservice.getLeaveDetails(params).subscribe(data => {
+                that._admsnservice.getPassengerDetails(params).subscribe(data => {
                     try {
-                        that.pendingPassengerLeaveDT = data.data;
+                        that.birthdayDT = data.data;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
@@ -82,9 +78,5 @@ export class PendingLeaveComponent implements OnInit {
                 })
             }
         });
-    }
-
-    public openApprovalForm(row) {
-        this._router.navigate(['/' + this.psngrtype + '/leave/approval/' + row.psngrid]);
     }
 }

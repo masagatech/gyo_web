@@ -20,6 +20,9 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
     psngrid: number = 0;
     psngrname: string = "";
 
+    psngrtype: any = "";
+    psngrtypenm: any = "";
+
     headertitle: string = "";
     psngrLeaveDT: any = [];
     leaveDetailsDT: any = [];
@@ -29,7 +32,6 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
     frmdt: any = "";
     todt: any = "";
     lvtype: string = "";
-    lvfor: string = "emp";
     reason: string = "";
     apprremark: string = "";
     status: number = 0;
@@ -46,9 +48,6 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".enttname input").focus();
-            commonfun.navistyle();
-
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
@@ -64,41 +63,45 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['psngrid'] !== undefined) {
-                that.psngrid = params['psngrid'];
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
 
-                params = {
-                    "flag": that.lvfor == "emp" ? "empleave" : "psngrleave", "psngrid": that.psngrid,
-                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                if (params['psngrid'] !== undefined) {
+                    that.psngrid = params['psngrid'];
+
+                    params = {
+                        "flag": that.psngrtype == "employee" ? "empleave" : "psngrleave", "psngrid": that.psngrid,
+                        "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+                        "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                    }
+
+                    that._lvservice.getLeaveDetails(params).subscribe(data => {
+                        try {
+                            that.psngrLeaveDT = data.data;
+
+                            if (that.psngrLeaveDT.length > 0) {
+                                that.psngrname = that.psngrLeaveDT[0].psngrname;
+                            }
+                            else {
+                                that.psngrname = "";
+                            }
+                        }
+                        catch (e) {
+                            that._msg.Show(messageType.error, "Error", e);
+                        }
+
+                        commonfun.loaderhide();
+                    }, err => {
+                        that._msg.Show(messageType.error, "Error", err);
+                        console.log(err);
+                        commonfun.loaderhide();
+                    }, () => {
+
+                    })
                 }
-
-                that._lvservice.getLeaveDetails(params).subscribe(data => {
-                    try {
-                        that.psngrLeaveDT = data.data;
-
-                        if (that.psngrLeaveDT.length > 0) {
-                            that.psngrname = that.psngrLeaveDT[0].psngrname;
-                        }
-                        else {
-                            that.psngrname = "";
-                        }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
+                else {
                     commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
-            }
-            else {
-                commonfun.loaderhide();
+                }
             }
         });
     }
@@ -110,14 +113,13 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that.selectedlvrow = row;
-        // that.headertitle = "Voucher No : " + row.expid + " (" + row.countvcr + ")";
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['psngrid'] !== undefined) {
                 that.psngrid = params['psngrid'];
 
                 params = {
-                    "flag": row.lvfor == "emp" ? "byemp" : "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid,
+                    "flag": row.lvfor == "employee" ? "byemp" : "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid,
                     "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
@@ -155,7 +157,7 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
 
     // Save Leave Approval
 
-    savePassengerLeaveApproval() {
+    saveLeaveApproval() {
         var that = this;
         var psngrlvapprdata = {};
 
@@ -191,7 +193,7 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         that.getLeavePassenger();
-                        that.resetpsngrLeaveApproval();
+                        that.resetLeaveApproval();
 
                         commonfun.loaderhide();
                     }
@@ -212,7 +214,7 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
         }
     }
 
-    resetpsngrLeaveApproval() {
+    resetLeaveApproval() {
         this.leaveDetailsDT = [];
         this.apprremark = "";
         this.status = 0;
@@ -220,8 +222,12 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
 
     // Back For View Data
 
-    backViewData() {
-        this._router.navigate(['/leave/pending']);
+    viewAllLeave() {
+        this._router.navigate(['/' + this.psngrtype + '/leave']);
+    }
+
+    viewPendingLeave() {
+        this._router.navigate(['/' + this.psngrtype + '/leave/pending']);
     }
 
     public ngOnDestroy() {

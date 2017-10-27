@@ -14,7 +14,9 @@ export class ViewLeaveComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    lvfor: string = "emp";
+    psngrtype: any = "";
+    psngrtypenm: any = "";
+
     lvpsngrDT: any = [];
 
     passengerDT: any = [];
@@ -31,6 +33,8 @@ export class ViewLeaveComponent implements OnInit {
 
     isShowGrid: any = true;
     isShowCalendar: any = false;
+
+    private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _lvservice: LeaveService, private _autoservice: CommonService) {
@@ -61,7 +65,7 @@ export class ViewLeaveComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": this.lvfor == "emp" ? "employee" : "passenger",
+            "flag": this.psngrtype,
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -91,28 +95,52 @@ export class ViewLeaveComponent implements OnInit {
 
     getLeaveDetails() {
         var that = this;
+        var params = {};
+
         commonfun.loader();
 
-        that._lvservice.getLeaveDetails({
-            "flag": this.lvfor == "emp" ? "employee" : "passenger", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
-            "utype": that.loginUser.utype, "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin, "status": that.status
-        }).subscribe(data => {
-            try {
-                that.lvpsngrDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+                if (that.psngrtype == "student") {
+                    that.psngrtypenm = 'Student';
+                }
+                else if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                }
 
-        })
+                params = {
+                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "other" : "student", "psngrtype": that.psngrtype,
+                    "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                    "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "issysadmin": that.loginUser.issysadmin, "status": that.status
+                }
+
+                that._lvservice.getLeaveDetails(params).subscribe(data => {
+                    try {
+                        that.lvpsngrDT = data.data;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+            else {
+                commonfun.loaderhide();
+            }
+        });
     }
 
     // Reset Passenger Leave Reports
@@ -127,15 +155,15 @@ export class ViewLeaveComponent implements OnInit {
     }
 
     public addLeaveDetails() {
-        this._router.navigate(['/leave/add']);
+        this._router.navigate([this.psngrtype + '/leave/add']);
     }
 
     public editLeaveDetails(row) {
-        this._router.navigate(['/leave/edit', row.lvid]);
+        this._router.navigate([this.psngrtype + '/leave/edit', row.lvid]);
     }
 
     public openLeaveApproval(row) {
-        this._router.navigate(['/leave/approval', row.key.split(':')[0]]);
+        this._router.navigate([this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
     }
 }
 

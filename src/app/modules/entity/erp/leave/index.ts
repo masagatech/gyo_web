@@ -18,7 +18,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "lvpsngr", "rights": "view", "urlname": "/Leave" }
+        data: { "module": "pentt", "submodule": "psngrlv", "rights": "view", "urlname": "/Leave" }
       },
       {
         path: 'add', component: AddLeaveComponent, canActivate: [AuthGuard],

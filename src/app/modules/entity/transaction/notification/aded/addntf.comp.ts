@@ -18,6 +18,7 @@ export class AddNotificationComponent implements OnInit {
 
     groupDT: any = [];
     standardDT: any = [];
+    sendtypeDT: any = [];
 
     ntfid: number = 0;
     grpid: number = 0;
@@ -42,6 +43,37 @@ export class AddNotificationComponent implements OnInit {
         }, 200);
     }
 
+    // Fill Group Drop Down and Checkbox List For Standard
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._ntfservice.getNotification({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype": "standard", "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.groupDT = data.data.filter(a => a.group == "ntfgrp");
+                that.standardDT = data.data.filter(a => a.group == "standard");
+
+                that.sendtypeDT.push({ "id": "parents", "val": "Parents" });
+                that.sendtypeDT.push({ "id": "teacher", "val": "Teacher" });
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Clear Fields
 
     resetNotificationFields() {
@@ -52,6 +84,36 @@ export class AddNotificationComponent implements OnInit {
         that.title = "";
         that.msg = "";
         that.clearcheckboxes();
+    }
+
+    // Get Send Type Rights
+
+    getSendTypeRights() {
+        var that = this;
+        var senditem = null;
+
+        var actrights = "";
+        var sendrights = null;
+
+        for (var i = 0; i <= that.sendtypeDT.length - 1; i++) {
+            senditem = null;
+            senditem = that.sendtypeDT[i];
+
+            if (senditem !== null) {
+                $("#send" + senditem.id).find("input[type=checkbox]").each(function () {
+                    actrights += (this.checked ? $(this).val() + "," : "");
+                });
+
+                if (actrights != "") {
+                    sendrights = actrights.slice(0, -1);
+                }
+                else {
+                    sendrights = null;
+                }
+            }
+        }
+
+        return sendrights;
     }
 
     // Get Standard Rights
@@ -84,6 +146,19 @@ export class AddNotificationComponent implements OnInit {
         return stdrights;
     }
 
+    private selectAndDeselectAllSendTypeCheckboxes() {
+        if ($("#selectallsendtype").is(':checked')) {
+            $(".sendtypecheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".sendtypecheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private clearSendTypeCheckboxes() {
+        $(".sendtypecheckboxes input[type=checkbox]").prop('checked', false);
+    }
+
     private selectAndDeselectAllCheckboxes() {
         if ($("#selectall").is(':checked')) {
             $(".allcheckboxes input[type=checkbox]").prop('checked', true);
@@ -102,10 +177,10 @@ export class AddNotificationComponent implements OnInit {
     saveNotification() {
         var that = this;
         var _stdrights = null;
-        var _parent = "";
-        var _teacher = "";
+        var _sendrights = null;
 
         _stdrights = that.getStandardRights();
+        _sendrights = that.getSendTypeRights();
 
         if (that.grpid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Group");
@@ -125,21 +200,16 @@ export class AddNotificationComponent implements OnInit {
         else if (_stdrights == null) {
             that._msg.Show(messageType.error, "Error", "Please Select Class");
         }
+        else if (_sendrights == null) {
+            that._msg.Show(messageType.error, "Error", "Please Select Send By");
+        }
         else {
             commonfun.loader();
-
-            $("#prnt").find("input[type=checkbox]").each(function () {
-                _parent += (this.checked ? $(this).val() : "");
-            });
-
-            $("#tchr").find("input[type=checkbox]").each(function () {
-                _teacher += (this.checked ? $(this).val() : "");
-            });
 
             var saventf = {
                 "ntfid": that.ntfid,
                 "ntftype": "standard",
-                "sendtype": "{'" + _parent + "', '" + _teacher + "'}",
+                "sendtype": "{" + _sendrights + "}",
                 "frmid": that.loginUser.loginid,
                 "toid": "{" + _stdrights + "}",
                 "title": that.title,
@@ -248,34 +318,6 @@ export class AddNotificationComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
-    }
-
-    // Fill Group Drop Down and Checkbox List For Standard
-
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
-
-        that._ntfservice.getNotification({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype": "standard", "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.groupDT = data.data.filter(a => a.group == "ntfgrp");
-                that.standardDT = data.data.filter(a => a.group == "standard");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     // Back For View Data

@@ -2,18 +2,7 @@
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-3">
-                <h4>Leave {{lvfor == 'emp' ? 'Employee' : _enttdetails.psngrtype}}</h4>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Leave For</label>
-                        <select id="lvfor" [(ngModel)]="lvfor" (ngModelChange)="getLeaveDetails()" class="form-control lvfor" tabindex="1">
-                            <option [value]="'emp'">Employee</option>
-                            <option [value]="_enttdetails.smpsngrtype">{{_enttdetails.psngrtype}}</option>
-                        </select>
-                    </div>
-                </div>
+                <h4>Leave {{psngrtypenm}}</h4>
             </div>
         </div>
     </div>

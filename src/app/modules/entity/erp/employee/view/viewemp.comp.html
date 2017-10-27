@@ -2,10 +2,10 @@
     <div class="header">
         <div class="row clearfix">
             <div class="col-md-5">
-                <h4>Employee</h4>
+                <h4>{{psngrtypenm}}</h4>
             </div>
             <div class="col-md-5 col-xs-8">
-                <div class="form-group">
+                <div class="form-group" *ngIf="psngrtype != 'teacher'">
                     <div class="form-line">
                         <label class="control-label">Employee Type <strong>*</strong></label>
                         <select id="emptype" [(ngModel)]="emptype" class="form-control emptype" tabindex="3" (ngModelChange)="getEmployeeDetails()">

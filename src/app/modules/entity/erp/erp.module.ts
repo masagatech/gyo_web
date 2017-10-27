@@ -16,13 +16,16 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'erp', loadChildren: './dashboard#ERPDashboardModule' },
-                    
-                    { path: 'admission/prospectus', loadChildren: './prospectus#ProspectusModule' },            
+                    { path: 'admission/prospectus', loadChildren: './prospectus#ProspectusModule' },
                     { path: 'prospectus/issues', loadChildren: './prospectusissues#ProspectusIssuesModule' },
+
                     { path: 'student', loadChildren: './admission#AdmissionModule' },
+
+                    { path: ':psngrtype', loadChildren: './employee#EmployeeModule' },
 
                     { path: ':psngrtype/attendance', loadChildren: './attendance#AttendanceModule' },
                     { path: ':psngrtype/leave', loadChildren: './leave#LeaveModule' },
+                    { path: ':psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
                 ]
             }
         ]

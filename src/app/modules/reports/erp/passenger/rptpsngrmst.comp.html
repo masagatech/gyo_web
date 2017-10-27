@@ -2,13 +2,13 @@
     <div class="header">
         <div class="row clearfix" id="fltrstud">
             <div class="col-md-5 col-xs-5">
-                <h4>Student</h4>
+                <h4>Passenger</h4>
             </div>
             <div class="col-md-2 col-xs-2">
-                <div class="form-group">
+                <div class="form-group" *ngIf="psngrtype == 'student'">
                     <div class="form-line">
                         <label class="control-label">Class</label>
-                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getStudentDetails()">
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getpassengerDetails()">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
@@ -20,10 +20,10 @@
             <div class="col-md-3 col-xs-3">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Student Name <strong>*</strong></label>
-                        <p-autoComplete id="studname" name="studname" [(ngModel)]="studname" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <label class="control-label">Passenger Name <strong>*</strong></label>
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectpassengerData($event)" [suggestions]="autopassengerDT" (completeMethod)="getpassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
                         <span class="material-icons inputlinkico">
-                            <a role="button" (click)="getStudentDetails()" class="btn btn-theme btn-search">search</a>
+                            <a role="button" (click)="getpassengerDetails()" class="btn btn-theme btn-search">search</a>
                         </span>
                     </div>
                 </div>
@@ -44,19 +44,21 @@
     </div>
 
     <div class="body no-padding">
-        <div #Student class="row clearfix">
+        <div #passenger class="row clearfix">
             <div class="col-md-12">
-                <p-dataTable [value]="studentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column header="" [style]="{'width':'50px','text-align':'center','vertical-align':'top'}">
+                <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column header="" [style]="{'width':'60px','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.studentname}}" src="uploads/Student/{{row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                            <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
-                    <p-column field="studentname" header="Student Name" [style]="{'width': '130px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="gender" header="Gender" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="mothername" header="Mother Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="fathername" header="Father Name" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="psngrname" header="{{psngrtypenm}} Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="classname" header="Class" [style]="{'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype != 'employee'"></p-column>
+                    <p-column header="Parents" [style]="{'width':'150px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.fathername}}<span *ngIf="row.fathername != '' && row.mothername !== ''"><br/></span>{{row.mothername}}
+                        </ng-template>
+                    </p-column>
                     <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             {{row.mobileno1}}<span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
@@ -67,25 +69,23 @@
                             {{row.email1}}<span *ngIf="row.email1 !== '' && row.email2 !== ''">, </span>{{row.email2}}
                         </ng-template>
                     </p-column>
-                    <p-column field="alert" header="Alert" [style]="{'width': '60px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="address" header="Residental Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="pickupaddr" header="Pick-up Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="dropaddr" header="Drop Address" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="pickrtname" header="Pick-up Route" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="droprtname" header="Drop Route" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="pickstpname" header="Pick-up Stop" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="dropstpname" header="Drop Stop" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="address" header="Address 1" [style]="{'width': '240px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column header="Address 2" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.city + ', ' + row.state + ', ' + row.country}}
+                        </ng-template>
+                    </p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'60px', 'text-align':'left','vertical-align':'top'}"></p-column>
                 </p-dataTable>
             </div>
         </div>
 
         <div id="render_me" class="row clearfix" style="display: none;">
-            <div class="col-md-4" *ngFor="let row of studentDT">
+            <div class="col-md-4" *ngFor="let row of passengerDT">
                 <table>
                     <tr>
-                        <td>Student Name</td>
-                        <td>{{row.studentname}}</td>
+                        <td>passenger Name</td>
+                        <td>{{row.passengername}}</td>
                     </tr>
                     <tr>
                         <td>Gender</td>

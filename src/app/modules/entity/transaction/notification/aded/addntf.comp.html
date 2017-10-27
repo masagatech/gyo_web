@@ -42,14 +42,39 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Send By <strong>*</strong></label><br />
-                        <span id="prnt">
+                        <!-- <span id="prnt">
                             <input id="parents" name="parents" type="checkbox" value="parents" class="filled-in" />
                             <label for="parents">Parents</label>
                         </span>
                         <span id="tchr">
                             <input id="teacher" name="teacher" type="checkbox" value="teacher" class="filled-in" />
                             <label for="teacher">Teacher</label>
-                        </span>
+                        </span> -->
+
+                        <div class="row clearfix" *ngIf="sendtypeDT.length">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input id="selectallsendtype" name="selectallsendtype" type="checkbox" (change)="selectAndDeselectAllSendTypeCheckboxes()" class="filled-in">
+                                    <label for="selectallsendtype">Select All</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="sendtypecheckboxes">
+                                    <div class="row clearfix">
+                                        <div class="col-md-4" *ngFor="let row of sendtypeDT; let i = index;">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <span id="send{{row.id}}">
+                                                        <input id="{{row.id}}" name="send{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                        <label for="{{row.id}}">{{row.val}}</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

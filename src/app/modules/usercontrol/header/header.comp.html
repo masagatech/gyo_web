@@ -35,20 +35,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-large" *ngIf="iserpmenu == true">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="erpMenuDT.length">ERP Reports <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-menu-large row">
-                        <li class="col-md-3" *ngFor="let row of erpReportsMenuDT | groupBy: 'pname'">
-                            <ul>
-                                <li class="dropdown-header">{{row.key}}</li>
-                                <li class="divider"></li>
-                                <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
-                                    <a [routerLink]="mrow.mlink">{{mrow.mname}}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
                 <li class="dropdown dropdown-large" *ngIf="isrptmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="reportsMenuDT.length">Reports <b class="caret"></b></a>
                     <ul class="dropdown-menu dropdown-menu-large row">
@@ -102,7 +88,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-large" *ngIf="ismstmenu == true">
+                <li class="dropdown dropdown-large">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="settingsMenuDT.length">
                         <i class="material-icons">settings</i>
                     </a>

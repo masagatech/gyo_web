@@ -18,7 +18,8 @@ export class AddLeaveComponent implements OnInit {
 
     lvid: number = 0;
 
-    lvfor: string = "emp";
+    psngrtype: any = "";
+    psngrtypenm: any = "";
 
     passengerDT: any = [];
     psngrdata: any = [];
@@ -108,11 +109,12 @@ export class AddLeaveComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": this.lvfor == "emp" ? "employee" : "passenger",
+            "flag": this.psngrtype,
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "emptype": "",
+            "classid": "0",
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -267,7 +269,7 @@ export class AddLeaveComponent implements OnInit {
                 "todt": that.todt,
                 "totm": that.totm,
                 "lvtype": that.lvtype,
-                "lvfor": that.lvfor,
+                "lvfor": that.psngrtype,
                 "reason": that.reason,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
@@ -316,46 +318,49 @@ export class AddLeaveComponent implements OnInit {
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.lvid = params['id'];
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
 
-                that._lvservice.getLeaveDetails({
-                    "flag": "edit",
-                    "id": that.lvid,
-                    "enttid": that._enttdetails.enttid,
-                    "wsautoid": that._enttdetails.wsautoid
-                }).subscribe(data => {
-                    try {
-                        that.lvid = data.data[0].lvid;
-                        that.psngrid = data.data[0].psngrid;
-                        that.psngrname = data.data[0].psngrname;
-                        that.psngrdata.value = that.psngrid;
-                        that.psngrdata.label = that.psngrname;
-                        that.lvtype = data.data[0].lvtype;
-                        that.lvfor = data.data[0].lvfor;
-                        that.reason = data.data[0].reason;
-                        that.frmdt = data.data[0].frmdt;
-                        that.todt = data.data[0].todt;
-                        that.frmtm = data.data[0].frmtm;
-                        that.ispickup = data.data[0].ispickup;
-                        that.isdrop = data.data[0].isdrop;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
+                if (params['id'] !== undefined) {
+                    that.lvid = params['id'];
 
+                    that._lvservice.getLeaveDetails({
+                        "flag": "edit",
+                        "id": that.lvid,
+                        "enttid": that._enttdetails.enttid,
+                        "wsautoid": that._enttdetails.wsautoid
+                    }).subscribe(data => {
+                        try {
+                            that.lvid = data.data[0].lvid;
+                            that.psngrid = data.data[0].psngrid;
+                            that.psngrname = data.data[0].psngrname;
+                            that.psngrdata.value = that.psngrid;
+                            that.psngrdata.label = that.psngrname;
+                            that.lvtype = data.data[0].lvtype;
+                            that.reason = data.data[0].reason;
+                            that.frmdt = data.data[0].frmdt;
+                            that.todt = data.data[0].todt;
+                            that.frmtm = data.data[0].frmtm;
+                            that.ispickup = data.data[0].ispickup;
+                            that.isdrop = data.data[0].isdrop;
+                        }
+                        catch (e) {
+                            that._msg.Show(messageType.error, "Error", e);
+                        }
+
+                        commonfun.loaderhide();
+                    }, err => {
+                        that._msg.Show(messageType.error, "Error", err);
+                        console.log(err);
+                        commonfun.loaderhide();
+                    }, () => {
+
+                    })
+                }
+                else {
+                    that.resetPassengerLeaveFields();
                     commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
-            }
-            else {
-                that.resetPassengerLeaveFields();
-                commonfun.loaderhide();
+                }
             }
         });
     }
@@ -363,6 +368,6 @@ export class AddLeaveComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/leave']);
+        this._router.navigate([this.psngrtype + '/leave']);
     }
 }

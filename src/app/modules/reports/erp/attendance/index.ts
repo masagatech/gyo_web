@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { AttendanceComponent } from './attendance.comp';
+import { AttendanceReportsComponent } from './attendance.comp';
 
 import { AttendanceService } from '@services/erp';
 
@@ -14,8 +14,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: AttendanceComponent, canActivate: [AuthGuard],
-        data: { "module": "erppsngr", "submodule": "psngrattnd", "rights": "view", "urlname": "/attendance" }
+        path: '', component: AttendanceReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rptpsngr", "submodule": "rptpsngrattnd", "rights": "view", "urlname": "/attendance" }
       },
     ]
   },
@@ -23,7 +23,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AttendanceComponent
+    AttendanceReportsComponent
   ],
 
   imports: [
@@ -34,6 +34,6 @@ export const routes = [
     providers: [AuthGuard, AttendanceService]
 })
 
-export class AttendanceModule {
+export class AttendanceReportsModule {
   public static routes = routes;
 }

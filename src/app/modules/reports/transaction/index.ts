@@ -13,13 +13,9 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'student', loadChildren: './passenger#PassengerAttendanceModule' },
-                    { path: 'passenger', loadChildren: './passenger#PassengerAttendanceModule' },
-
-                    { path: 'daily', loadChildren: './daily#DailyAttendanceModule' },
-                    { path: 'driver', loadChildren: './driver#DriverAttendanceModule' },
-
-                    { path: 'attendent', loadChildren: './attendent#AttendentAttendanceModule' },
+                    { path: 'classschedule', loadChildren: './classschedule#ClassScheduleReportsModule' },
+                    { path: 'exam', loadChildren: './exam#ExamReportsModule' },
+                    { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
                 ]
             }
         ]
@@ -34,6 +30,6 @@ export const routes = [
     providers: [AuthGuard]
 })
 
-export class AttendanceReportsModule {
+export class TransactionReportsModule {
 
 }
