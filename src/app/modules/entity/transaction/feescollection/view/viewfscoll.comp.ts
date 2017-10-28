@@ -64,6 +64,8 @@ export class ViewFeesCollectionComponent implements OnInit {
 
     fillAYAndClassDropDown() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._feesservice.getClassFees({
@@ -74,8 +76,15 @@ export class ViewFeesCollectionComponent implements OnInit {
                 that.ayDT = data.data[0].filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
-                    that.getFeesCollection();
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].id;
+                        that.getFeesCollection();
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
 
                 that.classDT = data.data[0].filter(a => a.group == "class");

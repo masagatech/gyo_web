@@ -18,6 +18,8 @@ export class ChapterReportsComponent implements OnInit, OnDestroy {
     chapterDT: any = [];
 
     classDT: any = [];
+    classid: number = 0;
+
     @ViewChild('chapter') chapter: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -25,6 +27,7 @@ export class ChapterReportsComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.fillClassDropDown();
         this.getChapterDetails();
     }
 
@@ -38,7 +41,34 @@ export class ChapterReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Subject
+    // Fill Class Drop Down
+
+    fillClassDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._chptrservice.getChapterDetails({
+            "flag": "classddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.classDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Chapter
 
     getChapterDetails() {
         var that = this;
@@ -46,7 +76,8 @@ export class ChapterReportsComponent implements OnInit, OnDestroy {
 
         that._chptrservice.getChapterDetails({
             "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "subid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.chapterDT = data.data;

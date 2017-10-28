@@ -13,7 +13,6 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'classschedule', loadChildren: './classschedule#ClassScheduleReportsModule' },
                     { path: 'exam', loadChildren: './exam#ExamReportsModule' },
                     { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
                 ]

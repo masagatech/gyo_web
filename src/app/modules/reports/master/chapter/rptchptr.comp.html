@@ -1,10 +1,23 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-3 col-xs-3">
+            <div class="col-md-8 col-xs-4">
                 <h4>View Chapter</h4>
             </div>
-            <div class="col-md-9 col-xs-9" align="right">
+            <div class="col-md-2 col-xs-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="classid" name="classname" [(ngModel)]="classid" (ngModelChange)="getChapterDetails()" class="form-control classid" tabindex="1">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.classid">
+                                {{row.classname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4" style="padding-top:20px; text-align: right;">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
@@ -19,27 +32,23 @@
         </div>
     </div>
 
-    <div class="body no-padding">
+    <div class="body no-padding" *ngIf="chapterDT.length">
         <div class="row clearfix">
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th width="100px">Subject</th>
-                            <th width="200px">Chapter</th>
+                            <th width="350px">Chapter</th>
                             <th>Description</th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of chapterDT | groupBy : 'classname'">
+                    <tbody *ngFor="let row of chapterDT | groupBy : 'subname'">
                         <tr class="tr-table">
-                            <th colspan="3">
-                                <b>Standard : </b>{{row.key}}
+                            <th colspan="2">
+                                <b>Subject : </b>{{row.key}}
                             </th>
                         </tr>
                         <tr *ngFor="let drow of row.value">
-                            <td>
-                                {{drow.subname}}
-                            </td>
                             <td>
                                 {{drow.chptrname}}
                             </td>

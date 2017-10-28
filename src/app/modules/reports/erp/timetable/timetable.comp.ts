@@ -2,21 +2,18 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { AttendanceService } from '@services/erp';
+import { ClassScheduleService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 import jsPDF from 'jspdf';
 
 @Component({
-    templateUrl: 'attendance.comp.html',
+    templateUrl: 'timetable.comp.html',
     providers: [CommonService]
 })
 
-export class AttendanceReportsComponent implements OnInit, OnDestroy {
+export class TimetableComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
-
-    psngrtype: any = "";
-    psngrtypenm: any = "";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -24,10 +21,18 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    currentdate: any = "";
-    attnddate: any = "";
+    passengerDT: any = [];
+    psngrdata: any = [];
+    psngrid: number = 0;
+    psngrname: string = "";
 
-    attendanceDT: any = [];
+    psngrtype: any = "";
+    psngrtypenm: any = "";
+
+    currentdate: any = "";
+    caldate: any = "";
+
+    timetableDT: any = [];
 
     statusid: number = 0;
     status: string = "";
@@ -35,49 +40,26 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
     global = new Globals();
 
-    @ViewChild('attendance') attendance: ElementRef;
+    @ViewChild('timetable') timetable: ElementRef;
 
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _attndservice: AttendanceService, private _autoservice: CommonService) {
+        private tmtservice: ClassScheduleService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getAttendanceDate();
-        this.getAttendance();
+        this.getCalendarDate();
+        this.getTimeTable();
     }
 
     public ngOnInit() {
-
-    }
-
-    // Format Date
-
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
-    getAttendanceDate() {
-        var date = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        this.currentdate = this.formatDate(today);
-        this.attnddate = this.formatDate(today);
-    }
-
-    refreshButtons() {
         setTimeout(function () {
-            commonfun.chevronstyle();
-        }, 0);
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
     }
 
     // Fill Academic Year, Class Drop Down
@@ -88,7 +70,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._attndservice.getAttendance({
+        that.tmtservice.getClassSchedule({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -100,7 +82,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getAttendance();
+                        that.getTimeTable();
                     }
                     else {
                         that.ayid = 0;
@@ -123,7 +105,67 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getAttendance() {
+    // Auto Completed Passenger
+
+    getPassengerData(event) {
+        let query = event.query;
+
+        this._autoservice.getERPAutoData({
+            "flag": this.psngrtype,
+            "classid": this.classid,
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.passengerDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Passenger
+
+    selectPassengerData(event, arg) {
+        var that = this;
+
+        that.psngrid = event.value;
+        that.psngrname = event.label;
+    }
+
+    // Format Date
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    getCalendarDate() {
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        this.currentdate = this.formatDate(today);
+        this.caldate = this.formatDate(today);
+    }
+
+    refreshButtons() {
+        setTimeout(function () {
+            commonfun.chevronstyle();
+        }, 0);
+    }
+
+    getTimeTable() {
         var that = this;
         var params = {};
 
@@ -138,32 +180,27 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                 }
                 else if (that.psngrtype == "teacher") {
                     that.psngrtypenm = 'Teacher';
-                    that.classid = 0;
-                }
-                else {
-                    that.psngrtypenm = 'Employee';
-                    that.classid = 0;
                 }
 
                 params = {
-                    "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                    "flag": that.psngrtype, "ayid": that.ayid, "classid": that.classid, "psngrid": that.psngrid,
+                    "caldate": that.caldate, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }
 
-                that._attndservice.getAttendance(params).subscribe(data => {
+                that.tmtservice.getTimeTable(params).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
-                            that.attendanceDT = data.data;
-                            that.statusid = data.data[0].statusid;
-                            that.status = data.data[0].status;
+                            that.timetableDT = data.data;
+                            that.statusid = data.data[0].subid;
+                            that.status = data.data[0].subname;
 
-                            if (that.statusid == 0 && that.status != "lv") {
-                                that.statusdesc = data.data[0].statusdesc;
+                            if (that.statusid == 0) {
+                                that.statusdesc = data.data[0].subname;
                             }
                         }
                         else {
-                            that.attendanceDT = [];
+                            that.timetableDT = [];
                             that.statusid = 0;
                             that.status = "";
                             that.statusdesc = "";
@@ -188,20 +225,8 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Absent
-
-    absentPassenger(row) {
-        row.status = "a";
-    }
-
-    // Present
-
-    presentPassenger(row) {
-        row.status = "p";
-    }
-
     public exportToCSV() {
-        this._autoservice.exportToCSV(this.attendanceDT, this.psngrtypenm + " Attendance Reports");
+        this._autoservice.exportToCSV(this.timetableDT, this.psngrtypenm + " Timetable Reports");
     }
 
     public exportToPDF() {
@@ -211,12 +236,13 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
 
-        pdf.addHTML(this.attendance.nativeElement, 0, 0, options, () => {
-            pdf.save(this.psngrtypenm + " Attendance Reports.pdf");
+        pdf.addHTML(this.timetable.nativeElement, 0, 0, options, () => {
+            pdf.save(this.psngrtypenm + " Timetable Reports.pdf");
         });
     }
 
-    public ngOnDestroy() {
-
+    ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

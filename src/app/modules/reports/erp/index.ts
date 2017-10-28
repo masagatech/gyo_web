@@ -17,11 +17,14 @@ export const routes = [
                     
                     // { path: 'teacherleave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
 
+                    { path: 'classschedule', loadChildren: './classschedule#ClassScheduleReportsModule' },
+                    
                     { path: ':psngrtype', loadChildren: './passenger#PassengerReportsModule' },
                     { path: ':psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
 
                     { path: ':psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
                     { path: ':psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
+                    { path: ':psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
                 ]
             }
         ]

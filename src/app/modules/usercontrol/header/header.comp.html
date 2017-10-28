@@ -65,7 +65,7 @@
                 <li class="dropdown dropdown-large" *ngIf="ismstmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="mastersMenuDT.length">Masters <b class="caret"></b></a>
                     <ul class="dropdown-menu dropdown-menu-large row">
-                        <li class="col-md-4" *ngFor="let row of mastersMenuDT | groupBy: 'pname'">
+                        <li class="col-md-3" *ngFor="let row of mastersMenuDT | groupBy: 'pname'">
                             <ul>
                                 <li class="dropdown-header">{{row.key}}</li>
                                 <li class="divider"></li>
