@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ExamService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
+import jsPDF from 'jspdf';
 
 @Component({
     templateUrl: 'rptexam.comp.html',
@@ -23,6 +24,8 @@ export class ExamReportsComponent implements OnInit {
 
     examDT: any = [];
     studentDT: any = [];
+
+    @ViewChild('attendance') attendance: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _examservice: ExamService) {
@@ -124,6 +127,22 @@ export class ExamReportsComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    public exportToCSV() {
+        this._autoservice.exportToCSV(this.examDT, "Exam Reports");
+    }
+
+    public exportToPDF() {
+        let pdf = new jsPDF();
+
+        let options = {
+            pagesplit: true
+        };
+
+        pdf.addHTML(this.attendance.nativeElement, 0, 0, options, () => {
+            pdf.save("Exam Reports.pdf");
+        });
     }
 
     public addExam() {

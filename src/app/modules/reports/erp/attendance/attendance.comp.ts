@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AttendanceService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
+import jsPDF from 'jspdf';
 
 @Component({
     templateUrl: 'attendance.comp.html',
     providers: [CommonService]
 })
 
-export class AttendanceReportsComponent implements OnInit {
+export class AttendanceReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -34,6 +35,8 @@ export class AttendanceReportsComponent implements OnInit {
 
     global = new Globals();
 
+    @ViewChild('attendance') attendance: ElementRef;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
@@ -47,7 +50,7 @@ export class AttendanceReportsComponent implements OnInit {
     }
 
     public ngOnInit() {
-        
+
     }
 
     // Format Date
@@ -186,5 +189,25 @@ export class AttendanceReportsComponent implements OnInit {
 
     presentPassenger(row) {
         row.status = "p";
+    }
+
+    public exportToCSV() {
+        this._autoservice.exportToCSV(this.attendanceDT, this.psngrtypenm + " Attendance Reports");
+    }
+
+    public exportToPDF() {
+        let pdf = new jsPDF();
+
+        let options = {
+            pagesplit: true
+        };
+
+        pdf.addHTML(this.attendance.nativeElement, 0, 0, options, () => {
+            pdf.save(this.psngrtypenm + " Attendance Reports.pdf");
+        });
+    }
+
+    public ngOnDestroy() {
+
     }
 }

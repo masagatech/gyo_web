@@ -187,7 +187,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
 
         that._lvservice.getLeaveDetails(params).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, that._enttdetails.psngrtype + " Leave Details");
+                that._autoservice.exportToCSV(data.data, that.psngrtypenm + " Leave Details");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -209,7 +209,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
         pdf.addHTML(this.rptpsngrlv.nativeElement, 0, 0, options, () => {
-            pdf.save(this._enttdetails.psngrtype + " Leave.pdf");
+            pdf.save(this._enttdetails.psngrtypenm + " Leave.pdf");
         });
     }
 

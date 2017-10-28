@@ -77,6 +77,8 @@ export class AddAlbumComponent implements OnInit {
 
     fillAYDropDownList() {
         var that = this;
+        var defayDT: any = [];
+        
         commonfun.loader();
 
         that._glrservice.getAlbumDetails({
@@ -86,7 +88,14 @@ export class AddAlbumComponent implements OnInit {
                 that.ayDT = data.data;
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].id;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
             }
             catch (e) {

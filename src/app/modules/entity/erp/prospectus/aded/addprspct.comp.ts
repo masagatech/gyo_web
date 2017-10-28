@@ -55,6 +55,8 @@ export class AddProspectusComponent implements OnInit {
 
     fillAYDropDown() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._prspctservice.getProspectusDetails({
@@ -64,7 +66,14 @@ export class AddProspectusComponent implements OnInit {
                 that.ayDT = data.data;
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].ayid;
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].ayid;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
             }
             catch (e) {

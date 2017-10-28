@@ -60,6 +60,8 @@ export class AddProspectusIssuesComponent implements OnInit {
 
     fillDropDownList() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._prspctservice.getProspectusIssues({
@@ -70,7 +72,14 @@ export class AddProspectusIssuesComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].key;
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].key;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
 
                 that.prospectusDT = data.data.filter(a => a.group == "prospectus");

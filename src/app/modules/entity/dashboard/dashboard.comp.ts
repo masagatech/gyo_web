@@ -126,6 +126,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     fillDropDownList() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._dbservice.getERPDashboard({
@@ -136,7 +138,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].id;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
 
                 that.getERPDashboardDetails();
@@ -235,22 +244,36 @@ export class DashboardComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        var _dbChartDT = {
-            labels: [], datasets: [
-                { label: '', backgroundColor: [], borderColor: [], data: [] },
-                { label: '', backgroundColor: [], borderColor: [], data: [] }
-            ]
-        };
+        var _dbChartDT = null;
 
         var _label = [];
         var _labels = [];
         var _datasets = [];
         var _datasets2 = [];
+        var _datasets3 = [];
 
         var _dashboardDT: any = [];
 
-        var _totalstudent: number = 0;
         var _presentstudent: number = 0;
+        var _absentstudent: number = 0;
+        var _leavestudent: number = 0;
+
+        if (dbtype == "classstatus") {
+            _dbChartDT = {
+                labels: [], datasets: [
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
+                    { label: '', backgroundColor: [], borderColor: [], data: [] }
+                ]
+            };
+        }
+        else {
+            _dbChartDT = {
+                labels: [], datasets: [
+                    { label: '', backgroundColor: [], borderColor: [], data: [] }
+                ]
+            };
+        }
 
         that._dbservice.getERPDashboard({
             "flag": dbtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid, "classid": 0,
@@ -274,17 +297,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         _datasets.push(_dashboardDT[i].totalcount);
                     }
                     else if (dbtype == "classstatus") {
-                        _dbChartDT.datasets[0].backgroundColor.push("#03A9F4");
-                        _dbChartDT.datasets[1].backgroundColor.push("#8BC34A");
+                        _dbChartDT.datasets[0].backgroundColor.push("#8BC34A");
+                        _dbChartDT.datasets[1].backgroundColor.push("#E91E63");
+                        _dbChartDT.datasets[2].backgroundColor.push("#FF9800");
 
-                        _datasets.push(_dashboardDT[i].totalstudent);
-                        _datasets2.push(_dashboardDT[i].present);
+                        _datasets.push(_dashboardDT[i].present);
+                        _datasets2.push(_dashboardDT[i].absent);
+                        _datasets3.push(_dashboardDT[i].leave);
 
-                        _totalstudent += parseFloat(_dashboardDT[i].totalstudent);
                         _presentstudent += parseFloat(_dashboardDT[i].present);
+                        _absentstudent += parseFloat(_dashboardDT[i].absent);
+                        _leavestudent += parseFloat(_dashboardDT[i].leave);
 
-                        _dbChartDT.datasets[0].label = "Total Student " + _totalstudent;
-                        _dbChartDT.datasets[1].label = "Present Student " + _presentstudent;
+                        _dbChartDT.datasets[0].label = "Present Student " + _presentstudent;
+                        _dbChartDT.datasets[1].label = "Absent Student " + _absentstudent;
+                        _dbChartDT.datasets[2].label = "Leave Student " + _leavestudent;
                     }
                     else if (dbtype == "tchrattnd") {
                         var color = _dashboardDT[i].color;
@@ -302,9 +329,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
                 _dbChartDT.labels = _labels;
                 _dbChartDT.datasets[0].data = _datasets;
-                _dbChartDT.datasets[1].data = _datasets2;
 
                 if (dbtype == "classstatus") {
+                    _dbChartDT.datasets[1].data = _datasets2;
+                    _dbChartDT.datasets[2].data = _datasets3;
+
                     that.classStatusChartDT = _dbChartDT;
                 }
                 else if (dbtype == "tchrattnd") {

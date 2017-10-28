@@ -16,7 +16,7 @@ export class ViewProspectusComponent implements OnInit {
 
     ayDT: any = [];
     ayid: number = 0;
-    
+
     prospectusDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -35,6 +35,8 @@ export class ViewProspectusComponent implements OnInit {
 
     fillAYDropDown() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._prspctservice.getProspectusDetails({
@@ -44,8 +46,15 @@ export class ViewProspectusComponent implements OnInit {
                 that.ayDT = data.data;
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].ayid;
-                    that.getProspectusDetails();
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].ayid;
+                        that.getProspectusDetails();
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
             }
             catch (e) {

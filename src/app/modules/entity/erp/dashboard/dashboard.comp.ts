@@ -68,6 +68,8 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
 
     fillDropDownList() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._dbservice.getERPDashboard({
@@ -78,7 +80,14 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].id;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
                 }
 
                 that.getERPDashboardDetails();
@@ -190,7 +199,7 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
         var _datasets2 = [];
 
         var _dashboardDT: any = [];
-        
+
         var _totalstudent: number = 0;
         var _presentstudent: number = 0;
 
@@ -212,7 +221,7 @@ export class ERPDashboardComponent implements OnInit, OnDestroy {
                     if (dbtype == "tchrsub") {
                         that.colors[name] = that.colors[name] || commonfun.randomColor(5);
                         _dbChartDT.datasets[0].backgroundColor.push(that.colors[name]);
-                        
+
                         _datasets.push(_dashboardDT[i].totalcount);
                     }
                     else if (dbtype == "classstatus") {
