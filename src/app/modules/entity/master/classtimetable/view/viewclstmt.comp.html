@@ -1,9 +1,9 @@
 <div class="card">
     <div class="header">
-        <h4>Class Schedule</h4>
+        <h4>Class TimeTable</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addNewClassSchedule()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="addNewClassTimeTable()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassSchedule();">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassTimeTable();">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown();getClassSchedule();">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown();getClassTimeTable();">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -40,9 +40,9 @@
             </div>
         </div>
 
-        <div class="row clearfix" *ngIf="classScheduleDT.length">
+        <div class="row clearfix" *ngIf="classTimeTableDT.length">
             <div class="col-md-12">
-                <p-schedule [events]="classScheduleDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
+                <p-schedule [events]="classTimeTableDT" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
 
                 <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [contentStyle]="{'overflow':'visible'}" [style]="{'overflow':'visible'}" [resizable]="false">
                     <div class="col-md-12">

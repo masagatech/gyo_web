@@ -4,10 +4,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@services';
 
-import { AddClassScheduleComponent } from './aded/addcs.comp';
-import { ViewClassScheduleComponent } from './view/viewcs.comp';
+import { AddClassTimeTableComponent } from './aded/addclstmt.comp';
+import { ViewClassTimeTableComponent } from './view/viewclstmt.comp';
 
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule, DialogModule } from 'primeng/primeng';
 
@@ -15,11 +15,11 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ViewClassScheduleComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "clssch", "rights": "view", "urlname": "/classSchedule" }
+        path: '', component: ViewClassTimeTableComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "clssch", "rights": "view", "urlname": "/classtimetable" }
       },
       {
-        path: 'add', component: AddClassScheduleComponent, canActivate: [AuthGuard],
+        path: 'add', component: AddClassTimeTableComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "clssch", "rights": "add", "urlname": "/add" }
       },
     ]
@@ -28,17 +28,17 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddClassScheduleComponent,
-    ViewClassScheduleComponent
+    ViewClassTimeTableComponent,
+    AddClassTimeTableComponent
   ],
 
   imports: [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, ScheduleModule, DialogModule
   ],
 
-  providers: [AuthGuard, ClassScheduleService]
+  providers: [AuthGuard, ClassTimeTableService]
 })
 
-export class ClassScheduleModule {
+export class ClassTimeTableModule {
   public static routes = routes;
 }

@@ -1,12 +1,12 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <h4>Class Schedule</h4>
+            <h4>Class TimeTable</h4>
             <div class="col-md-2 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="2" (ngModelChange)="getMonthlyClassSchedule();">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="2" (ngModelChange)="getMonthlyClassTimeTable();">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="3" (ngModelChange)="getMonthlyClassSchedule();">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="3" (ngModelChange)="getMonthlyClassTimeTable();">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="resetClassScheduleDetails()">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetClassTimeTableDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
@@ -66,13 +66,13 @@
                     <thead>
                         <tr>
                             <th width="200px">Date / Time</th>
-                            <th *ngFor="let cscol of classScheduleColumn" align="right">
+                            <th *ngFor="let cscol of classTimeTableColumn" align="right">
                                 {{cscol.monthname}}
                             </th>
                             <th width="100px" align="right">Total</th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of classScheduleDT | groupBy: 'classname'">
+                    <tbody *ngFor="let row of classTimeTableDT | groupBy: 'classname'">
                         <tr class="tr-table" *ngIf="row.key !== '' && row.key !== 'Total'">
                             <th colspan="14">
                                 {{row.key == 'Total' ? '' : row.key}}
@@ -82,7 +82,7 @@
                             <td>
                                 {{drow.subname}}
                             </td>
-                            <td *ngFor="let cscol of classScheduleColumn" align="right">
+                            <td *ngFor="let cscol of classTimeTableColumn" align="right">
                                 {{drow[cscol.monthname] == null ? 0 : drow[cscol.monthname]}}
                             </td>
                             <td align="right">
@@ -94,9 +94,9 @@
             </div>
 
             <!-- <div class="col-md-12 reports" *ngIf="schtype == 'monthly'">
-                <p-dataTable [value]="classScheduleDT">
+                <p-dataTable [value]="classTimeTableDT">
                     <p-column field="subname" header="Subject" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
-                    <p-column *ngFor="let cscol of classScheduleColumn" header="{{cscol.monthname}}" [style]="{'width': '25px', 'text-align':'center'}">
+                    <p-column *ngFor="let cscol of classTimeTableColumn" header="{{cscol.monthname}}" [style]="{'width': '25px', 'text-align':'center'}">
                         <ng-template let-drow="rowData" pTemplate type="body">
                             {{drow[cscol.monthname]}}
                         </ng-template>

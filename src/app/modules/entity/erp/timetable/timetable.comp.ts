@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
@@ -42,7 +42,7 @@ export class TimetableComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private tmtservice: ClassScheduleService, private _autoservice: CommonService) {
+        private tmtservice: ClassTimeTableService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -63,7 +63,7 @@ export class TimetableComponent implements OnInit {
         
         commonfun.loader();
 
-        that.tmtservice.getClassSchedule({
+        that.tmtservice.getClassTimeTable({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {

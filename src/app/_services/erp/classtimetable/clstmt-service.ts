@@ -4,15 +4,15 @@ import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class ClassScheduleService {
+export class ClassTimeTableService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    saveClassSchedule(req: any) {
-        return this._dataserver.post(Globals.erproute + "saveClassSchedule", req)
+    saveClassTimeTable(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveClassTimeTable", req)
     }
 
-    getClassSchedule(req: any) {
-        return this._dataserver.post(Globals.erproute + "getClassSchedule", req)
+    getClassTimeTable(req: any) {
+        return this._dataserver.post(Globals.erproute + "getClassTimeTable", req)
     }
 
     saveTimeTable(req: any) {

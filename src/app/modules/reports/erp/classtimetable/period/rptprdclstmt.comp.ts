@@ -2,15 +2,15 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptprdclssch.comp.html',
+    templateUrl: 'rptprdclstmt.comp.html',
     providers: [CommonService]
 })
 
-export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
+export class PeriodClassTimeTableReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -42,7 +42,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
     satdate: string = "";
     sundate: string = "";
 
-    classScheduleDT: any = [];
+    classTimeTableDT: any = [];
     @ViewChild('class') class: ElementRef;
 
     gridTotal: any = {
@@ -50,7 +50,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
     };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -73,7 +73,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
             "viewby": "portal"
@@ -113,7 +113,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "weekperiod", "ayid": that.ayid, "classid": 0, "weekno": that.weekno, "tchrid": 0, "uid": that.loginUser.uid,
             "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
@@ -151,7 +151,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
                 }
 
                 that.getWeekColumn();
-                that.getPeriodClassSchedule();
+                that.getPeriodClassTimeTable();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -171,7 +171,7 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "weekcolumn", "ayid": that.ayid, "classid": 0, "weekid": that.weekid, "tchrid": 0, "uid": that.loginUser.uid,
             "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
@@ -201,16 +201,16 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
 
     // Get Class Scedule Data
 
-    getPeriodClassSchedule() {
+    getPeriodClassTimeTable() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "period", "ayid": that.ayid, "classid": 0, "weekid": that.weekid, "tchrid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
-                that.classScheduleDT = data.data;
+                that.classTimeTableDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -294,12 +294,12 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "weekly", "ayid": that.ayid, "classid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Weekly Class Schedule");
+                that._autoservice.exportToCSV(data.data, "Weekly Class TimeTable");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -321,11 +321,11 @@ export class PeriodClassScheduleReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
         pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Weekly Class Schedule.pdf");
+            pdf.save("Weekly Class TimeTable.pdf");
         });
     }
 
-    resetClassScheduleDetails() {
+    resetClassTimeTableDetails() {
         this.getWeekPeriodData();
     }
 

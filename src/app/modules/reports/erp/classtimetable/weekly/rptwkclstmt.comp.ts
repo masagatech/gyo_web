@@ -2,15 +2,15 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptwkclssch.comp.html',
+    templateUrl: 'rptwkclstmt.comp.html',
     providers: [CommonService]
 })
 
-export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
+export class WeeklyClassTimeTableReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -25,8 +25,8 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
     tchrid: number = 0;
     tchrname: string = "";
 
-    classScheduleColumn: any = [];
-    classScheduleDT: any = [];
+    classTimeTableColumn: any = [];
+    classTimeTableDT: any = [];
     @ViewChild('class') class: ElementRef;
 
     gridTotal: any = {
@@ -34,12 +34,12 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
     };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getWeeklyClassSchedule();
+        this.getWeeklyClassTimeTable();
     }
 
     public ngOnInit() {
@@ -58,7 +58,7 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
             "viewby": "portal"
@@ -71,7 +71,7 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getWeeklyClassSchedule();
+                        that.getWeeklyClassTimeTable();
                     }
                     else {
                         that.ayid = 0;
@@ -124,7 +124,7 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getWeeklyClassSchedule();
+        this.getWeeklyClassTimeTable();
     }
 
     // Export
@@ -133,12 +133,12 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Weekly Class Schedule");
+                that._autoservice.exportToCSV(data.data, "Weekly Class TimeTable");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -160,22 +160,22 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
         pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Weekly Class Schedule.pdf");
+            pdf.save("Weekly Class TimeTable.pdf");
         });
     }
 
     // Get Class Scedule Data
 
-    getWeeklyClassSchedule() {
+    getWeeklyClassTimeTable() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
-                that.classScheduleDT = data.data;
+                that.classTimeTableDT = data.data;
                 that.grandTotal();
             }
             catch (e) {
@@ -207,11 +207,11 @@ export class WeeklyClassScheduleReportsComponent implements OnInit, OnDestroy {
         }
     }
 
-    resetClassScheduleDetails() {
+    resetClassTimeTableDetails() {
         this.tchrdata = [];
         this.tchrid = 0;
         this.tchrname = ""
-        this.getWeeklyClassSchedule();
+        this.getWeeklyClassTimeTable();
     }
 
     public ngOnDestroy() {

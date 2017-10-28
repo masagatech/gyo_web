@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 
 @Component({
-    templateUrl: 'viewcs.comp.html',
+    templateUrl: 'viewclstmt.comp.html',
     providers: [CommonService]
 })
 
-export class ViewClassScheduleComponent implements OnInit, OnDestroy {
+export class ViewClassTimeTableComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -31,7 +31,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
     defaultDate: string = "";
 
     subjectDT: any = [];
-    classScheduleDT: any = [];
+    classTimeTableDT: any = [];
 
     id: number = 0;
     ttid: number = 0;
@@ -43,7 +43,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
     rsttyp: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cd: ChangeDetectorRef,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -108,7 +108,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
             "viewby": "portal"
@@ -149,7 +149,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "subjectddl", "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -203,17 +203,17 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
 
     // Get Class Schedule
 
-    getClassSchedule() {
+    getClassTimeTable() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clsrstservice.getClassTimeTable({
             "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "viewby":"portal"
         }).subscribe(data => {
             try {
-                that.classScheduleDT = data.data;
+                that.classTimeTableDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -281,7 +281,7 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
-                    that.getClassSchedule();
+                    that.getClassTimeTable();
                     that.dialogVisible = false;
                 }
                 else {
@@ -301,8 +301,8 @@ export class ViewClassScheduleComponent implements OnInit, OnDestroy {
         this.dialogVisible = false;
     }
 
-    addNewClassSchedule() {
-        this._router.navigate(['/transaction/classschedule/add']);
+    addNewClassTimeTable() {
+        this._router.navigate(['/master/classtimetable/add']);
     }
 
     public ngOnDestroy() {

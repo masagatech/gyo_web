@@ -2,15 +2,15 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptmonclssch.comp.html',
+    templateUrl: 'rptmonclstmt.comp.html',
     providers: [CommonService]
 })
 
-export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
+export class MonthlyClassTimeTableReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -25,8 +25,8 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
     tchrid: number = 0;
     tchrname: string = "";
 
-    classScheduleColumn: any = [];
-    classScheduleDT: any = [];
+    classTimeTableColumn: any = [];
+    classTimeTableDT: any = [];
     @ViewChild('class') class: ElementRef;
 
     gridTotal: any = {
@@ -34,12 +34,12 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
     };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassScheduleService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clstmtservice: ClassTimeTableService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getMonthlyClassSchedule();
+        this.getMonthlyClassTimeTable();
     }
 
     public ngOnInit() {
@@ -58,7 +58,7 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clstmtservice.getClassTimeTable({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
             "viewby": "portal"
@@ -71,7 +71,7 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getMonthlyClassSchedule();
+                        that.getMonthlyClassTimeTable();
                     }
                     else {
                         that.ayid = 0;
@@ -124,7 +124,7 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getMonthlyClassSchedule();
+        this.getMonthlyClassTimeTable();
     }
 
     // Export
@@ -133,12 +133,12 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clstmtservice.getClassTimeTable({
             "flag": "monthly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Monthly Class Schedule");
+                that._autoservice.exportToCSV(data.data, "Monthly Class TimeTable");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -160,21 +160,21 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
         pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Class Schedule.pdf");
+            pdf.save("Class TimeTable.pdf");
         });
     }
 
     // Get Class Scedule Data
 
-    getMonthlyClassSchedule() {
+    getMonthlyClassTimeTable() {
         var that = this;
 
-        that._clsrstservice.getClassSchedule({
+        that._clstmtservice.getClassTimeTable({
             "flag": "column", "ayid": that.ayid
         }).subscribe(data => {
             if (data.data.length !== 0) {
-                that.classScheduleColumn = data.data;
-                that.getClassSchedule();
+                that.classTimeTableColumn = data.data;
+                that.getClassTimeTable();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -182,16 +182,16 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getClassSchedule() {
+    getClassTimeTable() {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassSchedule({
+        that._clstmtservice.getClassTimeTable({
             "flag": "monthly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
-                that.classScheduleDT = data.data;
+                that.classTimeTableDT = data.data;
                 that.grandTotal();
             }
             catch (e) {
@@ -223,11 +223,11 @@ export class MonthlyClassScheduleReportsComponent implements OnInit, OnDestroy {
         }
     }
 
-    resetClassScheduleDetails() {
+    resetClassTimeTableDetails() {
         this.tchrdata = [];
         this.tchrid = 0;
         this.tchrname = ""
-        this.getMonthlyClassSchedule();
+        this.getMonthlyClassTimeTable();
     }
 
     public ngOnDestroy() {

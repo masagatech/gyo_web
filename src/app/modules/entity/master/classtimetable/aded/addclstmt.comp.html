@@ -3,7 +3,7 @@
         <h4>Class Schedule</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassSchedule()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassTimeTable()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassSchedule(classid, 'view');">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassTimeTable(classid, 'view');">
                             <option [value]="0">Select Academic year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown(classid);getClassSchedule(classid, 'aded');">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown(classid);getClassTimeTable(classid, 'aded');">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Copy Of Class</label>
-                        <select id="cpclsid" name="cpclsname" [(ngModel)]="cpclassid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown(cpclassid);getClassSchedule(cpclassid, 'copy');">
+                        <select id="cpclsid" name="cpclsname" [(ngModel)]="cpclassid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown(cpclassid);getClassTimeTable(cpclassid, 'copy');">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -176,21 +176,21 @@
                                     </div>
                                 </div>
                             </td>
-                            <td *ngIf="!isEditClassSchedule">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addClassSchedule()">
+                            <td *ngIf="!isEditClassTimeTable">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addClassTimeTable()">
                                     <i class="material-icons">add</i>
                                 </button>
                             </td>
-                            <td *ngIf="isEditClassSchedule">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateClassSchedule()">
+                            <td *ngIf="isEditClassTimeTable">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateClassTimeTable()">
                                     <i class="material-icons">done</i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="cancelClassSchedule()">
+                                <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="cancelClassTimeTable()">
                                     <i class="material-icons">cancel</i>
                                 </button>
                             </td>
                         </tr>
-                        <tr *ngFor="let row of classScheduleDT; let i = index;">
+                        <tr *ngFor="let row of classTimeTableDT; let i = index;">
                             <td>
                                 {{i+1}}
                             </td>
@@ -222,7 +222,7 @@
                                 {{row.satsubname}}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editClassSchedule(row)">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editClassTimeTable(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </td>

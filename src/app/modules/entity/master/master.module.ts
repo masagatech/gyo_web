@@ -19,6 +19,7 @@ export const routes = [
                     { path: 'books', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
+                    { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableModule' },
 
                     // Passenger
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },

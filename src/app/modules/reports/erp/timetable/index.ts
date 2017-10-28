@@ -6,7 +6,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 
 import { TimetableComponent } from './timetable.comp';
 
-import { ClassScheduleService } from '@services/erp';
+import { ClassTimeTableService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -31,7 +31,7 @@ export const routes = [
     DataTableModule, AutoCompleteModule
   ],
   
-    providers: [AuthGuard, ClassScheduleService]
+    providers: [AuthGuard, ClassTimeTableService]
 })
 
 export class TimetableModule {
