@@ -80,7 +80,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
 
     // Auto Completed Passenger
 
-    getpassengerData(event) {
+    getPassengerData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({

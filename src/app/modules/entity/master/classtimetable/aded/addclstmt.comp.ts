@@ -598,7 +598,7 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Validate Class Schedule
+    // Validate Class Time Table
 
     isValidClassTimeTable() {
         var that = this;
@@ -672,7 +672,7 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    // Check Duplicate Class Schedule
+    // Check Duplicate Class Time Table
 
     isDuplicateClassTimeTable() {
         var that = this;
@@ -743,7 +743,7 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    // Add Class Schedule
+    // Add Class Time Table
 
     addClassTimeTable() {
         var that = this;
@@ -785,14 +785,14 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
         that.satsubid = 0;
     }
 
-    // Save Class Schedule
+    // Save Class Time Table
 
     saveClassTimeTable() {
         var that = this;
 
         that._clsrstservice.saveClassTimeTable({ "classtimetable": that.classTimeTableDT }).subscribe(data => {
             try {
-                var dataResult = data.data[0].funsave_ClassTimeTable;
+                var dataResult = data.data[0].funsave_classschedule;
                 var msgid = dataResult.msgid;
                 var msg = dataResult.msg;
 

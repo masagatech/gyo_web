@@ -20,11 +20,11 @@ export const routes = [
 
                     { path: 'student', loadChildren: './admission#AdmissionModule' },
 
-                    { path: ':psngrtype', loadChildren: './employee#EmployeeModule' },
+                    { path: 'erp/:psngrtype', loadChildren: './employee#EmployeeModule' },
 
-                    { path: ':psngrtype/attendance', loadChildren: './attendance#AttendanceModule' },
-                    { path: ':psngrtype/leave', loadChildren: './leave#LeaveModule' },
-                    { path: ':psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
+                    { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceModule' },
+                    { path: 'erp/:psngrtype/leave', loadChildren: './leave#LeaveModule' },
+                    { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
                 ]
             }
         ]

@@ -585,6 +585,6 @@ export class AddEmployeeComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/' + this.psngrtype]);
+        this._router.navigate(['/erp/' + this.psngrtype]);
     }
 }

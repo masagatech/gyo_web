@@ -146,14 +146,14 @@ export class ViewEmployeeComponent implements OnInit {
     }
 
     public addEmployeeForm() {
-        this._router.navigate(['/' + this.psngrtype + '/add']);
+        this._router.navigate(['/erp/' + this.psngrtype + '/add']);
     }
 
     public editEmployeeForm(row) {
-        this._router.navigate(['/' + this.psngrtype + '/edit', row.empid]);
+        this._router.navigate(['/erp/' + this.psngrtype + '/edit', row.empid]);
     }
 
     public viewEmployeeProfile(row) {
-        this._router.navigate(['/' + this.psngrtype + '/profile', row.empid]);
+        this._router.navigate(['/erp/' + this.psngrtype + '/profile', row.empid]);
     }
 }

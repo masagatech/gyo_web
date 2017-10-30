@@ -19,12 +19,12 @@ export const routes = [
 
                     { path: 'classtimeTable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
                     
-                    { path: ':psngrtype', loadChildren: './passenger#PassengerReportsModule' },
-                    { path: ':psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
+                    { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
+                    { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
 
-                    { path: ':psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
-                    { path: ':psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
-                    { path: ':psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
+                    { path: 'erp/:psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
+                    { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
+                    { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
                 ]
             }
         ]
