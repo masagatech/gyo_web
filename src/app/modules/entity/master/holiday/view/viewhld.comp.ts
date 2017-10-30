@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { HolidayService } from '@services/master';
@@ -12,11 +11,7 @@ import { HolidayService } from '@services/master';
 
 export class ViewHolidayComponent implements OnInit {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
-
-    entityDT: any = [];
-    enttid: number = 0;
-    enttname: any = [];
+    _enttdetails: any = [];
 
     holidayDT: any = [];
 
@@ -31,19 +26,15 @@ export class ViewHolidayComponent implements OnInit {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _holidayervice: HolidayService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.getDefaultDate();
-        this.viewHolidayDataRights();
+        this.getHolidayGrid();
     }
 
     public ngOnInit() {
         var that = this;
         that.refreshButtons();
-
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 100);
 
         that.header = {
             left: 'prev',
@@ -78,49 +69,6 @@ export class ViewHolidayComponent implements OnInit {
         this.defaultDate = this.formatDate(today);
     }
 
-    // Auto Completed Entity
-
-    getEntityData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Owners
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-
-        Cookie.set("_enttid_", event.value);
-        Cookie.set("_enttnm_", event.label);
-
-        this.getHolidayGrid();
-    }
-
-    public viewHolidayDataRights() {
-        var that = this;
-
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttname.value = parseInt(Cookie.get('_enttid_'));
-            that.enttname.label = Cookie.get('_enttnm_');
-            that.getHolidayGrid();
-        }
-    }
-
     getHolidayGrid() {
         var that = this;
 
@@ -128,7 +76,7 @@ export class ViewHolidayComponent implements OnInit {
 
         that._holidayervice.getHoliday({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "schid": that.enttid, "wsautoid": that._wsdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.holidayDT = data.data;
@@ -147,17 +95,13 @@ export class ViewHolidayComponent implements OnInit {
         })
     }
 
-    fetchEvents(eventData) {
-
-    }
-
     getHolidayCalendar(row) {
         var that = this;
         commonfun.loader();
 
         that._holidayervice.getHoliday({
             "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "schid": 1, "monthname": row.view.title
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "monthname": row.view.title
         }).subscribe(data => {
             try {
                 that.events = data.data;
@@ -191,15 +135,15 @@ export class ViewHolidayComponent implements OnInit {
     }
 
     public addHolidayForm() {
-        this._router.navigate(['/workspace/holiday/add']);
+        this._router.navigate(['/master/holiday/add']);
     }
 
     public editHolidayGrid(row) {
-        this._router.navigate(['/workspace/holiday/edit', row.hldid]);
+        this._router.navigate(['/master/holiday/edit', row.hldid]);
     }
 
     public editHolidayCalendar(row) {
-        this._router.navigate(['/workspace/holiday/edit', row.calEvent.id]);
+        this._router.navigate(['/master/holiday/edit', row.calEvent.id]);
     }
 }
 

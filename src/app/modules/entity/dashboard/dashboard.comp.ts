@@ -309,9 +309,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         _absentstudent += parseFloat(_dashboardDT[i].absent);
                         _leavestudent += parseFloat(_dashboardDT[i].leave);
 
-                        _dbChartDT.datasets[0].label = "Present Student " + (_presentstudent == NaN ? 0 : _presentstudent);
-                        _dbChartDT.datasets[1].label = "Absent Student " + (_absentstudent == NaN ? 0 : _absentstudent);
-                        _dbChartDT.datasets[2].label = "Leave Student " + (_leavestudent == NaN ? 0 : _leavestudent);
+                        _dbChartDT.datasets[0].label = "Present Student " + _presentstudent;
+                        _dbChartDT.datasets[1].label = "Absent Student " + _absentstudent;
+                        _dbChartDT.datasets[2].label = "Leave Student " + _leavestudent;
                     }
                     else if (dbtype == "tchrattnd") {
                         var color = _dashboardDT[i].color;

@@ -18,7 +18,6 @@ export const routes = [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
                     { path: 'entity', loadChildren: './entity#EntityModule' },
                     { path: 'user', loadChildren: './users#UserModule' },
-                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                 ]
             }
         ]
