@@ -214,11 +214,13 @@ export class AddFeesCollectionComponent implements OnInit {
     resetFeesCollFields() {
         var that = this;
 
+        that.catid = 0;
+        that.subcatid = 0;
+        that.fees = 0;
         that.receivedate = "";
         that.paymentmode = "";
         that.chequeno = 0;
         that.chequedate = "";
-        that.fees = 0;
         that.remark = "";
     }
 
@@ -297,6 +299,10 @@ export class AddFeesCollectionComponent implements OnInit {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
+                        that.catid = 0;
+                        that.subcatid = 0;
+                        that.fees = 0;
+                        
                         that.getStudentDetails();
                         that.getFeesCollection();
                     }
