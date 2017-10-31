@@ -193,11 +193,11 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     }
 
     public addAdmissionForm() {
-        this._router.navigate(['/student/admission']);
+        this._router.navigate(['/erp/student/admission']);
     }
 
     public editAdmissionForm(row) {
-        this._router.navigate(['/student/edit', row.enrlmntid]);
+        this._router.navigate(['/erp/student/edit', row.enrlmntid]);
     }
 
     public ngOnDestroy() {

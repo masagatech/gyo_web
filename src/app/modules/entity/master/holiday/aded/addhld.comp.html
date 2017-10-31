@@ -94,7 +94,7 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <span id="hldfor{{row.id}}">
-                                                <input id="{{row.id}}" name="send{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <input id="{{row.id}}" name="hldfor{{i + 1}}" type="checkbox" value="{{row.id}}" (change)="selectAndDeselectStudentCheckboxes()" class="filled-in" />
                                                 <label for="{{row.id}}">{{row.val}}</label>
                                             </span>
                                         </div>
@@ -105,21 +105,21 @@
                     </div>
                 </div>
 
-                <div class="row clearfix" *ngIf="standardDT.length">
-                    <div class="col-md-12">
+                <div class="row clearfix" *ngIf="classDT.length">
+                    <div id="divallclass" class="col-md-12 hide">
                         <div class="form-group">
                             <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
-                            <label for="selectall">Select All</label>
+                            <label for="selectall">All Class</label>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div id="divclsright" class="col-md-12 hide">
                         <div class="allcheckboxes">
                             <div class="row clearfix">
-                                <div class="col-md-4" *ngFor="let row of standardDT; let i = index;">
+                                <div class="col-md-4" *ngFor="let row of classDT; let i = index;">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <span id="std{{row.id}}">
-                                                <input id="{{row.id}}" name="std{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                            <span id="cls{{row.id}}">
+                                                <input id="{{row.id}}" name="cls{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
                                                 <label for="{{row.id}}">{{row.val}}</label>
                                             </span>
                                         </div>

@@ -223,11 +223,11 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     viewAllLeave() {
-        this._router.navigate(['/' + this.psngrtype + '/leave']);
+        this._router.navigate(['/erp/' + this.psngrtype + '/leave']);
     }
 
     viewPendingLeave() {
-        this._router.navigate(['/' + this.psngrtype + '/leave/pending']);
+        this._router.navigate(['/erp/' + this.psngrtype + '/leave/pending']);
     }
 
     public ngOnDestroy() {

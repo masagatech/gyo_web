@@ -18,7 +18,7 @@ export const routes = [
                     { path: 'admission/prospectus', loadChildren: './prospectus#ProspectusModule' },
                     { path: 'prospectus/issues', loadChildren: './prospectusissues#ProspectusIssuesModule' },
 
-                    { path: 'student', loadChildren: './admission#AdmissionModule' },
+                    { path: 'erp/student', loadChildren: './admission#AdmissionModule' },
 
                     { path: 'erp/:psngrtype', loadChildren: './employee#EmployeeModule' },
 

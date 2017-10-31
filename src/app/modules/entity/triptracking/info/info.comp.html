@@ -48,15 +48,15 @@
                 </div>
                 <div class="col-md-1" align="right">
                     <span class="material-icons {{row.sts}}">
-                                {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
-                            </span>
+                        {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                    </span>
                 </div>
             </div>
             <div class="row clearfix">
                 <div class="col-md-3">
                     <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
-                                {{row.pd == "p" ? "Pickup" : "Drop"}}
-                            </span>
+                        {{row.pd == "p" ? "Pickup" : "Drop"}}
+                    </span>
                 </div>
                 <div class="col-md-9">
                     {{row.date}} - {{row.time}}

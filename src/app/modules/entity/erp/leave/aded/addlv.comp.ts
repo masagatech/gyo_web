@@ -368,6 +368,6 @@ export class AddLeaveComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate([this.psngrtype + '/leave']);
+        this._router.navigate(['/erp/' + this.psngrtype + '/leave']);
     }
 }

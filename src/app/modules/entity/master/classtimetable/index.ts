@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, SharedComponentModule } from '@services';
 
 import { AddClassTimeTableComponent } from './aded/addclstmt.comp';
 import { ViewClassTimeTableComponent } from './view/viewclstmt.comp';
@@ -33,7 +33,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, ScheduleModule, DialogModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
+    DataTableModule, AutoCompleteModule, ScheduleModule, DialogModule
   ],
 
   providers: [AuthGuard, ClassTimeTableService]

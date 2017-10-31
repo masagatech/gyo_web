@@ -17,7 +17,7 @@ export const routes = [
                     
                     // { path: 'teacherleave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
 
-                    { path: 'classtimeTable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
+                    { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
                     
                     { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },

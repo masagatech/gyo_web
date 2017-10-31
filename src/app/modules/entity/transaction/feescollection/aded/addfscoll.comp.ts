@@ -191,6 +191,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.fees = data.data[0].fees;
                 }
                 else {
+                    that.catfees = 0;
                     that.fees = 0;
                 }
             }
@@ -238,7 +239,7 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
-        if (that.catfees < that.fees) {
+        if (parseInt(that.catfees) < parseInt(that.fees)) {
             that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
             $(".fees").focus();
             return false;

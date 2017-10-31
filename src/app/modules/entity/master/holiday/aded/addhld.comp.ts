@@ -29,7 +29,8 @@ export class AddHolidayComponent implements OnInit {
     hlddesc: string = "";
 
     hldforDT: any = [];
-    standardDT: any = [];
+    classDT: any = [];
+    classid: number = 0;
 
     mode: string = "";
     isactive: boolean = true;
@@ -47,7 +48,7 @@ export class AddHolidayComponent implements OnInit {
     public ngOnInit() {
         setTimeout(function () {
             $(".frmdt").focus();
-        }, 100);
+        }, 200);
 
         this.getHolidayDetails();
     }
@@ -62,7 +63,7 @@ export class AddHolidayComponent implements OnInit {
         this.hlddesc = "";
     }
 
-    // Fill Academic Year Drop Down and Checkbox List For Holiday For And Standard
+    // Fill Academic Year Drop Down and Checkbox List For Holiday For And Class
 
     fillDropDownList() {
         var that = this;
@@ -88,7 +89,7 @@ export class AddHolidayComponent implements OnInit {
                     }
                 }
 
-                that.standardDT = data.data.filter(a => a.group == "standard");
+                that.classDT = data.data.filter(a => a.group == "standard");
 
                 that.hldforDT.push({ "id": "Student", "val": "Student" });
                 that.hldforDT.push({ "id": "Teacher", "val": "Teacher" });
@@ -108,13 +109,33 @@ export class AddHolidayComponent implements OnInit {
         })
     }
 
+    private selectAndDeselectStudentCheckboxes() {
+        if ($("#Student").is(':checked')) {
+            $("#selectall").prop('checked', true);
+            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+            $("#divallclass").attr("class", "");
+        }
+        else {
+            $("#selectall").prop('checked', false);
+            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+            $("#divallclass").attr("class", "hide");
+        }
+
+        $("#divclsright").attr("class", "hide");
+    }
+
     private selectAndDeselectAllHolidayForCheckboxes() {
         if ($("#selectallhldfor").is(':checked')) {
             $(".hldforcheckboxes input[type=checkbox]").prop('checked', true);
+            $("#divallclass").attr("class", "");
         }
         else {
             $(".hldforcheckboxes input[type=checkbox]").prop('checked', false);
+            $("#divallclass").attr("class", "hide");
         }
+
+        this.selectAndDeselectStudentCheckboxes();
+        $("#divclsright").attr("class", "hide");
     }
 
     private clearHolidayForCheckboxes() {
@@ -124,14 +145,17 @@ export class AddHolidayComponent implements OnInit {
     private selectAndDeselectAllCheckboxes() {
         if ($("#selectall").is(':checked')) {
             $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+            $("#divclsright").attr("class", "hide");
         }
         else {
             $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+            $("#divclsright").attr("class", "");
         }
     }
 
     private clearcheckboxes() {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+        $("#divclsright").attr("class", "");
     }
 
     // Get Send Type Rights
@@ -164,34 +188,34 @@ export class AddHolidayComponent implements OnInit {
         return hldforrights;
     }
 
-    // Get Standard Rights
+    // Get Class Rights
 
-    getStandardRights() {
+    getClassRights() {
         var that = this;
-        var hldforitem = null;
+        var clsitem = null;
 
         var actrights = "";
-        var stdrights = null;
+        var clsrights = null;
 
-        for (var i = 0; i <= that.standardDT.length - 1; i++) {
-            hldforitem = null;
-            hldforitem = that.standardDT[i];
+        for (var i = 0; i <= that.classDT.length - 1; i++) {
+            clsitem = null;
+            clsitem = that.classDT[i];
 
-            if (hldforitem !== null) {
-                $("#hldfor" + hldforitem.id).find("input[type=checkbox]").each(function () {
+            if (clsitem !== null) {
+                $("#cls" + clsitem.id).find("input[type=checkbox]").each(function () {
                     actrights += (this.checked ? $(this).val() + "," : "");
                 });
 
                 if (actrights != "") {
-                    stdrights = actrights.slice(0, -1);
+                    clsrights = actrights.slice(0, -1);
                 }
                 else {
-                    stdrights = null;
+                    clsrights = null;
                 }
             }
         }
 
-        return stdrights;
+        return clsrights;
     }
 
     // Active / Deactive Data
@@ -231,21 +255,16 @@ export class AddHolidayComponent implements OnInit {
 
     saveHolidayInfo() {
         var that = this;
-        var _stdrights = null;
         var _hldforrights = null;
+        var _clsrights = null;
 
-        if ($(".hldforcheckboxes input[type=checkbox]").checked) {
-            _hldforrights = "0";
+        _hldforrights = that.getHolidayForRights();
+
+        if ($("#selectall").is(':checked')) {
+            _clsrights = 0;
         }
         else {
-            _hldforrights = that.getHolidayForRights();
-        }
-
-        if ($(".allcheckboxes input[type=checkbox]").checked) {
-            _stdrights = "0";
-        }
-        else {
-            _stdrights = that.getStandardRights();
+            _clsrights = that.getClassRights();
         }
 
         if (that.frmdt == "") {
@@ -263,11 +282,8 @@ export class AddHolidayComponent implements OnInit {
         else if (_hldforrights == null) {
             that._msg.Show(messageType.error, "Error", "Please Select Holiday For");
         }
-        else if (that.standardDT.length == 0) {
+        else if (that.classDT.length == 0) {
             that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
-        }
-        else if (_stdrights == null) {
-            that._msg.Show(messageType.error, "Error", "Please Select Class");
         }
         else {
             commonfun.loader();
@@ -277,8 +293,9 @@ export class AddHolidayComponent implements OnInit {
                 "hldcd": that.hldcd,
                 "hldnm": that.hldnm,
                 "hlddesc": that.hlddesc,
-                "hldfor": _hldforrights + "}",
-                "classid": "{" + _stdrights + "}",
+                "hldfor": "{" + _hldforrights + "}",
+                "ayid": that.ayid,
+                "classid": _clsrights == null ? "{}" : "{" + _clsrights + "}",
                 "frmdt": that.frmdt,
                 "todt": that.todt,
                 "cuid": that.loginUser.ucode,
@@ -341,6 +358,7 @@ export class AddHolidayComponent implements OnInit {
                     try {
                         var viewhld = data.data;
 
+                        that.ayid = viewhld[0].ayid;
                         that.hldid = viewhld[0].hldid;
                         that.hldcd = viewhld[0].hldcd;
                         that.hldnm = viewhld[0].hldnm;
@@ -350,21 +368,21 @@ export class AddHolidayComponent implements OnInit {
                         that.isactive = viewhld[0].isactive;
                         that.mode = viewhld[0].mode;
 
-                        var _sendforrights = null;
-                        var _sendforitem = null;
+                        var _hldforrights = null;
+                        var _hldforitem = null;
 
                         if (viewhld[0] != null) {
-                            _sendforrights = null;
-                            _sendforrights = viewhld[0].hldfor;
+                            _hldforrights = null;
+                            _hldforrights = viewhld[0].hldfor;
 
-                            if (_sendforrights != null) {
-                                for (var i = 0; i < _sendforrights.length; i++) {
-                                    _sendforitem = null;
-                                    _sendforitem = _sendforrights[i];
+                            if (_hldforrights != null) {
+                                for (var i = 0; i < _hldforrights.length; i++) {
+                                    _hldforitem = null;
+                                    _hldforitem = _hldforrights[i];
 
-                                    if (_sendforitem != null) {
+                                    if (_hldforitem != null) {
                                         $("#selectallhldfor").prop('checked', true);
-                                        $("#hldfor" + _sendforitem).find("#" + _sendforitem).prop('checked', true);
+                                        $("#hldfor" + _hldforitem).find("#" + _hldforitem).prop('checked', true);
                                     }
                                     else {
                                         $("#selectallhldfor").prop('checked', false);
@@ -376,30 +394,36 @@ export class AddHolidayComponent implements OnInit {
                             }
                         }
 
-                        var _stdrights = null;
-                        var _stditem = null;
+                        var _clsrights = null;
+                        var _clsitem = null;
 
                         if (viewhld[0] != null) {
-                            _stdrights = null;
-                            _stdrights = viewhld[0].classid;
+                            _clsrights = null;
+                            _clsrights = viewhld[0].classid;
 
-                            if (_stdrights != null) {
-                                for (var i = 0; i < _stdrights.length; i++) {
-                                    _stditem = null;
-                                    _stditem = _stdrights[i];
+                            if (_clsrights != null) {
+                                for (var i = 0; i < _clsrights.length; i++) {
+                                    _clsitem = null;
+                                    _clsitem = _clsrights[i];
 
-                                    if (_stditem != null) {
-                                        if (_stdrights == 0) {
+                                    if (_clsitem != null) {
+                                        if (_clsrights == 0) {
                                             $("#selectall").prop('checked', true);
                                             $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+                                            $("#divallclass").attr("class", "hide");
+                                            $("#divclsright").attr("class", "hide");
                                         }
                                         else {
-                                            $("#std" + _stditem).find("#" + _stditem).prop('checked', true);
+                                            $("#cls" + _clsitem).find("#" + _clsitem).prop('checked', true);
+                                            $("#divallclass").attr("class", "");
+                                            $("#divclsright").attr("class", "");
                                         }
                                     }
                                     else {
                                         $("#selectall").prop('checked', false);
                                         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+                                        $("#divallclass").attr("class", "hide");
+                                        $("#divclsright").attr("class", "hide");
                                     }
                                 }
                             }

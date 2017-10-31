@@ -672,6 +672,81 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
         return true;
     }
 
+    resetClassTimeTable() {
+        var that = this;
+
+        $(".frmtm").focus();
+
+        that.frmtm = "";
+        that.totm = "";
+        that.sunsubid = 0;
+        that.monsubid = 0;
+        that.tuessubid = 0;
+        that.wedsubid = 0;
+        that.thursubid = 0;
+        that.frisubid = 0;
+        that.satsubid = 0;
+    }
+
+    // Save Class Time Table
+
+    saveClassTimeTable() {
+        var that = this;
+
+        that._clsrstservice.saveClassTimeTable({ "classtimetable": that.classTimeTableDT }).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_classschedule;
+                var msgid = dataResult.msgid;
+                var msg = dataResult.msg;
+
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        });
+    }
+
+    getClassTimeTable(_classid, _type) {
+        var that = this;
+        commonfun.loader();
+
+        that._clsrstservice.getClassTimeTable({
+            "flag": "all", "ayid": that.ayid, "classid": _classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.classTimeTableDT = data.data;
+
+                if (_type == "copy") {
+                    for (var i = 0; i < that.classTimeTableDT.length; i++) {
+                        that.classTimeTableDT[i].csid = 0;
+                        that.classTimeTableDT[i].classid = that.classid;
+                    }
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Check Duplicate Class Time Table
 
     isDuplicateClassTimeTable() {
@@ -767,81 +842,6 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
                 that.resetClassTimeTable();
             }
         }
-    }
-
-    resetClassTimeTable() {
-        var that = this;
-
-        $(".frmtm").focus();
-
-        that.frmtm = "";
-        that.totm = "";
-        that.sunsubid = 0;
-        that.monsubid = 0;
-        that.tuessubid = 0;
-        that.wedsubid = 0;
-        that.thursubid = 0;
-        that.frisubid = 0;
-        that.satsubid = 0;
-    }
-
-    // Save Class Time Table
-
-    saveClassTimeTable() {
-        var that = this;
-
-        that._clsrstservice.saveClassTimeTable({ "classtimetable": that.classTimeTableDT }).subscribe(data => {
-            try {
-                var dataResult = data.data[0].funsave_classschedule;
-                var msgid = dataResult.msgid;
-                var msg = dataResult.msg;
-
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-        });
-    }
-
-    getClassTimeTable(_classid, _type) {
-        var that = this;
-        commonfun.loader();
-
-        that._clsrstservice.getClassTimeTable({
-            "flag": "all", "ayid": that.ayid, "classid": _classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.classTimeTableDT = data.data;
-
-                if (_type == "copy") {
-                    for (var i = 0; i < that.classTimeTableDT.length; i++) {
-                        that.classTimeTableDT[i].csid = 0;
-                        that.classTimeTableDT[i].classid = that.classid;
-                    }
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     editClassTimeTable(row) {

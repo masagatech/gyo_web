@@ -155,15 +155,15 @@ export class ViewLeaveComponent implements OnInit {
     }
 
     public addLeaveDetails() {
-        this._router.navigate([this.psngrtype + '/leave/add']);
+        this._router.navigate(['/erp/' + this.psngrtype + '/leave/add']);
     }
 
     public editLeaveDetails(row) {
-        this._router.navigate([this.psngrtype + '/leave/edit', row.lvid]);
+        this._router.navigate(['/erp/' + this.psngrtype + '/leave/edit', row.lvid]);
     }
 
     public openLeaveApproval(row) {
-        this._router.navigate([this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
+        this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
     }
 }
 
