@@ -134,41 +134,38 @@
                         <tr>
                             <th width="150px">Category</th>
                             <th width="150px">Sub Category</th>
-                            <th width="150px">Receive Date</th>
                             <th width="100px">Payment Mode</th>
-                            <th width="100px">Cheque No</th>
-                            <th width="150px">Cheque Date</th>
+                            <th width="100px">Cheque Details</th>
                             <th width="100px">Fees</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr *ngFor="let row of feesCollDT">
+                    <tbody *ngFor="let row of feesCollDT | groupBy: 'receivedate'">
+                        <tr class="tr-table">
+                            <th colspan="5">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
                             <td>
-                                {{row.catname}}
+                                {{drow.catname}}
                             </td>
                             <td>
-                                {{row.subcatname}}
+                                {{drow.subcatname}}
                             </td>
                             <td>
-                                {{row.receivedate}}
+                                {{drow.paymentmodenm}}
                             </td>
                             <td>
-                                {{row.paymentmodenm}}
-                            </td>
-                            <td>
-                                {{row.chequeno}}
-                            </td>
-                            <td>
-                                {{row.chequedate}}
+                                {{drow.chequedate + drow.chequeno == 0 ? "" : " - " + drow.chequeno}}
                             </td>
                             <td align="right">
-                                {{row.fees | _currency:loginUser.globsettings[0]}}
+                                {{drow.fees | _currency:loginUser.globsettings[0]}}
                             </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr class="tr-table">
-                            <th colspan="6">
+                            <th colspan="4">
                                 <b>Total</b>
                             </th>
                             <th align="right">

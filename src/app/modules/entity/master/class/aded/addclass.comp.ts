@@ -90,7 +90,7 @@ export class AddClassComponent implements OnInit {
                 that.standardDT = data.data.filter(a => a.group == "standard");
                 that.divisionDT = data.data.filter(a => a.group == "division");
                 that.subjectDT = data.data.filter(a => a.group == "subject");
-                that.classTypeDT = data.data.filter(a => a.group == "clstyp");
+                that.classTypeDT = data.data.filter(a => a.group == "classtype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

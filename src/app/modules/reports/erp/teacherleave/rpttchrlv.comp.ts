@@ -90,7 +90,7 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-                
+
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
@@ -161,8 +161,8 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._lvrptservice.getTeacherLeave({
-            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": -1
+            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": -1
         }).subscribe(data => {
             try {
                 that.leaveDT = data.data;

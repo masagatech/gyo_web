@@ -24,6 +24,7 @@ export const routes = [
 
                     { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceModule' },
                     { path: 'erp/:psngrtype/leave', loadChildren: './leave#LeaveModule' },
+                    { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
                 ]
             }

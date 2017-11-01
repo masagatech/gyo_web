@@ -18,23 +18,23 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "psngrlv", "rights": "view", "urlname": "/Leave" }
+        data: { "module": "erppsngr", "submodule": "psngrlv", "rights": "view", "urlname": "/Leave" }
       },
       {
         path: 'add', component: AddLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "lvpsngr", "rights": "add", "urlname": "/add" }
+        data: { "module": "erppsngr", "submodule": "psngrlv", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'edit/:id', component: AddLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "lvpsngr", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "erppsngr", "submodule": "psngrlv", "rights": "edit", "urlname": "/edit" }
       },
       {
         path: 'pending', component: PendingLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "lvpsngrappr", "rights": "view", "urlname": "/pending" }
+        data: { "module": "erppsngr", "submodule": "lvpsngrappr", "rights": "view", "urlname": "/pending" }
       },
       {
         path: 'approval/:psngrid', component: ApprovalLeaveComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "lvpsngrappr", "rights": "view", "urlname": "/approval" }
+        data: { "module": "erppsngr", "submodule": "lvpsngrappr", "rights": "view", "urlname": "/approval" }
       },
     ]
   },

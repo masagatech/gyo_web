@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { TimetableComponent } from './timetable.comp';
+import { HolidayComponent } from './Holiday.comp';
 
-import { ClassTimeTableService } from '@services/erp';
+import { HolidayService } from '@services/master';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -14,8 +14,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: TimetableComponent, canActivate: [AuthGuard],
-        data: { "module": "rptpsngr", "submodule": "rptpsngrtmt", "rights": "view", "urlname": "/timetable" }
+        path: '', component: HolidayComponent, canActivate: [AuthGuard],
+        data: { "module": "rptpsngr", "submodule": "rptpsngrhld", "rights": "view", "urlname": "/holiday" }
       },
     ]
   },
@@ -23,7 +23,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    TimetableComponent
+    HolidayComponent
   ],
 
   imports: [
@@ -31,9 +31,9 @@ export const routes = [
     DataTableModule, AutoCompleteModule
   ],
   
-    providers: [AuthGuard, ClassTimeTableService]
+    providers: [AuthGuard, HolidayService]
 })
 
-export class TimetableModule {
+export class HolidayReportsModule {
   public static routes = routes;
 }
