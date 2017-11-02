@@ -114,7 +114,7 @@ export class ViewLeaveComponent implements OnInit {
                 }
 
                 params = {
-                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "other" : "student", "psngrtype": that.psngrtype,
+                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "passenger" : "student", "psngrtype": that.psngrtype,
                     "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
                     "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                     "issysadmin": that.loginUser.issysadmin, "status": that.status

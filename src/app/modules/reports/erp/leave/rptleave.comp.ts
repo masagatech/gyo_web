@@ -28,9 +28,9 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
     psngrtypenm: any = "";
 
     status: number = -1;
-    
+
     lvpsngrDT: any = [];
-    
+
     @ViewChild('rptpsngrlv') rptpsngrlv: ElementRef;
 
     private subscribeParameters: any;
@@ -134,9 +134,9 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
                 }
 
                 params = {
-                    "flag": "reports", "frmdt": that.frmdt, "todt": that.todt, "psngrid": that.psngrid,
-                    "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "status": that.status
+                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "passenger" : "student", "psngrtype": that.psngrtype,
+                    "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": that.status
                 }
 
                 that._lvservice.getLeaveDetails(params).subscribe(data => {

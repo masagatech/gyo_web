@@ -15,13 +15,15 @@ export const routes = [
                 children: [
                     // Passenger
                     
-                    { path: 'teacherleave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
+                    // { path: 'teacherleave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
 
                     { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
                     
                     { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
 
+                    { path: 'erp/teacher/leave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
+                    
                     { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
                     { path: 'erp/:psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
                     { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayReportsModule' },

@@ -17,17 +17,17 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
     ayDT: any = [];
     ayid: number = 0;
 
-    classDT: any = [];
-    classid: number = 0;
-
     header: any;
     event: MyEvent;
     dialogVisible: boolean = false;
     idGen: number = 100;
     defaultDate: string = "";
 
+    tchrname: string = "";
+
     leaveDT: any = [];
     leaveReportsDT: any = [];
+    leaveDetailsDT: any = [];
 
     @ViewChild('class') class: ElementRef;
 
@@ -42,7 +42,7 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
 
         this.fillDropDownList();
         this.getDefaultDate();
-        this.getTeacherLeave();
+        this.getLeaveReports();
     }
 
     public ngOnInit() {
@@ -83,7 +83,7 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._lvrptservice.getTeacherLeave({
+        that._lvrptservice.getLeaveReports({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
             "viewby": "portal"
@@ -96,14 +96,12 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getTeacherLeave();
+                        that.getLeaveReports();
                     }
                     else {
                         that.ayid = 0;
                     }
                 }
-
-                that.classDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -125,8 +123,8 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._lvrptservice.getTeacherLeave({
-            "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+        that._lvrptservice.getLeaveReports({
+            "flag": "reports", "ayid": that.ayid, "classid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -156,13 +154,13 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    getTeacherLeave() {
+    getLeaveReports() {
         var that = this;
         commonfun.loader();
 
-        that._lvrptservice.getTeacherLeave({
-            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "classid": that.classid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": -1
+        that._lvrptservice.getLeaveReports({
+            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
+            "classid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.leaveDT = data.data;
@@ -185,8 +183,10 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._lvrptservice.getTeacherLeave({
-            "flag": "reports", "tchrid": e.calEvent.tchrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        that._lvrptservice.getLeaveReports({
+            "flag": "reports", "caldate": e.calEvent.start, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "ayid": that.ayid, "classid": 0, "tchrid": e.calEvent.tchrid, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.leaveReportsDT = data.data;
@@ -200,6 +200,39 @@ export class TeacherLeaveReportsComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    getLeaveDetails(row) {
+        var that = this;
+
+        $("#teacherLeaveModal").modal('show');
+        commonfun.loader("#teacherLeaveModal");
+
+        that._lvrptservice.getLeaveReports({
+            "flag": "details", "psngrid": row.key.split('~')[0], "psngrtype": "teacher", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "status": -1, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.leaveDetailsDT = data.data;
+                    that.tchrname = data.data[0].psngrname;
+                }
+                else {
+                    that.leaveDetailsDT = [];
+                    that.tchrname = "";
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide("#teacherLeaveModal");
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide("#teacherLeaveModal");
         }, () => {
 
         })

@@ -19,7 +19,7 @@ export class LeaveService {
         return this._dataserver.post("savePassengerLeaveApproval", req)
     }
 
-    getTeacherLeave(req: any) {
-        return this._dataserver.post(Globals.erproute + "getTeacherLeave", req)
+    getLeaveReports(req: any) {
+        return this._dataserver.post("getLeaveReports", req)
     }
 }

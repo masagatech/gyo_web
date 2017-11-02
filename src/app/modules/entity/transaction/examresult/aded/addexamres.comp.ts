@@ -129,6 +129,7 @@ export class AddExamResultComponent implements OnInit {
     resetStudentData() {
         this.studid = 0;
         this.studname = "";
+        this.studsdata = [];
     }
 
     // Save Exam Result
@@ -239,8 +240,9 @@ export class AddExamResultComponent implements OnInit {
         commonfun.loader();
 
         that._examservice.getExamResult({
-            "flag": "aded", "examid": that.examparamid, "ayid": that.ayid, "smstrid": that.smstrid, "classid": that.clsid, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "aded", "examid": that.examparamid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "ayid": that.ayid, "classid": that.clsid, "smstrid": that.smstrid, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.examList = data.data;

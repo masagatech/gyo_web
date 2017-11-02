@@ -109,7 +109,7 @@
                                 {{row.passmarks}}
                             </td>
                             <td align="right">
-                                <div class="form-group">
+                                <div class="form-group" *ngIf="row.marks != -1">
                                     <div class="form-line">
                                         <input type="text" OnlyNumber="true" class="form-control text-right {{'marks' + row.subid}}" [(ngModel)]="row.marks">
                                     </div>
@@ -118,12 +118,15 @@
                             <td align="right">
                                 {{row.outofmarks}}
                             </td>
-                            <td>
+                            <td *ngIf="row.marks != -1">
                                 <div class="form-group">
                                     <div class="form-line">
                                         <input type="text" class="form-control resremark" [(ngModel)]="row.resremark">
                                     </div>
                                 </div>
+                            </td>
+                            <td *ngIf="row.marks == -1">
+                                {{row.resremark}}
                             </td>
                         </tr>
                     </tbody>

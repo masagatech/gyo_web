@@ -152,6 +152,7 @@ export class RouteWisePassengerComponent implements OnInit, OnDestroy {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
+            
             commonfun.loaderhide("#passengerModal");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
