@@ -123,7 +123,7 @@ export class AttendanceComponent implements OnInit {
 
     getAttendance() {
         var that = this;
-        var params = {};
+        var _params = {};
 
         commonfun.loader();
 
@@ -143,16 +143,17 @@ export class AttendanceComponent implements OnInit {
                     that.classid = 0;
                 }
 
-                params = {
+                _params = {
                     "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
                     "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
 
-                that._attndservice.getAttendance(params).subscribe(data => {
+                that._attndservice.getAttendance(_params).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
                             that.attendanceDT = data.data;
+
                             that.statusid = data.data[0].statusid;
                             that.status = data.data[0].status;
 
@@ -220,6 +221,7 @@ export class AttendanceComponent implements OnInit {
     saveAttendance() {
         var that = this;
         var _absentpsngr: any = [];
+        var params = {};
 
         var isvalid = that.isValidation();
 
@@ -227,28 +229,38 @@ export class AttendanceComponent implements OnInit {
 
         if (isvalid) {
             if (_absentpsngr.length == 0) {
-                that._msg.Show(messageType.error, "Error", "First Select Atleast Student For Absent");
+                that._msg.Show(messageType.error, "Error", "First Select Atleast " + that.psngrtypenm + " For Absent");
             }
             else {
                 commonfun.loader();
 
-                for (var i = 0; i < _absentpsngr.length; i++) {
-                    var field = _absentpsngr[i];
+                var _psngrid: string[] = [];
+                var _attndid: number = 0;
 
-                    _absentpsngr[i].attndid = field.attndid;
-                    _absentpsngr[i].psngrid = field.psngrid;
-                    _absentpsngr[i].psngrtype = that.psngrtype;
-                    _absentpsngr[i].attnddate = that.attnddate;
-                    _absentpsngr[i].status = field.status;
-                    _absentpsngr[i].ayid = that.ayid;
-                    _absentpsngr[i].clsid = that.classid;
-                    _absentpsngr[i].enttid = that._enttdetails.enttid;
-                    _absentpsngr[i].wsautoid = that._enttdetails.wsautoid;
-                    _absentpsngr[i].cuid = that.loginUser.uid;
-                    _absentpsngr[i].isactive = true;
+                _psngrid = Object.keys(_absentpsngr).map(function (k) { return _absentpsngr[k].psngrid });
+
+                if (_absentpsngr.length > 0) {
+                    _attndid = _absentpsngr[0].attndid;
+                }
+                else {
+                    _attndid = 0;
                 }
 
-                that._attndservice.saveAttendance({ "attendance": _absentpsngr }).subscribe(data => {
+                params = {
+                    "attndid": _attndid,
+                    "psngrid": _psngrid,
+                    "psngrtype": that.psngrtype,
+                    "attnddate": that.attnddate,
+                    "status": "a",
+                    "ayid": that.ayid,
+                    "classid": that.classid,
+                    "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid,
+                    "cuid": that.loginUser.ucode,
+                    "isactive": true
+                }
+
+                that._attndservice.saveAttendance(params).subscribe(data => {
                     try {
                         var dataResult = data.data[0].funsave_attendance;
                         var msg = dataResult.msg;

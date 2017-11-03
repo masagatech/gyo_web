@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { HolidayComponent } from './Holiday.comp';
+import { HolidayComponent } from './holiday.comp';
 
 import { HolidayService } from '@services/master';
 
