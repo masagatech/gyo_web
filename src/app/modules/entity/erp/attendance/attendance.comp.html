@@ -72,7 +72,7 @@
                                     <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                                 </div>
                                 <div class="col-md-8">
-                                    {{row.psngrname}} {{psngrtype == 'employee' ? '(' + row.psngrtypenm + ')' : ''}}
+                                    {{row.psngrname}} {{psngrtype == 'employee' ? '(' + row.psngrtypenm + ')' : ''}} <br /> {{psngrtype == 'student' ? 'Roll No : ' + row.rollno : ''}}
                                 </div>
                                 <div class="col-md-2" align="right" *ngIf="currentdate == attnddate">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="absentPassenger(row)">
@@ -103,7 +103,7 @@
                                     <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                                 </div>
                                 <div class="col-md-8">
-                                    {{row.psngrname}} ({{row.classname}})
+                                    {{row.psngrname}} {{psngrtype == 'employee' ? '(' + row.psngrtypenm + ')' : ''}} <br /> {{psngrtype == 'student' ? 'Roll No : ' + row.rollno : ''}}
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                                     <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                                 </div>
                                 <div class="col-md-8">
-                                    {{row.psngrname}} ({{row.classname}})
+                                    {{row.psngrname}} {{psngrtype == 'employee' ? '(' + row.psngrtypenm + ')' : ''}} <br /> {{psngrtype == 'student' ? 'Roll No : ' + row.rollno : ''}}
                                 </div>
                             </div>
                         </div>

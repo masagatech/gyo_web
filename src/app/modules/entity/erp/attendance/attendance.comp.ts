@@ -207,7 +207,7 @@ export class AttendanceComponent implements OnInit {
             $(".ay").focus();
             return false;
         }
-        else if (that.psngrtype != "employee") {
+        else if (that.psngrtype == "student") {
             if (that.classid == 0) {
                 that._msg.Show(messageType.info, "Info", "Select Class");
                 $(".class").focus();
