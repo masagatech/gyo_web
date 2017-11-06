@@ -26,9 +26,6 @@ export const routes = [
                     // Passenger
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
 
-                    // Student
-                    { path: 'editstudent', loadChildren: './student#StudentModule' },
-
                     { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
 
                     { path: 'activity', loadChildren: './activity#ActivityModule' },

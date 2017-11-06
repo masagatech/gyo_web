@@ -1,0 +1,73 @@
+<div class="card">
+    <div class="header">
+        <h4>Student Rollover</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveStudentInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Academic Year</label>
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getStudentDetails()" tabindex="1">
+                                    <option [value]="0">Select Academic Year</option>
+                                    <option *ngFor="let row of ayDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getStudentDetails()" tabindex="2">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Student Name
+                            </th>
+                            <th>
+                                Roll No
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of studentDT">
+                        <tr>
+                            <td>
+                                {{row.studentname}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="row.rollno" class="form-control rollno text-right" tabindex="3" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
