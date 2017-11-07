@@ -15,6 +15,10 @@ export class AdmissionService {
         return this._dataserver.post("saveStudentInfo", req)
     }
 
+    saveStudentRollover(req: any) {
+        return this._dataserver.post("saveStudentRollover", req)
+    }
+
     getStudentDetails(req: any) {
         return this._dataserver.post("getStudentDetails", req)
     }

@@ -20,12 +20,10 @@ export class RolloverComponent implements OnInit {
     studentDT: any = [];
 
     autoid: number = 0;
-    studid: number = 0;
-    studname: string = "";
 
     ayDT: any = [];
     classDT: any = [];
-    
+
     ayid: number = 0;
     classid: number = 0;
     rollno: number = 0;
@@ -93,39 +91,125 @@ export class RolloverComponent implements OnInit {
     resetStudentFields() {
         var that = this;
 
-        that.studid = 0;
-        that.studname = "";
         that.classid = 0;
         that.rollno = 0;
     }
-    
+
     // Save Data
+
+    checkIfRollnoIsUnique() {
+        var that = this;
+
+        for (var i = 0; i < that.studentDT.length; i++) {
+            for (var j = 0; j < that.studentDT.length; j++) {
+                if (i != j) {
+                    var studentid = that.studentDT[i].studentid;
+                    var irollno = that.studentDT[i].rollno;
+                    var jrollno = that.studentDT[j].rollno;
+
+                    if (irollno == jrollno) {
+                        $(".rollno" + studentid).focus();
+                        return true; // means there are duplicate values
+                    }
+                }
+            }
+        }
+
+        return false; // means there are no duplicate values.
+    }
 
     isValidStudent() {
         var that = this;
+        var isduplicaterollno: boolean = false;
+
+        isduplicaterollno = that.checkIfRollnoIsUnique();
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
             $(".ayname").focus();
             return false;
         }
-        else if (that.studname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Student Name");
-            $(".studname").focus();
-            return false;
-        }
-        else if (that.classid == 0) {
+
+        if (that.classid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
             $(".class").focus();
             return false;
         }
-        else if (that.rollno == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Roll No");
-            $(".rollno").focus();
-            return false;
+
+        for (var i = 0; i < that.studentDT.length; i++) {
+            var _studlist = that.studentDT[i];
+
+            if (_studlist.classid == null || _studlist.classid == 0) {
+                that._msg.Show(messageType.error, "Error", "Select " + _studlist.studentname + " Class");
+                $(".class" + _studlist.studentid).focus();
+                return false;
+            }
+
+            if (_studlist.rollno == null || _studlist.rollno == "") {
+                that._msg.Show(messageType.error, "Error", "Enter " + _studlist.studentname + " Roll No");
+                $(".rollno" + _studlist.studentid).focus();
+                return false;
+            }
         }
 
+        for (var i = 0; i < that.studentDT.length; i++) {
+            var _istudlist = that.studentDT[i];
+
+            for (var j = 0; j < that.studentDT.length; j++) {
+                var _jstudlist = that.studentDT[j];
+
+                if (i != j) {
+                    var studentid = that.studentDT[i].studentid;
+                    var irollno = that.studentDT[i].rollno;
+                    var jrollno = that.studentDT[j].rollno;
+
+                    if (irollno == jrollno) {
+                        that._msg.Show(messageType.error, "Error", _istudlist.studentname + " and " + _jstudlist.studentname + " Roll No is same");
+                        $(".rollno" + _jstudlist.studentid).focus();
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // if (isduplicaterollno) {
+        //     that._msg.Show(messageType.error, "Error", "Duplicate Roll No not Allowed");
+        //     return false;
+        // }
+
         return true;
+    }
+
+    // Get Student Data
+
+    getStudentDetails() {
+        var that = this;
+        var params = {};
+
+        commonfun.loader();
+
+        params = {
+            "flag": "rollover", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin
+        };
+
+        that._admsnservice.getStudentDetails(params).subscribe(data => {
+            try {
+                that.studentDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide("#fltrstud");
+        }, () => {
+
+        })
     }
 
     saveStudentInfo() {
@@ -137,23 +221,11 @@ export class RolloverComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            var saveStudent = {
-                "autoid": that.autoid,
-                "ayid": that.ayid,
-                "schoolid": that._enttdetails.enttid,
-                "studentid": that.studid,
-                "classid": that.classid,
-                "rollno": that.rollno,
-                "cuid": that.loginUser.ucode,
-                "wsautoid": that._enttdetails.wsautoid,
-                "mode": ""
-            }
-
-            that._admsnservice.saveStudentInfo(saveStudent).subscribe(data => {
+            that._admsnservice.saveStudentRollover({ "studentrollover": that.studentDT }).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_studentinfo.msg;
-                    var msgid = dataResult[0].funsave_studentinfo.msgid;
+                    var dataResult = data.data[0].funsave_studentrollover;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -177,37 +249,5 @@ export class RolloverComponent implements OnInit {
                 // console.log("Complete");
             });
         }
-    }
-
-    // Get Student Data
-
-    getStudentDetails() {
-        var that = this;
-        var params = {};
-
-        commonfun.loader();
-
-        params = {
-            "flag": "rollover", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
-        };
-
-        that._admsnservice.getStudentDetails(params).subscribe(data => {
-            try {
-                that.studentDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide("#fltrstud");
-        }, () => {
-
-        })
     }
 }
