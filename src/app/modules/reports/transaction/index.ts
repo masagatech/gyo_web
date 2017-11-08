@@ -14,6 +14,7 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'exam', loadChildren: './exam#ExamReportsModule' },
+                    { path: 'examresult', loadChildren: './examresult#ExamResultReportsModule' },
                     { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
                 ]
             }

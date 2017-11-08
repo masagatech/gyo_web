@@ -16,11 +16,11 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewNotificationComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "ntf", "rights": "view", "urlname": "/notification" }
+        data: { "module": "erp", "submodule": "ntf", "rights": "view", "urlname": "/notification" }
       },
       {
         path: 'add', component: AddNotificationComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "ntf", "rights": "add", "urlname": "/add" }
+        data: { "module": "erp", "submodule": "ntf", "rights": "add", "urlname": "/add" }
       }
     ]
   },

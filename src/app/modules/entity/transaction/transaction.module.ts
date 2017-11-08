@@ -18,6 +18,7 @@ export const routes = [
                     { path: 'classfees', loadChildren: './classfees#ClassFeesModule' },
                     { path: 'feescollection', loadChildren: './feescollection#FeesCollectionModule' },
                     { path: 'assignment', loadChildren: './assignment#AssignmentModule' },
+                    { path: 'teacherremark', loadChildren: './teacherremark#TeacherRemarkModule' },
                     { path: 'assesment', loadChildren: './assesment#AssesmentModule' },
                     { path: 'assesmentresult', loadChildren: './assesmentresult#AssesmentResultModule' },
                     { path: 'exam', loadChildren: './exam#ExamModule' },

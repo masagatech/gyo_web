@@ -1,0 +1,93 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Exam Result</h4>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" (ngModelChange)="getSubjectList();" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getSubjectList();" tabindex="2">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Semester <strong>*</strong></label>
+                        <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getSubjectList()" tabindex="3">
+                            <option [value]="0">Select Semester</option>
+                            <option *ngFor="let row of semesterDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3" style="padding-top: 20px;" align="right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body" *ngIf="examResultDT.length">
+        <div #class class="row clearfix">
+            <div class="col-md-12 reports">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="200px">Student Name</th>
+                            <th *ngFor="let srow of subjectDT | filterBy:{'id': 1}" colspan="3">
+                                {{srow.subname.split('~')[0]}}
+                            </th>
+                        </tr>
+                        <tr class="tr-table">
+                            <th width="200px"></th>
+                            <th *ngFor="let srow of subjectDT">
+                                {{srow.subname.split('~')[1]}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of examResultDT">
+                        <tr>
+                            <td>
+                                {{row.studname}}
+                            </td>
+                            <td *ngFor="let srow of subjectDT" align="center" class="{{row[srow.subname]}}">
+                                {{row[srow.subname]}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

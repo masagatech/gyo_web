@@ -38,18 +38,18 @@ export const routes = [
 
           // Admin
 
-          // {
-          //   path: 'master/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
-          //   data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
-          // },
-          // {
-          //   path: 'master/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
-          //   data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
-          // },
-          // {
-          //   path: 'master/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
-          //   data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
-          // },
+          {
+            path: 'master/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
+          },
+          {
+            path: 'master/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
+          },
+          {
+            path: 'master/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
+          },
         ]
       }
     ]

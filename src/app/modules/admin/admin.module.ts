@@ -19,7 +19,7 @@ export const routes = [
                     
                     { path: 'location', loadChildren: './location#LocationModule' },
                     
-                    { path: 'admin', loadChildren: './masterofmaster#MOMModule' },
+                    { path: '', loadChildren: './masterofmaster#MOMModule' },
                     
                     // Workspace
                     { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
