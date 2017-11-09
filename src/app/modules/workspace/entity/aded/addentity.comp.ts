@@ -345,7 +345,7 @@ export class AddEntityComponent implements OnInit {
         this.contactDT.splice(this.contactDT.indexOf(row), 1);
     }
 
-    // File upload
+    // File Upload
 
     getLogoUploadConfig() {
         var that = this;
