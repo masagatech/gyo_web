@@ -38,7 +38,7 @@ export class ViewAssesmentComponent implements OnInit {
 
     }
 
-    // Fill Academic Year, Semester And Class Down
+    // Fill Academic Year And Class Down
 
     fillDropDownList() {
         var that = this;

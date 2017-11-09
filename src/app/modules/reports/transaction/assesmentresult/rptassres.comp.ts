@@ -2,40 +2,39 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ExamService } from '@services/erp';
+import { AssesmentService } from '@services/erp';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptexres.comp.html',
+    templateUrl: 'rptassres.comp.html',
     providers: [CommonService]
 })
 
-export class ExamResultReportsComponent implements OnInit, OnDestroy {
+export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     ayDT: any = [];
-    ayid: number = 0;
-    semesterDT: any = [];
-    smstrid: number = 0;
     classDT: any = [];
-    classid: number = 0;
+    studentDT: any = [];
+    studsdata: any = [];
 
-    subjectDT: any = [];
-    examResultDT: any = [];
-    @ViewChild('examresult') examresult: ElementRef;
+    ayid: number = 0;
+    clsid: number = 0;
 
-    gridTotal: any = {
-        strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-    };
+    studid: number = 0;
+    studname: string = "";
+
+    assesmentDT: any = [];
+    @ViewChild('assesmentresult') assesmentresult: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _examservice: ExamService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _assservice: AssesmentService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
-        this.getSubjectList();
+        this.fillAYAndClassDropDown();
+        this.getAssesmentResult();
     }
 
     public ngOnInit() {
@@ -46,15 +45,15 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Fill Academic Year, Exam Type And Class Down
+    // Fill AY And Class Drop Down
 
-    fillDropDownList() {
+    fillAYAndClassDropDown() {
         var that = this;
         var defayDT: any = [];
 
         commonfun.loader();
 
-        that._examservice.getExamDetails({
+        that._assservice.getAssesmentDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -73,7 +72,6 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
-                that.semesterDT = data.data.filter(a => a.group == "semester");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -89,35 +87,49 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Subject List
+    // Auto Completed Student
 
-    getSubjectList() {
-        var that = this;
+    getStudentData(event) {
+        let query = event.query;
 
-        that._examservice.getExamResult({
-            "flag": "ressubject", "classid": that.classid, "smstrid": that.smstrid, "enttid": that._enttdetails.enttid
-        }).subscribe(data => {
-            if (data.data.length !== 0) {
-                that.subjectDT = data.data;
-                that.getExamResult();
-            }
+        this._autoservice.getAutoData({
+            "flag": "student",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "classid": this.clsid,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.studentDT = data.data;
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
+            this._msg.Show(messageType.error, "Error", err);
         }, () => {
-        })
+
+        });
     }
 
-    getExamResult() {
+    // Selected Student
+
+    selectStudentData(event) {
+        this.studid = event.value;
+        this.studname = event.label;
+
+        this.getAssesmentResult();
+    }
+
+    getAssesmentResult() {
         var that = this;
         commonfun.loader();
 
-        that._examservice.getExamResult({
-            "flag": "reports", "type": "reports", "ayid": that.ayid, "classid": that.classid, "smstrid": that.smstrid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        that._assservice.getAssesmentResult({
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "classid": that.clsid, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.examResultDT = data.data;
+                that.assesmentDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -132,33 +144,12 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
 
         })
     }
-    
+
     // Export
 
     public exportToCSV() {
         var that = this;
-        commonfun.loader();
-
-        that._examservice.getExamResult({
-            "flag": "reports", "type": "export", "ayid": that.ayid, "classid": that.classid, "smstrid": that.smstrid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that._autoservice.exportToCSV(data.data, "Exam Result Reports");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
+        that._autoservice.exportToCSV(that.assesmentDT, "Assesment Result Reports");
     }
 
     public exportToPDF() {
@@ -168,8 +159,8 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
             pagesplit: true
         };
 
-        pdf.addHTML(this.examresult.nativeElement, 0, 0, options, () => {
-            pdf.save("Exam Result Reports.pdf");
+        pdf.addHTML(this.assesmentresult.nativeElement, 0, 0, options, () => {
+            pdf.save("Assesment Result Reports.pdf");
         });
     }
 

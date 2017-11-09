@@ -33,9 +33,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Semester <strong>*</strong></label>
+                                <label class="control-label">Exam Type <strong>*</strong></label>
                                 <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" tabindex="2">
-                                    <option [value]="0">Select Semester</option>
+                                    <option [value]="0">Select Exam Type</option>
                                     <option *ngFor="let row of semesterDT" [value]="row.id">
                                         {{row.val}}
                                     </option>

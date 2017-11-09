@@ -47,7 +47,7 @@ export class AddExamComponent implements OnInit {
         this.editExamDetails();
     }
 
-    // Fill Academic Year, Semester And Class Down
+    // Fill Academic Year, Exam Type And Class Down
 
     fillDropDownList() {
         var that = this;
@@ -215,7 +215,7 @@ export class AddExamComponent implements OnInit {
             $(".ayname").focus();
         }
         else if (that.smstrid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Semester");
+            that._msg.Show(messageType.error, "Error", "Select Exam Type");
             $(".smstrname").focus();
         }
         else if (that.clsid == 0) {

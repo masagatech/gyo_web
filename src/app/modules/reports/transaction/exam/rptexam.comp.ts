@@ -40,7 +40,7 @@ export class ExamReportsComponent implements OnInit {
 
     }
 
-    // Fill Academic Year, Semester And Class Down
+    // Fill Academic Year, Exam Type And Class Down
 
     fillDropDownList() {
         var that = this;

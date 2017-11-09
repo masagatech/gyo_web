@@ -46,25 +46,27 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="body no-padding">
         <div class="row clearfix">
-            <div class="col-md-12">
-                <table class="table table-bordered">
+            <div class="col-md-12 reports">
+                <table class="table table-bordered table-responsive">
                     <thead>
                         <tr>
-                            <th>
+                            <th width="80px">
+                                Roll No
+                            </th>
+                            <th width="200px">
                                 Student Name
                             </th>
-                            <th>
+                            <th width="250px">
                                 Heading
                             </th>
-                            <th>
+                            <th width="250px">
                                 Sub Heading
                             </th>
-                            <th>
+                            <th width="120px">
                                 Grade
                             </th>
                             <th>
@@ -79,6 +81,9 @@
                             </th>
                         </tr>
                         <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.rollno}}
+                            </td>
                             <td>
                                 {{drow.studentname}}
                             </td>
