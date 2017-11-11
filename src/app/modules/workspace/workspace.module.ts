@@ -19,6 +19,8 @@ export const routes = [
                     { path: 'entity', loadChildren: './entity#EntityModule' },
                     { path: 'user', loadChildren: './users#UserModule' },
                     { path: 'content', loadChildren: './content#ContentModule' },
+                    { path: 'contentdetails', loadChildren: './contentdetails#ContentDetailsModule' },
+                    { path: 'contententitymap', loadChildren: './contententitymap#ContentEntityMapModule' },
                 ]
             }
         ]

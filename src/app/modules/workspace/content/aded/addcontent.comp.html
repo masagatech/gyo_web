@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Subject <strong>*</strong></label>
-                                <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="getContentDetails();" class="form-control subname" tabindex="2">
+                                <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="getContentDetails()" class="form-control subname" tabindex="2">
                                     <option [value]="0">Select Subject</option>
                                     <option *ngFor="let row of subjectDT" [value]="row.subid">
                                         {{row.subname}}

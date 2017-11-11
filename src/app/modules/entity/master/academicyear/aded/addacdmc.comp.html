@@ -17,20 +17,16 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-8">
-                <div class="row clearfix">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Title <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="ayname" class="form-control ayname" tabindex="1">
-                            </div>
-                        </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="ayname" class="form-control ayname" tabindex="1">
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From Date</label>
@@ -38,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To Date</label>
@@ -51,8 +47,13 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark" rows="4" class="form-control no-resize auto-growth" [tabindex]="4"></textarea>
+                        <textarea [(ngModel)]="remark" rows="6" class="form-control no-resize auto-growth" [tabindex]="4"></textarea>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <input id="iscurrent" name="iscurrent" [(ngModel)]="iscurrent" type="checkbox" class="filled-in">
+                    <label for="iscurrent">Is Current</label>
                 </div>
             </div>
         </div>

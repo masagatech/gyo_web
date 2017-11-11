@@ -22,6 +22,7 @@ export class AddAcademicYearComponent implements OnInit {
     frmdt: any = "";
     todt: any = "";
     remark: string = "";
+    iscurrent: boolean = false;
 
     private subscribeParameters: any;
 
@@ -42,6 +43,7 @@ export class AddAcademicYearComponent implements OnInit {
         this.ayname = "";
         this.frmdt = "";
         this.todt = "";
+        this.iscurrent = false;
     }
 
     // Validation For Save
@@ -108,6 +110,7 @@ export class AddAcademicYearComponent implements OnInit {
                 "frmdt": that.frmdt,
                 "todt": that.todt,
                 "remark": that.remark,
+                "iscurrent": that.iscurrent,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid
@@ -169,6 +172,7 @@ export class AddAcademicYearComponent implements OnInit {
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;
                         that.remark = data.data[0].remark;
+                        that.iscurrent = data.data[0].iscurrent;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

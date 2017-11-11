@@ -34,8 +34,8 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Division <strong>*</strong></label>
-                                <select id="divid" name="divname" [(ngModel)]="divid" class="form-control divname" tabindex="2">
-                                    <option [value]="0">Select Division</option>
+                                <select id="divname" name="divname" [(ngModel)]="divname" class="form-control divname" tabindex="2">
+                                    <option [value]="">Select Division</option>
                                     <option *ngFor="let row of divisionDT" [value]="row.id">
                                         {{row.val}}
                                     </option>

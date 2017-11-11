@@ -59,6 +59,8 @@ export class AddEntityComponent implements OnInit {
     contactDT: any = [];
     duplicateContact: boolean = true;
 
+    division: string = "";
+    standardDT: any = [];
     weekDT: any = [];
     entttypeDT: any = [];
 
@@ -76,6 +78,7 @@ export class AddEntityComponent implements OnInit {
         this.getLogoUploadConfig();
 
         this.fillDropDownList();
+        this.fillStandardDropDown();
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
@@ -111,7 +114,7 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
-    // Entity Type DropDown
+    // Fill Entity Type, Week DropDown
 
     fillDropDownList() {
         var that = this;
@@ -130,6 +133,30 @@ export class AddEntityComponent implements OnInit {
                 }
 
                 that.weekDT = data.data.filter(a => a.group === "week");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            //that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Fill Standard DropDown
+
+    fillStandardDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._entityservice.getEntityDetails({ "flag": "standard" }).subscribe(data => {
+            try {
+                that.standardDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -434,6 +461,30 @@ export class AddEntityComponent implements OnInit {
         that.chooseLabel = "Upload Logo";
     }
 
+    private selectAndDeselectAllCheckboxes() {
+        if ($("#selectall").is(':checked')) {
+            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private selectAndDeselectGroupWiseCheckboxes(row) {
+        var key = "std" + row.key.split('~')[0];
+
+        if ($("#" + key).is(':checked')) {
+            $("#" + key + " input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $("#" + key + " input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private clearcheckboxes(): void {
+        $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+    }
+
     // Active / Deactive Data
 
     active_deactiveEntityInfo() {
@@ -469,12 +520,12 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
+    // Get Standard Rights
+
     // Save entity Data
 
     saveEntityInfo() {
         var that = this;
-        var mweek = null;
-        var weeklyoff = "";
 
         if (that.entttype == "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Type");
@@ -509,23 +560,47 @@ export class AddEntityComponent implements OnInit {
             $(".city").focus();
         }
         else {
+            var mweek = null;
+            var wkrights = "";
+            var weeklyoff = "";
+
+            var stditem = null;
+            var stdrights = "";
+            var standard = "";
+
             for (var i = 0; i <= that.weekDT.length - 1; i++) {
                 mweek = null;
                 mweek = that.weekDT[i];
 
                 if (mweek !== null) {
-                    var wkrights = "";
-
                     $("#week").find("input[type=checkbox]").each(function () {
                         wkrights += (this.checked ? $(this).val() + "," : "");
                     });
                 }
             }
 
-            weeklyoff = "{" + wkrights.slice(0, -1) + "}";
+            for (var i = 0; i <= that.standardDT.length - 1; i++) {
+                stditem = null;
+                stditem = that.standardDT[i];
+
+                if (stditem !== null) {
+                    $("#std" + stditem.key).find("input[type=checkbox]").each(function () {
+                        stdrights += (this.checked ? $(this).val() + "," : "");
+                    });
+                }
+            }
+
+            weeklyoff = "{" + wkrights.slice(0, -1) + "}";            
+            standard  = "{" + stdrights.slice(0, -1) + "}";
 
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
+            }
+            else if (standard == '{}') {
+                that._msg.Show(messageType.error, "Error", "Atleast select 1 Standard");
+            }
+            else if (that.division == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Division");
             }
             else {
                 commonfun.loader();
@@ -539,7 +614,6 @@ export class AddEntityComponent implements OnInit {
                     "schgeoloc": that.lat + "," + that.lon,
                     "schvehs": that.schvehs.toString() == "" ? 0 : that.schvehs,
                     "oprvehs": that.oprvehs.toString() == "" ? 0 : that.oprvehs,
-                    "weeklyoff": weeklyoff,
                     "address": that.address,
                     "country": that.country,
                     "state": that.state,
@@ -552,6 +626,9 @@ export class AddEntityComponent implements OnInit {
                     "email1": that.email,
                     "email2": that.email,
                     "contact": that.contactDT,
+                    "weeklyoff": weeklyoff,
+                    "standard": standard,
+                    "division": that.division,
                     "remark1": that.remark1,
                     "cuid": that.loginUser.ucode,
                     "wsautoid": that._wsdetails.wsautoid,
@@ -629,15 +706,7 @@ export class AddEntityComponent implements OnInit {
                         that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;
                         that.oprvehs = data.data[0].vanoperator;
-
-                        var weeklyoff = data.data[0].weeklyoff;
-
-                        if (weeklyoff != null) {
-                            for (var i = 0; i < weeklyoff.length; i++) {
-                                $("#week").find("#" + weeklyoff[i]).prop('checked', true);
-                            }
-                        }
-
+                        
                         that.address = data.data[0].address;
                         that.state = data.data[0].state;
                         that.fillCityDropDown();
@@ -651,9 +720,45 @@ export class AddEntityComponent implements OnInit {
                         that.mobile = data.data[0].mobileno1;
                         that.contactDT = data.data[0].contact !== null ? data.data[0].contact : [];
 
-                        that.remark1 = data.data[0].remark1;
-                        that.isactive = data.data[0].isactive;
-                        that.mode = data.data[0].mode;
+                        var weeklyoff = data.data[0].weeklyoff;
+
+                        if (weeklyoff != null) {
+                            for (var i = 0; i < weeklyoff.length; i++) {
+                                $("#week").find("#" + weeklyoff[i]).prop('checked', true);
+                            }
+                        }
+
+                        var _stdrights = null;
+                        var _stdids = null;
+
+                        if (data.data[0] != null) {
+                            _stdrights = null;
+                            _stdrights = data.data[0].standard;
+
+                            if (_stdrights != null) {
+                                for (var i = 0; i < _stdrights.length; i++) {
+                                    _stdids = null;
+                                    _stdids = _stdrights[i];
+
+                                    if (_stdids != null) {
+                                        $("#" + _stdids).prop('checked', true);
+                                        $(".allcheckboxes").find("#" + _stdids).prop('checked', true);
+                                    }
+                                    else {
+                                        $(".allcheckboxes").find("#" + _stdids).prop('checked', false);
+                                    }
+                                }
+                            }
+                            else {
+                                $(".allcheckboxes").find("#" + _stdids).prop('checked', false);
+                            }
+
+                            that.division = data.data[0].division;
+
+                            that.remark1 = data.data[0].remark1;
+                            that.isactive = data.data[0].isactive;
+                            that.mode = data.data[0].mode;
+                        }
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

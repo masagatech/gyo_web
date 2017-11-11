@@ -7,11 +7,11 @@ import { ContentService } from '@services/master';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addcontent.comp.html',
+    templateUrl: 'addcntdtls.comp.html',
     providers: [CommonService]
 })
 
-export class AddContentComponent implements OnInit {
+export class AddContentDetailsComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -21,15 +21,19 @@ export class AddContentComponent implements OnInit {
     paramcid: number = 0;
     cid: number = 0;
     ctitle: string = "";
-    cdesc: string = "";
+    cdid: number = 0;
     stdid: number = 0;
     subid: number = 0;
-    remark: string = "";
+    topicname: string = "";
+    isfree: boolean = false;
 
-    uploadPhotoDT: any = [];
+    contentDetailsDT: any = [];
+    selectedContentDetails: any = [];
+    isEditContentDetails: boolean = false;
+
+    uploadFileDT: any = [];
     global = new Globals();
     uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    chooseLabel: string = "";
 
     private subscribeParameters: any;
 
@@ -38,26 +42,13 @@ export class AddContentComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.getPhotoUploadConfig();
+        this.getFileUploadConfig();
         this.fillStandardDropDown();
         this.fillSubjectDropDown();
     }
 
     public ngOnInit() {
-        this.editContentDetails();
-    }
-
-    // Clear Fields
-
-    resetCotentFields() {
-        var that = this;
-
-        that.cid = 0;
-        that.ctitle = "";
-        that.cdesc = "";
-        that.remark = "";
-        that.chooseLabel = "Upload Photo";
-        that.uploadPhotoDT = [];
+        this.editContentInfo();
     }
 
     // Fill Standard Drop Down
@@ -115,10 +106,10 @@ export class AddContentComponent implements OnInit {
 
     // File Upload
 
-    getPhotoUploadConfig() {
+    getFileUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
             that.uploadconfig.server = that.global.serviceurl + "uploads";
             that.uploadconfig.serverpath = that.global.serviceurl;
             that.uploadconfig.uploadurl = that.global.uploadurl;
@@ -132,10 +123,10 @@ export class AddContentComponent implements OnInit {
         })
     }
 
-    onPhotoUpload(event) {
+    onFileUpload(event) {
         var that = this;
         var imgfile = [];
-        that.uploadPhotoDT = [];
+        that.uploadFileDT = [];
 
         imgfile = JSON.parse(event.xhr.response);
 
@@ -143,7 +134,7 @@ export class AddContentComponent implements OnInit {
 
         setTimeout(function () {
             for (var i = 0; i < imgfile.length; i++) {
-                that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
+                that.uploadFileDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
             }
         }, 1000);
     }
@@ -173,58 +164,176 @@ export class AddContentComponent implements OnInit {
         return bytes;
     }
 
-    removePhotoUpload() {
-        this.uploadPhotoDT.splice(0, 1);
+    removeFileUpload() {
+        this.uploadFileDT.splice(0, 1);
     }
 
-    // Save Content
+    // Add Content Details
 
-    saveContentInfo() {
+    isValidContentDetails() {
+        var that = this;
+
+        if (that.subid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Standard");
+            return false;
+        }
+        else if (that.subid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Subject");
+            return false;
+        }
+        else if (that.cid == 0) {
+            that._msg.Show(messageType.error, "Error", "This Subject No Any Content");
+            return false;
+        }
+        else {
+            if (that.isEditContentDetails == false) {
+                if (that.contentDetailsDT.length != 0) {
+                    for (var i = 0; i < that.contentDetailsDT.length; i++) {
+                        var issflds = that.contentDetailsDT[i];
+
+                        if (issflds.topicname == that.topicname) {
+                            that._msg.Show(messageType.error, "Error", "This Topic Name is Already Used");
+                            return false;
+                        }
+                    }
+                }
+            }
+            else {
+                var _cntdtls = that.contentDetailsDT.filter(a => a.topicname != that.topicname);
+
+                if (_cntdtls.length != 0) {
+                    for (var i = 0; i < _cntdtls.length; i++) {
+                        var existsflds = _cntdtls[i];
+
+                        if (existsflds.topicname == that.topicname) {
+                            that._msg.Show(messageType.error, "Error", "This Topic Name is Already Used");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    addContentDetails() {
+        var that = this;
+        var isvalidcntdtls: boolean = false;
+
+        isvalidcntdtls = that.isValidContentDetails();
+
+        if (isvalidcntdtls) {
+            that.contentDetailsDT.push({
+                "cdid": that.cdid, "cid": 0, "stdid": that.stdid, "subid": that.subid, "topicname": that.topicname,
+                "uploadfile": that.uploadFileDT.length == 0 ? "" : that.uploadFileDT[0].athurl,
+                "isfree": that.isfree, "cuid": "", "enttid": 0, "wsautoid": 0, "isactive": true
+            });
+
+            that.resetContentDetails();
+        }
+    }
+
+    // Edit Prospectus No
+
+    editContentDetails(row) {
+        var that = this;
+
+        that.selectedContentDetails = row;
+        that.topicname = row.topicname;
+        that.uploadFileDT.push({ "athurl": row.uploadfile });
+        that.isfree = row.isfree;
+
+        that.isEditContentDetails = true;
+    }
+
+    // Delete Prospectus No
+
+    deleteContentDetails(row) {
+        row.isactive = false;
+    }
+
+    // Update Prospectus No
+
+    updateContentDetails() {
+        var that = this;
+        var isvalidcntdtls: boolean = false;
+
+        isvalidcntdtls = that.isValidContentDetails();
+
+        if (isvalidcntdtls) {
+            that.selectedContentDetails.topicname = that.topicname;
+            that.selectedContentDetails.uploadfile = that.uploadFileDT.length == 0 ? "" : that.uploadFileDT[0].athurl;
+            that.selectedContentDetails.isfree = that.isfree;
+            that.isEditContentDetails = false;
+
+            that.resetContentDetails();
+        }
+    }
+
+    // Reset Prospectus No
+
+    resetContentInfo() {
+        var that = this;
+
+        that.cid = 0;
+        that.ctitle = "";
+        that.contentDetailsDT = [];
+    }
+
+    // Reset Prospectus No
+
+    resetContentDetails() {
+        var that = this;
+
+        that.topicname = "";
+        that.uploadFileDT = [];
+        that.isfree = false;
+        that.isEditContentDetails = false;
+    }
+
+    // Save Content Details
+
+    saveContentDetails() {
         var that = this;
 
         if (that.stdid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Standard");
-            $(".standard").focus();
+            $(".stdname").focus();
         }
         else if (that.subid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Subject");
-            $(".subject").focus();
+            $(".subname").focus();
         }
-        else if (that.ctitle == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Title");
-            $(".ctitle").focus();
+        else if (that.cid == 0) {
+            that._msg.Show(messageType.error, "Error", "This Subject No Any Content");
+            return false;
         }
-        else if (that.cdesc == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Description");
-            $(".cdesc").focus();
+        else if (that.contentDetailsDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Please Atleast 1 Content Details");
         }
         else {
             commonfun.loader();
 
-            var savecontent = {
-                "cid": that.cid,
-                "stdid": that.stdid,
-                "subid": that.subid,
-                "ctitle": that.ctitle,
-                "cdesc": that.cdesc,
-                "cphoto": that.uploadPhotoDT.length == 0 ? "" : that.uploadPhotoDT[0].athurl,
-                "remark": that.remark,
-                "cuid": that.loginUser.ucode,
-                "wsautoid": that._wsdetails.wsautoid
+            for (var i = 0; i < that.contentDetailsDT.length; i++) {
+                that.contentDetailsDT[i].cid = that.cid;
+                that.contentDetailsDT[i].stdid = that.stdid;
+                that.contentDetailsDT[i].subid = that.subid;
+                that.contentDetailsDT[i].cuid = that.loginUser.ucode;
+                that.contentDetailsDT[i].wsautoid = that._wsdetails.wsautoid;
             }
 
-            this._cntservice.saveContentInfo(savecontent).subscribe(data => {
+            this._cntservice.saveContentDetails({ "contentdetails": that.contentDetailsDT }).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_contentinfo;
+                    var dataResult = data.data[0].funsave_contentdetails;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        if (that.paramcid == 0) {
-                            that.resetCotentFields();
-                            that.paramcid = 0;
+                        if (msgid === "1") {
+                            that.resetContentInfo();
                             that.subid = 0;
                         }
                         else {
@@ -250,9 +359,9 @@ export class AddContentComponent implements OnInit {
         }
     }
 
-    // Get Content
+    // Get Content Details
 
-    editContentDetails() {
+    editContentInfo() {
         var that = this;
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
@@ -261,7 +370,7 @@ export class AddContentComponent implements OnInit {
                 that.getContentDetails();
             }
             else {
-                that.resetCotentFields();
+                that.resetContentDetails();
                 that.paramcid = 0;
                 that.subid = 0;
             }
@@ -273,36 +382,27 @@ export class AddContentComponent implements OnInit {
         commonfun.loader();
 
         that._cntservice.getContentDetails({
-            "flag": "edit", "cid": that.paramcid, "stdid": that.stdid, "subid": that.subid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "details", "cid": that.paramcid, "stdid": that.stdid, "subid": that.subid, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "wsautoid": that._wsdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
         }).subscribe(data => {
             try {
-                var contentdata = data.data;
+                var viewcntdtls = data.data;
 
-                if (contentdata.length == 0) {
-                    that.resetCotentFields();
-                }
-                else {
-                    if (that.paramcid !== 0) {
-                        that.stdid = contentdata[0].stdid;
+                if (viewcntdtls.length > 0) {
+                    if (that.paramcid != 0) {
+                        that.stdid = viewcntdtls[0].stdid;
                         that.fillSubjectDropDown();
 
-                        that.subid = contentdata[0].subid;
+                        that.subid = viewcntdtls[0].subid;
                     }
 
-                    that.cid = contentdata[0].cid;
-                    that.ctitle = contentdata[0].ctitle;
-                    that.cdesc = contentdata[0].cdesc;
+                    that.cid = viewcntdtls[0].cid;
+                    that.ctitle = viewcntdtls[0].ctitle;
 
-                    if (contentdata[0].cphoto !== "") {
-                        that.uploadPhotoDT.push({ "athurl": contentdata[0].cphoto });
-                        that.chooseLabel = "Change Photo";
-                    }
-                    else {
-                        that.uploadPhotoDT = [];
-                        that.chooseLabel = "Upload Photo";
-                    }
-
-                    that.remark = contentdata[0].remark;
+                    that.contentDetailsDT = viewcntdtls[0].cntdtls == null ? [] : viewcntdtls[0].cntdtls;
+                }
+                else {
+                    that.resetContentInfo();
                 }
             }
             catch (e) {
@@ -322,6 +422,6 @@ export class AddContentComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/workspace/content']);
+        this._router.navigate(['/workspace/contentdetails']);
     }
 }

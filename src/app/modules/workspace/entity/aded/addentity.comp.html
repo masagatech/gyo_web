@@ -239,8 +239,8 @@
                 <div class="col-md-1">
                     <div class="form-group">
                         <button type="button" class="btn btn-theme btn-xs" (click)="addCPRow()">
-                        <i class="material-icons">add</i>
-                    </button>
+                            <i class="material-icons">add</i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -280,6 +280,50 @@
                     </div>
                 </div>
                 <div class="col-md-4">
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="row clearfix">
+                <div class="col-md-8">
+                    <h4>Standard</h4>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label class="control-label">Division (e.g : A, B, C, D)</label>
+                            <input type="text" [(ngModel)]="division" class="form-control division" maxlength="150" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <label for="selectall">Select All</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="allcheckboxes" *ngFor="let row of standardDT | groupBy:'grpname'; let i = index;">
+                <div class="block-header">
+                    <input id="{{row.key.split('~')[0]}}" name="std{{i + 1}}" type="checkbox" value="{{row.key.split('~')[0]}}" (change)="selectAndDeselectGroupWiseCheckboxes(row)" class="filled-in" />
+                    <label for="{{row.key.split('~')[0]}}"><h4 style="margin: 0;">{{row.key.split('~')[1]}}</h4></label>
+                </div>
+                <div id="std{{row.key.split('~')[0]}}" style="margin-left: 15px;">
+                    <span *ngFor="let drow of row.value; let i = index;">
+                        <span id="std{{drow.key}}">
+                            <input id="{{drow.key}}" name="std{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
+                            <label for="{{drow.key}}">{{drow.val}}</label>
+                        </span>
+                    </span>
+
+                    <hr />
                 </div>
             </div>
         </div>

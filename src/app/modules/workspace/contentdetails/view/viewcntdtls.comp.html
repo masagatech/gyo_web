@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-8 col-xs-3">
+                <h4>Cotnent Details</h4>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard <strong>*</strong></label>
+                        <select id="stdid" name="stdname" [(ngModel)]="stdid" (ngModelChange)="getContentDetails()" class="form-control stdname" tabindex="1">
+                            <option [value]="0">Select Standard</option>
+                            <option *ngFor="let row of standardDT" [value]="row.stdid">
+                                {{row.stdname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addContentDetails()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="contentDetailsDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="stdname" header="Standard" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="subname" header="Subject" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column field="topicname" header="Topic Name" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column header="Is Free" [style]="{'width': '100px', 'align': 'center'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <span class="material-icons">
+                                {{row.isfree ? 'done' : 'cancel'}}
+                            </span>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>
