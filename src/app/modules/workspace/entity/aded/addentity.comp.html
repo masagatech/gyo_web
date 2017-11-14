@@ -316,11 +316,9 @@
                     <label for="{{row.key.split('~')[0]}}"><h4 style="margin: 0;">{{row.key.split('~')[1]}}</h4></label>
                 </div>
                 <div id="std{{row.key.split('~')[0]}}" style="margin-left: 15px;">
-                    <span *ngFor="let drow of row.value; let i = index;">
-                        <span id="std{{drow.key}}">
-                            <input id="{{drow.key}}" name="std{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
-                            <label for="{{drow.key}}">{{drow.val}}</label>
-                        </span>
+                    <span *ngFor="let drow of row.value; let i = index;" id="std{{drow.key}}">
+                        <input id="{{drow.key}}" name="std{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
+                        <label for="{{drow.key}}">{{drow.val}}</label>
                     </span>
 
                     <hr />

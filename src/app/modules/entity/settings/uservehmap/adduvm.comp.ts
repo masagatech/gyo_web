@@ -17,11 +17,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     uid: number = 0;
     uname: any = [];
     utype: string = "";
+    selecteudUser: any = [];
 
     vehicleDT: any = [];
     vehid: number = 0;
-    vehname: any = [];
-    vehicleList: any = [];
+    vehname: string = "";
+    selectedvehicle: any = [];
 
     private subscribeParameters: any;
 
@@ -41,11 +42,13 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     resetUserVehicleMap() {
         $(".enttname input").focus();
         this.uid = 0;
-        this.uname = [];
+        this.uname = "";
         this.utype = "";
+        this.selecteudUser = [];
         this.vehid = 0;
-        this.vehname = [];
-        this.vehicleList = [];
+        this.vehname = "";
+        this.selectedvehicle = [];
+        this.vehicleDT = [];
     }
 
     // Auto Completed User
@@ -55,13 +58,13 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         that._autoservice.getAutoData({
-            "flag": "entitywiseuser",
+            "flag": "formapuser",
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -78,6 +81,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.uid = event.uid;
+        that.uname = event.uname;
         that.utype = event.utype;
 
         that.getUserVehicleMap();
@@ -94,8 +98,9 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
+            "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -110,7 +115,9 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     selectVehicleData(event, arg) {
         this.vehid = event.value;
-        this.addVehicleList();
+        this.vehname = event.label;
+
+        this.addvehicleDT();
     }
 
     // Check Duplicate Vehicle
@@ -118,8 +125,8 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     isDuplicateVehicle() {
         var that = this;
 
-        for (var i = 0; i < that.vehicleList.length; i++) {
-            var field = that.vehicleList[i];
+        for (var i = 0; i < that.vehicleDT.length; i++) {
+            var field = that.vehicleDT[i];
 
             if (field.vehid == this.vehid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate Vehicle not Allowed");
@@ -130,21 +137,23 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    addVehicleList() {
+    addvehicleDT() {
         var that = this;
         var duplicateVehicle = that.isDuplicateVehicle();
 
         if (!duplicateVehicle) {
-            that.vehicleList.push({ "vehid": this.vehid, "vehname": this.vehname })
+            that.vehicleDT.push({ "vehid": this.vehid, "vehname": this.vehname })
         }
 
         that.vehid = 0;
-        that.vehname = [];
+        that.vehname = "";
+        that.selectedvehicle = [];
+
         $(".vehname input").focus();
     }
 
     deleteVehicle(row) {
-        this.vehicleList.splice(this.vehicleList.indexOf(row), 1);
+        this.vehicleDT.splice(this.vehicleDT.indexOf(row), 1);
     }
 
     saveUserVehicleMap() {
@@ -156,7 +165,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         }
         else {
             var selectedVehicle: string[] = [];
-            selectedVehicle = Object.keys(that.vehicleList).map(function (k) { return that.vehicleList[k].vehid });
+            selectedVehicle = Object.keys(that.vehicleDT).map(function (k) { return that.vehicleDT[k].vehid });
 
             if (selectedVehicle.length === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Atleast 1 Vehicle");
@@ -202,7 +211,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "flag": "details", "enttid": that._enttdetails.enttid, "uid": that.uid, "utype": that.utype
         }).subscribe(data => {
             try {
-                that.vehicleList = data.data;
+                that.vehicleDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

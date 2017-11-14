@@ -128,17 +128,17 @@ export class ViewUserComponent implements OnInit {
 
     // Auto Completed User
 
-    getAutoUsers(event) {
+    getUserData(event) {
         var that = this;
         let query = event.query;
 
         that._autoservice.getAutoData({
-            "flag": "allusers",
+            "flag": "users",
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
             "wsautoid": that._wsdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "srcutype": that.srcutype,
             "search": query
         }).subscribe(data => {
@@ -152,7 +152,7 @@ export class ViewUserComponent implements OnInit {
 
     // Selected User
 
-    selectAutoUsers(event, arg) {
+    selectUserData(event, arg) {
         this.autouid = event.uid;
         this.getUserDetails();
     }

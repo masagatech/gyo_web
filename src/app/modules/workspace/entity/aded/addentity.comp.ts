@@ -568,16 +568,11 @@ export class AddEntityComponent implements OnInit {
             var stdrights = "";
             var standard = "";
 
-            for (var i = 0; i <= that.weekDT.length - 1; i++) {
-                mweek = null;
-                mweek = that.weekDT[i];
+            $("#week").find("input[type=checkbox]").each(function () {
+                wkrights += (this.checked ? $(this).val() + "," : "");
+            });
 
-                if (mweek !== null) {
-                    $("#week").find("input[type=checkbox]").each(function () {
-                        wkrights += (this.checked ? $(this).val() + "," : "");
-                    });
-                }
-            }
+            weeklyoff = "{" + wkrights.slice(0, -1) + "}";
 
             for (var i = 0; i <= that.standardDT.length - 1; i++) {
                 stditem = null;
@@ -590,8 +585,7 @@ export class AddEntityComponent implements OnInit {
                 }
             }
 
-            weeklyoff = "{" + wkrights.slice(0, -1) + "}";            
-            standard  = "{" + stdrights.slice(0, -1) + "}";
+            standard = "{" + stdrights.slice(0, -1) + "}";
 
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
@@ -706,7 +700,7 @@ export class AddEntityComponent implements OnInit {
                         that.lon = data.data[0].lon;
                         that.schvehs = data.data[0].ownbuses;
                         that.oprvehs = data.data[0].vanoperator;
-                        
+
                         that.address = data.data[0].address;
                         that.state = data.data[0].state;
                         that.fillCityDropDown();

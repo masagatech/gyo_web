@@ -40,7 +40,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Entity Name</label>
+                        <label class="control-label">School Name</label>
                         <p-autoComplete id="enttname" name="enttname" [(ngModel)]="selectedEntity" [tabindex]="3" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
@@ -65,7 +65,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of contentDetailsDT | filterBy: {'isactive': true}; let i = index;">
+                <tr *ngFor="let row of contentDetailsDT; let i = index;">
                     <td align="right">
                         {{i + 1}}
                     </td>

@@ -150,6 +150,7 @@ export class AddContentEntityMapComponent implements OnInit {
 
     saveContentDetails() {
         var that = this;
+        var contententitymap: any = [];
 
         if (that.stdid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Standard");
@@ -159,16 +160,21 @@ export class AddContentEntityMapComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Subject");
             $(".subname").focus();
         }
+        else if (that.enttid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter School Name");
+            $(".enttname").focus();
+        }
         else {
             commonfun.loader();
 
-            var _content: string[] = [];
+            contententitymap = that.contentDetailsDT.filter(a => a.isvisible == true)
 
-            _content = Object.keys(that.contentDetailsDT).map(function (k) {
-                return (that.contentDetailsDT[k].isvisible ? that.contentDetailsDT[k].cdid : 0)
-            });
+            for (var i = 0; i < contententitymap.length; i++) {
+                contententitymap[i].enttid = that.enttid;
+                contententitymap[i].wsautoid = that._wsdetails.wsautoid;
+            }
 
-            this._cntservice.saveContentEntityMap({ "content": _content, "enttid": that.enttid }).subscribe(data => {
+            this._cntservice.saveContentEntityMap({ "contententitymap": contententitymap }).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_contententitymap;
                     var msg = dataResult.msg;
