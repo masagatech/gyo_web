@@ -18,7 +18,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: RolloverComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "rollover", "rights": "add", "urlname": "/rollover" }
+        data: { "module": "erppsngr", "submodule": "psngrrollover", "rights": "add", "urlname": "/rollover" }
       }
     ]
   },
