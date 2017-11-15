@@ -70,7 +70,9 @@
                         </div>
                     </td>
                     <td>
-                        <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server}}" chooseLabel="Upload Content File" (onUpload)="onFileUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                        <div id="divFileUpload">
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server}}" chooseLabel="Upload Content File" (onUpload)="onFileUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                        </div>
 
                         <div *ngIf="uploadFileDT.length">
                             <div *ngFor="let file of uploadFileDT" class="box">

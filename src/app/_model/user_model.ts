@@ -20,6 +20,7 @@ export interface LoginUserModel {
   dispname: string;
   fullname: string;
   uphoto: string;
+  schoolid: string;
   enttid: number;
   enttname: string;
   schlogo: string;

@@ -59,12 +59,13 @@
                                         <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
                                     </a>
                                     <hr class="hr ui-widget-content">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(drow)">
+                                    <button *ngIf="loginUser.utype != 'emp' && loginUser.utype != 'parent'" type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(drow)">
                                         <i class="material-icons">edit</i>
                                     </button>
                                     <button type="button" class="btn btn-theme btn-xs" (click)="openMainForm(drow)">
                                         <i class="material-icons">arrow_forward</i>
-                                    </button> {{drow.mode}}
+                                    </button>
+                                    <span *ngIf="loginUser.utype != 'emp' && loginUser.utype != 'parent'">{{drow.mode}}</span>
                                 </p-panel>
                             </div>
                         </ng-template>

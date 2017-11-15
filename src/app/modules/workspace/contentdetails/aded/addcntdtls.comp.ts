@@ -127,16 +127,18 @@ export class AddContentDetailsComponent implements OnInit {
         var that = this;
         var imgfile = [];
         that.uploadFileDT = [];
+        commonfun.loader("#divFileUpload");
 
         imgfile = JSON.parse(event.xhr.response);
 
-        console.log(imgfile);
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadFileDT.push({
+                "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, ""),
+                "athtype": imgfile[i].type
+            })
+        }
 
-        setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadFileDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
-            }
-        }, 1000);
+        commonfun.loaderhide("#divFileUpload");
     }
 
     // Get File Size
@@ -227,6 +229,7 @@ export class AddContentDetailsComponent implements OnInit {
             that.contentDetailsDT.push({
                 "cdid": that.cdid, "cid": 0, "stdid": that.stdid, "subid": that.subid, "topicname": that.topicname,
                 "uploadfile": that.uploadFileDT.length == 0 ? "" : that.uploadFileDT[0].athurl,
+                "filetype": that.uploadFileDT.length == 0 ? "" : that.uploadFileDT[0].athtype,
                 "isfree": that.isfree, "cuid": "", "enttid": 0, "wsautoid": 0, "isactive": true
             });
 
@@ -234,7 +237,7 @@ export class AddContentDetailsComponent implements OnInit {
         }
     }
 
-    // Edit Prospectus No
+    // Edit Content Details
 
     editContentDetails(row) {
         var that = this;
@@ -247,7 +250,7 @@ export class AddContentDetailsComponent implements OnInit {
         that.isEditContentDetails = true;
     }
 
-    // Delete Prospectus No
+    // Delete Content Details
 
     deleteContentDetails(row) {
         row.isactive = false;
@@ -264,6 +267,7 @@ export class AddContentDetailsComponent implements OnInit {
         if (isvalidcntdtls) {
             that.selectedContentDetails.topicname = that.topicname;
             that.selectedContentDetails.uploadfile = that.uploadFileDT.length == 0 ? "" : that.uploadFileDT[0].athurl;
+            that.selectedContentDetails.filetype = that.uploadFileDT.length == 0 ? "" : that.uploadFileDT[0].filetype;
             that.selectedContentDetails.isfree = that.isfree;
             that.isEditContentDetails = false;
 

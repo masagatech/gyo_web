@@ -27,7 +27,6 @@ export class AddContentEntityMapComponent implements OnInit {
     subid: number = 0;
     cid: number = 0;
     ctitle: string = "";
-    isvisible: boolean = false;
 
     contentDetailsDT: any = [];
     selectedContentDetails: any = [];
@@ -148,23 +147,46 @@ export class AddContentEntityMapComponent implements OnInit {
 
     // Save Content Details
 
-    saveContentDetails() {
+    isValidation() {
         var that = this;
         var contententitymap: any = [];
 
         if (that.stdid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Standard");
             $(".stdname").focus();
+            return false;
         }
-        else if (that.subid == 0) {
+
+        if (that.subid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Subject");
             $(".subname").focus();
+            return false;
         }
-        else if (that.enttid == 0) {
+
+        if (that.enttid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter School Name");
-            $(".enttname").focus();
+            $(".enttname input").focus();
+            return false;
         }
-        else {
+
+        contententitymap = that.contentDetailsDT.filter(a => a.isvisible == true);
+        
+        if (contententitymap.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Please select Atleast 1 Is Visible");
+            return false;
+        }
+
+        return true;
+    }
+
+    saveContentDetails() {
+        var that = this;
+        var isvalid: boolean = false;
+        var contententitymap: any = [];
+        
+        isvalid = that.isValidation();
+
+        if (isvalid) {
             commonfun.loader();
 
             contententitymap = that.contentDetailsDT.filter(a => a.isvisible == true)
@@ -182,6 +204,7 @@ export class AddContentEntityMapComponent implements OnInit {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
+                        that.getContentDetails();
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
