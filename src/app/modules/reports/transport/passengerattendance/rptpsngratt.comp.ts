@@ -83,7 +83,8 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getAttendanceReports({
-            "flag": "filterddl", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "filterddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.monthDT = data.data.filter(a => a.group === "month");
