@@ -4,19 +4,6 @@
             <div class="col-md-5 col-xs-9">
                 <h4>{{_enttdetails.psngrtype}}</h4>
             </div>
-            <div class="col-md-2 col-xs-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Standard</label>
-                        <select id="standard" name="standard" [(ngModel)]="standard" class="form-control" (ngModelChange)="getPassengerDetails()">
-                            <option [value]="''">All</option>
-                            <option *ngFor="let row of standardDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-3 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">

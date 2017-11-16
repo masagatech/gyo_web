@@ -15,16 +15,12 @@ declare var $: any;
 
 export class ViewPassengerComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     global = new Globals();
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
-
-    standardDT: any = [];
-    standard: string = "";
 
     autoPassengerDT: any = [];
     psngrid: number = 0;
@@ -35,10 +31,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
         this.viewPassengerDataRights();
     }
 
@@ -90,7 +84,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
+            "wsautoid": this._enttdetails.wsautoid,
             "id": this._enttdetails.enttid,
             "search": query
         }).subscribe((data) => {
@@ -109,32 +103,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         Cookie.set("_psngrnm_", event.label);
 
         this.getPassengerDetails();
-    }
-
-    // Fill Entity, Standard, Month DropDown
-
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
-
-        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
-            try {
-                that.standardDT = data.data.filter(a => a.group === "standard");
-                // setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     // View Data Rights
@@ -167,8 +135,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "schid": that._enttdetails.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "schid": that._enttdetails.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
         };
 
         that._psngrservice.getPassengerDetails(params).subscribe(data => {

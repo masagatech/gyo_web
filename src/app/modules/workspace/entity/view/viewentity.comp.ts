@@ -149,7 +149,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "entttype": that.entttype, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid,
-            "schoolid": that.loginUser.schoolid, "enttid": that.enttid
+            "schoolid": that._wsdetails.schoolid, "enttid": that.enttid
         }
 
         that._entityservice.getEntityDetails(params).subscribe(data => {
