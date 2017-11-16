@@ -34,19 +34,12 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     filename: string = "";
 
-    // Upload Photo
-
-    uploadFileDT: any = [];
-    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    chooseLabel: string = "";
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getUploadConfig();
         this.viewStudentDataRights();
     }
 
@@ -59,39 +52,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
-    }
-
-    // Upload
-
-    getUploadConfig() {
-        var that = this;
-
-        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
-            that.uploadfileconfig.server = that.global.serviceurl + "exceluploads";
-            that.uploadfileconfig.serverpath = that.global.serviceurl;
-            that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
-            that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
-            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
-        }, err => {
-            console.log("Error");
-        }, () => {
-            console.log("Complete");
-        })
-    }
-
-    // File Upload
-
-    onFileUpload(event) {
-        var that = this;
-        var xlsfile = [];
-        that.uploadFileDT = [];
-
-        xlsfile = JSON.parse(event.xhr.response);
-
-        for (var i = 0; i < xlsfile.length; i++) {
-            that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") })
-        }
     }
 
     isshStudent(viewtype) {
@@ -194,25 +154,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         that.getStudentDetails();
     }
 
-    getExcelData() {
-        var that = this;
-        var params = { "filename": that.uploadFileDT[0].athurl };
-
-        that._autoservice.excelupload({}).subscribe(data => {
-            try {
-                that.studentDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-        }, () => {
-
-        })
-    }
-
     getStudentDetails() {
         var that = this;
         var params = {};
@@ -253,6 +194,10 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     public addAdmissionForm() {
         this._router.navigate(['/erp/student/admission']);
+    }
+
+    public uploadAdmissionForm() {
+        this._router.navigate(['/erp/student/upload']);
     }
 
     public editAdmissionForm(row) {

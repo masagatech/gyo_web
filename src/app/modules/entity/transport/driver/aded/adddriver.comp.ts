@@ -304,12 +304,15 @@ export class AddDriverComponent implements OnInit {
         that.mobileno2 = "";
         that.email1 = "";
         that.email2 = "";
-        that.address = "";
-        that.country = "India";
-        that.state = 0;
-        that.city = 0;
-        that.area = 0;
-        that.pincode = 0;
+        
+        that.address = that._enttdetails.address;
+        that.country = that._enttdetails.country;
+        that.state = that._enttdetails.sid;
+        that.fillCityDropDown();
+        that.city = that._enttdetails.ctid;
+        that.fillAreaDropDown();
+        that.area = that._enttdetails.arid;
+        that.pincode = that._enttdetails.pincode;
 
         that.uploadPhotoDT = [];
         that.uploadDocsDT = [];

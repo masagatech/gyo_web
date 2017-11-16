@@ -36,15 +36,10 @@
                 <button type="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
                     <i class="material-icons">add</i></button>
             </div>
-            <div class="col-md-3 col-xs-8" align="right" style="padding-top: 20px">
+            <div class="col-md-3 col-xs-8 hide" align="right" style="padding-top: 20px">
                 <div class="form-group">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}" auto="true"></p-fileUpload>
-
-                    <div *ngIf="uploadFileDT.length">
-                        <div *ngFor="let file of uploadFileDT" class="box">
-                            {{file.athurl}}
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-theme btn-xs" (click)="uploadAdmissionForm()">
+                        <i class="material-icons">add</i> Excel Upload</button>
                 </div>
             </div>
         </div>
