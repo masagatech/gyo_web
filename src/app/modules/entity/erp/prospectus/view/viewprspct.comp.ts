@@ -25,6 +25,7 @@ export class ViewProspectusComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillAYDropDown();
+        this.getProspectusDetails();
     }
 
     public ngOnInit() {
@@ -70,6 +71,8 @@ export class ViewProspectusComponent implements OnInit {
 
         })
     }
+
+    // Get Prospectus Details
 
     getProspectusDetails() {
         var that = this;

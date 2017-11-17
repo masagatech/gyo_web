@@ -1,8 +1,7 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
-import { AuthenticationService } from '../_services/auth-service'
-import { LoginService } from '../_services/login/login-service';
-import { MessageService, messageType } from '../_services/messages/message-service';
-import { UserReq, LoginUserModel } from '../_model/user_model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {  } from '../_services/auth-service'
+import { MessageService, messageType, AuthenticationService, LoginService } from '@services';
+import { UserReq, LoginUserModel, Globals } from '@models';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -11,9 +10,12 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     providers: [AuthenticationService]
 })
 
-export class LoginComponent implements OnInit,OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
     public errorMsg = '';
     public btnLoginText = 'Login';
+
+    headertitle: string = "";
+
     _user = new UserReq("", "");
 
     constructor(private _router: Router, private _service: AuthenticationService, private _loginservice: LoginService, private _msg: MessageService) {
@@ -30,6 +32,20 @@ export class LoginComponent implements OnInit,OnDestroy {
         }
 
         Cookie.deleteAll();
+
+        that.getHeaderTitle();
+    }
+
+    getHeaderTitle() {
+        if (Globals.weburl == "school.goyo.in") {
+            this.headertitle = "School Management System";
+        }
+        else if (Globals.weburl == "track.goyo.in") {
+            this.headertitle = "Vehicle Tracking";
+        }
+        else {
+            this.headertitle = "School Management System";
+        }
     }
 
     login(e) {
@@ -76,7 +92,7 @@ export class LoginComponent implements OnInit,OnDestroy {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
-            
+
             commonfun.loaderhide("#loginloader");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -90,7 +106,7 @@ export class LoginComponent implements OnInit,OnDestroy {
         $('body').addClass('backgroundImg');
     }
 
-    ngOnDestroy(){
-         $('body').removeClass('backgroundImg');
+    ngOnDestroy() {
+        $('body').removeClass('backgroundImg');
     }
 }

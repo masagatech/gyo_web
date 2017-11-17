@@ -14,13 +14,17 @@ export class ViewProspectusIssuesComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    ayDT: any = [];
+    ayid: number = 0;
+
     prospectusIssuesDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _assmservice: ProspectusService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _prspctservice: ProspectusService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.fillAYDropDown();
         this.getProspectusIssues();
     }
 
@@ -28,12 +32,54 @@ export class ViewProspectusIssuesComponent implements OnInit {
 
     }
 
+    // Fill Academic Year Down
+
+    fillAYDropDown() {
+        var that = this;
+        var defayDT: any = [];
+
+        commonfun.loader();
+
+        that._prspctservice.getProspectusDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.ayDT = data.data;
+
+                if (that.ayDT.length > 0) {
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].ayid;
+                        that.getProspectusIssues();
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Prospectus Issues
+
     getProspectusIssues() {
         var that = this;
         commonfun.loader();
 
-        that._assmservice.getProspectusIssues({
-            "flag": "all", "enttid": that._enttdetails.enttid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+        that._prspctservice.getProspectusIssues({
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -58,6 +104,6 @@ export class ViewProspectusIssuesComponent implements OnInit {
     }
 
     public editProspectusIssues(row) {
-        this._router.navigate(['/prospectus/issues/edit', row.issuesid]);
+        this._router.navigate(['/prospectus/issues/edit', row.prspctid]);
     }
 }

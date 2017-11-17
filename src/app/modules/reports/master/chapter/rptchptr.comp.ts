@@ -76,7 +76,7 @@ export class ChapterReportsComponent implements OnInit, OnDestroy {
 
         that._chptrservice.getChapterDetails({
             "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "classid": that.classid, "subid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {

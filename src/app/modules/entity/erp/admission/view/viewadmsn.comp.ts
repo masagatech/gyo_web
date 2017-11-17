@@ -32,6 +32,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     studentDT: any = [];
 
+    filename: string = "";
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
@@ -46,8 +48,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         that.refreshButtons();
 
         setTimeout(function () {
-            $(".enttname input").focus();
-
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
@@ -194,6 +194,10 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     public addAdmissionForm() {
         this._router.navigate(['/erp/student/admission']);
+    }
+
+    public uploadAdmissionForm() {
+        this._router.navigate(['/erp/student/upload']);
     }
 
     public editAdmissionForm(row) {
