@@ -65,6 +65,21 @@ export const routes = [
             path: 'class/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
             data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
           },
+
+          // Library
+
+          {
+            path: 'library/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
+          },
+          {
+            path: 'library/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
+          },
+          {
+            path: 'library/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
+          },
         ]
       }
     ]
