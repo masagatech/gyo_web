@@ -1,0 +1,192 @@
+<div class="row clearfix">
+    <div *ngIf="isplayerShow">
+        <div class="col-md-12" class="backholder">
+            <a class="backarrow" (click)="hidePlayer();" role="button">
+                <i class="material-icons">chevron_left</i>
+                <span>Back to Search</span>
+            </a>
+        </div>
+        <div class="col-md-12">
+            <div class="row player">
+                <div class="playholder">
+                    <a (click)="playPause()" class="play" role="button">
+                        <i class="material-icons">{{ isplay == true ? 'pause_circle_outline' : 'play_circle_outline'}}</i>
+                    </a>
+                    <span class="vhbatr">
+                        <span class="vhbtrper">{{btr | _currency:{'decimals':0, 'currsym': '' } }}%</span>
+                        <span class="btr" style="border:1px solid #000;">
+                            <span class="btr-line" title="{{btr}}%" [ngStyle]="{'width': btr+'%'}"></span>
+                        </span>
+                    </span>
+                </div>
+                <div style=" margin-left: 56px; margin-right: 12px;">
+                    <p-slider [(ngModel)]="val" [animate]="true" [max]="maxrange" (mousedown)="mousedown()" [style]="{'margin-top': '6px'}" (onChange)="onSliderChnage($event)"></p-slider>
+                    <span class="timer">{{servertimer}}</span>
+                    <p-slider [(ngModel)]="speedval" [animate]="true" [min]="1" [max]="10" [step]="1" [style]="{  'margin-top': '20px', 'position': 'absolute','width': '61px','right': '40px'}"
+                        (onChange)="onSpeedSliderChnage($event)"></p-slider>
+                    <span class="speedtext">{{speedval + "x"}}</span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="qa-message-list">
+                    <div class="message-item" *ngFor="let l of psngrDT">
+                        <div class="message-inner">
+                            <div class="message-head clearfix">
+                                <i class="material-icons status {{'stat'+l.st}}">{{ l.st == 0 ? 'access_time' : l.st == 1 ? 'beenhere' : 'do_not_disturb_alt' }}</i>
+                                <span class="status textstatus {{'stat'+l.st}}">{{ l.st == 0 ? 'no action' : l.st == 1 ? (l.pd === 'p' ? 'picked up': 'dropped') : 'absent'
+                                    }}
+                                </span>
+                                <div class="avatar pull-left">
+                                    <img src="{{global.uploadurl + l.ico}}" onerror="this.src='assets/img/no.jpg';">
+                                </div>
+                                <div class="user-detail">
+                                    <div class="post-meta">
+                                        <div class="asker-meta">
+                                            <span class="qa-message-what">{{l.stnm}}</span>
+                                            <span class="qa-message-when">
+                                                <span class="qa-message-when-data">{{l.pdtime ? (l.pdtime | format :{'format':'DD-MMM-YYYY hh:mm:ss A'}) : 'No
+                                                    Action Taken'}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isplayerShow">
+        <div class="header">
+            <h6>Search Older History(60 days)</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <p-calendar [(ngModel)]="dateToValue" [showTime]="false" [readonlyInput]="true" placeholder="To Date" inputStyleClass="form-control form-control-bordered"
+                            dateFormat="dd-mm-yy"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+
+                    <button (click)="getTripDelta('0')" class="btn btn-success btn-sm">GET</button>
+                    <button (click)="resetHistory()" class="btn btn-primary btn-sm">RESET</button>
+
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-6">
+            <div class="form-group">
+                <p-calendar [(ngModel)]="dateFromValue" [readonlyInput]="true" placeholder="From Date" inputStyleClass="form-control form-control-bordered" dateFormat="dd-mm-yy" [showTime]="true"></p-calendar>
+            </div>
+        </div> -->
+
+        <div class="col-md-12 text-center">
+            <br/>
+        </div>
+        <div class="col-md-12">
+            <div class="summary">
+                <div class="tot_distance">{{summary.totaldistance | _currency:{'decimals':0, 'currsym': '' } }}
+                    <span>KM</span>
+                </div>
+                <div class="tot_text">
+                    <span>Total Driving Time : {{summary.totalDrive}}</span>
+                    <span></span>
+                </div>
+            </div>
+
+
+            <div class="lineHolder">
+                <!-- <div class="lineitem dashed">
+                    <div class="contLeft"></div>
+                    <div class="liner">
+                        <div class="innerLine"></div>
+                    </div>
+                    <div class="contRight">
+                        <div class="connecter">
+
+                        </div>
+                        <div class="text">
+                            <span>STOP</span>
+                            <span>00:30:00</span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="lineitem {{row.trktyp}}" *ngFor="let row of timelineTrack; let i = index;" (mouseover)="onsegover(i, row)" (mouseout)="onsegleave(i, row)"
+                    (click)="onsegclick(i,row)">
+                    <div class="contLeft">
+                        <div class="text">
+                            <span> {{row.sttm | format :{'format':'DD MMM'} }}</span>
+                            <span> {{row.sttm | format :{'format':'hh:mm A'} }}</span>
+
+                        </div>
+                    </div>
+                    <div class="liner">
+                        <div class="innerLine ">
+
+                        </div>
+                    </div>
+                    <div class="contRight">
+
+                        <div class="connecter"></div>
+                        <div class="text">
+                            <span class="head {{row.trktyp}}_col">{{row.trktyp === 'solid' ? 'DRIVING' : 'STOP / NO INFO' }}</span>
+                            <span>{{row.dur }}</span>
+                            <span *ngIf="row.trktyp === 'solid'">{{row.dist | _currency:{'decimals':2, 'currsym': '' } }} km</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="lineitem dashed">
+                    <div class="contLeft"></div>
+                    <div class="liner">
+                        <div class="innerLine"></div>
+                    </div>
+                    <div class="contRight">
+
+                        <div class="connecter"></div>
+                    </div>
+                </div> -->
+
+                <!-- <div class="lineitem" *ngFor="let row of timelineTrack">
+                    <div class="contLeft"></div>
+                    <div class="liner">
+                        <div class="innerLine"></div>
+                    </div>
+                    <div class="contRight">
+
+                        <div class="connecter">
+
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <!-- <div class="trptype">
+                    <span>{{row.pdtyp}}</span>
+                </div>
+                <div class="detailBlock">
+                    <a class="slideright" (click)="showPlayer(row);" role="button">
+                        <i class="material-icons"> chevron_right</i>
+                    </a>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <b>{{row.stdt | format :{'format':'DD-MMM-YYYY hh:mm A'} }}</b>
+                        </div>
+                        <div class="col-md-12 leftmar">
+                            <span class="material-icons ico-specify"></span>{{ row.stpdt ? (row.stpdt | format :{'format':'DD-MMM-YYYY hh:mm A'}) : 'Trip In Progress'
+                            }}
+                        </div>
+                        <div class="col-md-12 leftmar">
+                        </div>
+                    </div>
+                </div>
+                <div class="statusicon" align="right">
+                    <span class="material-icons">
+                        {{row.st == "2" ? "beenhere" : "access_time"}}
+                    </span>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,194 @@
+<div class="col-md-3 card" id="sidepanel" style="height: calc(100vh - 50px);overflow: auto;padding: 0px!important;margin-bottom:0px;border-right: 1px solid #ddd;background-color: rgb(241, 242, 245);">
+    <div class="body hide" style="height:55px;">
+        <div class="row clearfix ">
+            <div class="form-group">
+                <div class="form-line">
+                    <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttdata" [tabindex]="1" (onSelect)="selectEntityData($event)"
+                        [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30"
+                        class="form-controlAutoComplete enttname" placeholder="Search for entity"></p-autoComplete>
+                    <span class="material-icons inputserachico" style="top:4px;">search</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="    height: 30px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fcfcfc;
+    box-shadow: none;padding-left: 10px;
+    padding-right: 10px;">
+        <div class="btn-group btn-group-sm btn-group-justified" role="group" style="box-shadow:none" aria-label="Justified button group">
+            <a href="javascript:void(0);" class="btn bg-info waves-effect {{olfilter === 'all' ? 'active':''}}" (click)="filter('all'); false"
+                role="button">ALL ({{_counter.all}})</a>
+            <a href="javascript:void(0);" class="btn bg-success waves-effect {{olfilter === 'ol' ? 'active':''}}" (click)="filter('ol'); false"
+                role="button">ONL ({{_counter.online}})</a>
+            <a href="javascript:void(0);" class="btn bg-danger waves-effect {{olfilter === 'of' ? 'active':''}}" (click)="filter('of'); false"
+                role="button">OFF ({{_counter.offline}})</a>
+            <a href="javascript:void(0);" class="btn bg-warning waves-effect {{olfilter === 'ig' ? 'active':''}}" (click)="filter('ig'); false"
+                role="button">IGN ({{_counter.ign}})</a>
+        </div>
+
+
+    </div>
+
+
+    <div class="col-md-12 vehiclewrapper" style="height: calc(100% - 30px);" id="style-15">
+
+        <ul class="vehicles">
+            <li *ngFor="let row of vehtypeDT">
+                <div class="vehicle" *ngIf="olfilter ==='all' || olfilter === row.os || (olfilter === 'ol' && row.os === 'ig')">
+                    <div class="vhwrapper {{row.isshow ? (row.min > offlinetimeout ?  (row.min > 8 ? 'di': 'of') : 'ol') : 'ou'}}">
+                        <div class="vhbody">
+                            <div class="titlewrap">
+                                <div class="vhchkbx">
+                                    <input type="checkbox" id="{{row.vhid}}" [(ngModel)]="row.sel" data-md-icheck (change)="onchange($event, row)" class="small filled-in">
+                                    <label for="{{row.vhid}}"></label>
+                                    <img id="{{'vh'+ row.vhid}}" src="assets/img/map/{{row.ico}}_0.png?v=1" height="40px" />
+                                </div>
+
+                                <span class="vhbatr pull-right" style="width: 48px;
+                            text-align: right;" *ngIf="row.isshow">
+                                    {{row.isempty}}
+                                    <span class="vhbtrper">
+                                        <i *ngIf="row.btrst !== undefined && row.btrst !== 'BTRY'" class="chrg fa fa-bolt" style="
+                                    position: absolute;
+                                    right: -15px;
+                                    z-index: 111;
+                                    top: 1px;
+                                    -ms-transform: rotate(77deg); /* IE 9 */
+                                    -webkit-transform: rotate(77deg); /* Chrome, Safari, Opera */
+                                    transform: rotate(77deg);
+                                    color: #000;
+                                "></i>
+                                        {{row.btr | _currency:{'decimals':0, 'currsym': '' } }}%</span>
+                                    <span class="btr">
+                                        <span class="btr-line" title="{{row.btr}}%" [ngStyle]="{'width': row.btr+'%'}"></span>
+                                    </span>
+                                </span>
+                                <span class="vhbatr pull-right" title="{{row.rng+'%'}}" *ngIf="row.isshow" style="margin-right: 10px;
+                            margin-top: -2px;position: relative;width: 15px;height: 10px;">
+                                    <div class="range" [ngStyle]="{'width': row.rng+'%'}">
+                                    </div>
+                                    <div style="position:absolute;z-index: 2;  border-bottom: 10px solid rgba(255, 47, 47, 0.17);border-left: 15px solid rgb(255, 255, 255);">
+                                    </div>
+                                </span>
+                                <span class="vhbatr pull-right" style="margin-right: 10px;margin-top: -1px;position: relative;width: 15px;height: 10px;"
+                                    title="100%">
+                                    <div [ngClass]="row.acc === 0 ? 'engoff' : 'engon' " title="{{row.acc === 0 ? 'Ignation OFF' : 'Ignation ON' }}">
+                                    </div>
+
+                                </span>
+                                <div class="vhtitle">
+                                    {{row.vno}}
+                                </div>
+
+                                <div class="vhsubtitle hide">
+                                    <div>
+                                        <span class="shortdet">{{row.vrg}}&nbsp;&nbsp;&nbsp;{{row.vmodl}}</span>
+                                        <span class="tripstatus pull-right">{{row.flag == 'inprog' ? 'TRIP IN PROGRESS' : (row.flag == 'start' ? 'TRIP STARTED'
+                                            : 'TRIP STOPPED') }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="vhsubtitle">
+                                    <div *ngIf="row.isshow">
+                                        <span class="time" title="{{row.sertm}}">{{row.sertm | timeAgo}}</span>
+                                        <span class="speed pull-right">{{row.speed | _currency:{'decimals':0, 'currsym': '' } }} km/h</span>
+                                    </div>
+                                    <span *ngIf="!row.isshow">No updates found</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vhfooter" style="margin-left: 33px;">
+                            <div class="btn-group btn-group-xs btn-group-justified" role="group" aria-label="Justified button group">
+                                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="info_click(row,$event); false" role="button">INFO</a>
+                                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="passenger_click(row,$event); false" role="button">STUDENTS</a>
+                                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="history_click(row,$event); false" role="button">HISTORY</a>
+                                <a href="javascript:void(0);" class="btn {{row.isfollow ? 'btn-info' : 'bg-info'}} waves-effect" (click)="clickVehicle(row,$event); false"
+                                    role="button">{{row.isfollow ? 'UNFOLLOW' : 'FOLLOW'}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="col-md-9" id="map" style="margin-bottom:0px;padding:0px!important">
+    <div class="col-md-12" style="height: 30px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;">
+        <div class="pull-left" style="width: 100px;">
+            <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="markerOptions.showinfo" (ngModelChange)="showinfowindow()"
+                class="chk-col-blue-grey" checked="">
+            <label for="md_checkbox_chktitle">{{markerOptions.showinfo === true ? 'Hide Titles' : 'Show Titles' }}</label>
+        </div>
+        <div class="pull-left" style="width: 94px;">
+            <input type="checkbox" id="md_checkbox_chlives" [(ngModel)]="markerOptions.hidelive" (ngModelChange)="hidelives()" class="chk-col-orange"
+                checked="">
+            <label for="md_checkbox_chlives">{{markerOptions.hidelive === true ? 'Show Live' : 'Hide Live' }}</label>
+        </div>
+        <div class="pull-left" style="width: 105px;">
+            <input type="checkbox" id="md_checkbox_showtrafic" [(ngModel)]="markerOptions.showtrafic" (ngModelChange)="showHidetraffic()"
+                class="chk-col-orange" checked="">
+            <label for="md_checkbox_showtrafic">{{markerOptions.showtrafic === true ? 'Hide Traffic' : 'Show Traffic' }}</label>
+        </div>
+        <div class="pull-left" style="width: 108px;padding-top:4px; ">
+            <button class="btn btn-primary bg-info btn-xs" (click)="boundtomap()">Fit To Window</button>
+        </div>
+    </div>
+    <div style="left: 0px;z-index: 1;position: absolute;top:113px;background:#ffffff;height:40px;">
+        <a role="button" (click)="closesidepanel()">
+            <i class="material-icons" id="closeicon">keyboard_arrow_left</i>
+        </a>
+    </div>
+    <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 80px)', 'position': 'relative', 'overflow': 'hidden'}"
+        [options]="options" [overlays]="overlays"></p-gmap>
+</div>
+
+<section>
+    <div class="righthandle" style="display:none;right: 0px; border: 3px solid #000; border-right: 0;z-index: 999999999999;position: absolute;top:113px;background:#ffffff;height:40px;">
+        <a role="button">
+            <i class="material-icons" id="closeicon">keyboard_arrow_left</i>
+        </a>
+    </div>
+    <aside id="rightsidebar" class="right-sidebar">
+        <div class="card" style="height: 100%;">
+            <div class="header bg-blue-grey">
+                <h2>{{sidebarTitle}}
+                    <small>{{selectedSVh.vno +' '+ selectedSVh.vrg}}</small>
+                </h2>
+
+                <ul class="header-dropdown m-r--5" style="top: 0px;">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">more_vert</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="javascript:void(0);" class=" waves-effect waves-block">Action</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" (click)="close_sidebar();">
+                            <i class="material-icons">close</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-group btn-group-xs btn-group-justified" role="group" aria-label="Justified button group">
+                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="info_click(selectedSVh,$event); false" role="button">INFO</a>
+                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="passenger_click(selectedSVh,$event); false" role="button">PASSENGERS</a>
+                <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="history_click(selectedSVh,$event); false" role="button">HISTORY</a>
+            </div>
+            <div class="body" id="loaderbody" style="height: calc(100% - 75px);overflow: auto;font-size: 12px;">
+                <ng-template ADHOST></ng-template>
+                <!-- <ng-container #test *ngComponentOutlet="detailcomp"></ng-container> -->
+            </div>
+        </div>
+    </aside>
+</section>

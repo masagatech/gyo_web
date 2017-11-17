@@ -1,0 +1,67 @@
+<ul class="nav nav-tabs tab-nav-right" role="tablist">
+    <li role="presentation"><a href="#vhinfo" data-toggle="tab" (click)="getVHInfo()">Vehicle Info</a></li>
+    <li role="presentation" class="active"><a href="#todaytrp" data-toggle="tab">Today's Trips</a></li>
+</ul>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="vhinfo">
+        <div class="font-bold m-b--35">
+            <img src="assets/img/map/{{vhinfo.ico}}_0.png" height="48px" />
+        </div>
+        <ul class="dashboard-stat-list">
+            <li>
+                <b>Vehicle Id</b>
+                <span class="pull-right">{{vhinfo.vhid}}</span>
+            </li>
+            <li>
+                <b>Nubmber/Name</b>
+                <span class="pull-right">{{vhinfo.vhno}}</span>
+            </li>
+            <li>
+                <b>Registration No.</b>
+                <span class="pull-right">{{vhinfo.vrg}}</span>
+            </li>
+            <li>
+                <b>Model</b>
+                <span class="pull-right">{{vhinfo.vmodl}}</span>
+            </li>
+            <li>
+                <b>Condition</b>
+                <span class="pull-right">{{vhinfo.vhcnd}}</span>
+            </li>
+            <li>
+                <b>Capacity</b>
+                <span class="pull-right">{{vhinfo.vhcap}}</span>
+            </li>
+            <li>
+                <b>Facilities</b>
+                <span class="pull-right">{{vhinfo.vhfac}}</span>
+            </li>
+        </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane fade in active" id="todaytrp">
+        <div *ngFor="let row of tripDT" class="def-box">
+            <div class="row clearfix">
+                <div class="col-md-11">
+                    <b>{{row.nm}}</b>
+                    <br />
+                    <b>Batch : </b>{{row.btch}}
+                </div>
+                <div class="col-md-1" align="right">
+                    <span class="material-icons {{row.sts}}">
+                        {{row.stsi == "0" ? "access_time" : row.stsi == "1" ? "play_arrow" : "done"}}
+                    </span>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-3">
+                    <span class="{{row.pd == 'p' ? 'pickup' : 'drop'}}">
+                        {{row.pd == "p" ? "Pickup" : "Drop"}}
+                    </span>
+                </div>
+                <div class="col-md-9">
+                    {{row.date}} - {{row.time}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
