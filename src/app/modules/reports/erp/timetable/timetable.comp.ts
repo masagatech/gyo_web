@@ -11,7 +11,7 @@ import jsPDF from 'jspdf';
     providers: [CommonService]
 })
 
-export class TimetableComponent implements OnInit, OnDestroy {
+export class TimetableReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 

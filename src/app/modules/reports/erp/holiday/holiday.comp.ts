@@ -11,7 +11,7 @@ import jsPDF from 'jspdf';
     providers: [CommonService]
 })
 
-export class HolidayComponent implements OnInit, OnDestroy {
+export class HolidayReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 

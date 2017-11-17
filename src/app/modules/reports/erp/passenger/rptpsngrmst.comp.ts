@@ -161,8 +161,8 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
                 }
 
                 params = {
-                    "flag": that.psngrtype, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                    "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "classid": that.classid,
+                    "flag": "profile", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                    "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "psngrtype": that.psngrtype, "classid": that.classid,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,  "issysadmin": that.loginUser.issysadmin
                 };
 

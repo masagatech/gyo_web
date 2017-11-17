@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { TimetableComponent } from './timetable.comp';
+import { TimetableReportsComponent } from './timetable.comp';
 
 import { ClassTimeTableService } from '@services/erp';
 
@@ -14,7 +14,7 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: TimetableComponent, canActivate: [AuthGuard],
+        path: '', component: TimetableReportsComponent, canActivate: [AuthGuard],
         data: { "module": "rptpsngr", "submodule": "rptpsngrtmt", "rights": "view", "urlname": "/timetable" }
       },
     ]
@@ -23,7 +23,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    TimetableComponent
+    TimetableReportsComponent
   ],
 
   imports: [
@@ -34,6 +34,6 @@ export const routes = [
     providers: [AuthGuard, ClassTimeTableService]
 })
 
-export class TimetableModule {
+export class TimetableReportsModule {
   public static routes = routes;
 }

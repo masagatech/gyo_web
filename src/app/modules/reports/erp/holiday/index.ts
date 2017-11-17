@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
-import { HolidayComponent } from './holiday.comp';
+import { HolidayReportsComponent } from './holiday.comp';
 
 import { HolidayService } from '@services/master';
 
@@ -14,7 +14,7 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: HolidayComponent, canActivate: [AuthGuard],
+        path: '', component: HolidayReportsComponent, canActivate: [AuthGuard],
         data: { "module": "rptpsngr", "submodule": "rptpsngrhld", "rights": "view", "urlname": "/holiday" }
       },
     ]
@@ -23,7 +23,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    HolidayComponent
+    HolidayReportsComponent
   ],
 
   imports: [

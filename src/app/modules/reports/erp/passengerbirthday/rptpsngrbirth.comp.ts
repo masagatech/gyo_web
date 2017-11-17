@@ -56,8 +56,8 @@ export class PassengerBirthdayComponent implements OnInit {
                 }
 
                 params = {
-                    "flag": "birthday", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                    "flag": "birthday", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }
 
                 that._admsnservice.getPassengerDetails(params).subscribe(data => {
