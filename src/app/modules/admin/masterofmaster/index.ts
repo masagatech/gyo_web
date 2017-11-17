@@ -21,35 +21,50 @@ export const routes = [
             data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/other" }
           },
 
-          // Master
+          // Admin
 
           {
-            path: 'other/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
+            path: 'master/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
             data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
           },
           {
-            path: 'other/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            path: 'master/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
             data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
           },
           {
-            path: 'other/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            path: 'master/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
             data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
           },
 
-          // Admin
+          // Entity
 
-          // {
-          //   path: 'master/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
-          //   data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
-          // },
-          // {
-          //   path: 'master/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
-          //   data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
-          // },
-          // {
-          //   path: 'master/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
-          //   data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
-          // },
+          {
+            path: 'entity/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
+          },
+          {
+            path: 'entity/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
+          },
+          {
+            path: 'entity/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
+          },
+
+          // Class
+
+          {
+            path: 'class/:grpcd', component: ViewMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "view", "urlname": "/group" }
+          },
+          {
+            path: 'class/:grpcd/add', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "add", "urlname": "/add" }
+          },
+          {
+            path: 'class/:grpcd/edit/:id', component: AddMOMComponent, canActivateChid: [AuthGuard],
+            data: { "module": "set", "submodule": "mom", "rights": "edit", "urlname": "/edit" }
+          },
         ]
       }
     ]
