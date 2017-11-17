@@ -8,8 +8,6 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { TripTrackingComponent } from './ttmap.comp';
 import { TTMapService } from '@services/master';
 import { Globals } from '@models';
-import { TimeAgoPipe } from '@pipe/timeago';
-import { ADHOST } from '@directives';
 
 import { PSGComponent } from './passengers/psg.comp';
 import { INFOComponent } from './info/info.comp';
@@ -38,10 +36,8 @@ export const routes = [
 @NgModule({
   declarations: [
     TripTrackingComponent,
-    TimeAgoPipe,
     PSGComponent,
     INFOComponent,
-    ADHOST,
     HISTORYComponent
   ],
 

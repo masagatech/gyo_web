@@ -8,15 +8,16 @@ import { GroupByPipe } from '../_pipe/groupby.pipe';
 import { HeaderComponent } from '../modules/usercontrol/header/header.comp';
 import { LeftSideBarComponent } from '../modules/usercontrol/leftsidebar/leftsidebar.comp';
 import { LeftDashboardComponent } from '../modules/usercontrol/leftdashboard/leftdb.comp';
-import { OnlyNumber } from '@directives';
+import { ADHOST, OnlyNumber } from '@directives';
+import { TimeAgoPipe } from '@pipe/timeago';
 import { format } from '@pipe/format';
 
 @NgModule({
     imports: [RouterModule, FormsModule, CommonModule],
     declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
-        LeftDashboardComponent, OnlyNumber, format],
+        LeftDashboardComponent, ADHOST, OnlyNumber, TimeAgoPipe, format],
     exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
-        LeftDashboardComponent, OnlyNumber, format]
+        LeftDashboardComponent, ADHOST, OnlyNumber, TimeAgoPipe, format]
 })
 
 export class SharedComponentModule { }
