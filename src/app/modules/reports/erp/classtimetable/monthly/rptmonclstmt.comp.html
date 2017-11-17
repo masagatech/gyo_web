@@ -1,0 +1,108 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <h4>Class TimeTable</h4>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="2" (ngModelChange)="getMonthlyClassTimeTable();">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="3" (ngModelChange)="getMonthlyClassTimeTable();">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Teacher</label>
+                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="4" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetClassTimeTableDetails()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3" style="padding-top: 20px;" align="right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div #class class="row clearfix">
+            <div class="col-md-12 reports">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="200px">Date / Time</th>
+                            <th *ngFor="let cscol of classTimeTableColumn" align="right">
+                                {{cscol.monthname}}
+                            </th>
+                            <th width="100px" align="right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of classTimeTableDT | groupBy: 'classname'">
+                        <tr class="tr-table" *ngIf="row.key !== '' && row.key !== 'Total'">
+                            <th colspan="14">
+                                {{row.key == 'Total' ? '' : row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value" class="{{drow.class}}">
+                            <td>
+                                {{drow.subname}}
+                            </td>
+                            <td *ngFor="let cscol of classTimeTableColumn" align="right">
+                                {{drow[cscol.monthname] == null ? 0 : drow[cscol.monthname]}}
+                            </td>
+                            <td align="right">
+                                {{drow.total}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- <div class="col-md-12 reports" *ngIf="schtype == 'monthly'">
+                <p-dataTable [value]="classTimeTableDT">
+                    <p-column field="subname" header="Subject" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
+                    <p-column *ngFor="let cscol of classTimeTableColumn" header="{{cscol.monthname}}" [style]="{'width': '25px', 'text-align':'center'}">
+                        <ng-template let-drow="rowData" pTemplate type="body">
+                            {{drow[cscol.monthname]}}
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div> -->
+        </div>
+    </div>
+</div>

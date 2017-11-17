@@ -1,0 +1,126 @@
+<div class="card">
+    <div class="header">
+        <h4>{{psngrtypenm}} Timetable</h4>
+
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getTimeTable()" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="classid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getTimeTable()" tabindex="2">
+                            <option [value]="0">{{psngrtype == 'student' ? 'Select Class' : 'All'}}</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-6">
+                <div class="form-group" id="divPassenger">
+                    <div class="form-line">
+                        <label class="control-label">{{psngrtypenm}}</label>
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Date <strong>*</strong></label>
+                        <input type="date" id="caldate" name="caldate" [(ngModel)]="caldate" class="form-control caldate" tabindex="3">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-2" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getTimeTable()">
+                        <i class="material-icons">arrow_forward</i></button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2" style="padding-top: 20px; text-align: right;">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix" *ngIf="statusid == 0">
+        <div class="col-md-12">
+            <h4>{{statusdesc}}</h4>
+        </div>
+    </div>
+
+    <div class="row clearfix" *ngIf="statusid != 0">
+        <div class="col-md-12">
+            <table class="table table-bordered table-responsive reports">
+                <thead>
+                    <tr>
+                        <th width="100px">
+                            Class
+                        </th>
+                        <th width="200px">
+                            Teacher
+                        </th>
+                        <th *ngIf="psngrtype == 'student'" width="200px">
+                            Student Name
+                        </th>
+                        <th width="100px">
+                            From Time
+                        </th>
+                        <th width="100px">
+                            To Time
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of timetableDT">
+                        <td>
+                            {{row.classname}}
+                        </td>
+                        <td>
+                            {{row.tchrname}}
+                        </td>
+                        <td *ngIf="psngrtype == 'student'">
+                            {{row.studname}}
+                        </td>
+                        <td>
+                            {{row.frmtm == null ? '' : row.frmtm}}
+                        </td>
+                        <td>
+                            {{row.totm == null ? '' : row.totm}}
+                        </td>
+                        <td>
+                            {{row.subname}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

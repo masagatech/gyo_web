@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerLeaveService } from '@services/erp';
+import { LeaveService } from '@services/erp';
+import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
 
 @Component({
@@ -14,35 +16,32 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    ayDT: any = [];
-    ayid: number = 0;
+    frmdt: any = "";
+    todt: any = "";
 
-    classDT: any = [];
-    classid: number = 0;
+    passengerDT: any = [];
+    psngrdata: any = [];
+    psngrid: number = 0;
+    psngrname: string = "";
 
-    header: any;
-    event: MyEvent;
-    dialogVisible: boolean = false;
-    idGen: number = 100;
-    defaultDate: string = "";
+    psngrtype: any = "";
+    psngrtypenm: any = "";
 
-    leaveDT: any = [];
-    leaveReportsDT: any = [];
+    status: number = -1;
 
-    @ViewChild('class') class: ElementRef;
+    lvpsngrDT: any = [];
 
-    gridTotal: any = {
-        strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-    };
+    @ViewChild('rptpsngrlv') rptpsngrlv: ElementRef;
+
+    private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _lvrptservice: PassengerLeaveService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _lvservice: LeaveService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
-        this.getDefaultDate();
-        this.getTeacherLeave();
+        this.setFromDateAndToDate();
+        this.getPassengerLeaveReports();
     }
 
     public ngOnInit() {
@@ -52,10 +51,10 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
-        }, 100);
+        }, 0);
     }
 
-    // Format Date
+    // Selected Calendar Date
 
     formatDate(date) {
         var d = new Date(date),
@@ -69,69 +68,136 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         return [year, month, day].join('-');
     }
 
-    getDefaultDate() {
+    // Format Date
+
+    setFromDateAndToDate() {
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        this.defaultDate = this.formatDate(today);
+        var after1month = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 30);
+
+        this.frmdt = this.formatDate(today);
+        this.todt = this.formatDate(after1month);
     }
 
-    // Fill Class Drop Down
+    // Auto Completed Passenger
 
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
+    getPassengerData(event) {
+        let query = event.query;
 
-        that._lvrptservice.getTeacherLeave({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
-            "viewby": "portal"
-        }).subscribe(data => {
-            try {
-                that.ayDT = data.data.filter(a => a.group == "ay");
-                
-                if (that.ayDT.length > 0) {
-                    that.ayid = that.ayDT.filter(a => a.iscurrent == true)[0].id;
-                    that.getTeacherLeave();
-                }
-
-                that.classDT = data.data.filter(a => a.group == "class");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
+        this._autoservice.getAutoData({
+            "flag": "Passenger",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._enttdetails.wsautoid,
+            "search": query
+        }).subscribe((data) => {
+            this.passengerDT = data.data;
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
+            this._msg.Show(messageType.error, "Error", err);
         }, () => {
 
-        })
+        });
+    }
+
+    // Selected Passenger
+
+    selectPassengerData(event, arg) {
+        var that = this;
+
+        that.psngrid = event.value;
+        that.psngrname = event.label;
+    }
+
+    // Get Passenger Leave Reports
+
+    getPassengerLeaveReports() {
+        var that = this;
+        var params = {};
+
+        commonfun.loader();
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
+
+                if (that.psngrtype == "student") {
+                    that.psngrtypenm = 'Student';
+                }
+                else if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                }
+
+                params = {
+                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "passenger" : "student", "psngrtype": that.psngrtype,
+                    "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": that.status
+                }
+
+                that._lvservice.getLeaveDetails(params).subscribe(data => {
+                    try {
+                        that.lvpsngrDT = data.data;
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+        });
+    }
+
+    // Reset Passenger Leave Reports
+
+    resetPassengerLeaveReports() {
+        this.setFromDateAndToDate();
+        this.psngrid = 0;
+        this.psngrname = "";
+        this.psngrdata = [];
+        this.status = -1;
+
+        this.getPassengerLeaveReports();
     }
 
     // Export
 
     public exportToCSV() {
         var that = this;
-        commonfun.loader();
+        var params = {};
 
-        that._lvrptservice.getTeacherLeave({
-            "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
+        commonfun.loader("#divExport");
+
+        params = {
+            "flag": "export", "frmdt": that.frmdt, "todt": that.todt, "psngrid": that.psngrid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+            "status": that.status, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }
+
+        that._lvservice.getLeaveDetails(params).subscribe(data => {
             try {
-                that._autoservice.exportToCSV(data.data, "Leave");
+                that._autoservice.exportToCSV(data.data, that.psngrtypenm + " Leave Details");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
-            commonfun.loaderhide();
+            commonfun.loaderhide("#divExport");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
+            commonfun.loaderhide("#divExport");
         }, () => {
 
         })
@@ -142,69 +208,13 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         let options = {
             pagesplit: true
         };
-        pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Leave.pdf");
+        pdf.addHTML(this.rptpsngrlv.nativeElement, 0, 0, options, () => {
+            pdf.save(this._enttdetails.psngrtypenm + " Leave.pdf");
         });
-    }
-
-    getTeacherLeave() {
-        var that = this;
-        commonfun.loader();
-
-        that._lvrptservice.getTeacherLeave({
-            "flag": "calendar", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": -1
-        }).subscribe(data => {
-            try {
-                that.leaveDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    handleEventClick(e) {
-        var that = this;
-        commonfun.loader();
-
-        that._lvrptservice.getTeacherLeave({
-            "flag": "reports", "tchrid": e.calEvent.tchrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
-        }).subscribe(data => {
-            try {
-                that.leaveReportsDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
     }
-}
-
-export class MyEvent {
-    id: number;
-    title: string;
-    start: string;
-    end: string;
 }

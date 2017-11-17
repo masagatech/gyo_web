@@ -13,11 +13,21 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'leave', loadChildren: './leave#LeaveReportsModule' },
-                    { path: 'classschedule', loadChildren: './classschedule#ClassScheduleReportsModule' },
-                    { path: 'gallery', loadChildren: './gallery#GalleryReportsModule' },
-                    { path: 'exam', loadChildren: './exam#ExamReportsModule' },
-                    { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
+                    // Passenger
+                    
+                    // { path: 'teacherleave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
+
+                    { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
+                    
+                    { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
+                    { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
+
+                    { path: 'erp/teacher/leave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
+                    
+                    { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
+                    { path: 'erp/:psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
+                    { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayReportsModule' },
+                    { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableReportsModule' },
                 ]
             }
         ]

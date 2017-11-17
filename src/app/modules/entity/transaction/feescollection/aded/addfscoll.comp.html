@@ -1,0 +1,180 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Collection</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesCollection()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <b>Class Fees : </b>{{classfees | _currency:loginUser.globsettings[0]}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <b>Pending Fees : </b>{{classfees - totalFees() | _currency:loginUser.globsettings[0]}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <img alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                <br />{{studname}} - {{classname}}
+                <br /><b>Gender :</b> {{gender}}
+                <br /><b>Roll No :</b> {{rollno}}
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Category <strong>*</strong></label>
+                                <select id="catid" name="catname" [(ngModel)]="catid" (ngModelChange)="fillSubCateogryDropDown();getClassFees();" class="form-control catname" tabindex="1">
+                                    <option [value]="0">Select</option>
+                                    <option *ngFor="let crow of categoryDT" [value]="crow.key">
+                                        {{crow.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Sub Category <strong>*</strong></label>
+                                <select id="subcatid" name="subcatname" [(ngModel)]="subcatid" (ngModelChange)="getClassFees()" class="form-control subcatname" tabindex="2">
+                                    <option [value]="0">Select</option>
+                                    <option *ngFor="let scrow of subCategoryDT" [value]="scrow.key">
+                                        {{scrow.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Fees <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="fees" class="form-control text-right fees" tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Receive Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="receivedate" class="form-control receivedate" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Payment Mode <strong>*</strong></label>
+                                <select id="paymentmode" name="paymentmode" [(ngModel)]="paymentmode" class="form-control paymentmode" tabindex="5">
+                                    <option [value]="''">Select</option>
+                                    <option *ngFor="let pmrow of paymentmodeDT" [value]="pmrow.key">
+                                        {{pmrow.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix" *ngIf="paymentmode == 'cheque'">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Cheque No <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="chequeno" class="form-control text-right chequeno" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Cheque Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="chequedate" class="form-control chequedate" tabindex="7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="8"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix" *ngIf="feesCollDT.length">
+            <div class="col-md-12">
+                <h4>Payment History</h4>
+            </div>
+
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th width="150px">Category</th>
+                            <th width="150px">Sub Category</th>
+                            <th width="100px">Payment Mode</th>
+                            <th width="100px">Cheque Details</th>
+                            <th width="100px">Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of feesCollDT | groupBy: 'receivedate'">
+                        <tr class="tr-table">
+                            <th colspan="5">
+                                {{row.key}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.catname}}
+                            </td>
+                            <td>
+                                {{drow.subcatname}}
+                            </td>
+                            <td>
+                                {{drow.paymentmodenm}}
+                            </td>
+                            <td>
+                                {{drow.chequedate + drow.chequeno == 0 ? "" : " - " + drow.chequeno}}
+                            </td>
+                            <td align="right">
+                                {{drow.fees | _currency:loginUser.globsettings[0]}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="tr-table">
+                            <th colspan="4">
+                                <b>Total</b>
+                            </th>
+                            <th align="right">
+                                <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

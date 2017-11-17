@@ -1,0 +1,40 @@
+.def-box{
+    position: relative;
+}
+
+.imgProf{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: #ccc;
+    float: left;
+    margin-left: -5px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.imgProf img{
+    height: 30px;
+}
+
+.detailBlock{
+    margin-left: 35px;
+}
+span.material-icons.ico-specify {
+    font-size: 14px;
+    color: #329e05;
+    margin-top: 1px;
+    position: absolute;
+    left: -11px;
+    top: -3px;
+}
+.statusicon{
+    position: absolute;
+    right: 5px;
+    top:5px;
+}
+.leftmar{
+    margin-left: 10px;
+}

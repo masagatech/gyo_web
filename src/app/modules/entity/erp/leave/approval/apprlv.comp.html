@@ -1,0 +1,82 @@
+<div class="card">
+    <div class="header">
+        <h4>{{psngrtypenm}} Leave Approval > {{psngrname}}</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveLeaveApproval()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="viewAllLeave()">View Leave</a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="viewPendingLeave()">Pending Leave</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-md-10">
+        <div class="card" *ngIf="leaveDetailsDT.length">
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="row clearfix">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>From Date : </label> {{frmdt}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>To Date : </label> {{todt}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Leave Type : </label> {{lvtype}}
+                        </div>
+                        <div class="form-group">
+                            <label>Reason : </label> {{reason}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Remark <strong>*</strong></label>
+                                <textarea class="form-control" rows="6" [(ngModel)]="apprremark" tabindex="1"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label>Status <strong>*</strong></label>
+                                <select id="status" [(ngModel)]="status" class="form-control status" tabindex="2">
+                                    <option [value]="0">Select Status</option>
+                                    <option [value]="1">Accept</option>
+                                    <option [value]="2">Reject</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card">
+            <div class="header">
+                <b>Leave {{psngrtypenm}}</b>
+            </div>
+            <div class="body">
+                <div *ngFor="let row of psngrLeaveDT" style="padding: 10px;">
+                    <a role="button" (click)="getLeaveDetails(row);">
+                        {{row.lvdate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

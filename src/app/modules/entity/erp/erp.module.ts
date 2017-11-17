@@ -15,9 +15,18 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: '', loadChildren: './dashboard#ERPDashboardModule' },
-                    { path: 'master', loadChildren: './master#ERPMasterModule' },
-                    { path: 'transaction', loadChildren: './transaction#ERPTransactionModule' },
+                    { path: 'admission/prospectus', loadChildren: './prospectus#ProspectusModule' },
+                    { path: 'prospectus/issues', loadChildren: './prospectusissues#ProspectusIssuesModule' },
+
+                    { path: 'erp/student', loadChildren: './admission#AdmissionModule' },
+
+                    { path: 'erp/:psngrtype', loadChildren: './employee#EmployeeModule' },
+
+                    { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceModule' },
+                    { path: 'erp/:psngrtype/leave', loadChildren: './leave#LeaveModule' },
+                    { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayModule' },
+                    { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
+                    { path: 'erp/:psngrtype/rollover', loadChildren: './rollover#RolloverModule' },
                 ]
             }
         ]

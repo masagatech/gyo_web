@@ -10,10 +10,15 @@ export class ModuleComponent implements OnDestroy {
     }
 
     public ngOnInit() {
-
+        // setTimeout(function () {
+        //     $.AdminBSB.islocked = true;
+        //     $.AdminBSB.leftSideBar.Close();
+        //     $.AdminBSB.rightSideBar.activate();
+        // }, 100);
     }
 
     ngOnDestroy() {
-
+        // $.AdminBSB.islocked = false;
+        // $.AdminBSB.leftSideBar.Open();
     }
 }

@@ -1,0 +1,89 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Content</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveContentInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Standard <strong>*</strong></label>
+                                <select id="stdid" name="stdname" [(ngModel)]="stdid" (ngModelChange)="fillSubjectDropDown();getContentDetails();" class="form-control stdname" tabindex="1">
+                                    <option [value]="0">Select Standard</option>
+                                    <option *ngFor="let row of standardDT" [value]="row.stdid">
+                                        {{row.stdname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Subject <strong>*</strong></label>
+                                <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="getContentDetails();" class="form-control subname" tabindex="2">
+                                    <option [value]="0">Select Subject</option>
+                                    <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                        {{row.subname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                <div *ngIf="uploadPhotoDT.length">
+                    <div *ngFor="let file of uploadPhotoDT" class="box">
+                        <div class="row clearfix">
+                            <div class="col-md-9">
+                                <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="ctitle" class="form-control ctitle" tabindex="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description <strong>*</strong></label>
+                        <textarea [(ngModel)]="cdesc" rows="5" class="form-control no-resize auto-growth cdesc" maxlength="500" tabindex="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>

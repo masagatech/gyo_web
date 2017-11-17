@@ -15,11 +15,11 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: '', loadChildren: './masterofmaster#MOMModule' },
-                    
                     { path: 'qualification', loadChildren: './qualification#QualificationModule' },
                     
                     { path: 'location', loadChildren: './location#LocationModule' },
+                    
+                    { path: 'admin', loadChildren: './masterofmaster#MOMModule' },
                     
                     // Workspace
                     { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },

@@ -14,4 +14,12 @@ export class AssignmentService {
     saveAssignmentInfo(req: any) {
         return this._dataserver.post(Globals.erproute + "saveAssignmentInfo", req)
     }
+
+    getTeacherRemark(req: any) {
+        return this._dataserver.post(Globals.erproute + "getTeacherRemark", req)
+    }
+
+    saveTeacherRemark(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveTeacherRemark", req)
+    }
 }

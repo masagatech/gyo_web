@@ -1,0 +1,135 @@
+<div class="card">
+    <div class="header">
+        <h4>Holiday</h4>
+        <ul class="header-dropdown m-r--5">
+            <li *ngIf="hldid !== 0">
+                <span class="switch">
+                    <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveHolidayInfo()"><span class="lever"></span></label>
+                </span>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveHolidayInfo()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Academic Year <strong>*</strong></label>
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassTimeTable(classid, 'view');">
+                                    <option [value]="0">Select Academic year</option>
+                                    <option *ngFor="let row of ayDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" (ngModelChange)="todt = frmdt" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="todt" class="form-control date todt" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Holiday Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="hldnm" class="form-control hldnm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Description</label>
+                                <textarea [(ngModel)]="hlddesc" rows="4" class="form-control no-resize auto-growth"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix" *ngIf="hldforDT.length">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectallhldfor" name="selectallhldfor" type="checkbox" (change)="selectAndDeselectAllHolidayForCheckboxes()" class="filled-in">
+                            <label for="selectallhldfor">Select All</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="hldforcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of hldforDT; let i = index;">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <span id="hldfor{{row.id}}">
+                                                <input id="{{row.id}}" name="hldfor{{i + 1}}" type="checkbox" value="{{row.id}}" (change)="selectAndDeselectStudentCheckboxes()" class="filled-in" />
+                                                <label for="{{row.id}}">{{row.val}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="classDT.length">
+                    <div id="divallclass" class="col-md-12 hide">
+                        <div class="form-group">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <label for="selectall">All Class</label>
+                        </div>
+                    </div>
+                    <div id="divclsright" class="col-md-12 hide">
+                        <div class="allcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of classDT; let i = index;">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <span id="cls{{row.id}}">
+                                                <input id="{{row.id}}" name="cls{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <label for="{{row.id}}">{{row.val}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

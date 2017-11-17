@@ -90,7 +90,7 @@ export class AddClassComponent implements OnInit {
                 that.standardDT = data.data.filter(a => a.group == "standard");
                 that.divisionDT = data.data.filter(a => a.group == "division");
                 that.subjectDT = data.data.filter(a => a.group == "subject");
-                that.classTypeDT = data.data.filter(a => a.group == "clstyp");
+                that.classTypeDT = data.data.filter(a => a.group == "classtype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -112,11 +112,10 @@ export class AddClassComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "employee",
+            "flag": "teacher",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
-            "emptype": "tchr",
             "classid": 0,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,

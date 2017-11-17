@@ -17,10 +17,16 @@ export class DataService {
         let body = JSON.stringify(params);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this._http.post(this.global.otherurl + api, body, options)
+        return this._http.post(api, body, options)
             .map(res => res.json())
             .catch(this.handleError);
 
+    }
+
+    otherget(api: string, params: any) {
+        return this._http.get(api + "?" + $.param(params))
+            .map(res => res.json())
+            .catch(this.handleError);
     }
 
     post(api: string, params: any) {

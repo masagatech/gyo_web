@@ -5,17 +5,18 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { LeaveReportsComponent } from './rptleave.comp';
-import { PassengerLeaveService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
+import { LeaveService } from '@services/erp';
+
+import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: LeaveReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptlv", "rights": "view", "urlname": "/leave" }
-      }
+        data: { "module": "rptpsngr", "submodule": "rptpsngrlv", "rights": "view", "urlname": "/leave" }
+      },
     ]
   },
 ];
@@ -26,13 +27,12 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
-    AutoCompleteModule, ScheduleModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule, DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, PassengerLeaveService]
+  providers: [AuthGuard, LeaveService]
 })
 
-export class LeaveReportsModule {
+export class ERPLeaveReportsModule {
   public static routes = routes;
 }

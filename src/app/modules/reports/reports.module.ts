@@ -16,15 +16,14 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'log', loadChildren: './log#LogReportsModule' },
+                    { path: '', loadChildren: './erp#ERPReportsModule' },
+                    
                     { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'master', loadChildren: './master#MasterReportsModule' },
-                    { path: 'erp', loadChildren: './erp#ERPReportsModule' },
+                    { path: 'transaction', loadChildren: './transaction#TransactionReportsModule' },
+                    { path: 'transport', loadChildren: './transport#TransportReportsModule' },
 
-                    { path: 'student', loadChildren: './passenger#PassengerReportsModule' },
-                    { path: 'passenger', loadChildren: './passenger#PassengerReportsModule' },
-                    { path: 'attendance', loadChildren: './attendance#AttendanceReportsModule' },
-                    
+                    { path: 'log', loadChildren: './log#LogReportsModule' },
                     { path: 'speed', loadChildren: './speed#SpeedReportsModule' },
                 ]
             }

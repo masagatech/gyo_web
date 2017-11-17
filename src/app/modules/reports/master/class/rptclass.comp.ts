@@ -38,7 +38,6 @@ export class ClassReportsComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".entityname input").focus();
             commonfun.navistyle();
 
             $.AdminBSB.islocked = true;
@@ -53,11 +52,10 @@ export class ClassReportsComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "teacher",
+            "flag": "classwiseteacher",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
-            "emptype": "tchr",
             "classid": 0,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,

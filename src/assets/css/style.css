@@ -5580,7 +5580,19 @@ section.content {
     color: #000000!important;
 }
 
+.table-bordered thead tr.tr-table th {
+    padding: 5px 10px!important;
+    background-color: #eeeeee!important;
+    color: #000000!important;
+}
+
 .table-bordered tbody tr.tr-table th {
+    padding: 5px 10px!important;
+    background-color: #eeeeee!important;
+    color: #000000!important;
+}
+
+.table-bordered tfoot tr.tr-table th {
     padding: 5px 10px!important;
     background-color: #eeeeee!important;
     color: #000000!important;
@@ -10427,7 +10439,20 @@ body.waitMe_body .waitMe_container.text>div {
     border-radius: 5px;
 }
 
-.absent {
+.passed,
+.Passed {
+    background-color: rgb(10, 243, 80);
+    color: #FFFFFF;
+    padding: 5px 8px;
+    font-size: 11px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.absent,
+.Absent,
+.failed,
+.Failed {
     background-color: #E91E63;
     color: #FFFFFF;
     padding: 5px 8px;
@@ -10440,6 +10465,16 @@ body.waitMe_body .waitMe_container.text>div {
     background-color: #03A9F4;
     color: #FFFFFF;
     padding: 5px 8px;
+    font-size: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.leave,
+.Leave {
+    background-color: #FF9800;
+    color: #FFFFFF;
+    padding: 5px 10px;
     font-size: 10px;
     text-align: center;
     vertical-align: middle;
@@ -10472,15 +10507,6 @@ body.waitMe_body .waitMe_container.text>div {
     vertical-align: middle;
 }
 
-.leave {
-    background-color: #FF9800;
-    color: #FFFFFF;
-    padding: 5px 10px;
-    font-size: 10px;
-    text-align: center;
-    vertical-align: middle;
-}
-
 .closetrip {
     background-color: #FF5722;
     color: #FFFFFF;
@@ -10493,6 +10519,12 @@ body.waitMe_body .waitMe_container.text>div {
 .reports {
     width: 100%;
     overflow: auto;
+}
+
+.reports thead tr.tr-table th {
+    font-size: 12px;
+    padding: 4px!important;
+    text-align: center;
 }
 
 .reports tbody tr.tr-table th {

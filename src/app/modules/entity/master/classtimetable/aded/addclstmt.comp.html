@@ -1,0 +1,235 @@
+<div class="card">
+    <div class="header">
+        <h4>Class Time Table</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassTimeTable()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getClassTimeTable(classid, 'view');">
+                            <option [value]="0">Select Academic year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown(classid);getClassTimeTable(classid, 'aded');">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Copy Of Class</label>
+                        <select id="cpclsid" name="cpclsname" [(ngModel)]="cpclassid" class="form-control class" tabindex="2" (ngModelChange)="fillSubjectDropDown(cpclassid);getClassTimeTable(cpclassid, 'copy');">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div #psngrattnd class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered reports">
+                    <thead>
+                        <tr>
+                            <th>Period No</th>
+                            <th>From Time</th>
+                            <th>To Time</th>
+                            <th *ngIf="issun">Sunday</th>
+                            <th *ngIf="ismon">Monday</th>
+                            <th *ngIf="istues">Tuesday</th>
+                            <th *ngIf="iswed">Wednesday</th>
+                            <th *ngIf="isthur">Thursday</th>
+                            <th *ngIf="isfri">Friday</th>
+                            <th *ngIf="issat">Saturday</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#</td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="time" [(ngModel)]="frmtm" class="form-control frmtm" tabindex="3" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="time" [(ngModel)]="totm" class="form-control totm" tabindex="4" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="issun">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="sunsubid" name="sunsubname" [(ngModel)]="sunsubid" class="form-control sunsubname" tabindex="5" (ngModelChange)="getSundaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="ismon">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="monsubid" name="monsubname" [(ngModel)]="monsubid" class="form-control monsubname" tabindex="6" (ngModelChange)="getMondaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="istues">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="tuessubid" name="tuessubname" [(ngModel)]="tuessubid" class="form-control tuessubname" tabindex="7" (ngModelChange)="getTuesdaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="iswed">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="wedsubid" name="wedsubname" [(ngModel)]="wedsubid" class="form-control wedsubname" tabindex="8" (ngModelChange)="getWednesdaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="isthur">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="thursubid" name="thursubname" [(ngModel)]="thursubid" class="form-control thursubname" tabindex="9" (ngModelChange)="getThursdaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="isfri">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="frisubid" name="frisubname" [(ngModel)]="frisubid" class="form-control frisubname" tabindex="10" (ngModelChange)="getFridaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="issat">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="satsubid" name="satsubname" [(ngModel)]="satsubid" class="form-control satsubname" tabindex="11" (ngModelChange)="getSaturdaySubject()">
+                                            <option [value]="0">Select Subject</option>
+                                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                                {{row.subname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="!isEditClassTimeTable">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addClassTimeTable()">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </td>
+                            <td *ngIf="isEditClassTimeTable">
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateClassTimeTable()">
+                                    <i class="material-icons">done</i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="cancelClassTimeTable()">
+                                    <i class="material-icons">cancel</i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of classTimeTableDT; let i = index;">
+                            <td>
+                                {{i+1}}
+                            </td>
+                            <td>
+                                {{row.frmtm}}
+                            </td>
+                            <td>
+                                {{row.totm}}
+                            </td>
+                            <td *ngIf="issun">
+                                {{row.sunsubname}}
+                            </td>
+                            <td *ngIf="ismon">
+                                {{row.monsubname}}
+                            </td>
+                            <td *ngIf="istues">
+                                {{row.tuessubname}}
+                            </td>
+                            <td *ngIf="iswed">
+                                {{row.wedsubname}}
+                            </td>
+                            <td *ngIf="isthur">
+                                {{row.thursubname}}
+                            </td>
+                            <td *ngIf="isfri">
+                                {{row.frisubname}}
+                            </td>
+                            <td *ngIf="issat">
+                                {{row.satsubname}}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editClassTimeTable(row)">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

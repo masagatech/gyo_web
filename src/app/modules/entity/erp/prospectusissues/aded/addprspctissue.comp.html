@@ -1,0 +1,197 @@
+<div class="card">
+    <div class="header">
+        <h4>Prospectus</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectusIssues()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-8 border">
+                <div class="row clearfix">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Academic Year <strong>*</strong></label>
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                                    <option [value]="0">Select Academic Year</option>
+                                    <option *ngFor="let row of ayDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Prospectus <strong>*</strong></label>
+                                <select id="prspctid" name="prspctname" [(ngModel)]="prspctid" (ngModelChange)="getFormNo()" class="form-control prspctname" tabindex="2">
+                                    <option [value]="0">Select Prospectus</option>
+                                    <option *ngFor="let row of prospectusDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Fees</label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="prspctfees" class="form-control prntmob" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Parent Name <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="prntname" class="form-control prntname" tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Mobile No <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="prntmob" class="form-control prntmob" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Child Name</th>
+                            <th width="150px">Gender</th>
+                            <th width="150px">Class</th>
+                            <th width="100px">Form No</th>
+                            <th width="80px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="childname" class="form-control childname" tabindex="5">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="6">
+                                            <option [value]="''">Select Gender</option>
+                                            <option *ngFor="let row of genderDT" [value]="row.key">	
+                                                {{row.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control classname" tabindex="7">
+                                            <option [value]="0">Select Class</option>
+                                            <option *ngFor="let row of classDT" [value]="row.key">
+                                                {{row.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="formno" class="form-control text-right formno" tabindex="8">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" *ngIf="!iseditformno">
+                                    <button type="button" (click)="addChildData()" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+
+                                <div class="form-group" *ngIf="iseditformno">
+                                    <button type="button" (click)="updateChildData()" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <i class="material-icons">done</i>
+                                    </button>
+                                    <button type="button" (click)="resetChildData()" class="btn btn-danger btn-xs btn-xs-sm">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of prospectusIssuesDT | filterBy: {'isactive': true}; let i = index;">
+                            <td>
+                                {{row.childname}}
+                            </td>
+                            <td>
+                                {{row.gndrnm}}
+                            </td>
+                            <td>
+                                {{row.classname}}
+                            </td>
+                            <td align="right">
+                                {{row.formno}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" (click)="editChildData(row)" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" (click)="deleteChildData(row)" class="btn btn-danger btn-xs btn-xs-sm">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" align="right">
+                                <b>Fees To Be Collect</b>
+                            </td>
+                            <td align="right">
+                                <b>{{issuefees}}</b>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <b>Form No</b>
+                    </li>
+                    <li class="col-md-2 list-group-item" *ngFor="let row of formnoDT">
+                        {{row.formno}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

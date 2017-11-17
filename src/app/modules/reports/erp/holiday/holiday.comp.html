@@ -1,0 +1,83 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-6 col-xs-4">
+                <h4>{{psngrtypenm}} Holiday</h4>
+            </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getHoliday()" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-2" style="padding-top: 20px;">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getHoliday()">
+                        <i class="material-icons">arrow_forward</i></button>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-2" style="padding-top: 20px; text-align: right;">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <table #holiday class="table table-bordered table-responsive reports">
+                <thead>
+                    <tr>
+                        <th width="200px">
+                            Holiday Date
+                        </th>
+                        <th width="100px">
+                            Day
+                        </th>
+                        <th width="300px">
+                            Holiday
+                        </th>
+                        <th *ngIf="psngrtype == 'student'">
+                            Class Name
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of holidayDT">
+                        <td>
+                            {{row.hlddate}}
+                        </td>
+                        <td>
+                            {{row.week}}
+                        </td>
+                        <td>
+                            {{row.hldnm}}
+                        </td>
+                        <td *ngIf="psngrtype == 'student'">
+                            {{row.classname}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+</div>

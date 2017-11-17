@@ -28,8 +28,9 @@
     <script src="assets/js/demo.js?v=8"></script>
     <script src="assets/js/common.js?v=8"></script>
     <script src="assets/js/markerclusterer.min.js?v=8"></script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA82-J9f4u3b0uYLEHHQ_MwoQXUCGGGqys" type="text/javascript"></script>
+    <script src="assets/js/polyline.js?v=8"></script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA82-J9f4u3b0uYLEHHQ_MwoQXUCGGGqys&libraries=geometry" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/vendor/markerAnimate.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js"></script>
 
@@ -38,7 +39,7 @@
     <% if (webpackConfig.htmlElements.headTags) { %>
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
-                <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+                <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>"&
 </head>
 
 <body class="theme-teal">

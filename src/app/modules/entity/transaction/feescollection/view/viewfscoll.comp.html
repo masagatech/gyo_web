@@ -1,0 +1,91 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Collection</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesCollection()">
+                    <i class="material-icons">save</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" (ngModelChange)="getFeesCollection()" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getFeesCollection();" tabindex="2">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" *ngIf="classid != 0">
+                <div class="form-group" style="padding-top: 20px">
+                    Class Fees : {{classfees | _currency:loginUser.globsettings[0]}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix" *ngIf="feesCollDT.length">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th width="100px">Fees</th>
+                            <th width="55px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of feesCollDT">
+                            <td>
+                                {{row.studname}}
+                            </td>
+                            <td align="right">
+                                {{row.feescoll | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="addFeesCollection(row)">
+                                        <i class="material-icons">shopping_cart</i></button>
+                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="viewFeesCollection(row)">
+                                        <i class="material-icons">arrow_forward</i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="tr-table">
+                            <th>
+                                <b>Total</b>
+                            </th>
+                            <th align="right">
+                                <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

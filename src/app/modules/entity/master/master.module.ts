@@ -15,23 +15,23 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'employee', loadChildren: './employee#EmployeeModule' },
-                    { path: 'batch', loadChildren: './batch#BatchModule' },
+                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
+                    
                     { path: 'class', loadChildren: './class#ClassModule' },
                     { path: 'books', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
-                    
-                    // Passenger
-                    // { path: 'passenger', loadChildren: './passenger#PassengerModule' },
+                    { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableModule' },
 
-                    // Student
-                    { path: 'student', loadChildren: './student#StudentModule' },
+                    // Passenger
+                    { path: 'passenger', loadChildren: './passenger#PassengerModule' },
+
+                    { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
 
                     { path: 'activity', loadChildren: './activity#ActivityModule' },
-                    { path: 'driver', loadChildren: './driver#DriverModule' },
-                    { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
-                    { path: 'route', loadChildren: './route#RouteModule' },
+                    { path: 'tag', loadChildren: './tag#TagModule' },
+                    { path: 'taggroupmodulemap', loadChildren: './taggrpmdlmap#TagGroupModuleMapModule' },
+                    { path: 'album', loadChildren: './album#AlbumModule' },
                 ]
             }
         ]

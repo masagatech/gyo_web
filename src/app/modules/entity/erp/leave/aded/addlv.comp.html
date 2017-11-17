@@ -1,0 +1,90 @@
+<div class="card">
+    <div class="header">
+        <h4>Leave {{psngrtypenm}}</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="savePassengerLeave()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <div class="row clearfix">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">{{psngrtypenm}} Name : {{psngrname}} <strong>*</strong></label>
+                                <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                                <span class="material-icons inputserachico">search</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Leave Type <strong>*</strong></label>
+                                <select id="lvtype" [(ngModel)]="lvtype" class="form-control lvtype" tabindex="2">
+                                    <option [value]="''">Select Type</option>
+                                    <option *ngFor="let row of leavetypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From Date</label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control frmdt" min="{{currdate}}" tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Time</label>
+                                <input type="time" [(ngModel)]="frmtm" class="form-control frmtm" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To Date</label>
+                                <input type="date" [(ngModel)]="todt" class="form-control todt" min="{{currdate}}" tabindex="5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group hide">
+                            <div class="form-line">
+                                <label class="control-label">Time</label>
+                                <input type="time" [(ngModel)]="totm" class="form-control totm" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Reason</label>
+                        <textarea [(ngModel)]="reason" rows="4" class="form-control no-resize auto-growth" [tabindex]="6"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
