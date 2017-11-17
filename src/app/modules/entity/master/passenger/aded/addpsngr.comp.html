@@ -44,35 +44,6 @@
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Standard <strong>*</strong></label>
-                                <select id="standard" name="standard" [(ngModel)]="standard" class="form-control standard" tabindex="5">
-                                    <option [value]="''">Select Standard</option>
-                                    <option *ngFor="let row of standardDT" [value]="row.key">	
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Division <strong>*</strong></label>
-                                <select id="division" name="division" [(ngModel)]="division" class="form-control division" tabindex="5">
-                                    <option [value]="''">Select Division</option>
-                                    <option *ngFor="let row of divisionDT" [value]="row.key">	
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
                                 <label class="control-label">Date of Birth</label>
                                 <input type="date" name="dob" [(ngModel)]="dob" class="form-control date" tabindex="6">
                             </div>
@@ -244,25 +215,25 @@
                 </div>
                 <div class="form-group form-float">
                     <div class="form-line">
-                        <input *ngIf="pickstpid == 0" id="pickupaddr" name="chkpickupaddr" type="checkbox" [(ngModel)]="isCopyPickupAddr" (change)="copyPDAddrAndLatLong('pickaddr')" class="filled-in">
-                        <label for="pickupaddr" class="control-label">Pick Up Address <strong>*</strong></label>
-                        <textarea name="pickupaddr" [(ngModel)]="pickupaddr" rows="4" class="form-control no-resize auto-growth pickupaddr" (keydown.tab)="getLatAndLong('pickupaddr')" tabindex="15"></textarea>
+                        <input *ngIf="pickstpid == 0" id="pickaddr" name="chkpickaddr" type="checkbox" [(ngModel)]="isCopyPickAddr" (change)="copyPDAddrAndLatLong('pickaddr')" class="filled-in">
+                        <label for="pickaddr" class="control-label">Pick Up Address <strong>*</strong></label>
+                        <textarea name="pickaddr" [(ngModel)]="pickaddr" rows="4" class="form-control no-resize auto-growth pickaddr" (keydown.tab)="getLatAndLong('pickaddr')" tabindex="15"></textarea>
                     </div>
                 </div>
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Pickup Lat <strong>*</strong></label>
-                                <input type="text" name="pickuplet" [(ngModel)]="pickuplet" maxlength="50" class="form-control pickuplet" tabindex="18" />
+                                <label class="control-label">Pick Latitude <strong>*</strong></label>
+                                <input type="text" name="picklet" [(ngModel)]="picklet" maxlength="50" class="form-control picklet" tabindex="18" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <label class="control-label">Pickup Long <strong>*</strong></label>
-                                <input type="text" name="pickuplong" [(ngModel)]="pickuplong" maxlength="50" class="form-control pickuplong" tabindex="19" />
+                                <label class="control-label">Pick Longitude <strong>*</strong></label>
+                                <input type="text" name="picklong" [(ngModel)]="picklong" maxlength="50" class="form-control picklong" tabindex="19" />
                             </div>
                         </div>
                     </div>

@@ -233,11 +233,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Dashboard Data
 
     getERPDashboardDetails() {
-        this.getDivisionDetails();
-        this.getERPDashboardData("classstatus");
-        this.getERPDashboardData("tchrattnd");
-        this.getERPDashboardData("tchrsub");
-        this.getERPDashboardData("classfees");
+        if (this._enttdetails.entttype == "School") {
+            this.getDivisionDetails();
+            this.getERPDashboardData("classstatus");
+            this.getERPDashboardData("tchrattnd");
+            this.getERPDashboardData("tchrsub");
+            this.getERPDashboardData("classfees");
+        }
     }
 
     getERPDashboardData(dbtype) {

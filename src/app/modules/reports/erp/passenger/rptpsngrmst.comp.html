@@ -8,7 +8,7 @@
                 <div class="form-group" *ngIf="psngrtype == 'student'">
                     <div class="form-line">
                         <label class="control-label">Class</label>
-                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getPassengerDetails()">
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getPassengerReports()">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
@@ -23,7 +23,7 @@
                         <label class="control-label">{{psngrtypenm}} Name <strong>*</strong></label>
                         <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
                         <span class="material-icons inputlinkico">
-                            <a role="button" (click)="getpassengerDetails()" class="btn btn-theme btn-search">search</a>
+                            <a role="button" (click)="getPassengerReports()" class="btn btn-theme btn-search">search</a>
                         </span>
                     </div>
                 </div>

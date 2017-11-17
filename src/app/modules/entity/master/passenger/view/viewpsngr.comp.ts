@@ -167,8 +167,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "schid": that._enttdetails.enttid, "stdid": that.psngrid.toString() == "" ? 0 : that.psngrid, "standard": that.standard,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._wsdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 
         that._psngrservice.getPassengerDetails(params).subscribe(data => {
@@ -194,7 +194,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     }
 
     public editPassengerForm(row) {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.autoid]);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.psngrid]);
     }
 
     public ngOnDestroy() {

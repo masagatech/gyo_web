@@ -13,6 +13,15 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    // Passenger
+
+                    { path: 'passenger', loadChildren: '../erp/passenger#PassengerReportsModule' },
+                    { path: 'passenger/birthday', loadChildren: '../erp/passengerbirthday#PassengerBirthdayReportsModule' },
+                    { path: 'passenger/attendance', loadChildren: '../erp/attendance#AttendanceReportsModule' },
+                    { path: 'passenger/leave', loadChildren: '../erp/leave#ERPLeaveReportsModule' },
+                    { path: 'passenger/holiday', loadChildren: '../erp/holiday#HolidayReportsModule' },
+
+                    // Class
                     { path: 'class', loadChildren: './class#ClassReportsModule' },
                     { path: 'books', loadChildren: './books#BooksReportsModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterReportsModule' },

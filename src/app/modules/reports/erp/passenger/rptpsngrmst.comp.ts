@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { AdmissionService } from '@services/erp';
+import { PassengerService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
@@ -46,12 +46,12 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
     @ViewChild('passenger') passenger: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getPassengerDetails();
+        this.getPassengerReports();
     }
 
     public ngOnInit() {
@@ -107,7 +107,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
         this.psngrid = event.value;
         this.psngrname = event.label;
 
-        this.getPassengerDetails();
+        this.getPassengerReports();
     }
 
     // Fill Entity, Standard, Month DropDown
@@ -116,7 +116,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._admsnservice.getPassengerDetails({
+        that._psngrservice.getPassengerReports({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -138,8 +138,9 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
         })
     }
 
-    getPassengerDetails() {
+    getPassengerReports() {
         var that = this;
+
         var params = {};
 
         commonfun.loader("#fltrstud");
@@ -155,34 +156,39 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
                     that.psngrtypenm = 'Teacher';
                     that.classid = 0;
                 }
-                else {
+                else if (that.psngrtype == "employee") {
                     that.psngrtypenm = 'Employee';
                     that.classid = 0;
                 }
-
-                params = {
-                    "flag": "profile", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                    "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "psngrtype": that.psngrtype, "classid": that.classid,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,  "issysadmin": that.loginUser.issysadmin
-                };
-
-                that._admsnservice.getPassengerDetails(params).subscribe(data => {
-                    try {
-                        that.passengerDT = data.data;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide("#fltrstud");
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide("#fltrstud");
-                }, () => {
-
-                })
             }
+            else {
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
+                that.classid = 0;
+            }
+
+            params = {
+                "flag": "profile", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
+                "utype": that.loginUser.utype, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "classid": that.classid,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            };
+
+            that._psngrservice.getPassengerReports(params).subscribe(data => {
+                try {
+                    that.passengerDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide("#fltrstud");
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide("#fltrstud");
+            }, () => {
+
+            })
         });
     }
 

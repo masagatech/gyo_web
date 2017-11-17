@@ -6,11 +6,15 @@ import { Router } from '@angular/router';
 export class PassengerService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getPassengerDetails(req: any) {
-        return this._dataserver.post("getStudentDetails", req)
+    savePassengerInfo(req: any) {
+        return this._dataserver.post("savePassengerInfo", req)
     }
 
-    savePassengerInfo(req: any) {
-        return this._dataserver.post("saveStudentInfo", req)
+    getPassengerDetails(req: any) {
+        return this._dataserver.post("getPassengerDetails", req)
+    }
+
+    getPassengerReports(req: any) {
+        return this._dataserver.post("getPassengerReports", req)
     }
 }

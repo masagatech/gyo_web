@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { AdmissionService } from '@services/erp';
+import { PassengerService } from '@services/master';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
@@ -24,7 +24,7 @@ export class PassengerBirthdayComponent implements OnInit {
     private subscribeParameters: any;
     
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _admsnservice: AdmissionService, private _autoservice: CommonService) {
+        private _psngrservice: PassengerService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -60,7 +60,7 @@ export class PassengerBirthdayComponent implements OnInit {
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }
 
-                that._admsnservice.getPassengerDetails(params).subscribe(data => {
+                that._psngrservice.getPassengerReports(params).subscribe(data => {
                     try {
                         that.birthdayDT = data.data;
                     }

@@ -26,10 +26,6 @@ export class AdmissionService {
     viewStudentDetails(req: any) {
         return this._dataserver.post("viewStudentDetails", req)
     }
-
-    getPassengerDetails(req: any) {
-        return this._dataserver.post("getPassengerDetails", req)
-    }
     
     saveStudentVehicleMap(req: any) {
         return this._dataserver.post("saveStudentVehicleMap", req)

@@ -144,47 +144,49 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                     that.psngrtypenm = 'Employee';
                     that.classid = 0;
                 }
-
-                params = {
-                    "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
-                }
-
-                that._attndservice.getAttendance(params).subscribe(data => {
-                    try {
-                        if (data.data.length > 0) {
-                            that.attendanceDT = data.data;
-                            that.statusid = data.data[0].statusid;
-                            that.status = data.data[0].status;
-
-                            if (that.statusid == 0 && that.status != "lv") {
-                                that.statusdesc = data.data[0].statusdesc;
-                            }
-                        }
-                        else {
-                            that.attendanceDT = [];
-                            that.statusid = 0;
-                            that.status = "";
-                            that.statusdesc = "";
-                        }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
             }
             else {
-                commonfun.loaderhide();
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
+                that.classid = 0;
             }
+
+            params = {
+                "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            }
+
+            that._attndservice.getAttendance(params).subscribe(data => {
+                try {
+                    if (data.data.length > 0) {
+                        that.attendanceDT = data.data;
+                        that.statusid = data.data[0].statusid;
+                        that.status = data.data[0].status;
+
+                        if (that.statusid == 0 && that.status != "lv") {
+                            that.statusdesc = data.data[0].statusdesc;
+                        }
+                    }
+                    else {
+                        that.attendanceDT = [];
+                        that.statusid = 0;
+                        that.status = "";
+                        that.statusdesc = "";
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
         });
     }
 

@@ -131,8 +131,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     var that = this;
 
     that._menuservice.getMenuDetails({
-      "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-      "psngrtype": that._enttdetails.psngrtype
+      "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype,
+      "entttype": that._enttdetails.entttype, "issysadmin": that.loginUser.issysadmin
     }).subscribe(data => {
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
       that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");

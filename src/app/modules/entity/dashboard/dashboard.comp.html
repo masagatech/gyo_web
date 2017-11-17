@@ -6,7 +6,7 @@
             </div>
 
             <div class="col-md-2" align="right">
-                <div class="form-group">
+                <div class="form-group" *ngIf="_enttdetails.entttype == 'School'">
                     <div class="form-line">
                         <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getDashboardDetails();">
                             <option [value]="0">Select Academic year</option>
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="row clearfix">
+<div class="row clearfix" *ngIf="_enttdetails.entttype == 'School'">
     <div class="col-md-9">
         <div class="row clearfix">
             <div class="col-md-8 col-xs-7">
