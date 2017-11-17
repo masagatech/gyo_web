@@ -36,7 +36,7 @@ export const routes = [
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
                     
                     // Trip Tracking V1
-                    { path: 'triptrackingv1', loadChildren: './triptrackingv1#TripTrackingModule' },
+                    { path: 'triptrackingv1', loadChildren: './triptrackingv1#TripTrackingV1Module' },
                     
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },

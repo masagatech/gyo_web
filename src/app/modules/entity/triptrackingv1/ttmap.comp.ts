@@ -259,13 +259,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             else if (_d["evt"] == "data") {
                 try {
-                    debugger
                     var geoloc = _d["data"];
                     let el = that.vehtypeDT.find(a => a.vhid === geoloc.vhid);
 
                     if (el !== undefined) {
-                        console.log(geoloc);
-                        debugger
                         el.tripid = geoloc.tripid;
                         if (isNaN(geoloc.speed)) el.speed = 0;
                         else el.speed = geoloc.speed;
@@ -433,9 +430,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (mrk !== undefined) {
             let bear = 0;
-            // let _ico = mrk.getIcon().ico;
-            debugger
-            // mrk.setIcon({ url: 'assets/img/map/' + _ico + '_' + bear + '.png?v=1', ico: _ico })
+            
             mrk.setPosition(new google.maps.LatLng(loc[0], loc[1]));
 
             if (this.selectedFlwVh.vhid !== undefined && this.selectedFlwVh.vhid == vhid) {
@@ -741,4 +736,3 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         this._socketservice.close();
     }
 }
-

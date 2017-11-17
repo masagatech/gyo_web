@@ -46,7 +46,7 @@ export const routes = [
   ],
 
   entryComponents: [PSGComponent, INFOComponent, HISTORYComponent],
-  
+
   imports: [
     CommonModule, FormsModule, SharedComponentModule, SocketIoModule.forRoot(config),
     RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,
@@ -56,7 +56,7 @@ export const routes = [
   providers: [AuthGuard, TTMapService]
 })
 
-export class TripTrackingModule {
+export class TripTrackingV1Module {
   constructor() {
 
   }
