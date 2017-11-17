@@ -18,7 +18,7 @@ export const routes = [
                     { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     
                     { path: 'class', loadChildren: './class#ClassModule' },
-                    { path: 'books', loadChildren: './books#BooksModule' },
+                    { path: 'classbooks', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
                     { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableModule' },
