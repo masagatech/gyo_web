@@ -33,7 +33,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Middle Name <strong>*</strong></label>
+                                <label class="control-label">Middle Name</label>
                                 <input type="text" name="mname" [(ngModel)]="mname" maxlength="50" class="form-control mname" tabindex="2" />
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Academic Year</label>
+                                <label class="control-label">Academic Year <strong>*</strong></label>
                                 <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="4">
                                     <option [value]="0">Select Academic Year</option>
                                     <option *ngFor="let row of ayDT" [value]="row.key">	
@@ -81,7 +81,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Gender <strong>*</strong></label>
+                                <label class="control-label">Gender</label>
                                 <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="6">
                                     <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">	
@@ -94,7 +94,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Date Of Birth</label>
+                                <label class="control-label">Date Of Birth <strong>*</strong></label>
                                 <input type="date" name="dob" [(ngModel)]="dob" maxlength="50" class="form-control dob" tabindex="7" />
                             </div>
                         </div>
@@ -342,7 +342,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School <strong>*</strong></label>
+                                <label class="control-label">School</label>
                                 <select id="fthrschid" name="fthrschname" [(ngModel)]="fthrschid" class="form-control fthrschname" tabindex="20">
                                     <option [value]="0">Other</option>
                                     <option [value]="_enttdetails.enttid">{{_enttdetails.enttname}}</option>
@@ -351,19 +351,19 @@
                         </div>
                         <div class="form-group" *ngIf="fthrschid == 0">
                             <div class="form-line">
-                                <label class="control-label">School Name <strong>*</strong></label>
+                                <label class="control-label">School Name</label>
                                 <input type="text" [(ngModel)]="fthrothschname" class="form-control fthrothschname" maxlength="100" tabindex="21" />
                             </div>
                         </div>
                         <div class="form-group" *ngIf="fthrschid != 0">
                             <div class="form-line">
-                                <label class="control-label">Enrollment ID <strong>*</strong></label>
+                                <label class="control-label">Enrollment ID</label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="fthrenrlmntid" class="form-control fthrenrlmntid" maxlength="20" tabindex="22" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Qualification <strong>*</strong></label>
+                                <label class="control-label">Qualification</label>
                                 <select id="fthrqlfid" name="fthrqlftitle" [(ngModel)]="fthrqlfid" class="form-control fthrqlftitle" tabindex="23">
                                     <option value="0">-- Select Qualification --</option>
                                     <optgroup *ngFor="let row of qualificationDT | groupBy: 'qlfgrpname'" label="{{row.key}}">
@@ -376,7 +376,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Occupation <strong>*</strong></label>
+                                <label class="control-label">Occupation</label>
                                 <select id="fthrocptn" name="fthrocptn" [(ngModel)]="fthrocptn" class="form-control fthrocptn" tabindex="24">
                                     <option [value]="''">-- Select Occupation --</option>
                                     <option *ngFor="let row of fthrocptnDT" [value]="row.key">
@@ -387,7 +387,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Salary <strong>*</strong></label>
+                                <label class="control-label">Salary</label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="fthrsalary" class="form-control fthrsalary" maxlength="20" tabindex="25" />
                             </div>
                         </div>
@@ -402,19 +402,19 @@
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Mobile No</label>
+                                <label class="control-label">Mobile No <strong>*</strong></label>
                                 <input type="text" name="mthrmobile" [(ngModel)]="mthrmobile" maxlength="10" class="form-control mthrmobile" (keydown.tab)="getParentAndSibling(mthrmobile)" (keydown.enter)="getParentAndSibling(mthrmobile)" tabindex="27">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Email</label>
+                                <label class="control-label">Email <strong>*</strong></label>
                                 <input type="text" name="mthremail" [(ngModel)]="mthremail" class="form-control mthremail" tabindex="28">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">School <strong>*</strong></label>
+                                <label class="control-label">School</label>
                                 <select id="mthrschid" name="mthrschname" [(ngModel)]="mthrschid" class="form-control mthrschname" tabindex="29">
                                     <option [value]="_enttdetails.enttid">{{_enttdetails.enttname}}</option>
                                     <option [value]="0">Other</option>
@@ -423,19 +423,19 @@
                         </div>
                         <div class="form-group" *ngIf="mthrschid == 0">
                             <div class="form-line">
-                                <label class="control-label">School Name <strong>*</strong></label>
+                                <label class="control-label">School Name</label>
                                 <input type="text" [(ngModel)]="mthrothschname" class="form-control mthrothschname" maxlength="100" tabindex="30" />
                             </div>
                         </div>
                         <div class="form-group" *ngIf="mthrschid != 0">
                             <div class="form-line">
-                                <label class="control-label">Enrollment ID <strong>*</strong></label>
+                                <label class="control-label">Enrollment ID</label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="mthrenrlmntid" class="form-control mthrenrlmntid" maxlength="50" tabindex="31" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Qualification <strong>*</strong></label>
+                                <label class="control-label">Qualification</label>
                                 <select id="mthrqlfid" name="mthrqlftitle" [(ngModel)]="mthrqlfid" class="form-control mthrqlftitle" tabindex="32">
                                     <option value="0">-- Select Qualification --</option>
                                     <optgroup *ngFor="let row of qualificationDT | groupBy: 'qlfgrpname'" label="{{row.key}}">
@@ -448,7 +448,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Occupation <strong>*</strong></label>
+                                <label class="control-label">Occupation</label>
                                 <select id="mthrocptn" name="mthrocptn" [(ngModel)]="mthrocptn" class="form-control mthrocptn" tabindex="33">
                                     <option [value]="''">-- Select Occupation --</option>
                                     <option *ngFor="let row of mthrocptnDT" [value]="row.key">

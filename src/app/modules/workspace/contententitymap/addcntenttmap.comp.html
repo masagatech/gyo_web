@@ -1,0 +1,93 @@
+<div class="card">
+    <div class="header">
+        <h4>Content Entity Map</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveContentDetails()">
+                    <i class="material-icons">save</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard <strong>*</strong></label>
+                        <select id="stdid" name="stdname" [(ngModel)]="stdid" (ngModelChange)="fillSubjectDropDown();getContentDetails();" class="form-control stdname" tabindex="1">
+                            <option [value]="0">Select Standard</option>
+                            <option *ngFor="let row of standardDT" [value]="row.stdid">
+                                {{row.stdname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Subject <strong>*</strong></label>
+                        <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="getContentDetails()" class="form-control subname" tabindex="2">
+                            <option [value]="0">Select Subject</option>
+                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                {{row.subname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">School Name</label>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="selectedEntity" [tabindex]="3" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header" *ngIf="cid != 0">
+        <h4>{{ctitle}}</h4>
+    </div>
+
+    <div class="body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th width="100px">Sr. No</th>
+                    <th width="300px">Topic Name</th>
+                    <th>Upload Content File</th>
+                    <th width="100px">Is Free</th>
+                    <th width="100px">Is Visible</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of contentDetailsDT; let i = index;">
+                    <td align="right">
+                        {{i + 1}}
+                    </td>
+                    <td>
+                        {{row.topicname}}
+                    </td>
+                    <td>
+                        {{row.uploadfile}}
+                    </td>
+                    <td>
+                        <span class="material-icons">
+                            {{row.isfree ? 'done' : 'cancel'}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input id="{{row.cdid}}" name="cnt{{i + 1}}" type="checkbox" [(ngModel)]="row.isvisible" class="form-control isvisible" tabindex="4">
+                            <label for="{{row.cdid}}"></label>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

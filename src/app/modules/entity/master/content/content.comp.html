@@ -1,0 +1,76 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <h4>Content</h4>
+            </div>
+            <div class="col-md-2 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard <strong>*</strong></label>
+                        <select id="stdid" name="stdname" [(ngModel)]="stdid" (ngModelChange)="fillSubjectDropDown();getContentDetails();" class="form-control stdname" tabindex="1">
+                            <option [value]="0">Select Standard</option>
+                            <option *ngFor="let row of standardDT" [value]="row.stdid">
+                                {{row.stdname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Subject <strong>*</strong></label>
+                        <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="getContentDetails()" class="form-control subname" tabindex="2">
+                            <option [value]="0">Select Subject</option>
+                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                {{row.subname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <div *ngFor="let row of contentDT | groupBy: 'ctitle'">
+                    <div class="header">
+                        <b>{{row.key}}</b>
+                    </div>
+                    <p-dataGrid [value]="row.value" [paginator]="true" [rows]="8">
+                        <ng-template let-drow pTemplate="item">
+                            <div style="padding:3px" class="ui-g-12 ui-md-3">
+                                <p-panel [header]="drow.topicname" [style]="{'text-align':'center'}">
+                                    <a role="button" (click)="openContentFileModel(drow)">
+                                        <img alt="{{drow.topicname}}" src="assets/img/pdf-icon.png" onerror="this.src='assets/img/pdf-icon.png';" height="80px">
+                                    </a>
+                                </p-panel>
+                            </div>
+                        </ng-template>
+                    </p-dataGrid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="contentFileModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 1050px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Topic : {{topicname}}
+                </h4>
+            </div>
+            <div class="modal-body" id="contentfile">
+                <iframe id="icontentfile" width="1000" height="500" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

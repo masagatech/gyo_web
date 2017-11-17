@@ -15,8 +15,9 @@ declare var $: any;
 })
 
 export class UserReportsComponent implements OnInit, OnDestroy {
-    autoUserDT: any = [];
+    _enttdetails: any = [];
 
+    autoUserDT: any = [];
     autouid: number = 0;
     autouname: any = [];
 
@@ -26,14 +27,12 @@ export class UserReportsComponent implements OnInit, OnDestroy {
     usersDT: any = [];
     loginUser: LoginUserModel;
 
-    _wsdetails: any = [];
-
     @ViewChild('users') users: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
+        this._enttdetails = Globals.getEntityDetails();
 
         this.fillUserTypeDropDown();
         this.viewUserDataRights();
@@ -88,7 +87,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
     // Auto Completed User
 
-    getAutoUsers(event) {
+    getUserData(event) {
         var that = this;
         let query = event.query;
 
@@ -97,8 +96,9 @@ export class UserReportsComponent implements OnInit, OnDestroy {
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin,
-            "wsautoid": that._wsdetails.wsautoid,
             "srcutype": that.srcutype,
             "search": query
         }).subscribe(data => {
@@ -112,7 +112,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
     // Selected User
 
-    selectAutoUsers(event, arg) {
+    selectUserData(event, arg) {
         this.autouid = event.uid;
         this.getUserDetails();
     }
@@ -137,8 +137,8 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
         uparams = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "srcutype": that.srcutype,
-            "srcuid": that.autouid
+            "issysadmin": that.loginUser.issysadmin, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "srcutype": that.srcutype, "srcuid": that.autouid
         };
 
         that._userservice.getUserDetails(uparams).subscribe(data => {

@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">User Name</label>
-                        <p-autoComplete id="autouname" name="autouname" [(ngModel)]="autouname" [tabindex]="1" (onSelect)="selectAutoUsers($event, 1)" [suggestions]="autoUserDT" (completeMethod)="getAutoUsers($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
+                        <p-autoComplete id="autouname" name="autouname" [(ngModel)]="autouname" [tabindex]="1" (onSelect)="selectUserData($event, 1)" [suggestions]="autoUserDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
                         <span class="material-icons inputserachico">search</span>
                     </div>
                 </div>

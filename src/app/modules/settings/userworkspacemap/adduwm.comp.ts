@@ -58,7 +58,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
     // Auto Completed User
 
-    getAutoUsers(event) {
+    getUserData(event) {
         var that = this;
         let query = event.query;
 
@@ -67,8 +67,8 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
             "wsautoid": that._wsdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -81,7 +81,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
     // Selected User
 
-    selectAutoUsers(event, arg) {
+    selectUserData(event, arg) {
         var that = this;
 
         that.uid = event.uid;

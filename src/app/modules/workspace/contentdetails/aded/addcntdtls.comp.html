@@ -1,0 +1,135 @@
+<div class="card">
+    <div class="header">
+        <h4>Content Details</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveContentDetails()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard <strong>*</strong></label>
+                        <select id="stdid" name="stdname" [(ngModel)]="stdid" (ngModelChange)="fillSubjectDropDown();getContentDetails();" class="form-control stdname" tabindex="1">
+                            <option [value]="0">Select Standard</option>
+                            <option *ngFor="let row of standardDT" [value]="row.stdid">
+                                {{row.stdname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Subject <strong>*</strong></label>
+                        <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="getContentDetails()" class="form-control subname" tabindex="2">
+                            <option [value]="0">Select Subject</option>
+                            <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                {{row.subname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header" *ngIf="cid != 0">
+        <h4>{{ctitle}}</h4>
+    </div>
+
+    <div class="body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th width="80px">Sr. No</th>
+                    <th width="300px">Topic Name</th>
+                    <th>Upload Content</th>
+                    <th width="80px">Is Free</th>
+                    <th width="80px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#</td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="topicname" class="form-control topicname" tabindex="3">
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="divFileUpload">
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server}}" chooseLabel="Upload Content File" (onUpload)="onFileUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                        </div>
+
+                        <div *ngIf="uploadFileDT.length">
+                            <div *ngFor="let file of uploadFileDT" class="box">
+                                {{file.athurl}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input id="isfree" name="isfree" type="checkbox" [(ngModel)]="isfree" class="form-control isfree" tabindex="4">
+                            <label for="isfree"></label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group" *ngIf="!isEditContentDetails">
+                            <button type="button" (click)="addContentDetails()" class="btn btn-theme btn-xs btn-xs-sm">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </div>
+
+                        <div class="form-group" *ngIf="isEditContentDetails">
+                            <button type="button" (click)="updateContentDetails()" class="btn btn-theme btn-xs btn-xs-sm">
+                                <i class="material-icons">done</i>
+                            </button>
+                            <button type="button" (click)="resetContentDetails()" class="btn btn-danger btn-xs btn-xs-sm">
+                                <i class="material-icons">cancel</i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngFor="let row of contentDetailsDT | filterBy: {'isactive': true}; let i = index;">
+                    <td align="right">
+                        {{i + 1}}
+                    </td>
+                    <td>
+                        {{row.topicname}}
+                    </td>
+                    <td>
+                        {{row.uploadfile}}
+                    </td>
+                    <td>
+                        <span class="material-icons">
+                            {{row.isfree ? 'done' : 'cancel'}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <button type="button" (click)="editContentDetails(row)" class="btn btn-theme btn-xs btn-xs-sm">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button type="button" (click)="deleteContentDetails(row)" class="btn btn-danger btn-xs btn-xs-sm">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

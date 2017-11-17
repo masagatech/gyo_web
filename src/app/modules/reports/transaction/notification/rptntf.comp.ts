@@ -54,12 +54,13 @@ export class NotificationReportsComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         that._autoservice.getAutoData({
-            "flag": "users",
+            "flag": "allusers",
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
+            "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
             that.frmUsersDT = data.data;

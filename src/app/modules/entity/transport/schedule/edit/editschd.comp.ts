@@ -736,49 +736,58 @@ export class EditScheduleComponent implements OnInit {
             $(".batch").focus();
             return false;
         }
-        else if (that.pickdriverid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
-            $(".pdrv").focus();
-            return false;
-        }
-        else if (that.pickvehicleid === "") {
-            that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle No");
-            $(".pveh").focus();
-            return false;
-        }
-        else if (that.pickpsngrtype == "byrt") {
-            if (that.pickrtid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
-                $(".proute").focus();
+
+        if (that.ispickup) {
+            if (that.pickdriverid === 0) {
+                that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
+                $(".pdrv").focus();
+                return false;
+            }
+            else if (that.pickvehicleid === "") {
+                that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle No");
+                $(".pveh").focus();
+                return false;
+            }
+            else if (that.pickpsngrtype == "byrt") {
+                if (that.pickrtid === 0) {
+                    that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
+                    $(".proute").focus();
+                    return false;
+                }
+            }
+            else if (that.pickPassengerDT.length === 0) {
+                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up Passenger");
+                $(".pickpsngrname input").focus();
                 return false;
             }
         }
-        else if (that.pickPassengerDT.length === 0) {
-            that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up Passenger");
-            $(".pickpsngrname input").focus();
-            return false;
+
+        if (that.isdrop) {
+            if (that.dropdriverid === 0) {
+                that._msg.Show(messageType.error, "Error", "Select Drop Driver");
+                $(".ddrv").focus();
+                return false;
+            }
+            else if (that.dropvehicleid === "") {
+                that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
+                $(".dveh").focus();
+                return false;
+            }
+            else if (that.droppsngrtype == "byrt") {
+                if (that.droprtid === 0) {
+                    that._msg.Show(messageType.error, "Error", "Select Drop Route");
+                    $(".droute").focus();
+                    return false;
+                }
+            }
+            else if (that.dropPassengerDT.length === 0) {
+                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop Passenger");
+                $(".droppsngrname input").focus();
+                return false;
+            }
         }
-        else if (that.dropPassengerDT.length === 0) {
-            that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop Passenger");
-            $(".droppsngrname input").focus();
-            return false;
-        }
-        /*else if (that.dropdriverid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select Drop Driver");
-            $(".ddrv").focus();
-            return false;
-        }
-        else if (that.dropvehicleid === "") {
-            that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
-            $(".dveh").focus();
-            return false;
-        }
-        else if (that.droprtid === 0) {
-            that._msg.Show(messageType.error, "Error", "Select Drop Route");
-            $(".droute").focus();
-            return false;
-        }*/
-        else if (that.ispickup == false && that.isdrop == false) {
+
+        if (that.ispickup == false && that.isdrop == false) {
             that._msg.Show(messageType.error, "Error", "Please Select atleast 1 Pick up / Drop Checkbox");
             $(".droppsngrname input").focus();
             return false;

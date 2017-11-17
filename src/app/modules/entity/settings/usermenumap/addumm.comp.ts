@@ -59,7 +59,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
     // Auto Completed User
 
-    getAutoUsers(event) {
+    getUserData(event) {
         var that = this;
         let query = event.query;
 
@@ -68,8 +68,9 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
+            "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -82,7 +83,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
     // Selected User
 
-    selectAutoUsers(event, arg) {
+    selectUserData(event, arg) {
         var that = this;
 
         that.uid = event.uid;
@@ -95,10 +96,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         that.refutype = event.utype;
         that.isemprefuser = event.isemp;
 
-        that.refuserdata.uid = that.refuid;
-        that.refuserdata.uname = that.refuname;
-        that.refuserdata.utype = that.refutype;
-        that.refuserdata.isemp = that.isemprefuser;
+        that.refuserdata = that.userdata;
 
         that.getMenuDetails();
         that.getUserRightsById(that.refuid, that.refutype);
@@ -106,7 +104,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
     // Selected Reference User
 
-    selectAutoRefUsers(event, arg) {
+    selectRefUserData(event, arg) {
         var that = this;
 
         that.refuid = event.uid;

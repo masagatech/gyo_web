@@ -18,7 +18,7 @@ export class AddClassComponent implements OnInit {
 
     clsid: number = 0;
     stdid: number = 0;
-    divid: number = 0;
+    divname: string = "";
     strength: number = 0;
     clstypid: number = 0;
 
@@ -63,7 +63,7 @@ export class AddClassComponent implements OnInit {
         var that = this;
 
         that.stdid = 0;
-        that.divid = 0;
+        that.divname = "";
         that.strength = 0;
         that.clstypid = 0;
 
@@ -249,9 +249,9 @@ export class AddClassComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Standard");
             $(".standard").focus();
         }
-        else if (that.divid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Subject");
-            $(".subject").focus();
+        else if (that.divname == "") {
+            that._msg.Show(messageType.error, "Error", "Select Division");
+            $(".division").focus();
         }
         else if (that.strength == 0) {
             that._msg.Show(messageType.error, "Error", "Select Strength");
@@ -280,7 +280,7 @@ export class AddClassComponent implements OnInit {
             var saveClass = {
                 "clsid": that.clsid,
                 "stdid": that.stdid,
-                "divid": that.divid,
+                "divname": that.divname,
                 "strength": that.strength,
                 "clstypid": that.clstypid,
                 "clstchrid": that.clstchrid,
@@ -342,7 +342,7 @@ export class AddClassComponent implements OnInit {
                     try {
                         that.clsid = data.data[0].classid;
                         that.stdid = data.data[0].stdid;
-                        that.divid = data.data[0].divid;
+                        that.divname = data.data[0].divname;
                         that.strength = data.data[0].strength;
                         that.clstypid = data.data[0].clstypid;
 

@@ -50,12 +50,6 @@ export class AddUserComponent implements OnInit {
 
     workspaceList: any = [];
 
-    isAllVehRights: boolean = true;
-    vehtypeDT: any = [];
-    vehtypeList: any = [];
-    vehtypeid: number = 0;
-    vehtypename: any = [];
-
     private subscribeParameters: any;
 
     uploadPhotoDT: any = [];
@@ -265,84 +259,6 @@ export class AddUserComponent implements OnInit {
         this.entityList.splice(this.entityList.indexOf(row), 1);
     }
 
-    // Is Rights Vehicle
-
-    isAllVehicleRights() {
-        if (this.isAllVehRights) {
-            this.vehtypeList = [];
-        }
-    }
-
-    // Auto Completed Vehicle
-
-    getVehicleData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "vehicle",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "isallenttrights": this.isAllEnttRights,
-            "enttlist": this.entityList,
-            "search": query
-        }).subscribe((data) => {
-            this.vehtypeDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Vehicle
-
-    selectVehicleData(event, type) {
-        this.vehtypeid = event.value;
-
-        this.addVehicleList();
-        $(".vehtypename input").focus();
-    }
-
-    // Check Duplicate Vehicle
-
-    isDuplicateVehicle() {
-        var that = this;
-
-        for (var i = 0; i < that.vehtypeList.length; i++) {
-            var field = that.vehtypeList[i];
-
-            if (field.vehtypeid == this.vehtypeid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Vehicle not Allowed");
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // Read Get Vehicle
-
-    addVehicleList() {
-        var that = this;
-        var duplicateVehicle = that.isDuplicateVehicle();
-
-        if (!duplicateVehicle) {
-            that.vehtypeList.push({
-                "vehtypeid": that.vehtypename.value, "vehtypename": that.vehtypename.label
-            });
-        }
-
-        that.vehtypeid = 0;
-        that.vehtypename = [];
-    }
-
-    deleteVehicle(row) {
-        this.vehtypeList.splice(this.vehtypeList.indexOf(row), 1);
-    }
-
     // User Photo Upload
 
     getPhotoUploadConfig() {
@@ -443,7 +359,6 @@ export class AddUserComponent implements OnInit {
         that.mode = "";
 
         that.entityList = [];
-        that.vehtypeList = [];
 
         that.uploadPhotoDT = [];
         that.chooseLabel = "Upload Photo";
@@ -491,7 +406,6 @@ export class AddUserComponent implements OnInit {
 
             var _wslist: string[] = [];
             var _enttlist: string[] = [];
-            var _vehlist: string[] = [];
 
             if (that.utype == "admin" || that.utype == "user") {
                 _wslist = ["0"];
@@ -517,8 +431,6 @@ export class AddUserComponent implements OnInit {
                 }
             }
 
-            _vehlist = that.isAllVehRights ? ["0"] : Object.keys(that.vehtypeList).map(function (k) { return that.vehtypeList[k].vehtypeid });
-
             var saveuser = {
                 "uid": that.uid,
                 "loginid": that.loginid,
@@ -529,7 +441,6 @@ export class AddUserComponent implements OnInit {
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "wsrights": _wslist,
                 "school": _enttlist,
-                "vehicle": _vehlist,
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -606,8 +517,6 @@ export class AddUserComponent implements OnInit {
                         that.workspaceList = data.data[0].workspace !== null ? data.data[0].workspace : [];
                         that.isAllEnttRights = data.data[0].isallenttrights;
                         that.entityList = data.data[0].school !== null ? data.data[0].school : [];
-                        that.isAllVehRights = data.data[0].isallvehrights;
-                        that.vehtypeList = data.data[0].vehicle !== null ? data.data[0].vehicle : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;

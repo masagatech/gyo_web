@@ -306,9 +306,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.lname = "";
         that.classid = 0;
 
-        that.address = "";
-        that.state = 0;
-        that.city = 0;
+        that.address = that._enttdetails.address;
+        that.country = that._enttdetails.country;
+        that.state = that._enttdetails.sid;
+        that.fillCityDropDown();
+        that.city = that._enttdetails.ctid;
+        that.fillAreaDropDown();
+        that.area = that._enttdetails.arid;
+        that.pincode = that._enttdetails.pincode;
         that.remark1 = "";
         that.otherinfo = "";
 
@@ -626,11 +631,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".fname").focus();
             return false;
         }
-        else if (that.mname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Middle Name");
-            $(".mname").focus();
-            return false;
-        }
         else if (that.lname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Last Name");
             $(".lname").focus();
@@ -643,6 +643,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }
         else if (that.classid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
+            $(".class").focus();
+            return false;
+        }
+        else if (that.dob == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Date Of Birth");
             $(".class").focus();
             return false;
         }

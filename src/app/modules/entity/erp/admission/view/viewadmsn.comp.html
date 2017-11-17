@@ -1,10 +1,10 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix" id="fltrstuds">
-            <div class="col-md-5 col-xs-9">
+            <div class="col-md-2">
                 <h4>Student</h4>
             </div>
-            <div class="col-md-2 col-xs-3">
+            <div class="col-md-2 col-xs-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class</label>
@@ -35,6 +35,12 @@
                     <i class="material-icons">list</i></button>
                 <button type="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
                     <i class="material-icons">add</i></button>
+            </div>
+            <div class="col-md-3 col-xs-8 hide" align="right" style="padding-top: 20px">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="uploadAdmissionForm()">
+                        <i class="material-icons">add</i> Excel Upload</button>
+                </div>
             </div>
         </div>
     </div>

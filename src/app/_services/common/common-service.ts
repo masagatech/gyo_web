@@ -87,4 +87,8 @@ export class CommonService {
         var date = new Date();
         return (exportFileName + date.toLocaleDateString() + "_" + date.toLocaleTimeString() + '.csv')
     }
+
+    excelupload(req: any) {
+        return this._dataserver.post("exceluploads", req)
+    }
 }
