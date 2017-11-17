@@ -52,12 +52,11 @@ export class AddContentComponent implements OnInit {
     resetCotentFields() {
         var that = this;
 
-        that.cid = 0;
+        that.stdid = 0;
+        that.subid = 0;
         that.ctitle = "";
         that.cdesc = "";
-        that.remark = "";
         that.chooseLabel = "Upload Photo";
-        that.uploadPhotoDT = [];
     }
 
     // Fill Standard Drop Down
@@ -222,10 +221,8 @@ export class AddContentComponent implements OnInit {
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        if (that.paramcid == 0) {
+                        if (msgid === "1") {
                             that.resetCotentFields();
-                            that.paramcid = 0;
-                            that.subid = 0;
                         }
                         else {
                             that.backViewData();
@@ -254,6 +251,7 @@ export class AddContentComponent implements OnInit {
 
     editContentDetails() {
         var that = this;
+        commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
@@ -262,48 +260,39 @@ export class AddContentComponent implements OnInit {
             }
             else {
                 that.resetCotentFields();
-                that.paramcid = 0;
-                that.subid = 0;
+                commonfun.loaderhide();
             }
         });
     }
 
     getContentDetails() {
         var that = this;
-        commonfun.loader();
 
         that._cntservice.getContentDetails({
-            "flag": "edit", "cid": that.paramcid, "stdid": that.stdid, "subid": that.subid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "edit", "cid": that.cid, "stdid": that.stdid, "subid": that.subid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
-                var contentdata = data.data;
+                if (that.paramcid == 0) {
+                    that.stdid = data.data[0].stdid;
+                    that.fillSubjectDropDown();
 
-                if (contentdata.length == 0) {
-                    that.resetCotentFields();
+                    that.subid = data.data[0].subid;
+                }
+                
+                that.cid = data.data[0].cid;
+                that.ctitle = data.data[0].ctitle;
+                that.cdesc = data.data[0].cdesc;
+
+                if (data.data[0].cphoto !== "") {
+                    that.uploadPhotoDT.push({ "athurl": data.data[0].cphoto });
+                    that.chooseLabel = "Change Photo";
                 }
                 else {
-                    if (that.paramcid !== 0) {
-                        that.stdid = contentdata[0].stdid;
-                        that.fillSubjectDropDown();
-
-                        that.subid = contentdata[0].subid;
-                    }
-
-                    that.cid = contentdata[0].cid;
-                    that.ctitle = contentdata[0].ctitle;
-                    that.cdesc = contentdata[0].cdesc;
-
-                    if (contentdata[0].cphoto !== "") {
-                        that.uploadPhotoDT.push({ "athurl": contentdata[0].cphoto });
-                        that.chooseLabel = "Change Photo";
-                    }
-                    else {
-                        that.uploadPhotoDT = [];
-                        that.chooseLabel = "Upload Photo";
-                    }
-
-                    that.remark = contentdata[0].remark;
+                    that.uploadPhotoDT = [];
+                    that.chooseLabel = "Upload Photo";
                 }
+
+                that.remark = data.data[0].remark;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

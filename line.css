@@ -1,0 +1,98 @@
+body{
+    
+}
+
+.lineHolder{
+    display: block;
+    width:300px;
+}
+.lineitem{
+    height: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-direction: normal;
+}
+.lineitem .contLeft{
+    width: 96px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    text-align: right;
+}
+
+.lineitem .line{
+    width: 20px;
+    min-width: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.lineitem .line>.innerLine{
+    border-right: 3px solid #798e9b;
+    height: 100%;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    
+}
+
+.lineitem .contRight{
+    padding-bottom: 22px;
+    position: relative;
+    padding-left: 16px;
+    min-height: 66px;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -webkit-box-orient: vertical;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    
+}
+.lineitem .connecter{
+    width: 9px;
+    height: 9px;
+    border: 2px solid #798e9b;
+    top: -5px;
+    left: -16px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 1;
+}
+.lineitem:hover{
+    background-color: #eee
+}
+
+.solid .innerLine, .solid .connecter{
+    border-color: #1f91f3!important;
+    outline-color: #1f91f3!important;
+}
+
+.dashed .innerLine, .dashed .connecter{
+    border-color: #ff5050!important;
+        outline-color: #ff5050!important;
+    
+}
+.solid{
+   height: 80px;
+}
+.text span{
+    display: block
+}

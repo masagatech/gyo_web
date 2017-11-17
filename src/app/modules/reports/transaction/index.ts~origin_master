@@ -13,9 +13,13 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'class', loadChildren: './class#ClassReportsModule' },
-                    { path: 'chapter', loadChildren: './chapter#ChapterReportsModule' },
-                    { path: 'gallery', loadChildren: './gallery#GalleryReportsModule' },
+                    { path: 'exam', loadChildren: './exam#ExamReportsModule' },
+                    { path: 'examresult', loadChildren: './examresult#ExamResultReportsModule' },
+                    
+                    { path: 'assesment', loadChildren: './assesment#AssesmentReportsModule' },
+                    { path: 'assesmentresult', loadChildren: './assesmentresult#AssesmentResultReportsModule' },
+
+                    { path: 'notification', loadChildren: './notification#NotificationReportsModule' },
                 ]
             }
         ]
@@ -30,6 +34,6 @@ export const routes = [
     providers: [AuthGuard]
 })
 
-export class MasterReportsModule {
+export class TransactionReportsModule {
 
 }

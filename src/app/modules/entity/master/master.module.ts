@@ -32,7 +32,6 @@ export const routes = [
                     { path: 'tag', loadChildren: './tag#TagModule' },
                     { path: 'taggroupmodulemap', loadChildren: './taggrpmdlmap#TagGroupModuleMapModule' },
                     { path: 'album', loadChildren: './album#AlbumModule' },
-                    { path: 'content', loadChildren: './content#EntityContentModule' },
                 ]
             }
         ]

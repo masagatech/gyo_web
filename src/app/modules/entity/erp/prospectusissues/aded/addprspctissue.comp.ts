@@ -22,7 +22,7 @@ export class AddProspectusIssuesComponent implements OnInit {
     genderDT: any = [];
     classDT: any = [];
 
-    prspctparamid: number = 0;
+    issuesparamid: number = 0;
     issuesid: number = 0;
     ayid: number = 0;
     prspctid: number = 0;
@@ -112,13 +112,11 @@ export class AddProspectusIssuesComponent implements OnInit {
             try {
                 that.formnoDT = data.data;
 
-                if (that.prspctparamid == 0) {
-                    if (data.data.length > 0) {
-                        that.prspctfees = data.data[0].fees;
-                    }
-                    else {
-                        that.prspctfees = 0;
-                    }
+                if (data.data.length > 0) {
+                    that.prspctfees = data.data[0].fees;
+                }
+                else {
+                    that.prspctfees = 0;
                 }
             }
             catch (e) {
@@ -324,6 +322,7 @@ export class AddProspectusIssuesComponent implements OnInit {
             commonfun.loader();
 
             for (var i = 0; i < that.prospectusIssuesDT.length; i++) {
+                that.prospectusIssuesDT[i].issuesid = that.issuesid;
                 that.prospectusIssuesDT[i].prspctid = that.prspctid;
                 that.prospectusIssuesDT[i].ayid = that.ayid;
                 that.prospectusIssuesDT[i].prntname = that.prntname;
@@ -337,14 +336,14 @@ export class AddProspectusIssuesComponent implements OnInit {
 
             this._prspctservice.saveProspectusIssues({ "prospectusissues": that.prospectusIssuesDT }).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_prospectusissues;
+                    var dataResult = data.data[0].funsave_Prospectusinfo;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        if (that.prspctparamid == 0) {
+                        if (msgid === "1") {
                             that.resetProspectusFields();
                         }
                         else {
@@ -378,7 +377,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.prspctparamid = params['id'];
+                that.issuesparamid = params['id'];
                 that.getProspectusIssues();
             }
             else {
@@ -393,23 +392,20 @@ export class AddProspectusIssuesComponent implements OnInit {
         commonfun.loader();
 
         that._prspctservice.getProspectusIssues({
-            "flag": "edit", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "prspctid": that.prspctparamid,
-            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "edit", "issuesid": that.issuesparamid, "clissuesid": that.classid, "ayid": that.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 var viewass = data.data;
 
                 if (viewass.length > 0) {
+                    that.issuesid = that.issuesparamid;
                     that.ayid = viewass[0].ayid;
-                    that.prspctid = viewass[0].prspctid;
-                    that.getFormNo();
-                    
-                    that.prspctfees = viewass[0].fees;
+                    that.classid = viewass[0].classid;
 
                     that.prntname = viewass[0].prntname;
                     that.prntmob = viewass[0].prntmob;
-
-                    that.prospectusIssuesDT = viewass[0].childlist;
+                    that.prospectusIssuesDT = viewass[0].formno;
 
                     that.remark = viewass[0].remark;
                 }

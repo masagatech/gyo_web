@@ -17,7 +17,7 @@ export class ViewContentComponent implements OnInit {
 
     standardDT: any = [];
     stdid: number = 0;
-
+    
     contentDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -25,7 +25,7 @@ export class ViewContentComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        this.fillStandardDropDown();
+        this.getStandardDetails();
         this.getContentDetails();
     }
 
@@ -33,7 +33,7 @@ export class ViewContentComponent implements OnInit {
 
     }
 
-    fillStandardDropDown() {
+    getStandardDetails() {
         var that = this;
         commonfun.loader();
 
