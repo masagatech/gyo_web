@@ -65,43 +65,43 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['psngrtype'] !== undefined) {
                 that.psngrtype = params['psngrtype'];
+            }
+            else {
+                that.psngrtype = "passenger";
+            }
 
-                if (params['psngrid'] !== undefined) {
-                    that.psngrid = params['psngrid'];
+            if (params['psngrid'] !== undefined) {
+                that.psngrid = params['psngrid'];
 
-                    params = {
-                        "flag": that.psngrtype == "employee" ? "empleave" : "psngrleave", "psngrid": that.psngrid,
-                        "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-                        "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                params = {
+                    "flag": that.psngrtype == "employee" ? "empleave" : "psngrleave", "psngrid": that.psngrid, "psngrtype": that.psngrtype,
+                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                }
+
+                that._lvservice.getLeaveDetails(params).subscribe(data => {
+                    try {
+                        that.psngrLeaveDT = data.data;
+
+                        if (that.psngrLeaveDT.length > 0) {
+                            that.psngrname = that.psngrLeaveDT[0].psngrname;
+                        }
+                        else {
+                            that.psngrname = "";
+                        }
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
                     }
 
-                    that._lvservice.getLeaveDetails(params).subscribe(data => {
-                        try {
-                            that.psngrLeaveDT = data.data;
-
-                            if (that.psngrLeaveDT.length > 0) {
-                                that.psngrname = that.psngrLeaveDT[0].psngrname;
-                            }
-                            else {
-                                that.psngrname = "";
-                            }
-                        }
-                        catch (e) {
-                            that._msg.Show(messageType.error, "Error", e);
-                        }
-
-                        commonfun.loaderhide();
-                    }, err => {
-                        that._msg.Show(messageType.error, "Error", err);
-                        console.log(err);
-                        commonfun.loaderhide();
-                    }, () => {
-
-                    })
-                }
-                else {
                     commonfun.loaderhide();
-                }
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
             }
         });
     }
@@ -119,7 +119,7 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
                 that.psngrid = params['psngrid'];
 
                 params = {
-                    "flag": row.lvfor == "employee" ? "byemp" : "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid,
+                    "flag": row.lvfor == "employee" ? "byemp" : "bypsngr", "lvid": row.lvid, "psngrid": that.psngrid, "psngrtype": that.psngrtype,
                     "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }
@@ -223,11 +223,21 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     viewAllLeave() {
-        this._router.navigate(['/erp/' + this.psngrtype + '/leave']);
+        if (this.psngrtype == "passenger") {
+            this._router.navigate(['/master/' + this.psngrtype + '/leave']);
+        }
+        else {
+            this._router.navigate(['/erp/' + this.psngrtype + '/leave']);
+        }
     }
 
     viewPendingLeave() {
-        this._router.navigate(['/erp/' + this.psngrtype + '/leave/pending']);
+        if (this.psngrtype == "passenger") {
+            this._router.navigate(['/master/' + this.psngrtype + '/leave/pending']);
+        }
+        else {
+            this._router.navigate(['/erp/' + this.psngrtype + '/leave/pending']);
+        }
     }
 
     public ngOnDestroy() {

@@ -41,7 +41,6 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         var that = this;
 
         setTimeout(function () {
-            $(".enttname input").focus();
             commonfun.navistyle();
 
             $.AdminBSB.islocked = true;
@@ -76,7 +75,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Fill Entity, Class, Month DropDown
+    // Fill Class, Month DropDown
 
     fillDropDownList() {
         var that = this;
@@ -111,7 +110,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._rptservice.getAttendanceReports({
-            "flag": "column", "monthname": that.monthname, "schoolid": that._enttdetails.enttid
+            "flag": "column", "monthname": that.monthname, "enttid": that._enttdetails.enttid
         }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attColumn = data.data;
@@ -133,8 +132,8 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
             commonfun.loader("#fltrpsngr");
 
             that._rptservice.getAttendanceReports({
-                "flag": "student", "monthname": that.monthname, "classid": that.classid, "schoolid": that._enttdetails.enttid,
-                "uid": that.loginUser.uid, "utype": that.loginUser.utype
+                "flag": "monthly", "psngrtype": that._enttdetails.smpsngrtype, "monthname": that.monthname, "classid": that.classid,
+                "enttid": that._enttdetails.enttid, "uid": that.loginUser.uid, "utype": that.loginUser.utype
             }).subscribe(data => {
                 try {
                     if (data.data.length == 0) {

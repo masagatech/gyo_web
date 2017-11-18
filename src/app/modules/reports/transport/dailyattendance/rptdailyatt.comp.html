@@ -1,10 +1,30 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <h4>Today's Attendance</h4>
             </div>
-            <div class="col-md-3" style="text-align: right;">
+            <div class="col-md-2">
+                <div class="form-group" *ngIf="_enttdetails.psngrtype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Class</label>
+                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control" (ngModelChange)="getAttendanceReports()">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1" style="padding-top: 20px;">
+                <div class="form-group" *ngIf="_enttdetails.psngrtype == 'student'">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
+                        <span class="material-icons">subdirectory_arrow_right</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3" style="padding-top: 20px;" align="right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
@@ -23,15 +43,14 @@
         <div #dailyatt class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="attData">
-                    <p-column field="studsname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left'}"></p-column>
-                    <p-column field="standard" header="Standard" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
-                    <p-column field="division" header="Division" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
-                    <p-column field="p" header="P" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left'}"></p-column>
+                    <p-column *ngIf="_enttdetails.psngrtype == 'student'" field="classname" header="Class" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
+                    <p-column field="p" header="P" [style]="{'width': '50px', 'text-align': 'left'}">
                         <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="material-icons {{drow.p === 'check' ? 'act-green' : 'act-red'}}">{{drow.p}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column field="d" header="D" [style]="{'width': '30px', 'text-align': 'left'}">
+                    <p-column field="d" header="D" [style]="{'width': '50px', 'text-align': 'left'}">
                         <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="material-icons {{drow.d === 'check' ? 'act-green' : 'act-red'}}">{{drow.d}}</span>
                         </ng-template>

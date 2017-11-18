@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="form-group">
+                <div class="form-group" *ngIf="_enttdetails.psngrtype == 'student'">
                     <div class="form-line">
                         <label class="control-label">Class</label>
                         <select id="classid" name="classname" [(ngModel)]="classid" class="form-control" (ngModelChange)="getAttendanceColumn()">
@@ -56,8 +56,8 @@
         <div #psngrattnd class="row clearfix">
             <div class="col-md-12 reports">
                 <p-dataTable [value]="attData">
-                    <p-column field="stdnm" header="Name" [style]="{'width': '215px', 'text-align': 'left'}"></p-column>
-                    <p-column field="classname" header="Class" [style]="{'width': '35px', 'text-align': 'center'}"></p-column>
+                    <p-column field="psngrname" header="Name" [style]="{'width': '215px', 'text-align': 'left'}"></p-column>
+                    <p-column *ngIf="_enttdetails.psngrtype == 'student'" field="classname" header="Class" [style]="{'width': '35px', 'text-align': 'center'}"></p-column>
                     <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width': '25px', 'text-align':'center'}">
                         <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="{{drow[atcol.day]}}">

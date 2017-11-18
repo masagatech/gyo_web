@@ -48,8 +48,6 @@ export class AddUserComponent implements OnInit {
     enttid: number = 0;
     enttname: any = [];
 
-    workspaceList: any = [];
-
     private subscribeParameters: any;
 
     uploadPhotoDT: any = [];
@@ -412,17 +410,6 @@ export class AddUserComponent implements OnInit {
                 _enttlist = ["0"];
             }
             else {
-                if (that.workspaceList.length !== 0) {
-                    _wslist = Object.keys(that.workspaceList).map(function (k) { return that.workspaceList[k].wsautoid });
-                }
-                else {
-                    that.workspaceList.push({
-                        "wsautoid": that._wsdetails.wsautoid, "wsname": that._wsdetails.wsname
-                    });
-
-                    _wslist = Object.keys(that.workspaceList).map(function (k) { return that.workspaceList[k].wsautoid });
-                }
-
                 if (that.isAllEnttRights) {
                     _enttlist = ["0"];
                 }
@@ -514,9 +501,8 @@ export class AddUserComponent implements OnInit {
                         that.fname = data.data[0].fname;
                         that.lname = data.data[0].lname;
                         that.utype = data.data[0].utype;
-                        that.workspaceList = data.data[0].workspace !== null ? data.data[0].workspace : [];
                         that.isAllEnttRights = data.data[0].isallenttrights;
-                        that.entityList = data.data[0].school !== null ? data.data[0].school : [];
+                        that.entityList = data.data[0].schooldt !== null ? data.data[0].schooldt : [];
                         that.email1 = data.data[0].email1;
                         that.email2 = data.data[0].email2;
                         that.mobileno1 = data.data[0].mobileno1;

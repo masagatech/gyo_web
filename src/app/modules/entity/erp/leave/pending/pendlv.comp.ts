@@ -85,6 +85,11 @@ export class PendingLeaveComponent implements OnInit {
     }
 
     public openApprovalForm(row) {
-        this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval/' + row.psngrid]);
+        if (this.psngrtype == "passenger") {
+            this._router.navigate(['/master/' + this.psngrtype + '/leave/approval', row.psngrid]);
+        }
+        else {
+            this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval/' + row.psngrid]);
+        }
     }
 }

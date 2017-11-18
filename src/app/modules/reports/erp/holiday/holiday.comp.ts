@@ -109,32 +109,33 @@ export class HolidayReportsComponent implements OnInit, OnDestroy {
                 else if (that.psngrtype == "employee") {
                     that.psngrtypenm = 'Employee';
                 }
-
-                params = {
-                    "flag": "reports", "hldfor": that.psngrtype, "ayid": that.ayid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-                }
-
-                that._hldservice.getHoliday(params).subscribe(data => {
-                    try {
-                        that.holidayDT = data.data;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
             }
             else {
-                commonfun.loaderhide();
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
             }
+
+            params = {
+                "flag": "reports", "hldfor": that.psngrtype, "ayid": that.ayid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            }
+
+            that._hldservice.getHoliday(params).subscribe(data => {
+                try {
+                    that.holidayDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
         });
     }
 

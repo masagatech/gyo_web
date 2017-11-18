@@ -132,30 +132,34 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
                 else {
                     that.psngrtypenm = 'Employee';
                 }
+            }
+            else {
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
+            }
 
-                params = {
-                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "passenger" : "student", "psngrtype": that.psngrtype,
-                    "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "status": that.status
+            params = {
+                "flag": "leave", "psngrtype": that.psngrtype, "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
+                "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "issysadmin": that.loginUser.issysadmin, "status": that.status
+            }
+
+            that._lvservice.getLeaveDetails(params).subscribe(data => {
+                try {
+                    that.lvpsngrDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
                 }
 
-                that._lvservice.getLeaveDetails(params).subscribe(data => {
-                    try {
-                        that.lvpsngrDT = data.data;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
-            }
+            })
         });
     }
 

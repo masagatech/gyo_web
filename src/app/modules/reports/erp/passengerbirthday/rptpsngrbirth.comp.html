@@ -1,7 +1,7 @@
 <div class="card">
     <div class="header">
         <h4>
-            Student Birthday List
+            {{_enttdetails.psngrtype}} Birthday List
         </h4>
     </div>
 
@@ -14,7 +14,7 @@
                             <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
-                    <p-column field="psngrname" header="Student Name" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align':'left'}"></p-column>
                     <p-column field="birthdate" header="Birth Date" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="age" header="Age" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                 </p-dataTable>

@@ -53,8 +53,8 @@
                         </ng-template>
                     </p-column>
                     <p-column field="psngrname" header="{{psngrtypenm}} Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="classname" header="Class" [style]="{'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype != 'employee'"></p-column>
-                    <p-column header="Parents" [style]="{'width':'150px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'">
+                    <p-column field="classname" header="Class" [style]="{'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype != 'employee' && psngrtype != 'passenger'"></p-column>
+                    <p-column header="Parents" [style]="{'width':'150px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype == 'student' && psngrtype == 'passenger'">
                         <ng-template let-row="rowData" pTemplate type="body">
                             {{row.fathername}}<span *ngIf="row.fathername != '' && row.mothername !== ''"><br/></span>{{row.mothername}}
                         </ng-template>
@@ -70,7 +70,7 @@
                         </ng-template>
                     </p-column>
                     <p-column field="address" header="Address 1" [style]="{'width': '240px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column header="Address 2" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
+                    <p-column header="Address 2" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype != 'passenger'">
                         <ng-template let-row="rowData" pTemplate type="body">
                             {{row.city + ', ' + row.state + ', ' + row.country}}
                         </ng-template>

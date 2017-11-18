@@ -258,13 +258,19 @@ export class AddHolidayComponent implements OnInit {
         var _hldforrights = null;
         var _clsrights = null;
 
-        _hldforrights = that.getHolidayForRights();
-
-        if ($("#selectall").is(':checked')) {
-            _clsrights = 0;
+        if (that._enttdetails.psngrtype != 'Passenger') {
+            _hldforrights = that.getHolidayForRights();
+    
+            if ($("#selectall").is(':checked')) {
+                _clsrights = 0;
+            }
+            else {
+                _clsrights = that.getClassRights() == null ? 0 : that.getClassRights();
+            }
         }
         else {
-            _clsrights = that.getClassRights();
+            _hldforrights = "Passenger";    
+            _clsrights = 0;
         }
 
         if (that.frmdt == "") {
@@ -279,13 +285,16 @@ export class AddHolidayComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Holiday Title");
             $(".hldnm").focus();
         }
-        else if (_hldforrights == null) {
-            that._msg.Show(messageType.error, "Error", "Please Select Holiday For");
-        }
-        else if (that.classDT.length == 0) {
-            that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
-        }
         else {
+            if (that._enttdetails.psngrtype != 'Passenger') {
+                if (_hldforrights == null) {
+                    that._msg.Show(messageType.error, "Error", "Please Select Holiday For");
+                }
+                else if (that.classDT.length == 0) {
+                    that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
+                }
+            }
+
             commonfun.loader();
 
             var saveholiday = {
@@ -294,8 +303,8 @@ export class AddHolidayComponent implements OnInit {
                 "hldnm": that.hldnm,
                 "hlddesc": that.hlddesc,
                 "hldfor": "{" + _hldforrights + "}",
+                "classid": "{" + _clsrights + "}",
                 "ayid": that.ayid,
-                "classid": _clsrights == null ? "{}" : "{" + _clsrights + "}",
                 "frmdt": that.frmdt,
                 "todt": that.todt,
                 "cuid": that.loginUser.ucode,

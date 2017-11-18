@@ -22,7 +22,7 @@ export class PassengerBirthdayComponent implements OnInit {
     global = new Globals();
 
     private subscribeParameters: any;
-    
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _psngrservice: PassengerService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
@@ -54,29 +54,33 @@ export class PassengerBirthdayComponent implements OnInit {
                 else {
                     that.psngrtypenm = 'Employee';
                 }
+            }
+            else {
+                that.psngrtype = "passenger";
+                that.psngrtypenm = "Passenger";
+            }
 
-                params = {
-                    "flag": "birthday", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            params = {
+                "flag": "birthday", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            }
+
+            that._psngrservice.getPassengerReports(params).subscribe(data => {
+                try {
+                    that.birthdayDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
                 }
 
-                that._psngrservice.getPassengerReports(params).subscribe(data => {
-                    try {
-                        that.birthdayDT = data.data;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
-            }
+            })
         });
     }
 }

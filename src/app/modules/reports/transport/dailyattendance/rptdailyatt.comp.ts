@@ -15,6 +15,9 @@ export class DailyAttendanceComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    classDT: any = [];
+    classid: number = 0;
+
     attColumn: any = [];
     attData: any = [];
 
@@ -31,7 +34,6 @@ export class DailyAttendanceComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         setTimeout(function () {
-            $(".enttname input").focus();
             commonfun.navistyle();
 
             $.AdminBSB.islocked = true;
@@ -64,6 +66,36 @@ export class DailyAttendanceComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Fill Class, Month DropDown
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._rptservice.getAttendanceReports({
+            "flag": "filterddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that._enttdetails.issysadmin
+        }).subscribe(data => {
+            try {
+                that.classDT = data.data.filter(a => a.group === "class");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Attendent Data
+
     getAttendanceReports() {
         var that = this;
         var monthname = that.getDefaultMonth();
@@ -71,7 +103,8 @@ export class DailyAttendanceComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._rptservice.getAttendanceReports({
-            "flag": "daily", "monthname": monthname, "schoolid": that._enttdetails.enttid, "uid":"0"
+            "flag": "daily", "psngrtype": that._enttdetails.smpsngrtype, "monthname": monthname, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "uid":"0"
         }).subscribe(data => {
             try {
                 that.attData = data.data;

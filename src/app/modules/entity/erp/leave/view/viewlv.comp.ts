@@ -69,6 +69,8 @@ export class ViewLeaveComponent implements OnInit {
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "emptype": this.loginUser.ctype,
+            "classid": "0",
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -109,37 +111,37 @@ export class ViewLeaveComponent implements OnInit {
                 else if (that.psngrtype == "teacher") {
                     that.psngrtypenm = 'Teacher';
                 }
-                else {
+                else if (that.psngrtype == "employee") {
                     that.psngrtypenm = 'Employee';
                 }
-
-                params = {
-                    "flag": (that.psngrtype == "employee" || that.psngrtype == "teacher") ? "passenger" : "student", "psngrtype": that.psngrtype,
-                    "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                    "psngrid": that.psngrid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                    "issysadmin": that.loginUser.issysadmin, "status": that.status
-                }
-
-                that._lvservice.getLeaveDetails(params).subscribe(data => {
-                    try {
-                        that.lvpsngrDT = data.data;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
             }
             else {
-                commonfun.loaderhide();
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
             }
+
+            params = {
+                "flag": "leave", "psngrtype": that.psngrtype, "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
+                "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "issysadmin": that.loginUser.issysadmin, "status": that.status
+            }
+
+            that._lvservice.getLeaveDetails(params).subscribe(data => {
+                try {
+                    that.lvpsngrDT = data.data;
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
         });
     }
 
@@ -155,15 +157,30 @@ export class ViewLeaveComponent implements OnInit {
     }
 
     public addLeaveDetails() {
-        this._router.navigate(['/erp/' + this.psngrtype + '/leave/add']);
+        if (this.psngrtype == "passenger") {
+            this._router.navigate(['/master/' + this.psngrtype + '/leave/add']);
+        }
+        else {
+            this._router.navigate(['/erp/' + this.psngrtype + '/leave/add']);
+        }
     }
 
     public editLeaveDetails(row) {
-        this._router.navigate(['/erp/' + this.psngrtype + '/leave/edit', row.lvid]);
+        if (this.psngrtype == "passenger") {
+            this._router.navigate(['/master/' + this.psngrtype + '/leave/edit', row.lvid]);
+        }
+        else {
+            this._router.navigate(['/erp/' + this.psngrtype + '/leave/edit', row.lvid]);
+        }
     }
 
     public openLeaveApproval(row) {
-        this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
+        if (this.psngrtype == "passenger") {
+            this._router.navigate(['/master/' + this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
+        }
+        else {
+            this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
+        }
     }
 }
 

@@ -47,7 +47,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
     resetUserRights() {
         $("#uname input").focus();
-        
+
         this.uid = 0;
         this.uname = "";
         this.userdata = [];
@@ -119,7 +119,9 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     getMenuDetails() {
         var that = this;
 
-        this._menuservice.getMenuDetails({ "flag": "all", "psngrtype": that._enttdetails.psngrtype, "isemp": that.isemprefuser }).subscribe(data => {
+        this._menuservice.getMenuDetails({
+            "flag": "all", "entttype": that._enttdetails.entttype, "psngrtype": that._enttdetails.psngrtype, "isemp": that.isemprefuser
+        }).subscribe(data => {
             this.menudetails = data.data;
             $("#menus").prop('checked', false);
         }, err => {
@@ -178,6 +180,8 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
                     "uid": that.refuid,
                     "utype": that.refutype,
                     "giverights": _giverights,
+                    "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid,
                     "cuid": that.loginUser.login
                 }
 
