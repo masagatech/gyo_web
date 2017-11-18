@@ -23,6 +23,7 @@ export interface LoginUserModel {
   schoolid: string;
   enttid: number;
   enttname: string;
+  entttype: string;
   schlogo: string;
   wsautoid: number;
   wscode: string;

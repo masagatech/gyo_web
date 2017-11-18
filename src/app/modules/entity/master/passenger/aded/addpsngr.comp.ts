@@ -573,7 +573,7 @@ export class AddPassengerComponent implements OnInit {
                 "gender": that.gender,
                 "dob": that.dob,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
-                "schoolid": that._enttdetails.enttid,
+                "enttid": that._enttdetails.enttid,
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
@@ -600,9 +600,9 @@ export class AddPassengerComponent implements OnInit {
 
             that._psngrservice.savePassengerInfo(savePassenger).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_psngrinfo.msg;
-                    var msgid = dataResult[0].funsave_psngrinfo.msgid;
+                    var dataResult = data.data[0].funsave_passengerinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);

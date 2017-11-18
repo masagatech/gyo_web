@@ -8,7 +8,7 @@
             <div class="col-md-2" align="right">
                 <div class="form-group" *ngIf="_enttdetails.entttype == 'School'">
                     <div class="form-line">
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getDashboardDetails();">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getERPDashboardDetails()">
                             <option [value]="0">Select Academic year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
