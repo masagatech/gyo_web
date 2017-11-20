@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() enttname: string = "";
   @Input() homeurl: string = "";
 
-  iserpmenu: boolean = false;
+  isenttmenu: boolean = false;
   ismstmenu: boolean = false;
   isrptmenu: boolean = false;
 
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   mastersMenuDT: any = [];
   settingsMenuDT: any = [];
-  erpMenuDT: any = [];
+  enttMenuDT: any = [];
   reportsMenuDT: any = [];
   erpReportsMenuDT: any = [];
   adminMenuDT: any = [];
@@ -120,12 +120,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
       if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
         this.ismstmenu = false;
-        this.iserpmenu = false;
+        this.isenttmenu = false;
         this.isrptmenu = false;
       }
       else {
         this.ismstmenu = true;
-        this.iserpmenu = false;
+        this.isenttmenu = false;
         this.isrptmenu = false;
       }
     }
@@ -135,7 +135,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.entttype = this._enttdetails.entttype;
 
       this.ismstmenu = true;
-      this.iserpmenu = true;
+      this.isenttmenu = true;
       this.isrptmenu = true;
     }
   }
@@ -149,7 +149,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }).subscribe(data => {
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
       that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
-      that.erpMenuDT = data.data.filter(a => a.mptype === "erp");
+      that.enttMenuDT = data.data.filter(a => a.mptype === "erp");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
       that.erpReportsMenuDT = data.data.filter(a => a.mptype === "erprpt");
       that.adminMenuDT = data.data.filter(a => a.mptype === "admin");

@@ -20,11 +20,11 @@
                         <i class="material-icons">home</i>
                     </a>
                 </li>
-                <li class="dropdown dropdown-large" *ngIf="iserpmenu == true">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="erpMenuDT.length">
+                <li class="dropdown dropdown-large" *ngIf="isenttmenu == true">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="enttMenuDT.length">
                         <i class="material-icons">add</i></a>
                     <ul class="dropdown-menu dropdown-menu-large row">
-                        <li class="col-md-3" *ngFor="let row of erpMenuDT | groupBy: 'pname'">
+                        <li class="col-md-3" *ngFor="let row of enttMenuDT | groupBy: 'pname'">
                             <ul>
                                 <li class="dropdown-header text-left">{{row.key}}</li>
                                 <li class="divider"></li>
@@ -88,7 +88,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-large">
+                <li class="dropdown dropdown-large" *ngIf="isenttmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="settingsMenuDT.length">
                         <i class="material-icons">settings</i>
                     </a>
