@@ -1,0 +1,131 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Books</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveBooksInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Library <strong>*</strong></label>
+                                <select id="librid" name="librname" [(ngModel)]="librid" class="form-control librid" tabindex="1">
+                                    <option [value]="0">Select Library</option>
+                                    <option *ngFor="let row of libraryDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Subjects <strong>*</strong></label>
+                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subid" tabindex="2">
+                                    <option [value]="0">Select Subject</option>
+                                    <option *ngFor="let row of subjectDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Book Name <strong>*</strong></label>
+                                <input [(ngModel)]="bkname" class="form-control bkname" maxlength="100" tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">No of Book <strong>*</strong></label>
+                                <input [(ngModel)]="noofbook" OnlyNumber="true" class="form-control noofbook" maxlength="100" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From No <strong>*</strong></label>
+                                <input [(ngModel)]="fromno" OnlyNumber="true" class="form-control fromno" maxlength="100" tabindex="5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To No <strong>*</strong></label>
+                                <input [(ngModel)]="tono" OnlyNumber="true" class="form-control tono" maxlength="100" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Limit Issued Days <strong>*</strong></label>
+                                <input [(ngModel)]="lmtissd" OnlyNumber="true" class="form-control lmtissd" maxlength="100" tabindex="7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">After Limit Issued Per Day Fine <strong>*</strong></label>
+                                <input [(ngModel)]="aftrlmtfine" OnlyNumber="true" class="form-control text-right tono" maxlength="100" tabindex="8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description</label>
+                        <textarea [(ngModel)]="bkdesc" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="9"></textarea>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Author Name</label>
+                                <input [(ngModel)]="athrname" class="form-control" maxlength="100" tabindex="10" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Publication</label>
+                                <input [(ngModel)]="publication" class="form-control" maxlength="100" tabindex="11" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

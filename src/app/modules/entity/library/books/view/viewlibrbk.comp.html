@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-3 col-xs-3">
+                <h4>View Books</h4>
+            </div>
+            <div class="col-md-9 col-xs-9" style="text-align: right;">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addLibrarySubject()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="libraryBooksDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-column field="bkname" header="Book Name" [style]="{'width':'200px','text-align':'left'}"></p-column>
+                    <p-column field="librname" header="Library" [style]="{'width':'150px','text-align':'left'}"></p-column>
+                    <p-column field="subname" header="Subject" [style]="{'width':'150px','text-align':'left'}"></p-column>
+                    <p-column field="noofbook" header="No of Book" [style]="{'width':'100px','text-align':'left'}"></p-column>
+                    <p-column field="fromno" header="From No" [style]="{'width':'100px','text-align':'left'}"></p-column>
+                    <p-column field="tono" header="To No" [style]="{'width':'100px','text-align':'left'}"></p-column>
+                    <p-column field="lmtissd" header="Limit Issued" [style]="{'width':'100px','text-align':'left'}"></p-column>
+                    <p-column field="aftrlmtfine" header="After Limit Issued Per Day Fine" [style]="{'width':'150px','text-align':'left'}"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editLibrarySubject(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

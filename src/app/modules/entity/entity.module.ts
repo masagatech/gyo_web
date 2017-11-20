@@ -23,8 +23,12 @@ export const routes = [
                     
                     // Entity
                     { path: 'master', loadChildren: './master#MasterModule' },
-
+                    
+                    // Master Of Master
                     { path: 'master', loadChildren: '../admin/masterofmaster#MOMModule' },
+                    
+                    // Library
+                    { path: 'master', loadChildren: './library#LibraryModule' },
                     
                     // Transaction
                     { path: 'transaction', loadChildren: './transaction#TransactionModule' },

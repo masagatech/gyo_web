@@ -15,27 +15,30 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
-                    
-                    { path: 'class', loadChildren: './class#ClassModule' },
-                    { path: 'classbooks', loadChildren: './books#BooksModule' },
-                    { path: 'chapter', loadChildren: './chapter#ChapterModule' },
-                    { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
-                    { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableModule' },
-
                     // Passenger
+
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'passenger/attendance', loadChildren: '../erp/attendance#AttendanceModule' },
                     { path: 'passenger/leave', loadChildren: '../erp/leave#LeaveModule' },
                     { path: 'passenger/holiday', loadChildren: '../erp/holiday#HolidayModule' },
 
-                    { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
+                    // Master
 
+                    { path: 'academicyear', loadChildren: './academicyear#AcademicYearModule' },
+                    { path: 'holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'activity', loadChildren: './activity#ActivityModule' },
                     { path: 'tag', loadChildren: './tag#TagModule' },
                     { path: 'taggroupmodulemap', loadChildren: './taggrpmdlmap#TagGroupModuleMapModule' },
                     { path: 'album', loadChildren: './album#AlbumModule' },
                     { path: 'content', loadChildren: './content#EntityContentModule' },
+
+                    // Class
+
+                    { path: 'class', loadChildren: './class#ClassModule' },
+                    { path: 'classbooks', loadChildren: './books#BooksModule' },
+                    { path: 'chapter', loadChildren: './chapter#ChapterModule' },
+                    { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },
+                    { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableModule' },
                 ]
             }
         ]

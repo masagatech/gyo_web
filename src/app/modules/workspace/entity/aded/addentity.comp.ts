@@ -520,46 +520,60 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
-    // Get Standard Rights
+    // Save Entity Data
 
-    // Save entity Data
-
-    saveEntityInfo() {
+    isValidationEntity() {
         var that = this;
 
         if (that.entttype == "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Type");
             $(".entttype").focus();
+            return false;
         }
         else if (that.schcd == "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Code");
             $(".schcd").focus();
+            return false;
         }
         else if (that.schnm == "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that.entttype + " Name");
             $(".schnm").focus();
+            return false;
         }
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
+            return false;
         }
         else if (that.lat == "") {
             that._msg.Show(messageType.error, "Error", "Enter Late");
             $(".lat").focus();
+            return false;
         }
         else if (that.lon == "") {
             that._msg.Show(messageType.error, "Error", "Enter Lon");
             $(".lon").focus();
+            return false;
         }
         else if (that.state == 0) {
             that._msg.Show(messageType.error, "Error", "Select State");
             $(".state").focus();
+            return false;
         }
         else if (that.city == 0) {
             that._msg.Show(messageType.error, "Error", "Select City");
             $(".city").focus();
+            return false;
         }
-        else {
+
+        return true;
+    }
+
+    saveEntityInfo() {
+        var that = this;
+        var isvalid = that.isValidationEntity();
+
+        if (isvalid) {
             var mweek = null;
             var wkrights = "";
             var weeklyoff = "";
@@ -590,11 +604,13 @@ export class AddEntityComponent implements OnInit {
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
-            else if (standard == '{}') {
-                that._msg.Show(messageType.error, "Error", "Atleast select 1 Standard");
-            }
-            else if (that.division == "") {
-                that._msg.Show(messageType.error, "Error", "Enter Division");
+            else if (that.entttype == "School") {
+                if (standard == '{}') {
+                    that._msg.Show(messageType.error, "Error", "Atleast select 1 Standard");
+                }
+                else if (that.division == "") {
+                    that._msg.Show(messageType.error, "Error", "Enter Division");
+                }
             }
             else {
                 commonfun.loader();

@@ -46,6 +46,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   erpReportsMenuDT: any = [];
   adminMenuDT: any = [];
 
+  wsautoid: number = 0;
+  enttid: number = 0;
+  entttype: string = "";
+  psngrtype: string = "";
+
   private themes: any = [
     { nm: 'red', disp: 'Red' },
     { nm: 'pink', disp: 'pink' },
@@ -109,6 +114,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
 
     if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+      this.wsautoid = this.loginUser.wsautoid;
+      this.enttid = this.loginUser.enttid;
+      this.entttype = this.loginUser.entttype;
+
       if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
         this.ismstmenu = false;
         this.iserpmenu = false;
@@ -121,6 +130,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     }
     else {
+      this.wsautoid = this._enttdetails.wsautoid;
+      this.enttid = this._enttdetails.enttid;
+      this.entttype = this._enttdetails.entttype;
+
       this.ismstmenu = true;
       this.iserpmenu = true;
       this.isrptmenu = true;
@@ -132,8 +145,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     that._menuservice.getMenuDetails({
       "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype,
-      "entttype": that._enttdetails.entttype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-      "issysadmin": that.loginUser.issysadmin
+      "entttype": that.entttype, "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
     }).subscribe(data => {
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
       that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");

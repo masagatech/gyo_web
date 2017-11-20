@@ -90,8 +90,8 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "enttid": this._enttdetails.enttid,
-            "issysadmin": this.loginUser.issysadmin,
             "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
             this.passengerDT = data.data;
