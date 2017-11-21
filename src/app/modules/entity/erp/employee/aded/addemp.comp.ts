@@ -453,7 +453,7 @@ export class AddEmployeeComponent implements OnInit {
                 "email1": that.email1,
                 "email2": that.email2,
                 "address": that.address,
-                "geoloc": that.lat + "," + that.lon,
+                "geoloc": that.lat == "" ? "0" : that.lat + "," + that.lon == "" ? "0" : that.lon,
                 "country": that.country,
                 "state": that.state,
                 "city": that.city,

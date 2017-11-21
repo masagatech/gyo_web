@@ -184,7 +184,7 @@ export class AddScheduleComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "passenger",
+            "flag": "studspsngr",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

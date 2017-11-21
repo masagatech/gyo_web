@@ -16,11 +16,11 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'qualification', loadChildren: './qualification#QualificationModule' },
-                    
+
                     { path: 'location', loadChildren: './location#LocationModule' },
-                    
+
                     { path: '', loadChildren: './masterofmaster#MOMModule' },
-                    
+
                     // Workspace
                     { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
 
@@ -29,6 +29,9 @@ export const routes = [
 
                     // My Profile
                     { path: 'myprofile', loadChildren: './myprofile#MyProfileModule' },
+
+                    // Setting
+                    { path: 'settings', loadChildren: './settings#AdminSettingsModule' },
                 ]
             }
         ]

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SettingsComponent } from '../settings/settings.comp';
+import { AdminSettingsComponent } from '../settings/settings.comp';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { FormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 export const routes = [
     {
         path: '',
-        component: SettingsComponent,
+        component: AdminSettingsComponent,
         canActivate: [AuthGuard],
         children: [
             {
@@ -29,11 +29,11 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        SettingsComponent
+        AdminSettingsComponent
     ],
     providers: [AuthGuard]
 })
 
-export class SettingsModule {
+export class AdminSettingsModule {
 
 }

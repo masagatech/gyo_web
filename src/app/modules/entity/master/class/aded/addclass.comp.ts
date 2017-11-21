@@ -203,8 +203,8 @@ export class AddClassComponent implements OnInit {
         var that = this;
         var subitem = null;
 
-        var actrights = "";
         var subrights = {};
+        var actrights = "";
 
         for (var i = 0; i <= that.subjectDT.length - 1; i++) {
             subitem = null;

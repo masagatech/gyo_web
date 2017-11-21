@@ -12,7 +12,6 @@ import { UserService } from '@services/master';
 
 export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
 
     usersDT: any = [];
 
@@ -32,7 +31,6 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
         private _wsservice: WorkspaceService, private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
 
         this.getUploadConfig();
         this.getWorkspaceDetails();
@@ -63,12 +61,8 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         that._autoservice.getAutoData({
-            "flag": "users",
-            "uid": that.loginUser.uid,
-            "ucode": that.loginUser.ucode,
-            "utype": that.loginUser.utype,
-            "wsautoid": that._wsdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin,
+            "flag": "formapwsuser",
+            "wsautoid": that.loginUser.wsautoid,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -91,34 +85,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         that.getUserRightsById();
     }
 
-    getUserDetails() {
-        var that = this;
-        var uparams = {};
-
-        commonfun.loader();
-
-        uparams = {
-            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
-        };
-
-        that._userservice.getUserDetails(uparams).subscribe(data => {
-            try {
-                that.usersDT = data.data.filter(a => a.utype != "admin");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
+    // Get Workspace Details
 
     getWorkspaceDetails() {
         var that = this;
@@ -128,7 +95,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
         that._wsservice.getWorkspaceDetails({
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": 0
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that.loginUser.wsautoid
         }).subscribe(data => {
             try {
                 that.workspaceDT = data.data.filter(a => !a.issysadmin);
@@ -147,15 +114,18 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Get Workspace Rights
+
     getUserRights() {
+        var that = this;
         var wsitem = null;
 
+        var _wsrights = {};
         var actrights = "";
-        var _wsights = null;
 
-        for (var i = 0; i <= this.workspaceDT.length - 1; i++) {
+        for (var i = 0; i <= that.workspaceDT.length - 1; i++) {
             wsitem = null;
-            wsitem = this.workspaceDT[i];
+            wsitem = that.workspaceDT[i];
 
             if (wsitem !== null) {
                 $("#ws" + wsitem.wsautoid).find("input[type=checkbox]").each(function () {
@@ -163,15 +133,12 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
                 });
 
                 if (actrights != "") {
-                    _wsights = actrights.slice(0, -1);
-                }
-                else {
-                    _wsights = null;
+                    _wsrights = actrights.slice(0, -1);
                 }
             }
         }
 
-        return _wsights;
+        return _wsrights;
     }
 
     saveUserWorkspaceMapping() {
@@ -180,7 +147,11 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
         _wsrights = that.getUserRights();
 
-        if (that.workspaceDT.length == 0) {
+        if (that.uid == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter User");
+            $(".uname input").focus();
+        }
+        else if (that.workspaceDT.length == 0) {
             that._msg.Show(messageType.error, "Error", "No any Workspace");
         }
         else if (_wsrights == null) {
@@ -190,15 +161,17 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
             var saveUR = {
                 "uid": that.uid,
                 "utype": that.utype,
-                "wsrights": "{" + that._wsdetails.wsautoid + "," + _wsrights + "}",
+                "wsrights": "{" + _wsrights + "}",
+                "forrights": "wsmap",
+                "wsautoid": that.loginUser.wsautoid,
                 "cuid": that.loginUser.login
             }
 
-            that._userservice.updateUserInfo(saveUR).subscribe(data => {
+            that._userservice.saveUserRights(saveUR).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funupdate_userinfo.msg;
-                    var msgid = dataResult[0].funupdate_userinfo.msgid;
+                    var dataResult = data.data[0].funsave_userrights;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -235,7 +208,9 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         var that = this;
         this.clearcheckboxes();
 
-        that._userservice.getUserDetails({ "flag": "wsrights", "uid": that.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
+        that._userservice.getUserRights({
+            "flag": "wsmap", "uid": that.uid, "utype": that.utype, "wsautoid": that.loginUser.wsautoid
+        }).subscribe(data => {
             try {
                 var viewUR = data.data;
 

@@ -85,7 +85,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "Passenger",
+            "flag": "studspsngr",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -139,9 +139,10 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
             }
 
             params = {
-                "flag": "leave", "psngrtype": that.psngrtype, "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
-                "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "issysadmin": that.loginUser.issysadmin, "status": that.status
+                "flag": "leave", "psngrtype": that.psngrtype, "psngrid": that.psngrid, "frmdt": that.frmdt, "todt": that.todt,
+                "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "status": that.status,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "issysadmin": that.loginUser.issysadmin
             }
 
             that._lvservice.getLeaveDetails(params).subscribe(data => {
@@ -184,12 +185,12 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         commonfun.loader("#divExport");
 
         params = {
-            "flag": "export", "frmdt": that.frmdt, "todt": that.todt, "psngrid": that.psngrid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
-            "status": that.status, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": that.psngrtype, "psngrid": that.psngrid, "frmdt": that.frmdt, "todt": that.todt,
+            "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "status": that.status,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 
-        that._lvservice.getLeaveDetails(params).subscribe(data => {
+        that._lvservice.exportLeaveDetails(params).subscribe(data => {
             try {
                 that._autoservice.exportToCSV(data.data, that.psngrtypenm + " Leave Details");
             }

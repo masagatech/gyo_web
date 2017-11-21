@@ -7,16 +7,20 @@ import { Router } from '@angular/router';
 export class LeaveService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    getLeaveDetails(req: any) {
-        return this._dataserver.post("getPassengerLeave", req)
-    }
-
     saveLeaveInfo(req: any) {
         return this._dataserver.post("savePassengerLeave", req)
     }
 
     saveLeaveApproval(req: any) {
         return this._dataserver.post("savePassengerLeaveApproval", req)
+    }
+
+    getLeaveDetails(req: any) {
+        return this._dataserver.post("getPassengerLeave", req)
+    }
+
+    exportLeaveDetails(req: any) {
+        return this._dataserver.post("exportPassengerLeave", req)
     }
 
     getLeaveReports(req: any) {

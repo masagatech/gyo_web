@@ -84,7 +84,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "Student",
+            "flag": "student",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

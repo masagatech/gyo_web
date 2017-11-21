@@ -41,8 +41,6 @@
                         <div class="col-md-4" *ngFor="let row of workspaceDT; let i = index;">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="40px" style="margin-right: 7px;">
-
                                     <span id="ws{{row.wsautoid}}">
                                         <input id="{{row.wsautoid}}" name="ws{{i + 1}}" type="checkbox" value="{{row.wsautoid}}" class="filled-in" />
                                         <label for="{{row.wsautoid}}">{{row.wsname}}</label>

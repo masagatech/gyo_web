@@ -119,10 +119,10 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     getMenuDetails() {
         var that = this;
 
-        this._menuservice.getMenuDetails({
+        that._menuservice.getMenuDetails({
             "flag": "all", "entttype": that._enttdetails.entttype, "psngrtype": that._enttdetails.psngrtype, "isemp": that.isemprefuser
         }).subscribe(data => {
-            this.menudetails = data.data;
+            that.menudetails = data.data;
             $("#menus").prop('checked', false);
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -135,8 +135,8 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     }
 
     getUserRights() {
-        var _giverights = [];
         var mitem = null;
+        var _giverights = [];
 
         for (var i = 0; i <= this.menudetails.length - 1; i++) {
             mitem = null;
@@ -144,7 +144,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
             if (mitem !== null) {
                 var actrights = "";
-
+        
                 $("#M" + mitem.mid).find("input[type=checkbox]").each(function () {
                     actrights += (this.checked ? $(this).val() + "," : "");
                 });
@@ -180,6 +180,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
                     "uid": that.refuid,
                     "utype": that.refutype,
                     "giverights": _giverights,
+                    "forrights": "menumap",
                     "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid,
                     "cuid": that.loginUser.login
@@ -234,7 +235,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         var that = this;
         this.clearcheckboxes();
 
-        that._userservice.getUserRights({ "flag": "details", "uid": _uid, "utype": _utype }).subscribe(data => {
+        that._userservice.getUserRights({ "flag": "menumap", "uid": _uid, "utype": _utype }).subscribe(data => {
             try {
                 var viewUR = data.data;
 
