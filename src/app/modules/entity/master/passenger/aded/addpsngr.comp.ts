@@ -371,7 +371,7 @@ export class AddPassengerComponent implements OnInit {
     resetPassengerFields() {
         var that = this;
 
-        that.psngrid = 0
+        that.psngrid = 0;
         that.psngrcode = "";
         that.psngrname = "";
 
@@ -385,9 +385,9 @@ export class AddPassengerComponent implements OnInit {
         that.primarymobile = "";
         that.secondarymobile = "";
 
-        that.resiaddr = "";
-        that.resilet = "0.00";
-        that.resilong = "0.00";
+        that.resiaddr = that._enttdetails.address;
+        that.resilet = that._enttdetails.lat;
+        that.resilong = that._enttdetails.lon;
 
         that.pickrtid = 0;
         that.pickstpid = 0;
@@ -583,13 +583,13 @@ export class AddPassengerComponent implements OnInit {
                 "resaddr": that.resiaddr,
                 "pickaddr": that.pickaddr,
                 "dropaddr": that.dropaddr,
-                "resgeoloc": that.resilet + "," + that.resilong,
+                "resgeoloc": (that.resilet == "" ? "0.00" : that.resilet) + "," + (that.resilong == "" ? "0.00" : that.resilong),
                 "pickrtid": that.pickrtid,
                 "droprtid": that.droprtid,
                 "pickstpid": that.pickstpid,
                 "dropstpid": that.dropstpid,
-                "pickgeoloc": that.picklet + "," + that.picklong,
-                "dropgeoloc": that.droplet + "," + that.droplong,
+                "pickgeoloc": (that.picklet == "" ? "0.00" : that.picklet) + "," + (that.picklong == "" ? "0.00" : that.picklong),
+                "dropgeoloc": (that.droplet == "" ? "0.00" : that.droplet) + "," + (that.droplong == "" ? "0.00" : that.droplong),
                 "aadharno": that.aadharno,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
@@ -721,7 +721,6 @@ export class AddPassengerComponent implements OnInit {
             }
             else {
                 this.fillRoutesDDL();
-
                 that.resetPassengerFields();
             }
         });

@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getAttendance()" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getAttendanceColumn()" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getAttendance()" tabindex="2">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getAttendanceColumn()" tabindex="2">
                             <option [value]="0">{{psngrtype == 'student' ? 'Select Class' : 'All'}}</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -29,17 +29,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Attendance Date <strong>*</strong></label>
-                        <input type="date" id="attnddate" name="attnddate" [(ngModel)]="attnddate" class="form-control attnddate" tabindex="3">
+                        <label class="control-label">Month</label>
+                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control" (ngModelChange)="getAttendanceColumn()">
+                            <option [value]="''">Select Month</option>
+                            <option *ngFor="let row of attndmonthDT" [value]="row.val">
+                                {{row.val}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendance()">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceColumn()">
                         <i class="material-icons">arrow_forward</i></button>
                 </div>
             </div>
@@ -65,68 +70,31 @@
     </div>
 
     <div class="row clearfix" *ngIf="statusid != 0 || status == 'lv'">
-        <div class="col-md-4">
-            <div class="header">
-                <h2>Present {{psngrtypenm}}</h2>
-            </div>
-            <div class="body no-padding">
-                <div *ngFor="let row of attendanceDT | filterBy: {'status':'p'}">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="row clearfix">
-                                <div class="col-md-2">
-                                    <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                                </div>
-                                <div class="col-md-8">
-                                    {{row.psngrname}} {{psngrtype == 'employee' ? '(' + row.psngrtypenm + ')' : ''}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="header">
-                <h2>Absent {{psngrtypenm}}</h2>
-            </div>
-            <div class="body no-padding">
-                <div *ngFor="let row of attendanceDT | filterBy: {'status':'a'}">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="row clearfix">
-                                <div class="col-md-2">
-                                    <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                                </div>
-                                <div class="col-md-8">
-                                    {{row.psngrname}} ({{row.classname}})
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="header">
-                <h2>Leave {{psngrtypenm}}</h2>
-            </div>
-            <div class="body no-padding">
-                <div *ngFor="let row of attendanceDT | filterBy: {'status':'lv'}">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="row clearfix">
-                                <div class="col-md-2">
-                                    <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
-                                </div>
-                                <div class="col-md-8">
-                                    {{row.psngrname}} ({{row.classname}})
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-12 reports">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th width="80px" *ngIf="psngrtype == 'student'">Roll No</th>
+                        <th width="200px">{{psngrtypenm}} Name</th>
+                        <th *ngFor="let atcol of attendanceColumn">
+                            {{atcol.day}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let row of attendanceDT">
+                    <tr>
+                        <td *ngIf="psngrtype == 'student'">
+                            {{row.rollno}}
+                        </td>
+                        <td>
+                            {{row.psngrname}}
+                        </td>
+                        <td *ngFor="let atcol of attendanceColumn" align="center" class="{{row[atcol.day]}}">
+                            {{row[atcol.day]}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

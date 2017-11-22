@@ -32,8 +32,8 @@ export class AddRouteComponent implements OnInit {
     stpid: number = 0;
     stpname: string = "";
     address: string = "";
-    lat: number = 0.00;
-    long: number = 0.00;
+    lat: string = "";
+    lon: string = "";
 
     stopsList: any = [];
     selectedStops: any = [];
@@ -58,22 +58,22 @@ export class AddRouteComponent implements OnInit {
         this.editRoutes();
 
         this.options = {
-            center: { lat: this.lat, lng: this.long },
+            center: { lat: this.lat, lng: this.lon },
             zoom: 18
         };
 
-        this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.long }, title: "", draggable: true });
+        this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.lon }, title: "", draggable: true });
         this.overlays = [this.marker];
     }
 
     private ovrldrag(e) {
         this.lat = this.marker.position.lat();
-        this.long = this.marker.position.lng();
+        this.lon = this.marker.position.lng();
     }
 
-    // get lat and long by address form google map
+    // get lat and lon by address form google map
 
-    getLatAndLong() {
+    getLatAndLon() {
         let that = this;
         commonfun.loader("#address");
 
@@ -83,9 +83,9 @@ export class AddRouteComponent implements OnInit {
         geocoder.geocode({ 'address': that.address }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 that.lat = results[0].geometry.location.lat();
-                that.long = results[0].geometry.location.lng();
+                that.lon = results[0].geometry.location.lng();
 
-                var latlng = new google.maps.LatLng(that.lat, that.long);
+                var latlng = new google.maps.LatLng(that.lat, that.lon);
                 that.marker.setPosition(latlng);
                 that._gmap.map.setCenter(latlng);
             }
@@ -100,7 +100,7 @@ export class AddRouteComponent implements OnInit {
 
     handleMapClick(e) {
         this.lat = e.latLng.lat();
-        this.long = e.latLng.lng();
+        this.lon = e.latLng.lng();
         var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
         this.marker.setPosition(latlng);
     }
@@ -274,7 +274,7 @@ export class AddRouteComponent implements OnInit {
         })
     }
 
-    // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Long
+    // Copy Pick Up and Drop Address and Lat Lon from Residental Address and Lat Lon
 
     // Clear Fields
 
@@ -285,16 +285,16 @@ export class AddRouteComponent implements OnInit {
         this.stpid = 0;
         this.stpname = "";
         this.address = "";
-        this.lat = 0.00;
-        this.long = 0.00;
+        this.lat = "";
+        this.lon = "";
     }
 
     resetStopsFields() {
         this.stpid = 0;
         this.stpname = "";
         this.address = "";
-        this.lat = 0.00;
-        this.long = 0.00;
+        this.lat = "";
+        this.lon = "";
     }
 
     // add stops list
@@ -326,12 +326,6 @@ export class AddRouteComponent implements OnInit {
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
         }
-        else if (that.lat == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Lat");
-        }
-        else if (that.long == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Long");
-        }
         else {
             var duplicateStops = that.isDuplicateStops();
 
@@ -341,13 +335,11 @@ export class AddRouteComponent implements OnInit {
                     "stpname": that.stpname,
                     "address": that.address,
                     "lat": that.lat,
-                    "long": that.long,
-                    "geoloc": that.lat != 0 ? "0.00" : that.lat + "," + that.long != null ? "0.00" : that.long,
+                    "lon": that.lon,
+                    "geoloc": (that.lat == "" ? "0.00" : that.lat) + "," + (that.lon == "" ? "0.00" : that.lon),
                     "rtid": that.rtid,
                     "isactive": true
                 })
-
-                console.log(that.lat != null ? "0.00" : that.lat + "," + that.long != null ? "0.00" : that.long);
             }
 
             that.resetStopsFields();
@@ -367,10 +359,10 @@ export class AddRouteComponent implements OnInit {
         this.stpname = row.stpname;
         this.address = row.address;
         this.lat = row.lat;
-        this.long = row.long;
+        this.lon = row.lon;
 
         if (this.lat.toString() != "0" && this.lat.toString() != "") {
-            var latlng = new google.maps.LatLng(this.lat, this.long);
+            var latlng = new google.maps.LatLng(this.lat, this.lon);
             this.marker.setPosition(latlng);
             this._gmap.map.setCenter(latlng);
         }
@@ -384,8 +376,8 @@ export class AddRouteComponent implements OnInit {
         this.selectedStops.stpname = this.stpname;
         this.selectedStops.address = this.address;
         this.selectedStops.lat = this.lat;
-        this.selectedStops.long = this.long;
-        this.selectedStops.geoloc = this.lat + "," + this.long;
+        this.selectedStops.lon = this.lon;
+        this.selectedStops.geoloc = this.lat + "," + this.lon;
         this.selectedStops.rtid = this.rtid;
         this.resetStopsFields();
         this.selectedStops = [];
@@ -451,7 +443,7 @@ export class AddRouteComponent implements OnInit {
                     "stpid": _slrow.stpid,
                     "stpname": _slrow.stpname,
                     "address": _slrow.address,
-                    "geoloc": _slrow.geoloc !== undefined ? _slrow.lat + "," + _slrow.long : _slrow.geoloc,
+                    "geoloc": (_slrow.lat == "" ? "0.00" : _slrow.lat) + "," + (_slrow.lon == "" ? "0.00" : _slrow.lon),
                     "rtid": _slrow.rtid,
                     "cuid": that.loginUser.ucode,
                     "ordno": i + 1,

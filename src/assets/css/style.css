@@ -8854,7 +8854,7 @@ fieldset[disabled] .form-control {
 .sidebar .user-info .info-container .user-helper-dropdown {
     position: absolute;
     right: 0;
-    bottom: 13px;
+    bottom: -8px;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     -ms-box-shadow: none;
@@ -10452,7 +10452,9 @@ body.waitMe_body .waitMe_container.text>div {
 .absent,
 .Absent,
 .failed,
-.Failed {
+.Failed,
+.wo,
+.WO {
     background-color: #E91E63;
     color: #FFFFFF;
     padding: 5px 8px;
@@ -10461,7 +10463,9 @@ body.waitMe_body .waitMe_container.text>div {
     vertical-align: middle;
 }
 
-.holiday {
+.holiday,
+.hld,
+.HLD {
     background-color: #03A9F4;
     color: #FFFFFF;
     padding: 5px 8px;
@@ -10471,7 +10475,9 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .leave,
-.Leave {
+.Leave,
+.lv,
+.LV {
     background-color: #FF9800;
     color: #FFFFFF;
     padding: 5px 10px;

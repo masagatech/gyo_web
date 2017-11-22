@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   entityDT: any = [];
 
   ufullname: string = "";
-  utype: string = "";
+  ctypename: string = "";
   uphoto: string = "";
 
   @Input() wsname: string = "";
@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getHeaderDetails() {
     this.ufullname = this.loginUser.fullname;
-    this.utype = this.loginUser.utypename;
+    this.ctypename = this.loginUser.ctypename;
     this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
 
     if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {

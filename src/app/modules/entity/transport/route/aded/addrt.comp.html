@@ -60,14 +60,14 @@
                         <div id="address" class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Address <strong>*</strong></label>
-                                <textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4" (keydown.tab)="getLatAndLong()"></textarea>
+                                <textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4" (keydown.tab)="getLatAndLon()"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Lat <strong>*</strong></label>
+                                <label class="control-label">Latitude <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="lat" class="form-control lat" maxlength="50" tabindex="5" />
                             </div>
                         </div>
@@ -75,8 +75,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Long <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="long" class="form-control long" maxlength="50" tabindex="6" />
+                                <label class="control-label">Longitude <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="lon" class="form-control lon" maxlength="50" tabindex="6" />
                             </div>
                         </div>
                         <div *ngIf="!isedit">
@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="ui-helper-clearfix">
-                                    {{stops.lat + ", " + stops.long}}
+                                    {{stops.lat + ", " + stops.lon}}
                                 </div>
                             </div>
                             <div class="col-md-1" align="right">

@@ -621,7 +621,7 @@ export class AddEntityComponent implements OnInit {
                     "schcd": that.schcd,
                     "schnm": that.schnm,
                     "schlogo": that.uploadLogoDT.length == 0 ? "" : that.uploadLogoDT[0].athurl,
-                    "schgeoloc": that.lat + "," + that.lon,
+                    "schgeoloc": (that.lat == "" ? "0.00" : that.lat) + "," + (that.lon == "" ? "0.00" : that.lon),
                     "schvehs": that.schvehs.toString() == "" ? 0 : that.schvehs,
                     "oprvehs": that.oprvehs.toString() == "" ? 0 : that.oprvehs,
                     "address": that.address,

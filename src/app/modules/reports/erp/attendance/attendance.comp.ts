@@ -15,8 +15,8 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    psngrtype: any = "";
-    psngrtypenm: any = "";
+    psngrtype: string = "";
+    psngrtypenm: string = "";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -24,9 +24,10 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    currentdate: any = "";
-    attnddate: any = "";
+    attndmonthDT: any = [];
+    attndmonth: string = "";
 
+    attendanceColumn: any = [];
     attendanceDT: any = [];
 
     statusid: number = 0;
@@ -45,39 +46,25 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getAttendanceDate();
-        this.getAttendance();
+        this.fillMonthDropDown();
+        this.getDefaultMonth();
+        this.getAttendanceColumn();
     }
 
     public ngOnInit() {
-
-    }
-
-    // Format Date
-
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
-    getAttendanceDate() {
-        var date = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        this.currentdate = this.formatDate(today);
-        this.attnddate = this.formatDate(today);
-    }
-
-    refreshButtons() {
         setTimeout(function () {
-            commonfun.chevronstyle();
-        }, 0);
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
+    }
+
+    getDefaultMonth() {
+        let date = new Date();
+        let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let mname = monthNames[date.getMonth()] + "-" + date.getFullYear().toString().substr(-2);
+
+        this.attndmonth = mname;
     }
 
     // Fill Academic Year, Class Drop Down
@@ -100,7 +87,10 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getAttendance();
+                        that.fillMonthDropDown();
+                        that.getDefaultMonth();
+
+                        that.getAttendanceColumn();
                     }
                     else {
                         that.ayid = 0;
@@ -123,7 +113,51 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getAttendance() {
+    // Fill Month Drop Down
+
+    fillMonthDropDown() {
+        var that = this;
+        var defayDT: any = [];
+
+        commonfun.loader();
+
+        that._attndservice.getAttendance({
+            "flag": "month", "ayid": that.ayid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.attndmonthDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Attendent Data
+
+    getAttendanceColumn() {
+        var that = this;
+
+        that._attndservice.getAttendance({ "flag": "column", "attndmonth": that.attndmonth }).subscribe(data => {
+            if (data.data.length !== 0) {
+                that.attendanceColumn = data.data;
+                that.getAttendanceReports();
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        })
+    }
+
+    getAttendanceReports() {
         var that = this;
         var params = {};
 
@@ -152,8 +186,8 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             }
 
             params = {
-                "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
+                "flag": "reports", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attndmonth": that.attndmonth,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
             }
 
@@ -219,6 +253,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

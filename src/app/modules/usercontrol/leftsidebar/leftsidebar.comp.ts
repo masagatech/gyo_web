@@ -18,9 +18,8 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
     global = new Globals();
 
     ufullname: string = "";
-    utype: string = "";
+    ctypename: string = "";
     uphoto: string = "";
-    wsname: string = "";
     toggleClass: string = "";
 
     mainMenuDT: any = [];
@@ -32,9 +31,8 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.ufullname = this.loginUser.fullname;
-        this.utype = this.loginUser.utype;
+        this.ctypename = this.loginUser.ctypename;
         this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
-        this.wsname = this.loginUser.wsname;
 
         this.getMainMenuList();
         this.getParentMenuList();

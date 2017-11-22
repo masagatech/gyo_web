@@ -25,9 +25,6 @@ export class AddEmployeeComponent implements OnInit {
     emppwd: string = "";
     empname: string = "";
 
-    emptypeDT: any = [];
-    emptype: string = "";
-
     psngrtype: string = "";
     psngrtypenm: string = "";
 
@@ -40,6 +37,18 @@ export class AddEmployeeComponent implements OnInit {
     dob: any = "";
     aadharno: string = "";
     licenseno: string = "";
+
+    emptypeDT: any = [];
+    emptype: string = "";
+
+    salarymodeDT: any = [];
+    salarymode: string = "";
+
+    salary: any = "";
+    doj: any = "";
+    noticedays: number = 0;
+    aboutus: string = "";
+
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -52,7 +61,6 @@ export class AddEmployeeComponent implements OnInit {
     city: number = 0;
     area: number = 0;
     pincode: number = 0;
-    remark1: string = "";
     uploadedFiles: any = [];
     attachDocsDT: any = [];
 
@@ -147,6 +155,7 @@ export class AddEmployeeComponent implements OnInit {
                 }
 
                 that.genderDT = data.data.filter(a => a.group == "gender");
+                that.salarymodeDT = data.data.filter(a => a.group == "paymentmode");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -353,10 +362,17 @@ export class AddEmployeeComponent implements OnInit {
         that.emppwd = "";
         that.empname = "";
         that.gender = "";
+        that.dob = "";
         that.birthplace = "";
         that.nationality = "";
         that.licenseno = "";
-        that.remark1 = "";
+        
+        that.salary = "";
+        that.salarymode = "";
+        that.doj = "";
+        that.noticedays = 0;
+        that.aboutus = "";
+
         that.mobileno1 = "";
         that.mobileno2 = "";
         that.email1 = "";
@@ -366,6 +382,8 @@ export class AddEmployeeComponent implements OnInit {
         that.lon = "";
         
         that.address = that._enttdetails.address;
+        that.lat = that._enttdetails.lat;
+        that.lon = that._enttdetails.lon;
         that.country = that._enttdetails.country;
         that.state = that._enttdetails.sid;
         that.fillCityDropDown();
@@ -391,13 +409,6 @@ export class AddEmployeeComponent implements OnInit {
             $(".emppwd").focus();
             return false;
         }
-        if (that.psngrtype == "employee") {
-            if (that.emptype == "") {
-                that._msg.Show(messageType.error, "Error", "Enter Employee Type");
-                $(".emptype").focus();
-                return false;
-            }
-        }
         if (that.empname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Employee Name");
             $(".empname").focus();
@@ -406,6 +417,38 @@ export class AddEmployeeComponent implements OnInit {
         if (that.gender == "") {
             that._msg.Show(messageType.error, "Error", "Select Gender");
             $(".gender").focus();
+            return false;
+        }
+        if (that.dob == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Birth Date");
+            $(".dob").focus();
+            return false;
+        }
+        if (that.psngrtype == "employee") {
+            if (that.emptype == "") {
+                that._msg.Show(messageType.error, "Error", "Select Department");
+                $(".emptype").focus();
+                return false;
+            }
+        }
+        if (that.doj == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Joining Date");
+            $(".doj").focus();
+            return false;
+        }
+        if (that.noticedays == 0 || that.noticedays.toString() == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Notice Days");
+            $(".noticedays").focus();
+            return false;
+        }
+        if (that.salarymode == "") {
+            that._msg.Show(messageType.error, "Error", "Select Salary Mode");
+            $(".salarymode").focus();
+            return false;
+        }
+        if (that.salary == "" || that.salary == "0") {
+            that._msg.Show(messageType.error, "Error", "Enter Salary");
+            $(".salary").focus();
             return false;
         }
         if (that.mobileno1 == "") {
@@ -440,7 +483,6 @@ export class AddEmployeeComponent implements OnInit {
                 "empcode": that.empcode,
                 "emppwd": that.emppwd,
                 "empname": that.empname,
-                "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype,
                 "gender": that.gender,
                 "birthplace": that.birthplace,
                 "nationality": that.nationality,
@@ -448,12 +490,20 @@ export class AddEmployeeComponent implements OnInit {
                 "aadharno": that.aadharno,
                 "licenseno": that.licenseno,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
+
+                "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype,
+                "doj": that.doj,
+                "noticedays": that.noticedays,
+                "salarymode": that.salarymode,
+                "salary": that.salary,
+                "aboutus": that.aboutus,
+                
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
                 "email2": that.email2,
                 "address": that.address,
-                "geoloc": that.lat == "" ? "0" : that.lat + "," + that.lon == "" ? "0" : that.lon,
+                "geoloc": (that.lat == "" ? "0.00" : that.lat) + "," + (that.lon == "" ? "0.00" : that.lon),
                 "country": that.country,
                 "state": that.state,
                 "city": that.city,
@@ -461,7 +511,6 @@ export class AddEmployeeComponent implements OnInit {
                 "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
                 "enttid": that._enttdetails.enttid,
                 "attachdocs": that.attachDocsDT,
-                "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
@@ -530,7 +579,6 @@ export class AddEmployeeComponent implements OnInit {
                         that.empcode = _empdata[0].empcode;
                         that.emppwd = _empdata[0].emppwd;
                         that.empname = _empdata[0].empname;
-                        that.emptype = _empdata[0].emptype;
 
                         if (data.data[0].empphoto !== "") {
                             that.uploadPhotoDT.push({ "athurl": data.data[0].empphoto });
@@ -546,6 +594,13 @@ export class AddEmployeeComponent implements OnInit {
                         that.dob = _empdata[0].dob;
                         that.aadharno = _empdata[0].aadharno;
                         that.licenseno = _empdata[0].licenseno;
+                        
+                        that.emptype = _empdata[0].emptype;
+                        that.doj = _empdata[0].doj;
+                        that.noticedays = _empdata[0].noticedays;
+                        that.salarymode = _empdata[0].salarymode;
+                        that.salary = _empdata[0].salary;
+
                         that.email1 = _empdata[0].email1;
                         that.email2 = _empdata[0].email2;
                         that.mobileno1 = _empdata[0].mobileno1;
@@ -560,7 +615,7 @@ export class AddEmployeeComponent implements OnInit {
                         that.fillAreaDropDown();
                         that.area = _empdata[0].area;
                         that.pincode = _empdata[0].pincode;
-                        that.remark1 = _empdata[0].remark1;
+                        that.aboutus = _empdata[0].aboutus;
                         that.isactive = _empdata[0].isactive;
                         that.mode = _empdata[0].mode;
                     }

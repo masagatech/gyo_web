@@ -59,7 +59,7 @@ export class WorkspaceComponent implements OnDestroy {
             this.wsname = this._enttdetails.enttname;
             this.enttname = this._enttdetails.wsname;
             this.wslogo = this.global.uploadurl + this._enttdetails.wslogo;
-            this.homeurl = "/";
+            this.homeurl = "/workspace/entity";
         }
     }
 
