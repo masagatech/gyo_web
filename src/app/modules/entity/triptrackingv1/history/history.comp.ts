@@ -140,7 +140,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     summary = {
         totaldistance: 0,
-        totalDrive: '...'
+        totalDrive: '...',
+        maxspeed: 0
     }
 
     resetHistory() {
@@ -172,7 +173,9 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         //2017-11-14T00:00:00+05:30
 
         this._trackboard.gettrackboardHistoryPost_trk({ "vhid": this.data.imei, "frmdt": moment(this.dateToValue).format('YYYY-MM-DDT00:00:00+05:30'), "format": "tap" }).subscribe(_data => {
-            this.timelineTrack = _data.data;
+            var _maindata = _data.data;
+
+            this.timelineTrack = _maindata.segment;
             if (this.timelineTrack === null || this.timelineTrack.length === 0) {
                 that._msg.Show(messageType.info, "No data", "Sorry, We unable to find data for this trip.");
                 commonfun.loaderhide("#loaderbody");
@@ -187,7 +190,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 var poly;
                 if (el.trktyp === "solid") {
                     poly = new google.maps.Polyline(this.travel_polyoption);
-                    this.summary.totaldistance += el.dist
+                    // this.summary.totaldistance += el.dist
                     times.push(el.dur);
                 }
                 else {
@@ -207,6 +210,9 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
 
             }
+
+            this.summary.totaldistance = _maindata.total_distance;
+            this.summary.maxspeed = _maindata.mx_spd;
 
             this.map.fitBounds(bounds);
             commonfun.loaderhide("#loaderbody");
@@ -235,7 +241,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         // this._PSG.showPassengerList(this.PGDATA.tripid);
         //this.getPassengers(tripid);
     }
-    
+
     private onsegover(i, row) {
         var pol = this.polylines[i]
         pol.setOptions({
