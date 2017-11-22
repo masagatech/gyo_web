@@ -157,7 +157,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
         this.summary = {
             totaldistance: 0,
-            totalDrive: '...'
+            totalDrive: '...',
+            maxspeed :0
         }
 
 
