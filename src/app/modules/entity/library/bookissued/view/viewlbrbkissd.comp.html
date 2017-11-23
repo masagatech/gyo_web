@@ -31,7 +31,8 @@
                         <p-column field="subname" header="Subject" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                         <p-column field="studname" header="Student" [style]="{'text-align':'left'}"></p-column>
                         <p-column field="issddate" header="Issued Date" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                        <p-column field="countbooks" header="Count Books" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                        <p-column field="countbooks" header="Total Books" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
+                        <p-column field="countreturn" header="Return Books" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left'}">
                             <ng-template let-row="rowData" pTemplate type="body">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="editBookIssued(row)">
