@@ -27,6 +27,7 @@ export class AttendanceComponent implements OnInit {
     attnddate: any = "";
 
     attendanceDT: any = [];
+    absentDT: any = [];
 
     statusid: number = 0;
     status: string = "";
@@ -158,6 +159,7 @@ export class AttendanceComponent implements OnInit {
                 try {
                     if (data.data.length > 0) {
                         that.attendanceDT = data.data;
+                        that.absentDT = that.attendanceDT.filter(a => a.status == "a");
 
                         that.statusid = data.data[0].statusid;
                         that.status = data.data[0].status;
@@ -168,6 +170,7 @@ export class AttendanceComponent implements OnInit {
                     }
                     else {
                         that.attendanceDT = [];
+                        that.absentDT = [];
                         that.statusid = 0;
                         that.status = "";
                         that.statusdesc = "";
@@ -192,12 +195,22 @@ export class AttendanceComponent implements OnInit {
 
     absentPassenger(row) {
         row.status = "a";
+        this.absentDT = this.attendanceDT.filter(a => a.status == "a");
+        $("#selectall").prop('checked', false);
     }
 
     // Present
 
     presentPassenger(row) {
         row.status = "p";
+        this.absentDT = this.attendanceDT.filter(a => a.status == "a");
+
+        if (this.absentDT.length == 0) {
+            $("#selectall").prop('checked', true);
+        }
+        else {
+            $("#selectall").prop('checked', false);
+        }
     }
 
     isValidation() {
@@ -208,12 +221,16 @@ export class AttendanceComponent implements OnInit {
             $(".ay").focus();
             return false;
         }
-        else if (that.psngrtype == "student") {
+        if (that.psngrtype == "student") {
             if (that.classid == 0) {
                 that._msg.Show(messageType.info, "Info", "Select Class");
                 $(".class").focus();
                 return false;
             }
+        }
+        if (!$("#selectall").is(':checked') && that.absentDT.length == 0) {
+            that._msg.Show(messageType.error, "Error", "Select All Checkbox / Select Atleast 1 " + that.psngrtypenm + " For Absent");
+            return false;
         }
 
         return true;
@@ -221,79 +238,63 @@ export class AttendanceComponent implements OnInit {
 
     saveAttendance() {
         var that = this;
-        var _absentpsngr: any = [];
-        var params = {};
-
         var isvalid = that.isValidation();
 
-        _absentpsngr = that.attendanceDT.filter(a => a.status == "a");
-
         if (isvalid) {
-            if (_absentpsngr.length == 0) {
-                that._msg.Show(messageType.error, "Error", "First Select Atleast " + that.psngrtypenm + " For Absent");
+            commonfun.loader();
+
+            var _psngrid: string[] = [];
+            var _attndid: number = 0;
+            var params = {};
+
+            _psngrid = Object.keys(that.absentDT).map(function (k) { return that.absentDT[k].psngrid });
+
+            if (that.absentDT.length > 0) {
+                _attndid = that.absentDT[0].attndid;
             }
             else {
-                commonfun.loader();
-
-                var _psngrid: string[] = [];
-                var _attndid: number = 0;
-
-                _psngrid = Object.keys(_absentpsngr).map(function (k) { return _absentpsngr[k].psngrid });
-
-                if (_absentpsngr.length > 0) {
-                    _attndid = _absentpsngr[0].attndid;
-                }
-                else {
-                    _attndid = 0;
-                }
-
-                params = {
-                    "attndid": _attndid,
-                    "psngrid": _psngrid,
-                    "psngrtype": that.psngrtype,
-                    "attnddate": that.attnddate,
-                    "status": "a",
-                    "ayid": that.ayid,
-                    "classid": that.classid,
-                    "enttid": that._enttdetails.enttid,
-                    "wsautoid": that._enttdetails.wsautoid,
-                    "cuid": that.loginUser.ucode,
-                    "isactive": true
-                }
-
-                that._attndservice.saveAttendance(params).subscribe(data => {
-                    try {
-                        var dataResult = data.data[0].funsave_attendance;
-                        var msg = dataResult.msg;
-                        var msgid = dataResult.msgid;
-
-                        if (msgid != "-1") {
-                            that._msg.Show(messageType.success, "Success", msg);
-
-                            if (msgid === "1") {
-
-                            }
-                            else {
-
-                            }
-                        }
-                        else {
-                            that._msg.Show(messageType.error, "Error", msg);
-                        }
-
-                        commonfun.loaderhide();
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-                    // console.log("Complete");
-                });
+                _attndid = 0;
             }
+
+            params = {
+                "attndid": _attndid,
+                "psngrid": _psngrid,
+                "psngrtype": that.psngrtype,
+                "attnddate": that.attnddate,
+                "status": "a",
+                "ayid": that.ayid,
+                "classid": that.classid,
+                "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
+                "isactive": true
+            }
+
+            that._attndservice.saveAttendance(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_attendance;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
         }
     }
 }

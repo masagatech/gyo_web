@@ -1,0 +1,203 @@
+<div class="card">
+    <div class="header">
+        <h4>Library Book Issued</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveLibraryBookIssued()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Library <strong>*</strong></label>
+                        <select id="librid" name="librname" [(ngModel)]="librid" class="form-control librname" tabindex="2">
+                            <option [value]="0">Select Library</option>
+                            <option *ngFor="let row of libraryDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Subject <strong>*</strong></label>
+                        <select id="subid" name="subname" [(ngModel)]="subid" (ngModelChange)="fillBooksDropDown()" class="form-control subname" tabindex="3">
+                            <option [value]="0">Select Subject</option>
+                            <option *ngFor="let row of subjectDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="4">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Student <strong>*</strong> {{studname}}</label>
+                        <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="5" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event, classid)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <span class="material-icons inputlinkico"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Issued Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="issddate" class="form-control issddate" tabindex="6">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Book Name</th>
+                            <th width="150px">Book No</th>
+                            <th width="150px">Limit Issued Days</th>
+                            <th width="180px">After Limit Per Day Fine</th>
+                            <th width="70px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="bookid" name="bookname" [(ngModel)]="bookid" (ngModelChange)="fillBookNoDropDown()" class="form-control bookname" tabindex="7">
+                                            <option [value]="0">Select Book</option>
+                                            <option *ngFor="let row of booksDT" [value]="row.bookid">
+                                                {{row.bkname}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="bookno" name="bookno" [(ngModel)]="bookno" class="form-control bookno" tabindex="8">
+                                            <option [value]="0">Select Book No</option>
+                                            <option *ngFor="let row of bookNoDT" [value]="row.bookno">	
+                                                {{row.bookno}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td align="right">
+                                {{lmtissd}}
+                            </td>
+                            <td align="right">
+                                {{aftrlmtfine}}
+                            </td>
+                            <td>
+                                <div class="form-group" *ngIf="!iseditbkissd">
+                                    <button type="button" (click)="addBookIssued()" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+
+                                <div class="form-group" *ngIf="iseditbkissd">
+                                    <button type="button" (click)="updateBookIssued()" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <i class="material-icons">done</i>
+                                    </button>
+                                    <button type="button" (click)="resetBookIssued()" class="btn btn-danger btn-xs btn-xs-sm">
+                                        <i class="material-icons">cancel</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of bookIssuedDT; let i = index;">
+                            <td>
+                                {{row.bookname}}
+                            </td>
+                            <td align="right">
+                                {{row.bookno}}
+                            </td>
+                            <td align="right">
+                                {{row.lmtissd}}
+                            </td>
+                            <td align="right">
+                                {{row.aftrlmtfine}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" (click)="editBookIssued(row)" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" (click)="deleteBookIssued(row)" class="btn btn-danger btn-xs btn-xs-sm">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" align="right">
+                                <b>After Limit Total Fine</b>
+                            </td>
+                            <td align="right">
+                                <b>{{totalIssuedFine()}}</b>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

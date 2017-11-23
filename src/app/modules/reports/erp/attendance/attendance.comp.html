@@ -63,15 +63,9 @@
         </div>
     </div>
 
-    <div class="row clearfix" *ngIf="statusid == 0 && status != 'lv'">
-        <div class="col-md-12">
-            <h4>{{statusdesc}}</h4>
-        </div>
-    </div>
-
-    <div class="row clearfix" *ngIf="statusid != 0 || status == 'lv'">
+    <div class="row clearfix">
         <div class="col-md-12 reports">
-            <table class="table table-bordered table-responsive">
+            <table #attendance class="table table-bordered table-responsive">
                 <thead>
                     <tr>
                         <th width="80px" *ngIf="psngrtype == 'student'">Roll No</th>
@@ -79,6 +73,11 @@
                         <th *ngFor="let atcol of attendanceColumn">
                             {{atcol.day}}
                         </th>
+                        <th width="30px">P</th>
+                        <th width="30px">A</th>
+                        <th width="30px">LV</th>
+                        <th width="30px">WO</th>
+                        <th width="30px">H</th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let row of attendanceDT">
@@ -92,9 +91,84 @@
                         <td *ngFor="let atcol of attendanceColumn" align="center" class="{{row[atcol.day]}}">
                             {{row[atcol.day]}}
                         </td>
+                        <td align="center" class="P">
+                            {{row.P == null ? '0' : row.P}}
+                        </td>
+                        <td align="center" class="A">
+                            {{row.A == null ? '0' : row.A}}
+                        </td>
+                        <td align="center" class="LV">
+                            {{row.LV == null ? '0' : row.LV}}
+                        </td>
+                        <td align="center" class="WO">
+                            {{row.WO == null ? '0' : row.WO}}
+                        </td>
+                        <td align="center" class="H">
+                            {{row.H == null ? '0' : row.H}}
+                        </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="header" *ngIf="attendanceDT.length">
+        <div class="row clearfix">
+            <div class="col-md-8">
+            </div>
+            <div class="col-md-4" align="right">
+                <div class="small-box">
+                    <div class="header">
+                        Legends
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="small-box">
+                            <div class="pickdrop">
+                                P
+                            </div>
+                            <div class="content">
+                                Present
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="absent">
+                                A
+                            </div>
+                            <div class="content">
+                                Absent
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="leave">
+                                LV
+                            </div>
+                            <div class="content">
+                                Leave
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small-box">
+                            <div class="holiday">
+                                H
+                            </div>
+                            <div class="content">
+                                Holiday
+                            </div>
+                        </div>
+                        <div class="small-box">
+                            <div class="WO">
+                                WO
+                            </div>
+                            <div class="content">
+                                Weekly Off
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

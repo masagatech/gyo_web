@@ -61,7 +61,8 @@
     <div class="row clearfix" *ngIf="statusid != 0 || status == 'lv'">
         <div class="col-md-4">
             <div class="header">
-                <h2>Present {{psngrtypenm}}</h2>
+                <input id="selectall" name="selectall" type="checkbox" class="filled-in" *ngIf="!absentDT.length" checked>
+                <label for="selectall"><h2>All Present {{psngrtypenm}}</h2></label>
             </div>
             <div class="body no-padding">
                 <div *ngFor="let row of attendanceDT | filterBy: {'status':'p'}">
