@@ -54,14 +54,26 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row clearfix">
             <div class="col-md-2">
                 <div class="form-group">
                     <div class="form-line">
+                        <label class="control-label">Pesron Type <strong>*</strong></label>
+                        <select id="persontype" name="persontype" [(ngModel)]="persontype" class="form-control persontype" tabindex="4">
+                            <option *ngFor="let row of personTypeDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-2" *ngIf="persontype == 'student'">
+                <div class="form-group">
+                    <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="4">
+                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="5">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
@@ -73,8 +85,9 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Student <strong>*</strong> {{studname}}</label>
-                        <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="5" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event, classid)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <label class="control-label">Person <strong>*</strong> {{personname}}</label>
+                        <p-autoComplete id="personid" name="personname" [(ngModel)]="selectedPerson" [tabindex]="6" (onSelect)="selectPersonData($event)" [suggestions]="personDT" (completeMethod)="getPersonData($event, persontype, classid)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete personname"></p-autoComplete>
                         <span class="material-icons inputlinkico"></span>
                     </div>
                 </div>
@@ -83,7 +96,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Issued Date <strong>*</strong></label>
-                        <input type="date" [(ngModel)]="issddate" class="form-control issddate" tabindex="6">
+                        <input type="date" [(ngModel)]="issddate" class="form-control issddate" tabindex="7">
                     </div>
                 </div>
             </div>
@@ -106,7 +119,7 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="bookid" name="bookname" [(ngModel)]="bookid" (ngModelChange)="fillBookNoDropDown()" class="form-control bookname" tabindex="7">
+                                        <select id="bookid" name="bookname" [(ngModel)]="bookid" (ngModelChange)="fillBookNoDropDown()" class="form-control bookname" tabindex="8">
                                             <option [value]="0">Select Book</option>
                                             <option *ngFor="let row of booksDT" [value]="row.bookid">
                                                 {{row.bkname}}
@@ -118,7 +131,7 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="bookno" name="bookno" [(ngModel)]="bookno" class="form-control bookno" tabindex="8">
+                                        <select id="bookno" name="bookno" [(ngModel)]="bookno" class="form-control bookno" tabindex="9">
                                             <option [value]="0">Select Book No</option>
                                             <option *ngFor="let row of bookNoDT" [value]="row.bookno">	
                                                 {{row.bookno}}
@@ -194,7 +207,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="10"></textarea>
                     </div>
                 </div>
             </div>

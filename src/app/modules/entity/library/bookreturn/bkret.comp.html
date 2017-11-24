@@ -1,0 +1,118 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <h4>Book Return</h4>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" (ngModelChange)="getLibraryBookIssued()" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Library <strong>*</strong></label>
+                        <select id="librid" name="librname" [(ngModel)]="librid" class="form-control librname" tabindex="2">
+                            <option [value]="0">Select Library</option>
+                            <option *ngFor="let row of libraryDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Pesron Type <strong>*</strong></label>
+                        <select id="persontype" name="persontype" [(ngModel)]="persontype" class="form-control persontype" tabindex="3">
+                            <option *ngFor="let row of personTypeDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+                <div class="form-group" *ngIf="persontype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="4">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Person <strong>*</strong> {{personname}}</label>
+                        <p-autoComplete id="personid" name="personname" [(ngModel)]="selectedPerson" [tabindex]="5" (onSelect)="selectPersonData($event)" [suggestions]="personDT" (completeMethod)="getPersonData($event, persontype, classid)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete personname"></p-autoComplete>
+                        <span class="material-icons inputlinkico"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1" style="padding-top: 20px">
+                <button type="button" class="btn btn-theme btn-xs" (click)="getLibraryBookIssued()">
+                    <i class="material-icons">arrow_forward</i></button>
+            </div>
+            <div class="col-md-2" style="padding-top: 20px; text-align: right;">
+                <button type="button" class="btn btn-theme btn-xs" (click)="saveBookReturn()">
+                    <i class="material-icons">save</i></button>
+            </div>
+        </div>
+
+        <div class="body no-padding">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <p-dataTable [value]="bookIssuedDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                        <p-column field="librname" header="Library" [style]="{'width':'150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column field="subname" header="Subject" [style]="{'width':'120px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column header="Book Name" [style]="{'width':'250px', 'text-align':'left', 'vertical-align':'top'}">
+                            <ng-template let-row="rowData" pTemplate type="body">
+                                {{row.bookname + ' (No. ' + row.bookno + ')'}}
+                            </ng-template>
+                        </p-column>
+                        <p-column field="lmtissd" header="Limit Issued" [style]="{'width':'100px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column field="issddate" header="Issued Date" [style]="{'width':'100px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column header="Return Date" [style]="{'width': '150px', 'align': 'left', 'vertical-align':'top'}">
+                            <ng-template let-row="rowData" pTemplate type="body">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="date" [(ngModel)]="row.retdate" class="form-control retdate" tabindex="6">
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="aftrlmtfine" header="After Limit Fine Rs." [style]="{'width':'100px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                        <p-column header="Pay Rs." [style]="{'width': '80px', 'align': 'left', 'vertical-align':'top'}">
+                            <ng-template let-row="rowData" pTemplate type="body">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="row.payrs" class="form-control text-right payrs" tabindex="7">
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -20,6 +20,7 @@ export const routes = [
                     { path: 'library', loadChildren: './library#LibraryMasterModule' },
                     { path: 'librarybooks', loadChildren: './books#LibraryBooksModule' },
                     { path: 'bookissued', loadChildren: './bookissued#LibraryBookIssuedModule' },
+                    { path: 'bookreturn', loadChildren: './bookreturn#LibraryBookReturnModule' },
                 ]
             }
         ]

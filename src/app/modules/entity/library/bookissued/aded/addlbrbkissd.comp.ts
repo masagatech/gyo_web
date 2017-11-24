@@ -19,12 +19,13 @@ export class AddLibraryBookIssuedComponent implements OnInit {
     ayDT: any = [];
     libraryDT: any = [];
     subjectDT: any = [];
+    personTypeDT: any = [];
     classDT: any = [];
     booksDT: any = [];
     bookNoDT: any = [];
 
-    studentDT: any = [];
-    studsdata: any = [];
+    personDT: any = [];
+    selectedPerson: any = [];
 
     issdparamid: number = 0;
     issdid: number = 0;
@@ -32,8 +33,9 @@ export class AddLibraryBookIssuedComponent implements OnInit {
     librid: number = 0;
     subid: number = 0;
     classid: number = 0;
-    studid: number = 0;
-    studname: string = "";
+    personid: number = 0;
+    personname: string = "";
+    persontype: string = "student";
     bookid: number = 0;
     bookno: number = 0;
     issddate: any = "";
@@ -91,6 +93,7 @@ export class AddLibraryBookIssuedComponent implements OnInit {
 
                 that.libraryDT = data.data.filter(a => a.group == "library");
                 that.subjectDT = data.data.filter(a => a.group == "librarysubject");
+                that.personTypeDT = data.data.filter(a => a.group == "persontype");
                 that.classDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
@@ -107,23 +110,24 @@ export class AddLibraryBookIssuedComponent implements OnInit {
         })
     }
 
-    // Auto Completed Student
+    // Auto Completed Person
 
-    getStudentData(event, _classid) {
+    getPersonData(event, _persontype, _classid) {
         let query = event.query;
 
-        this._autoservice.getAutoData({
-            "flag": "student",
+        this._autoservice.getERPAutoData({
+            "flag": "allpassenger",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "psngrtype": _persontype,
             "classid": _classid,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.studentDT = data.data;
+            this.personDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -131,11 +135,11 @@ export class AddLibraryBookIssuedComponent implements OnInit {
         });
     }
 
-    // Selected Student
+    // Selected Person
 
-    selectStudentData(event) {
-        this.studid = event.value;
-        this.studname = event.label;
+    selectPersonData(event) {
+        this.personid = event.value;
+        this.personname = event.label;
     }
 
     // Get Book No
@@ -264,7 +268,7 @@ export class AddLibraryBookIssuedComponent implements OnInit {
         commonfun.loader();
 
         that._librservice.getLibraryBookIssued({
-            "flag": "validbookno", "bookno": that.bookno, "bookid": that.bookid, "subid": that.subid,
+            "flag": "validbookno", "bookno": that.bookno, "bookid": that.bookid, "subid": that.subid, "librid": that.librid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -369,12 +373,13 @@ export class AddLibraryBookIssuedComponent implements OnInit {
         that.issdid = 0;
         that.librid = 0;
         that.subid = 0;
+        that.persontype = "student";
         that.classid = 0;
-        that.studid = 0;
-        that.studname ="";
-        that.studsdata = [];
+        that.personid = 0;
+        that.personname = "";
+        that.selectedPerson = [];
         that.issddate = "";
-        that.bookIssuedDT= [];
+        that.bookIssuedDT = [];
 
         that.resetBookIssuedFields();
     }
@@ -397,9 +402,9 @@ export class AddLibraryBookIssuedComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Subject");
             $(".subname").focus();
         }
-        else if (that.studid == 0 || that.studname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Student Name");
-            $(".studname input").focus();
+        else if (that.personid == 0 || that.personname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter " + that.persontype + " Name");
+            $(".personname input").focus();
         }
         else if (that.issddate == "") {
             that._msg.Show(messageType.error, "Error", "Enter Issued Date");
@@ -413,8 +418,8 @@ export class AddLibraryBookIssuedComponent implements OnInit {
             commonfun.loader();
 
             params = {
-                "issdid": that.issdid, "ayid": that.ayid, "librid": that.librid, "subid": that.subid, "studid": that.studid,
-                "issddate": that.issddate, "bookissdt": that.bookIssuedDT, "remark": that.remark,
+                "typ": "issued", "issdid": that.issdid, "ayid": that.ayid, "librid": that.librid, "subid": that.subid, "psngrid": that.personid,
+                "psngrtype": that.persontype, "issddate": that.issddate, "bookissdt": that.bookIssuedDT, "remark": that.remark,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode
             };
 
@@ -484,11 +489,12 @@ export class AddLibraryBookIssuedComponent implements OnInit {
                     that.ayid = data.data[0].ayid;
                     that.librid = data.data[0].librid;
                     that.subid = data.data[0].subid;
+                    that.persontype = data.data[0].psngrtype;
                     that.classid = data.data[0].classid;
-                    that.studid = data.data[0].studid;
-                    that.studname = data.data[0].studname;
-                    that.studsdata.value = that.studid;
-                    that.studsdata.label = that.studname;
+                    that.personid = data.data[0].psngrid;
+                    that.personname = data.data[0].psngrname;
+                    that.selectedPerson.value = that.personid;
+                    that.selectedPerson.label = that.personname;
                     that.issddate = data.data[0].issddate;
 
                     that.fillBooksDropDown();
