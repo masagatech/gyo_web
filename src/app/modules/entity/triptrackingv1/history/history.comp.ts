@@ -681,13 +681,14 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     }
 
     private clearAll() {
-        this.clearPassengers();
-        this.isplay = false;
-        if (this.timer) clearTimeout(this.timer);
-        this.marker.setMap(null);
-        if (this.poly) this.poly.setMap(null);
-        if (this.HistoryMarker["start"]) this.HistoryMarker["start"].setMap(null);
-        if (this.HistoryMarker["stop"]) this.HistoryMarker["stop"].setMap(null);
+        this.resetHistory()
+        // this.clearPassengers();
+        // this.isplay = false;
+        // if (this.timer) clearTimeout(this.timer);
+        // this.marker.setMap(null);
+        // if (this.poly) this.poly.setMap(null);
+        // if (this.HistoryMarker["start"]) this.HistoryMarker["start"].setMap(null);
+        // if (this.HistoryMarker["stop"]) this.HistoryMarker["stop"].setMap(null);
 
 
     }
