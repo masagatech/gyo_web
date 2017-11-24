@@ -27,6 +27,12 @@ export class LibraryService {
         return this._dataserver.post(Globals.erproute + "saveLibraryBooks", req)
     }
 
+    // Library Book Issued
+
+    getLibraryBookIssued(req: any) {
+        return this._dataserver.post(Globals.erproute + "getLibraryBookIssued", req)
+    }
+
     saveLibraryBookIssued(req: any) {
         return this._dataserver.post(Globals.erproute + "saveLibraryBookIssued", req)
     }

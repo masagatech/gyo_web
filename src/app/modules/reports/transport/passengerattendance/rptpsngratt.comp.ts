@@ -21,8 +21,8 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    attColumn: any = [];
-    attData: any = [];
+    attendanceColumn: any = [];
+    attendanceDT: any = [];
 
     @ViewChild('psngrattnd') psngrattnd: ElementRef;
 
@@ -60,7 +60,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        this._autoservice.exportToCSV(this.attData, "Passenger Attendance Details");
+        this._autoservice.exportToCSV(this.attendanceDT, "Passenger Attendance Details");
     }
 
     public exportToPDF() {
@@ -113,7 +113,7 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
             "flag": "column", "monthname": that.monthname, "enttid": that._enttdetails.enttid
         }).subscribe(data => {
             if (data.data.length !== 0) {
-                that.attColumn = data.data;
+                that.attendanceColumn = data.data;
                 that.getAttendanceReports();
             }
         }, err => {
@@ -137,18 +137,18 @@ export class PassengerAttendanceComponent implements OnInit, OnDestroy {
             }).subscribe(data => {
                 try {
                     if (data.data.length == 0) {
-                        that.attData = [];
+                        that.attendanceDT = [];
                     }
                     else if (data.data.length == 1) {
                         if (data.data[0].stdnm !== null) {
-                            that.attData = data.data;
+                            that.attendanceDT = data.data;
                         }
                         else {
-                            that.attData = [];
+                            that.attendanceDT = [];
                         }
                     }
                     else {
-                        that.attData = data.data;
+                        that.attendanceDT = data.data;
                     }
                 }
                 catch (e) {

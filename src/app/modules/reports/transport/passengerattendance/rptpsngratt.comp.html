@@ -55,10 +55,10 @@
     <div class="body no-padding">
         <div #psngrattnd class="row clearfix">
             <div class="col-md-12 reports">
-                <p-dataTable [value]="attData">
+                <p-dataTable [value]="attendanceDT">
                     <p-column field="psngrname" header="Name" [style]="{'width': '215px', 'text-align': 'left'}"></p-column>
                     <p-column *ngIf="_enttdetails.psngrtype == 'student'" field="classname" header="Class" [style]="{'width': '35px', 'text-align': 'center'}"></p-column>
-                    <p-column *ngFor="let atcol of attColumn" header="{{atcol.day}}" [style]="{'width': '25px', 'text-align':'center'}">
+                    <p-column *ngFor="let atcol of attendanceColumn" header="{{atcol.day}}" [style]="{'width': '25px', 'text-align':'center'}">
                         <ng-template let-drow="rowData" pTemplate type="body">
                             <span class="{{drow[atcol.day]}}">
                                 {{drow[atcol.day] == 'DA' ? 'AD' : drow[atcol.day] == 'AP' ? 'PA' : drow[atcol.day]}}
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <div class="header" *ngIf="attData.length">
+    <div class="header" *ngIf="attendanceDT.length">
         <div class="row clearfix">
             <div class="col-md-7">
             </div>
