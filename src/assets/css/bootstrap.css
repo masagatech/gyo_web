@@ -5373,7 +5373,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 
 .navbar-nav>li>.dropdown-menu {
     margin: 0;
-    padding: 0;
+    padding: 5px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }

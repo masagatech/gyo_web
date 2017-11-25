@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Type</label>
-                        <select id="entttype" [(ngModel)]="entttype" class="form-control entttype" (ngModelChange)="getValidEntity()">
+                        <select id="entttype" [(ngModel)]="entttype" class="form-control entttype" (ngModelChange)="getValidEntity()" tabindex="1">
                             <option *ngFor="let row of entttypeDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">{{entttype}} Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" />
+                                <input type="text" [(ngModel)]="schcd" class="form-control schcd" maxlength="10" tabindex="2" />
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">{{entttype}} Name</label>
-                                <input type="text" [(ngModel)]="schnm" class="form-control schnm" maxlength="200" />
+                                <input type="text" [(ngModel)]="schnm" class="form-control schnm" maxlength="200" tabindex="3" />
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">{{entttype}} Vehicles (How Many)</label>
-                                <input type="text" [(ngModel)]="schvehs" OnlyNumber="true" class="form-control schvehs" maxlength="5" />
+                                <input type="text" [(ngModel)]="schvehs" OnlyNumber="true" class="form-control schvehs" maxlength="5" tabindex="4" />
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Operator Vehicles (How Many) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="oprvehs" OnlyNumber="true" class="form-control oprvehs" maxlength="5" />
+                                <input type="text" [(ngModel)]="oprvehs" OnlyNumber="true" class="form-control oprvehs" maxlength="5" tabindex="5" />
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500"></textarea>
+                        <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="6"></textarea>
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                         <div class="form-group" id="address">
                             <div class="form-line">
                                 <label class="control-label">Address <strong>*</strong></label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" (keydown.tab)="getLatAndLong()"></textarea>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" (keydown.tab)="getLatAndLong()" tabindex="7"></textarea>
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Lat</label>
-                                <input type="text" [(ngModel)]="lat" OnlyNumber="true" class="form-control lat" maxlength="50" />
+                                <input type="text" [(ngModel)]="lat" OnlyNumber="true" class="form-control lat" maxlength="50" tabindex="8" />
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Long</label>
-                                <input type="text" [(ngModel)]="lon" OnlyNumber="true" class="form-control lon" maxlength="50" />
+                                <input type="text" [(ngModel)]="lon" OnlyNumber="true" class="form-control lon" maxlength="50" tabindex="9" />
                             </div>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="11" disabled />
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" disabled tabindex="10" />
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State <strong>*</strong></label>
-                                <select id="state" [(ngModel)]="state" class="form-control state" tabindex="12" (ngModelChange)="fillCityDropDown()">
+                                <select id="state" [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="11">
                                     <option [value]="0">Select State</option>
                                     <option *ngFor="let row of stateDT" [value]="row.key">
                                         {{row.val}}
@@ -160,9 +160,22 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City <strong>*</strong></label>
-                                <select id="city" [(ngModel)]="city" class="form-control city" tabindex="13" (ngModelChange)="fillAreaDropDown()">
+                                <select id="city" [(ngModel)]="city" class="form-control city" tabindex="13" (ngModelChange)="fillAreaDropDown()" tabindex="12">
                                     <option [value]="0">Select City</option>
                                     <option *ngFor="let row of cityDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Area <strong>*</strong></label>
+                                <select id="area" [(ngModel)]="area" class="form-control area" tabindex="13">
+                                    <option [value]="0">Select Area</option>
+                                    <option *ngFor="let row of areaDT" [value]="row.key">
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -184,7 +197,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Name</label>
-                            <input type="text" [(ngModel)]="name" class="form-control" maxlength="50" />
+                            <input type="text" [(ngModel)]="name" class="form-control" maxlength="50" tabindex="14" />
                         </div>
                     </div>
                 </div>
@@ -192,7 +205,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Contact No</label>
-                            <input type="text" [(ngModel)]="mobile" class="form-control" maxlength="10" />
+                            <input type="text" [(ngModel)]="mobile" class="form-control" maxlength="10" tabindex="15" />
                         </div>
                     </div>
                 </div>
@@ -200,7 +213,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Email</label>
-                            <input type="text" [(ngModel)]="email" class="form-control" maxlength="150" />
+                            <input type="text" [(ngModel)]="email" class="form-control" maxlength="150" tabindex="16" />
                         </div>
                     </div>
                 </div>
@@ -216,7 +229,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Name</label>
-                            <input type="text" [(ngModel)]="cpname" class="form-control cpname" maxlength="50" />
+                            <input type="text" [(ngModel)]="cpname" class="form-control cpname" maxlength="50" tabindex="17" />
                         </div>
                     </div>
                 </div>
@@ -224,7 +237,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Contact No</label>
-                            <input type="text" [(ngModel)]="cpmobile" class="form-control cpmobile" maxlength="10" />
+                            <input type="text" [(ngModel)]="cpmobile" class="form-control cpmobile" maxlength="10" tabindex="18" />
                         </div>
                     </div>
                 </div>
@@ -232,7 +245,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Email</label>
-                            <input type="text" [(ngModel)]="cpemail" class="form-control cpemail" maxlength="150" />
+                            <input type="text" [(ngModel)]="cpemail" class="form-control cpemail" maxlength="150" tabindex="19" />
                         </div>
                     </div>
                 </div>
@@ -294,7 +307,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Division (e.g : A, B, C, D)</label>
-                                <input type="text" [(ngModel)]="division" class="form-control division" maxlength="150" />
+                                <input type="text" [(ngModel)]="division" class="form-control division" maxlength="150" tabindex="20" />
                             </div>
                         </div>
                     </div>

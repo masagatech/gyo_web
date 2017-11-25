@@ -451,11 +451,17 @@ export class AddEntityComponent implements OnInit {
         that.address = "";
         that.lat = "0.00";
         that.lon = "0.00";
+
+        that.address = that._wsdetails.address;
+        that.getLatAndLong();
         that.country = "India";
-        that.state = 0;
-        that.city = 0;
-        that.area = 0;
-        that.pincode = 0;
+        that.state = that._wsdetails.sid;
+        that.fillCityDropDown();
+        that.city = that._wsdetails.ctid;
+        that.fillAreaDropDown();
+        that.area = that._wsdetails.arid;
+        that.pincode = that._wsdetails.pincode;
+
         that.isactive = true;
         that.mode = "";
         that.chooseLabel = "Upload Logo";

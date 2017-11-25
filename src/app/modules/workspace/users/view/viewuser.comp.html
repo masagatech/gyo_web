@@ -66,20 +66,45 @@
                     <p-dataGrid [value]="row.value" [paginator]="true" [rows]="8">
                         <ng-template let-drow pTemplate="item">
                             <div style="padding:3px" class="ui-g-12 ui-md-3">
-                                <p-panel [header]="drow.fullname" [style]="{'text-align':'center'}">
+                                <p-panel [style]="{'text-align':'center'}">
+                                    <p-header>
+                                        <div class="row clearfix">
+                                            <div class="col-md-1">
+                                                <i class="material-icons sm-font">{{drow.isactive ? 'done' : ''}}</i>
+                                            </div>
+                                            <div class="col-md-10">
+                                                {{drow.fullname}}
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a role="button" (click)="editUserForm(drow)"><i class="material-icons sm-font">edit</i></a>
+                                            </div>
+                                        </div>
+                                    </p-header>
                                     <div class="row clearfix">
-                                        <div class="col-md-12" align="center">
-                                            <a class="navbar-brand" (click)="viewUserProfile(drow)">
-                                                <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" height="100px">
-                                            </a>
+                                        <div class="col-md-4 border">
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <a class="navbar-brand" (click)="viewUserProfile(drow)">
+                                                        <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" height="80px">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-12" *ngIf="drow.gender != ''">
+                                                    {{drow.gender}}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <hr class="hr ui-widget-content">
-                                        </div>
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-theme btn-xs" (click)="editUserForm(drow)">
-                                                <i class="material-icons">edit</i>
-                                            </button> {{drow.mode}}
+                                        <div class="col-md-8" align="left">
+                                            <div class="row clearfix">
+                                                <div class="col-md-12" *ngIf="drow.dob != ''">
+                                                    <span class="material-icons sm-font">date_range</span> {{drow.dob}}
+                                                </div>
+                                                <div class="col-md-12" *ngIf="drow.mobileno1 != ''">
+                                                    <span class="material-icons sm-font">phone_iphone</span> {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
+                                                </div>
+                                                <div class="col-md-12" *ngIf="drow.email1 != ''">
+                                                    <span class="material-icons sm-font">email</span> {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </p-panel>

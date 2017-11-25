@@ -900,4 +900,10 @@ export class AddScheduleComponent implements OnInit {
     public onUploadSuccess(event) {
         console.log('success');
     }
+
+    // Back For View Data
+
+    backViewData() {
+        this._router.navigate(['/transport/schedule']);
+    }
 }

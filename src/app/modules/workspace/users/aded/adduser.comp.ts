@@ -15,6 +15,8 @@ export class AddUserComponent implements OnInit {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
+    genderDT: any = [];
+
     utypeDT: any = [];
     utype: string = "";
 
@@ -28,6 +30,9 @@ export class AddUserComponent implements OnInit {
     upwd: string = "";
     fname: string = "";
     lname: string = "";
+    gender: string = "";
+    currdate: any = "";
+    dob: string = "";
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -61,7 +66,7 @@ export class AddUserComponent implements OnInit {
         this._wsdetails = Globals.getWSDetails();
 
         this.getPhotoUploadConfig();
-        this.fillUserTypeDropDown();
+        this.fillDropDownList();
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
@@ -79,13 +84,27 @@ export class AddUserComponent implements OnInit {
         $.AdminBSB.input.activate();
     }
 
-    fillUserTypeDropDown() {
+    // Format Date Time
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    fillDropDownList() {
         var that = this;
         commonfun.loader();
 
         that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
-            that.utypeDT = data.data;
-            // setTimeout(function () { $.AdminBSB.select.refresh('utype'); }, 100);
+            that.genderDT = data.data.filter(a => a.group == "gender");
+            that.utypeDT = data.data.filter(a => a.group == "usertype");
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -105,7 +124,6 @@ export class AddUserComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
             try {
                 that.stateDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('state'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -136,7 +154,6 @@ export class AddUserComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
             try {
                 that.cityDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('city'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -342,17 +359,21 @@ export class AddUserComponent implements OnInit {
         that.lname = "";
         that.utype = "";
         that.remark1 = "";
+        that.gender = "";
+        that.dob = "";
         that.mobileno1 = "";
         that.mobileno2 = "";
-
         that.email1 = "";
         that.email2 = "";
-        that.address = "";
+
+        that.address = that._wsdetails.address;
         that.country = "India";
-        that.state = 0;
-        that.city = 0;
-        that.area = 0;
-        that.pincode = 0;
+        that.state = that._wsdetails.sid;
+        that.fillCityDropDown();
+        that.city = that._wsdetails.ctid;
+        that.fillAreaDropDown();
+        that.area = that._wsdetails.arid;
+        that.pincode = that._wsdetails.pincode;
         that.isactive = true;
         that.mode = "";
 
@@ -382,6 +403,14 @@ export class AddUserComponent implements OnInit {
         else if (that.lname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Last Name");
             $(".lname").focus();
+        }
+        else if (that.gender == "") {
+            that._msg.Show(messageType.error, "Error", "Select Gender");
+            $(".gender").focus();
+        }
+        else if (that.dob == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Birth Date");
+            $(".dob").focus();
         }
         else if (that.utype == "") {
             that._msg.Show(messageType.error, "Error", "Select User Type");
@@ -428,6 +457,8 @@ export class AddUserComponent implements OnInit {
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "wsrights": _wslist,
                 "school": _enttlist,
+                "gender": that.gender,
+                "dob": that.dob,
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -488,6 +519,10 @@ export class AddUserComponent implements OnInit {
 
         commonfun.loader();
 
+        var date = new Date();
+        var _currdate = new Date(date.getFullYear() - 18, date.getMonth(), date.getDate());
+        this.currdate = this.formatDate(_currdate);
+
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 that.uid = params['id'];
@@ -500,6 +535,8 @@ export class AddUserComponent implements OnInit {
                         that.upwd = data.data[0].upwd;
                         that.fname = data.data[0].fname;
                         that.lname = data.data[0].lname;
+                        that.gender = data.data[0].gender;
+                        that.dob = data.data[0].dob;
                         that.utype = data.data[0].utype;
                         that.isAllEnttRights = data.data[0].isallenttrights;
                         that.entityList = data.data[0].schooldt !== null ? data.data[0].schooldt : [];
@@ -542,6 +579,8 @@ export class AddUserComponent implements OnInit {
                 })
             }
             else {
+                this.dob = this.formatDate(_currdate);
+
                 that.resetUserFields();
                 commonfun.loaderhide();
             }

@@ -189,6 +189,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Area <strong>*</strong></label>
+                                    <select id="area" [(ngModel)]="area" class="form-control area" tabindex="19">
+                                        <option [value]="0">Select Area</option>
+                                        <option *ngFor="let row of areaDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2087,6 +2087,12 @@ select.selectpicker {
     line-height: 1.428571429;
     color: #333333;
     white-space: normal;
+    font-size: 12px;
+}
+
+.dropdown-menu-large>li>ul>li>a>i {
+    font-size: 11px;
+    color: red;
 }
 
 .dropdown-small {

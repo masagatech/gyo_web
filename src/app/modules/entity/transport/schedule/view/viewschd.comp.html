@@ -1,0 +1,150 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <h4>Pick Up and Drop</h4>
+            </div>
+            <div class="col-md-6" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addPickDropInfo()">
+                    <i class="material-icons">add</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="editPickDropInfo()">
+                    <i class="material-icons">edit</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Batch Name <strong>*</strong></label>
+                        <select id="batchid" [(ngModel)]="batchid" class="form-control batch" tabindex="2" (ngModelChange)="getPickDropInfo()">
+                            <option [value]="0">Select Batch</option>
+                            <option *ngFor="let row of batchDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div *ngIf="batchid != 0">
+            <div class="row clearfix">
+                <div class="col-md-6 border">
+                    <div class="header content-header">
+                        <h4>Pick-Up</h4>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">From Date</label> {{pickfromdate}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">To Date</label> {{picktodate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Driver Name</label> {{pickdrvname}}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Name</label> {{pickvehname}}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Route Name</label> {{pickrtname}}
+                    </div>
+
+                    <div *ngIf="pickPassengerDT.length">
+                        <ul class="list-group">
+                            <li class="list-group-item active">
+                                {{_enttdetails.psngrtype}}
+                            </li>
+                            <li class="list-group-item" *ngFor="let pkrow of pickPassengerDT">
+                                {{pkrow.stdnm}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="header content-header">
+                        <h4>Drop</h4>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">From Date</label> {{dropfromdate}}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">To Date</label> {{droptodate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Driver Name</label> {{dropdrvname}}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Name</label> {{dropvehname}}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Route Name</label> {{droprtname}}
+                    </div>
+
+                    <div *ngIf="dropPassengerDT.length">
+                        <ul class="list-group">
+                            <li class="list-group-item active">
+                                {{_enttdetails.psngrtype}}
+                            </li>
+                            <li class="list-group-item" *ngFor="let drprow of dropPassengerDT">
+                                {{drprow.stdnm}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-md-6 border">
+                    <div *ngIf="pickAttList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item active">
+                                Attendant
+                            </li>
+                            <li class="list-group-item" *ngFor="let row of pickAttList">
+                                {{row.attnm}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div *ngIf="dropAttList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item active">
+                                Attendant
+                            </li>
+                            <li class="list-group-item" *ngFor="let row of dropAttList">
+                                {{row.attnm}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-line">
+                    <label class="control-label">Instrunction</label> {{instrunction}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

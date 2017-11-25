@@ -56,6 +56,7 @@ export class AddContentComponent implements OnInit {
         that.subid = 0;
         that.ctitle = "";
         that.cdesc = "";
+        that.remark = "";
         that.chooseLabel = "Upload Photo";
     }
 
@@ -269,30 +270,40 @@ export class AddContentComponent implements OnInit {
         var that = this;
 
         that._cntservice.getContentDetails({
-            "flag": "edit", "cid": that.cid, "stdid": that.stdid, "subid": that.subid, "wsautoid": that._wsdetails.wsautoid
+            "flag": "edit", "cid": that.paramcid, "stdid": that.stdid, "subid": that.subid, "wsautoid": that._wsdetails.wsautoid
         }).subscribe(data => {
             try {
-                if (that.paramcid == 0) {
-                    that.stdid = data.data[0].stdid;
-                    that.fillSubjectDropDown();
+                if (data.data.length != 0) {
+                    if (that.paramcid != 0) {
+                        that.stdid = data.data[0].stdid;
+                        that.fillSubjectDropDown();
 
-                    that.subid = data.data[0].subid;
-                }
-                
-                that.cid = data.data[0].cid;
-                that.ctitle = data.data[0].ctitle;
-                that.cdesc = data.data[0].cdesc;
+                        that.subid = data.data[0].subid;
+                    }
 
-                if (data.data[0].cphoto !== "") {
-                    that.uploadPhotoDT.push({ "athurl": data.data[0].cphoto });
-                    that.chooseLabel = "Change Photo";
+                    that.cid = data.data[0].cid;
+                    that.ctitle = data.data[0].ctitle;
+                    that.cdesc = data.data[0].cdesc;
+
+                    if (data.data[0].cphoto !== "") {
+                        that.uploadPhotoDT.push({ "athurl": data.data[0].cphoto });
+                        that.chooseLabel = "Change Photo";
+                    }
+                    else {
+                        that.uploadPhotoDT = [];
+                        that.chooseLabel = "Upload Photo";
+                    }
+
+                    that.remark = data.data[0].remark;
                 }
                 else {
+                    that.cid = 0;
+                    that.ctitle = "";
+                    that.cdesc = "";
+                    that.remark = "";
                     that.uploadPhotoDT = [];
                     that.chooseLabel = "Upload Photo";
                 }
-
-                that.remark = data.data[0].remark;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

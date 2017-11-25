@@ -5,6 +5,7 @@ import { AuthGuard } from '@services';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { ViewScheduleComponent } from './view/viewschd.comp';
 import { AddScheduleComponent } from './add/addschd.comp';
 import { EditScheduleComponent } from './edit/editschd.comp';
 
@@ -16,13 +17,16 @@ export const routes = [
     {
         path: '', children: [
             {
-                path: 'add', component: AddScheduleComponent, canActivate: [AuthGuard],
-                data: { "module": "schd", "submodule": "asch", "rights": "add", "urlname": "/createschedule" }
+                path: '', component: ViewScheduleComponent, canActivate: [AuthGuard],
+                data: { "module": "schd", "submodule": "sch", "rights": "view", "urlname": "/view" }
             },
-
+            {
+                path: 'add', component: AddScheduleComponent, canActivate: [AuthGuard],
+                data: { "module": "schd", "submodule": "sch", "rights": "add", "urlname": "/add" }
+            },
             {
                 path: 'edit', component: EditScheduleComponent, canActivate: [AuthGuard],
-                data: { "module": "schd", "submodule": "esch", "rights": "edit", "urlname": "/changeschedule" }
+                data: { "module": "schd", "submodule": "sch", "rights": "edit", "urlname": "/edit" }
             }
         ]
     },
@@ -33,6 +37,7 @@ export const routes = [
         DataTableModule, OrderListModule, AutoCompleteModule, ScheduleModule
     ],
     declarations: [
+        ViewScheduleComponent,
         AddScheduleComponent,
         EditScheduleComponent
     ],

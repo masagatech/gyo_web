@@ -27,6 +27,12 @@ export interface LoginUserModel {
   schlogo: string;
   wsautoid: number;
   wscode: string;
+  address: string;
+  country: string;
+  sid: number;
+  ctid: number;
+  arid: number;
+  pincode: number;
   wsname: string;
   schenttmaxno: number;
   cmpenttmaxno: number;

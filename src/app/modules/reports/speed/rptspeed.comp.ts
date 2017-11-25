@@ -21,8 +21,9 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     viewedon: string = "30";
 
     driverDT: any = [];
+    selectedDriver: any = [];
     drvid: number = 0;
-    drvname: any = [];
+    drvname: string = "";
 
     speedDriverDT: any = [];
 
@@ -89,8 +90,11 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
     // Selected Driver
 
     selectDriverData(event) {
-        Cookie.set("_drvid_", event.value);
-        Cookie.set("_drvnm_", event.label);
+        this.drvid = event.value;
+        this.drvname = event.label;
+
+        Cookie.set("_drvid_", this.drvid.toString());
+        Cookie.set("_drvnm_", this.drvname);
 
         this.getSpeedViolationReports();
     }
@@ -99,8 +103,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (Cookie.get('_drvnm_') != null) {
-            that.drvname.value = parseInt(Cookie.get('_drvid_'));
-            that.drvname.label = Cookie.get('_drvnm_');
+            that.selectedDriver.value = parseInt(Cookie.get('_drvid_'));
+            that.selectedDriver.label = Cookie.get('_drvnm_');
 
             that.getLimitSpeedDriver();
             that.getSpeedViolationReports();
@@ -169,7 +173,8 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         Cookie.delete('_drvnm_');
 
         this.drvid = 0;
-        this.drvname = [];
+        this.drvname = "";
+        this.selectedDriver = [];
 
         this.getSpeedViolationReports();
     }

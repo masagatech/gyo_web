@@ -114,7 +114,6 @@ export class AddWorkspaceComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
             try {
                 that.stateDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('state'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -145,7 +144,6 @@ export class AddWorkspaceComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
             try {
                 that.cityDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('city'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -174,7 +172,6 @@ export class AddWorkspaceComponent implements OnInit {
         that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
             try {
                 that.areaDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('area'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -270,12 +267,15 @@ export class AddWorkspaceComponent implements OnInit {
 
         that.email1 = "";
         that.email2 = "";
-        that.address = "";
+
+        that.address = that.loginUser.address;
         that.country = "India";
-        that.state = 0;
-        that.city = 0;
-        that.area = 0;
-        that.pincode = 0;
+        that.state = that.loginUser.sid;
+        that.fillCityDropDown();
+        that.city = that.loginUser.ctid;
+        that.fillAreaDropDown();
+        that.area = that.loginUser.arid;
+        that.pincode = that.loginUser.pincode;
         that.isactive = true;
 
         that.iscompany = false;

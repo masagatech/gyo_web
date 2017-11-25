@@ -39,7 +39,9 @@
                                 <li class="dropdown-header text-left">{{row.key}}</li>
                                 <li class="divider"></li>
                                 <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
-                                    <a [routerLink]="mrow.mlink">{{mrow.mname}}</a>
+                                    <a [routerLink]="mrow.mlink">
+                                        <i class="material-icons">donut_large</i> {{mrow.mname}}
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -66,7 +68,9 @@
                                 <li class="dropdown-header">{{row.key}}</li>
                                 <li class="divider"></li>
                                 <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
-                                    <a [routerLink]="mrow.mlink">{{mrow.mname}}</a>
+                                    <a [routerLink]="mrow.mlink">
+                                        <i class="material-icons">donut_large</i> {{mrow.mname}}
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -80,7 +84,9 @@
                                 <li class="dropdown-header">{{row.key}}</li>
                                 <li class="divider"></li>
                                 <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
-                                    <a role="button" [routerLink]="mrow.mlink">{{mrow.mname}}</a>
+                                    <a role="button" [routerLink]="mrow.mlink">
+                                        <i class="material-icons">donut_large</i> {{mrow.mname}}
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -92,7 +98,9 @@
                         <li class="col-md-4" *ngFor="let row of adminMenuDT">
                             <ul>
                                 <li>
-                                    <a role="button" [routerLink]="row.mlink">{{row.mname}}</a>
+                                    <a role="button" [routerLink]="row.mlink">
+                                        <i class="material-icons">donut_large</i> {{row.mname}}
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -106,7 +114,9 @@
                         <li class="col-md-12">
                             <ul>
                                 <li *ngFor="let row of settingsMenuDT">
-                                    <a role="button" [routerLink]="row.mlink">{{row.mname}}</a>
+                                    <a role="button" [routerLink]="row.mlink">
+                                        <i class="material-icons">donut_large</i> {{row.mname}}
+                                    </a>
                                 </li>
                             </ul>
                         </li>

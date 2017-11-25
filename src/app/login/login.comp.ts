@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                                     that._router.navigate(['/admin/workspace']);
                                 }
                                 else {
-                                    Cookie.set("_wsdetails_", JSON.stringify(userDetails));
+                                    Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
                                     that._router.navigate(['/workspace/entity']);
                                 }
                             }
