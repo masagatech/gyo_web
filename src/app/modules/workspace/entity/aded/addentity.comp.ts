@@ -61,6 +61,7 @@ export class AddEntityComponent implements OnInit {
 
     division: string = "";
     standardDT: any = [];
+    subjectDT: any = [];
     weekDT: any = [];
     entttypeDT: any = [];
 
@@ -78,7 +79,7 @@ export class AddEntityComponent implements OnInit {
         this.getLogoUploadConfig();
 
         this.fillDropDownList();
-        this.fillStandardDropDown();
+        this.fillStdAndSubDropDown();
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
@@ -148,15 +149,16 @@ export class AddEntityComponent implements OnInit {
         })
     }
 
-    // Fill Standard DropDown
+    // Fill Standard And Subject DropDown
 
-    fillStandardDropDown() {
+    fillStdAndSubDropDown() {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "standard" }).subscribe(data => {
+        that._entityservice.getEntityDetails({ "flag": "ddlfield" }).subscribe(data => {
             try {
-                that.standardDT = data.data;
+                that.standardDT = data.data.filter(a => a.group === "standard");
+                that.subjectDT = data.data.filter(a => a.group === "subject");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -467,6 +469,8 @@ export class AddEntityComponent implements OnInit {
         that.chooseLabel = "Upload Logo";
     }
 
+    // Setting Standard Checkboxes
+
     private selectAndDeselectAllCheckboxes() {
         if ($("#selectall").is(':checked')) {
             $(".allcheckboxes input[type=checkbox]").prop('checked', true);
@@ -489,6 +493,32 @@ export class AddEntityComponent implements OnInit {
 
     private clearcheckboxes(): void {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+    }
+
+    // Setting Subject Checkboxes
+
+    private selectAndDeselectAllSubCheckboxes() {
+        if ($("#selectallsub").is(':checked')) {
+            $(".allsubcheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".allsubcheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private selectAndDeselectGroupWiseSubCheckboxes(row) {
+        var key = "sub" + row.key;
+
+        if ($("#" + key).is(':checked')) {
+            $("#" + key + " input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $("#" + key + " input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private clearsubcheckboxes(): void {
+        $(".allsubcheckboxes input[type=checkbox]").prop('checked', false);
     }
 
     // Active / Deactive Data
@@ -587,12 +617,18 @@ export class AddEntityComponent implements OnInit {
             var stditem = null;
             var stdrights = "";
             var standard = "";
+            
+            var subitem = null;
+            var subrights = "";
+            var subject = "";
 
             $("#week").find("input[type=checkbox]").each(function () {
                 wkrights += (this.checked ? $(this).val() + "," : "");
             });
 
             weeklyoff = "{" + wkrights.slice(0, -1) + "}";
+
+            // Standard
 
             for (var i = 0; i <= that.standardDT.length - 1; i++) {
                 stditem = null;
@@ -606,6 +642,21 @@ export class AddEntityComponent implements OnInit {
             }
 
             standard = "{" + stdrights.slice(0, -1) + "}";
+
+            // Subject
+
+            for (var i = 0; i <= that.subjectDT.length - 1; i++) {
+                subitem = null;
+                subitem = that.subjectDT[i];
+
+                if (subitem !== null) {
+                    $("#sub" + subitem.key).find("input[type=checkbox]").each(function () {
+                        subrights += (this.checked ? $(this).val() + "," : "");
+                    });
+                }
+            }
+
+            subject = "{" + subrights.slice(0, -1) + "}";
 
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
@@ -645,6 +696,7 @@ export class AddEntityComponent implements OnInit {
                     "weeklyoff": weeklyoff,
                     "standard": standard,
                     "division": that.division,
+                    "subject": subject,
                     "remark1": that.remark1,
                     "cuid": that.loginUser.ucode,
                     "wsautoid": that._wsdetails.wsautoid,
@@ -746,8 +798,13 @@ export class AddEntityComponent implements OnInit {
 
                         var _stdrights = null;
                         var _stdids = null;
+                        
+                        var _subrights = null;
+                        var _subids = null;
 
                         if (data.data[0] != null) {
+                            // Standard
+
                             _stdrights = null;
                             _stdrights = data.data[0].standard;
 
@@ -770,6 +827,29 @@ export class AddEntityComponent implements OnInit {
                             }
 
                             that.division = data.data[0].division;
+                            
+                            // Subject
+
+                            _subrights = null;
+                            _subrights = data.data[0].subject;
+
+                            if (_subrights != null) {
+                                for (var i = 0; i < _subrights.length; i++) {
+                                    _subids = null;
+                                    _subids = _subrights[i];
+
+                                    if (_subids != null) {
+                                        $("#" + _subids).prop('checked', true);
+                                        $(".allsubcheckboxes").find("#" + _subids).prop('checked', true);
+                                    }
+                                    else {
+                                        $(".allsubcheckboxes").find("#" + _subids).prop('checked', false);
+                                    }
+                                }
+                            }
+                            else {
+                                $(".allsubcheckboxes").find("#" + _subids).prop('checked', false);
+                            }
 
                             that.remark1 = data.data[0].remark1;
                             that.isactive = data.data[0].isactive;

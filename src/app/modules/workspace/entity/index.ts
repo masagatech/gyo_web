@@ -12,7 +12,7 @@ import { EntityService } from '@services/master';
 
 import {
   LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
-  AutoCompleteModule, FileUploadModule
+  AutoCompleteModule, FileUploadModule, TabViewModule
 } from 'primeng/primeng';
 
 export const routes = [
@@ -34,7 +34,7 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule,
-    CheckboxModule, AutoCompleteModule, FileUploadModule
+    CheckboxModule, AutoCompleteModule, FileUploadModule, TabViewModule
   ],
 
   providers: [AuthGuard, EntityService]
