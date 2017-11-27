@@ -89,6 +89,15 @@ export class AddEntityComponent implements OnInit {
         setTimeout(function () {
             $(".schcd").focus();
         }, 100);
+        
+        // if (this.entttype == "School") {
+        //     $('#tabStandard').prop('disabled', false);
+        //     $('#tabSubject').prop('disabled', false);
+        // }
+        // else {
+        //     $('#tabStandard').prop('disabled', true);
+        //     $('#tabSubject').prop('disabled', true);
+        // }
 
         this.getEntityDetails();
     }
@@ -617,7 +626,7 @@ export class AddEntityComponent implements OnInit {
             var stditem = null;
             var stdrights = "";
             var standard = "";
-            
+
             var subitem = null;
             var subrights = "";
             var subject = "";
@@ -635,7 +644,7 @@ export class AddEntityComponent implements OnInit {
                 stditem = that.standardDT[i];
 
                 if (stditem !== null) {
-                    $("#std" + stditem.key).find("input[type=checkbox]").each(function () {
+                    $("#stditem" + stditem.key).find("input[type=checkbox]").each(function () {
                         stdrights += (this.checked ? $(this).val() + "," : "");
                     });
                 }
@@ -650,7 +659,7 @@ export class AddEntityComponent implements OnInit {
                 subitem = that.subjectDT[i];
 
                 if (subitem !== null) {
-                    $("#sub" + subitem.key).find("input[type=checkbox]").each(function () {
+                    $("#subitem" + subitem.key).find("input[type=checkbox]").each(function () {
                         subrights += (this.checked ? $(this).val() + "," : "");
                     });
                 }
@@ -661,13 +670,14 @@ export class AddEntityComponent implements OnInit {
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
-            else if (that.entttype == "School") {
-                if (standard == '{}') {
-                    that._msg.Show(messageType.error, "Error", "Atleast select 1 Standard");
-                }
-                else if (that.division == "") {
-                    that._msg.Show(messageType.error, "Error", "Enter Division");
-                }
+            else if (that.entttype == "School" && standard == '{}') {
+                that._msg.Show(messageType.error, "Error", "Atleast select 1 Standard");
+            }
+            else if (that.entttype == "School" && that.division == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Division");
+            }
+            else if (that.entttype == "School" && subject == '{}') {
+                that._msg.Show(messageType.error, "Error", "Atleast select 1 Subject");
             }
             else {
                 commonfun.loader();
@@ -756,104 +766,109 @@ export class AddEntityComponent implements OnInit {
                     "wsautoid": that._wsdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        that.schid = data.data[0].autoid;
-                        that.entttype = data.data[0].entttype;
-                        that.schcd = data.data[0].schoolcode;
-                        that.schnm = data.data[0].schoolname;
+                        if (data.data.length > 0) {
+                            that.schid = data.data[0].autoid;
+                            that.entttype = data.data[0].entttype;
+                            that.schcd = data.data[0].schoolcode;
+                            that.schnm = data.data[0].schoolname;
 
-                        if (data.data[0].schlogo !== "") {
-                            that.uploadLogoDT.push({ "athurl": data.data[0].schlogo });
-                            that.chooseLabel = "Change Logo";
-                        }
-                        else {
-                            that.uploadLogoDT = [];
-                            that.chooseLabel = "Upload Logo";
-                        }
-
-                        that.lat = data.data[0].lat;
-                        that.lon = data.data[0].lon;
-                        that.schvehs = data.data[0].ownbuses;
-                        that.oprvehs = data.data[0].vanoperator;
-
-                        that.address = data.data[0].address;
-                        that.state = data.data[0].state;
-                        that.fillCityDropDown();
-                        that.city = data.data[0].city;
-                        that.fillAreaDropDown();
-                        that.area = data.data[0].area;
-                        that.pincode = data.data[0].pincode;
-
-                        that.name = data.data[0].name;
-                        that.email = data.data[0].email1;
-                        that.mobile = data.data[0].mobileno1;
-                        that.contactDT = data.data[0].contact !== null ? data.data[0].contact : [];
-
-                        var weeklyoff = data.data[0].weeklyoff;
-
-                        if (weeklyoff != null) {
-                            for (var i = 0; i < weeklyoff.length; i++) {
-                                $("#week").find("#" + weeklyoff[i]).prop('checked', true);
-                            }
-                        }
-
-                        var _stdrights = null;
-                        var _stdids = null;
-                        
-                        var _subrights = null;
-                        var _subids = null;
-
-                        if (data.data[0] != null) {
-                            // Standard
-
-                            _stdrights = null;
-                            _stdrights = data.data[0].standard;
-
-                            if (_stdrights != null) {
-                                for (var i = 0; i < _stdrights.length; i++) {
-                                    _stdids = null;
-                                    _stdids = _stdrights[i];
-
-                                    if (_stdids != null) {
-                                        $("#" + _stdids).prop('checked', true);
-                                        $(".allcheckboxes").find("#" + _stdids).prop('checked', true);
-                                    }
-                                    else {
-                                        $(".allcheckboxes").find("#" + _stdids).prop('checked', false);
-                                    }
-                                }
+                            if (data.data[0].schlogo !== "") {
+                                that.uploadLogoDT.push({ "athurl": data.data[0].schlogo });
+                                that.chooseLabel = "Change Logo";
                             }
                             else {
-                                $(".allcheckboxes").find("#" + _stdids).prop('checked', false);
+                                that.uploadLogoDT = [];
+                                that.chooseLabel = "Upload Logo";
                             }
 
-                            that.division = data.data[0].division;
+                            that.lat = data.data[0].lat;
+                            that.lon = data.data[0].lon;
+                            that.schvehs = data.data[0].ownbuses;
+                            that.oprvehs = data.data[0].vanoperator;
+
+                            that.address = data.data[0].address;
+                            that.state = data.data[0].state;
+                            that.fillCityDropDown();
+                            that.city = data.data[0].city;
+                            that.fillAreaDropDown();
+                            that.area = data.data[0].area;
+                            that.pincode = data.data[0].pincode;
+
+                            that.name = data.data[0].name;
+                            that.email = data.data[0].email1;
+                            that.mobile = data.data[0].mobileno1;
+                            that.contactDT = data.data[0].contact !== null ? data.data[0].contact : [];
+
+                            var weeklyoff = data.data[0].weeklyoff;
+
+                            if (weeklyoff != null) {
+                                for (var i = 0; i < weeklyoff.length; i++) {
+                                    $("#week").find("#" + weeklyoff[i]).prop('checked', true);
+                                }
+                            }
+
+                            if (that.entttype == "School") {
+                                var _stdrights = null;
+                                var _stdids = null;
+
+                                var _subrights = null;
+                                var _subids = null;
+
+                                // Standard
+
+                                _stdrights = null;
+                                _stdrights = data.data[0].standard;
+
+                                if (_stdrights != null) {
+                                    for (var i = 0; i < _stdrights.length; i++) {
+                                        _stdids = null;
+                                        _stdids = _stdrights[i];
+
+                                        if (_stdids != null) {
+                                            $("#std" + _stdids).prop('checked', true);
+                                            $(".allcheckboxes").find("#std" + _stdids).prop('checked', true);
+                                        }
+                                        else {
+                                            $(".allcheckboxes").find("#std" + _stdids).prop('checked', false);
+                                        }
+                                    }
+                                }
+                                else {
+                                    $(".allcheckboxes").find("#std" + _stdids).prop('checked', false);
+                                }
+
+                                that.division = data.data[0].division;
+
+                                // Subject
+
+                                _subrights = null;
+                                _subrights = data.data[0].subject;
+
+                                if (_subrights != null) {
+                                    for (var i = 0; i < _subrights.length; i++) {
+                                        _subids = null;
+                                        _subids = _subrights[i];
+
+                                        if (_subids != null) {
+                                            $("#sub" + _subids).prop('checked', true);
+                                            $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', true);
+                                        }
+                                        else {
+                                            $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
+                                        }
+                                    }
+                                }
+                                else {
+                                    $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
+                                }
+                            }
                             
-                            // Subject
-
-                            _subrights = null;
-                            _subrights = data.data[0].subject;
-
-                            if (_subrights != null) {
-                                for (var i = 0; i < _subrights.length; i++) {
-                                    _subids = null;
-                                    _subids = _subrights[i];
-
-                                    if (_subids != null) {
-                                        $("#" + _subids).prop('checked', true);
-                                        $(".allsubcheckboxes").find("#" + _subids).prop('checked', true);
-                                    }
-                                    else {
-                                        $(".allsubcheckboxes").find("#" + _subids).prop('checked', false);
-                                    }
-                                }
-                            }
-                            else {
-                                $(".allsubcheckboxes").find("#" + _subids).prop('checked', false);
-                            }
-
                             that.remark1 = data.data[0].remark1;
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;
+                        }
+                        else {
+                            that.resetEntityFields();
                         }
                     }
                     catch (e) {

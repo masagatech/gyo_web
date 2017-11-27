@@ -882,6 +882,22 @@
     color: #009688 !important;
 }
 
+.theme-teal .ui-tabview .ui-tabview-nav>li.ui-state-default.ui-state-active {
+    background: #ffffff !important;
+}
+
+.theme-teal .ui-tabview .ui-tabview-nav>li.ui-state-default {
+    background: #009688 !important;
+}
+
+.theme-teal .ui-tabview .ui-tabview-nav>li.ui-state-default.ui-state-active a {
+    color: #212121 !important;
+}
+
+.theme-teal .ui-tabview .ui-tabview-nav>li.ui-state-default a {
+    color: #ffffff !important;
+}
+
 
 /* green */
 
