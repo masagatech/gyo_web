@@ -76,15 +76,18 @@
                                             <div class="col-md-12" *ngIf="row.gender != ''">
                                                 {{row.gender}}
                                             </div>
+                                            <div class="col-md-12">
+                                                <b>Roll No :</b> {{row.rollno == null ? 0 : row.rollno}}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-8" align="left">
                                         <div class="row clearfix">
+                                            <div class="col-md-12">
+                                                <b>Enrollment No :</b> {{row.enrlmntid}}
+                                            </div>
                                             <div class="col-md-12" *ngIf="row.classname != ''">
                                                 <b>Standard :</b> {{row.classname}}
-                                            </div>
-                                            <div class="col-md-12">
-                                                <b>Roll No :</b> {{row.rollno == null ? 0 : row.rollno}}
                                             </div>
                                             <div class="col-md-12" *ngIf="row.dob != ''">
                                                 <span class="material-icons sm-font">date_range</span> {{row.dob}}
@@ -95,7 +98,7 @@
                                             </div>
                                             <div class="col-md-12" *ngIf="row.email1 != ''">
                                                 <span class="material-icons sm-font">email</span> {{row.email1}}
-                                                <span *ngIf="row.email1 != '' && row.email1 !== ''">, </span>{{row.email2}}
+                                                <span *ngIf="row.email1 != '' && row.email2 !== ''">, </span>{{row.email2}}
                                             </div>
                                         </div>
                                     </div>
@@ -117,8 +120,9 @@
                             <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
+                    <p-column field="enrlmntid" header="Enrollment No" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="studentname" header="Student Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="studentname" header="Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="classname" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -132,7 +136,7 @@
                             {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                    <p-column field="mode" header="Status" [style]="{'width':'80px', 'text-align':'left','vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editAdmissionForm(row)">

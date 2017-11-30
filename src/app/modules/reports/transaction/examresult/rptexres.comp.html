@@ -64,6 +64,7 @@
                 <table class="table table-bordered table-responsive">
                     <thead>
                         <tr>
+                            <th width="100px">Enrollment No</th>
                             <th width="80px">Roll No</th>
                             <th width="200px">Student Name</th>
                             <th *ngFor="let srow of subjectDT | filterBy:{'id': 1}" colspan="3">
@@ -71,6 +72,7 @@
                             </th>
                         </tr>
                         <tr class="tr-table">
+                            <th width="100px"></th>
                             <th width="80px"></th>
                             <th width="200px"></th>
                             <th *ngFor="let srow of subjectDT">
@@ -80,7 +82,10 @@
                     </thead>
                     <tbody *ngFor="let row of examResultDT">
                         <tr>
-                            <td>
+                            <td align="right">
+                                {{row.studid}}
+                            </td>
+                            <td align="right">
                                 {{row.rollno}}
                             </td>
                             <td>

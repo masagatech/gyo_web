@@ -23,7 +23,6 @@ export class AddProspectusComponent implements OnInit {
     ayid: number = 0;
     frmno: number = 0;
     tono: number = 0;
-    noofform: number = 0;
     fees: any = "";
 
     // Upload Form
@@ -90,19 +89,6 @@ export class AddProspectusComponent implements OnInit {
         })
     }
 
-    setNoOfForm() {
-        var that = this;
-
-        if (parseInt(that.frmno.toString()) > parseInt(that.tono.toString())) {
-            that._msg.Show(messageType.error, "Error", "Should be To No grater than From No");
-            that.tono = 0;
-            that.noofform = 0;
-        }
-        else {
-            that.noofform = (that.tono - that.frmno) + 1;
-        }
-    }
-
     // Clear Prospectus Fields
 
     resetProspectusFields() {
@@ -112,7 +98,6 @@ export class AddProspectusComponent implements OnInit {
         that.title = "";
         that.frmno = 0;
         that.tono = 0;
-        that.noofform = 0;
         that.fees = "";
         that.uploadFormDT = [];
         that.chooseLabel = "Upload Form";
@@ -159,26 +144,48 @@ export class AddProspectusComponent implements OnInit {
 
     // Save Prospectus
 
-    saveProspectus() {
+    isValidation() {
         var that = this;
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
             $(".ayname").focus();
+            return false;
         }
         else if (that.title == "") {
             that._msg.Show(messageType.error, "Error", "Enter Title");
-            $(".title").focus();
+            $(".prspcttitle").focus();
+            return false;
         }
         else if (that.frmno == 0) {
             that._msg.Show(messageType.error, "Error", "Enter From No");
             $(".frmno").focus();
+            return false;
         }
         else if (that.tono == 0) {
             that._msg.Show(messageType.error, "Error", "Enter To No");
             $(".tono").focus();
+            return false;
         }
-        else {
+        else if (that.fees == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Fees");
+            $(".fees").focus();
+            return false;
+        }
+        else if (parseInt(that.frmno.toString()) > parseInt(that.tono.toString())) {
+            that._msg.Show(messageType.error, "Error", "Should be To No grater than From No");
+            $(".frmno").focus();
+            return false;
+        }
+        
+        return true;
+    }
+
+    saveProspectus() {
+        var that = this;
+        var isvalid = that.isValidation();
+
+        if (isvalid) {
             commonfun.loader();
 
             var saveProspectus = {
@@ -186,7 +193,7 @@ export class AddProspectusComponent implements OnInit {
                 "title": that.title,
                 "frmno": that.frmno,
                 "tono": that.tono,
-                "noofform": that.noofform,
+                "noofform": (that.tono - that.frmno) + 1,
                 "fees": that.fees,
                 "uploadform": that.uploadFormDT.length > 0 ? that.uploadFormDT[0].athurl : "",
                 "remark": that.remark,
@@ -265,7 +272,6 @@ export class AddProspectusComponent implements OnInit {
 
                     that.frmno = viewprspct[0].frmno;
                     that.tono = viewprspct[0].tono;
-                    that.noofform = viewprspct[0].noofform;
                     that.fees = viewprspct[0].fees;
 
                     if (viewprspct[0].uploadform == "" || viewprspct[0].uploadform == null) {

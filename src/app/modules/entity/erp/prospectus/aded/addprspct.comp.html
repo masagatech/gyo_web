@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Title No <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="title" class="form-control title" tabindex="2">
+                                <input type="text" [(ngModel)]="title" class="form-control prspcttitle" tabindex="2">
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From No <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="frmno" (keydown.tab)="setNoOfForm()" (keydown.enter)="setNoOfForm()" class="form-control text-right frmno" tabindex="3">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="frmno" class="form-control text-right frmno" tabindex="3">
                             </div>
                         </div>
                     </div>
@@ -53,15 +53,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To No <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="tono" (keydown.tab)="setNoOfForm()" (keydown.enter)="setNoOfForm()" class="form-control text-right tono" tabindex="4">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">No. of Form</label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="noofform" class="form-control text-right" tabindex="5" disabled>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="tono" class="form-control text-right tono" tabindex="4">
                             </div>
                         </div>
                     </div>
@@ -77,33 +69,33 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <div class="row clearfix">
-                        <div class="col-md-12">
-                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadformconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onFormUpload($event)" accept="{{uploadformconfig.acceptedFiles}}" maxFileSize="{{uploadformconfig.maxFilesize}}" auto="true"></p-fileUpload>
-                        </div>
-                        <div class="col-md-12">
-                            <div *ngFor="let file of uploadFormDT">
-                                <div class="row clearfix">
-                                    <div class="col-md-6">
-                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeFormUpload()">
-                                            <i class="material-icons">delete</i></button>
-                                    </div>
-                                    <div class="col-md-6" align="right">
-                                        {{uploadFormconfig.uploadurl + file.athurl}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
                         <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="7"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadformconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onFormUpload($event)" accept="{{uploadformconfig.acceptedFiles}}" maxFileSize="{{uploadformconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                </div>
+                <div class="col-md-12">
+                    <div *ngFor="let file of uploadFormDT">
+                        <div class="row clearfix">
+                            <div class="col-md-6" align="right">
+                                {{uploadformconfig.uploadurl + file.athurl}}
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-danger btn-xs" (click)="removeFormUpload()">
+                                    <i class="material-icons">delete</i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

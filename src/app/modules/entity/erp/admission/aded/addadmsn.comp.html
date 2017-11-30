@@ -19,8 +19,11 @@
         <div class="card">
             <div class="body">
                 <div class="row clearfix">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         Student’s Name (In Block Letters)
+                    </div>
+                    <div class="col-md-4" align="right" *ngIf="enrlmntid != 0">
+                        <b>Enrollment No : </b> {{enrlmntid}}
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
@@ -357,7 +360,7 @@
                         </div>
                         <div class="form-group" *ngIf="fthrschid != 0">
                             <div class="form-line">
-                                <label class="control-label">Enrollment ID</label>
+                                <label class="control-label">Enrollment No</label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="fthrenrlmntid" class="form-control fthrenrlmntid" maxlength="20" tabindex="22" />
                             </div>
                         </div>
@@ -429,7 +432,7 @@
                         </div>
                         <div class="form-group" *ngIf="mthrschid != 0">
                             <div class="form-line">
-                                <label class="control-label">Enrollment ID</label>
+                                <label class="control-label">Enrollment No</label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="mthrenrlmntid" class="form-control mthrenrlmntid" maxlength="50" tabindex="31" />
                             </div>
                         </div>
@@ -497,7 +500,7 @@
                                 School
                             </th>
                             <th>
-                                School Name / Enrollment ID
+                                School Name / Enrollment No
                             </th>
                             <th width="70px">
                             </th>

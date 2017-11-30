@@ -346,6 +346,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
                         if (that.prspctparamid == 0) {
                             that.resetProspectusFields();
+                            that.getFormNo();
                         }
                         else {
                             that.backViewData();
