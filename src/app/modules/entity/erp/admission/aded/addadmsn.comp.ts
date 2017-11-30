@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
+import { debounce } from 'rxjs/operator/debounce';
 
 declare var google: any;
 declare var loader: any;
@@ -846,28 +847,35 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                             that.mode = that.studentDT[0].mode;
                             that.otherinfo = that.studentDT[0].otherinfo;
 
-                            if (that.studentDT[0].FilePath !== "" || that.studentDT[0].FilePath !== null) {
-                                that.uploadPhotoDT.push({ "athurl": that.studentDT[0].FilePath });
+                            var filepath = that.studentDT[0].FilePath;
+                            var birthcrtfct = that.studentDT[0].birthcrtfct;
+                            var addrproof = that.studentDT[0].addrproof;
+
+                            if (filepath != "" && filepath != null) {
+                                that.uploadPhotoDT.push({ "athurl": filepath });
                                 that.chooseLabel = "Change Student Photo";
                             }
                             else {
                                 that.uploadPhotoDT = [];
+                                that.chooseLabel = "Upload Student Photo";
                             }
 
-                            if (that.studentDT[0].birthcrtfct !== "" || that.studentDT[0].birthcrtfct !== null) {
-                                that.uploadDOBCertificate.push({ "athurl": that.studentDT[0].birthcrtfct });
+                            if (birthcrtfct != "" && birthcrtfct != null) {
+                                that.uploadDOBCertificate.push({ "athurl": birthcrtfct });
                                 that.chooseDOBLabel = "Change Birth Certificate";
                             }
                             else {
                                 that.uploadDOBCertificate = [];
+                                that.chooseDOBLabel = "Upload Birth Certificate";
                             }
 
-                            if (that.studentDT[0].addrproof !== "" || that.studentDT[0].addrproof !== null) {
-                                that.uploadAddrProof.push({ "athurl": that.studentDT[0].addrproof });
+                            if (addrproof != "" && addrproof != null) {
+                                that.uploadAddrProof.push({ "athurl": addrproof });
                                 that.chooseAddrLabel = "Change Address Proof";
                             }
                             else {
                                 that.uploadAddrProof = [];
+                                that.chooseAddrLabel = "Upload Address Proof";
                             }
                         }
                         else {

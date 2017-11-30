@@ -67,60 +67,65 @@
         </div>
     </div>
 
-    <div class="row clearfix" *ngIf="statusid == 0">
-        <div class="col-md-12">
-            <h4>{{statusdesc}}</h4>
+    <div class="body" *ngIf="timetableDT.length">
+        <div class="row clearfix" *ngIf="statusid == 0">
+            <div class="col-md-12">
+                <h4>{{statusdesc}}</h4>
+            </div>
+        </div>
+
+        <div class="row clearfix" *ngIf="statusid != 0">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th width="100px">
+                                Class
+                            </th>
+                            <th width="200px">
+                                Teacher
+                            </th>
+                            <th *ngIf="psngrtype == 'student'" width="200px">
+                                Student Name
+                            </th>
+                            <th width="100px">
+                                From Time
+                            </th>
+                            <th width="100px">
+                                To Time
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of timetableDT">
+                            <td>
+                                {{row.classname}}
+                            </td>
+                            <td>
+                                {{row.tchrname}}
+                            </td>
+                            <td *ngIf="psngrtype == 'student'">
+                                {{row.studname}}
+                            </td>
+                            <td>
+                                {{row.frmtm == null ? '' : row.frmtm}}
+                            </td>
+                            <td>
+                                {{row.totm == null ? '' : row.totm}}
+                            </td>
+                            <td>
+                                {{row.subname}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <div class="row clearfix" *ngIf="statusid != 0">
-        <div class="col-md-12">
-            <table class="table table-bordered table-responsive reports">
-                <thead>
-                    <tr>
-                        <th width="100px">
-                            Class
-                        </th>
-                        <th width="200px">
-                            Teacher
-                        </th>
-                        <th *ngIf="psngrtype == 'student'" width="200px">
-                            Student Name
-                        </th>
-                        <th width="100px">
-                            From Time
-                        </th>
-                        <th width="100px">
-                            To Time
-                        </th>
-                        <th>
-                            Subject
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let row of timetableDT">
-                        <td>
-                            {{row.classname}}
-                        </td>
-                        <td>
-                            {{row.tchrname}}
-                        </td>
-                        <td *ngIf="psngrtype == 'student'">
-                            {{row.studname}}
-                        </td>
-                        <td>
-                            {{row.frmtm == null ? '' : row.frmtm}}
-                        </td>
-                        <td>
-                            {{row.totm == null ? '' : row.totm}}
-                        </td>
-                        <td>
-                            {{row.subname}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="body" *ngIf="!timetableDT.length">
+        No records found
     </div>
 </div>

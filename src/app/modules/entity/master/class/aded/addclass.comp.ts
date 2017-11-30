@@ -38,11 +38,6 @@ export class AddClassComponent implements OnInit {
     subjectDT: any = [];
     classTypeDT: any = [];
 
-    uploadClassDT: any = [];
-    global = new Globals();
-    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    chooseLabel: string = "";
-
     private subscribeParameters: any;
 
     constructor(private _clsservice: ClassService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -265,7 +260,7 @@ export class AddClassComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Class Teacher");
             $(".clstchrname input").focus();
         }
-        else if(that.subjectDT.length == 0){
+        else if (that.subjectDT.length == 0) {
             that._msg.Show(messageType.error, "Error", "No any Subject Entry on this " + that._enttdetails.enttname);
         }
         else if (_subrights == null) {
@@ -340,24 +335,24 @@ export class AddClassComponent implements OnInit {
                     "flag": "edit", "clsid": that.clsid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        that.clsid = data.data[0].classid;
-                        that.stdid = data.data[0].stdid;
-                        that.divname = data.data[0].divname;
-                        that.strength = data.data[0].strength;
-                        that.clstypid = data.data[0].clstypid;
+                        if (data.data.length > 0) {
+                            that.clsid = data.data[0].classid;
+                            that.stdid = data.data[0].stdid;
+                            that.divname = data.data[0].divname;
+                            that.strength = data.data[0].strength;
+                            that.clstypid = data.data[0].clstypid;
 
-                        that.clstchrid = data.data[0].clstchrid;
-                        that.clstchrname = data.data[0].clstchrname;
+                            that.clstchrid = data.data[0].clstchrid;
+                            that.clstchrname = data.data[0].clstchrname;
 
-                        that.clstchrdata.value = that.clstchrid;
-                        that.clstchrdata.label = that.clstchrname;
+                            that.clstchrdata.value = that.clstchrid;
+                            that.clstchrdata.label = that.clstchrname;
 
-                        that.otherTeacherList = data.data[0].othtchrdata == null ? [] : data.data[0].othtchrdata;
+                            that.otherTeacherList = data.data[0].othtchrdata == null ? [] : data.data[0].othtchrdata;
 
-                        var _subrights = null;
-                        var _subitem = null;
+                            var _subrights = null;
+                            var _subitem = null;
 
-                        if (data.data[0] != null) {
                             _subrights = null;
                             _subrights = data.data[0].subid;
 

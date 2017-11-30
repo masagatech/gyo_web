@@ -52,8 +52,9 @@
                             <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
-                    <p-column field="psngrname" header="{{psngrtypenm}} Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="classname" header="Class" [style]="{'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype != 'employee' && psngrtype != 'passenger'"></p-column>
+                    <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
+                    <p-column field="psngrname" header="{{psngrtypenm}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
                     <p-column header="Parents" [style]="{'width':'150px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype == 'student' && psngrtype == 'passenger'">
                         <ng-template let-row="rowData" pTemplate type="body">
                             {{row.fathername}}<span *ngIf="row.fathername != '' && row.mothername !== ''"><br/></span>{{row.mothername}}

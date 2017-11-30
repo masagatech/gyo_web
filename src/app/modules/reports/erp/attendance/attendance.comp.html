@@ -34,7 +34,6 @@
                     <div class="form-line">
                         <label class="control-label">Month</label>
                         <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control" (ngModelChange)="getAttendanceColumn()">
-                            <option [value]="''">Select Month</option>
                             <option *ngFor="let row of attndmonthDT" [value]="row.val">
                                 {{row.val}}
                             </option>
@@ -80,8 +79,8 @@
                         <th width="30px">H</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let row of attendanceDT">
-                    <tr>
+                <tbody *ngIf="attendanceDT.length">
+                    <tr *ngFor="let row of attendanceDT">
                         <td *ngIf="psngrtype == 'student'">
                             {{row.rollno}}
                         </td>
@@ -105,6 +104,13 @@
                         </td>
                         <td align="center" class="H">
                             {{row.H == null ? '0' : row.H}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="!attendanceDT.length">
+                    <tr>
+                        <td colspan="40">
+                            No records found
                         </td>
                     </tr>
                 </tbody>

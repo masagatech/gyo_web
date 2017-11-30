@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="body no-padding">
+    <div class="body no-padding" *ngIf="classDT.length">
         <div #class class="row clearfix">
             <div class="col-md-12">
                 <table class="table table-bordered">
@@ -95,5 +95,8 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="body" *ngIf="!classDT.length">
+        No records found
     </div>
 </div>

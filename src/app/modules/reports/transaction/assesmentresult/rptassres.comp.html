@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div class="body no-padding">
+    <div class="body no-padding" *ngIf="assesmentDT.length">
         <div class="row clearfix">
             <div class="col-md-12 reports">
                 <table class="table table-bordered table-responsive">
@@ -110,5 +110,8 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="body" *ngIf="!assesmentDT.length">
+        No records found
     </div>
 </div>
