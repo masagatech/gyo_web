@@ -10,7 +10,6 @@ import { LoginUserModel, Globals } from '@models';
 
 export class EntityComponent implements OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
     _enttdetails: any = [];
 
     wsname: string = "";
@@ -21,7 +20,6 @@ export class EntityComponent implements OnDestroy {
 
     constructor(private _router: Router, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
         if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {

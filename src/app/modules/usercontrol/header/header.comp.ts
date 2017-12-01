@@ -19,8 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   _enttdetails: any = [];
 
-  entityDT: any = [];
-
   ufullname: string = "";
   ctypename: string = "";
   uphoto: string = "";
@@ -37,7 +35,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mname: string = "";
 
   global = new Globals();
-  uploadconfig = { server: "", serverpath: "", uploadurl: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
   mastersMenuDT: any = [];
   settingsMenuDT: any = [];
