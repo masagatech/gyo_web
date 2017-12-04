@@ -261,6 +261,7 @@ export class AttendanceComponent implements OnInit {
                 "psngrid": _psngrid,
                 "psngrtype": that.psngrtype,
                 "attnddate": that.attnddate,
+                "tchrid": that.loginUser.uid,
                 "status": "a",
                 "ayid": that.ayid,
                 "classid": that.classid,

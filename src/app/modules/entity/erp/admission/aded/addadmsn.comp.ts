@@ -764,9 +764,10 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
             that._admsnservice.saveAdmissionInfo(saveAdmission).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_admissioninfo.msg;
-                    var msgid = dataResult[0].funsave_admissioninfo.msgid;
+                    var dataResult = data.data[0].funsave_admissioninfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var enrlmntid = dataResult.enrlmntid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
