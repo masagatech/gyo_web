@@ -16,15 +16,15 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewQualificationComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "qlf", "rights": "view", "urlname": "/qualification" }
+        data: { "module": "pentt", "submodule": "qualification", "rights": "view", "urlname": "/qualification" }
       },
       {
         path: 'add', component: AddQualificationComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "qlf", "rights": "add", "urlname": "/add" }
+        data: { "module": "pentt", "submodule": "qualification", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'edit/:id', component: AddQualificationComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "qlf", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "pentt", "submodule": "qualification", "rights": "edit", "urlname": "/edit" }
       },
     ]
   },

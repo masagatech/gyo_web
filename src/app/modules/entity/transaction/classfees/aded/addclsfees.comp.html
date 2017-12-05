@@ -28,120 +28,83 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getClassFees()" tabindex="2">
-                            <option [value]="0">Select Class</option>
-                            <option *ngFor="let row of classDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row clearfix">
-            <div class="col-md-6">
-                <table class="table table-bordered table-responsive reports">
-                    <thead>
-                        <tr>
-                            <th width="140px">Category</th>
-                            <th width="140px">Sub Category</th>
-                            <th width="70px">Fees</th>
-                            <th width="50px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <select id="catid" name="catname" [(ngModel)]="catid" class="form-control catname" tabindex="3">
-                                            <option [value]="0">Select Category</option>
-                                            <option *ngFor="let crow of categoryDT" [value]="crow.id">
-                                                {{crow.val}}
-                                            </option>
-                                        </select>
+            <div class="col-md-7">
+                <div class="row clearfix">
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Category <strong>*</strong></label>
+                                    <select id="catid" name="catname" [(ngModel)]="catid" class="form-control catname" tabindex="2">
+                                        <option [value]="0">Select Category</option>
+                                        <option *ngFor="let crow of categoryDT" [value]="crow.id">
+                                            {{crow.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Sub Category <strong>*</strong></label>
+                                    <select id="subcatid" name="subcatname" [(ngModel)]="subcatid" class="form-control subcatname" tabindex="3">
+                                        <option [value]="0">No Sub Category</option>
+                                        <option *ngFor="let scrow of subCategoryDT" [value]="scrow.id">
+                                            {{scrow.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Fees <strong>*</strong></label>
+                                    <input type="text" OnlyNumber="true" [(ngModel)]="fees" class="form-control text-right fees" tabindex="4">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="padding-top: 20px;">
+                            <div class="form-group">
+                                <input id="isonline" name="isonline" type="checkbox" [(ngModel)]="isonline" class="filled-in" />
+                                <label for="isonline">Is Online</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" *ngIf="classDT.length">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                                <label for="selectall">Select All</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="allcheckboxes">
+                                <div class="row clearfix">
+                                    <div class="col-md-3" *ngFor="let row of classDT; let i = index;">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <span id="cls{{row.id}}">
+                                                    <input id="{{row.id}}" name="cls{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                    <label for="{{row.id}}">{{row.val}}</label>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <select id="subcatid" name="subcatname" [(ngModel)]="subcatid" class="form-control subcatname" tabindex="4">
-                                            <option [value]="0">No Sub Category</option>
-                                            <option *ngFor="let scrow of subCategoryDT" [value]="scrow.id">
-                                                {{scrow.val}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </td>
-                            <td align="right">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="fees" class="form-control text-right fees" tabindex="5">
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group" *ngIf="!iseditfees">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addFeesDetails()">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                </div>
-                                <div class="form-group" *ngIf="iseditfees">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateFeesDetails()">
-                                        <i class="material-icons">done</i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="resetFeesDetails()">
-                                        <i class="material-icons">cancel</i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr *ngFor="let row of feesDT">
-                            <td>
-                                {{row.catname}}
-                            </td>
-                            <td>
-                                {{row.subcatname}}
-                            </td>
-                            <td align="right">
-                                {{row.fees | _currency:loginUser.globsettings[0]}}
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editFeesDetails(row)">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="deleteFeesDetails(row)">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2">
-                                <b>Total</b>
-                            </td>
-                            <td align="right">
-                                <div class="form-group">
-                                    {{totalFees() | _currency:loginUser.globsettings[0]}}
-                                </div>
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <table class="table table-bordered table-responsive reports">
                     <thead>
                         <tr>
@@ -158,21 +121,21 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="instlfees" class="form-control text-right" tabindex="4">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="instlfees" class="form-control text-right" tabindex="5">
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="date" [(ngModel)]="duedate" class="form-control" tabindex="5">
+                                        <input type="date" [(ngModel)]="duedate" class="form-control" tabindex="6">
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="pnltyfees" class="form-control text-right" tabindex="6">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="pnltyfees" class="form-control text-right" tabindex="7">
                                     </div>
                                 </div>
                             </td>

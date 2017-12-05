@@ -7,11 +7,11 @@ import { FeesService } from '@services/erp';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addclsfees.comp.html',
+    templateUrl: 'addinstlfees.comp.html',
     providers: [CommonService]
 })
 
-export class AddClassFeesComponent implements OnInit, OnDestroy {
+export class AddInstallmentFeesComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -24,8 +24,10 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     catid: number = 0;
     subcatid: number = 0;
     fees: any = "";
-    isonline: boolean = false;
-    remark: string = "";
+
+    feesDT: any = [];
+    selectedFees: any = [];
+    iseditfees: boolean = false;
 
     installmentDT: any = [];
     selectedInstallmentFees: any = [];
@@ -37,6 +39,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     pnltyfees: any = "";
 
     ayid: number = 0;
+    classid: number = 0;
 
     private subscribeParameters: any;
 
@@ -60,7 +63,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.cfid = params['id'];
+                that.classid = params['id'];
                 that.getClassFees();
             }
             else {
@@ -75,8 +78,9 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     resetAllFields() {
         var that = this;
 
-        that.cfid = 0;
+        that.classid = 0;
         that.resetFeesDetails();
+        that.feesDT = [];
         that.installmentDT = [];
     }
 
@@ -100,6 +104,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
+                        that.getClassFees();
                     }
                     else {
                         that.ayid = 0;
@@ -124,17 +129,70 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         })
     }
 
-    private selectAndDeselectAllCheckboxes() {
-        if ($("#selectall").is(':checked')) {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+    // Fill Fees Category
+
+    addFeesDetails() {
+        var that = this;
+
+        if (that.catid == 0) {
+            that._msg.Show(messageType.info, "Info", "Please Select Category");
+        }
+        else if (that.fees == 0) {
+            that._msg.Show(messageType.info, "Info", "Please Enter Fees");
         }
         else {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+            that.feesDT.push({
+                "cfid": that.cfid, "ayid": that.ayid, "clsid": that.classid,
+                "catid": that.catid, "catname": $(".catname option:selected").text().trim(),
+                "subcatid": that.subcatid, "subcatname": $(".subcatname option:selected").text().trim(),
+                "fees": that.fees, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode, "isactive": true
+            })
+
+            that.catid = 0;
+            that.subcatid = 0;
+            that.fees = 0;
         }
     }
 
-    private clearcheckboxes() {
-        $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+    editFeesDetails(row) {
+        var that = this;
+
+        that.selectedFees = row;
+        that.iseditfees = true;
+
+        that.catid = row.catid;
+        that.subcatid = row.subcatid;
+        that.fees = row.fees | that.loginUser.globsettings[0];
+    }
+
+    deleteFeesDetails(row) {
+        row.isactive = false;
+    }
+
+    updateFeesDetails() {
+        var that = this;
+
+        that.selectedFees.catid = that.catid;
+        that.selectedFees.subcatid = that.subcatid;
+        that.selectedFees.fees = that.fees;
+
+        that.iseditfees = false;
+        that.resetFeesDetails();
+    }
+
+    totalFees() {
+        var that = this;
+        var field: any = [];
+
+        var totalfees = 0;
+
+        for (var i = 0; i < that.feesDT.length; i++) {
+            field = that.feesDT[i];
+            totalfees += parseFloat(field.fees);
+        }
+
+        return totalfees;
     }
 
     totalInstallmentFees() {
@@ -197,7 +255,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         }
         else {
             that.installmentDT.push({
-                "instlid": that.instlid, "ayid": that.ayid, "instlfees": that.instlfees, "duedate": that.duedate,
+                "instlid": that.instlid, "ayid": that.ayid, "clsid": that.classid, "instlfees": that.instlfees, "duedate": that.duedate,
                 "pnltyfees": that.pnltyfees, "cuid": that.loginUser.ucode, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                 "isactive": true
             })
@@ -241,37 +299,6 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         that.catid = 0;
         that.subcatid = 0;
         that.fees = 0;
-        that.clearcheckboxes();
-    }
-
-    // Get Class Rights
-
-    getClassRights() {
-        var that = this;
-        var clsitem = null;
-
-        var actrights = "";
-        var clsrights = null;
-
-        for (var i = 0; i <= that.classDT.length - 1; i++) {
-            clsitem = null;
-            clsitem = that.classDT[i];
-
-            if (clsitem !== null) {
-                $("#cls" + clsitem.id).find("input[type=checkbox]").each(function () {
-                    actrights += (this.checked ? $(this).val() + "," : "");
-                });
-
-                if (actrights != "") {
-                    clsrights = actrights.slice(0, -1);
-                }
-                else {
-                    clsrights = null;
-                }
-            }
-        }
-
-        return clsrights;
     }
 
     // Save Class Fees
@@ -279,6 +306,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     isValidClassFees() {
         var that = this;
 
+        var totalfees = that.totalFees();
         var totalinstlfees = that.totalInstallmentFees();
 
         if (that.ayid == 0) {
@@ -286,13 +314,18 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
             $(".ay").focus();
             return false;
         }
+        else if (that.classid == 0) {
+            that._msg.Show(messageType.info, "Info", "Select Class");
+            $(".class").focus();
+            return false;
+        }
         else if (that.installmentDT.length == 0) {
             that._msg.Show(messageType.info, "Info", "Fill atleast 1 Installment");
             $(".class").focus();
             return false;
         }
-        else if (that.fees != totalinstlfees) {
-            that._msg.Show(messageType.info, "Info", "Fees and Total Installment Fees Not Matched");
+        else if (totalfees != totalinstlfees) {
+            that._msg.Show(messageType.info, "Info", "Total Category Fees and Total Installment Fees Not Matched");
             $(".class").focus();
             return false;
         }
@@ -304,57 +337,48 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         var that = this;
         var isvalid = false;
 
-        var _clsrights = null;
-        _clsrights = that.getClassRights();
-
         isvalid = that.isValidClassFees();
 
         if (isvalid) {
-            if (_clsrights == null) {
-                that._msg.Show(messageType.error, "Error", "Please Select Class");
+            commonfun.loader();
+
+            var saveclassfees = {
+                "classfees": that.feesDT,
+                "feesinstallment": that.installmentDT
             }
-            else {
-                commonfun.loader();
 
-                var saveclassfees = {
-                    "cfid": that.cfid, "ayid": that.ayid, "clsid": "{" + _clsrights + "}", "catid": that.catid, "subcatid": that.subcatid,
-                    "fees": that.fees, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                    "feesinstallment": that.installmentDT, "cuid": that.loginUser.ucode, "isactive": true
-                }
+            that._feesservice.saveClassFees(saveclassfees).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_classfees;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
-                that._feesservice.saveClassFees(saveclassfees).subscribe(data => {
-                    try {
-                        var dataResult = data.data[0].funsave_classfees;
-                        var msg = dataResult.msg;
-                        var msgid = dataResult.msgid;
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
 
-                        if (msgid != "-1") {
-                            that._msg.Show(messageType.success, "Success", msg);
-
-                            if (msgid === "1") {
-                                that.resetAllFields();
-                            }
-                            else {
-                                that.backViewData();
-                            }
+                        if (msgid === "1") {
+                            that.resetAllFields();
                         }
                         else {
-                            that._msg.Show(messageType.error, "Error", msg);
+                            that.backViewData();
                         }
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
 
-                        commonfun.loaderhide();
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
                     commonfun.loaderhide();
-                }, () => {
-                    // console.log("Complete");
-                });
-            }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
         }
     }
 
@@ -365,45 +389,11 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._feesservice.getClassFees({
-            "flag": "edit", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "id": that.cfid,
+            "flag": "edit", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                var viewfees = data.data;
-
-                that.cfid = data.data[0].cfid;
-                that.ayid = data.data[0].ayid;
-                that.catid = data.data[0].catid;
-                that.subcatid = data.data[0].subcatid;
-                that.fees = data.data[0].fees;
-                that.isonline = data.data[0].isonline;
-                that.remark = data.data[0].remark;
-
-                var _clsrights = null;
-                var _clsitem = null;
-
-                if (viewfees[0] != null) {
-                    _clsrights = null;
-                    _clsrights = viewfees[0].clsid;
-
-                    if (_clsrights != null) {
-                        for (var i = 0; i < _clsrights.length; i++) {
-                            _clsitem = null;
-                            _clsitem = _clsrights[i];
-
-                            if (_clsitem != null) {
-                                $("#selectall").prop('checked', true);
-                                $("#cls" + _clsitem).find("#" + _clsitem).prop('checked', true);
-                            }
-                            else {
-                                $("#selectall").prop('checked', false);
-                            }
-                        }
-                    }
-                    else {
-                        $("#selectall").prop('checked', false);
-                    }
-                }
+                that.feesDT = data.data[0];
                 that.installmentDT = data.data[1];
             }
             catch (e) {

@@ -62,6 +62,7 @@ export class AddEntityComponent implements OnInit {
     division: string = "";
     standardDT: any = [];
     subjectDT: any = [];
+    boardDT: any = [];
     weekDT: any = [];
     entttypeDT: any = [];
 
@@ -79,7 +80,7 @@ export class AddEntityComponent implements OnInit {
         this.getLogoUploadConfig();
 
         this.fillDropDownList();
-        this.fillStdAndSubDropDown();
+        this.fillFieldDropDown();
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
@@ -89,15 +90,6 @@ export class AddEntityComponent implements OnInit {
         setTimeout(function () {
             $(".schcd").focus();
         }, 100);
-        
-        // if (this.entttype == "School") {
-        //     $('#tabStandard').prop('disabled', false);
-        //     $('#tabSubject').prop('disabled', false);
-        // }
-        // else {
-        //     $('#tabStandard').prop('disabled', true);
-        //     $('#tabSubject').prop('disabled', true);
-        // }
 
         this.getEntityDetails();
     }
@@ -160,7 +152,7 @@ export class AddEntityComponent implements OnInit {
 
     // Fill Standard And Subject DropDown
 
-    fillStdAndSubDropDown() {
+    fillFieldDropDown() {
         var that = this;
         commonfun.loader();
 
@@ -168,6 +160,7 @@ export class AddEntityComponent implements OnInit {
             try {
                 that.standardDT = data.data.filter(a => a.group === "standard");
                 that.subjectDT = data.data.filter(a => a.group === "subject");
+                that.boardDT = data.data.filter(a => a.group === "board");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -476,6 +469,12 @@ export class AddEntityComponent implements OnInit {
         that.isactive = true;
         that.mode = "";
         that.chooseLabel = "Upload Logo";
+
+        that.clearcheckboxes();
+    }
+
+    private clearcheckboxes(): void {
+        $("input[type=checkbox]").prop('checked', false);
     }
 
     // Setting Standard Checkboxes
@@ -500,10 +499,6 @@ export class AddEntityComponent implements OnInit {
         }
     }
 
-    private clearcheckboxes(): void {
-        $(".allcheckboxes input[type=checkbox]").prop('checked', false);
-    }
-
     // Setting Subject Checkboxes
 
     private selectAndDeselectAllSubCheckboxes() {
@@ -526,8 +521,15 @@ export class AddEntityComponent implements OnInit {
         }
     }
 
-    private clearsubcheckboxes(): void {
-        $(".allsubcheckboxes input[type=checkbox]").prop('checked', false);
+    // Setting Board Checkboxes
+
+    private selectAndDeselectAllBoardCheckboxes() {
+        if ($("#selectallboard").is(':checked')) {
+            $(".allboardcheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".allboardcheckboxes input[type=checkbox]").prop('checked', false);
+        }
     }
 
     // Active / Deactive Data
@@ -631,6 +633,10 @@ export class AddEntityComponent implements OnInit {
             var subrights = "";
             var subject = "";
 
+            var boarditem = null;
+            var boardrights = "";
+            var board = "";
+
             $("#week").find("input[type=checkbox]").each(function () {
                 wkrights += (this.checked ? $(this).val() + "," : "");
             });
@@ -667,6 +673,21 @@ export class AddEntityComponent implements OnInit {
 
             subject = "{" + subrights.slice(0, -1) + "}";
 
+            // Board
+
+            for (var i = 0; i <= that.boardDT.length - 1; i++) {
+                boarditem = null;
+                boarditem = that.boardDT[i];
+
+                if (boarditem !== null) {
+                    $("#boarditem" + boarditem.key).find("input[type=checkbox]").each(function () {
+                        boardrights += (this.checked ? $(this).val() + "," : "");
+                    });
+                }
+            }
+
+            board = "{" + boardrights.slice(0, -1) + "}";
+
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
@@ -678,6 +699,9 @@ export class AddEntityComponent implements OnInit {
             }
             else if (that.entttype == "School" && subject == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Subject");
+            }
+            else if (that.entttype == "School" && board == '{}') {
+                that._msg.Show(messageType.error, "Error", "Atleast select 1 Board");
             }
             else {
                 commonfun.loader();
@@ -707,6 +731,7 @@ export class AddEntityComponent implements OnInit {
                     "standard": standard,
                     "division": that.division,
                     "subject": subject,
+                    "board": board,
                     "remark1": that.remark1,
                     "cuid": that.loginUser.ucode,
                     "wsautoid": that._wsdetails.wsautoid,
@@ -814,6 +839,9 @@ export class AddEntityComponent implements OnInit {
                                 var _subrights = null;
                                 var _subids = null;
 
+                                var _boardrights = null;
+                                var _boardids = null;
+
                                 // Standard
 
                                 _stdrights = null;
@@ -861,8 +889,31 @@ export class AddEntityComponent implements OnInit {
                                 else {
                                     $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
                                 }
+                                
+                                // Board
+
+                                _boardrights = null;
+                                _boardrights = data.data[0].board;
+
+                                if (_boardrights != null) {
+                                    for (var i = 0; i < _boardrights.length; i++) {
+                                        _boardids = null;
+                                        _boardids = _boardrights[i];
+
+                                        if (_boardids != null) {
+                                            $("#board" + _boardids).prop('checked', true);
+                                            $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', true);
+                                        }
+                                        else {
+                                            $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
+                                        }
+                                    }
+                                }
+                                else {
+                                    $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
+                                }
                             }
-                            
+
                             that.remark1 = data.data[0].remark1;
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;

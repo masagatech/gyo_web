@@ -1,12 +1,51 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-3 col-xs-3">
+            <div class="col-md-3">
                 <h4>View Books</h4>
             </div>
-            <div class="col-md-9 col-xs-9" style="text-align: right;">
+            <div class="col-md-3 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Library <strong>*</strong></label>
+                        <select id="librid" name="librname" [(ngModel)]="librid" class="form-control librname" (ngModelChange)="getLibraryBooks()" tabindex="2">
+                            <option [value]="0">Select Library</option>
+                            <option *ngFor="let row of libraryDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Subject <strong>*</strong></label>
+                        <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subname" (ngModelChange)="getLibraryBooks()" tabindex="2">
+                            <option [value]="0">Select Subject</option>
+                            <option *ngFor="let row of subjectDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-2" style="padding-top: 20px; text-align: right;">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addLibrarySubject()">
                     <i class="material-icons">add</i></button>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Book <strong>*</strong> {{bkname}}</label>
+                        <p-autoComplete id="bookid" name="bkname" [(ngModel)]="selectedBook" [tabindex]="5" (onSelect)="selectBookData($event)" [suggestions]="autoBooksDT" (completeMethod)="getBookData($event, Booktype, classid)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete bkname"></p-autoComplete>
+                        <span class="material-icons inputlinkico"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

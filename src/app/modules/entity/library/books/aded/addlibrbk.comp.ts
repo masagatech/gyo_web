@@ -16,11 +16,11 @@ export class AddLibraryBooksComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    subjectDT: any = [];
-    subid: number = 0;
-
     libraryDT: any = [];
     librid: number = 0;
+
+    subjectDT: any = [];
+    subid: number = 0;
 
     bookid: number = 0;
     bkname: string = "";
@@ -81,7 +81,7 @@ export class AddLibraryBooksComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.libraryDT = data.data.filter(a => a.group == "library");
-                that.subjectDT = data.data.filter(a => a.group == "librarysubject");
+                that.subjectDT = data.data.filter(a => a.group == "subject");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

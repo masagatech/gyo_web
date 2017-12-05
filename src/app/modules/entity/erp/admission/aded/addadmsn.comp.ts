@@ -20,6 +20,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     ayDT: any = [];
     classDT: any = [];
+    boardDT: any = [];
     genderDT: any = [];
 
     stateDT: any = [];
@@ -43,6 +44,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     lname: string = "";
     ayid: number = 0;
     classid: number = 0;
+    rollno: number = 0;
+    boardid: number = 0;
     gender: string = "";
     dob: any = "";
     birthplace: string = "";
@@ -169,6 +172,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.boardDT = data.data.filter(a => a.group == "board");
                 that.genderDT = data.data.filter(a => a.group == "gender");
                 that.fthrocptnDT = data.data.filter(a => a.group == "occupation").filter(a => a.key != "housewife");
                 that.mthrocptnDT = data.data.filter(a => a.group == "occupation");
@@ -306,6 +310,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.mname = "";
         that.lname = "";
         that.classid = 0;
+        that.rollno = 0;
+
+        that.boardid = 0;
+        that.gender = "";
+        that.dob = "";
+        that.birthplace = "";
+        that.otherinfo = "";
+        that.remark1 = "";
 
         that.address = that._enttdetails.address;
         that.country = that._enttdetails.country;
@@ -315,8 +327,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.fillAreaDropDown();
         that.area = that._enttdetails.arid;
         that.pincode = that._enttdetails.pincode;
-        that.remark1 = "";
-        that.otherinfo = "";
 
         that.uploadPhotoDT = [];
         that.chooseLabel = "Upload Student Photo";
@@ -647,9 +657,24 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".class").focus();
             return false;
         }
+        else if (that.rollno == 0) {
+            that._msg.Show(messageType.error, "Error", "Enter Roll No");
+            $(".rollno").focus();
+            return false;
+        }
+        else if (that.boardid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Board");
+            $(".boardname").focus();
+            return false;
+        }
+        else if (that.gender == "") {
+            that._msg.Show(messageType.error, "Error", "Select Gender");
+            $(".gender").focus();
+            return false;
+        }
         else if (that.dob == "") {
             that._msg.Show(messageType.error, "Error", "Enter Date Of Birth");
-            $(".class").focus();
+            $(".dob").focus();
             return false;
         }
         else if (that.address == "") {
@@ -707,6 +732,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 "ayid": that.ayid,
                 "enttid": that._enttdetails.enttid,
                 "classid": that.classid,
+                "rollno": that.rollno,
+                "boardid": that.boardid,
                 "gender": that.gender,
                 "dob": that.dob,
                 "birthplace": that.birthplace,
@@ -826,14 +853,18 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         if (that.studentDT.length != 0) {
                             that.enrlmntid = that.studentDT[0].enrlmntid;
                             that.loginid = that.studentDT[0].loginid;
-                            that.ayid = that.studentDT[0].ayid;
                             that.fname = that.studentDT[0].fname;
                             that.mname = that.studentDT[0].mname;
                             that.lname = that.studentDT[0].lname;
+                            that.ayid = that.studentDT[0].ayid;
                             that.classid = that.studentDT[0].classid;
+                            that.rollno = that.studentDT[0].rollno;
+                            that.boardid = that.studentDT[0].boardid;
+                            that.gender = that.studentDT[0].gender;
                             that.dob = that.studentDT[0].dob;
                             that.birthplace = that.studentDT[0].birthplace;
-                            that.gender = that.studentDT[0].gender;
+                            that.otherinfo = that.studentDT[0].otherinfo;
+                            that.remark1 = that.studentDT[0].remark1;
 
                             that.address = that.studentDT[0].address;
                             that.country = that.studentDT[0].country;
@@ -843,10 +874,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                             that.fillAreaDropDown();
                             that.area = that.studentDT[0].area;
                             that.pincode = that.studentDT[0].pincode;
-                            that.remark1 = that.studentDT[0].remark1;
                             that.isactive = that.studentDT[0].isactive;
                             that.mode = that.studentDT[0].mode;
-                            that.otherinfo = that.studentDT[0].otherinfo;
 
                             var filepath = that.studentDT[0].FilePath;
                             var birthcrtfct = that.studentDT[0].birthcrtfct;

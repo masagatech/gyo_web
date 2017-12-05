@@ -10,8 +10,8 @@
                         <label class="control-label">Academic Year <strong>*</strong></label>
                         <select id="ayid" name="ayname" [(ngModel)]="ayid" (ngModelChange)="getProspectusDetails()" class="form-control ayname" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
-                            <option *ngFor="let row of ayDT" [value]="row.ayid">
-                                {{row.ayname}}
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
                             </option>
                         </select>
                     </div>

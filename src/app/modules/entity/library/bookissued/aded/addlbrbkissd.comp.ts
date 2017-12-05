@@ -92,7 +92,7 @@ export class AddLibraryBookIssuedComponent implements OnInit {
                 }
 
                 that.libraryDT = data.data.filter(a => a.group == "library");
-                that.subjectDT = data.data.filter(a => a.group == "librarysubject");
+                that.subjectDT = data.data.filter(a => a.group == "subject");
                 that.personTypeDT = data.data.filter(a => a.group == "persontype");
                 that.classDT = data.data.filter(a => a.group == "class");
             }
@@ -115,8 +115,8 @@ export class AddLibraryBookIssuedComponent implements OnInit {
     getPersonData(event, _persontype, _classid) {
         let query = event.query;
 
-        this._autoservice.getERPAutoData({
-            "flag": "allpassenger",
+        this._autoservice.getAutoData({
+            "flag": "passenger",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

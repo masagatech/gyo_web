@@ -372,6 +372,30 @@
                                 </div>
                             </div>
                         </p-tabPanel>
+
+                        <p-tabPanel id="tabBoard" header="Board" [disabled]="entttype == 'School' ? false : true">
+                            <div class="header">
+                                <h4>Board</h4>
+                            </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input id="selectallboard" name="selectallboard" type="checkbox" (change)="selectAndDeselectAllBoardCheckboxes()" class="filled-in">
+                                                <label for="selectallboard">Select All</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="allboardcheckboxes">
+                                    <span *ngFor="let row of boardDT; let i = index;" id="boarditem{{row.key}}">
+                                        <input id="board{{row.key}}" name="board{{i + 1}}" type="checkbox" value="{{row.key}}" class="filled-in" />
+                                        <label for="board{{row.key}}">{{row.val}}</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </p-tabPanel>
                     </p-tabView>
                 </div>
             </div>

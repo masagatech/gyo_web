@@ -82,7 +82,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     getPassengerData(event) {
         let query = event.query;
 
-        this._autoservice.getAutoData({
+        this._autoservice.getERPAutoData({
             "flag": "passenger",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,

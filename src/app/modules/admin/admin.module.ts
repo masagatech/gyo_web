@@ -15,10 +15,12 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'qualification', loadChildren: './qualification#QualificationModule' },
-
                     { path: 'location', loadChildren: './location#LocationModule' },
 
+                    { path: 'qualification', loadChildren: './qualification#QualificationModule' },
+
+                    { path: 'subject', loadChildren: './subject#SubjectModule' },
+                    
                     { path: '', loadChildren: './masterofmaster#MOMModule' },
 
                     // Workspace

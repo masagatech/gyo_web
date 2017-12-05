@@ -17,31 +17,44 @@
         <div class="row clearfix">
             <div class="col-md-6 border">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-xs-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Academic Year <strong>*</strong></label>
                                 <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
                                     <option [value]="0">Select Academic Year</option>
-                                    <option *ngFor="let row of ayDT" [value]="row.ayid">
-                                        {{row.ayname}}
+                                    <option *ngFor="let row of ayDT" [value]="row.id">
+                                        {{row.val}}
                                     </option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-xs-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Title No <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="title" class="form-control prspcttitle" tabindex="2">
+                                <label class="control-label">Board <strong>*</strong></label>
+                                <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="4">
+                                    <option [value]="0">Select Board</option>
+                                    <option *ngFor="let row of boardDT" [value]="row.id">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="title" class="form-control prspcttitle" tabindex="2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">From No <strong>*</strong></label>
@@ -49,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">To No <strong>*</strong></label>
@@ -80,20 +93,24 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="row clearfix">
-                <div class="col-md-12">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadformconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onFormUpload($event)" accept="{{uploadformconfig.acceptedFiles}}" maxFileSize="{{uploadformconfig.maxFilesize}}" auto="true"></p-fileUpload>
-                </div>
-                <div class="col-md-12">
-                    <div *ngFor="let file of uploadFormDT">
-                        <div class="row clearfix">
-                            <div class="col-md-6" align="right">
-                                {{uploadformconfig.uploadurl + file.athurl}}
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-danger btn-xs" (click)="removeFormUpload()">
-                                    <i class="material-icons">delete</i></button>
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadformconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onFormUpload($event)" accept="{{uploadformconfig.acceptedFiles}}" maxFileSize="{{uploadformconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                        </div>
+                        <div class="col-md-12">
+                            <div *ngFor="let file of uploadFormDT">
+                                <div class="row clearfix">
+                                    <div class="col-md-12">
+                                        {{uploadformconfig.uploadurl + file.athurl}}
+                                    </div>
+                                    <div class="col-md-12" align="right">
+                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeFormUpload()">
+                                            <i class="material-icons">delete</i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

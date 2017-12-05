@@ -16,11 +16,13 @@ export class AddProspectusComponent implements OnInit {
     _enttdetails: any = [];
 
     ayDT: any = [];
+    boardDT: any = [];
 
     prspctparamid: number = 0;
     prspctid: number = 0;
-    title: string = "";
     ayid: number = 0;
+    boardid: number = 0;
+    title: string = "";
     frmno: number = 0;
     tono: number = 0;
     fees: any = "";
@@ -62,18 +64,20 @@ export class AddProspectusComponent implements OnInit {
             "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.ayDT = data.data;
+                that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                     if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].ayid;
+                        that.ayid = defayDT[0].id;
                     }
                     else {
                         that.ayid = 0;
                     }
                 }
+                
+                that.boardDT = data.data.filter(a => a.group == "board");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -95,6 +99,7 @@ export class AddProspectusComponent implements OnInit {
         var that = this;
 
         that.prspctid = 0;
+        that.boardid = 0;
         that.title = "";
         that.frmno = 0;
         that.tono = 0;
@@ -152,6 +157,11 @@ export class AddProspectusComponent implements OnInit {
             $(".ayname").focus();
             return false;
         }
+        else if (that.boardid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Board");
+            $(".boardname").focus();
+            return false;
+        }
         else if (that.title == "") {
             that._msg.Show(messageType.error, "Error", "Enter Title");
             $(".prspcttitle").focus();
@@ -190,6 +200,7 @@ export class AddProspectusComponent implements OnInit {
 
             var saveProspectus = {
                 "prspctid": that.prspctid,
+                "boardid": that.boardid,
                 "title": that.title,
                 "frmno": that.frmno,
                 "tono": that.tono,
@@ -268,6 +279,7 @@ export class AddProspectusComponent implements OnInit {
 
                 if (viewprspct.length > 0) {
                     that.prspctid = viewprspct[0].prspctid;
+                    that.boardid = viewprspct[0].boardid;
                     that.title = viewprspct[0].title;
 
                     that.frmno = viewprspct[0].frmno;

@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="header">
+        <h4>Subject</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveSubject()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Subject Type <strong>*</strong></label>
+                                <select id="subtype" [(ngModel)]="subtype" class="form-control subtype" tabindex="1">
+                                    <option [value]="''">Select Subject Type</option>
+                                    <option *ngFor="let row of subtypeDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="subname" class="form-control subname" tabindex="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description</label>
+                        <textarea [(ngModel)]="subdesc" rows="4" class="form-control no-resize auto-growth" [tabindex]="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

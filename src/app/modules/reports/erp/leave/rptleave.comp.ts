@@ -85,7 +85,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "studspsngr",
+            "flag": this.psngrtype,
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

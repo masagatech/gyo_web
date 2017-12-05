@@ -97,8 +97,8 @@ export class BookReturnComponent implements OnInit {
     getPersonData(event, _persontype, _classid) {
         let query = event.query;
 
-        this._autoservice.getERPAutoData({
-            "flag": "allpassenger",
+        this._autoservice.getAutoData({
+            "flag": "passenger",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,

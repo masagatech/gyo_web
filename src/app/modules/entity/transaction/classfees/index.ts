@@ -5,10 +5,11 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { AddClassFeesComponent } from './aded/addclsfees.comp';
+import { AddInstallmentFeesComponent } from './installment/addinstlfees.comp';
 
 import { FeesService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -24,6 +25,10 @@ export const routes = [
       {
         path: 'edit/:id', component: AddClassFeesComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "clsfees", "rights": "edit", "urlname": "/edit" }
+      },
+      {
+        path: 'installment', component: AddInstallmentFeesComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "clsfees", "rights": "add", "urlname": "/installment" }
       }
     ]
   },
@@ -31,12 +36,12 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AddClassFeesComponent
+    AddClassFeesComponent,
+    AddInstallmentFeesComponent
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule
   ],
 
   providers: [AuthGuard, FeesService]
