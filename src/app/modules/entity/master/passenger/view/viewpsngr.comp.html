@@ -51,7 +51,7 @@
                                         <div class="row clearfix">
                                             <div class="col-md-12">
                                                 <a role="button" (click)="viewpassengerProfile(row)">
-                                                    <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="80px">
+                                                    <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" class="img-xs">
                                                 </a>
                                             </div>
                                             <div class="col-md-12" *ngIf="row.gender != ''">
@@ -86,7 +86,7 @@
                 <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                            <img alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" class="img-sm">
                         </ng-template>
                     </p-column>
                     <p-column field="psngrname" header="passenger Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>

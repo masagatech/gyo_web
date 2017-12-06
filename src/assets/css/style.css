@@ -10844,6 +10844,16 @@ td {
     background: red;
 }
 
+.img-xs {
+    height: 80px;
+    max-width: 80px;
+}
+
+.img-sm {
+    height: 40px;
+    max-width: 40px;
+}
+
 
 /*
 

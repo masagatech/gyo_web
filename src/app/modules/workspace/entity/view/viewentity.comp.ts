@@ -25,7 +25,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     entityDT: any = [];
 
-    isSelectWS: boolean = false;
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
@@ -67,8 +66,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
                 else {
                     that.entttypeDT.splice(0, 0, { "key": "", "val": "All" });
                 }
-                
-                // setTimeout(function () { $.AdminBSB.select.refresh('entttype'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -142,7 +139,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         var params = {};
 
         Cookie.set("_entttype_", this.entttype);
-        this.entttype = Cookie.get('_entttype_');
+        that.entttype = Cookie.get('_entttype_');
 
         commonfun.loader();
 

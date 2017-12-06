@@ -70,7 +70,7 @@ export class AddProspectusComponent implements OnInit {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                     if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
+                        that.ayid = defayDT[0].key;
                     }
                     else {
                         that.ayid = 0;

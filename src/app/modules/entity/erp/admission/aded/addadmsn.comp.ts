@@ -38,6 +38,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     iseditsibling: boolean = false;
 
     enrlmntid: number = 0;
+    autoid: number = 0;
     loginid: number = 0;
     fname: string = "";
     mname: string = "";
@@ -725,6 +726,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 // Student
 
                 "enrlmntid": that.enrlmntid,
+                "autoid": that.autoid,
                 "loginid": that.loginid,
                 "fname": that.fname,
                 "mname": that.mname,
@@ -852,6 +854,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
                         if (that.studentDT.length != 0) {
                             that.enrlmntid = that.studentDT[0].enrlmntid;
+                            that.autoid = that.studentDT[0].autoid;
                             that.loginid = that.studentDT[0].loginid;
                             that.fname = that.studentDT[0].fname;
                             that.mname = that.studentDT[0].mname;

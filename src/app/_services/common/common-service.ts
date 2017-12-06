@@ -91,4 +91,8 @@ export class CommonService {
     excelupload(req: any) {
         return this._dataserver.post("exceluploads", req)
     }
+
+    sendEmail(req: any) {
+        return this._dataserver.post("sendEmail", req)
+    }
 }

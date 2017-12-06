@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule } from '@services';
 
+import { ViewClassFeesComponent } from './view/viewclsfees.comp';
 import { AddClassFeesComponent } from './aded/addclsfees.comp';
 import { AddInstallmentFeesComponent } from './installment/addinstlfees.comp';
 
@@ -15,7 +16,7 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: AddClassFeesComponent, canActivate: [AuthGuard],
+        path: '', component: ViewClassFeesComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "clsfees", "rights": "view", "urlname": "/classfees" }
       },
       {
@@ -36,6 +37,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
+    ViewClassFeesComponent,
     AddClassFeesComponent,
     AddInstallmentFeesComponent
   ],

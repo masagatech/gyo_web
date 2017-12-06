@@ -17,6 +17,8 @@ declare var $: any;
 export class UserReportsComponent implements OnInit, OnDestroy {
     _enttdetails: any = [];
 
+    global = new Globals();
+    
     autoUserDT: any = [];
     autouid: number = 0;
     autouname: any = [];
@@ -73,8 +75,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
-            that.utypeDT = data.data;
-            // setTimeout(function () { $.AdminBSB.select.refresh('srcutype'); }, 100);
+            that.utypeDT = data.data.filter(a => a.group == "usertype");
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);

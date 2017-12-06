@@ -198,7 +198,7 @@ export class AddExamResultComponent implements OnInit {
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "examresult": that.examList
             }
 
-            this._examservice.saveExamResult(params).subscribe(data => {
+            that._examservice.saveExamResult(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_examresult;
                     var msg = dataResult.msg;
@@ -231,6 +231,25 @@ export class AddExamResultComponent implements OnInit {
                 // console.log("Complete");
             });
         }
+    }
+
+    saveExamResultWithMailSent() {
+        var that = this;
+
+        that._autoservice.sendEmail({}).subscribe(data => {
+            try {
+                that._msg.Show(messageType.success, "Success", "Mail Sent Successfully");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Get Exam Result

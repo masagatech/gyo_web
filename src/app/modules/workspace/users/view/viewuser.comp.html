@@ -85,7 +85,7 @@
                                             <div class="row clearfix">
                                                 <div class="col-md-12">
                                                     <a class="navbar-brand" (click)="viewUserProfile(drow)">
-                                                        <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" height="80px">
+                                                        <img alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default.gif';" class="img-xs">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-12" *ngIf="drow.gender != ''">
@@ -119,7 +119,7 @@
                 <p-dataTable [value]="usersDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.fullname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" height="40px" width="40px">
+                            <img alt="{{row.fullname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" class="img-sm">
                         </ng-template>
                     </p-column>
                     <p-column field="utypename" header="User Type" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>

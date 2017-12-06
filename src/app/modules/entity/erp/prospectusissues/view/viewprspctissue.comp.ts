@@ -44,13 +44,13 @@ export class ViewProspectusIssuesComponent implements OnInit {
             "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.ayDT = data.data;
+                that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                     if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].ayid;
+                        that.ayid = defayDT[0].key;
                         that.getProspectusIssues();
                     }
                     else {

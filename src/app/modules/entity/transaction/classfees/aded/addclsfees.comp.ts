@@ -318,7 +318,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
 
                 var saveclassfees = {
                     "cfid": that.cfid, "ayid": that.ayid, "clsid": "{" + _clsrights + "}", "catid": that.catid, "subcatid": that.subcatid,
-                    "fees": that.fees, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "fees": that.fees, "isonline": that.isonline, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                     "feesinstallment": that.installmentDT, "cuid": that.loginUser.ucode, "isactive": true
                 }
 
@@ -364,25 +364,22 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._feesservice.getClassFees({
-            "flag": "edit", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "id": that.cfid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
+        that._feesservice.getClassFees({ "flag": "edit", "id": that.cfid }).subscribe(data => {
             try {
-                var viewfees = data.data;
+                var viewfees = data.data[0];
 
-                that.cfid = data.data[0].cfid;
-                that.ayid = data.data[0].ayid;
-                that.catid = data.data[0].catid;
-                that.subcatid = data.data[0].subcatid;
-                that.fees = data.data[0].fees;
-                that.isonline = data.data[0].isonline;
-                that.remark = data.data[0].remark;
+                that.cfid = viewfees[0].cfid;
+                that.ayid = viewfees[0].ayid;
+                that.catid = viewfees[0].catid;
+                that.subcatid = viewfees[0].subcatid;
+                that.fees = viewfees[0].fees;
+                that.isonline = viewfees[0].isonline;
+                that.remark = viewfees[0].remark;
 
                 var _clsrights = null;
                 var _clsitem = null;
 
-                if (viewfees[0] != null) {
+                if (viewfees != null) {
                     _clsrights = null;
                     _clsrights = viewfees[0].clsid;
 
@@ -404,6 +401,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
                         $("#selectall").prop('checked', false);
                     }
                 }
+
                 that.installmentDT = data.data[1];
             }
             catch (e) {
