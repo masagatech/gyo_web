@@ -6,18 +6,18 @@ import { ProspectusService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'viewprspctissue.comp.html',
+    templateUrl: 'viewprspctissd.comp.html',
     providers: [CommonService]
 })
 
-export class ViewProspectusIssuesComponent implements OnInit {
+export class ViewProspectusIssuedComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     ayDT: any = [];
     ayid: number = 0;
 
-    prospectusIssuesDT: any = [];
+    prospectusIssuedDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _prspctservice: ProspectusService) {
@@ -25,7 +25,7 @@ export class ViewProspectusIssuesComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillAYDropDown();
-        this.getProspectusIssues();
+        this.getProspectusIssued();
     }
 
     public ngOnInit() {
@@ -51,7 +51,7 @@ export class ViewProspectusIssuesComponent implements OnInit {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].key;
-                        that.getProspectusIssues();
+                        that.getProspectusIssued();
                     }
                     else {
                         that.ayid = 0;
@@ -72,18 +72,18 @@ export class ViewProspectusIssuesComponent implements OnInit {
         })
     }
 
-    // Get Prospectus Issues
+    // Get Prospectus Issued
 
-    getProspectusIssues() {
+    getProspectusIssued() {
         var that = this;
         commonfun.loader();
 
-        that._prspctservice.getProspectusIssues({
+        that._prspctservice.getProspectusIssued({
             "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.prospectusIssuesDT = data.data;
+                that.prospectusIssuedDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -99,11 +99,11 @@ export class ViewProspectusIssuesComponent implements OnInit {
         })
     }
 
-    public addProspectusIssues() {
-        this._router.navigate(['/prospectus/issues/add']);
+    public addProspectusIssued() {
+        this._router.navigate(['/prospectus/issued/add']);
     }
 
-    public editProspectusIssues(row) {
-        this._router.navigate(['/prospectus/issues/edit', row.prspctid]);
+    public editProspectusIssued(row) {
+        this._router.navigate(['/prospectus/issued/edit', row.prntid]);
     }
 }

@@ -16,7 +16,7 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'admission/prospectus', loadChildren: './prospectus#ProspectusModule' },
-                    { path: 'prospectus/issues', loadChildren: './prospectusissues#ProspectusIssuesModule' },
+                    { path: 'prospectus/issued', loadChildren: './prospectusissued#ProspectusIssuedModule' },
 
                     { path: 'erp/student', loadChildren: './admission#AdmissionModule' },
 

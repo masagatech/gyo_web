@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-9 col-xs-9">
+                <h4>Peding Prospectus Issued</h4>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" (ngModelChange)="getProspectusIssued()" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-4" *ngFor="let row of pendingProspectusIssuedDT">
+                <div class="info-box bg-blue hover-expand-effect">
+                    <div class="icon">
+                        <a role="button" (click)="openApprovalForm(row)">
+                            <i class="material-icons">warning</i>
+                        </a>
+                    </div>
+                    <div class="content">
+                        <div class="number count-to">
+                            {{row.prntname}} <small>({{row.prntmob}})</small>
+                        </div>
+                        <div class="text">
+                            <span class="material-icons pull-left">child_care</span>
+                            <span class="padding pull-left">({{row.countchild}})</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

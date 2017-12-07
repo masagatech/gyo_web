@@ -1,31 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
+
 import { ProspectusService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+
+declare var $: any;
+declare var commonfun: any;
 
 @Component({
-    templateUrl: 'viewprspct.comp.html',
+    templateUrl: 'pendprspctissd.comp.html',
     providers: [CommonService]
 })
 
-export class ViewProspectusComponent implements OnInit {
+export class PendingProspectusIssuedComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     ayDT: any = [];
     ayid: number = 0;
 
-    prospectusDT: any = [];
+    pendingProspectusIssuedDT: any = [];
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _prspctservice: ProspectusService) {
+    private subscribeParameters: any;
+
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+        private _prspctservice: ProspectusService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillAYDropDown();
-        this.getProspectusDetails();
+        this.getProspectusIssued();
     }
 
     public ngOnInit() {
@@ -51,7 +57,7 @@ export class ViewProspectusComponent implements OnInit {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].key;
-                        that.getProspectusDetails();
+                        that.getProspectusIssued();
                     }
                     else {
                         that.ayid = 0;
@@ -72,18 +78,22 @@ export class ViewProspectusComponent implements OnInit {
         })
     }
 
-    // Get Prospectus Details
+    // View Pending Prospectus Issued Data
 
-    getProspectusDetails() {
+    getProspectusIssued() {
         var that = this;
+        var params = {};
+
         commonfun.loader();
 
-        that._prspctservice.getProspectusDetails({
-            "flag": "all", "ayid": that.ayid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
+        params = {
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }
+
+        that._prspctservice.getProspectusIssued(params).subscribe(data => {
             try {
-                that.prospectusDT = data.data;
+                that.pendingProspectusIssuedDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -99,11 +109,7 @@ export class ViewProspectusComponent implements OnInit {
         })
     }
 
-    public addProspectus() {
-        this._router.navigate(['/admission/prospectus/add']);
-    }
-
-    public editProspectus(row) {
-        this._router.navigate(['/admission/prospectus/edit', row.prspctid]);
+    public openApprovalForm(row) {
+        this._router.navigate(['/prospectus/issued/approval', row.prspctid]);
     }
 }

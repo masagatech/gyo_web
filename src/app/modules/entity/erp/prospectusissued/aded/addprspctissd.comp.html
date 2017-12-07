@@ -3,7 +3,7 @@
         <h4>Prospectus</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectusIssues()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectusIssued()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
@@ -139,7 +139,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngFor="let row of prospectusIssuesDT | filterBy: {'isactive': true}; let i = index;">
+                        <tr *ngFor="let row of prospectusIssuedDT | filterBy: {'isactive': true}; let i = index;">
                             <td>
                                 {{row.childname}}
                             </td>
@@ -168,7 +168,7 @@
                                 <b>Fees To Be Collect</b>
                             </td>
                             <td align="right">
-                                <b>{{issuefees}}</b>
+                                <b>{{issuedfees}}</b>
                             </td>
                             <td></td>
                         </tr>

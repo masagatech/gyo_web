@@ -7,11 +7,11 @@ import { ProspectusService } from '@services/erp';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addprspctissue.comp.html',
+    templateUrl: 'addprspctissd.comp.html',
     providers: [CommonService]
 })
 
-export class AddProspectusIssuesComponent implements OnInit {
+export class AddProspectusIssuedComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -22,8 +22,8 @@ export class AddProspectusIssuesComponent implements OnInit {
     genderDT: any = [];
     classDT: any = [];
 
-    prspctparamid: number = 0;
-    issuesid: number = 0;
+    prntid: number = 0;
+    issdid: number = 0;
     ayid: number = 0;
     prspctid: number = 0;
     prntname: string = "";
@@ -32,9 +32,9 @@ export class AddProspectusIssuesComponent implements OnInit {
     gender: string = "";
     classid: number = 0;
     prspctfees: any = "";
-    issuefees: any = "0";
+    issuedfees: any = "0";
 
-    prospectusIssuesDT: any = [];
+    prospectusIssuedDT: any = [];
     selectedChildData: any = [];
     formno: number = 0;
     iseditformno: boolean = false;
@@ -53,7 +53,7 @@ export class AddProspectusIssuesComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.editProspectusIssues();
+        this.editProspectusIssued();
     }
 
     // Fill Academic Year, Prospectus, Gender, Class Drop Down
@@ -64,7 +64,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
         commonfun.loader();
 
-        that._prspctservice.getProspectusIssues({
+        that._prspctservice.getProspectusIssued({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -106,13 +106,13 @@ export class AddProspectusIssuesComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
-        that._prspctservice.getProspectusIssues({
+        that._prspctservice.getProspectusIssued({
             "flag": "form", "prspctid": that.prspctid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.formnoDT = data.data;
 
-                if (that.prspctparamid == 0) {
+                if (that.prntid == 0) {
                     if (data.data.length > 0) {
                         that.prspctfees = data.data[0].fees;
                     }
@@ -142,7 +142,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
         that.ayid = 0;
         that.prntname = "";
-        that.prospectusIssuesDT = [];
+        that.prospectusIssuedDT = [];
         that.remark = "";
     }
 
@@ -161,8 +161,8 @@ export class AddProspectusIssuesComponent implements OnInit {
         }
         else {
             if (that.iseditformno == false) {
-                for (var i = 0; i < that.prospectusIssuesDT.length; i++) {
-                    var issflds = that.prospectusIssuesDT[i];
+                for (var i = 0; i < that.prospectusIssuedDT.length; i++) {
+                    var issflds = that.prospectusIssuedDT[i];
 
                     if (issflds.formno == that.formno) {
                         that._msg.Show(messageType.error, "Error", "This Form No is Already Used");
@@ -171,11 +171,11 @@ export class AddProspectusIssuesComponent implements OnInit {
                 }
             }
             else {
-                var _prspctissues = that.prospectusIssuesDT.filter(a => a.formno != that.formno);
+                var _prspctissued = that.prospectusIssuedDT.filter(a => a.formno != that.formno);
 
-                if (_prspctissues.length != 0) {
-                    for (var i = 0; i < _prspctissues.length; i++) {
-                        var existsflds = _prspctissues[i];
+                if (_prspctissued.length != 0) {
+                    for (var i = 0; i < _prspctissued.length; i++) {
+                        var existsflds = _prspctissued[i];
 
                         if (existsflds.formno == that.formno) {
                             that._msg.Show(messageType.error, "Error", "This Form No is Already Used");
@@ -196,7 +196,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
         commonfun.loader();
 
-        that._prspctservice.getProspectusIssues({
+        that._prspctservice.getProspectusIssued({
             "flag": "validform", "formno": that.formno, "prspctid": that.prspctid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
@@ -207,15 +207,15 @@ export class AddProspectusIssuesComponent implements OnInit {
 
                     if (isvalidform) {
                         if (validmsg == "success") {
-                            that.prospectusIssuesDT.push({
-                                "ayid": 0, "issuesid": 0, "prspctid": 0, "prntname": "", "prntmob": "", "childname": that.childname,
+                            that.prospectusIssuedDT.push({
+                                "ayid": 0, "issdid": that.issdid, "prspctid": 0, "prntname": "", "prntmob": "", "childname": that.childname,
                                 "gender": that.gender, "gndrnm": $(".gender option:selected").text().trim(),
                                 "classid": that.classid, "classname": $(".classname option:selected").text().trim(),
                                 "formno": that.formno, "fees": 0, "remark": "", "cuid": "", "enttid": 0, "wsautoid": 0,
                                 "isactive": true
                             });
 
-                            that.issuefees = that.prspctfees * that.prospectusIssuesDT.filter(a => a.isactive == true).length;
+                            that.issuedfees = that.prspctfees * that.prospectusIssuedDT.filter(a => a.isactive == true).length;
                             that.resetChildData();
                         }
                         else {
@@ -258,7 +258,7 @@ export class AddProspectusIssuesComponent implements OnInit {
 
     deleteChildData(row) {
         row.isactive = false;
-        this.issuefees = this.prspctfees * this.prospectusIssuesDT.filter(a => a.isactive == true).length;
+        this.issuedfees = this.prspctfees * this.prospectusIssuedDT.filter(a => a.isactive == true).length;
     }
 
     // Update Prospectus No
@@ -294,11 +294,11 @@ export class AddProspectusIssuesComponent implements OnInit {
         that.iseditformno = false;
     }
 
-    // Save Prospectus Issues
+    // Save Prospectus Issued
 
-    saveProspectusIssues() {
+    saveProspectusIssued() {
         var that = this;
-        var _prspctissues: any = [];
+        var _prspctissued: any = [];
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
@@ -316,35 +316,35 @@ export class AddProspectusIssuesComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".prntmob").focus();
         }
-        else if (that.prospectusIssuesDT.length == 0) {
+        else if (that.prospectusIssuedDT.length == 0) {
             that._msg.Show(messageType.error, "Error", "Please Atleast 1 Prospectus No");
             $(".formno").focus();
         }
         else {
             commonfun.loader();
 
-            for (var i = 0; i < that.prospectusIssuesDT.length; i++) {
-                that.prospectusIssuesDT[i].prspctid = that.prspctid;
-                that.prospectusIssuesDT[i].ayid = that.ayid;
-                that.prospectusIssuesDT[i].prntname = that.prntname;
-                that.prospectusIssuesDT[i].prntmob = that.prntmob;
-                that.prospectusIssuesDT[i].fees = that.issuefees;
-                that.prospectusIssuesDT[i].remark = that.remark;
-                that.prospectusIssuesDT[i].cuid = that.loginUser.ucode;
-                that.prospectusIssuesDT[i].enttid = that._enttdetails.enttid;
-                that.prospectusIssuesDT[i].wsautoid = that._enttdetails.wsautoid;
+            for (var i = 0; i < that.prospectusIssuedDT.length; i++) {
+                that.prospectusIssuedDT[i].prspctid = that.prspctid;
+                that.prospectusIssuedDT[i].ayid = that.ayid;
+                that.prospectusIssuedDT[i].prntname = that.prntname;
+                that.prospectusIssuedDT[i].prntmob = that.prntmob;
+                that.prospectusIssuedDT[i].fees = that.prspctfees;
+                that.prospectusIssuedDT[i].remark = that.remark;
+                that.prospectusIssuedDT[i].cuid = that.loginUser.ucode;
+                that.prospectusIssuedDT[i].enttid = that._enttdetails.enttid;
+                that.prospectusIssuedDT[i].wsautoid = that._enttdetails.wsautoid;
             }
 
-            this._prspctservice.saveProspectusIssues({ "prospectusissues": that.prospectusIssuesDT }).subscribe(data => {
+            this._prspctservice.saveProspectusIssued({ "typ": "aded", "prospectusissued": that.prospectusIssuedDT }).subscribe(data => {
                 try {
-                    var dataResult = data.data[0].funsave_prospectusissues;
+                    var dataResult = data.data[0].funsave_prospectusissued;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        if (that.prspctparamid == 0) {
+                        if (that.prntid == 0) {
                             that.resetProspectusFields();
                             that.getFormNo();
                         }
@@ -373,14 +373,14 @@ export class AddProspectusIssuesComponent implements OnInit {
 
     // Get Prospectus
 
-    editProspectusIssues() {
+    editProspectusIssued() {
         var that = this;
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.prspctparamid = params['id'];
-                that.getProspectusIssues();
+                that.prntid = params['id'];
+                that.getProspectusIssued();
             }
             else {
                 that.resetProspectusFields();
@@ -389,34 +389,35 @@ export class AddProspectusIssuesComponent implements OnInit {
         });
     }
 
-    getProspectusIssues() {
+    getProspectusIssued() {
         var that = this;
         commonfun.loader();
 
-        that._prspctservice.getProspectusIssues({
-            "flag": "edit", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "prspctid": that.prspctparamid,
+        that._prspctservice.getProspectusIssued({
+            "flag": "edit", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "prntid": that.prntid,
             "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                var viewass = data.data;
+                var viewissd = data.data;
 
-                if (viewass.length > 0) {
-                    that.ayid = viewass[0].ayid;
-                    that.prspctid = viewass[0].prspctid;
+                if (viewissd.length > 0) {
+                    that.ayid = viewissd[0].ayid;
+                    that.prspctid = viewissd[0].prspctid;
                     that.getFormNo();
                     
-                    that.prspctfees = viewass[0].fees;
+                    that.prspctfees = viewissd[0].fees;
 
-                    that.prntname = viewass[0].prntname;
-                    that.prntmob = viewass[0].prntmob;
+                    that.prntname = viewissd[0].prntname;
+                    that.prntmob = viewissd[0].prntmob;
 
-                    that.prospectusIssuesDT = viewass[0].childlist;
+                    that.prospectusIssuedDT = viewissd[0].childlist;
+                    that.issuedfees = viewissd[0].issuedfees;
 
-                    that.remark = viewass[0].remark;
+                    that.remark = viewissd[0].remark;
                 }
                 else {
                     that.prntname = "";
-                    that.prospectusIssuesDT = [];
+                    that.prospectusIssuedDT = [];
                     that.remark = "";
                 }
             }
@@ -437,6 +438,6 @@ export class AddProspectusIssuesComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/prospectus/issues']);
+        this._router.navigate(['/prospectus/issued']);
     }
 }

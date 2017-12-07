@@ -384,7 +384,7 @@ export class AddLibraryBookIssuedComponent implements OnInit {
         that.resetBookIssuedFields();
     }
 
-    // Save Book Issued Issues
+    // Save Book Issued Issued
 
     saveLibraryBookIssued() {
         var that = this;

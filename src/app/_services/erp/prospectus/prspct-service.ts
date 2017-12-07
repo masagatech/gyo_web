@@ -17,13 +17,13 @@ export class ProspectusService {
         return this._dataserver.post(Globals.erproute + "getProspectusDetails", req)
     }
     
-    // Prospectus Issues
+    // Prospectus Issued
 
-    saveProspectusIssues(req: any) {
-        return this._dataserver.post(Globals.erproute + "saveProspectusIssues", req)
+    saveProspectusIssued(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveProspectusIssued", req)
     }
 
-    getProspectusIssues(req: any) {
-        return this._dataserver.post(Globals.erproute + "getProspectusIssues", req)
+    getProspectusIssued(req: any) {
+        return this._dataserver.post(Globals.erproute + "getProspectusIssued", req)
     }
 }
