@@ -66,7 +66,7 @@ export class ApprovalProspectusIssuedComponent implements OnInit, OnDestroy {
                 that.prntid = params['id'];
 
                 params = {
-                    "flag": "pending", "prntid": that.prntid, "issdid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "flag": "approval", "prntid": that.prntid, "issdid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }
 
@@ -110,7 +110,7 @@ export class ApprovalProspectusIssuedComponent implements OnInit, OnDestroy {
                 that.prntid = params['id'];
 
                 params = {
-                    "flag": "pending", "prntid": that.prntid, "issdid": row.issdid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "flag": "approval", "prntid": that.prntid, "issdid": row.issdid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }
 
@@ -178,8 +178,13 @@ export class ApprovalProspectusIssuedComponent implements OnInit, OnDestroy {
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        that.getProspectusIssued();
-                        that.resetProspectusIssuedApproval();
+                        if (that.prospectusIssuedDT.length == 0) {
+                            that.backViewData();
+                        }
+                        else {
+                            that.getProspectusIssued();
+                            that.resetProspectusIssuedApproval();
+                        }
 
                         commonfun.loaderhide();
                     }
@@ -208,11 +213,7 @@ export class ApprovalProspectusIssuedComponent implements OnInit, OnDestroy {
 
     // Back For View Data
 
-    viewAllProspectusIssued() {
-        this._router.navigate(['/prospectus/issued']);
-    }
-
-    viewPendingProspectusIssued() {
+    backViewData() {
         this._router.navigate(['/prospectus/issued/approval']);
     }
 

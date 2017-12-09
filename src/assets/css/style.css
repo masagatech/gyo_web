@@ -10859,6 +10859,11 @@ td {
     padding-top: 20px;
 }
 
+.img-lg {
+    height: 100px;
+    max-width: 200px;
+}
+
 .img-xs {
     height: 80px;
     max-width: 80px;

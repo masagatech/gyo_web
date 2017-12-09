@@ -25,7 +25,7 @@ export const routes = [
       },
       {
         path: 'upload', component: UploadAdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "admsn", "rights": "upload", "urlname": "admission" }
+        data: { "module": "erp", "submodule": "admsn", "rights": "upload", "urlname": "upload" }
       },
       {
         path: 'admission', component: AddAdmissionComponent, canActivate: [AuthGuard],

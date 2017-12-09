@@ -87,7 +87,7 @@ export class PendingProspectusIssuedComponent implements OnInit {
         commonfun.loader();
 
         params = {
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
+            "flag": "pending", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 
@@ -110,6 +110,6 @@ export class PendingProspectusIssuedComponent implements OnInit {
     }
 
     public openApprovalForm(row) {
-        this._router.navigate(['/prospectus/issued/approval', row.prspctid]);
+        this._router.navigate(['/prospectus/issued/approval', row.prntid]);
     }
 }

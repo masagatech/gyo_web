@@ -56,7 +56,7 @@
                             <div style="padding:3px" class="col-md-3">
                                 <p-panel [header]="drow.schoolname" [style]="{'text-align':'center'}">
                                     <a role="button" (click)="openMainForm(drow)">
-                                        <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" class="img-xs">
+                                        <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" class="img-lg">
                                     </a>
                                     <hr class="hr ui-widget-content">
                                     <button *ngIf="loginUser.utype != 'emp' && loginUser.utype != 'parent'" type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(drow)">
