@@ -42,10 +42,40 @@
 <div class="row clearfix" *ngIf="_enttdetails.entttype == 'School'">
     <div class="col-md-9">
         <div class="row clearfix">
-            <div class="col-md-8 col-xs-7">
+            <div class="col-md-8">
                 <div class="card">
+                    <div class="header">
+                        <h6>Today's Class Status</h6>
+                    </div>
+
                     <div class="body no-padding">
                         <p-chart type="bar" [data]="classStatusChartDT" height="100px"></p-chart>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-md-6">
+                                <h6>Exam Status</h6>
+                            </div>
+
+                            <div class="col-md-6" align="right">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getERPDashboardData('examstatus')" tabindex="3">
+                                            <option *ngFor="let row of semesterDT" [value]="row.id">
+                                                {{row.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="body no-padding">
+                        <p-chart type="bar" [data]="examStatusChartDT" height="100px"></p-chart>
                     </div>
                 </div>
 
@@ -55,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-5">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="header">
                         <h6>Today's Teacher Attendance</h6>
@@ -71,11 +101,11 @@
     <div class="col-md-3">
         <div class="card">
             <div class="header">
-                <h4>Teacher Subject</h4>
+                <h6>Class Teacher</h6>
             </div>
 
             <div class="body no-padding">
-                <p-chart type="pie" #piechart [data]="tchrSubDT"></p-chart>
+                <p-chart type="pie" #piechart [data]="classtypeDT"></p-chart>
             </div>
         </div>
     </div>

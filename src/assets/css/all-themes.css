@@ -790,9 +790,12 @@
 }
 
 .theme-teal .ui-panel-titlebar,
-.theme-teal .btn-theme,
-.theme-teal .login-page {
+.theme-teal .btn-theme {
     background: #009688!important;
+    color: #fff!important;
+}
+
+.theme-teal .login-page {
     color: #fff!important;
 }
 

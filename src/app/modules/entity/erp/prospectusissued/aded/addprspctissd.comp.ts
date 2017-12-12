@@ -28,6 +28,7 @@ export class AddProspectusIssuedComponent implements OnInit {
     prspctid: number = 0;
     prntname: string = "";
     prntmob: string = "";
+    prnttyp: string = "";
     childname: string = "";
     gender: string = "";
     classid: number = 0;
@@ -409,6 +410,7 @@ export class AddProspectusIssuedComponent implements OnInit {
 
                     that.prntname = viewissd[0].prntname;
                     that.prntmob = viewissd[0].prntmob;
+                    that.prnttyp = viewissd[0].prnttyp;
 
                     that.prospectusIssuedDT = viewissd[0].childlist;
                     that.issuedfees = viewissd[0].issuedfees;

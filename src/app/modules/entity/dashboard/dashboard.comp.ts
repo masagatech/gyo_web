@@ -26,6 +26,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     classStatusDT: any = [];
     classStatusChartDT: any = [];
 
+    semesterDT: any = [];
+    smstrid: number = 0;
+
+    examStatusDT: any = [];
+    examStatusChartDT: any = [];
+
     isShowStatusChart: boolean = true;
     isShowStatusGrid: boolean = false;
 
@@ -41,7 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isShowAttndChart: boolean = true;
     isShowAttndGrid: boolean = false;
 
-    tchrSubDT: any = [];
+    classtypeDT: any = [];
     tchrattndDT: any = [];
 
     classFeesDT: any = [];
@@ -127,6 +133,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     fillDropDownList() {
         var that = this;
         var defayDT: any = [];
+        var defsmstrDT: any = [];
 
         commonfun.loader();
 
@@ -145,6 +152,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     }
                     else {
                         that.ayid = 0;
+                    }
+                }
+
+                that.semesterDT = data.data.filter(a => a.group == "semester");
+
+                if (that.semesterDT.length > 0) {
+                    defsmstrDT = that.semesterDT.filter(a => a.iscurrent == true);
+
+                    if (defsmstrDT.length > 0) {
+                        that.smstrid = defsmstrDT[0].id;
+                    }
+                    else {
+                        that.smstrid = 0;
                     }
                 }
 
@@ -236,8 +256,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (this._enttdetails.entttype == "School") {
             this.getDivisionDetails();
             this.getERPDashboardData("classstatus");
+            this.getERPDashboardData("examstatus");
             this.getERPDashboardData("tchrattnd");
-            this.getERPDashboardData("tchrsub");
+            this.getERPDashboardData("classtype");
             this.getERPDashboardData("classfees");
         }
     }
@@ -246,23 +267,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        var _dbChartDT = null;
-
-        var _label = [];
-        var _labels = [];
-        var _datasets = [];
-        var _datasets2 = [];
-        var _datasets3 = [];
-
-        var _dashboardDT: any = [];
+        // Class Status Variable
 
         var _presentstudent: number = 0;
         var _absentstudent: number = 0;
         var _leavestudent: number = 0;
+        var _wostudent: number = 0;
+        var _hldstudent: number = 0;
+
+        // Exam Status Variable
+
+        var _passedstudent: number = 0;
+        var _failedstudent: number = 0;
+        var _absentstudent: number = 0;
+        var _awaitingstudent: number = 0;
+
+        var _dbChartDT = null;
+
+        var _label = [];
+        var _labels = [];
+
+        var _datasets = [];
+        var _datasets2 = [];
+        var _datasets3 = [];
+        var _datasets4 = [];
+        var _datasets5 = [];
+
+        var _dashboardDT: any = [];
 
         if (dbtype == "classstatus") {
             _dbChartDT = {
                 labels: [], datasets: [
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
+                    { label: '', backgroundColor: [], borderColor: [], data: [] }
+                ]
+            };
+        }
+        else if (dbtype == "examstatus") {
+            _dbChartDT = {
+                labels: [], datasets: [
+                    { label: '', backgroundColor: [], borderColor: [], data: [] },
                     { label: '', backgroundColor: [], borderColor: [], data: [] },
                     { label: '', backgroundColor: [], borderColor: [], data: [] },
                     { label: '', backgroundColor: [], borderColor: [], data: [] }
@@ -278,12 +325,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
 
         that._dbservice.getERPDashboard({
-            "flag": dbtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid, "classid": 0,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
+            "flag": dbtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "ayid": that.ayid, "classid": 0, "smstrid": that.smstrid, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
                 if (dbtype == "classstatus") {
                     that.classStatusDT = data.data;
+                }
+                else if (dbtype == "examstatus") {
+                    that.examStatusDT = data.data;
                 }
 
                 _dashboardDT = data.data;
@@ -292,7 +343,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     var name = _dashboardDT[i].name;
                     _labels.push(name);
 
-                    if (dbtype == "tchrsub") {
+                    if (dbtype == "classtype") {
                         that.colors[name] = that.colors[name] || commonfun.randomColor(5);
                         _dbChartDT.datasets[0].backgroundColor.push(that.colors[name]);
 
@@ -302,18 +353,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         _dbChartDT.datasets[0].backgroundColor.push("#8BC34A");
                         _dbChartDT.datasets[1].backgroundColor.push("#E91E63");
                         _dbChartDT.datasets[2].backgroundColor.push("#FF9800");
+                        _dbChartDT.datasets[3].backgroundColor.push("#E91E63");
+                        _dbChartDT.datasets[4].backgroundColor.push("#03A9F4");
 
                         _datasets.push(_dashboardDT[i].present);
                         _datasets2.push(_dashboardDT[i].absent);
                         _datasets3.push(_dashboardDT[i].leave);
+                        _datasets4.push(_dashboardDT[i].weekly_off);
+                        _datasets5.push(_dashboardDT[i].holiday);
 
-                        _presentstudent += parseFloat(_dashboardDT[i].present);
-                        _absentstudent += parseFloat(_dashboardDT[i].absent);
-                        _leavestudent += parseFloat(_dashboardDT[i].leave);
+                        _presentstudent += parseFloat(_dashboardDT[i].present == null ? 0 : _dashboardDT[i].present);
+                        _absentstudent += parseFloat(_dashboardDT[i].absent == null ? 0 : _dashboardDT[i].absent);
+                        _leavestudent += parseFloat(_dashboardDT[i].leave == null ? 0 : _dashboardDT[i].leave);
+                        _wostudent += parseFloat(_dashboardDT[i].weekly_off == null ? 0 : _dashboardDT[i].weekly_off);
+                        _hldstudent += parseFloat(_dashboardDT[i].holiday == null ? 0 : _dashboardDT[i].holiday);
 
                         _dbChartDT.datasets[0].label = "Present Student " + _presentstudent;
                         _dbChartDT.datasets[1].label = "Absent Student " + _absentstudent;
                         _dbChartDT.datasets[2].label = "Leave Student " + _leavestudent;
+                        _dbChartDT.datasets[3].label = "Weekly Off " + _wostudent;
+                        _dbChartDT.datasets[4].label = "Holiday " + _hldstudent;
+                    }
+                    else if (dbtype == "examstatus") {
+                        _dbChartDT.datasets[0].backgroundColor.push("#8BC34A");
+                        _dbChartDT.datasets[1].backgroundColor.push("#E91E63");
+                        _dbChartDT.datasets[2].backgroundColor.push("#FF9800");
+                        _dbChartDT.datasets[3].backgroundColor.push("#03A9F4");
+
+                        _datasets.push(_dashboardDT[i].passed);
+                        _datasets2.push(_dashboardDT[i].failed);
+                        _datasets3.push(_dashboardDT[i].absent);
+                        _datasets4.push(_dashboardDT[i].awaiting);
+
+                        _passedstudent += parseFloat(_dashboardDT[i].passed == null ? 0 : _dashboardDT[i].passed);
+                        _failedstudent += parseFloat(_dashboardDT[i].failed == null ? 0 : _dashboardDT[i].failed);
+                        _absentstudent += parseFloat(_dashboardDT[i].absent == null ? 0 : _dashboardDT[i].absent);
+                        _awaitingstudent += parseFloat(_dashboardDT[i].awaiting == null ? 0 : _dashboardDT[i].awaiting);
+
+                        _dbChartDT.datasets[0].label = "Passed Student " + _passedstudent;
+                        _dbChartDT.datasets[1].label = "Failed Student " + _failedstudent;
+                        _dbChartDT.datasets[2].label = "Absent Student " + _absentstudent;
+                        _dbChartDT.datasets[3].label = "Awaiting Student " + _awaitingstudent;
                     }
                     else if (dbtype == "tchrattnd") {
                         var color = _dashboardDT[i].color;
@@ -335,14 +415,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 if (dbtype == "classstatus") {
                     _dbChartDT.datasets[1].data = _datasets2;
                     _dbChartDT.datasets[2].data = _datasets3;
+                    _dbChartDT.datasets[3].data = _datasets4;
+                    _dbChartDT.datasets[4].data = _datasets5;
 
                     that.classStatusChartDT = _dbChartDT;
+                }
+                else if (dbtype == "examstatus") {
+                    _dbChartDT.datasets[1].data = _datasets2;
+                    _dbChartDT.datasets[2].data = _datasets3;
+                    _dbChartDT.datasets[3].data = _datasets4;
+
+                    that.examStatusChartDT = _dbChartDT;
                 }
                 else if (dbtype == "tchrattnd") {
                     that.tchrattndDT = _dbChartDT;
                 }
-                else if (dbtype == "tchrsub") {
-                    that.tchrSubDT = _dbChartDT;
+                else if (dbtype == "classtype") {
+                    that.classtypeDT = _dbChartDT;
                 }
                 else if (dbtype == "classfees") {
                     that.classFeesDT = _dbChartDT;

@@ -18,6 +18,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    prospectusDT: any = [];
+    prspctnoDT: any = [];
+
     ayDT: any = [];
     classDT: any = [];
     boardDT: any = [];
@@ -37,9 +40,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     selectedSibling: any = [];
     iseditsibling: boolean = false;
 
+    isprspct: boolean = false;
+    prspctid: number = 0;
+    prspctno: number = 0;
+
+    paramsid: number = 0;
     enrlmntid: number = 0;
     autoid: number = 0;
-    loginid: number = 0;
     fname: string = "";
     mname: string = "";
     lname: string = "";
@@ -73,22 +80,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     sibenrlmntid: number = 0;
     sibisactive: boolean = false;
 
-    // Parents - Mother
-
-    mthrfmlid: number = 0;
-    mthrname: string = "";
-    mthrmobile: string = "";
-    mthremail: string = "";
-    mthrqlfid: number = 0;
-    mthrocptn: string = "";
-    mthrsalary: any = "";
-    mthrschid: number = 0;
-    mthrothschname: string = "";
-    mthrenrlmntid: number = 0;
-
     // Parents - Father
 
+    fthrloginid: number = 0;
     fthrfmlid: number = 0;
+    fthrcode: string = "";
     fthrname: string = "";
     fthrmobile: string = "";
     fthremail: string = "";
@@ -98,6 +94,21 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     fthrschid: number = 0;
     fthrothschname: string = "";
     fthrenrlmntid: number = 0;
+
+    // Parents - Mother
+
+    mthrloginid: number = 0;
+    mthrfmlid: number = 0;
+    mthrcode: string = "";
+    mthrname: string = "";
+    mthrmobile: string = "";
+    mthremail: string = "";
+    mthrqlfid: number = 0;
+    mthrocptn: string = "";
+    mthrsalary: any = "";
+    mthrschid: number = 0;
+    mthrothschname: string = "";
+    mthrenrlmntid: number = 0;
 
     global = new Globals();
 
@@ -146,6 +157,19 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.getAdmissionDetails();
     }
 
+    isWithProspectus() {
+        var that = this;
+
+        if (that.isprspct) {
+            $('#prspctid').prop('disabled', false);
+            $('#prspctno').prop('disabled', false);
+        }
+        else {
+            $('#prspctid').prop('disabled', true);
+            $('#prspctno').prop('disabled', true);
+        }
+    }
+
     // Fill Academic Year, Class And Occupation DropDown
 
     fillDropDownList() {
@@ -159,6 +183,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
+                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
@@ -187,6 +212,33 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
 
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Form No
+
+    getFormNo() {
+        var that = this;
+        commonfun.loader();
+
+        that._admsnservice.getStudentDetails({
+            "flag": "prspctno", "prspctid": that.prspctid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.prspctnoDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
             commonfun.loaderhide();
         }, () => {
 
@@ -299,55 +351,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
-    }
-
-    // Clear Fields
-
-    resetStudentFields() {
-        var that = this;
-
-        that.enrlmntid = 0
-        that.fname = "";
-        that.mname = "";
-        that.lname = "";
-        that.classid = 0;
-        that.rollno = 0;
-
-        that.boardid = 0;
-        that.gender = "";
-        that.dob = "";
-        that.birthplace = "";
-        that.otherinfo = "";
-        that.remark1 = "";
-
-        that.address = that._enttdetails.address;
-        that.country = that._enttdetails.country;
-        that.state = that._enttdetails.sid;
-        that.fillCityDropDown();
-        that.city = that._enttdetails.ctid;
-        that.fillAreaDropDown();
-        that.area = that._enttdetails.arid;
-        that.pincode = that._enttdetails.pincode;
-
-        that.uploadPhotoDT = [];
-        that.chooseLabel = "Upload Student Photo";
-
-        that.uploadDOBCertificate = [];
-        that.chooseDOBLabel = "Upload Birth Certificate";
-
-        that.uploadAddrProof = [];
-        that.chooseAddrLabel = "Upload Address Proof";
-    }
-
-    resetParentFields() {
-        var that = this;
-
-        that.fthrname = "";
-        that.mthrname = "";
-        that.fthremail = "";
-        that.mthremail = "";
-        that.fthrmobile = "";
-        that.mthrmobile = "";
     }
 
     // Upload
@@ -567,8 +570,43 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     // Get Admission Data
 
+    resetFatherFields() {
+        var that = this;
+
+        that.fthrloginid = 0;
+        that.fthrfmlid = 0;
+        that.fthrcode = "";
+        that.fthrname = "";
+        that.fthrmobile = "";
+        that.fthremail = "";
+        that.fthrschid = 0;
+        that.fthrenrlmntid = 0;
+        that.fthrothschname = "";
+        that.fthrqlfid = 0;
+        that.fthrocptn = "";
+        that.fthrsalary = "";
+    }
+
+    resetMotherFields() {
+        var that = this;
+
+        that.mthrloginid = 0;
+        that.mthrfmlid = 0;
+        that.mthrcode = "";
+        that.mthrname = "";
+        that.mthrmobile = "";
+        that.mthremail = "";
+        that.mthrschid = 0;
+        that.mthrenrlmntid = 0;
+        that.mthrothschname = "";
+        that.mthrqlfid = 0;
+        that.mthrocptn = "";
+        that.mthrsalary = "";
+    }
+
     getParentAndSibling(_mobile) {
         var that = this;
+
         var _mthrfld: any = [];
         var _fthrfld: any = [];
 
@@ -588,7 +626,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     _mthrfld = that.parentDT.filter(a => a.relation == "mother");
 
                     if (_fthrfld.length != 0) {
+                        that.fthrloginid = _fthrfld[0].loginid;
                         that.fthrfmlid = _fthrfld[0].fmlid;
+                        that.fthrcode = _fthrfld[0].fmlcode;
                         that.fthrname = _fthrfld[0].fullname;
                         that.fthrmobile = _fthrfld[0].mobile;
                         that.fthremail = _fthrfld[0].email;
@@ -599,9 +639,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.fthrocptn = _fthrfld[0].occupation;
                         that.fthrsalary = _fthrfld[0].salary;
                     }
+                    else {
+                        that.resetFatherFields();
+                    }
 
                     if (_mthrfld.length != 0) {
+                        that.mthrloginid = _mthrfld[0].loginid;
                         that.mthrfmlid = _mthrfld[0].fmlid;
+                        that.mthrcode = _mthrfld[0].fmlcode;
                         that.mthrname = _mthrfld[0].fullname;
                         that.mthrmobile = _mthrfld[0].mobile;
                         that.mthremail = _mthrfld[0].email;
@@ -611,6 +656,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.mthrqlfid = _mthrfld[0].qlfid;
                         that.mthrocptn = _mthrfld[0].occupation;
                         that.mthrsalary = _mthrfld[0].salary;
+                    }
+                    else {
+                        that.resetMotherFields();
                     }
                 }
             }
@@ -693,14 +741,24 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".city").focus();
             return false;
         }
-        else if (that.fthrname == "" && that.mthrname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Father Name / Mother Name");
-            $(".fthrname").focus();
-            return false;
-        }
         else if (that.fthrmobile == "" && that.mthrmobile == "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Mobile No / Mother Mobile No");
             $(".fthrmobile").focus();
+            return false;
+        }
+        else if (that.fthrcode == "" && that.mthrcode == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Code / Mother Code");
+            $(".fthrcode").focus();
+            return false;
+        }
+        else if (that.fthrcode == that.mthrcode) {
+            that._msg.Show(messageType.error, "Error", "Father Code and Mother Code Not Same");
+            $(".fthrcode").focus();
+            return false;
+        }
+        else if (that.fthrname == "" && that.mthrname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Name / Mother Name");
+            $(".fthrname").focus();
             return false;
         }
         else if (that.fthremail == "" && that.mthremail == "") {
@@ -725,9 +783,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             var saveAdmission = {
                 // Student
 
+                "prspctid": that.prspctid,
+                "prspctno": that.prspctno,
+
                 "enrlmntid": that.enrlmntid,
                 "autoid": that.autoid,
-                "loginid": that.loginid,
                 "fname": that.fname,
                 "mname": that.mname,
                 "lname": that.lname,
@@ -758,9 +818,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
                 // Father
 
+                "fthrloginid": that.fthrloginid,
                 "fthrfmlid": that.fthrfmlid,
-                "fthrfullname": that.fthrname,
                 "fthrmobile": that.fthrmobile,
+                "fthrcode": that.fthrcode,
+                "fthrfullname": that.fthrname,
                 "fthremail": that.fthremail,
                 "fthrschid": that.fthrschid,
                 "fthrenrlmntid": that.fthrschid == 0 ? 0 : that.fthrenrlmntid,
@@ -768,14 +830,15 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 "fthrqlfid": that.fthrqlfid,
                 "fthrocptn": that.fthrocptn,
                 "fthrsalary": that.fthrsalary == "" ? "0" : that.fthrsalary,
-                "fthrwsautoid": that._enttdetails.wsautoid,
                 "fthrcuid": that.loginUser.ucode,
 
                 // Mother
 
+                "mthrloginid": that.mthrloginid,
                 "mthrfmlid": that.mthrfmlid,
-                "mthrfullname": that.mthrname,
                 "mthrmobile": that.mthrmobile,
+                "mthrcode": that.mthrcode,
+                "mthrfullname": that.mthrname,
                 "mthremail": that.mthremail,
                 "mthrschid": that.mthrschid,
                 "mthrenrlmntid": that.mthrschid == 0 ? 0 : that.mthrenrlmntid,
@@ -783,7 +846,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 "mthrqlfid": that.mthrqlfid,
                 "mthrocptn": that.mthrocptn,
                 "mthrsalary": that.mthrsalary == "" ? "0" : that.mthrsalary,
-                "mthrwsautoid": that._enttdetails.wsautoid,
                 "mthrcuid": that.loginUser.ucode,
 
                 // Sibling
@@ -802,6 +864,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid == "1") {
+                            that.prspctno = 0;
+
                             that.resetStudentFields();
                             that.resetParentFields();
                         }
@@ -829,144 +893,322 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }
     }
 
+    // Reset Fields
+
+    resetStudentFields() {
+        var that = this;
+
+        if (that.prspctid != 0 && that.prspctno != 0) {
+            that._admsnservice.viewStudentDetails({
+                "flag": "addadmsn", "prspctid": that.prspctid, "prspctno": that.prspctno, "wsautoid": that._enttdetails.wsautoid
+            }).subscribe(data => {
+                try {
+                    that.studentDT = data.data[0];
+
+                    if (that.studentDT.length != 0) {
+                        that.fname = that.studentDT[0].fname;
+                        that.mname = that.studentDT[0].mname;
+                        that.lname = that.studentDT[0].lname;
+                        that.ayid = that.studentDT[0].ayid;
+                        that.classid = that.studentDT[0].classid;
+                        that.boardid = that.studentDT[0].boardid;
+                        that.gender = that.studentDT[0].gender;
+                    }
+                    else {
+                        that.fname = "";
+                        that.mname = "";
+                        that.lname = "";
+                        that.ayid = 0;
+                        that.classid = 0;
+                        that.boardid = 0;
+                        that.gender = "";
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+        else {
+            that.fname = "";
+            that.mname = "";
+            that.lname = "";
+            that.ayid = 0;
+            that.classid = 0;
+            that.boardid = 0;
+            that.gender = "";
+        }
+
+        that.enrlmntid = 0;
+        that.rollno = 0;
+
+        that.dob = "";
+        that.birthplace = "";
+        that.otherinfo = "";
+        that.remark1 = "";
+
+        that.address = that._enttdetails.address;
+        that.country = that._enttdetails.country;
+        that.state = that._enttdetails.sid;
+        that.fillCityDropDown();
+        that.city = that._enttdetails.ctid;
+        that.fillAreaDropDown();
+        that.area = that._enttdetails.arid;
+        that.pincode = that._enttdetails.pincode;
+
+        that.uploadPhotoDT = [];
+        that.chooseLabel = "Upload Student Photo";
+
+        that.uploadDOBCertificate = [];
+        that.chooseDOBLabel = "Upload Birth Certificate";
+
+        that.uploadAddrProof = [];
+        that.chooseAddrLabel = "Upload Address Proof";
+    }
+
+    resetParentFields() {
+        var that = this;
+
+        if (that.prspctid != 0 && that.prspctno != 0) {
+            that._admsnservice.viewStudentDetails({
+                "flag": "addadmsn", "prspctid": that.prspctid, "prspctno": that.prspctno, "wsautoid": that._enttdetails.wsautoid
+            }).subscribe(data => {
+                try {
+                    that.parentDT = data.data[1];
+
+                    if (that.parentDT.length != 0) {
+                        that.fthrfmlid = 0;
+                        that.fthrname = that.parentDT[0].prnttyp == "father" ? that.parentDT[0].prntname : "";
+                        that.fthrmobile = that.parentDT[0].prnttyp == "father" ? that.parentDT[0].prntmob : "";
+
+                        that.mthrfmlid = 0;
+                        that.mthrname = that.parentDT[0].prnttyp == "mother" ? that.parentDT[0].prntname : "";
+                        that.mthrmobile = that.parentDT[0].prnttyp == "mother" ? that.parentDT[0].prntmob : "";
+
+                        that.getParentAndSibling(that.parentDT[0].prntmob);
+                    }
+                    else {
+                        that.fthrfmlid = 0;
+                        that.fthrname = "";
+                        that.fthrmobile = "";
+
+                        that.mthrfmlid = 0;
+                        that.mthrname = "";
+                        that.mthrmobile = "";
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+        else {
+            that.fthrfmlid = 0;
+            that.fthrname = "";
+            that.fthrmobile = "";
+
+            that.mthrfmlid = 0;
+            that.mthrname = "";
+            that.mthrmobile = "";
+        }
+
+        that.fthremail = "";
+        that.fthrschid = 0;
+        that.fthrothschname = "";
+        that.fthrenrlmntid = 0;
+        that.fthrqlfid = 0;
+        that.fthrocptn = "";
+        that.fthrsalary = "";
+
+        that.mthremail = "";
+        that.mthrschid = 0;
+        that.mthrothschname = "";
+        that.mthrenrlmntid = 0;
+        that.mthrqlfid = 0;
+        that.mthrocptn = "";
+        that.mthrsalary = "";
+    }
+
     // Get Admission Data
 
     getAdmissionDetails() {
+        var that = this;
+
+        that.subscribeParameters = this._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.paramsid = params['id'];
+                that.getStudentDetails();
+                $('#prspctid').prop('disabled', true);
+                $('#prspctno').prop('disabled', true);
+            }
+            else {
+                that.resetStudentFields();
+                $('#prspctid').prop('disabled', false);
+                $('#prspctno').prop('disabled', false);
+            }
+        });
+    }
+
+    getStudentDetails() {
         var that = this;
         var _mthrfld = null;
         var _fthrfld = null;
 
         commonfun.loader();
 
-        that.subscribeParameters = this._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.enrlmntid = params['id'];
+        that._admsnservice.viewStudentDetails({
+            "flag": "editadmsn", "id": that.paramsid, "prspctid": that.prspctid, "prspctno": that.prspctno,
+            "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.studentDT = data.data[0];
+                that.parentDT = data.data[1].filter(a => a.fmltyp == "parent");
+                that.siblingDT = data.data[1].filter(a => a.fmltyp == "sibling");
 
-                that._admsnservice.viewStudentDetails({
-                    "flag": "editadmsn",
-                    "id": that.enrlmntid,
-                    "wsautoid": that._enttdetails.wsautoid
-                }).subscribe(data => {
-                    try {
-                        that.studentDT = data.data[0];
-                        that.parentDT = data.data[1].filter(a => a.fmltyp == "parent");
-                        that.siblingDT = data.data[1].filter(a => a.fmltyp == "sibling");
-
-                        if (that.studentDT.length != 0) {
-                            that.enrlmntid = that.studentDT[0].enrlmntid;
-                            that.autoid = that.studentDT[0].autoid;
-                            that.loginid = that.studentDT[0].loginid;
-                            that.fname = that.studentDT[0].fname;
-                            that.mname = that.studentDT[0].mname;
-                            that.lname = that.studentDT[0].lname;
-                            that.ayid = that.studentDT[0].ayid;
-                            that.classid = that.studentDT[0].classid;
-                            that.rollno = that.studentDT[0].rollno;
-                            that.boardid = that.studentDT[0].boardid;
-                            that.gender = that.studentDT[0].gender;
-                            that.dob = that.studentDT[0].dob;
-                            that.birthplace = that.studentDT[0].birthplace;
-                            that.otherinfo = that.studentDT[0].otherinfo;
-                            that.remark1 = that.studentDT[0].remark1;
-
-                            that.address = that.studentDT[0].address;
-                            that.country = that.studentDT[0].country;
-                            that.state = that.studentDT[0].state;
-                            that.fillCityDropDown();
-                            that.city = that.studentDT[0].city;
-                            that.fillAreaDropDown();
-                            that.area = that.studentDT[0].area;
-                            that.pincode = that.studentDT[0].pincode;
-                            that.isactive = that.studentDT[0].isactive;
-                            that.mode = that.studentDT[0].mode;
-
-                            var filepath = that.studentDT[0].FilePath;
-                            var birthcrtfct = that.studentDT[0].birthcrtfct;
-                            var addrproof = that.studentDT[0].addrproof;
-
-                            if (filepath != "" && filepath != null) {
-                                that.uploadPhotoDT.push({ "athurl": filepath });
-                                that.chooseLabel = "Change Student Photo";
-                            }
-                            else {
-                                that.uploadPhotoDT = [];
-                                that.chooseLabel = "Upload Student Photo";
-                            }
-
-                            if (birthcrtfct != "" && birthcrtfct != null) {
-                                that.uploadDOBCertificate.push({ "athurl": birthcrtfct });
-                                that.chooseDOBLabel = "Change Birth Certificate";
-                            }
-                            else {
-                                that.uploadDOBCertificate = [];
-                                that.chooseDOBLabel = "Upload Birth Certificate";
-                            }
-
-                            if (addrproof != "" && addrproof != null) {
-                                that.uploadAddrProof.push({ "athurl": addrproof });
-                                that.chooseAddrLabel = "Change Address Proof";
-                            }
-                            else {
-                                that.uploadAddrProof = [];
-                                that.chooseAddrLabel = "Upload Address Proof";
-                            }
-                        }
-                        else {
-                            that.resetStudentFields();
-                        }
-
-                        if (that.parentDT.length != 0) {
-                            _fthrfld = that.parentDT.filter(a => a.relation == "father");
-                            _mthrfld = that.parentDT.filter(a => a.relation == "mother");
-
-                            if (_fthrfld.length != 0) {
-                                that.fthrfmlid = _fthrfld[0].fmlid;
-                                that.fthrname = _fthrfld[0].fullname;
-                                that.fthrmobile = _fthrfld[0].mobile;
-                                that.fthremail = _fthrfld[0].email;
-                                that.fthrschid = _fthrfld[0].schid;
-                                that.fthrenrlmntid = _fthrfld[0].enrlmntid;
-                                that.fthrothschname = _fthrfld[0].othschname;
-                                that.fthrqlfid = _fthrfld[0].qlfid;
-                                that.fthrocptn = _fthrfld[0].occupation;
-                                that.fthrsalary = _fthrfld[0].salary;
-                            }
-
-                            if (_mthrfld.length != 0) {
-                                that.mthrfmlid = _mthrfld[0].fmlid;
-                                that.mthrname = _mthrfld[0].fullname;
-                                that.mthrmobile = _mthrfld[0].mobile;
-                                that.mthremail = _mthrfld[0].email;
-                                that.mthrschid = _mthrfld[0].schid;
-                                that.mthrenrlmntid = _mthrfld[0].enrlmntid;
-                                that.mthrothschname = _mthrfld[0].othschname;
-                                that.mthrqlfid = _mthrfld[0].qlfid;
-                                that.mthrocptn = _mthrfld[0].occupation;
-                                that.mthrsalary = _mthrfld[0].salary;
-                            }
-                        }
-                        else {
-                            that.resetParentFields();
-                        }
+                if (that.studentDT.length != 0) {
+                    if (that.paramsid == 0) {
+                        // that.prspctid = 0;
+                        // that.prspctno = 0;
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that.prspctid = that.studentDT[0].prspctid;
+                        that.getFormNo();
+                        that.prspctno = that.studentDT[0].prspctno;
                     }
 
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
+                    that.enrlmntid = that.studentDT[0].enrlmntid;
+                    that.autoid = that.studentDT[0].autoid;
+                    that.fname = that.studentDT[0].fname;
+                    that.mname = that.studentDT[0].mname;
+                    that.lname = that.studentDT[0].lname;
+                    that.ayid = that.studentDT[0].ayid;
+                    that.classid = that.studentDT[0].classid;
+                    that.rollno = that.studentDT[0].rollno;
+                    that.boardid = that.studentDT[0].boardid;
+                    that.gender = that.studentDT[0].gender;
+                    that.dob = that.studentDT[0].dob;
+                    that.birthplace = that.studentDT[0].birthplace;
+                    that.otherinfo = that.studentDT[0].otherinfo;
+                    that.remark1 = that.studentDT[0].remark1;
 
-                })
+                    that.address = that.studentDT[0].address;
+                    that.country = that.studentDT[0].country;
+                    that.state = that.studentDT[0].state;
+                    that.fillCityDropDown();
+                    that.city = that.studentDT[0].city;
+                    that.fillAreaDropDown();
+                    that.area = that.studentDT[0].area;
+                    that.pincode = that.studentDT[0].pincode;
+                    that.isactive = that.studentDT[0].isactive;
+                    that.mode = that.studentDT[0].mode;
+
+                    var filepath = that.studentDT[0].FilePath;
+                    var birthcrtfct = that.studentDT[0].birthcrtfct;
+                    var addrproof = that.studentDT[0].addrproof;
+
+                    if (filepath != "" && filepath != null) {
+                        that.uploadPhotoDT.push({ "athurl": filepath });
+                        that.chooseLabel = "Change Student Photo";
+                    }
+                    else {
+                        that.uploadPhotoDT = [];
+                        that.chooseLabel = "Upload Student Photo";
+                    }
+
+                    if (birthcrtfct != "" && birthcrtfct != null) {
+                        that.uploadDOBCertificate.push({ "athurl": birthcrtfct });
+                        that.chooseDOBLabel = "Change Birth Certificate";
+                    }
+                    else {
+                        that.uploadDOBCertificate = [];
+                        that.chooseDOBLabel = "Upload Birth Certificate";
+                    }
+
+                    if (addrproof != "" && addrproof != null) {
+                        that.uploadAddrProof.push({ "athurl": addrproof });
+                        that.chooseAddrLabel = "Change Address Proof";
+                    }
+                    else {
+                        that.uploadAddrProof = [];
+                        that.chooseAddrLabel = "Upload Address Proof";
+                    }
+                }
+                else {
+                    that.resetStudentFields();
+                }
+
+                if (that.parentDT.length != 0) {
+                    _fthrfld = that.parentDT.filter(a => a.relation == "father");
+                    _mthrfld = that.parentDT.filter(a => a.relation == "mother");
+
+                    if (_fthrfld.length != 0) {
+                        that.fthrloginid = _fthrfld[0].loginid;
+                        that.fthrfmlid = _fthrfld[0].fmlid;
+                        that.fthrcode = _fthrfld[0].fmlcode;
+                        that.fthrname = _fthrfld[0].fullname;
+                        that.fthrmobile = _fthrfld[0].mobile;
+                        that.fthremail = _fthrfld[0].email;
+                        that.fthrschid = _fthrfld[0].schid;
+                        that.fthrenrlmntid = _fthrfld[0].enrlmntid;
+                        that.fthrothschname = _fthrfld[0].othschname;
+                        that.fthrqlfid = _fthrfld[0].qlfid;
+                        that.fthrocptn = _fthrfld[0].occupation;
+                        that.fthrsalary = _fthrfld[0].salary;
+                    }
+                    else {
+                        that.resetFatherFields();
+                    }
+
+                    if (_mthrfld.length != 0) {
+                        that.mthrloginid = _mthrfld[0].loginid;
+                        that.mthrfmlid = _mthrfld[0].fmlid;
+                        that.mthrcode = _mthrfld[0].fmlcode;
+                        that.mthrname = _mthrfld[0].fullname;
+                        that.mthrmobile = _mthrfld[0].mobile;
+                        that.mthremail = _mthrfld[0].email;
+                        that.mthrschid = _mthrfld[0].schid;
+                        that.mthrenrlmntid = _mthrfld[0].enrlmntid;
+                        that.mthrothschname = _mthrfld[0].othschname;
+                        that.mthrqlfid = _mthrfld[0].qlfid;
+                        that.mthrocptn = _mthrfld[0].occupation;
+                        that.mthrsalary = _mthrfld[0].salary;
+                    }
+                    else {
+                        that.resetMotherFields();
+                    }
+                }
+                else {
+                    that.resetParentFields();
+                }
             }
-            else {
-                that.resetStudentFields();
-                that.resetParentFields();
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
-        });
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data

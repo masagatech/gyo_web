@@ -352,11 +352,12 @@ export class AddEntityComponent implements OnInit {
             return;
         }
 
-        // Duplicate items Check
+        // Duplicate Contact Check
+
         that.duplicateContact = that.isDuplicateContact();
 
         // Add New Row
-        if (that.duplicateContact === false) {
+        if (that.duplicateContact == false) {
             that.contactDT.push({
                 'cpname': that.cpname,
                 'cpcontactno': that.cpmobile,

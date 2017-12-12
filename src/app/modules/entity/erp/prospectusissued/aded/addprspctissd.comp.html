@@ -57,6 +57,18 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
+                                <label class="control-label">Relation <strong>*</strong></label>
+                                <select id="prnttyp" [(ngModel)]="prnttyp" class="form-control prnttyp" tabindex="35">
+                                        <option [value]="''">Select Relation</option>
+                                        <option [value]="'father'">Father</option>
+                                        <option [value]="'mother'">Mother</option>
+                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
                                 <label class="control-label">Parent Name <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="prntname" class="form-control prntname" tabindex="3">
                             </div>

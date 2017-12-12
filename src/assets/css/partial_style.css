@@ -1,11 +1,19 @@
-.backgroundImg {
-    background: url(../../assets/img/bg.png) no-repeat center center fixed;
+.school-bg-img {
+    background: url(../../assets/img/bg/school-bg_1.jpg) no-repeat center center fixed;
+    /* background-size: cover; */
+    background-color: #524e4f;
+    /* background-color: #e7a600; */
+}
+
+.track-bg-img {
+    background: url(../../assets/img/bg/track-bg.png) no-repeat center center fixed;
     background-size: contain;
     background-color: #f58d3d;
 }
 
 .login-card {
-    border: solid 1px red;
+    /* border: solid 1px red; */
+    border: solid 1px #ffffff;
 }
 
 .slim>thead>tr>th,

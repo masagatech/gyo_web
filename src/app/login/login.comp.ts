@@ -105,10 +105,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        $('body').addClass('backgroundImg');
+        if (Globals.weburl == "school.goyo.in") {
+            $('body').addClass('school-bg-img');
+        }
+        else if (Globals.weburl == "track.goyo.in") {
+            $('body').addClass('track-bg-img');
+        }
+        else {
+            $('body').addClass('school-bg-img');
+        }
     }
 
     ngOnDestroy() {
-        $('body').removeClass('backgroundImg');
+        $('body').removeClass('school-bg-img');
+        $('body').removeClass('track-bg-img');
     }
 }
