@@ -403,8 +403,6 @@ export class AddEntityComponent implements OnInit {
 
         imgfile = JSON.parse(event.xhr.response);
 
-        console.log(imgfile);
-
         setTimeout(function () {
             for (var i = 0; i < imgfile.length; i++) {
                 that.uploadLogoDT.push({ "athurl": imgfile[i].path.replace(that.uploadlogoconfig.filepath, "") })
