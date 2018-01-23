@@ -36,6 +36,8 @@ export class AddVehicleComponent implements OnInit {
     istrackenabled: boolean = false;
     private subscribeParameters: any;
 
+    speedAllow: number = 0;
+
     constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
         private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
@@ -124,6 +126,7 @@ export class AddVehicleComponent implements OnInit {
         this.devtype = "";
         this.simno = "";
         this.imei = "";
+        this.speedAllow = 0;
 
     }
 
@@ -169,7 +172,8 @@ export class AddVehicleComponent implements OnInit {
                 "istrack": this.istrackenabled,
                 "devtype": this.devtype,
                 "simno": this.simno,
-                "imei": this.imei
+                "imei": this.imei,
+                "allowspd": this.speedAllow
             }
 
             this._vehservice.saveVehicleInfo(savevehicle).subscribe(data => {
@@ -187,6 +191,29 @@ export class AddVehicleComponent implements OnInit {
                         else {
                             that.backViewData();
                         }
+                        try {
+
+                            //saving data to vts
+                            this.saveToVTS({
+                                "vhid": savevehicle.imei,
+                                "vhname": savevehicle.vehno,
+                                "alwspeed": savevehicle.allowspd,
+                                "Vhd":{
+                                    "vehregno": that.vehregno,
+                                    "vehtype": that.vehtype,
+                                    "vehmake": that.vehmake,
+                                    "vehmdl": that.vehmdl,
+                                    "simno": that.simno,
+                                    "imei": that.imei,
+                                    "capacity": that.capacity,
+                                    "vehcond": that.vehcond,
+                                    "vehfclt": that.vehfclt,
+                                }
+                            })
+                        } catch (error) {
+
+                        }
+
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -204,6 +231,16 @@ export class AddVehicleComponent implements OnInit {
             }, () => {
             });
         }
+    }
+
+    saveToVTS(vhdata) {
+        this._vehservice.saveVehicleInfoToVts(vhdata).subscribe(data => {
+
+
+        }, err => {
+
+        }, () => {
+        });
     }
 
     // Get vehicle Data
@@ -239,6 +276,7 @@ export class AddVehicleComponent implements OnInit {
                         this.devtype = _vehicledata[0].devtype;
                         this.simno = _vehicledata[0].simno;
                         this.imei = _vehicledata[0].imei;
+                        this.speedAllow = _vehicledata[0].vhspeed;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

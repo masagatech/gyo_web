@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard,SharedComponentModule } from '@services';
 
 import { AddVehicleComponent } from './aded/addveh.comp';
 import { ViewVehicleComponent } from './view/viewveh.comp';
+
 
 import { VehicleService } from '@services/master';
 
@@ -29,7 +30,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule,
+    SharedComponentModule
   ],
 
   providers: [AuthGuard, VehicleService]
