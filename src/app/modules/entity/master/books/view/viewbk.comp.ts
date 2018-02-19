@@ -56,10 +56,10 @@ export class ViewBooksComponent implements OnInit {
     }
 
     public addSubject() {
-        this._router.navigate(['/master/books/add']);
+        this._router.navigate(['/master/classbooks/add']);
     }
 
     public editSubject(row) {
-        this._router.navigate(['/master/books/edit', row.bkid]);
+        this._router.navigate(['/master/classbooks/edit', row.bkid]);
     }
 }
