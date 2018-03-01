@@ -17,7 +17,7 @@ export class AddAssignmentComponent implements OnInit {
 
     assnmid: number = 0;
     title: string = "";
-    assnmupload: string = "";
+    uploadassnm: string = "";
     subid: number = 0;
     clsid: number = 0;
     msg: string = "";
@@ -39,6 +39,7 @@ export class AddAssignmentComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.getUploadConfig();
         this.fillClassDropDown();
         this.fillSubjectDropDown();
     }
@@ -108,7 +109,7 @@ export class AddAssignmentComponent implements OnInit {
         that.uploadconfig.uploadurl = that.global.uploadurl;
         that.uploadconfig.filepath = that.global.filepath;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "allfile" }).subscribe(data => {
             that.uploadconfig.maxFilesize = data.data[0]._filesize;
             that.uploadconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
@@ -126,7 +127,11 @@ export class AddAssignmentComponent implements OnInit {
         imgfile = JSON.parse(event.xhr.response);
 
         for (var i = 0; i < imgfile.length; i++) {
-            that.uploadAssignmentDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
+            that.uploadAssignmentDT.push({
+                "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, ""),
+                "filetype": imgfile[i].type == "image/png" || imgfile[i].type == "image/jpeg" || imgfile[i].type == "image/jpg"
+                    || imgfile[i].type == "image/gif" || imgfile[i].type == "image/bmp" ? "image" : "doc"
+            })
         }
 
         console.log(that.uploadAssignmentDT);
@@ -157,7 +162,7 @@ export class AddAssignmentComponent implements OnInit {
         return bytes;
     }
 
-    removePhotoUpload() {
+    removeAssignmentUpload() {
         this.uploadAssignmentDT.splice(0, 1);
     }
 
@@ -172,6 +177,7 @@ export class AddAssignmentComponent implements OnInit {
         that.todt = "";
         that.subid = 0;
         that.clsid = 0;
+        that.chooseLabel = "Upload Assignment";
     }
 
     // Save Assignment
@@ -183,13 +189,13 @@ export class AddAssignmentComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Enter Title");
             $(".title").focus();
         }
-        else if (that.subid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Subject");
-            $(".subject").focus();
-        }
         else if (that.clsid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
             $(".class").focus();
+        }
+        else if (that.subid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Subject");
+            $(".subject").focus();
         }
         else if (that.msg == "") {
             that._msg.Show(messageType.error, "Error", "Enter Message");
@@ -209,6 +215,8 @@ export class AddAssignmentComponent implements OnInit {
             var saveassignment = {
                 "assnmid": that.assnmid,
                 "title": that.title,
+                "uploadassnm": that.uploadAssignmentDT.length > 0 ? that.uploadAssignmentDT[0].athurl : "",
+                "assnmtype": that.uploadAssignmentDT.length > 0 ? that.uploadAssignmentDT[0].filetype : "",
                 "subid": that.subid,
                 "clsid": that.clsid,
                 "toid": that.clsid,
@@ -273,8 +281,21 @@ export class AddAssignmentComponent implements OnInit {
                     try {
                         that.assnmid = data.data[0].assnmid;
                         that.title = data.data[0].title;
-                        that.subid = data.data[0].subid;
+
+                        if (data.data[0].uploadassnm !== "") {
+                            that.uploadAssignmentDT.push({
+                                "athurl": data.data[0].uploadassnm, "filetype": data.data[0].assnmtype
+                            });
+                            that.chooseLabel = "Change Uploaded Assignment";
+                        }
+                        else {
+                            that.uploadAssignmentDT = [];
+                            that.chooseLabel = "Upload Assignment";
+                        }
+
                         that.clsid = data.data[0].clsid;
+                        that.fillSubjectDropDown();
+                        that.subid = data.data[0].subid;
                         that.msg = data.data[0].msg;
                         that.frmdt = data.data[0].frmdt;
                         that.todt = data.data[0].todt;

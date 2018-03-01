@@ -12,12 +12,12 @@ export class Globals {
     serviceurl: string = "http://" + Globals.weburl + ":8082/goyoapi/";
     uploadurl: string = "http://" + Globals.weburl + ":8082/images/";
     static socketurl: string = "http://" + Globals.weburl + ":8082/";
-    
-    // filepath: string = "www\\uploads\\";
-    // xlsfilepath: string = "www\\uploads\\exceluploads\\";
-    
-    filepath: string = "www/uploads/";
-    xlsfilepath: string = "www/uploads/exceluploads/";
+
+    filepath: string = "www\\uploads\\";
+    xlsfilepath: string = "www\\exceluploads\\";
+
+    // filepath: string = "www/uploads/";
+    // xlsfilepath: string = "www/uploads/bulkupload/";
 
     static socketurl_trk: string = "http://35.154.114.229:6979/";
     trackurl_trk: string = "http://35.154.114.229:6979/goyoapi/";

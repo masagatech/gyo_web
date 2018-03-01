@@ -31,7 +31,7 @@ export class UploadAdmissionComponent implements OnInit, OnDestroy {
     // Upload Photo
 
     uploadFileDT: any = [];
-    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseLabel: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -58,11 +58,11 @@ export class UploadAdmissionComponent implements OnInit, OnDestroy {
     getUploadConfig() {
         var that = this;
 
-        that._autoservice.getMOM({ "flag": "filebyid", "id": 24 }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
             that.uploadfileconfig.server = that.global.serviceurl + "exceluploads";
             that.uploadfileconfig.serverpath = that.global.serviceurl;
             that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
-            that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
+            that.uploadfileconfig.filepath = that.global.filepath;
             that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
             that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
@@ -82,7 +82,7 @@ export class UploadAdmissionComponent implements OnInit, OnDestroy {
         xlsfile = JSON.parse(event.xhr.response);
 
         for (var i = 0; i < xlsfile.length; i++) {
-            that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.filepath, "") });
         }
 
         that.getExcelData();

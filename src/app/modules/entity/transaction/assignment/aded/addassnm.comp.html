@@ -24,13 +24,18 @@
                 </div>
 
                 <div class="form-group">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="Upload Assignment" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
 
                     <div *ngIf="uploadAssignmentDT.length">
                         <div *ngFor="let file of uploadAssignmentDT" class="box">
                             <div class="row clearfix">
                                 <div class="col-md-9">
-                                    <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                    <div *ngIf="file.filetype == 'image'">
+                                        <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                    </div>
+                                    <div *ngIf="file.filetype != 'image'">
+                                        <a href="{{uploadconfig.uploadurl + file.athurl}}">{{file.athurl}}</a>
+                                    </div>
                                 </div>
                                 <div class="col-md-3" align="right">
                                     <button type="button" class="btn btn-danger btn-xs" (click)="removeAssignmentUpload()">
