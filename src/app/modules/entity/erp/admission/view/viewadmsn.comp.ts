@@ -85,7 +85,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     // File Upload
 
     onBeforeUpload(event) {
-        debugger;
         event.formData.append("bulktype", "student");
         event.formData.append("wsautoid", this._enttdetails.wsautoid);
         event.formData.append("enttid", this._enttdetails.enttid);
@@ -93,18 +92,63 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         event.formData.append("cuid", this.loginUser.ucode);
     }
 
+    getBulkUpload() {
+        var that = this;
+        var defayDT: any = [];
+
+        commonfun.loader();
+
+        console.log(that.uploadFileDT);
+
+        that._autoservice.bulkUpload({
+            "bulktype": "student", "multistudent": that.uploadFileDT.length > 0 ? that.uploadFileDT[0].athurl : "",
+            "ayid": that.ayid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode
+        }).subscribe(data => {
+            try {
+                console.log(data);
+
+                if (data.status == 0) {
+                    that._msg.Show(messageType.error, "Error", data.message);
+                }
+                else {
+                    that.closeBulkUploadPopup();
+                    that.getStudentDetails();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     onFileUpload(event) {
         var that = this;
-        var xlsfile = [];
         that.uploadFileDT = [];
 
-        xlsfile = JSON.parse(event.xhr.response);
+        var xlsfile = JSON.parse(event.xhr.response);
+        console.log(xlsfile);
 
-        for (var i = 0; i < xlsfile.length; i++) {
-            that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+        if (xlsfile.status == 0) {
+            that._msg.Show(messageType.error, "Error", xlsfile.message);
         }
+        else {
+            that.closeBulkUploadPopup();
+            that.getStudentDetails();
 
-        that.getStudentDetails();
+            // for (var i = 0; i < xlsfile.length; i++) {
+            //     that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            //     that.getBulkUpload();
+            // }
+        }
     }
 
     isshStudent(viewtype) {
@@ -269,6 +313,14 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     public editAdmissionForm(row) {
         this._router.navigate(['/erp/student/edit', row.enrlmntid]);
+    }
+
+    openBulkUploadPopup() {
+        $("#bulkUploadModal").modal('show');
+    }
+
+    closeBulkUploadPopup() {
+        $("#bulkUploadModal").modal("hide");
     }
 
     public ngOnDestroy() {

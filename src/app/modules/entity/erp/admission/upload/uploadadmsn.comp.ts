@@ -133,7 +133,7 @@ export class UploadAdmissionComponent implements OnInit, OnDestroy {
     getExcelData() {
         var that = this;
 
-        that._autoservice.excelupload({}).subscribe(data => {
+        that._autoservice.bulkUpload({}).subscribe(data => {
             try {
                 that.studentDT = data.data;
             }

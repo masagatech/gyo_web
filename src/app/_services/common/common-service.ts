@@ -88,8 +88,8 @@ export class CommonService {
         return (exportFileName + date.toLocaleDateString() + "_" + date.toLocaleTimeString() + '.csv')
     }
 
-    excelupload(req: any) {
-        return this._dataserver.post("exceluploads", req)
+    bulkUpload(req: any) {
+        return this._dataserver.post("bulkUpload", req)
     }
 
     sendEmail(req: any) {
