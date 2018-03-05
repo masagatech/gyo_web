@@ -224,6 +224,7 @@ export class AddAssignmentComponent implements OnInit {
                 "msg": that.msg,
                 "frmdt": that.frmdt,
                 "todt": that.todt,
+                "src": "web",
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid
