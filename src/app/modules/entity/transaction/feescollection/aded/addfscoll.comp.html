@@ -22,7 +22,7 @@
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <b>Pending Fees : </b>{{classfees - totalFees() | _currency:loginUser.globsettings[0]}}
+                    <b>Pending Fees : </b>{{pendingfees | _currency:loginUser.globsettings[0]}}
                 </div>
             </div>
         </div>

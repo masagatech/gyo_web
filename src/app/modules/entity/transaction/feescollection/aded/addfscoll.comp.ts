@@ -23,6 +23,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     fclid: number = 0;
     classfees: any = "";
+    pendingfees: any = "";
     ayid: number = 0;
 
     studid: number = 0;
@@ -90,6 +91,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.gender = data.data[0].gender;
                     that.rollno = data.data[0].rollno;
                     that.classfees = data.data[0].classfees;
+                    that.pendingfees = data.data[0].classfees - that.totalFees();
                     that.statusid = data.data[0].statusid;
 
                     that.fillCategoryAndPaymentModeDropDown();
@@ -102,6 +104,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.gender = "";
                     that.rollno = "";
                     that.classfees = "";
+                    that.pendingfees = "";
                     that.statusid = 0;
                 }
             }
@@ -252,7 +255,7 @@ export class AddFeesCollectionComponent implements OnInit {
             $(".receivedate").focus();
             return false;
         }
-        
+
         if (that.paymentmode == "") {
             that._msg.Show(messageType.info, "Info", "Select Payment Mode");
             $(".paymentmode").focus();
@@ -285,9 +288,9 @@ export class AddFeesCollectionComponent implements OnInit {
             commonfun.loader();
 
             var savefeescoll = {
-                "fclid": that.fclid, "ayid": that.ayid, "clsid": that.classid, "studid": that.studid,
-                "catid": that.catid, "subcatid": that.subcatid, "fees": that.fees, "receivedate": that.receivedate,
-                "paymentmode": that.paymentmode, "chequeno": that.chequeno, "chequedate": that.chequedate,
+                "fclid": that.fclid, "ayid": that.ayid, "clsid": that.classid, "frmid": that.loginUser.uid, "toid": that.studid,
+                "studid": that.studid, "catid": that.catid, "subcatid": that.subcatid, "fees": that.fees, "pendfees": that.pendingfees - that.fees,
+                "receivedate": that.receivedate, "paymentmode": that.paymentmode, "chequeno": that.chequeno, "chequedate": that.chequedate,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode, "isactive": true
             }
 
@@ -302,7 +305,7 @@ export class AddFeesCollectionComponent implements OnInit {
                         that.catid = 0;
                         that.subcatid = 0;
                         that.fees = 0;
-                        
+
                         that.getStudentDetails();
                         that.getFeesCollection();
                     }
