@@ -50,6 +50,7 @@
                     <thead>
                         <tr>
                             <th width="100px">Enrollment No</th>
+                            <th width="100px">Class Name</th>
                             <th width="100px">Roll No</th>
                             <th>Student Name</th>
                             <th width="100px">Fees</th>
@@ -60,6 +61,9 @@
                         <tr *ngFor="let row of feesCollDT">
                             <td>
                                 {{row.studid}}
+                            </td>
+                            <td>
+                                {{row.classname}}
                             </td>
                             <td>
                                 {{row.rollno}}
@@ -82,8 +86,7 @@
                     </tbody>
                     <tfoot>
                         <tr class="tr-table">
-                            <th></th>
-                            <th></th>
+                            <th colspan="3"></th>
                             <th>
                                 <b>Total</b>
                             </th>
