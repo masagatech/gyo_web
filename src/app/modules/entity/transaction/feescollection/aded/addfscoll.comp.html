@@ -95,11 +95,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" *ngIf="paymentmode == 'cheque'">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Payment Status <strong>*</strong></label>
-                                <select id="paymentstatus" name="paymentstatus" [(ngModel)]="paymentstatus" class="form-control paymentstatus" tabindex="6">
+                                <label class="control-label">Cheque Status <strong>*</strong></label>
+                                <select id="chequestatus" name="chequestatus" [(ngModel)]="chequestatus" class="form-control chequestatus" tabindex="6">
                                     <option [value]="''">Select Payment Status</option>
                                     <option [value]="'pending'">Pending</option>
                                     <option [value]="'complete'">Complete</option>
@@ -144,18 +144,19 @@
                 <table class="table table-bordered table-responsive reports">
                     <thead>
                         <tr>
-                            <th width="250px">Category</th>
-                            <th width="100px">Payment Mode</th>
-                            <th width="150px">Cheque Details</th>
+                            <th width="220px">Category</th>
+                            <th width="120px">Receive Date</th>
                             <th width="100px">Fees</th>
+                            <th width="120px">Payment Mode</th>
+                            <th width="140px">Cheque Details</th>
+                            <th width="120px">Cheque Status</th>
                             <th>Remark</th>
-                            <th width="100px">Is Complete</th>
-                            <th width="50px"></th>
+                            <th width="40px"></th>
                         </tr>
                     </thead>
                     <tbody *ngFor="let row of feesCollDT | groupBy: 'receivedate'">
                         <tr class="tr-table">
-                            <th colspan="7">
+                            <th colspan="8">
                                 {{row.key}}
                             </th>
                         </tr>
@@ -164,19 +165,22 @@
                                 {{drow.catname}} {{drow.subcatname == '' ? '' : ' - ' || drow.subcatname}}
                             </td>
                             <td>
-                                {{drow.paymentmodenm}}
-                            </td>
-                            <td>
-                                {{drow.chequedate}} {{drow.chequeno == 0 ? "" : " - " + drow.chequeno}}
+                                {{drow.receivedate}}
                             </td>
                             <td align="right">
                                 {{drow.fees | _currency:loginUser.globsettings[0]}}
                             </td>
                             <td>
-                                {{drow.remark1}}
+                                {{drow.paymentmodenm}}
+                            </td>
+                            <td>
+                                {{drow.chequedate}} {{drow.chequeno == 0 ? "" : " - " + drow.chequeno}}
                             </td>
                             <td class="text-center">
                                 <i class="material-icons">{{drow.status}}</i>
+                            </td>
+                            <td>
+                                {{drow.remark1}}
                             </td>
                             <td>
                                 <div class="form-group">
@@ -188,13 +192,13 @@
                     </tbody>
                     <tfoot>
                         <tr class="tr-table">
-                            <th colspan="3">
+                            <th colspan="2">
                                 <b>Total</b>
                             </th>
                             <th align="right">
                                 <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
                             </th>
-                            <th colspan="3"></th>
+                            <th colspan="5"></th>
                         </tr>
                     </tfoot>
                 </table>

@@ -40,9 +40,9 @@ export class AddFeesCollectionComponent implements OnInit {
     fees: any = "";
     receivedate: any = "";
     paymentmode: string = "";
-    paymentstatus: string = "";
+    chequestatus: string = "";
     chequeno: number = 0;
-    chequedate: string = "";
+    chequedate: any = null;
     remark: string = "";
     statusid: number = 0;
 
@@ -223,9 +223,9 @@ export class AddFeesCollectionComponent implements OnInit {
         that.fees = 0;
         that.receivedate = "";
         that.paymentmode = "";
-        that.paymentstatus = "";
+        that.chequestatus = "";
         that.chequeno = 0;
-        that.chequedate = "";
+        that.chequedate = null;
         that.remark = "";
     }
 
@@ -264,9 +264,9 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
-        if (that.paymentstatus == "") {
+        if (that.chequestatus == "") {
             that._msg.Show(messageType.info, "Info", "Select Payment Status");
-            $(".paymentstatus").focus();
+            $(".chequestatus").focus();
             return false;
         }
 
@@ -276,7 +276,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 $(".chequeno").focus();
                 return false;
             }
-            if (that.chequedate == "") {
+            if (that.chequedate == null) {
                 that._msg.Show(messageType.info, "Info", "Enter Cheque Date");
                 $(".chequedate").focus();
                 return false;
@@ -296,11 +296,26 @@ export class AddFeesCollectionComponent implements OnInit {
             commonfun.loader();
 
             var savefeescoll = {
-                "fclid": that.fclid, "ayid": that.ayid, "clsid": that.classid, "frmid": that.loginUser.uid, "toid": that.studid,
-                "studid": that.studid, "catid": that.catid, "subcatid": that.subcatid, "fees": that.fees, "pendfees": that.pendingfees - that.fees,
-                "receivedate": that.receivedate, "paymentmode": that.paymentmode, "iscomplete": that.paymentstatus == "pending" ? false : true,
-                "chequeno": that.chequeno, "chequedate": that.chequedate, "remark": that.remark,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode, "isactive": true
+                "fclid": that.fclid,
+                "ayid": that.ayid,
+                "clsid": that.classid,
+                "frmid": that.loginUser.uid,
+                "toid": that.studid,
+                "studid": that.studid,
+                "catid": that.catid,
+                "subcatid": that.subcatid,
+                "fees": that.fees,
+                "pendfees": that.pendingfees - that.fees,
+                "receivedate": that.receivedate,
+                "paymentmode": that.paymentmode,
+                "iscomplete": that.chequestatus == "pending" ? false : true,
+                "chequeno": that.chequeno,
+                "chequedate": that.chequedate,
+                "remark": that.remark,
+                "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
+                "isactive": true
             }
 
             that._feesservice.saveFeesCollection(savefeescoll).subscribe(data => {
@@ -379,7 +394,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 that.fees = data.data[0].fees;
                 that.receivedate = data.data[0].receivedate;
                 that.paymentmode = data.data[0].paymentmode;
-                that.paymentstatus = data.data[0].iscomplete == true ? "complete" : "pending";
+                that.chequestatus = data.data[0].iscomplete == true ? "complete" : "pending";
                 that.chequeno = data.data[0].chequeno;
                 that.chequedate = data.data[0].chequedate;
                 that.remark = data.data[0].remark1;
