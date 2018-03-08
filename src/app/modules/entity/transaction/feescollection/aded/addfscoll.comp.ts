@@ -218,6 +218,7 @@ export class AddFeesCollectionComponent implements OnInit {
     resetFeesCollFields() {
         var that = this;
 
+        that.fclid = 0;
         that.catid = 0;
         that.subcatid = 0;
         that.fees = 0;
@@ -246,10 +247,12 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
-        if (parseInt(that.catfees) < parseInt(that.fees)) {
-            that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
-            $(".fees").focus();
-            return false;
+        if (that.fclid == 0) {
+            if (parseInt(that.catfees) < parseInt(that.fees)) {
+                that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
+                $(".fees").focus();
+                return false;
+            }
         }
 
         if (that.receivedate == "") {
@@ -264,13 +267,12 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
-        if (that.chequestatus == "") {
-            that._msg.Show(messageType.info, "Info", "Select Payment Status");
-            $(".chequestatus").focus();
-            return false;
-        }
-
         if (that.paymentmode == "cheque") {
+            if (that.chequestatus == "") {
+                that._msg.Show(messageType.info, "Info", "Select Cheque Status");
+                $(".chequestatus").focus();
+                return false;
+            }
             if (that.chequeno == 0) {
                 that._msg.Show(messageType.info, "Info", "Enter Cheque No");
                 $(".chequeno").focus();
