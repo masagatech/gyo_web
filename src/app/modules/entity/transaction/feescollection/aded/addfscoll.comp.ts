@@ -302,7 +302,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 "ayid": that.ayid,
                 "clsid": that.classid,
                 "frmid": that.loginUser.uid,
-                "toid": that.studid,
+                "frmtype": that.loginUser.utype,
                 "studid": that.studid,
                 "catid": that.catid,
                 "subcatid": that.subcatid,
