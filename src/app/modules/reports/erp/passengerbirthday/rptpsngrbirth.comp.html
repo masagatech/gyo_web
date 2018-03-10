@@ -15,6 +15,8 @@
                         </ng-template>
                     </p-column>
                     <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="classname" header="Class Name" [style]="{'width':'150px', 'text-align':'left'}" *ngIf="psngrtype == 'student'"></p-column>
+                    <p-column field="rollno" header="Roll No" [style]="{'width':'150px', 'text-align':'left'}" *ngIf="psngrtype == 'student'"></p-column>
                     <p-column field="birthdate" header="Birth Date" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="age" header="Age" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                 </p-dataTable>
