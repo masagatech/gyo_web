@@ -31,7 +31,7 @@
                             <div class="row clearfix">
                                 <div class="col-md-9">
                                     <div *ngIf="file.filetype == 'image'">
-                                        <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                        <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/noimage.gif';" height="40px" />
                                     </div>
                                     <div *ngIf="file.filetype != 'image'">
                                         <a href="{{uploadconfig.uploadurl + file.athurl}}">{{file.athurl}}</a>

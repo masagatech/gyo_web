@@ -208,7 +208,7 @@ export class AddNotificationComponent implements OnInit {
 
             var saventf = {
                 "ntfid": that.ntfid,
-                "ntftype": "standard",
+                "ntftype": "other",
                 "sendtype": "{" + _sendrights + "}",
                 "frmid": that.loginUser.uid,
                 "frmtype": that.loginUser.utype,

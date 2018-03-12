@@ -29,9 +29,10 @@
 
         <div class="row clearfix">
             <div class="col-md-3">
-                <img alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                <img *ngIf="gndrkey == 'M'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
+                <img *ngIf="gndrkey == 'F'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
                 <br />{{studname}} - {{classname}}
-                <br /><b>Gender :</b> {{gender}}
+                <br /><b>Gender :</b> {{gndrval}}
                 <br /><b>Roll No :</b> {{rollno}}
             </div>
             <div class="col-md-6">

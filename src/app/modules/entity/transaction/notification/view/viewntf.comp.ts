@@ -14,7 +14,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class ViewNotificationComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
-    
+
     notificationDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -36,7 +36,7 @@ export class ViewNotificationComponent implements OnInit {
         commonfun.loader();
 
         that._ntfservice.getNotification({
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype":"standard", "enttid": that._enttdetails.enttid,
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "sendtype": "", "ntftype": "other", "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {

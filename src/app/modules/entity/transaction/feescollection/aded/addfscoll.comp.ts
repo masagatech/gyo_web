@@ -31,7 +31,8 @@ export class AddFeesCollectionComponent implements OnInit {
     studphoto: string = "";
     classid: number = 0;
     classname: string = "";
-    gender: string = "";
+    gndrkey: string = "";
+    gndrval: string = "";
     rollno: string = "";
 
     catid: number = 0;
@@ -89,7 +90,8 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.studphoto = data.data[0].studphoto;
                     that.classid = data.data[0].classid;
                     that.classname = data.data[0].classname;
-                    that.gender = data.data[0].gender;
+                    that.gndrkey = data.data[0].gndrkey;
+                    that.gndrval = data.data[0].gndrval;
                     that.rollno = data.data[0].rollno;
                     that.classfees = data.data[0].classfees;
                     that.pendingfees = data.data[0].classfees - that.totalFees();
@@ -102,7 +104,8 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.studphoto = "";
                     that.classid = 0;
                     that.classname = "";
-                    that.gender = "";
+                    that.gndrkey = "";
+                    that.gndrval = "";
                     that.rollno = "";
                     that.classfees = "";
                     that.pendingfees = "";

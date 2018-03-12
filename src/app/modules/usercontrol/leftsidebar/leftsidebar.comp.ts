@@ -19,6 +19,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
 
     ufullname: string = "";
     ctypename: string = "";
+    gender: string = "";
     uphoto: string = "";
     toggleClass: string = "";
 
@@ -32,6 +33,7 @@ export class LeftSideBarComponent implements OnInit, OnDestroy {
 
         this.ufullname = this.loginUser.fullname;
         this.ctypename = this.loginUser.ctypename;
+        this.gender = this.loginUser.gndrkey;
         this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
 
         this.getMainMenuList();

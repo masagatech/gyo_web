@@ -4,7 +4,8 @@
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="img-left">
-                        <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';">
+                        <img *ngIf="gender == 'M'" alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default-male.png';">
+                        <img *ngIf="gender == 'F'" alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default-female.png';">
                     </div>
                     <div class="left-title">
                         {{ufullname + " (" + ctypename + ")"}}

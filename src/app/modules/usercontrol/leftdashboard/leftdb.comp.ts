@@ -22,6 +22,7 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
     ufullname: string = "";
     utype: string = "";
     uphoto: string = "";
+    gender: string = "";
     wsname: string = "";
 
     dashboardDT: any = [];
@@ -34,6 +35,7 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
 
         this.ufullname = this.loginUser.fullname;
         this.utype = this.loginUser.utype;
+        this.gender = this.loginUser.gndrkey;
         this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
         this.wsname = this.loginUser.wsname;
 

@@ -198,13 +198,15 @@
                                                 <i class="material-icons">delete</i></button>
                                         </div>
                                         <div class="col-md-6" align="right">
-                                            <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="60px" />
+                                            <img *ngIf="gender == 'M'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px">
+                                            <img *ngIf="gender == 'F'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div *ngIf="!uploadPhotoDT.length" align="right">
-                                <img src="assets/img/default.gif" height="60px" />
+                                <img *ngIf="gender == 'M'" src="assets/img/default-male.png" height="60px" />
+                                <img *ngIf="gender == 'F'" src="assets/img/default-female.png" height="60px" />
                             </div>
                         </div>
                     </div>

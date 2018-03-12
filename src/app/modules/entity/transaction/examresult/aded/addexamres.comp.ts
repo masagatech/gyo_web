@@ -166,6 +166,12 @@ export class AddExamResultComponent implements OnInit {
                     $(".marks" + _examlist.subid).focus();
                     return false;
                 }
+
+                if (_examlist.marks > _examlist.outofmarks) {
+                    that._msg.Show(messageType.error, "Error", "Enter Marks should be less than Out of Marks in " + _examlist.subname);
+                    $(".marks" + _examlist.subid).focus();
+                    return false;
+                }
             }
         }
 
