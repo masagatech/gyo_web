@@ -89,7 +89,7 @@
                                                         <img *ngIf="drow.gndrkey == 'F'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
                                                     </a>
                                                 </div>
-                                                <div class="col-md-12" *ngIf="drow.gender != ''">
+                                                <div class="col-md-12" *ngIf="drow.gndrval != ''">
                                                     {{drow.gndrval}}
                                                 </div>
                                             </div>

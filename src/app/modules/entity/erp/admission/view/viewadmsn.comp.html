@@ -72,8 +72,8 @@
                                                     <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
                                                 </a>
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.gender != ''">
-                                                {{row.gender}}
+                                            <div class="col-md-12" *ngIf="row.gndrval != ''">
+                                                {{row.gndrval}}
                                             </div>
                                             <div class="col-md-12">
                                                 <b>Roll No :</b> {{row.rollno == null ? 0 : row.rollno}}
@@ -158,7 +158,7 @@
 </div>
 
 <div class="modal fade" id="bulkUploadModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog full-width" role="document">
         <div class="modal-lg modal-content">
             <div class="modal-header">
                 <div class="row clearfix">
@@ -174,7 +174,7 @@
             </div>
             <div class="modal-body" id="user">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Academic Year <strong>*</strong></label>
@@ -187,7 +187,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 pad-20">
+                    <div class="col-md-3 pad-20">
                         <div class="form-group">
                             <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
                                 auto="true"></p-fileUpload>
@@ -200,6 +200,164 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <h4>View : Excel Format</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a role="button" target="_blank" href="assets\file\tblstudent.xlsx">
+                            <i class="material-icons">file_download</i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body table-overflow">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                first_name
+                            </th>
+                            <th>
+                                middle_name
+                            </th>
+                            <th>
+                                last_name
+                            </th>
+                            <th>
+                                roll_no
+                            </th>
+                            <th>
+                                class_name
+                            </th>
+                            <th>
+                                board_name
+                            </th>
+                            <th>
+                                gender
+                            </th>
+                            <th>
+                                dob
+                            </th>
+                            <th>
+                                birth_place
+                            </th>
+                            <th>
+                                address
+                            </th>
+                            <th>
+                                country
+                            </th>
+                            <th>
+                                state
+                            </th>
+                            <th>
+                                city
+                            </th>
+                            <th>
+                                area
+                            </th>
+                            <th>
+                                pin_code
+                            </th>
+                            <th>
+                                father_name
+                            </th>
+                            <th>
+                                father_mobile
+                            </th>
+                            <th>
+                                father_email
+                            </th>
+                            <th>
+                                mother_name
+                            </th>
+                            <th>
+                                mother_mobile
+                            </th>
+                            <th>
+                                mother_email
+                            </th>
+                            <th>
+                                other_info
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Nimit
+                            </td>
+                            <td>
+                                Nilesh
+                            </td>
+                            <td>
+                                Shah
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                I (A)
+                            </td>
+                            <td>
+                                State Board
+                            </td>
+                            <td>
+                                M
+                            </td>
+                            <td>
+                                01-08-2010
+                            </td>
+                            <td>
+                                Mumbai
+                            </td>
+                            <td>
+                                Sakinaka, Andheri (East)
+                            </td>
+                            <td>
+                                India
+                            </td>
+                            <td>
+                                Maharashtra
+                            </td>
+                            <td>
+                                Mumbai
+                            </td>
+                            <td>
+                                Andheri
+                            </td>
+                            <td>
+                                421306
+                            </td>
+                            <td>
+                                Nilesh Shah
+                            </td>
+                            <td>
+                                9919883204
+                            </td>
+                            <td>
+                                n.shah12@gmail.com
+                            </td>
+                            <td>
+                                Deepa Shah
+                            </td>
+                            <td>
+                                9919883204
+                            </td>
+                            <td>
+                                deepa12@gmail.com
+                            </td>
+                            <td>
+                                ABC
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

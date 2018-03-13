@@ -78,6 +78,17 @@
                     <div class="col-md-4 col-xs-4">
                         <div class="form-group">
                             <div class="form-line">
+                                <label class="control-label">GR. No. <strong>*</strong></label>
+                                <input type="text" name="grno" OnlyNumber="true" [(ngModel)]="grno" maxlength="50" class="form-control grno text-right" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
                                 <label class="control-label">First Name <strong>*</strong></label>
                                 <input type="text" name="fname" [(ngModel)]="fname" maxlength="50" class="form-control fname" tabindex="3" />
                             </div>
@@ -679,11 +690,11 @@
                             <td>
                                 <div class="form-group">
                                     <button type="button" (click)="editSibling(row)" class="btn btn-theme btn-xs btn-xs-sm">
-                                    <i class="material-icons">edit</i>
-                                </button>
+                                        <i class="material-icons">edit</i>
+                                    </button>
                                     <button type="button" (click)="deleteSibling(row)" class="btn btn-danger btn-xs btn-xs-sm">
-                                    <i class="material-icons">delete</i>
-                                </button>
+                                        <i class="material-icons">delete</i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

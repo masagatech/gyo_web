@@ -15,10 +15,10 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="notificationDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="title" header="Title" [style]="{'width':'200px','text-align':'left'}"></p-column>
-                    <p-column field="msg" header="Message" [style]="{'text-align':'left'}"></p-column>
-                    <p-column field="grpname" header="Group" [style]="{'width':'150px','text-align':'left'}"></p-column>
-                    <p-column field="standard" header="Standard" [style]="{'width':'200px','text-align':'left'}"></p-column>
+                    <p-column field="title" header="Title" [style]="{'width':'200px','text-align':'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="msg" header="Message" [style]="{'text-align':'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="grpname" header="Group" [style]="{'width':'150px','text-align':'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="standard" header="Standard" [style]="{'width':'300px','text-align':'left', 'vertical-align':'top'}"></p-column>
                 </p-dataTable>
             </div>
         </div>
