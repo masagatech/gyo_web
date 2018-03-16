@@ -38,7 +38,7 @@
                         <label class="control-label">Exam Type <strong>*</strong></label>
                         <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" (ngModelChange)="getExamResult()" class="form-control smstrname" tabindex="2">
                             <option [value]="0">Select Exam Type</option>
-                            <option *ngFor="let row of semesterDT" [value]="row.id">
+                            <option *ngFor="let row of examTypeDT" [value]="row.id">
                                 {{row.val}}
                             </option>
                         </select>

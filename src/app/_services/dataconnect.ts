@@ -8,7 +8,6 @@ declare var $: any;
 
 @Injectable()
 export class DataService {
-
     global = new Globals();
 
     constructor(private _http: Http) { }
@@ -17,10 +16,10 @@ export class DataService {
         let body = JSON.stringify(params);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
+
         return this._http.post(api, body, options)
             .map(res => res.json())
             .catch(this.handleError);
-
     }
 
     otherget(api: string, params: any) {
@@ -33,19 +32,25 @@ export class DataService {
         let body = JSON.stringify(params);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
+
         return this._http.post(this.global.serviceurl + api, body, options)
             .map(res => res.json())
             .catch(this.handleError);
-
     }
 
     get(api: string, params: any) {
         return this._http.get(this.global.serviceurl + api + "?" + $.param(params))
             .map(res => res.json())
             .catch(this.handleError);;
-
     }
 
+    public rawget(api: string, params: any) {
+        params.t = (new Date).getTime();
+
+        return this._http.get(api + "?" + $.param(params))
+            .map(res => { return res; })
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response) {
         console.error(error);

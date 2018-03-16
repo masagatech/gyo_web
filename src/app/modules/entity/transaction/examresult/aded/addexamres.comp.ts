@@ -16,7 +16,7 @@ export class AddExamResultComponent implements OnInit {
     _enttdetails: any = [];
 
     ayDT: any = [];
-    semesterDT: any = [];
+    examTypeDT: any = [];
     classDT: any = [];
     subjectDT: any = [];
 
@@ -74,8 +74,8 @@ export class AddExamResultComponent implements OnInit {
                     }
                 }
 
-                that.semesterDT = data.data.filter(a => a.group == "semester");
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.examTypeDT = data.data.filter(a => a.group == "semester");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

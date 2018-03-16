@@ -11,6 +11,8 @@ export class Globals {
 
     serviceurl: string = "http://" + Globals.weburl + ":8082/goyoapi/";
     uploadurl: string = "http://" + Globals.weburl + ":8082/images/";
+    
+    static reporturl: string = "http://" + Globals.weburl + ":8085/";
     static socketurl: string = "http://" + Globals.weburl + ":8082/";
 
     filepath: string = "www\\uploads\\";

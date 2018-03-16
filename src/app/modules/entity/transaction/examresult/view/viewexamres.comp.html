@@ -1,7 +1,7 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2 col-xs-4">
+            <div class="col-md-2">
                 <h4>Exam Result</h4>
             </div>
             <div class="col-md-2">
@@ -39,10 +39,33 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2" style="padding-top: 20px; text-align: right;">
+            <div class="col-md-2 pad-20 text-right">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="addExamResult()">
-                        <i class="material-icons">add</i></button>
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Exam Type <strong>*</strong></label>
+                        <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" tabindex="2">
+                            <option [value]="0">Select Exam Type</option>
+                            <option *ngFor="let row of examTypeDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 pad-20 text-right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
+                        <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -98,6 +121,123 @@
                             </td>
                             <td>
                                 {{drow.resremark}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog full-width" role="document">
+        <div class="modal-lg modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-8 col-xs-8">
+                        <h4>Student : Bulk Upload</h4>
+                    </div>
+                    <div class="col-md-4 col-xs-4 text-right">
+                        <a role="button" (click)="closeBulkUploadPopup()">
+                            <i class="material-icons">cancel</i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <h4>View : Excel Format</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <a role="button" (click)="downloadExamResultFormat('xls', 'all')">
+                            <i class="material-icons">file_download</i> Download with details
+                        </a>
+                    </div>
+                    <div class="col-md-2">
+                        <a role="button" (click)="downloadExamResultFormat('xls', 'single')">
+                            <i class="material-icons">file_download</i> Download without details
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
+                                auto="true"></p-fileUpload>
+
+                            <div *ngIf="uploadFileDT.length">
+                                <div *ngFor="let file of uploadFileDT" class="box">
+                                    {{file.athurl}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div id="divexmresrpt">
+
+                </div>
+                <table class="table table-bordered table-responsive hide">
+                    <thead>
+                        <tr>
+                            <th>
+                                exam_date
+                            </th>
+                            <th>
+                                from_time
+                            </th>
+                            <th>
+                                to_time
+                            </th>
+                            <th>
+                                roll_no
+                            </th>
+                            <th>
+                                student_name
+                            </th>
+                            <th>
+                                subject_name
+                            </th>
+                            <th>
+                                marks
+                            </th>
+                            <th>
+                                out_of_marks
+                            </th>
+                            <th>
+                                remark
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                1/Nov/2017
+                            </td>
+                            <td>
+                                09:30 AM
+                            </td>
+                            <td>
+                                11:30 AM
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                Nimit Nilesh Shah
+                            </td>
+                            <td>
+                                Hindi
+                            </td>
+                            <td>
+                                40
+                            </td>
+                            <td>
+                                50
+                            </td>
+                            <td>
+                                Good
                             </td>
                         </tr>
                     </tbody>

@@ -39,8 +39,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     uploadFileDT: any = [];
     uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    chooseLabel: string = "";
-
+    
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
@@ -62,7 +61,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Upload
+    // Bulk Upload
 
     getUploadConfig() {
         var that = this;
@@ -92,44 +91,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         event.formData.append("cuid", this.loginUser.ucode);
     }
 
-    getBulkUpload() {
-        var that = this;
-        var defayDT: any = [];
-
-        commonfun.loader();
-
-        console.log(that.uploadFileDT);
-
-        that._autoservice.bulkUpload({
-            "bulktype": "student", "multistudent": that.uploadFileDT.length > 0 ? that.uploadFileDT[0].athurl : "",
-            "ayid": that.ayid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode
-        }).subscribe(data => {
-            try {
-                console.log(data);
-
-                if (data.status == 0) {
-                    that._msg.Show(messageType.error, "Error", data.message);
-                }
-                else {
-                    that.closeBulkUploadPopup();
-                    that.getStudentDetails();
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     onFileUpload(event) {
         var that = this;
         that.uploadFileDT = [];
@@ -143,11 +104,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         else {
             that.closeBulkUploadPopup();
             that.getStudentDetails();
-
-            // for (var i = 0; i < xlsfile.length; i++) {
-            //     that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
-            //     that.getBulkUpload();
-            // }
         }
     }
 
