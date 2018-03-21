@@ -2506,3 +2506,20 @@ select.selectpicker {
     width: 99%;
     overflow: auto;
 }
+
+.div-overflow {
+    max-height: 500px;
+    overflow: auto;
+}
+
+.search-box {
+    border: solid 1px #ccc;
+    padding: 3px;
+    height: auto!important;
+}
+
+.dropdown-right {
+    float: right;
+    margin: 0 5px;
+    font-size: 15px!important;
+}

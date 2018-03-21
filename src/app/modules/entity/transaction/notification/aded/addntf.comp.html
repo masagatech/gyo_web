@@ -39,17 +39,10 @@
                         <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="3"></textarea>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Send By <strong>*</strong></label><br />
-                        <!-- <span id="prnt">
-                            <input id="parents" name="parents" type="checkbox" value="parents" class="filled-in" />
-                            <label for="parents">Parents</label>
-                        </span>
-                        <span id="tchr">
-                            <input id="teacher" name="teacher" type="checkbox" value="teacher" class="filled-in" />
-                            <label for="teacher">Teacher</label>
-                        </span> -->
 
                         <div class="row clearfix" *ngIf="sendtypeDT.length">
                             <div class="col-md-12">
@@ -59,16 +52,14 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="sendtypecheckboxes">
+                                <div class="allsendtypecheckboxes">
                                     <div class="row clearfix">
                                         <div class="col-md-4" *ngFor="let row of sendtypeDT; let i = index;">
                                             <div class="form-group">
-                                                <div class="form-line">
-                                                    <span id="send{{row.id}}">
-                                                        <input id="{{row.id}}" name="send{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
-                                                        <label for="{{row.id}}">{{row.val}}</label>
-                                                    </span>
-                                                </div>
+                                                <span id="send{{row.id}}">
+                                                    <input id="{{row.id}}" name="send{{i + 1}}" type="checkbox" value="{{row.id}}" (change)="selectTeacherSendTypeCheckboxes()" class="filled-in" />
+                                                    <label for="{{row.id}}">{{row.val}}</label>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -77,26 +68,55 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <div class="row clearfix" *ngIf="teacherDT.length">
+                            <div id="divselectteacher" class="col-md-12 hide">
+                                <div class="form-group">
+                                    <input id="selectallteacher" name="selectallteacher" type="checkbox" (change)="selectAndDeselectAllTeacherCheckboxes()" class="filled-in">
+                                    <label for="selectallteacher">Select All Teacher</label>
+                                </div>
+                            </div>
+                            <div id="divteacher" class="col-md-12 hide">
+                                <div class="allteachercheckboxes">
+                                    <div class="row clearfix">
+                                        <div class="col-md-4" *ngFor="let row of teacherDT; let i = index;">
+                                            <div class="form-group">
+                                                <span id="tchr{{row.id}}">
+                                                    <input id="t{{row.id}}" name="tchr{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                    <label for="t{{row.id}}">{{row.val}}</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!teacherDT.length">
+                            No any Teacher on this school !!!
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="row clearfix" *ngIf="standardDT.length">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
-                            <label for="selectall">Select All</label>
+                            <input id="selectallstandard" name="selectallstandard" type="checkbox" (change)="selectAndDeselectAllStandardCheckboxes()" class="filled-in">
+                            <label for="selectallstandard">Select All</label>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="allcheckboxes">
+                        <div class="allstandardcheckboxes">
                             <div class="row clearfix">
                                 <div class="col-md-4" *ngFor="let row of standardDT; let i = index;">
                                     <div class="form-group">
-                                        <div class="form-line">
-                                            <span id="std{{row.id}}">
-                                                <input id="{{row.id}}" name="std{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
-                                                <label for="{{row.id}}">{{row.val}}</label>
-                                            </span>
-                                        </div>
+                                        <span id="std{{row.id}}">
+                                            <input id="s{{row.id}}" name="std{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                            <label for="s{{row.id}}">{{row.val}}</label>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

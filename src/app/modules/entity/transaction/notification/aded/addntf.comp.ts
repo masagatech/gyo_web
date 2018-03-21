@@ -19,6 +19,7 @@ export class AddNotificationComponent implements OnInit {
     groupDT: any = [];
     standardDT: any = [];
     sendtypeDT: any = [];
+    teacherDT: any = [];
 
     ntfid: number = 0;
     grpid: number = 0;
@@ -43,6 +44,10 @@ export class AddNotificationComponent implements OnInit {
         }, 200);
     }
 
+    hideWhenTeacherCheckboxes(row) {
+
+    }
+
     // Fill Group Drop Down and Checkbox List For Standard
 
     fillDropDownList() {
@@ -59,6 +64,8 @@ export class AddNotificationComponent implements OnInit {
 
                 that.sendtypeDT.push({ "id": "parents", "val": "Parents" });
                 that.sendtypeDT.push({ "id": "teacher", "val": "Teacher" });
+
+                that.teacherDT = data.data.filter(a => a.group == "teacher");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -83,7 +90,10 @@ export class AddNotificationComponent implements OnInit {
         that.grpid = 0;
         that.title = "";
         that.msg = "";
-        that.clearcheckboxes();
+
+        that.clearSendTypeCheckboxes();
+        that.clearTeacherCheckboxes();
+        that.clearStandardCheckboxes();
     }
 
     // Get Send Type Rights
@@ -116,6 +126,46 @@ export class AddNotificationComponent implements OnInit {
         return sendrights;
     }
 
+    // Get Teacher Rights
+
+    getTeacherRights() {
+        var that = this;
+        var tchritem = null;
+
+        var actrights = "";
+        var tchrrights = null;
+
+        if ($("#teacher").is(':checked')) {
+            if ($("#selectallteacher").is(':checked')) {
+                tchrrights = "{0}";
+            }
+            else {
+                for (var i = 0; i <= that.teacherDT.length - 1; i++) {
+                    tchritem = null;
+                    tchritem = that.teacherDT[i];
+
+                    if (tchritem !== null) {
+                        $("#tchr" + tchritem.id).find("input[type=checkbox]").each(function () {
+                            actrights += (this.checked ? $(this).val() + "," : "");
+                        });
+
+                        if (actrights != "") {
+                            tchrrights = actrights.slice(0, -1);
+                        }
+                        else {
+                            tchrrights = null;
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            tchrrights = "{}";
+        }
+
+        return tchrrights;
+    }
+
     // Get Standard Rights
 
     getStandardRights() {
@@ -146,41 +196,75 @@ export class AddNotificationComponent implements OnInit {
         return stdrights;
     }
 
+    // Send Type Checkboxes
+
     private selectAndDeselectAllSendTypeCheckboxes() {
         if ($("#selectallsendtype").is(':checked')) {
-            $(".sendtypecheckboxes input[type=checkbox]").prop('checked', true);
+            $(".allsendtypecheckboxes input[type=checkbox]").prop('checked', true);
         }
         else {
-            $(".sendtypecheckboxes input[type=checkbox]").prop('checked', false);
+            $(".allsendtypecheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private selectTeacherSendTypeCheckboxes() {
+        if ($("#teacher").is(':checked')) {
+            $("#divselectteacher").prop('class', "show");
+            $("#selectallteacher").prop('checked', true);
+        }
+        else {
+            $("#divselectteacher").prop('class', "hide");
+            $("#selectallteacher").prop('checked', false);
         }
     }
 
     private clearSendTypeCheckboxes() {
-        $(".sendtypecheckboxes input[type=checkbox]").prop('checked', false);
+        $(".allsendtypecheckboxes input[type=checkbox]").prop('checked', false);
     }
 
-    private selectAndDeselectAllCheckboxes() {
-        if ($("#selectall").is(':checked')) {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
+    // Teacher Checkboxes
+
+    private selectAndDeselectAllTeacherCheckboxes() {
+        if ($("#selectallteacher").is(':checked')) {
+            $(".allteachercheckboxes input[type=checkbox]").prop('checked', true);
+            $("#divteacher").prop('class', "hide");
         }
         else {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+            $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
+            $("#divteacher").prop('class', "show");
         }
     }
 
-    private clearcheckboxes() {
-        $(".allcheckboxes input[type=checkbox]").prop('checked', false);
+    private clearTeacherCheckboxes() {
+        $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
+    }
+
+    // Standard Checkboxes
+
+    private selectAndDeselectAllStandardCheckboxes() {
+        if ($("#selectallstandard").is(':checked')) {
+            $(".allstandardcheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".allstandardcheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private clearStandardCheckboxes() {
+        $(".allstandardcheckboxes input[type=checkbox]").prop('checked', false);
     }
 
     // Save Notification
 
     saveNotification() {
         var that = this;
-        var _stdrights = null;
         var _sendrights = null;
+        var _stdrights = null;
+        var _tchrrights = null;
 
-        _stdrights = that.getStandardRights();
         _sendrights = that.getSendTypeRights();
+        _stdrights = that.getStandardRights();
+        _tchrrights = that.getTeacherRights();
 
         if (that.grpid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Group");
@@ -209,14 +293,15 @@ export class AddNotificationComponent implements OnInit {
             var saventf = {
                 "ntfid": that.ntfid,
                 "ntftype": "other",
-                "sendtype": "{" + _sendrights + "}",
-                "frmid": that.loginUser.uid,
-                "frmtype": that.loginUser.utype,
-                "classid": "{" + _stdrights + "}",
-                "studid":"{0}",
                 "title": that.title,
                 "msg": that.msg,
                 "grpid": that.grpid,
+                "frmid": that.loginUser.uid,
+                "frmtype": that.loginUser.utype,
+                "sendtype": "{" + _sendrights + "}",
+                "classid": "{" + _stdrights + "}",
+                "studid": "{0}",
+                "tchrid": "{" + _tchrrights + "}",
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid

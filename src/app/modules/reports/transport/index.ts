@@ -19,6 +19,7 @@ export const routes = [
                     { path: 'driver', loadChildren: './driver#DriverReportsModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
                     { path: 'batch', loadChildren: './batch#BatchReportsModule' },
+                    { path: 'milege', loadChildren: './milege#MilegeReportsModule' },
 
                     // Attendance
                     
