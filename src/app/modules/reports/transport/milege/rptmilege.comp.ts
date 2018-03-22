@@ -50,7 +50,7 @@ export class MilegeReportsComponent implements OnInit, OnDestroy {
 
     setFromDateAndToDate() {
         var date = new Date();
-        var before1month = new Date(date.getFullYear(), date.getMonth() - 6, date.getDate());
+        var before1month = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
         this.frmdt = this.formatDate(before1month);
@@ -92,6 +92,21 @@ export class MilegeReportsComponent implements OnInit, OnDestroy {
         }, () => {
 
         });
+    }
+
+    // Vehicle Checkboxes
+
+    private selectAndDeselectAllVehicleCheckboxes() {
+        if ($("#selectallvehicle").is(':checked')) {
+            $(".allvehiclecheckboxes input[type=checkbox]").prop('checked', true);
+        }
+        else {
+            $(".allvehiclecheckboxes input[type=checkbox]").prop('checked', false);
+        }
+    }
+
+    private clearVehicleCheckboxes() {
+        $(".allvehiclecheckboxes input[type=checkbox]").prop('checked', false);
     }
 
     // Get Vehicle Rights

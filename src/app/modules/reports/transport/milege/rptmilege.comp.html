@@ -80,12 +80,26 @@
                 </div>
             </div>
 
-            <div class="modal-body model-overflow" id="newaddress">
-                <div *ngFor="let row of vehicleDT; let i = index;">
-                    <span id="vehicle{{row.imei}}">
-                        <input id="{{row.imei}}" name="vehicle{{i + 1}}" type="checkbox" value="{{row.imei}}" class="filled-in" />
-                        <label for="{{row.imei}}">{{row.vehicleno}}</label>
-                    </span>
+            <div class="modal-body model-overflow">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectallvehicle" name="selectallvehicle" type="checkbox" (change)="selectAndDeselectAllVehicleCheckboxes()" class="filled-in">
+                            <label for="selectallvehicle">Select All</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="allvehiclecheckboxes">
+                            <div class="row clearfix">
+                                <div *ngFor="let row of vehicleDT; let i = index;" class="col-md-6">
+                                    <span id="vehicle{{row.imei}}">
+                                        <input id="{{row.imei}}" name="vehicle{{i + 1}}" type="checkbox" value="{{row.imei}}" class="filled-in" />
+                                        <label for="{{row.imei}}">{{row.vehicleno}}</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
