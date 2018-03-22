@@ -7,13 +7,16 @@ export class Globals {
 
     // static weburl: string = "school.goyo.in";
     // static weburl: string = "track.goyo.in";
-    static weburl: string = window.location.hostname;
 
-    serviceurl: string = "http://" + Globals.weburl + ":8082/goyoapi/";
-    uploadurl: string = "http://" + Globals.weburl + ":8082/images/";
+    static weburl: string = window.location.hostname;
+    static port: string = "8082";
+
+    serviceurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/goyoapi/";
+    uploadurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/images/";
     
+    static socketurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/";
+
     static reporturl: string = "http://" + Globals.weburl + ":8085/";
-    static socketurl: string = "http://" + Globals.weburl + ":8082/";
 
     filepath: string = "www\\uploads\\";
     xlsfilepath: string = "www\\exceluploads\\";
