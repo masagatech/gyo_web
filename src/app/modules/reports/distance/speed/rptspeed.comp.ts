@@ -4,14 +4,14 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, Common, LoginUserModel } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { MilegeService } from '@services/master';
+import { ReportsService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptmilege.comp.html',
+    templateUrl: 'rptspeed.comp.html',
     providers: [CommonService]
 })
 
-export class MilegeReportsComponent implements OnInit, OnDestroy {
+export class SpeedReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -24,7 +24,7 @@ export class MilegeReportsComponent implements OnInit, OnDestroy {
     todt: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _milegeservice: MilegeService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -142,23 +142,23 @@ export class MilegeReportsComponent implements OnInit, OnDestroy {
         that.vehnames = _vehnames;
     }
 
-    private getMilegeDetails(format) {
+    private getSpeedReports(format) {
         let that = this;
         let params = {};
 
         // "351777090309137"
 
         params = {
-            "flag": that.flag, "rpttype": "milege", "vhid": that.vehids, "frmdt": that.frmdt, "todt": that.todt,
+            "flag": that.flag, "rpttype": "speed", "vhid": that.vehids, "frmdt": that.frmdt, "todt": that.todt,
             "vwtype": "download", "format": format
         }
 
         if (format == "html") {
             commonfun.loader();
 
-            that._milegeservice.getMilegeDetails(params).subscribe(data => {
+            that._rptservice.getReports(params).subscribe(data => {
                 try {
-                    $("#divmilege").html(data._body);
+                    $("#divspeed").html(data._body);
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
@@ -174,13 +174,13 @@ export class MilegeReportsComponent implements OnInit, OnDestroy {
             });
         }
         else {
-            window.open(Common.getReportUrl("getMilegeDetails", params));
+            window.open(Common.getReportUrl("getReports", params));
         }
     }
 
     applyVehicleSearch() {
         this.getVehicleRights();
-        this.getMilegeDetails("html");
+        this.getSpeedReports("html");
         this.closeVehiclePopup();
     }
 

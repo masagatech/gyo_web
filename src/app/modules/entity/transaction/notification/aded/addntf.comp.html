@@ -40,29 +40,37 @@
                     </div>
                 </div>
 
+                <div class="row clearfix">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input id="issendsms" name="issendsms" [(ngModel)]="issendsms" type="checkbox" class="filled-in">
+                            <label for="issendsms">Send SMS</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input id="issendemail" name="issendemail" [(ngModel)]="issendemail" type="checkbox" class="filled-in">
+                            <label for="issendemail">Send Email</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Send By <strong>*</strong></label><br />
 
-                        <div class="row clearfix" *ngIf="sendtypeDT.length">
-                            <div class="col-md-12">
+                        <div class="row clearfix">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <input id="selectallsendtype" name="selectallsendtype" type="checkbox" (change)="selectAndDeselectAllSendTypeCheckboxes()" class="filled-in">
-                                    <label for="selectallsendtype">Select All</label>
+                                    <input id="issendparents" name="issendparents" [(ngModel)]="issendparents" type="checkbox" class="filled-in">
+                                    <label for="issendparents">Parents</label>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="allsendtypecheckboxes">
-                                    <div class="row clearfix">
-                                        <div class="col-md-4" *ngFor="let row of sendtypeDT; let i = index;">
-                                            <div class="form-group">
-                                                <span id="send{{row.id}}">
-                                                    <input id="{{row.id}}" name="send{{i + 1}}" type="checkbox" value="{{row.id}}" (change)="selectTeacherSendTypeCheckboxes()" class="filled-in" />
-                                                    <label for="{{row.id}}">{{row.val}}</label>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input id="issendteacher" name="issenissendteacherdemail" [(ngModel)]="issendteacher" (change)="selectTeacherSendTypeCheckboxes()" type="checkbox" class="filled-in">
+                                    <label for="issendteacher">Teacher</label>
                                 </div>
                             </div>
                         </div>
@@ -99,13 +107,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
+
                 <div class="row clearfix" *ngIf="standardDT.length">
                     <div class="col-md-12">
                         <div class="form-group">
                             <input id="selectallstandard" name="selectallstandard" type="checkbox" (change)="selectAndDeselectAllStandardCheckboxes()" class="filled-in">
-                            <label for="selectallstandard">Select All</label>
+                            <label for="selectallstandard">Select All Standard</label>
                         </div>
                     </div>
                     <div class="col-md-12">

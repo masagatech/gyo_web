@@ -6,16 +6,14 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { SpeedReportsComponent } from './rptspeed.comp';
-import { ReportsService } from '@services/master';
-
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { ReportsService } from '@services/reports';
 
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: SpeedReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptspd", "rights": "view", "urlname": "/speed" }
+        data: { "module": "rpt", "submodule": "rptspeed", "rights": "view", "urlname": "/milege" }
       }
     ]
   },
@@ -27,7 +25,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
   providers: [AuthGuard, ReportsService]

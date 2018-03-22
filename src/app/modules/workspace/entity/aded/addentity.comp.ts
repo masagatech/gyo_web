@@ -32,6 +32,7 @@ export class AddEntityComponent implements OnInit {
     schnm: string = "";
     lat: string = "0.00";
     lon: string = "0.00";
+    countsms: number = 0;
     schvehs: number = 0;
     oprvehs: number = 0;
     address: string = "";
@@ -448,6 +449,7 @@ export class AddEntityComponent implements OnInit {
         that.entttype = "";
         that.schcd = "";
         that.schnm = "";
+        that.countsms = 0;
         that.schvehs = 0;
         that.oprvehs = 0;
         that.remark1 = "";
@@ -712,6 +714,7 @@ export class AddEntityComponent implements OnInit {
                     "schnm": that.schnm,
                     "schlogo": that.uploadLogoDT.length == 0 ? "" : that.uploadLogoDT[0].athurl,
                     "schgeoloc": (that.lat == "" ? "0.00" : that.lat) + "," + (that.lon == "" ? "0.00" : that.lon),
+                    "countsms": that.countsms.toString() == "" ? 0 : that.countsms,
                     "schvehs": that.schvehs.toString() == "" ? 0 : that.schvehs,
                     "oprvehs": that.oprvehs.toString() == "" ? 0 : that.oprvehs,
                     "address": that.address,
@@ -807,6 +810,7 @@ export class AddEntityComponent implements OnInit {
 
                             that.lat = data.data[0].lat;
                             that.lon = data.data[0].lon;
+                            that.countsms = data.data[0].countsms;
                             that.schvehs = data.data[0].ownbuses;
                             that.oprvehs = data.data[0].vanoperator;
 

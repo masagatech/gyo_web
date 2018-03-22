@@ -18,8 +18,13 @@ export class AddNotificationComponent implements OnInit {
 
     groupDT: any = [];
     standardDT: any = [];
-    sendtypeDT: any = [];
     teacherDT: any = [];
+
+    issendsms: boolean = false;
+    issendemail: boolean = false;
+
+    issendparents: boolean = false;
+    issendteacher: boolean = false;
 
     ntfid: number = 0;
     grpid: number = 0;
@@ -62,9 +67,6 @@ export class AddNotificationComponent implements OnInit {
                 that.groupDT = data.data.filter(a => a.group == "ntfgrp");
                 that.standardDT = data.data.filter(a => a.group == "standard");
 
-                that.sendtypeDT.push({ "id": "parents", "val": "Parents" });
-                that.sendtypeDT.push({ "id": "teacher", "val": "Teacher" });
-
                 that.teacherDT = data.data.filter(a => a.group == "teacher");
             }
             catch (e) {
@@ -90,40 +92,13 @@ export class AddNotificationComponent implements OnInit {
         that.grpid = 0;
         that.title = "";
         that.msg = "";
+        that.issendsms = false;
+        that.issendemail = false;
+        that.issendparents = false;
+        that.issendteacher = false;
 
-        that.clearSendTypeCheckboxes();
         that.clearTeacherCheckboxes();
         that.clearStandardCheckboxes();
-    }
-
-    // Get Send Type Rights
-
-    getSendTypeRights() {
-        var that = this;
-        var senditem = null;
-
-        var actrights = "";
-        var sendrights = null;
-
-        for (var i = 0; i <= that.sendtypeDT.length - 1; i++) {
-            senditem = null;
-            senditem = that.sendtypeDT[i];
-
-            if (senditem !== null) {
-                $("#send" + senditem.id).find("input[type=checkbox]").each(function () {
-                    actrights += (this.checked ? $(this).val() + "," : "");
-                });
-
-                if (actrights != "") {
-                    sendrights = actrights.slice(0, -1);
-                }
-                else {
-                    sendrights = null;
-                }
-            }
-        }
-
-        return sendrights;
     }
 
     // Get Teacher Rights
@@ -133,11 +108,11 @@ export class AddNotificationComponent implements OnInit {
         var tchritem = null;
 
         var actrights = "";
-        var tchrrights = null;
+        var tchrrights = "";
 
-        if ($("#teacher").is(':checked')) {
+        if (that.issendteacher) {
             if ($("#selectallteacher").is(':checked')) {
-                tchrrights = "{0}";
+                tchrrights = "0";
             }
             else {
                 for (var i = 0; i <= that.teacherDT.length - 1; i++) {
@@ -153,14 +128,14 @@ export class AddNotificationComponent implements OnInit {
                             tchrrights = actrights.slice(0, -1);
                         }
                         else {
-                            tchrrights = null;
+                            tchrrights = "";
                         }
                     }
                 }
             }
         }
         else {
-            tchrrights = "{}";
+            tchrrights = "";
         }
 
         return tchrrights;
@@ -173,7 +148,7 @@ export class AddNotificationComponent implements OnInit {
         var stditem = null;
 
         var actrights = "";
-        var stdrights = null;
+        var stdrights = "";
 
         for (var i = 0; i <= that.standardDT.length - 1; i++) {
             stditem = null;
@@ -188,7 +163,7 @@ export class AddNotificationComponent implements OnInit {
                     stdrights = actrights.slice(0, -1);
                 }
                 else {
-                    stdrights = null;
+                    stdrights = "";
                 }
             }
         }
@@ -198,28 +173,19 @@ export class AddNotificationComponent implements OnInit {
 
     // Send Type Checkboxes
 
-    private selectAndDeselectAllSendTypeCheckboxes() {
-        if ($("#selectallsendtype").is(':checked')) {
-            $(".allsendtypecheckboxes input[type=checkbox]").prop('checked', true);
-        }
-        else {
-            $(".allsendtypecheckboxes input[type=checkbox]").prop('checked', false);
-        }
-    }
-
     private selectTeacherSendTypeCheckboxes() {
-        if ($("#teacher").is(':checked')) {
+        if (this.issendteacher) {
             $("#divselectteacher").prop('class', "show");
             $("#selectallteacher").prop('checked', true);
+            $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
+            $("#divteacher").prop('class', "show");
         }
         else {
             $("#divselectteacher").prop('class', "hide");
             $("#selectallteacher").prop('checked', false);
+            $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
+            $("#divteacher").prop('class', "hide");
         }
-    }
-
-    private clearSendTypeCheckboxes() {
-        $(".allsendtypecheckboxes input[type=checkbox]").prop('checked', false);
     }
 
     // Teacher Checkboxes
@@ -256,38 +222,88 @@ export class AddNotificationComponent implements OnInit {
 
     // Save Notification
 
-    saveNotification() {
+    isValidationNotification(_stdrights, _tchrrights) {
         var that = this;
-        var _sendrights = null;
-        var _stdrights = null;
-        var _tchrrights = null;
-
-        _sendrights = that.getSendTypeRights();
-        _stdrights = that.getStandardRights();
-        _tchrrights = that.getTeacherRights();
 
         if (that.grpid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Group");
             $(".grpname").focus();
+            return false;
         }
-        else if (that.title == "") {
+
+        if (that.title == "") {
             that._msg.Show(messageType.error, "Error", "Enter Title");
             $(".ntf-title").focus();
+            return false;
         }
-        else if (that.msg == "") {
+
+        if (that.msg == "") {
             that._msg.Show(messageType.error, "Error", "Enter Message");
             $(".msg").focus();
+            return false;
         }
-        else if (that.standardDT.length == 0) {
-            that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
-        }
-        else if (_stdrights == null) {
-            that._msg.Show(messageType.error, "Error", "Please Select Class");
-        }
-        else if (_sendrights == null) {
+
+        if ((that.issendparents == false) && (that.issendteacher == false)) {
             that._msg.Show(messageType.error, "Error", "Please Select Send By");
+            return false;
+        }
+
+        if (that.issendparents == true) {
+            if (that.standardDT.length == 0) {
+                that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
+                return false;
+            }
+
+            if (_stdrights == "") {
+                that._msg.Show(messageType.error, "Error", "Please Select Standard");
+                return false;
+            }
+        }
+
+        if (that.issendteacher == true) {
+            if (that.standardDT.length == 0) {
+                that._msg.Show(messageType.error, "Error", "No any Standard Entry on this " + that._enttdetails.enttname);
+                return false;
+            }
+
+            if (that.teacherDT.length == 0) {
+                that._msg.Show(messageType.error, "Error", "No any Teacher Entry on this " + that._enttdetails.enttname);
+                return false;
+            }
+
+            if ((_stdrights == "") && (_tchrrights == "")) {
+                that._msg.Show(messageType.error, "Error", "Please Select Standard / Teacher");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    saveNotification() {
+        var that = this;
+
+        var _sendtype = "";
+        var _stdrights = null;
+        var _tchrrights = null;
+
+        var _isvalidntf: boolean = true;
+
+        _sendtype += that.issendparents ? "parents" : "";
+
+        if (that.issendparents) {
+            _sendtype += that.issendteacher ? ",teacher" : "";
         }
         else {
+            _sendtype += that.issendteacher ? "teacher" : "";
+        }
+
+        _stdrights = that.getStandardRights();
+        _tchrrights = that.getTeacherRights();
+
+        _isvalidntf = that.isValidationNotification(_stdrights, _tchrrights);
+
+        if (_isvalidntf) {
             commonfun.loader();
 
             var saventf = {
@@ -295,10 +311,12 @@ export class AddNotificationComponent implements OnInit {
                 "ntftype": "other",
                 "title": that.title,
                 "msg": that.msg,
+                "issendsms": that.issendsms,
+                "issendemail": that.issendemail,
                 "grpid": that.grpid,
                 "frmid": that.loginUser.uid,
                 "frmtype": that.loginUser.utype,
-                "sendtype": "{" + _sendrights + "}",
+                "sendtype": "{" + _sendtype + "}",
                 "classid": "{" + _stdrights + "}",
                 "studid": "{0}",
                 "tchrid": "{" + _tchrrights + "}",
@@ -359,6 +377,8 @@ export class AddNotificationComponent implements OnInit {
                         that.ntfid = viewntf[0].ntfid;
                         that.title = viewntf[0].title;
                         that.msg = viewntf[0].msg;
+                        that.issendsms = viewntf[0].issendsms;
+                        that.issendemail = viewntf[0].issendemail;
                         that.grpid = data.data[0].grpid;
 
                         var _stdrights = null;

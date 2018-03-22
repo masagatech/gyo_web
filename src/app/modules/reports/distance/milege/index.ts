@@ -6,7 +6,7 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { MilegeReportsComponent } from './rptmilege.comp';
-import { MilegeService } from '@services/master';
+import { ReportsService } from '@services/reports';
 
 export const routes = [
   {
@@ -28,7 +28,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
-  providers: [AuthGuard, MilegeService]
+  providers: [AuthGuard, ReportsService]
 })
 
 export class MilegeReportsModule {

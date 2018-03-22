@@ -7,7 +7,7 @@
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
                     <div class="form-line">
-                        <select id="flag" [(ngModel)]="flag" class="form-control flag" tabindex="1" (ngModelChange)="getMilegeDetails('html')">
+                        <select id="flag" [(ngModel)]="flag" class="form-control flag" tabindex="1" (ngModelChange)="getMilegeReports('html')">
                             <option [value]="'summary'">Summary</option>
                             <option [value]="'details'">Details</option>
                         </select>
@@ -45,7 +45,7 @@
             </div>
             <div class="col-md-4 col-xs-2">
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-info" (click)="getMilegeDetails('html')">Get</button>
+                    <button type="button" class="btn btn-info" (click)="getMilegeReports('html')">Get</button>
                 </div>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -53,8 +53,8 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="getMilegeDetails('xls')"><i class="fa fa-file-excel-o"></i> Download Excel</a></li>
-                        <li><a role="button" (click)="getMilegeDetails('pdf')"><i class="fa fa-file-pdf-o"></i> Download PDF</a></li>
+                        <li><a role="button" (click)="getMilegeReports('xls')"><i class="fa fa-file-excel-o"></i> Download Excel</a></li>
+                        <li><a role="button" (click)="getMilegeReports('pdf')"><i class="fa fa-file-pdf-o"></i> Download PDF</a></li>
                     </ul>
                 </div>
             </div>

@@ -24,7 +24,7 @@ export const routes = [
                     { path: 'transport', loadChildren: './transport#TransportReportsModule' },
 
                     { path: 'log', loadChildren: './log#LogReportsModule' },
-                    { path: 'speed', loadChildren: './speed#SpeedReportsModule' },
+                    { path: 'distance', loadChildren: './distance#DistanceReportsModule' },
                 ]
             }
         ]
