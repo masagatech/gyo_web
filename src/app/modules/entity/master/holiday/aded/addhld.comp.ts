@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { HolidayService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -9,8 +9,7 @@ declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addhld.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addhld.comp.html'
 })
 
 export class AddHolidayComponent implements OnInit {
@@ -37,8 +36,8 @@ export class AddHolidayComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _hldservice: HolidayService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _hldservice: HolidayService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -260,7 +259,7 @@ export class AddHolidayComponent implements OnInit {
 
         if (that._enttdetails.psngrtype != 'Passenger') {
             _hldforrights = that.getHolidayForRights();
-    
+
             if ($("#selectall").is(':checked')) {
                 _clsrights = 0;
             }
@@ -269,7 +268,7 @@ export class AddHolidayComponent implements OnInit {
             }
         }
         else {
-            _hldforrights = "Passenger";    
+            _hldforrights = "Passenger";
             _clsrights = 0;
         }
 

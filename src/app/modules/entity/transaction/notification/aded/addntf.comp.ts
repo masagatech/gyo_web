@@ -23,6 +23,12 @@ export class AddNotificationComponent implements OnInit {
     issendsms: boolean = false;
     issendemail: boolean = false;
 
+    smspack: number = 0;
+    usedsms: number = 0;
+    pendingsms: number = 0;
+    smshead: string = "";
+    isvaildsendsms: string = "";
+
     issendparents: boolean = false;
     issendteacher: boolean = false;
 
@@ -39,6 +45,7 @@ export class AddNotificationComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
+        this.sendSMS_Valid();
     }
 
     public ngOnInit() {
@@ -49,15 +56,34 @@ export class AddNotificationComponent implements OnInit {
         }, 200);
     }
 
-    hideWhenTeacherCheckboxes(row) {
+    sendSMS_Valid() {
+        var that = this;
 
+        that._ntfservice.getNotification({
+            "flag": "validsendsms", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.smspack = data.data[0].smspack;
+                that.usedsms = data.data[0].usedsms;
+                that.pendingsms = data.data[0].pendingsms;
+                that.smshead = data.data[0].smshead;
+                that.isvaildsendsms = data.data[0].isvaildsendsms;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
+
+        })
     }
 
     // Fill Group Drop Down and Checkbox List For Standard
 
     fillDropDownList() {
         var that = this;
-        commonfun.loader();
 
         that._ntfservice.getNotification({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ntftype": "standard", "enttid": that._enttdetails.enttid,
@@ -72,12 +98,9 @@ export class AddNotificationComponent implements OnInit {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
-
-            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide();
         }, () => {
 
         })

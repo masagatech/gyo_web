@@ -1,0 +1,79 @@
+<div class="card">
+    <div class="header">
+        <h4>SMS Pack</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveSMSPack()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">School Name</label>
+                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="selectedEntity" [tabindex]="1" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                        <span class="material-icons inputserachico">search</span>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">SMS Pack <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="smspack" class="form-control smspack text-right" tabindex="2" autofocus />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Amount <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="packamt" class="form-control packamt text-right" tabindex="3" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">From Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control date frmdt" (ngModelChange)="todt = frmdt" tabindex="4" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To Date <strong>*</strong></label>
+                                <input type="date" [(ngModel)]="todt" class="form-control date todt" tabindex="5" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Remark</label>
+                                <textarea [(ngModel)]="remark" rows="4" class="form-control no-resize auto-growth" tabindex="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

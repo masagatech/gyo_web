@@ -21,6 +21,7 @@ export const routes = [
                     { path: 'content', loadChildren: './content#ContentModule' },
                     { path: 'contentdetails', loadChildren: './contentdetails#ContentDetailsModule' },
                     { path: 'contententitymap', loadChildren: './contententitymap#ContentEntityMapModule' },
+                    { path: 'smspack', loadChildren: './smspack#SMSPackModule' },
                 ]
             }
         ]
