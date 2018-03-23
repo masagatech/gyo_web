@@ -10885,6 +10885,10 @@ td {
     background: red;
 }
 
+.m-05 {
+    margin: 5px;
+}
+
 .pad-06 {
     padding: 6px;
 }
