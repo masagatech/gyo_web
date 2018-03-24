@@ -25,6 +25,15 @@ export class AddAnnouncementComponent implements OnInit {
     desc: string = "";
     anncdate: any = "";
 
+    issendsms: boolean = false;
+    issendemail: boolean = false;
+
+    smspack: number = 0;
+    usedsms: number = 0;
+    pendingsms: number = 0;
+    smshead: string = "";
+    isvaildsendsms: string = "";
+
     private subscribeParameters: any;
 
     constructor(private _ntfservice: AnnouncementService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -33,6 +42,7 @@ export class AddAnnouncementComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
+        this.sendSMS_Valid();
     }
 
     public ngOnInit() {
@@ -43,16 +53,28 @@ export class AddAnnouncementComponent implements OnInit {
         }, 200);
     }
 
-    // Clear Fields
-
-    resetAnnouncementFields() {
+    sendSMS_Valid() {
         var that = this;
 
-        that.anncid = 0;
-        that.grpid = 0;
-        that.title = "";
-        that.desc = "";
-        that.anncdate = "";
+        that._autoservice.getDropDownData({
+            "flag": "validsendsms", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.smspack = data.data[0].smspack;
+                that.usedsms = data.data[0].usedsms;
+                that.pendingsms = data.data[0].pendingsms;
+                that.smshead = data.data[0].smshead;
+                that.isvaildsendsms = data.data[0].isvaildsendsms;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+        }, () => {
+
+        })
     }
 
     // Fill Group Drop Down and Checkbox List For Standard
@@ -81,6 +103,23 @@ export class AddAnnouncementComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    // Clear Fields
+
+    resetAnnouncementFields() {
+        var that = this;
+
+        that.anncid = 0;
+        that.grpid = 0;
+        that.title = "";
+        that.desc = "";
+        that.anncdate = "";
+
+        that.issendsms = false;
+        that.issendemail = false;
+
+        that.clearCheckboxes();
     }
 
     // Get Standard Rights
@@ -122,7 +161,7 @@ export class AddAnnouncementComponent implements OnInit {
         }
     }
 
-    private clearcheckboxes(): void {
+    private clearCheckboxes() {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
     }
 
@@ -161,16 +200,20 @@ export class AddAnnouncementComponent implements OnInit {
 
             var saventf = {
                 "anncid": that.anncid,
-                "frmid": that.loginUser.loginid,
-                "toid": "{" + _stdrights + "}",
+                "annctype": "standard",
                 "title": that.title,
                 "desc": that.desc,
+                "issendsms": that.issendsms,
+                "issendemail": that.issendemail,
                 "grpid": that.grpid,
+                "frmid": that.loginUser.uid,
+                "frmtype": that.loginUser.utype,
+                "classid": "{" + _stdrights + "}",
+                "studid": "{0}",
                 "anncdate": that.anncdate,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid,
-                "annctype": "standard"
+                "wsautoid": that._enttdetails.wsautoid
             }
 
             this._ntfservice.saveAnnouncement(saventf).subscribe(data => {
@@ -184,6 +227,7 @@ export class AddAnnouncementComponent implements OnInit {
 
                         if (msgid === "1") {
                             that.resetAnnouncementFields();
+                            that.sendSMS_Valid();
                         }
                         else {
                             that.backViewData();
@@ -229,6 +273,8 @@ export class AddAnnouncementComponent implements OnInit {
                         that.anncid = viewannc[0].anncid;
                         that.title = viewannc[0].title;
                         that.desc = viewannc[0].desc;
+                        that.issendsms = viewannc[0].issendsms;
+                        that.issendemail = viewannc[0].issendemail;
                         that.grpid = viewannc[0].grpid;
                         that.anncdate = viewannc[0].anncdate;
 
@@ -237,7 +283,7 @@ export class AddAnnouncementComponent implements OnInit {
 
                         if (viewannc[0] != null) {
                             _stdrights = null;
-                            _stdrights = viewannc[0].toid;
+                            _stdrights = viewannc[0].classid;
 
                             if (_stdrights != null) {
                                 for (var i = 0; i < _stdrights.length; i++) {

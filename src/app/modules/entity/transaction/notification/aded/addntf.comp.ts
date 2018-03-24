@@ -20,6 +20,11 @@ export class AddNotificationComponent implements OnInit {
     standardDT: any = [];
     teacherDT: any = [];
 
+    ntfid: number = 0;
+    grpid: number = 0;
+    title: string = "";
+    msg: string = "";
+
     issendsms: boolean = false;
     issendemail: boolean = false;
 
@@ -31,11 +36,6 @@ export class AddNotificationComponent implements OnInit {
 
     issendparents: boolean = false;
     issendteacher: boolean = false;
-
-    ntfid: number = 0;
-    grpid: number = 0;
-    title: string = "";
-    msg: string = "";
 
     private subscribeParameters: any;
 
@@ -59,7 +59,7 @@ export class AddNotificationComponent implements OnInit {
     sendSMS_Valid() {
         var that = this;
 
-        that._ntfservice.getNotification({
+        that._autoservice.getDropDownData({
             "flag": "validsendsms", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -359,6 +359,7 @@ export class AddNotificationComponent implements OnInit {
 
                         if (msgid === "1") {
                             that.resetNotificationFields();
+                            that.sendSMS_Valid();
                         }
                         else {
                             that.backViewData();
@@ -409,7 +410,7 @@ export class AddNotificationComponent implements OnInit {
 
                         if (viewntf[0] != null) {
                             _stdrights = null;
-                            _stdrights = viewntf[0].toid;
+                            _stdrights = viewntf[0].classid;
 
                             if (_stdrights != null) {
                                 for (var i = 0; i < _stdrights.length; i++) {

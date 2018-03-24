@@ -35,14 +35,40 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Description <strong>*</strong></label>
-                        <textarea [(ngModel)]="desc" rows="5" class="form-control no-resize auto-growth desc" maxlength="500" tabindex="2"></textarea>
+                        <label class="control-label">Description <strong>*</strong> (250 Character Limit)</label>
+                        <textarea [(ngModel)]="desc" rows="5" class="form-control no-resize auto-growth desc" maxlength="250" tabindex="2"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Date <strong>*</strong></label>
                         <input type="date" [(ngModel)]="anncdate" class="form-control anncdate" tabindex="3" />
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="isvaildsendsms">
+                    <div class="col-md-12">
+                        <input id="issendsms" name="issendsms" [(ngModel)]="issendsms" type="checkbox" class="filled-in">
+                        <label for="issendsms">Send SMS</label>
+                    </div>
+                </div>
+
+                {{smshead}}
+
+                <div class="row clearfix" *ngIf="isvaildsendsms">
+                    <div class="col-md-12">
+                        <span>Total SMS Pack : </span> {{smspack}}<br />
+                        <span>Used SMS : </span> {{usedsms}}<br />
+                        <span>Pending SMS : </span> {{pendingsms}}<br />
+                    </div>
+                </div>
+
+                <hr class="hr" />
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <input id="issendemail" name="issendemail" [(ngModel)]="issendemail" type="checkbox" class="filled-in">
+                        <label for="issendemail">Send Email</label>
                     </div>
                 </div>
             </div>
