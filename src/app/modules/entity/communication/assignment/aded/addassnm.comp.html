@@ -1,0 +1,107 @@
+<div class="card">
+    <div class="header">
+        <h4>Homework</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveAssignment()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="title" class="form-control" tabindex="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadAssignmentDT.length">
+                        <div *ngFor="let file of uploadAssignmentDT" class="box">
+                            <div class="row clearfix">
+                                <div class="col-md-9">
+                                    <div *ngIf="file.filetype == 'image'">
+                                        <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/noimage.gif';" height="40px" />
+                                    </div>
+                                    <div *ngIf="file.filetype != 'image'">
+                                        <a href="{{uploadconfig.uploadurl + file.athurl}}">{{file.athurl}}</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" align="right">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeAssignmentUpload()">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillSubjectDropDown()" class="form-control class" tabindex="1">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Subject <strong>*</strong></label>
+                                <select id="subid" name="subname" [(ngModel)]="subid" class="form-control subject" tabindex="2">
+                                    <option [value]="0">Select Subject</option>
+                                    <option *ngFor="let row of subjectDT" [value]="row.subid">
+                                        {{row.subname}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Message <strong>*</strong></label>
+                        <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">From Date <strong>*</strong></label>
+                            <div class="form-line">
+                                <input type="date" [(ngModel)]="frmdt" class="form-control frmdt" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">To Date <strong>*</strong></label>
+                            <div class="form-line">
+                                <input type="date" [(ngModel)]="todt" class="form-control todt" tabindex="5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

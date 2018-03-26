@@ -5,15 +5,15 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
-import { SpeedReportsComponent } from './rptspeed.comp';
-import { ReportsService } from '@services/reports';
+import { AnnouncementReportsComponent } from './rptannc.comp';
+import { AnnouncementService } from '@services/reports';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: SpeedReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptspeed", "rights": "view", "urlname": "/speed" }
+        path: '', component: AnnouncementReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "announcement", "submodule": "rptmnlntf", "rights": "view", "urlname": "/announcement" }
       }
     ]
   },
@@ -21,16 +21,16 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    SpeedReportsComponent
+    AnnouncementReportsComponent
   ],
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
-  providers: [AuthGuard, ReportsService]
+  providers: [AuthGuard, AnnouncementService]
 })
 
-export class SpeedReportsModule {
+export class AnnouncementReportsModule {
   public static routes = routes;
 }

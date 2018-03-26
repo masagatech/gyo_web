@@ -5,15 +5,15 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
-import { SpeedReportsComponent } from './rptspeed.comp';
+import { MileageReportsComponent } from './rptmileage.comp';
 import { ReportsService } from '@services/reports';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: SpeedReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptspeed", "rights": "view", "urlname": "/speed" }
+        path: '', component: MileageReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptmileage", "rights": "view", "urlname": "/mileage" }
       }
     ]
   },
@@ -21,7 +21,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    SpeedReportsComponent
+    MileageReportsComponent
   ],
 
   imports: [
@@ -31,6 +31,6 @@ export const routes = [
   providers: [AuthGuard, ReportsService]
 })
 
-export class SpeedReportsModule {
+export class MileageReportsModule {
   public static routes = routes;
 }

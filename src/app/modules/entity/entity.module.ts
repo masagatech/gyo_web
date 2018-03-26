@@ -33,6 +33,9 @@ export const routes = [
                     // Transaction
                     { path: 'transaction', loadChildren: './transaction#TransactionModule' },
                     
+                    // Communication
+                    { path: 'communication', loadChildren: './communication#CommunicationModule' },
+                    
                     // Transport
                     { path: 'transport', loadChildren: './transport#TransportModule' },
                     

@@ -13,8 +13,8 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'mileage', loadChildren: './mileage#MileageReportsModule' },
-                    { path: 'speed', loadChildren: './speed#SpeedReportsModule' }
+                    { path: 'notification/:type', loadChildren: './notification#NotificationReportsModule' },
+                    { path: 'announcement', loadChildren: './announcement#AnnouncementReportsModule' },
                 ]
             }
         ]
@@ -29,6 +29,6 @@ export const routes = [
     providers: [AuthGuard]
 })
 
-export class DistanceReportsModule {
+export class CommunicationReportsModule {
 
 }
