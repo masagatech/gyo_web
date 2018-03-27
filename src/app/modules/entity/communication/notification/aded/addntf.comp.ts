@@ -200,15 +200,14 @@ export class AddNotificationComponent implements OnInit {
         if (this.issendteacher) {
             $("#divselectteacher").prop('class', "show");
             $("#selectallteacher").prop('checked', true);
-            $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
-            $("#divteacher").prop('class', "show");
         }
         else {
             $("#divselectteacher").prop('class', "hide");
             $("#selectallteacher").prop('checked', false);
-            $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
-            $("#divteacher").prop('class', "hide");
         }
+        
+        $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
+        $("#divteacher").prop('class', "hide");
     }
 
     // Teacher Checkboxes
