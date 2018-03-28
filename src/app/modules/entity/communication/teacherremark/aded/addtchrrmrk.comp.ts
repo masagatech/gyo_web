@@ -21,6 +21,7 @@ export class AddTeacherRemarkComponent implements OnInit {
     trid: number = 0;
     classid: number = 0;
     remark: string = "";
+    issendemail: boolean = false;
 
     private subscribeParameters: any;
 
@@ -172,6 +173,7 @@ export class AddTeacherRemarkComponent implements OnInit {
                 "remark": that.remark,
                 "classid": that.classid,
                 "studid": "{" + _studrights + "}",
+                "issendemail": that.issendemail,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid

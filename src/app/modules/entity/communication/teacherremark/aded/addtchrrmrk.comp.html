@@ -3,6 +3,10 @@
         <h4>Teacher Remark</h4>
         <ul class="header-dropdown m-r--5">
             <li>
+                <input id="issendemail" name="issendemail" [(ngModel)]="issendemail" type="checkbox" class="filled-in">
+                <label for="issendemail">Send Email To Parent</label>
+            </li>
+            <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveTeacherRemark()">
                     <i class="material-icons">save</i></a>
             </li>
