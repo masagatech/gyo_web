@@ -23,6 +23,7 @@ export class AddAssignmentComponent implements OnInit {
     msg: string = "";
     frmdt: any = "";
     todt: any = "";
+    issendemail: boolean = false;
 
     subjectDT: any = [];
     classDT: string = "";
@@ -128,13 +129,10 @@ export class AddAssignmentComponent implements OnInit {
 
         for (var i = 0; i < imgfile.length; i++) {
             that.uploadAssignmentDT.push({
-                "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, ""),
-                "filetype": imgfile[i].type == "image/png" || imgfile[i].type == "image/jpeg" || imgfile[i].type == "image/jpg"
-                    || imgfile[i].type == "image/gif" || imgfile[i].type == "image/bmp" ? "image" : "doc"
+                "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, ""), "filename": imgfile[i].name,
+                "filetype": imgfile[i].type, "filesize": that.formatSizeUnits(imgfile[i].size)
             })
         }
-
-        console.log(that.uploadAssignmentDT);
     }
 
     // Get File Size
@@ -216,7 +214,6 @@ export class AddAssignmentComponent implements OnInit {
                 "assnmid": that.assnmid,
                 "title": that.title,
                 "uploadassnm": that.uploadAssignmentDT.length > 0 ? that.uploadAssignmentDT[0].athurl : "",
-                "assnmtype": that.uploadAssignmentDT.length > 0 ? that.uploadAssignmentDT[0].filetype : "",
                 "subid": that.subid,
                 "clsid": that.clsid,
                 "assnmby": that.loginUser.loginid,
@@ -226,6 +223,7 @@ export class AddAssignmentComponent implements OnInit {
                 "frmdt": that.frmdt,
                 "todt": that.todt,
                 "src": "web",
+                "issendemail": that.issendemail,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid
