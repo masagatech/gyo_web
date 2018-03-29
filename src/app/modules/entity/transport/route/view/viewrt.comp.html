@@ -13,12 +13,13 @@
 </div>
 
 <div class="row clearfix">
-    <div *ngFor="let row of stopsDT | groupBy:'rtname'; let i = index;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div *ngFor="let row of stopsDT | groupBy:'rtgroup'; let i = index;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="card">
             <div class="header">
-                <h4>{{row.key}}</h4>
+                <h4>{{row.key.split('~')[1]}}</h4>
+
                 <ul class="header-dropdown m-r--5 pull-right">
-                    <li><a role="button" (click)="editRoutesForm(stopsDT[i])"><i class="material-icons">edit</i></a></li>
+                    <li><a role="button" (click)="editRoutesForm(row)"><i class="material-icons">edit</i></a></li>
                 </ul>
             </div>
             <div class="body">

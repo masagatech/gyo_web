@@ -173,6 +173,8 @@ export class AddTeacherRemarkComponent implements OnInit {
                 "remark": that.remark,
                 "classid": that.classid,
                 "studid": "{" + _studrights + "}",
+                "frmid": that.loginUser.uid,
+                "frmtype": that.loginUser.utype,
                 "issendemail": that.issendemail,
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,

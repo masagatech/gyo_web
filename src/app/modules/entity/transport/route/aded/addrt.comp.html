@@ -105,44 +105,42 @@
             </div>
         </div>
 
-        <div class="row clearfix" *ngIf="stopsList.length">
-            <div class="col-md-12">
-                <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [listStyle]="{'height':'auto'}" [responsive]="true" header="Stops">
-                    <ng-template let-stops pTemplate="editor">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="ui-helper-clearfix">
-                                    {{stops.stpname}}
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="ui-helper-clearfix">
-                                    {{stops.address}}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="ui-helper-clearfix">
-                                    {{stops.lat + ", " + stops.lon}}
-                                </div>
-                            </div>
-                            <div class="col-md-1" align="right">
-                                <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editStopsList(stops)">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-1" align="right">
-                                <div class="ui-helper-clearfix">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteStopsList(stops)">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                                </div>
+        <div *ngIf="stopsList.length">
+            <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [listStyle]="{'height':'auto', 'width':'1000px'}" [responsive]="true" header="Stops">
+                <ng-template let-stops pTemplate="editor">
+                    <div class="row clearfix">
+                        <div class="col-md-2">
+                            <div class="ui-helper-clearfix">
+                                {{stops.stpname}}
                             </div>
                         </div>
-                    </ng-template>
-                </p-orderList>
-            </div>
+                        <div class="col-md-5">
+                            <div class="ui-helper-clearfix">
+                                {{stops.address}}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="ui-helper-clearfix">
+                                {{stops.lat + ", " + stops.lon}}
+                            </div>
+                        </div>
+                        <div class="col-md-1" align="right">
+                            <div class="ui-helper-clearfix">
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editStopsList(stops)">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1" align="right">
+                            <div class="ui-helper-clearfix">
+                                <button type="button" class="btn btn-danger btn-xs" (click)="deleteStopsList(stops)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-orderList>
         </div>
     </div>
 </div>

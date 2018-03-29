@@ -143,25 +143,25 @@ export class AddExamResultComponent implements OnInit {
             $(".ayname").focus();
             return false;
         }
-        
+
         if (that.smstrid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Exam Type");
             $(".smstrname").focus();
             return false;
         }
-        
+
         if (that.clsid == 0) {
             that._msg.Show(messageType.error, "Error", "Select class");
             $(".class").focus();
             return false;
         }
-        
+
         if (that.studid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Student Name");
             $(".studname input").focus();
             return false;
         }
-        
+
         if (that.examList.length > 0) {
             for (var i = 0; i < that.examList.length; i++) {
                 var _examlist = that.examList[i];
@@ -206,7 +206,8 @@ export class AddExamResultComponent implements OnInit {
 
             var params = {
                 "examid": that.examparamid, "ayid": that.ayid, "smstrid": that.smstrid, "examtype": $("#smstrid option:selected").text().trim(),
-                "clsid": that.clsid, "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "clsid": that.clsid, "studid": that.studid, "frmid": that.loginUser.uid, "frmtype": that.loginUser.utype,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                 "issendemail": that.issendemail, "examresult": that.examList
             }
 
