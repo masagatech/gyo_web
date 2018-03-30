@@ -19,34 +19,35 @@
     </div>
 
     <div class="body">
+      
         <div class="row clearfix">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Route Name <strong>*</strong></label>
-                        <select id="rtid" [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtid" tabindex="2" (ngModelChange)="getStopsByRoute()">
-                            <option [value]="0">Select Route</option>
-                            <option *ngFor="let row of routesDT" [value]="row.key">
-                                {{row.value}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2" style="padding-top: 20px">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid == 0">
-                        <span class="material-icons">add</span>
-                    </button>
-                    <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
-                        <span class="material-icons">edit</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-4 border">
+                    <div class="row clearfix">
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label class="control-label">Route Name <strong>*</strong></label>
+                                        <select id="rtid" [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtid" tabindex="2" (ngModelChange)="getStopsByRoute()">
+                                            <option [value]="0">Select Route</option>
+                                            <option *ngFor="let row of routesDT" [value]="row.key">
+                                                {{row.value}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="padding-top: 20px">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid == 0">
+                                        <span class="material-icons">add</span>
+                                    </button>
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                
                 <div class="row clearfix">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -100,13 +101,13 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <p-gmap #gmap [style]="{'width':'100%','height':'250px'}" (onMapClick)="handleMapClick($event)" (onOverlayDragEnd)="ovrldrag($event)" [options]="options" [overlays]="overlays"></p-gmap>
+            <div class="col-md-8">
+                <p-gmap #gmap [style]="{'width':'100%','height':'350px'}" (onMapClick)="handleMapClick($event)" (onOverlayDragEnd)="ovrldrag($event)" [options]="options" [overlays]="overlays"></p-gmap>
             </div>
         </div>
 
         <div *ngIf="stopsList.length">
-            <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [listStyle]="{'height':'auto', 'width':'1000px'}" [responsive]="true" header="Stops">
+            <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [styleClass]="'pliststop'" [style]="{'width':'100%'}" [listStyle]="{'height':'auto', 'width':'auto'}" [responsive]="true" header="Stops">
                 <ng-template let-stops pTemplate="editor">
                     <div class="row clearfix">
                         <div class="col-md-2">
@@ -119,11 +120,16 @@
                                 {{stops.address}}
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="ui-helper-clearfix">
                                 {{stops.lat + ", " + stops.lon}}
                             </div>
                         </div>
+                        <div class="col-md-1">
+                                <div class="ui-helper-clearfix">
+                                    {{stops.radius}}
+                                </div>
+                            </div>
                         <div class="col-md-1" align="right">
                             <div class="ui-helper-clearfix">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="editStopsList(stops)">

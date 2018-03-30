@@ -46,6 +46,8 @@ export class AddRouteComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
+    markers: any = [];
+    circles: any = [];
     private subscribeParameters: any;
 
     constructor(private _rtservice: RouteService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -56,6 +58,12 @@ export class AddRouteComponent implements OnInit {
 
     public ngOnInit() {
         let that = this;
+
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
 
         that.editRoutes();
 
@@ -70,9 +78,9 @@ export class AddRouteComponent implements OnInit {
             center: { lat: 0, lng: 0 }, fillColor: '#1976D2', fillOpacity: 0.35,
             strokeWeight: 1, radius: that.radius, draggable: true, editable: true,
         });
-        
-        that.overlays = [that.marker];
 
+        that.overlays = [that.marker];
+        this.getDefaultMap();
         that.circle.bindTo('center', that.marker, 'position');
 
         google.maps.event.addListener(that.circle, 'radius_changed', function () {
@@ -81,7 +89,28 @@ export class AddRouteComponent implements OnInit {
             that.cdRef.detectChanges();
         })
     }
+    public ngAfterViewInit() {
+        let that = this;
 
+        that.map = that._gmap.getMap();
+
+        if (that.map !== undefined) {
+            setTimeout(function () {
+                google.maps.event.trigger(that.map, 'resize');
+            }, 1000)
+        }
+    }
+
+
+
+    getDefaultMap() {
+        this.options = {
+            center: { lat: 22.861639, lng: 78.257621 },
+            zoom: 5,
+            styles: [{ "stylers": [{ "saturation": -100 }] }],
+            maxZoom: 16
+        };
+    }
     private ovrldrag(e) {
         this.lat = this.marker.position.lat();
         this.lon = this.marker.position.lng();
@@ -113,7 +142,7 @@ export class AddRouteComponent implements OnInit {
                     that.overlays.push(that.marker);
                     that.overlays.push(that.circle);
                 }
-                
+
                 var latlng = new google.maps.LatLng(that.lat, that.lon);
                 that.circle.setCenter(latlng);
                 that.marker.setPosition(latlng);
@@ -128,6 +157,7 @@ export class AddRouteComponent implements OnInit {
             that.cdRef.detectChanges();
         });
     }
+
 
     handleMapClick(e) {
         this.lat = e.latLng.lat();
@@ -285,6 +315,9 @@ export class AddRouteComponent implements OnInit {
                     setTimeout(function () {
                         commonfun.orderstyle();
                     }, 200);
+                    
+
+                    this.bindStopsOnMap();
                 }
                 else {
                     that.stopsList = [];
@@ -536,9 +569,115 @@ export class AddRouteComponent implements OnInit {
         }
     }
 
+    bindStopsOnMap() {
+
+        for (let i = 0; i < this.stopsList.length; i++) {
+            var element = this.stopsList[i];
+            element.rowid = element.stpid;
+            this.addmarker(element)
+        }
+        if (this.stopsList.length > 0) {
+            this.boundtomap();
+        }
+
+    }
+
+
+
+
+    private addmarker(stps) {
+        //debugger
+        // let bearing = 0;
+        // let imagePath = 'assets/img/map/' + vh.ico + '_' + bearing + '.png?v=1';
+
+        // let image = {
+        //     url: imagePath,
+        //     ico: vh.ico
+        // };
+        //debugger
+        var populationOptions = {
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: this.map,
+            draggable: false,
+            editable: true,
+            center: new google.maps.LatLng(stps.lat, stps.lon),
+            radius: Math.sqrt(stps.radius) * 100
+        };
+        // Add the circle for this city to the map.
+        var cityCircle = new google.maps.Circle(populationOptions);
+
+    
+        let vhmarker = new google.maps.Marker({
+            position: {
+                lat: stps.lat
+                , lng: stps.lon
+            },
+
+            strokeColor: 'red',
+            strokeWeight: 3,
+            scale: 6,
+            draggable: true,
+            // icon: image,
+            title: stps.stpname + ' (' + stps.address + ')',
+            data: stps
+        });
+
+        vhmarker.info = new google.maps.InfoWindow({
+            content: vhmarker.title
+        });
+        vhmarker.bindTo("position", cityCircle, "center");
+
+        vhmarker.info.open(this.map, vhmarker);
+
+        google.maps.event.addListener(vhmarker, 'dragend', function (event) {
+
+
+            console.debug('final position is ' + event.latLng.lat() + ' / ' + event.latLng.lng());
+        });
+
+        vhmarker.setMap(this.map);
+        this.markers[stps.rowid] = vhmarker;
+        this.circles[stps.rowid] = cityCircle;
+    }
+
+    private removemarker(rowid) {
+        let mrkr = this.markers[rowid];
+
+        if (mrkr != null) {
+            mrkr.setMap(null);
+            //delete this.vhmarkers[vhid];
+        }
+    }
+
+
+    private boundtomap() {
+        var bounds = new google.maps.LatLngBounds();
+var that = this;
+        Object.keys(this.markers).forEach(function (key) {
+         //   debugger
+            // console.log(key, obj[key]);
+            let mr = that.markers[key];
+            bounds.extend(mr.getPosition());
+        });
+
+
+
+        this.map.fitBounds(bounds);
+    }
+
     // Back For View Data
 
     backViewData() {
         this._router.navigate(['/transport/route']);
     }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
+    }
 }
+

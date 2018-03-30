@@ -2487,3 +2487,7 @@ select.selectpicker {
     margin: 0 5px;
     font-size: 15px!important;
 }
+
+.pliststop  .ui-orderlist-list-container{
+    width: calc(100% - 36px);
+}
