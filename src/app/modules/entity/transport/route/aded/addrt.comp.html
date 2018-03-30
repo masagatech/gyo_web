@@ -19,35 +19,35 @@
     </div>
 
     <div class="body">
-      
+
         <div class="row clearfix">
             <div class="col-md-4 border">
-                    <div class="row clearfix">
-                            <div class="col-md-10">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <label class="control-label">Route Name <strong>*</strong></label>
-                                        <select id="rtid" [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtid" tabindex="2" (ngModelChange)="getStopsByRoute()">
+                <div class="row clearfix">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Route Name <strong>*</strong></label>
+                                <select id="rtid" [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtid" tabindex="2" (ngModelChange)="getStopsByRoute()">
                                             <option [value]="0">Select Route</option>
                                             <option *ngFor="let row of routesDT" [value]="row.key">
                                                 {{row.value}}
                                             </option>
                                         </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2" style="padding-top: 20px">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid == 0">
-                                        <span class="material-icons">add</span>
-                                    </button>
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
-                                        <span class="material-icons">edit</span>
-                                    </button>
-                                </div>
                             </div>
                         </div>
-                
+                    </div>
+                    <div class="col-md-2" style="padding-top: 20px">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid == 0">
+                                        <span class="material-icons">add</span>
+                                    </button>
+                            <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row clearfix">
                     <div class="col-md-12">
                         <div class="form-group">
@@ -61,9 +61,10 @@
                         <div id="address" class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Address <strong>*</strong></label>
-                                <textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4" (keydown.tab)="getLatAndLon()"></textarea>                                {{radius}}
+                                <textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4" (keydown.tab)="getLatAndLon()"></textarea>
                             </div>
                         </div>
+                        {{radius}}
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -110,12 +111,18 @@
             <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [styleClass]="'pliststop'" [style]="{'width':'100%'}" [listStyle]="{'height':'auto', 'width':'auto'}" [responsive]="true" header="Stops">
                 <ng-template let-stops pTemplate="editor">
                     <div class="row clearfix">
+                        <div class="col-md-1">
+                            <div class="ui-helper-clearfix">
+                                <input id="{{stops.rowid}}" name="{{stops.rowid}}" [(ngModel)]="stops.isviewmap" (ngModelChange)="isViewMapShow(stops)" type="checkbox" class="filled-in">
+                                <label for="{{stops.rowid}}"></label>
+                            </div>
+                        </div>
                         <div class="col-md-2">
                             <div class="ui-helper-clearfix">
                                 {{stops.stpname}}
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="ui-helper-clearfix">
                                 {{stops.address}}
                             </div>
@@ -126,10 +133,10 @@
                             </div>
                         </div>
                         <div class="col-md-1">
-                                <div class="ui-helper-clearfix">
-                                    {{stops.radius}}
-                                </div>
+                            <div class="ui-helper-clearfix">
+                                {{stops.radius | _currency: {'decimals':2,'currsym':''} }}
                             </div>
+                        </div>
                         <div class="col-md-1" align="right">
                             <div class="ui-helper-clearfix">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="editStopsList(stops)">
