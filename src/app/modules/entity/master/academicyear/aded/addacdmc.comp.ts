@@ -104,7 +104,7 @@ export class AddAcademicYearComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            var savelvpsngr = {
+            var params = {
                 "ayid": that.ayid,
                 "ayname": that.ayname,
                 "frmdt": that.frmdt,
@@ -116,7 +116,7 @@ export class AddAcademicYearComponent implements OnInit {
                 "wsautoid": that._enttdetails.wsautoid
             }
 
-            that._acdmcservice.saveAcademicYear(savelvpsngr).subscribe(data => {
+            that._acdmcservice.saveAcademicYear(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_academicyear;
                     var msg = dataResult.msg;

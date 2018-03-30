@@ -17,9 +17,12 @@ export class AddRouteComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    marker: any;
     @ViewChild("gmap")
     _gmap: GMap;
+
+    marker: any;
+    circle: any;
+    inkm: any;
 
     private options: any;
     private overlays: any[];
@@ -34,6 +37,7 @@ export class AddRouteComponent implements OnInit {
     address: string = "";
     lat: string = "";
     lon: string = "";
+    radius: any = 1000;
 
     stopsList: any = [];
     selectedStops: any = [];
@@ -51,24 +55,45 @@ export class AddRouteComponent implements OnInit {
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 100);
+        let that = this;
 
-        this.editRoutes();
+        that.editRoutes();
 
-        this.options = {
-            center: { lat: this.lat, lng: this.lon },
-            zoom: 18
+        that.options = {
+            center: { lat: that.lat, lng: that.lon },
+            zoom: 12
         };
 
-        this.marker = new google.maps.Marker({ position: { lat: this.lat, lng: this.lon }, title: "", draggable: true });
-        this.overlays = [this.marker];
+        that.marker = new google.maps.Marker({ position: { lat: that.lat, lng: that.lon }, title: "", draggable: true });
+
+        that.circle = new google.maps.Circle({
+            center: { lat: 0, lng: 0 }, fillColor: '#1976D2', fillOpacity: 0.35,
+            strokeWeight: 1, radius: that.radius, draggable: true, editable: true,
+        });
+        
+        that.overlays = [that.marker];
+
+        that.circle.bindTo('center', that.marker, 'position');
+
+        google.maps.event.addListener(that.circle, 'radius_changed', function () {
+            that.radius = this.getRadius().toFixed(2);
+            that.meterinkm();
+            that.cdRef.detectChanges();
+        })
     }
 
     private ovrldrag(e) {
         this.lat = this.marker.position.lat();
         this.lon = this.marker.position.lng();
+    }
+
+    private meterinkm() {
+        this.inkm = (this.radius / 1000).toFixed(2) + " KM";
+    }
+
+    private radiousChanged() {
+        this.circle.setRadius(Number(this.radius));
+        this.meterinkm()
     }
 
     // get lat and lon by address form google map
@@ -78,15 +103,21 @@ export class AddRouteComponent implements OnInit {
         commonfun.loader("#address");
 
         let geocoder = new google.maps.Geocoder();
-        // let address = "Chakkinaka, Kalyan (E)";
 
         geocoder.geocode({ 'address': that.address }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 that.lat = results[0].geometry.location.lat();
                 that.lon = results[0].geometry.location.lng();
 
+                if (that.overlays.length == 0) {
+                    that.overlays.push(that.marker);
+                    that.overlays.push(that.circle);
+                }
+                
                 var latlng = new google.maps.LatLng(that.lat, that.lon);
+                that.circle.setCenter(latlng);
                 that.marker.setPosition(latlng);
+
                 that._gmap.map.setCenter(latlng);
             }
             else {
@@ -181,7 +212,6 @@ export class AddRouteComponent implements OnInit {
         that._rtservice.getStopsDetails({ "flag": "rtddl", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.routesDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('rtid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -337,6 +367,7 @@ export class AddRouteComponent implements OnInit {
                     "lat": that.lat,
                     "lon": that.lon,
                     "geoloc": (that.lat == "" ? "0.00" : that.lat) + "," + (that.lon == "" ? "0.00" : that.lon),
+                    "radius": that.radius,
                     "rtid": that.rtid,
                     "isactive": true
                 })
@@ -362,9 +393,21 @@ export class AddRouteComponent implements OnInit {
         this.lon = row.lon;
 
         if (this.lat.toString() != "0" && this.lat.toString() != "") {
+            if (this.overlays.length == 0) {
+                this.overlays.push(this.marker);
+                this.overlays.push(this.circle);
+            }
+
             var latlng = new google.maps.LatLng(this.lat, this.lon);
+            this.circle.setCenter(latlng);
             this.marker.setPosition(latlng);
+
             this._gmap.map.setCenter(latlng);
+        }
+
+        if (row.radius) {
+            this.radius = row.radius;
+            this.radiousChanged();
         }
     }
 
@@ -444,31 +487,32 @@ export class AddRouteComponent implements OnInit {
                     "stpname": _slrow.stpname,
                     "address": _slrow.address,
                     "geoloc": (_slrow.lat == "" ? "0.00" : _slrow.lat) + "," + (_slrow.lon == "" ? "0.00" : _slrow.lon),
-                    "rtid": _slrow.rtid,
-                    "cuid": that.loginUser.ucode,
+                    "radius": _slrow.radius,
                     "ordno": i + 1,
-                    "wsautoid": that._enttdetails.wsautoid,
                     "isactive": _slrow.isactive
                 })
             }
 
-            var savestp = {
+            var params = {
                 "rtid": that.rtid,
                 "rtname": that.rtname,
-                "stops": _stopsList
+                "stops": _stopsList,
+                "cuid": that.loginUser.ucode,
+                "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid
             }
 
-            this._rtservice.saveStopsInfo(savestp).subscribe(data => {
+            this._rtservice.saveStopsInfo(params).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_stopsinfo.msg;
-                    var msgid = dataResult[0].funsave_stopsinfo.msgid;
+                    var dataResult = data.data[0].funsave_stopsinfo;
+
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            //that.resetStopsFields();
                             that.getStopsByRoute();
                         }
                         else {

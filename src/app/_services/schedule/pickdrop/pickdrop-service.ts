@@ -13,4 +13,8 @@ export class PickDropService {
     savePickDropInfo(req: any) {
         return this._dataserver.post("savePickDropInfo", req)
     }
+
+    saveTrackingInfo(req: any) {
+        return this._dataserver.get("saveTrackingInfo", req)
+    }
 }

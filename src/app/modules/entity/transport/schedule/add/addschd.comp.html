@@ -79,7 +79,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
                         <select id="pickpsngrtype" [(ngModel)]="pickpsngrtype" class="form-control pickpsngrtype" tabindex="7" (ngModelChange)="setDropPsngrType();">
@@ -88,7 +88,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row clearfix" *ngIf="pickpsngrtype == 'byrt'">
+                <div class="row clearfix">
                     <div class="col-md-11">
                         <div class="form-group">
                             <div class="form-line">
@@ -185,7 +185,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group hide">
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
                         <select id="droppsngrtype" [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="14">
@@ -194,7 +194,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="row clearfix" *ngIf="droppsngrtype == 'byrt'">
+                <div class="row clearfix">
                     <div class="col-md-11">
                         <div class="form-group">
                             <div class="form-line">
