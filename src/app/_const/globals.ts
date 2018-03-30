@@ -5,14 +5,9 @@ export class Globals {
     photoid: number = 29;
     xlsid: number = 24;
 
-<<<<<<< HEAD
     // static weburl: string = "school.goyo.in"; 
     //static weburl: string = "track.goyo.in";
-=======
-    // static weburl: string = "school.goyo.in";
-    // static weburl: string = "track.goyo.in";
 
->>>>>>> origin/master
     static weburl: string = window.location.hostname;
     static port: string = "8082";
 
