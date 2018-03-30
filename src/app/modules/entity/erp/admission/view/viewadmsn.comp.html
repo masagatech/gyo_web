@@ -1,14 +1,26 @@
 <div class="card">
     <div class="header">
+        <h4>Student</h4>
+
         <div class="row clearfix" id="fltrstuds">
             <div class="col-md-2">
-                <h4>Student</h4>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="4">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="col-md-2 col-xs-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class</label>
-                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getStudentDetails()">
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" tabindex="1" (ngModelChange)="getStudentDetails()">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
@@ -28,19 +40,17 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-4" align="right" style="padding-top: 20px">
+            <div class="col-md-5 col-xs-12 pad-20 text-right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshStudent('grid')">
                     <i class="material-icons">apps</i></button>
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshStudent('list')">
                     <i class="material-icons">list</i></button>
                 <button type="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
-                    <i class="material-icons">add</i></button>
-            </div>
-            <div class="col-md-3 col-xs-8 hide" align="right" style="padding-top: 20px">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="uploadAdmissionForm()">
-                        <i class="material-icons">add</i> Excel Upload</button>
-                </div>
+                    <i class="material-icons">add</i> <i class="font-no-italic">Add New</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
+                    <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
+                </button>
             </div>
         </div>
     </div>
@@ -54,37 +64,41 @@
                             <p-panel [style]="{'text-align':'center'}">
                                 <p-header>
                                     <div class="row clearfix">
-                                        <div class="col-md-1">
+                                        <div class="col-md-1 col-xs-2">
                                             <i class="material-icons sm-font">{{row.isactive ? 'done' : ''}}</i>
                                         </div>
-                                        <div class="col-md-10">
+                                        <div class="col-md-10 col-xs-8">
                                             {{row.studentname}}
                                         </div>
-                                        <div class="col-md-1">
+                                        <div class="col-md-1 col-xs-2">
                                             <a role="button" (click)="editAdmissionForm(row)"><i class="material-icons sm-font">edit</i></a>
                                         </div>
                                     </div>
                                 </p-header>
                                 <div class="row clearfix">
-                                    <div class="col-md-4 border">
+                                    <div class="col-md-4 col-xs-4 border">
                                         <div class="row clearfix">
                                             <div class="col-md-12">
-                                                <a role="button" (click)="viewStudentProfile(row)">
-                                                    <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" class="img-xs">
+                                                <a role="button">
+                                                    <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
+                                                    <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
                                                 </a>
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.gender != ''">
-                                                {{row.gender}}
+                                            <div class="col-md-12" *ngIf="row.gndrval != ''">
+                                                {{row.gndrval}}
                                             </div>
                                             <div class="col-md-12">
                                                 <b>Roll No :</b> {{row.rollno == null ? 0 : row.rollno}}
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-8" align="left">
+                                    <div class="col-md-8 col-xs-8" align="left">
                                         <div class="row clearfix">
                                             <div class="col-md-12">
                                                 <b>Enrollment No :</b> {{row.enrlmntid}}
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.classname != ''">
+                                                <b>GR. No. :</b> {{row.grno}}
                                             </div>
                                             <div class="col-md-12" *ngIf="row.classname != ''">
                                                 <b>Standard :</b> {{row.classname}}
@@ -103,6 +117,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <p-footer>
+                                    <div class="row clearfix">
+                                        <div class="col-md-12">
+                                            <span class="font-bold">Class Teacher : </span> {{row.clstchrname}}
+                                        </div>
+                                    </div>
+                                </p-footer>
                             </p-panel>
                         </div>
                     </ng-template>
@@ -117,7 +138,8 @@
                 <p-dataTable [value]="studentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                     <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <img alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default.gif';" class="img-sm">
+                            <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">
+                            <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
                         </ng-template>
                     </p-column>
                     <p-column field="enrlmntid" header="Enrollment No" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -145,6 +167,195 @@
                         </ng-template>
                     </p-column>
                 </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog full-width" role="document">
+        <div class="modal-lg modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-8 col-xs-8">
+                        <h4>Student : Bulk Upload</h4>
+                    </div>
+                    <div class="col-md-4 col-xs-4 text-right">
+                        <a role="button" (click)="closeBulkUploadPopup()">
+                            <i class="material-icons">cancel</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" id="user">
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadFileDT.length">
+                        <div *ngFor="let file of uploadFileDT" class="box">
+                            {{file.athurl}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <h4>View : Excel Format</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a role="button" target="_blank" href="assets\file\tblstudent.xlsx">
+                            <i class="material-icons">file_download</i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body table-overflow">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                first_name
+                            </th>
+                            <th>
+                                middle_name
+                            </th>
+                            <th>
+                                last_name
+                            </th>
+                            <th>
+                                roll_no
+                            </th>
+                            <th>
+                                class_name
+                            </th>
+                            <th>
+                                board_name
+                            </th>
+                            <th>
+                                gender
+                            </th>
+                            <th>
+                                dob
+                            </th>
+                            <th>
+                                birth_place
+                            </th>
+                            <th>
+                                address
+                            </th>
+                            <th>
+                                country
+                            </th>
+                            <th>
+                                state
+                            </th>
+                            <th>
+                                city
+                            </th>
+                            <th>
+                                area
+                            </th>
+                            <th>
+                                pin_code
+                            </th>
+                            <th>
+                                father_name
+                            </th>
+                            <th>
+                                father_mobile
+                            </th>
+                            <th>
+                                father_email
+                            </th>
+                            <th>
+                                mother_name
+                            </th>
+                            <th>
+                                mother_mobile
+                            </th>
+                            <th>
+                                mother_email
+                            </th>
+                            <th>
+                                other_info
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Nimit
+                            </td>
+                            <td>
+                                Nilesh
+                            </td>
+                            <td>
+                                Shah
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                I (A)
+                            </td>
+                            <td>
+                                State Board
+                            </td>
+                            <td>
+                                M
+                            </td>
+                            <td>
+                                01-08-2010
+                            </td>
+                            <td>
+                                Mumbai
+                            </td>
+                            <td>
+                                Sakinaka, Andheri (East)
+                            </td>
+                            <td>
+                                India
+                            </td>
+                            <td>
+                                Maharashtra
+                            </td>
+                            <td>
+                                Mumbai
+                            </td>
+                            <td>
+                                Andheri
+                            </td>
+                            <td>
+                                421306
+                            </td>
+                            <td>
+                                Nilesh Shah
+                            </td>
+                            <td>
+                                9919883204
+                            </td>
+                            <td>
+                                n.shah12@gmail.com
+                            </td>
+                            <td>
+                                Deepa Shah
+                            </td>
+                            <td>
+                                9919883204
+                            </td>
+                            <td>
+                                deepa12@gmail.com
+                            </td>
+                            <td>
+                                ABC
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

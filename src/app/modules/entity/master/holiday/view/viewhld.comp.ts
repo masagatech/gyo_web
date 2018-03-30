@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { HolidayService } from '@services/master';
 
 @Component({
-    templateUrl: 'viewhld.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewhld.comp.html'
 })
 
 export class ViewHolidayComponent implements OnInit {
@@ -24,7 +23,7 @@ export class ViewHolidayComponent implements OnInit {
     isShowCalendar: any = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _holidayervice: HolidayService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _holidayervice: HolidayService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

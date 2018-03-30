@@ -24,6 +24,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     catid: number = 0;
     subcatid: number = 0;
     fees: any = "";
+    iscompulsory: boolean = false;
     isonline: boolean = false;
     remark: string = "";
 
@@ -286,15 +287,18 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
             $(".ay").focus();
             return false;
         }
-        else if (that.installmentDT.length == 0) {
-            that._msg.Show(messageType.info, "Info", "Fill atleast 1 Installment");
-            $(".class").focus();
-            return false;
-        }
-        else if (that.fees != totalinstlfees) {
-            that._msg.Show(messageType.info, "Info", "Fees and Total Installment Fees Not Matched");
-            $(".class").focus();
-            return false;
+
+        if (that.iscompulsory) {
+            if (that.installmentDT.length == 0) {
+                that._msg.Show(messageType.info, "Info", "Fill atleast 1 Installment");
+                $(".class").focus();
+                return false;
+            }
+            if (that.fees != totalinstlfees) {
+                that._msg.Show(messageType.info, "Info", "Fees and Total Installment Fees Not Matched");
+                $(".class").focus();
+                return false;
+            }
         }
 
         return true;
@@ -318,7 +322,8 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
 
                 var saveclassfees = {
                     "cfid": that.cfid, "ayid": that.ayid, "clsid": "{" + _clsrights + "}", "catid": that.catid, "subcatid": that.subcatid,
-                    "fees": that.fees, "isonline": that.isonline, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "fees": that.fees, "iscompulsory": that.iscompulsory, "isonline": that.isonline,
+                    "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                     "feesinstallment": that.installmentDT, "cuid": that.loginUser.ucode, "isactive": true
                 }
 
@@ -374,6 +379,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
                 that.subcatid = viewfees[0].subcatid;
                 that.fees = viewfees[0].fees;
                 that.isonline = viewfees[0].isonline;
+                that.iscompulsory = viewfees[0].iscompulsory;
                 that.remark = viewfees[0].remark;
 
                 var _clsrights = null;

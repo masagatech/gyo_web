@@ -263,6 +263,6 @@ export class AddBooksComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/books']);
+        this._router.navigate(['/master/classbooks']);
     }
 }

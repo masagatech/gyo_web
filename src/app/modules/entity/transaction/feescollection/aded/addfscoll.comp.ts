@@ -23,6 +23,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     fclid: number = 0;
     classfees: any = "";
+    pendingfees: any = "";
     ayid: number = 0;
 
     studid: number = 0;
@@ -30,7 +31,8 @@ export class AddFeesCollectionComponent implements OnInit {
     studphoto: string = "";
     classid: number = 0;
     classname: string = "";
-    gender: string = "";
+    gndrkey: string = "";
+    gndrval: string = "";
     rollno: string = "";
 
     catid: number = 0;
@@ -39,8 +41,9 @@ export class AddFeesCollectionComponent implements OnInit {
     fees: any = "";
     receivedate: any = "";
     paymentmode: string = "";
+    chequestatus: string = "";
     chequeno: number = 0;
-    chequedate: string = "";
+    chequedate: any = null;
     remark: string = "";
     statusid: number = 0;
 
@@ -87,9 +90,11 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.studphoto = data.data[0].studphoto;
                     that.classid = data.data[0].classid;
                     that.classname = data.data[0].classname;
-                    that.gender = data.data[0].gender;
+                    that.gndrkey = data.data[0].gndrkey;
+                    that.gndrval = data.data[0].gndrval;
                     that.rollno = data.data[0].rollno;
                     that.classfees = data.data[0].classfees;
+                    that.pendingfees = data.data[0].classfees - that.totalFees();
                     that.statusid = data.data[0].statusid;
 
                     that.fillCategoryAndPaymentModeDropDown();
@@ -99,9 +104,11 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.studphoto = "";
                     that.classid = 0;
                     that.classname = "";
-                    that.gender = "";
+                    that.gndrkey = "";
+                    that.gndrval = "";
                     that.rollno = "";
                     that.classfees = "";
+                    that.pendingfees = "";
                     that.statusid = 0;
                 }
             }
@@ -214,13 +221,15 @@ export class AddFeesCollectionComponent implements OnInit {
     resetFeesCollFields() {
         var that = this;
 
+        that.fclid = 0;
         that.catid = 0;
         that.subcatid = 0;
         that.fees = 0;
         that.receivedate = "";
         that.paymentmode = "";
+        that.chequestatus = "";
         that.chequeno = 0;
-        that.chequedate = "";
+        that.chequedate = null;
         that.remark = "";
     }
 
@@ -241,10 +250,12 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
-        if (parseInt(that.catfees) < parseInt(that.fees)) {
-            that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
-            $(".fees").focus();
-            return false;
+        if (that.fclid == 0) {
+            if (parseInt(that.catfees) < parseInt(that.fees)) {
+                that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
+                $(".fees").focus();
+                return false;
+            }
         }
 
         if (that.receivedate == "") {
@@ -252,7 +263,7 @@ export class AddFeesCollectionComponent implements OnInit {
             $(".receivedate").focus();
             return false;
         }
-        
+
         if (that.paymentmode == "") {
             that._msg.Show(messageType.info, "Info", "Select Payment Mode");
             $(".paymentmode").focus();
@@ -260,12 +271,17 @@ export class AddFeesCollectionComponent implements OnInit {
         }
 
         if (that.paymentmode == "cheque") {
+            if (that.chequestatus == "") {
+                that._msg.Show(messageType.info, "Info", "Select Cheque Status");
+                $(".chequestatus").focus();
+                return false;
+            }
             if (that.chequeno == 0) {
                 that._msg.Show(messageType.info, "Info", "Enter Cheque No");
                 $(".chequeno").focus();
                 return false;
             }
-            if (that.chequedate == "") {
+            if (that.chequedate == null) {
                 that._msg.Show(messageType.info, "Info", "Enter Cheque Date");
                 $(".chequedate").focus();
                 return false;
@@ -285,10 +301,26 @@ export class AddFeesCollectionComponent implements OnInit {
             commonfun.loader();
 
             var savefeescoll = {
-                "fclid": that.fclid, "ayid": that.ayid, "clsid": that.classid, "studid": that.studid,
-                "catid": that.catid, "subcatid": that.subcatid, "fees": that.fees, "receivedate": that.receivedate,
-                "paymentmode": that.paymentmode, "chequeno": that.chequeno, "chequedate": that.chequedate,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "cuid": that.loginUser.ucode, "isactive": true
+                "fclid": that.fclid,
+                "ayid": that.ayid,
+                "clsid": that.classid,
+                "frmid": that.loginUser.uid,
+                "frmtype": that.loginUser.utype,
+                "studid": that.studid,
+                "catid": that.catid,
+                "subcatid": that.subcatid,
+                "fees": that.fees,
+                "pendfees": that.pendingfees - that.fees,
+                "receivedate": that.receivedate,
+                "paymentmode": that.paymentmode,
+                "iscomplete": that.chequestatus == "pending" ? false : true,
+                "chequeno": that.chequeno,
+                "chequedate": that.chequedate,
+                "remark": that.remark,
+                "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
+                "isactive": true
             }
 
             that._feesservice.saveFeesCollection(savefeescoll).subscribe(data => {
@@ -299,10 +331,8 @@ export class AddFeesCollectionComponent implements OnInit {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
-                        that.catid = 0;
-                        that.subcatid = 0;
-                        that.fees = 0;
-                        
+                        that.resetFeesCollFields();
+
                         that.getStudentDetails();
                         that.getFeesCollection();
                     }
@@ -325,7 +355,7 @@ export class AddFeesCollectionComponent implements OnInit {
         }
     }
 
-    // Get Class Fees
+    // Get Fees Collection
 
     getFeesCollection() {
         var that = this;
@@ -337,6 +367,42 @@ export class AddFeesCollectionComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.feesCollDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Edit Fees Collection
+
+    editFeesCollection(row) {
+        var that = this;
+        commonfun.loader();
+
+        that._feesservice.getFeesCollection({
+            "flag": "edit", "fclid": row.fclid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                that.fclid = data.data[0].fclid;
+                that.catid = data.data[0].catid;
+                that.fillSubCateogryDropDown();
+                that.subcatid = data.data[0].scatid;
+                that.fees = data.data[0].fees;
+                that.receivedate = data.data[0].receivedate;
+                that.paymentmode = data.data[0].paymentmode;
+                that.chequestatus = data.data[0].iscomplete == true ? "complete" : "pending";
+                that.chequeno = data.data[0].chequeno;
+                that.chequedate = data.data[0].chequedate;
+                that.remark = data.data[0].remark1;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

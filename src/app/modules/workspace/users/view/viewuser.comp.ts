@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 

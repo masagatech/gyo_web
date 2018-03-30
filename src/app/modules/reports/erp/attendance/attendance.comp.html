@@ -64,9 +64,10 @@
 
     <div class="row clearfix">
         <div class="col-md-12 reports">
-            <table #attendance class="table table-bordered table-responsive">
+            <table id="attendance" class="table table-bordered table-responsive">
                 <thead>
                     <tr>
+                        <th width="100px" *ngIf="psngrtype == 'student'">Enrollment No</th>
                         <th width="80px" *ngIf="psngrtype == 'student'">Roll No</th>
                         <th width="200px">{{psngrtypenm}} Name</th>
                         <th *ngFor="let atcol of attendanceColumn">
@@ -81,6 +82,9 @@
                 </thead>
                 <tbody *ngIf="attendanceDT.length">
                     <tr *ngFor="let row of attendanceDT">
+                        <td *ngIf="psngrtype == 'student'">
+                            {{row.psngrid}}
+                        </td>
                         <td *ngIf="psngrtype == 'student'">
                             {{row.rollno}}
                         </td>

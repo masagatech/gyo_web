@@ -1,10 +1,12 @@
 <div id="employee" class="hovercard" *ngFor="let row of employeeDT">
     <div class="card">
         <div class="body">
-            <img src="assets/img/coverphoto.png" onerror="this.src='assets/img/default.gif';" class="cover-img">
+            <img src="assets/img/coverphoto.png" onerror="this.src='assets/img/noimage.gif';" class="cover-img">
 
             <div class="avatar">
-                <img alt="{{row.empname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default.gif';" height="100px">
+                <img *ngIf="row.gndrkey == 'M'" alt="{{row.empname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
+                <img *ngIf="row.gndrkey == 'F'" alt="{{row.empname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
+
                 <div class="title">
                     {{row.empname}}
                 </div>

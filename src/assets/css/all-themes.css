@@ -1,6 +1,6 @@
 ﻿/* Red */
 
-.theme-red th {
+.theme-red thead th {
     background: #F44336!important;
     color: #fff!important;
 }
@@ -93,7 +93,7 @@
 
 /* Pink */
 
-.theme-pink th {
+.theme-pink thead th {
     background: #E91E63!important;
     color: #fff!important;
 }
@@ -186,7 +186,7 @@
 
 /* purple */
 
-.theme-purple th {
+.theme-purple thead th {
     background: #9C27B0!important;
     color: #fff!important;
 }
@@ -279,7 +279,7 @@
 
 /* deep-purple */
 
-.theme-deep-purple th {
+.theme-deep-purple thead th {
     background: #673AB7!important;
     color: #fff!important;
 }
@@ -380,7 +380,7 @@
 
 /* indigo */
 
-.theme-indigo th {
+.theme-indigo thead th {
     background: #3F51B5!important;
     color: #fff!important;
 }
@@ -481,7 +481,7 @@
 
 /* blue */
 
-.theme-blue th {
+.theme-blue thead th {
     background: #2196F3!important;
     color: #fff!important;
 }
@@ -582,7 +582,7 @@
 
 /* light-blue */
 
-.theme-light-blue th {
+.theme-light-blue thead th {
     background: #03A9F4!important;
     color: #fff!important;
 }
@@ -683,7 +683,7 @@
 
 /* cyan */
 
-.theme-cyan th {
+.theme-cyan thead th {
     background: #00BCD4!important;
     color: #fff!important;
 }
@@ -784,7 +784,7 @@
 
 /* teal */
 
-.theme-teal th {
+.theme-teal thead th {
     background: #009688!important;
     color: #fff!important;
 }
@@ -904,7 +904,7 @@
 
 /* green */
 
-.theme-green th {
+.theme-green thead th {
     background: #4CAF50!important;
     color: #fff!important;
 }
@@ -1005,7 +1005,7 @@
 
 /* light-green */
 
-.theme-light-green th {
+.theme-light-green thead th {
     background: #8BC34A!important;
     color: #fff!important;
 }
@@ -1106,7 +1106,7 @@
 
 /* lime */
 
-.theme-lime th {
+.theme-lime thead th {
     background: #CDDC39!important;
     color: #fff!important;
 }
@@ -1207,7 +1207,7 @@
 
 /* yellow */
 
-.theme-yellow th {
+.theme-yellow thead th {
     background: #FFEB3B!important;
     color: #fff!important;
 }
@@ -1308,7 +1308,7 @@
 
 /* amber */
 
-.theme-amber th {
+.theme-amber thead th {
     background: #FFC107!important;
     color: #fff!important;
 }
@@ -1409,7 +1409,7 @@
 
 /* orange */
 
-.theme-orange th {
+.theme-orange thead th {
     background: #FF9800!important;
     color: #fff!important;
 }
@@ -1510,7 +1510,7 @@
 
 /* deep-orange */
 
-.theme-deep-orange th {
+.theme-deep-orange thead th {
     background: #FF5722!important;
     color: #fff!important;
 }
@@ -1611,7 +1611,7 @@
 
 /* brown */
 
-.theme-brown th {
+.theme-brown thead th {
     background: #795548!important;
     color: #fff!important;
 }
@@ -1712,7 +1712,7 @@
 
 /* grey */
 
-.theme-grey th {
+.theme-grey thead th {
     background: #9E9E9E!important;
     color: #fff!important;
 }
@@ -1817,7 +1817,7 @@
 
 /* blue-grey */
 
-.theme-blue-grey th {
+.theme-blue-grey thead th {
     background: #607D8B!important;
     color: #fff!important;
 }
@@ -1918,7 +1918,7 @@
 
 /* black */
 
-.theme-black th {
+.theme-black thead th {
     background: #000!important;
     color: #fff!important;
 }

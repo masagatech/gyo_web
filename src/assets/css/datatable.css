@@ -2225,7 +2225,8 @@ button.ui-button::-moz-focus-inner {
     position: fixed;
     top: 20px;
     right: 20px;
-    width: 301px
+    width: 301px;
+    z-index: 10000000000!important;
 }
 
 .ui-growl-item-container {
@@ -4368,7 +4369,6 @@ button.ui-button::-moz-focus-inner {
 
 .ui-widget {
     font-family: "Roboto", "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 1em;
     font-size: 1em;
 }
 

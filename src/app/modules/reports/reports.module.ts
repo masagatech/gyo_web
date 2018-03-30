@@ -21,10 +21,11 @@ export const routes = [
                     { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'master', loadChildren: './master#MasterReportsModule' },
                     { path: 'transaction', loadChildren: './transaction#TransactionReportsModule' },
+                    { path: 'communication', loadChildren: './communication#CommunicationReportsModule' },
                     { path: 'transport', loadChildren: './transport#TransportReportsModule' },
 
                     { path: 'log', loadChildren: './log#LogReportsModule' },
-                    { path: 'speed', loadChildren: './speed#SpeedReportsModule' },
+                    { path: 'distance', loadChildren: './distance#DistanceReportsModule' },
                 ]
             }
         ]

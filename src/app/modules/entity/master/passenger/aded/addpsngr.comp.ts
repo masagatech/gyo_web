@@ -687,7 +687,7 @@ export class AddPassengerComponent implements OnInit {
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;
 
-                            that.gender = data.data[0].gender;
+                            that.gender = data.data[0].gndrkey;
                             that.dob = data.data[0].dob;
                             that.pickaddr = data.data[0].pickaddr;
                             that.dropaddr = data.data[0].dropaddr;

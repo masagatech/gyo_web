@@ -63,6 +63,6 @@ export class ViewRouteComponent implements OnInit {
     }
 
     public editRoutesForm(row) {
-        this._router.navigate(['/transport/route/edit', row.rtid]);
+        this._router.navigate(['/transport/route/edit', row.key.split('~')[0]]);
     }
 }

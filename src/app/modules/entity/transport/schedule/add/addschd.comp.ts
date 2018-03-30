@@ -747,6 +747,39 @@ export class AddScheduleComponent implements OnInit {
         return true;
     }
 
+    // Save Tracking
+
+    saveTrackingInfo() {
+        var that = this;
+
+        var params = {
+            "batchid": that.batchid,
+            "pdrvid": that.pickdriverid,
+            "ddrvid": that.dropdriverid,
+            "pvehid": that.pickvehicleid.split('~')[0],
+            "dvehid": that.dropvehicleid.split('~')[0],
+            "prtid": that.pickrtid,
+            "drtid": that.droprtid,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "cuid": that.loginUser.ucode
+        }
+
+        that._pickdropservice.saveTrackingInfo(params).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_trackinginfo;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+        });
+    }
+
     // Save
 
     savePickDropInfo() {
@@ -842,14 +875,15 @@ export class AddScheduleComponent implements OnInit {
 
             that._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
                 try {
-                    var dataResult = data.data;
+                    var dataResult = data.data[0].funsave_pickdropinfo;
 
-                    if (dataResult[0].funsave_pickdropinfo.msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", dataResult[0].funsave_pickdropinfo.msg);
+                    if (dataResult.msgid != "-1") {
+                        that.saveTrackingInfo();
+                        that._msg.Show(messageType.success, "Success", dataResult.msg);
                         that.resetPickDropFields();
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", dataResult[0].funsave_pickdropinfo.msg);
+                        that._msg.Show(messageType.error, "Error", dataResult.msg);
                     }
 
                     commonfun.loaderhide();

@@ -32,8 +32,10 @@
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="isenttmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="enttMenuDT.length">
-                        <i class="material-icons">add</i></a>
-                    <ul class="dropdown-menu dropdown-menu-large row">
+                        <i class="material-icons">add</i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-large row div-overflow">
                         <li class="col-md-3" *ngFor="let row of enttMenuDT | groupBy: 'pname'">
                             <ul>
                                 <li class="dropdown-header text-left">{{row.key}}</li>
@@ -49,7 +51,8 @@
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="isrptmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="reportsMenuDT.length">Reports <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-menu-large row">
+
+                    <ul class="dropdown-menu dropdown-menu-large row div-overflow">
                         <div class="col-sm-1">
                         </div>
                         <div class="col-sm-10">
@@ -78,7 +81,8 @@
                 </li>
                 <li class="dropdown dropdown-large" *ngIf="ismstmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="mastersMenuDT.length">Masters <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-menu-large row">
+
+                    <ul class="dropdown-menu dropdown-menu-large row div-overflow">
                         <li class="col-md-3" *ngFor="let row of mastersMenuDT | groupBy: 'pname'">
                             <ul>
                                 <li class="dropdown-header">{{row.key}}</li>
@@ -94,7 +98,8 @@
                 </li>
                 <li class="dropdown dropdown-large">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="adminMenuDT.length">Admin <b class="caret"></b></a>
-                    <ul class="dropdown-menu dropdown-menu-large row">
+
+                    <ul class="dropdown-menu dropdown-menu-large row div-overflow">
                         <li class="col-md-4" *ngFor="let row of adminMenuDT">
                             <ul>
                                 <li>
@@ -128,7 +133,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">
-                            <img alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default.gif';" class="pull-left" height="40px"> {{ufullname + " (" + ctypename + ")"}}
+                            <img *ngIf="gender == 'M'" alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default-male.png';" class="pull-left" height="40px">
+                            <img *ngIf="gender == 'F'" alt="{{ufullname}}" src="{{uphoto}}" onerror="this.src='assets/img/default-female.png';" class="pull-left" height="40px"> {{ufullname + " (" + ctypename + ")"}}
                             <br /><small>{{wsname}}</small>
                         </li>
                         <li class="body">

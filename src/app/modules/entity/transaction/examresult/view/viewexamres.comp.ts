@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { ExamService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 
@@ -14,18 +14,28 @@ export class ViewExamResultComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    global = new Globals();
+
     ayDT: any = [];
     classDT: any = [];
+    examTypeDT: any = [];
+
     studentDT: any = [];
     studsdata: any = [];
 
     ayid: number = 0;
     clsid: number = 0;
+    smstrid: number = 0;
 
     studid: number = 0;
     studname: string = "";
 
     examDT: any = [];
+
+    // Upload File
+
+    uploadFileDT: any = [];
+    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _examservice: ExamService) {
@@ -34,13 +44,119 @@ export class ViewExamResultComponent implements OnInit {
 
         this.fillAYAndClassDropDown();
         this.getExamResult();
+        this.getUploadConfig();
     }
 
     public ngOnInit() {
 
     }
 
-    // Fill AY And Class Drop Down
+    // Bulk Upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that.uploadfileconfig.server = that.global.serviceurl + "bulkUpload";
+        that.uploadfileconfig.serverpath = that.global.serviceurl;
+        that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
+        that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
+            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // File Upload
+
+    onBeforeUpload(event) {
+        event.formData.append("bulktype", "examresult");
+        event.formData.append("savetype", "bulk");
+        event.formData.append("wsautoid", this._enttdetails.wsautoid);
+        event.formData.append("enttid", this._enttdetails.enttid);
+        event.formData.append("ayid", this.ayid);
+        event.formData.append("clsid", this.clsid);
+        event.formData.append("smstrid", this.smstrid);
+        event.formData.append("cuid", this.loginUser.ucode);
+    }
+
+    onFileUpload(event) {
+        var that = this;
+        that.uploadFileDT = [];
+
+        var xlsfile = JSON.parse(event.xhr.response);
+        console.log(xlsfile);
+
+        if (xlsfile.status == 0) {
+            that._msg.Show(messageType.error, "Error", xlsfile.message);
+        }
+        else {
+            that.closeBulkUploadPopup();
+            that.getExamResult();
+        }
+    }
+
+    openBulkUploadPopup() {
+        if (this.ayid == 0) {
+            this._msg.Show(messageType.error, "Error", "Select Academic Year");
+        }
+        else if (this.clsid == 0) {
+            this._msg.Show(messageType.error, "Error", "Select Class");
+        }
+        else if (this.smstrid == 0) {
+            this._msg.Show(messageType.error, "Error", "Select Exam Type");
+        }
+        else {
+            $("#bulkUploadModal").modal('show');
+            this.downloadExamResultFormat("html", "single");
+        }
+    }
+
+    private downloadExamResultFormat(format, type) {
+        let that = this;
+        let params = {};
+
+        params = {
+            "flag": "download", "ayid": that.ayid, "smstrid": that.smstrid, "classid": that.clsid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": false,
+            "format": format, "type": type
+        }
+
+        if (format == "html") {
+            commonfun.loader();
+
+            that._examservice.downloadExamResult(params).subscribe(data => {
+                try {
+                    $("#divexmresrpt").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            });
+        }
+        else {
+            window.open(Common.getReportUrl("downloadExamResult", params));
+        }
+    }
+
+    closeBulkUploadPopup() {
+        $("#bulkUploadModal").modal("hide");
+    }
+
+    // Fill AY, Class And Exam Type Drop Down
 
     fillAYAndClassDropDown() {
         var that = this;
@@ -67,6 +183,7 @@ export class ViewExamResultComponent implements OnInit {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.examTypeDT = data.data.filter(a => a.group == "semester");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

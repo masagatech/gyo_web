@@ -87,43 +87,6 @@
     display: inherit;
 }
 
-
-/* Modals ====================================== */
-
-.modal .modal-header {
-    border: none;
-    /* padding: 25px 25px 5px 25px; */
-    padding: 10px;
-}
-
-.modal .modal-header .modal-title {
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.modal .modal-content {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    -ms-border-radius: 0;
-    border-radius: 0;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.31) !important;
-    border: none;
-}
-
-.modal .modal-content .modal-body {
-    color: #777;
-    /* padding: 15px 25px; */
-    padding: 10px;
-}
-
-.modal .modal-footer {
-    border: none;
-}
-
-.modal-lg {
-    width: 95%!important;
-}
-
 body.stop-scrolling {
     height: 100%;
     overflow: hidden;
@@ -2495,4 +2458,32 @@ select.selectpicker {
 .hovercard .bottom {
     padding: 0 20px;
     margin-bottom: 17px;
+}
+
+.full-width {
+    width: 100% !important;
+    margin: 30px !important;
+}
+
+.table-overflow {
+    width: 99%;
+    overflow: auto;
+}
+
+.div-overflow {
+    max-height: 500px;
+    overflow: auto;
+}
+
+.search-box {
+    border: solid 1px #ccc;
+    padding: 3px;
+    max-height: 60px!important;
+    overflow: auto;
+}
+
+.dropdown-right {
+    float: right;
+    margin: 0 5px;
+    font-size: 15px!important;
 }

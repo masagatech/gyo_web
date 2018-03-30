@@ -6,7 +6,7 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { DriverAttendanceComponent } from './rptdrvatt.comp';
-import { ReportsService } from '@services/master';
+import { ReportsService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 

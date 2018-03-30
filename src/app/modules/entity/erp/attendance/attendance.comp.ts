@@ -23,7 +23,7 @@ export class AttendanceComponent implements OnInit {
     classDT: any = [];
     classid: number = 0;
 
-    currentdate: any = "";
+    avlattnddate: any = "";
     attnddate: any = "";
 
     attendanceDT: any = [];
@@ -43,8 +43,6 @@ export class AttendanceComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getAttendanceDate();
-        this.getAttendance();
     }
 
     public ngOnInit() {
@@ -65,24 +63,12 @@ export class AttendanceComponent implements OnInit {
         return [year, month, day].join('-');
     }
 
-    getAttendanceDate() {
-        var date = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        this.currentdate = this.formatDate(today);
-        this.attnddate = this.formatDate(today);
-    }
-
-    refreshButtons() {
-        setTimeout(function () {
-            commonfun.chevronstyle();
-        }, 0);
-    }
-
     // Fill Academic Year, Class Drop Down
 
     fillDropDownList() {
         var that = this;
         var defayDT: any = [];
+        var defAttndDT: any = [];
 
         commonfun.loader();
 
@@ -102,11 +88,28 @@ export class AttendanceComponent implements OnInit {
                     else {
                         that.ayid = 0;
                     }
+                }
 
-                    that.getAttendance();
+                var date = new Date();
+                var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+                that.attnddate = that.formatDate(today);
+
+                defAttndDT = data.data.filter(a => a.group == "setattendaceday");
+
+                if (defAttndDT.length > 0) {
+                    var attndday = parseInt(defAttndDT[0].val);
+                    var setbeforedate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - attndday);
+
+                    that.avlattnddate = that.formatDate(setbeforedate);
+                }
+                else {
+                    that.avlattnddate = that.formatDate(today);
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+
+                that.getAttendance();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -261,7 +264,8 @@ export class AttendanceComponent implements OnInit {
                 "psngrid": _psngrid,
                 "psngrtype": that.psngrtype,
                 "attnddate": that.attnddate,
-                "tchrid": that.loginUser.uid,
+                "frmid": that.loginUser.uid,
+                "frmtype": that.loginUser.utype,
                 "status": "a",
                 "ayid": that.ayid,
                 "classid": that.classid,

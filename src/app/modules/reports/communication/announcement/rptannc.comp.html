@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <h4>Announcement</h4>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Group <strong>*</strong></label>
+                        <select id="grpid" name="grpname" [(ngModel)]="grpid" class="form-control grpname" tabindex="1">
+                            <option [value]="0">Select Group</option>
+                            <option *ngFor="let row of groupDT" [value]="row.id">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">From  Date <strong>*</strong></label>
+                        <input type="date" name="frmdt" [(ngModel)]="frmdt" class="form-control frmdt" tabindex="2" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">To  Date <strong>*</strong></label>
+                        <input type="date" name="todt" [(ngModel)]="todt" class="form-control todt" tabindex="3" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-sm" (click)="getAnnouncementReports('html')">Get</button>
+                    <button type="button" class="btn btn-theme btn-sm" (click)="resetAnnouncementReports()">Reset</button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getAnnouncementReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getAnnouncementReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div id="divannouncement">
+        </div>
+    </div>
+</div>

@@ -104,7 +104,7 @@ export class HolidayReportsComponent implements OnInit, OnDestroy {
                     that.psngrtypenm = 'Student';
                 }
                 else if (that.psngrtype == "teacher") {
-                    that.psngrtypenm = 'employee';
+                    that.psngrtypenm = 'Teacher';
                 }
                 else if (that.psngrtype == "employee") {
                     that.psngrtypenm = 'Employee';

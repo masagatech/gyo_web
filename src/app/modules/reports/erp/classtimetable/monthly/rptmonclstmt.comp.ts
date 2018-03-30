@@ -39,7 +39,6 @@ export class MonthlyClassTimeTableReportsComponent implements OnInit, OnDestroy 
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getMonthlyClassTimeTable();
     }
 
     public ngOnInit() {
@@ -71,7 +70,6 @@ export class MonthlyClassTimeTableReportsComponent implements OnInit, OnDestroy 
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getMonthlyClassTimeTable();
                     }
                     else {
                         that.ayid = 0;

@@ -6,7 +6,6 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { AddAdmissionComponent } from './aded/addadmsn.comp';
-import { UploadAdmissionComponent } from './upload/uploadadmsn.comp';
 import { ViewAdmissionComponent } from './view/viewadmsn.comp';
 
 import { AdmissionService } from '@services/erp';
@@ -24,10 +23,6 @@ export const routes = [
         data: { "module": "erp", "submodule": "admsn", "rights": "view", "urlname": "student" }
       },
       {
-        path: 'upload', component: UploadAdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "admsn", "rights": "upload", "urlname": "upload" }
-      },
-      {
         path: 'admission', component: AddAdmissionComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "admsn", "rights": "add", "urlname": "admission" }
       },
@@ -42,7 +37,6 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    UploadAdmissionComponent,
     AddAdmissionComponent,
     ViewAdmissionComponent
   ],

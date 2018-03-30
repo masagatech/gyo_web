@@ -535,7 +535,7 @@ export class AddUserComponent implements OnInit {
                         that.upwd = data.data[0].upwd;
                         that.fname = data.data[0].fname;
                         that.lname = data.data[0].lname;
-                        that.gender = data.data[0].gender;
+                        that.gender = data.data[0].gndrkey;
                         that.dob = data.data[0].dob;
                         that.utype = data.data[0].utype;
                         that.isAllEnttRights = data.data[0].isallenttrights;

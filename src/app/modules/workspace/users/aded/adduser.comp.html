@@ -142,7 +142,8 @@
                             <div *ngFor="let file of uploadPhotoDT">
                                 <div class="row clearfix">
                                     <div class="col-md-9">
-                                        <img src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default.gif';" height="40px" />
+                                        <img *ngIf="gender == 'M'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="40px">
+                                        <img *ngIf="gender == 'F'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="40px">
                                     </div>
                                     <div class="col-md-3">
                                         <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">

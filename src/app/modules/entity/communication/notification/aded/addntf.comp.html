@@ -1,0 +1,147 @@
+<div class="card">
+    <div class="header">
+        <h4>Send Notification</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveNotification()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Group <strong>*</strong></label>
+                        <select id="grpid" name="grpname" [(ngModel)]="grpid" class="form-control grpname" tabindex="1">
+                            <option [value]="0">Select Group</option>
+                            <option *ngFor="let row of groupDT" [value]="row.id">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong> (250 Character Limit)</label>
+                        <input [(ngModel)]="title" class="form-control ntf-title" tabindex="2" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Message <strong>*</strong></label>
+                        <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="250" tabindex="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="isvaildsendsms">
+                    <div class="col-md-12">
+                        <input id="issendsms" name="issendsms" [(ngModel)]="issendsms" type="checkbox" class="filled-in">
+                        <label for="issendsms">Send SMS</label>
+                    </div>
+                </div>
+
+                {{smshead}}
+
+                <div class="row clearfix" *ngIf="isvaildsendsms">
+                    <div class="col-md-12">
+                        <span>Total SMS Pack : </span> {{smspack}}<br />
+                        <span>Used SMS : </span> {{usedsms}}<br />
+                        <span>Pending SMS : </span> {{pendingsms}}<br />
+                    </div>
+                </div>
+
+                <hr class="hr" />
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <input id="issendemail" name="issendemail" [(ngModel)]="issendemail" type="checkbox" class="filled-in">
+                        <label for="issendemail">Send Email</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Send By <strong>*</strong></label><br />
+
+                        <div class="row clearfix">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input id="issendparents" name="issendparents" [(ngModel)]="issendparents" type="checkbox" class="filled-in">
+                                    <label for="issendparents">Parents</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input id="issendteacher" name="issenissendteacherdemail" [(ngModel)]="issendteacher" (change)="selectTeacherSendTypeCheckboxes()" type="checkbox" class="filled-in">
+                                    <label for="issendteacher">Teacher</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <div class="row clearfix" *ngIf="teacherDT.length">
+                            <div id="divselectteacher" class="col-md-12 hide">
+                                <div class="form-group">
+                                    <input id="selectallteacher" name="selectallteacher" type="checkbox" (change)="selectAndDeselectAllTeacherCheckboxes()" class="filled-in">
+                                    <label for="selectallteacher">Select All Teacher</label>
+                                </div>
+                            </div>
+                            <div id="divteacher" class="col-md-12 hide">
+                                <div class="allteachercheckboxes">
+                                    <div class="row clearfix">
+                                        <div class="col-md-4" *ngFor="let row of teacherDT; let i = index;">
+                                            <div class="form-group">
+                                                <span id="tchr{{row.id}}">
+                                                    <input id="t{{row.id}}" name="tchr{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                    <label for="t{{row.id}}">{{row.val}}</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!teacherDT.length">
+                            No any Teacher on this school !!!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="standardDT.length">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectallstandard" name="selectallstandard" type="checkbox" (change)="selectAndDeselectAllStandardCheckboxes()" class="filled-in">
+                            <label for="selectallstandard">Select All Standard</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="allstandardcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of standardDT; let i = index;">
+                                    <div class="form-group">
+                                        <span id="std{{row.id}}">
+                                            <input id="s{{row.id}}" name="std{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                            <label for="s{{row.id}}">{{row.val}}</label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

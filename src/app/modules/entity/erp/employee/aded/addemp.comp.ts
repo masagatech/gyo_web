@@ -366,7 +366,7 @@ export class AddEmployeeComponent implements OnInit {
         that.birthplace = "";
         that.nationality = "";
         that.licenseno = "";
-        
+
         that.salary = "";
         that.salarymode = "";
         that.doj = "";
@@ -380,7 +380,7 @@ export class AddEmployeeComponent implements OnInit {
         that.address = "";
         that.lat = "";
         that.lon = "";
-        
+
         that.address = that._enttdetails.address;
         that.lat = that._enttdetails.lat;
         that.lon = that._enttdetails.lon;
@@ -391,7 +391,7 @@ export class AddEmployeeComponent implements OnInit {
         that.fillAreaDropDown();
         that.area = that._enttdetails.arid;
         that.pincode = that._enttdetails.pincode;
-        that.chooseLabel = "Upload Employee Photo";
+        that.chooseLabel = "Upload " + that.psngrtypenm + " Photo";
     }
 
     // Save Data
@@ -400,7 +400,7 @@ export class AddEmployeeComponent implements OnInit {
         var that = this;
 
         if (that.empcode == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Employee Code");
+            that._msg.Show(messageType.error, "Error", "Enter " + that.psngrtypenm + " Code");
             $(".empcode").focus();
             return false;
         }
@@ -410,7 +410,7 @@ export class AddEmployeeComponent implements OnInit {
             return false;
         }
         if (that.empname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Employee Name");
+            that._msg.Show(messageType.error, "Error", "Enter " + that.psngrtypenm + " Name");
             $(".empname").focus();
             return false;
         }
@@ -466,7 +466,7 @@ export class AddEmployeeComponent implements OnInit {
             $(".address").focus();
             return false;
         }
-        
+
         return true;
     }
 
@@ -497,7 +497,7 @@ export class AddEmployeeComponent implements OnInit {
                 "salarymode": that.salarymode,
                 "salary": that.salary,
                 "aboutus": that.aboutus,
-                
+
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
                 "email1": that.email1,
@@ -582,19 +582,19 @@ export class AddEmployeeComponent implements OnInit {
 
                         if (data.data[0].empphoto !== "") {
                             that.uploadPhotoDT.push({ "athurl": data.data[0].empphoto });
-                            that.chooseLabel = "Change Employee Photo";
+                            that.chooseLabel = "Change " + that.psngrtypenm + " Photo";
                         }
                         else {
-                            that.chooseLabel = "Upload Employee Photo";
+                            that.chooseLabel = "Upload " + that.psngrtypenm + " Photo";
                         }
 
-                        that.gender = _empdata[0].gender;
+                        that.gender = _empdata[0].gndrkey;
                         that.birthplace = _empdata[0].birthplace;
                         that.nationality = _empdata[0].nationality;
                         that.dob = _empdata[0].dob;
                         that.aadharno = _empdata[0].aadharno;
                         that.licenseno = _empdata[0].licenseno;
-                        
+
                         that.emptype = _empdata[0].emptype;
                         that.doj = _empdata[0].doj;
                         that.noticedays = _empdata[0].noticedays;

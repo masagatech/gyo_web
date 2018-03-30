@@ -29,6 +29,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
     attendanceColumn: any = [];
     attendanceDT: any = [];
+    exportAttendanceDT: any = [];
 
     statusid: number = 0;
     status: string = "";
@@ -149,7 +150,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         that._attndservice.getAttendance({ "flag": "column", "attndmonth": that.attndmonth }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attendanceColumn = data.data;
-                that.getAttendanceReports();
+                that.getAttendanceReports("reports");
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -157,7 +158,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getAttendanceReports() {
+    getAttendanceReports(rpttyp) {
         var that = this;
         var params = {};
 
@@ -186,7 +187,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             }
 
             params = {
-                "flag": "reports", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "flag": rpttyp, "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
                 "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attndmonth": that.attndmonth,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
             }
@@ -194,12 +195,19 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             that._attndservice.getAttendance(params).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
-                        that.attendanceDT = data.data;
-                        that.statusid = data.data[0].statusid;
-                        that.status = data.data[0].status;
+                        if (rpttyp == "export") {
+                            that.exportAttendanceDT = data.data;
+                            that._autoservice.exportToCSV(that.exportAttendanceDT, that.psngrtypenm + " Attendance Reports");
+                        }
+                        else {
+                            that.attendanceDT = data.data;
 
-                        if (that.statusid == 0 && that.status != "lv") {
-                            that.statusdesc = data.data[0].statusdesc;
+                            that.statusid = data.data[0].statusid;
+                            that.status = data.data[0].status;
+
+                            if (that.statusid == 0 && that.status != "lv") {
+                                that.statusdesc = data.data[0].statusdesc;
+                            }
                         }
                     }
                     else {
@@ -237,19 +245,31 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     }
 
     public exportToCSV() {
-        this._autoservice.exportToCSV(this.attendanceDT, this.psngrtypenm + " Attendance Reports");
+        this.getAttendanceReports("export");
     }
 
     public exportToPDF() {
-        let pdf = new jsPDF();
-
-        let options = {
-            pagesplit: true
+        var specialElementHandlers = {
+            '#editor': function (element, renderer) { return true; }
         };
 
-        pdf.addHTML(this.attendance.nativeElement, 0, 0, options, () => {
-            pdf.save(this.psngrtypenm + " Attendance Reports.pdf");
+        var doc = new jsPDF();
+
+        doc.fromHTML($('#attendance').html(), 15, 15, {
+            'width': 500, 'elementHandlers': specialElementHandlers
         });
+
+        doc.save(this.psngrtypenm + " Attendance Reports.pdf");
+
+        // let pdf = new jsPDF();
+
+        // let options = {
+        //     pagesplit: true
+        // };
+
+        // pdf.addHTML(this.attendance.nativeElement, 0, 0, options, () => {
+        //     pdf.save(this.psngrtypenm + " Attendance Reports.pdf");
+        // });
     }
 
     public ngOnDestroy() {

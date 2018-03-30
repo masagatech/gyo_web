@@ -22,6 +22,9 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
+    ayDT: any = [];
+    ayid: number = 0;
+
     classDT: any = [];
     classid: number = 0;
 
@@ -32,13 +35,17 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     studentDT: any = [];
 
-    filename: string = "";
+    // Upload File
 
+    uploadFileDT: any = [];
+    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.getUploadConfig();
         this.fillDropDownList();
         this.viewStudentDataRights();
     }
@@ -52,6 +59,52 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    // Bulk Upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that.uploadfileconfig.server = that.global.serviceurl + "bulkUpload";
+        that.uploadfileconfig.serverpath = that.global.serviceurl;
+        that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
+        that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
+            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // File Upload
+
+    onBeforeUpload(event) {
+        event.formData.append("bulktype", "student");
+        event.formData.append("wsautoid", this._enttdetails.wsautoid);
+        event.formData.append("enttid", this._enttdetails.enttid);
+        event.formData.append("ayid", this.ayid);
+        event.formData.append("cuid", this.loginUser.ucode);
+    }
+
+    onFileUpload(event) {
+        var that = this;
+        that.uploadFileDT = [];
+
+        var xlsfile = JSON.parse(event.xhr.response);
+        console.log(xlsfile);
+
+        if (xlsfile.status == 0) {
+            that._msg.Show(messageType.error, "Error", xlsfile.message);
+        }
+        else {
+            that.closeBulkUploadPopup();
+            that.getStudentDetails();
+        }
     }
 
     isshStudent(viewtype) {
@@ -114,6 +167,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     fillDropDownList() {
         var that = this;
+        var defayDT: any = [];
+
         commonfun.loader();
 
         that._admsnservice.getStudentDetails({
@@ -122,6 +177,18 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.classDT = data.data.filter(a => a.group === "class");
+                that.ayDT = data.data.filter(a => a.group == "ay");
+
+                if (that.ayDT.length > 0) {
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].key;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -202,6 +269,14 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     public editAdmissionForm(row) {
         this._router.navigate(['/erp/student/edit', row.enrlmntid]);
+    }
+
+    openBulkUploadPopup() {
+        $("#bulkUploadModal").modal('show');
+    }
+
+    closeBulkUploadPopup() {
+        $("#bulkUploadModal").modal("hide");
     }
 
     public ngOnDestroy() {

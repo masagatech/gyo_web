@@ -47,6 +47,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     paramsid: number = 0;
     enrlmntid: number = 0;
     autoid: number = 0;
+    grno: number = 0;
     fname: string = "";
     mname: string = "";
     lname: string = "";
@@ -787,6 +788,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 "prspctno": that.prspctno,
 
                 "enrlmntid": that.enrlmntid,
+                "grno": that.grno,
                 "autoid": that.autoid,
                 "fname": that.fname,
                 "mname": that.mname,
@@ -948,6 +950,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }
 
         that.enrlmntid = 0;
+        that.grno = 0;
         that.rollno = 0;
 
         that.dob = "";
@@ -1093,6 +1096,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     }
 
                     that.enrlmntid = that.studentDT[0].enrlmntid;
+                    that.grno = that.studentDT[0].grno;
                     that.autoid = that.studentDT[0].autoid;
                     that.fname = that.studentDT[0].fname;
                     that.mname = that.studentDT[0].mname;
@@ -1101,7 +1105,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.classid = that.studentDT[0].classid;
                     that.rollno = that.studentDT[0].rollno;
                     that.boardid = that.studentDT[0].boardid;
-                    that.gender = that.studentDT[0].gender;
+                    that.gender = that.studentDT[0].gndrkey;
                     that.dob = that.studentDT[0].dob;
                     that.birthplace = that.studentDT[0].birthplace;
                     that.otherinfo = that.studentDT[0].otherinfo;
