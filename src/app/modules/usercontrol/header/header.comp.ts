@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ufullname: string = "";
   ctypename: string = "";
+  gender: string = "";
   uphoto: string = "";
 
   @Input() wsname: string = "";
@@ -108,6 +109,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getHeaderDetails() {
     this.ufullname = this.loginUser.fullname;
     this.ctypename = this.loginUser.ctypename;
+    this.gender = this.loginUser.gndrkey;
     this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
 
     if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
