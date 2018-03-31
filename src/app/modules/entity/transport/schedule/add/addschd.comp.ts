@@ -596,6 +596,8 @@ export class AddScheduleComponent implements OnInit {
                     }
 
                     if (pickdata.length !== 0) {
+                        that.pickfromdate = pickdata[0].frmdt;
+                        that.picktodate = pickdata[0].todt;
                         that.pickdriverid = pickdata[0].driverid;
                         that.pickvehicleid = pickdata[0].vehicleno;
                         that.pickpsngrtype = pickdata[0].psngrtype;
@@ -606,6 +608,8 @@ export class AddScheduleComponent implements OnInit {
                         that.ispickup = pickdata[0].isactive;
                     }
                     else {
+                        that.pickfromdate = "";
+                        that.picktodate = "";
                         that.pickdriverid = 0;
                         that.pickvehicleid = "";
                         that.pickpsngrtype = "bypsngr";
@@ -625,6 +629,8 @@ export class AddScheduleComponent implements OnInit {
                     }
 
                     if (dropdata.length !== 0) {
+                        that.dropfromdate = pickdata[0].frmdt;
+                        that.droptodate = pickdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropvehicleid = dropdata[0].vehicleno;
                         that.droppsngrtype = dropdata[0].psngrtype;
@@ -634,6 +640,8 @@ export class AddScheduleComponent implements OnInit {
                         that.isdrop = dropdata[0].isactive;
                     }
                     else {
+                        that.dropfromdate = "";
+                        that.droptodate = "";
                         that.dropdriverid = 0;
                         that.dropvehicleid = "";
                         that.droppsngrtype = "bypsngr";
@@ -780,7 +788,7 @@ export class AddScheduleComponent implements OnInit {
         });
     }
 
-    // Save
+    // Save Schedule
 
     savePickDropInfo() {
         var that = this;
