@@ -13,7 +13,7 @@ export class Globals {
 
     serviceurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/goyoapi/";
     uploadurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/images/";
-    
+
     static socketurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/";
 
     static reporturl: string = "http://" + Globals.weburl + ":8085/";
@@ -25,10 +25,10 @@ export class Globals {
     // xlsfilepath: string = "www/uploads/bulkupload/";
 
     static trkserv :string = "127.0.0.1"
-    //static trkserv :string = "35.154.114.229"
+    // static trkserv: string = "35.154.114.229"
 
-    static socketurl_trk: string = "http://"+ Globals.trkserv+":6979/";
-    trackurl_trk: string = "http://"+ Globals.trkserv+":6979/goyoapi/";
+    static socketurl_trk: string = "http://" + Globals.trkserv + ":6979/";
+    trackurl_trk: string = "http://" + Globals.trkserv + ":6979/goyoapi/";
 
     otherurl: string = "http://35.154.27.42:8081/goyoapi/";
 

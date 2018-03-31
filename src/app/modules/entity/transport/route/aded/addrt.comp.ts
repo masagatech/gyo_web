@@ -32,6 +32,9 @@ export class AddRouteComponent implements OnInit {
     rtid: number = 0;
     rtname: string = "";
 
+    stopsTypeDT: any = [];
+    stptype: string = "";
+
     stpid: number = 0;
     stpname: string = "";
     address: string = "";
@@ -54,6 +57,8 @@ export class AddRouteComponent implements OnInit {
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.fillDropDownList();
     }
 
     public ngOnInit() {
@@ -256,6 +261,30 @@ export class AddRouteComponent implements OnInit {
         })
     }
 
+    // Fill Stops DropDown List
+
+    fillDropDownList() {
+        var that = this;
+        commonfun.loader();
+
+        that._rtservice.getStopsDetails({ "flag": "dropdown" }).subscribe(data => {
+            try {
+                that.stopsTypeDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Get Route Edit
 
     editRoutes() {
@@ -343,16 +372,13 @@ export class AddRouteComponent implements OnInit {
         this.rtid = 0;
         this.rtname = "";
 
-        this.stpid = 0;
-        this.stpname = "";
-        this.address = "";
-        this.lat = "";
-        this.lon = "";
+        this.resetStopsFields();
     }
 
     resetStopsFields() {
         this.stpid = 0;
         this.stpname = "";
+        this.stptype = "";
         this.address = "";
         this.lat = "";
         this.lon = "";
@@ -386,6 +412,9 @@ export class AddRouteComponent implements OnInit {
         else if (that.stpname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Stops Name");
         }
+        else if (that.stptype == "") {
+            that._msg.Show(messageType.error, "Error", "Select Stops Type");
+        }
         else if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
         }
@@ -401,6 +430,7 @@ export class AddRouteComponent implements OnInit {
                     "rowid": "t" + _rowid,
                     "stpid": that.stpid,
                     "stpname": that.stpname,
+                    "stptype": that.stptype,
                     "address": that.address,
                     "lat": that.lat,
                     "lon": that.lon,
@@ -460,6 +490,7 @@ export class AddRouteComponent implements OnInit {
         this.selectedStops = row;
         this.stpid = row.stpid;
         this.stpname = row.stpname;
+        this.stptype = row.stptype;
         this.address = row.address;
         this.lat = row.lat;
         this.lon = row.lon;
@@ -478,6 +509,7 @@ export class AddRouteComponent implements OnInit {
         this.isedit = false;
         this.selectedStops.stpid = this.stpid;
         this.selectedStops.stpname = this.stpname;
+        this.selectedStops.stptype = this.stptype;
         this.selectedStops.address = this.address;
         this.selectedStops.lat = this.lat;
         this.selectedStops.lon = this.lon;
@@ -546,6 +578,7 @@ export class AddRouteComponent implements OnInit {
                 _stopsList.push({
                     "stpid": _slrow.stpid,
                     "stpname": _slrow.stpname,
+                    "stptype": _slrow.stptype,
                     "address": _slrow.address,
                     "geoloc": (_slrow.lat == "" ? "0.00" : _slrow.lat) + "," + (_slrow.lon == "" ? "0.00" : _slrow.lon),
                     "radius": _slrow.radius,

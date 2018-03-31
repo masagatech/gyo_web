@@ -19,7 +19,6 @@
     </div>
 
     <div class="body">
-
         <div class="row clearfix">
             <div class="col-md-4 border">
                 <div class="row clearfix">
@@ -27,29 +26,42 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Route Name <strong>*</strong></label>
-                                <select id="rtid" [(ngModel)]="rtid" id="ddlRoutes" class="form-control rtid" tabindex="2" (ngModelChange)="getStopsByRoute()">
-                                            <option [value]="0">Select Route</option>
-                                            <option *ngFor="let row of routesDT" [value]="row.key">
-                                                {{row.value}}
-                                            </option>
-                                        </select>
+                                <select id="rtid" [(ngModel)]="rtid" class="form-control rtid" tabindex="1" (ngModelChange)="getStopsByRoute()">
+                                    <option [value]="0">Select Route</option>
+                                    <option *ngFor="let row of routesDT" [value]="row.key">
+                                        {{row.value}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2" style="padding-top: 20px">
                         <div class="form-group">
                             <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid == 0">
-                                        <span class="material-icons">add</span>
-                                    </button>
+                                <span class="material-icons">add</span>
+                            </button>
                             <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
-                                        <span class="material-icons">edit</span>
-                                    </button>
+                                <span class="material-icons">edit</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Stops Type <strong>*</strong></label>
+                                <select id="stptype" [(ngModel)]="stptype" class="form-control stptype" tabindex="2">
+                                    <option [value]="''">Select Stops Type</option>
+                                    <option *ngFor="let row of stopsTypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Stops Name <strong>*</strong></label>
@@ -57,6 +69,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="row clearfix">
                     <div class="col-md-12">
                         <div id="address" class="form-group">
                             <div class="form-line">
@@ -64,8 +79,10 @@
                                 <textarea [(ngModel)]="address" placeholder="Enter Address and Press Tab Or Drag map marker to set location" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="4" (keydown.tab)="getLatAndLon()"></textarea>
                             </div>
                         </div>
-                        {{radius}}
                     </div>
+                </div>
+
+                <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
@@ -81,6 +98,19 @@
                                 <input type="text" [(ngModel)]="lon" class="form-control lon" maxlength="50" tabindex="6" />
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Radius</label>
+                                <input type="text" [(ngModel)]="radius" class="form-control radius" maxlength="50" tabindex="7" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div *ngIf="!isedit">
                             <div class="form-group" align="right">
                                 <button type="button" class="btn btn-theme btn-xs" (click)="addStopsList()">
@@ -111,15 +141,15 @@
             <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [styleClass]="'pliststop'" [style]="{'width':'100%'}" [listStyle]="{'height':'auto', 'width':'auto'}" [responsive]="true" header="Stops">
                 <ng-template let-stops pTemplate="editor">
                     <div class="row clearfix">
-                        <div class="col-md-1">
-                            <div class="ui-helper-clearfix">
-                                <input id="{{stops.rowid}}" name="{{stops.rowid}}" [(ngModel)]="stops.isviewmap" (ngModelChange)="isViewMapShow(stops)" type="checkbox" class="filled-in">
-                                <label for="{{stops.rowid}}"></label>
-                            </div>
-                        </div>
                         <div class="col-md-2">
                             <div class="ui-helper-clearfix">
-                                {{stops.stpname}}
+                                <input id="{{stops.rowid}}" name="{{stops.rowid}}" [(ngModel)]="stops.isviewmap" (ngModelChange)="isViewMapShow(stops)" type="checkbox" class="filled-in">
+                                <label for="{{stops.rowid}}">{{stops.stpname}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="ui-helper-clearfix">
+                                {{stops.stptypenm}}
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -144,7 +174,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-md-1" align="right">
+                        <div class="col-md-1">
                             <div class="ui-helper-clearfix">
                                 <button type="button" class="btn btn-danger btn-xs" (click)="deleteStopsList(stops)">
                                     <i class="material-icons">delete</i>
