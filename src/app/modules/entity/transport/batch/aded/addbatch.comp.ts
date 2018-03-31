@@ -276,10 +276,11 @@ export class AddBatchComponent implements OnInit {
 
     getBatchDetails() {
         var that = this;
-        commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
+                commonfun.loader();
+        
                 that.batchid = params['id'];
                 that.getWorkingDay();
 
