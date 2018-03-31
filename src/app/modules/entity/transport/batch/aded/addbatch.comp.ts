@@ -20,9 +20,6 @@ export class AddBatchComponent implements OnInit {
     batchid: number = 0;
     batchcode: string = "";
     batchname: string = "";
-
-    fromtime: any = "";
-    totime: any = "";
     instruction: string = "";
 
     weekDT: any = [];
@@ -40,42 +37,70 @@ export class AddBatchComponent implements OnInit {
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 100);
-
         this.getBatchDetails();
     }
 
-    public onUploadError(event) {
-    }
+    getWorkingDay() {
+        let that = this;
 
-    public onUploadSuccess(event) {
-    }
-
-    getWeekList() {
-        var that = this;
-        commonfun.loader();
-
-        that._batchservice.getBatchDetails({
-            "flag": "dropdown",
+        this._batchservice.getBatchDetails({
+            "flag": "wkday",
+            "batchid": that.batchid,
             "schid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
-            try {
-                that.weekDT = data.data;
+            that.weekDT = data.data;
+
+            for (var i = 0; i < data.data.length; i++) {
+                var wkflds = data.data[i];
+                that.selectWeekRow(wkflds);
             }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
         }, () => {
+            // console.log("Complete");
+        });
+    }
 
-        })
+    selectWeekRow(wkrow) {
+        if (!wkrow.isopen) {
+            $(".pft" + wkrow.name).prop("disabled", "disabled");
+            $(".ptt" + wkrow.name).prop("disabled", "disabled");
+            $(".dft" + wkrow.name).prop("disabled", "disabled");
+            $(".dtt" + wkrow.name).prop("disabled", "disabled");
+        }
+        else {
+            $(".pft" + wkrow.name).removeAttr("disabled");
+            $(".ptt" + wkrow.name).removeAttr("disabled");
+            $(".dft" + wkrow.name).removeAttr("disabled");
+            $(".dtt" + wkrow.name).removeAttr("disabled");
+        }
+    }
+
+    copyAcrossRow() {
+        var selectedWeekDT = [];
+
+        selectedWeekDT = this.weekDT.filter(a => a.isopen == true);
+
+        if (selectedWeekDT.length == 0) {
+            this._msg.Show(messageType.error, "Error", "Select Atleast 1 Row");
+        }
+        else {
+            if (selectedWeekDT[0].pickfrmtm == "" || selectedWeekDT[0].picktotm == "") {
+                this._msg.Show(messageType.error, "Error", "Fill Atleast 1 Row");
+            }
+            else {
+                for (var i = 0; i < this.weekDT.length; i++) {
+                    var wkflds = this.weekDT[i];
+
+                    wkflds.isopen = selectedWeekDT[0].isopen;
+                    wkflds.pickfrmtm = selectedWeekDT[0].pickfrmtm;
+                    wkflds.picktotm = selectedWeekDT[0].picktotm;
+                    wkflds.dropfrmtm = selectedWeekDT[0].dropfrmtm;
+                    wkflds.droptotm = selectedWeekDT[0].droptotm;
+                }
+            }
+        }
     }
 
     // Active / Deactive Data
@@ -107,7 +132,7 @@ export class AddBatchComponent implements OnInit {
         }, err => {
             console.log(err);
         }, () => {
-            
+
         });
     }
 
@@ -117,49 +142,98 @@ export class AddBatchComponent implements OnInit {
         this.batchid = 0;
         this.batchcode = "";
         this.batchname = "";
-        this.fromtime = "";
-        this.totime = "";
         this.instruction = "";
+        this.getWorkingDay();
     }
 
     // Save Data
 
-    saveBatchInfo() {
-        var that = this;
+    isValidBatch() {
+        let that = this;
 
         if (that.batchcode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Batch Code");
             $(".batchcode").focus();
+            return false;
         }
         else if (that.batchname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Batch Name");
             $(".batchname").focus();
+            return false;
         }
-        else if (that.fromtime == "") {
-            that._msg.Show(messageType.error, "Error", "Enter From Time");
-            $(".fromtime").focus();
+
+        for (var i = 0; i < that.weekDT.length; i++) {
+            var selectedweeklist = that.weekDT.filter(a => a.isopen);
+            var _weeklist = that.weekDT[i];
+
+            if (selectedweeklist.length == 0) {
+                that._msg.Show(messageType.error, "Error", "Select Atleast 1 Working Days");
+                $("." + _weeklist.name).focus();
+                return false;
+            }
+            else {
+                if (_weeklist.isopen) {
+                    if (_weeklist.pickfrmtm == null || _weeklist.pickfrmtm == "") {
+                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Pickup From Time");
+                        $(".pft" + _weeklist.name).focus();
+                        return false;
+                    }
+                    
+                    if (_weeklist.picktotm == null || _weeklist.picktotm == "") {
+                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Pickup To Time");
+                        $(".ptt" + _weeklist.name).focus();
+                        return false;
+                    }
+                    
+                    if (_weeklist.dropfrmtm == null || _weeklist.dropfrmtm == "") {
+                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Drop From Time");
+                        $(".dft" + _weeklist.name).focus();
+                        return false;
+                    }
+                    
+                    if (_weeklist.droptotm == null || _weeklist.droptotm == "") {
+                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Drop To Time");
+                        $(".dtt" + _weeklist.name).focus();
+                        return false;
+                    }
+                    
+                    if (_weeklist.pickfrmtm > _weeklist.picktotm) {
+                        that._msg.Show(messageType.error, "Error", "Sholuld Be " + _weeklist.name + " Pickup To Time Greater Than Pickup From Time");
+                        $(".picktotm" + _weeklist.name).focus();
+                        return false;
+                    }
+                    
+                    if (_weeklist.dropfrmtm > _weeklist.droptotm) {
+                        that._msg.Show(messageType.error, "Error", "Sholuld Be " + _weeklist.name + " Drop To Time Greater Than Drop From Time");
+                        $(".droptotm" + _weeklist.name).focus();
+                        return false;
+                    }
+                }
+            }
         }
-        else if (that.totime == "") {
-            that._msg.Show(messageType.error, "Error", "Enter To Time");
-            $(".totime").focus();
-        }
-        else if (that.selectedWeek.length == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Week");
-        }
-        else {
+
+        return true;
+    }
+
+    saveBatchInfo() {
+        var that = this;
+
+        var isvalidbtc = that.isValidBatch();
+
+        if (isvalidbtc) {
             commonfun.loader();
+
+            var selectedweeklist = that.weekDT.filter(a => a.isopen);
 
             var savebatch = {
                 "autoid": that.batchid,
                 "batchcode": that.batchcode,
                 "batchname": that.batchname,
-                "schoolid": that._enttdetails.enttid,
-                "fromtime": that.fromtime,
-                "totime": that.totime,
-                "cuid": that.loginUser.ucode,
-                "wsautoid": that._enttdetails.wsautoid,
+                "weekdtls": selectedweeklist,
                 "instruction": that.instruction,
-                "weekallow": that.selectedWeek,
+                "cuid": that.loginUser.ucode,
+                "schoolid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
@@ -207,6 +281,7 @@ export class AddBatchComponent implements OnInit {
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 that.batchid = params['id'];
+                that.getWorkingDay();
 
                 that._batchservice.getBatchDetails({
                     "flag": "edit",
@@ -217,11 +292,7 @@ export class AddBatchComponent implements OnInit {
                         that.batchid = data.data[0].autoid;
                         that.batchcode = data.data[0].batchcode;
                         that.batchname = data.data[0].batchname;
-                        that.getWeekList();
-                        that.fromtime = data.data[0].fromtime;
-                        that.totime = data.data[0].totime;
                         that.instruction = data.data[0].instruction;
-                        that.selectedWeek = data.data[0].weekallow !== null ? data.data[0].weekallow : [];
                         that.isactive = data.data[0].isactive;
                         that.mode = data.data[0].mode;
                     }
@@ -238,7 +309,6 @@ export class AddBatchComponent implements OnInit {
                 })
             }
             else {
-                that.getWeekList();
                 that.resetBatchFields();
             }
         });
