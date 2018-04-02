@@ -6,7 +6,7 @@ export class Globals {
     xlsid: number = 24;
 
     // static weburl: string = "school.goyo.in"; 
-    //static weburl: string = "track.goyo.in";
+    // static weburl: string = "track.goyo.in";
 
     static weburl: string = window.location.hostname;
     static port: string = "8082";
@@ -15,7 +15,6 @@ export class Globals {
     uploadurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/images/";
 
     static socketurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/";
-
     static reporturl: string = "http://" + Globals.weburl + ":8085/";
 
     filepath: string = "www\\uploads\\";

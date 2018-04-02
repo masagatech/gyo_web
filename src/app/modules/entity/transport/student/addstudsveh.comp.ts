@@ -18,9 +18,9 @@ export class AddStudentVehicleComponent implements OnInit {
     _enttdetails: any = [];
 
     autoStudentDT: any = [];
-    studsdata: any = [];
     studid: number = 0;
     studname: string = "";
+    selectedStudent: any = {};
 
     ayDT: any = [];
     alertDT: any = [];
@@ -429,27 +429,27 @@ export class AddStudentVehicleComponent implements OnInit {
             $(".ayname").focus();
             return false;
         }
-        else if (that.studname == "") {
+        if (that.studname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Student Name");
-            $(".studname").focus();
+            $(".studname input").focus();
             return false;
         }
-        else if (that.resiaddr == "") {
+        if (that.resiaddr == "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Address");
             $(".resiaddr").focus();
             return false;
         }
-        else if (that.resilet == "") {
+        if (that.resilet == "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Lat");
             $(".resilet").focus();
             return false;
         }
-        else if (that.resilong == "") {
+        if (that.resilong == "") {
             that._msg.Show(messageType.error, "Error", "Enter Residental Long");
             $(".resilong").focus();
             return false;
         }
-        else if (that.pickrtid == 0) {
+        if (that.pickrtid == 0) {
             if (that.pickaddr == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
                 $(".pickaddr").focus();
@@ -466,7 +466,7 @@ export class AddStudentVehicleComponent implements OnInit {
                 return false;
             }
         }
-        else if (that.droprtid == 0) {
+        if (that.droprtid == 0) {
             if (that.dropaddr == "") {
                 that._msg.Show(messageType.error, "Error", "Enter Drop Address");
                 $(".dropaddr").focus();
