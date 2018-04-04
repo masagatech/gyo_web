@@ -12,7 +12,6 @@
     </div>
 
     <div class="col-md-12 vehiclewrapper" id="style-15">
-
         <ul class="vehicles">
             <li class="vehicle" *ngFor="let row of vehtypeDT">
                 <div class="vhwrapper {{row.isshow ? row.min > 3 ? 'of' : 'ol' : 'ou'}}">
@@ -75,9 +74,11 @@
             <button class="btn btn-primary bg-info btn-xs" (click)="boundtomap()">Fit To Window</button>
         </div>
     </div>
+
     <div style="left: 0px;z-index: 1;position: absolute;top:113px;background:#ffffff;height:40px;">
         <a role="button" (click)="closesidepanel()"> <i class="material-icons" id="closeicon">keyboard_arrow_left</i></a>
     </div>
+
     <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 80px)', 'position': 'relative', 'overflow': 'hidden'}" [options]="options" [overlays]="overlays"></p-gmap>
 </div>
 
@@ -110,14 +111,15 @@
                     </li>
                 </ul>
             </div>
+
             <div class="btn-group btn-group-xs btn-group-justified" role="group" aria-label="Justified button group">
                 <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="info_click(selectedSVh,$event); false" role="button">INFO</a>
                 <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="passenger_click(selectedSVh,$event); false" role="button">PASSENGERS</a>
                 <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="history_click(selectedSVh,$event); false" role="button">HISTORY</a>
             </div>
+
             <div class="body" id="loaderbody" style="height: calc(100% - 75px);overflow: auto;font-size: 12px;">
                 <ng-template ADHOST></ng-template>
-                <!-- <ng-container #test *ngComponentOutlet="detailcomp"></ng-container> -->
             </div>
         </div>
     </aside>

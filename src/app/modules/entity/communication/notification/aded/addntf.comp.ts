@@ -338,6 +338,8 @@ export class AddNotificationComponent implements OnInit {
                 "grpid": that.grpid,
                 "frmid": that.loginUser.uid,
                 "frmtype": that.loginUser.utype,
+                "issendparents": that.issendparents,
+                "issendteacher": that.issendteacher,
                 "sendtype": "{" + _sendtype + "}",
                 "classid": "{" + _stdrights + "}",
                 "studid": "{0}",
@@ -347,7 +349,7 @@ export class AddNotificationComponent implements OnInit {
                 "wsautoid": that._enttdetails.wsautoid
             }
 
-            this._ntfservice.saveNotification(saventf).subscribe(data => {
+            that._ntfservice.saveNotification(saventf).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_notification;
                     var msg = dataResult.msg;

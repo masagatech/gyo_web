@@ -68,7 +68,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     vhmarkers: any = [];
     dbcaller: any = [];
     offlinetimeout = 5;
-    //side bar
 
     sidebarTitle = "Title";
     trafficLayer: any = new google.maps.TrafficLayer();
@@ -85,6 +84,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         offline: 0,
         ign: 0
     }
+
     olfilter: any = "all";
     _showempty: boolean = false;
 
@@ -114,7 +114,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
-            $.AdminBSB.rightSideBar.closeonwindow = false; //do not close right bar on window click
+            $.AdminBSB.rightSideBar.closeonwindow = false; // do not close right bar on window click
+            
             $(".enttname input").focus();
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
@@ -174,6 +175,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Selected Entity
+
     private selectEntityData(event) {
         this.enttid = event.value;
         this.enttname = event.label;
@@ -182,6 +184,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Vehicle DropDown
+
     private fillVehicleDropDown() {
         var that = this;
         commonfun.loader();
@@ -237,7 +240,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         that.sel_msttripid = row.id;
     }
 
-    // get Tracking Map Data
+    // Get Tracking Map Data
 
     getMessage() {
         var that = this;
@@ -283,22 +286,15 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                         el.flag = geoloc.flag;
                         el.ju = true;
 
-                        //battry status
+                        // Battery Status
                         el.btrst = geoloc.btrst
 
-                        //gsm signal
+                        // GSM Signal
+
                         if (geoloc.actvt === "hrtbt") {
                             el.rng = geoloc.gsmsig
                             el.acc = geoloc.acc
                         }
-
-                        //console.info(el)
-                        // $("#vh" + geoloc.vhid).removeClass('swing animated');
-
-                        // setTimeout(function () {
-                        //     $("#vh" + geoloc.vhid).addClass('swing animated');
-                        // }, 100);
-
                     }
                     if (geoloc.loc !== undefined)
                         this.moveMarker([geoloc.loc[1], geoloc.loc[0]], geoloc.vhid, geoloc.bearing);
@@ -316,6 +312,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // private get timeinterval
+
     private setLiveBeatsOn() {
         if (this.dbcaller !== undefined) {
             clearInterval(this.dbcaller);
@@ -383,6 +380,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if (d !== undefined) {
                 el.tripid = d.tripid;
+
                 if (isNaN(d.speed)) el.speed = 0;
                 else el.speed = d.speed;
 
@@ -390,6 +388,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 else el.bearing = d.bearing;
 
                 // el.btr = d.btr;
+
                 if (isNaN(d.btr)) el.btr = 100;
                 else el.btr = d.btr;
 
@@ -400,8 +399,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 el.isshow = true;
                 el.ju = false;
                 el.flag = d.flag;
-                //battry status
+
+                // Battery Status
+
                 el.btrst = d.btrst
+
                 if (isNaN(d.gsmsig)) {
                     el.rng = 0;
                 } else {
@@ -413,7 +415,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     el.acc = d.acc;
                 }
 
-
                 this.moveMarker([el.loc[1], el.loc[0]], el.vhid, el.bearing);
             } else if (el.ju) {
 
@@ -423,7 +424,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    //move marker
+    // Move Marker
 
     private moveMarker(loc, vhid, bearing) {
         let mrk = this.vhmarkers[vhid];
@@ -439,7 +440,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    //select for map show
+    // Select for map show
 
     private onchange(e, vh) {
         if (vh.isshow === undefined || vh.isshow === false) {
@@ -556,7 +557,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private addmarker(vh) {
-
         let bearing = 0;
         let imagePath = 'assets/img/map/' + vh.ico + '_' + bearing + '.png?v=1';
 
@@ -645,6 +645,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
             this.sidebarTitle = "History";
             this.selectedSVh = vh;
+
             commonfun.loader("#loaderbody", "timer", 'Loading History...');
         }
 
@@ -663,8 +664,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-
     onlineCheckr: any;
+
     private checkOnlineCount() {
         let that = this;
         this.onlineCheckr = setInterval(function () {
@@ -698,11 +699,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         $.AdminBSB.rightSideBar.Close();
     }
 
-    clear() {
-        // this.overlays = [];
-    }
-
-    //ui changer
+    // UI Changer
 
     private closesidepanel() {
         if ($("#sidepanel").hasClass('col-md-3')) {
@@ -729,9 +726,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.onlineCheckr !== undefined) {
             clearInterval(this.onlineCheckr);
         }
+
         $.AdminBSB.islocked = false;
         $.AdminBSB.rightSideBar.closeonwindow = true;
         $.AdminBSB.leftSideBar.Open();
+        
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
         this._socketservice.close();
     }

@@ -9,9 +9,9 @@ import { SelectItem, GMap } from 'primeng/primeng';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
 
-import { PSGComponent } from './passengers/psg.comp'
-import { INFOComponent } from './info/info.comp'
-import { HISTORYComponent } from './history/history.comp'
+import { PSGComponent } from './passengers/psg.comp';
+import { INFOComponent } from './info/info.comp';
+import { HISTORYComponent } from './history/history.comp';
 
 declare var google: any;
 
@@ -68,8 +68,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     vhmarkers: any = [];
     dbcaller: any = [];
 
-    //side bar
-
     sidebarTitle = "Title";
     trafficLayer: any = new google.maps.TrafficLayer();
 
@@ -105,7 +103,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
-            $.AdminBSB.rightSideBar.closeonwindow = false; //do not close right bar on window click
+            $.AdminBSB.rightSideBar.closeonwindow = false; // do not close right bar on window click
+            
             $(".enttname input").focus();
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
@@ -164,6 +163,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Selected Entity
+
     private selectEntityData(event) {
         this.enttid = event.value;
         this.enttname = event.label;
@@ -172,6 +172,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Vehicle DropDown
+
     private fillVehicleDropDown() {
         var that = this;
         commonfun.loader();
@@ -219,7 +220,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         that.sel_msttripid = row.id;
     }
 
-    // get Tracking Map Data
+    // Get Tracking Map Data
 
     getMessage() {
         var that = this;
@@ -277,6 +278,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // private get timeinterval
+
     private setLiveBeatsOn() {
         if (this.dbcaller !== undefined) {
             clearInterval(this.dbcaller);
@@ -361,7 +363,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    //move marker
+    // Move Marker
 
     private moveMarker(loc, vhid, bearing) {
         let mrk = this.vhmarkers[vhid];
@@ -379,7 +381,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    //select for map show
+    // Select for map show
 
     private onchange(e, vh) {
         if (vh.isshow === undefined || vh.isshow === false) {
@@ -590,11 +592,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         $.AdminBSB.rightSideBar.Close();
     }
 
-    clear() {
-        // this.overlays = [];
-    }
-
-    //ui changer
+    // UI Changer
 
     private closesidepanel() {
         if ($("#sidepanel").hasClass('col-md-3')) {
@@ -621,6 +619,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         $.AdminBSB.islocked = false;
         $.AdminBSB.rightSideBar.closeonwindow = true;
         $.AdminBSB.leftSideBar.Open();
+
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
         this._socketservice.close();
     }
