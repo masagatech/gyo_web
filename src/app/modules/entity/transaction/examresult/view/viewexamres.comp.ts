@@ -88,15 +88,21 @@ export class ViewExamResultComponent implements OnInit {
         var that = this;
         that.uploadFileDT = [];
 
-        var xlsfile = JSON.parse(event.xhr.response);
-        console.log(xlsfile);
+        var xlsfile = JSON.parse(event.xhr.response).data.funsave_examresult;
 
-        if (xlsfile.status == 0) {
-            that._msg.Show(messageType.error, "Error", xlsfile.message);
+        if (xlsfile.msgid == 401) {
+            that._msg.Show(messageType.error, "Error", xlsfile.msg);
         }
-        else {
+        else if (xlsfile.msgid == 1) {
+            for (var i = 0; i < xlsfile.length; i++) {
+                that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            }
+
             that.closeBulkUploadPopup();
             that.getExamResult();
+        }
+        else {
+            that._msg.Show(messageType.warn, "Warning", xlsfile.msg);
         }
     }
 
