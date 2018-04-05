@@ -178,6 +178,7 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
                 "apprvtype": that.loginUser.utype,
                 "apprremark": that.apprremark,
                 "lvtype": that.lvtype,
+                "psngrtype": that.psngrtype,
                 "status": that.status,
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,

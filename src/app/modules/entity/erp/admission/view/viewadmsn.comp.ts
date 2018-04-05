@@ -39,7 +39,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     uploadFileDT: any = [];
     uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
@@ -95,15 +95,21 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         that.uploadFileDT = [];
 
-        var xlsfile = JSON.parse(event.xhr.response);
-        console.log(xlsfile);
+        var xlsfile = JSON.parse(event.xhr.response).data.funsave_multistudentinfo;
 
-        if (xlsfile.status == 0) {
-            that._msg.Show(messageType.error, "Error", xlsfile.message);
+        if (xlsfile.msgid == 401) {
+            that._msg.Show(messageType.error, "Error", xlsfile.msg);
         }
-        else {
+        else if (xlsfile.msgid == 1) {
+            for (var i = 0; i < xlsfile.length; i++) {
+                that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            }
+
             that.closeBulkUploadPopup();
             that.getStudentDetails();
+        }
+        else {
+            that._msg.Show(messageType.warn, "Warning", xlsfile.msg);
         }
     }
 
