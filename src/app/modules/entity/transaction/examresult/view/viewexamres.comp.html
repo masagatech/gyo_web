@@ -73,7 +73,7 @@
 
     <div class="body no-padding">
         <div class="row clearfix">
-            <div class="col-md-12">
+            <div class="col-md-12" *ngIf="examDT.length">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -125,6 +125,9 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="col-md-12" *ngIf="!examDT.length">
+                <h4>No Data Found</h4>
             </div>
         </div>
     </div>
