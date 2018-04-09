@@ -36,15 +36,15 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Assesment Type <strong>*</strong></label>
-                                <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" class="form-control asstype" tabindex="2">
-                                    <option [value]="0">Select Assesment Type</option>
-                                    <optgroup id="subject" label="Subject">
-                                        <option *ngFor="let row of subjectDT" [value]="row.id">
+                                <select id="asstypid" name="asstypname" [(ngModel)]="asstype" class="form-control asstype" tabindex="2">
+                                    <option [value]="''">Select Assesment Type</option>
+                                    <optgroup value="subject" label="Subject">
+                                        <option *ngFor="let row of subjectDT" [value]="row.subtypeid">
                                             {{row.val}}
                                         </option>
                                     </optgroup>
-                                    <optgroup id="activity" label="Activity">
-                                        <option *ngFor="let row of activityDT" [value]="row.id">
+                                    <optgroup value="activity" label="Activity">
+                                        <option *ngFor="let row of activityDT" [value]="row.subtypeid">
                                             {{row.val}}
                                         </option>
                                     </optgroup>
@@ -52,13 +52,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
+                    <div class="col-md-2 col-xs-3 pad-20">
                         <div class="form-group">
                             <button type="button" class="btn btn-theme btn-xs" (click)="getAssesmentDetails()">
                                 <i class="material-icons">arrow_forward</i></button>
                         </div>
                     </div>
-                    <div class="col-md-2 col-xs-3" align="right" style="padding-top: 20px;">
+                    <div class="col-md-2 col-xs-3 pad-20 text-right">
                         <div class="form-group">
                             <button type="button" class="btn btn-theme btn-xs" (click)="addAssesment()">
                                 <i class="material-icons">add</i></button>
@@ -79,8 +79,8 @@
                             <p-column [style]="{'width': '50px', 'align': 'left'}">
                                 <ng-template let-row="rowData" pTemplate type="body">
                                     <button type="button" class="btn btn-theme btn-xs" (click)="editAssesment(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
+                                        <i class="material-icons">edit</i>
+                                    </button>
                                 </ng-template>
                             </p-column>
                         </p-dataTable>
@@ -88,3 +88,5 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>

@@ -28,7 +28,7 @@ export class AddAssesmentResultComponent implements OnInit {
     assresid: number = 0;
     ayid: number = 0;
     clsid: number = 0;
-    asstypid: number = 0;
+    asstype: string = "";
     studid: number = 0;
     studname: string = "";
     frmdt: any = "";
@@ -37,10 +37,7 @@ export class AddAssesmentResultComponent implements OnInit {
     assesmentList: any = [];
     gradeList: any = [];
 
-    selectedSubHead: any = [];
-    subheadid: number = 0;
-    subheadname: string = "";
-    iseditsubhead: boolean = false;
+    issendemail: boolean = false;
 
     remark: string = "";
 
@@ -187,9 +184,8 @@ export class AddAssesmentResultComponent implements OnInit {
 
     // Save Assesment Result
 
-    saveAssesmentResult() {
+    isValidation() {
         var that = this;
-        var _asslist = null;
 
         var date = new Date();
         var today = that.formatDate(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -197,18 +193,22 @@ export class AddAssesmentResultComponent implements OnInit {
         if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
             $(".ayname").focus();
+            return false;
         }
         else if (that.clsid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
             $(".class").focus();
+            return false;
         }
-        else if (that.asstypid == 0) {
+        else if (that.asstype == "") {
             that._msg.Show(messageType.error, "Error", "Select Assesment Type");
             $(".asstype").focus();
+            return false;
         }
         else if (that.studid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Student Name");
             $(".studname input").focus();
+            return false;
         }
         else if (that.frmdt == "") {
             that._msg.Show(messageType.error, "Error", "Enter From Date");
@@ -230,14 +230,44 @@ export class AddAssesmentResultComponent implements OnInit {
             $(".todt").focus();
             return false;
         }
-        else {
+
+        if (that.assesmentList.length > 0) {
+            for (var i = 0; i < that.assesmentList.length; i++) {
+                var _asslist = that.assesmentList[i];
+
+                for (var j = 0; j < _asslist.gradelist.length; j++) {
+                    var _gradelist = _asslist.gradelist[j];
+
+                    if (_gradelist.gradeid == null || _gradelist.gradeid == "0") {
+                        that._msg.Show(messageType.error, "Error", "Select " + _asslist.subheading + " Grade");
+                        $(".grade" + _asslist.assresid).focus();
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    saveAssesmentResult() {
+        var that = this;
+        var _asslist = null;
+        var _isvalid: boolean = false;
+
+        _isvalid = that.isValidation();
+
+        var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
+        var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
+
+        if (_isvalid) {
             commonfun.loader();
 
             for (var i = 0; i < that.assesmentList.length; i++) {
                 _asslist = that.assesmentList[i];
                 _asslist.ayid = that.ayid;
                 _asslist.clsid = that.clsid;
-                _asslist.asstypid = that.asstypid;
+                _asslist.asstypid = asstypid;
                 _asslist.studid = that.studid;
                 _asslist.frmdt = that.frmdt;
                 _asslist.todt = that.todt;
@@ -247,12 +277,12 @@ export class AddAssesmentResultComponent implements OnInit {
             }
 
             var params = {
-                "assid": that.assparamid, "ayid": that.ayid, "clsid": that.clsid, "asstypid": that.asstypid, "studid": that.studid,
+                "assid": that.assparamid, "ayid": that.ayid, "clsid": that.clsid, "asstypid": asstypid, "asstyp": asstypname, "studid": that.studid,
                 "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "assesmentresult": that.assesmentList
+                "issendemail": that.issendemail, "assesmentresult": that.assesmentList, "remark": that.remark
             }
 
-            this._assservice.saveAssesmentResult(params).subscribe(data => {
+            that._assservice.saveAssesmentResult(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_assesmentresult;
                     var msg = dataResult.msg;
@@ -293,9 +323,12 @@ export class AddAssesmentResultComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
+        var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
+        var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
+
         that._assservice.getAssesmentResult({
-            "flag": "aded", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid, "asstypid": that.asstypid, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "aded", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid, "asstypid": asstypid, "asstyp": asstypname,
+            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.assesmentList = data.data;
@@ -305,7 +338,7 @@ export class AddAssesmentResultComponent implements OnInit {
                         that.assid = that.assparamid;
                         that.clsid = that.assesmentList[0].clsid;
                         that.fillAssesmentTypeDropDown();
-                        that.asstypid = that.assesmentList[0].asstypid;
+                        that.asstype = that.assesmentList[0].asstyp + "~" + that.assesmentList[0].asstypid;
                         that.frmdt = that.assesmentList[0].frmdt;
                         that.todt = that.assesmentList[0].todt;
                     }

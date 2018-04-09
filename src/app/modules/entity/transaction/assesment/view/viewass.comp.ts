@@ -18,7 +18,7 @@ export class ViewAssesmentComponent implements OnInit {
     ayid: number = 0;
     subjectDT: any = [];
     activityDT: any = [];
-    asstypid: number = 0;
+    asstype: string = "";
     classDT: any = [];
     clsid: number = 0;
 
@@ -109,9 +109,12 @@ export class ViewAssesmentComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
+        var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
+        var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
+
         that._assservice.getAssesmentDetails({
-            "flag": "all", "ayid": that.ayid, "asstypid": that.asstypid, "clsid": that.clsid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "all", "ayid": that.ayid, "asstypid": asstypid, "asstyp": asstypname, "clsid": that.clsid, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.assesmentDT = data.data;

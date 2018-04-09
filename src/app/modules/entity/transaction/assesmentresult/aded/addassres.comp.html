@@ -3,6 +3,10 @@
         <h4>Assesment</h4>
         <ul class="header-dropdown m-r--5">
             <li>
+                <input id="issendemail" name="issendemail" [(ngModel)]="issendemail" type="checkbox" class="filled-in">
+                <label for="issendemail">Send Email To Parent</label>
+            </li>
+            <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveAssesmentResult()">
                     <i class="material-icons">save</i></a>
             </li>
@@ -46,15 +50,15 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Assesment Type <strong>*</strong></label>
-                            <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" (ngModelChange)="getAssesmentResult();" class="form-control asstype" tabindex="3">
-                                <option [value]="0">Select Assesment Type</option>
+                            <select id="asstypid" name="asstypname" [(ngModel)]="asstype" (ngModelChange)="getAssesmentResult();" class="form-control asstype" tabindex="3">
+                                <option [value]="''">Select Assesment Type</option>
                                 <optgroup id="subject" label="Subject">
-                                    <option *ngFor="let row of subjectDT" [value]="row.id">
+                                    <option *ngFor="let row of subjectDT" [value]="row.subtypeid">
                                         {{row.val}}
                                     </option>
                                 </optgroup>
                                 <optgroup id="activity" label="Activity">
-                                    <option *ngFor="let row of activityDT" [value]="row.id">
+                                    <option *ngFor="let row of activityDT" [value]="row.subtypeid">
                                         {{row.val}}
                                     </option>
                                 </optgroup>
@@ -138,7 +142,7 @@
                         <td>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control grade" tabindex="7">
+                                    <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control {{'grade' + drow.assresid}}" tabindex="7">
                                         <option [value]="0">Select Grade</option>
                                         <option *ngFor="let mdrow of drow.gradelist" [value]="mdrow.gradeid">
                                             {{mdrow.gradename}}

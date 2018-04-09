@@ -207,8 +207,8 @@ export class AddExamResultComponent implements OnInit {
             var params = {
                 "examid": that.examparamid, "ayid": that.ayid, "smstrid": that.smstrid, "examtype": $("#smstrid option:selected").text().trim(),
                 "clsid": that.clsid, "studid": that.studid, "frmid": that.loginUser.uid, "frmtype": that.loginUser.utype,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "issendemail": that.issendemail, "examresult": that.examList
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issendemail": that.issendemail,
+                "examresult": that.examList
             }
 
             that._examservice.saveExamResult(params).subscribe(data => {
