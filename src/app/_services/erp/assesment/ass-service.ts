@@ -26,4 +26,8 @@ export class AssesmentService {
     getAssesmentResult(req: any) {
         return this._dataserver.post(Globals.erproute + "getAssesmentResult", req)
     }
+
+    getAssesmentResultReports(req: any) {
+        return this._dataserver.post(Globals.erproute + "getAssesmentResultReports", req)
+    }
 }

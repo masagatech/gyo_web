@@ -29,12 +29,16 @@ export class AddAssesmentResultComponent implements OnInit {
     selectedStudent: any = [];
 
     mode: string = "";
-    assparamid: number = 0;
     assid: number = 0;
     assresid: number = 0;
     ayid: number = 0;
+    ayname: string = "";
     clsid: number = 0;
+    clsname: string = "";
     asstype: string = "";
+    asstyphead: string = "";
+    asstypname: string = "";
+    assdate: string = "";
     frmdt: any = "";
     todt: any = "";
 
@@ -58,10 +62,12 @@ export class AddAssesmentResultComponent implements OnInit {
         this.fillAYAndClassDropDown();
         this.fillAssesmentTypeDropDown();
         this.setFromDateAndToDate();
+        
+        this.getAssesmentResult();
     }
 
     public ngOnInit() {
-        this.getAssesmentResult();
+
     }
 
     add_edit_AssesmentResult() {
@@ -290,7 +296,7 @@ export class AddAssesmentResultComponent implements OnInit {
             commonfun.loader();
 
             var params = {
-                "mode": that.mode, "assid": that.assparamid, "ayid": that.ayid, "clsid": that.clsid,
+                "mode": that.mode, "assid": 0, "ayid": that.ayid, "clsid": that.clsid,
                 "asstypid": asstypid, "asstyp": asstypname, "asstypname": $("#asstypid option:selected").text().trim(),
                 "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
@@ -341,24 +347,27 @@ export class AddAssesmentResultComponent implements OnInit {
         var editassres = Cookie.get("_editassres_");
 
         if (editassres == null) {
-            $("#divfields *").removeAttr("disabled");
             that.mode = "add";
 
             var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
             var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
 
             params = {
-                "flag": "aded", "mode": "add", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid,
+                "flag": "aded", "mode": "add", "assid": 0, "ayid": that.ayid, "classid": that.clsid,
                 "asstypid": asstypid, "asstyp": asstypname, "studid": that.studid,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
             }
         }
         else {
-            $("#divfields *").attr("disabled", "disabled");
             that.mode = "edit";
 
             that.ayid = that._editassres.ayid;
+            that.ayname = that._editassres.ayname;
             that.clsid = that._editassres.classid;
+            that.clsname = that._editassres.classname;
+            that.asstyphead = that._editassres.asstyphead;
+            that.asstypname = that._editassres.asstypname;
+            that.assdate = that._editassres.assdate;
 
             that.fillAssesmentTypeDropDown();
             that.asstype = that._editassres.asstyp + "~" + that._editassres.asstypid;
@@ -374,7 +383,7 @@ export class AddAssesmentResultComponent implements OnInit {
             var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
 
             params = {
-                "flag": "aded", "mode": "edit", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid,
+                "flag": "aded", "mode": "edit", "assid": 0, "ayid": that.ayid, "classid": that.clsid,
                 "asstypid": asstypid, "asstyp": asstypname, "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
             }
@@ -387,18 +396,6 @@ export class AddAssesmentResultComponent implements OnInit {
                 that.assesmentList = data.data;
 
                 if (that.assesmentList.length > 0) {
-                    if (that.assparamid !== 0) {
-                        that.assid = that.assparamid;
-                        that.clsid = that.assesmentList[0].clsid;
-                        that.fillAssesmentTypeDropDown();
-                        that.asstype = that.assesmentList[0].asstyp + "~" + that.assesmentList[0].asstypid;
-                        that.frmdt = that.assesmentList[0].frmdt;
-                        that.todt = that.assesmentList[0].todt;
-                    }
-                    else {
-                        that.assid = that.assesmentList[0].assid;
-                    }
-
                     that.gradeList = that.assesmentList[0].gradelist;
                     that.remark = that.assesmentList[0].remark;
                 }

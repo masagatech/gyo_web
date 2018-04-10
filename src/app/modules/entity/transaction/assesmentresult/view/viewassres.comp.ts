@@ -151,8 +151,10 @@ export class ViewAssesmentResultComponent implements OnInit {
         Cookie.delete("_editassres_");
 
         var params = {
-            "flag": "aded", "mode": "edit", "assid": 0, "ayid": row.ayid, "classid": row.classid, "asstypid": row.asstypid, "asstyp": row.asstyp,
-            "studid": row.studid, "frmdt": row.frmdt, "todt": row.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "aded", "mode": "edit", "assid": 0, "ayid": row.ayid, "ayname": row.ayname, "classid": row.classid, "classname": row.classname,
+            "asstypid": row.asstypid, "asstyp": row.asstyp, "asstyphead": row.asstyphead, "asstypname": row.asstypname,
+            "studid": row.studid, "studname": row.studname, "frmdt": row.frmdt, "todt": row.todt, "assdate": row.assdate,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
         Cookie.set("_editassres_", JSON.stringify(params));

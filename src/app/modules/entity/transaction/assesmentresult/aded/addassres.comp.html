@@ -18,7 +18,7 @@
     </div>
 
     <div class="body">
-        <div id="divfields">
+        <div *ngIf="mode == 'add'">
             <div class="row clearfix">
                 <div class="col-md-2">
                     <div class="form-group">
@@ -102,6 +102,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div *ngIf="mode == 'edit'">
+            <p>Academic Year : {{ayname}}</p>
+            <p>Class : {{clsname}}</p>
+            <p>Assesment Type : {{asstyphead}} - {{asstypname}}</p>
+            <p>Student : {{studname}}</p>
+            <p>{{assdate}}</p>
         </div>
 
         <table class="table table-bordered reports">
