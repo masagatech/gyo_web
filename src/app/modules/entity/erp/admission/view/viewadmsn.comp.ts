@@ -29,7 +29,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     classid: number = 0;
 
     autoStudentDT: any = [];
-    studsdata: any = [];
+    selectStudent: any = {};
     studid: number = 0;
     studname: string = "";
 
@@ -163,8 +163,11 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     // Selected Student
 
     selectStudentData(event) {
-        Cookie.set("_studid_", event.value);
-        Cookie.set("_studnm_", event.label);
+        this.studid = event.value;
+        this.studname = event.label;
+
+        Cookie.set("_studid_", this.studid.toString());
+        Cookie.set("_studname_", this.studname);
 
         this.getStudentDetails();
     }
@@ -216,12 +219,11 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     public viewStudentDataRights() {
         var that = this;
 
-        if (Cookie.get('_studnm_') != null) {
+        if (Cookie.get('_studname_') != null) {
             that.studid = parseInt(Cookie.get('_studid_'));
-            that.studname = Cookie.get('_studnm_');
+            that.studname = Cookie.get('_studname_');
 
-            that.studsdata.value = that.studid;
-            that.studsdata.label = that.studname;
+            that.selectStudent = { value: that.studid, label: that.studname }
         }
 
         that.getStudentDetails();
@@ -235,16 +237,16 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
         if (that.studid == 0) {
             Cookie.set("_studid_", "0");
-            Cookie.set("_studnm_", "");
+            Cookie.set("_studname_", "");
 
-            that.studsdata.value = parseInt(Cookie.get('_studid_'));
-            that.studsdata.label = Cookie.get('_studnm_');
+            that.selectStudent.value = parseInt(Cookie.get('_studid_'));
+            that.selectStudent.label = Cookie.get('_studname_');
         }
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "studid": that.studid.toString() == "" ? 0 : that.studid,
-            "classid": that.classid, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid
+            "studid": that.studid, "classid": that.classid, "issysadmin": that.loginUser.issysadmin,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         };
 
         that._admsnservice.getStudentDetails(params).subscribe(data => {
@@ -263,6 +265,15 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
+    }
+
+    resetStudentData() {
+        Cookie.delete("_studid_");
+        Cookie.delete("_studname_");
+        this.studid = 0;
+        this.studname = "";
+        this.selectStudent = {};
+        this.getStudentDetails();
     }
 
     public addAdmissionForm() {

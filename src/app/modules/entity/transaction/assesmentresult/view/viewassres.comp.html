@@ -74,18 +74,23 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of assesmentDT | groupBy: 'asstypehead'">
+                    <tbody *ngFor="let row of assesmentDT">
                         <tr class="tr-table">
-                            <th colspan="6">
-                                {{row.key}}
-                            </th>
+                            <td colspan="5">
+                                {{row.asstyphead}} : {{row.asstypname}} ({{row.dispfrmdt}} to {{row.disptodt}})
+                            </td>
+                            <td align="right">
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editAssesmentResult(row)">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                            </td>
                         </tr>
-                        <tr *ngFor="let drow of row.value">
+                        <tr *ngFor="let drow of row.assreslist">
                             <td>
                                 {{drow.rollno}}
                             </td>
                             <td>
-                                {{drow.studentname}}
+                                {{drow.studname}}
                             </td>
                             <td>
                                 {{drow.heading}}

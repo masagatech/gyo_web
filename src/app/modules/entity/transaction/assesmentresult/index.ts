@@ -23,7 +23,7 @@ export const routes = [
         data: { "module": "erp", "submodule": "assres", "rights": "add", "urlname": "/add" }
       },
       {
-        path: 'edit/:id', component: AddAssesmentResultComponent, canActivate: [AuthGuard],
+        path: 'edit', component: AddAssesmentResultComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "assres", "rights": "edit", "urlname": "/edit" }
       }
     ]

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssesmentService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -15,22 +16,25 @@ export class AddAssesmentResultComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    _editassres: any = [];
+
     ayDT: any = [];
     classDT: any = [];
     subjectDT: any = [];
     activityDT: any = [];
 
     studentDT: any = [];
-    studsdata: any = [];
+    studid: number = 0;
+    studname: string = "";
+    selectedStudent: any = [];
 
+    mode: string = "";
     assparamid: number = 0;
     assid: number = 0;
     assresid: number = 0;
     ayid: number = 0;
     clsid: number = 0;
     asstype: string = "";
-    studid: number = 0;
-    studname: string = "";
     frmdt: any = "";
     todt: any = "";
 
@@ -48,13 +52,35 @@ export class AddAssesmentResultComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this._editassres = this.getAssesmentResultForEdit();
+
+        this.add_edit_AssesmentResult();
         this.fillAYAndClassDropDown();
         this.fillAssesmentTypeDropDown();
         this.setFromDateAndToDate();
     }
 
     public ngOnInit() {
-        // this.editAssesmentDetails();
+        this.getAssesmentResult();
+    }
+
+    add_edit_AssesmentResult() {
+        var editassres = Cookie.get("_editassres_");
+
+        if (editassres == null) {
+            this._router.navigate(['/transaction/assesmentresult/add']);
+        }
+    }
+
+    getAssesmentResultForEdit() {
+        let editassres = Cookie.get("_editassres_");
+
+        if (editassres !== null) {
+            return JSON.parse(editassres);
+        }
+        else {
+            return {};
+        }
     }
 
     // Fill AY And Class Drop Down
@@ -123,7 +149,7 @@ export class AddAssesmentResultComponent implements OnInit {
 
         })
 
-        this.studsdata = [];
+        this.selectedStudent = [];
     }
 
     // Auto Completed Student
@@ -263,22 +289,11 @@ export class AddAssesmentResultComponent implements OnInit {
         if (_isvalid) {
             commonfun.loader();
 
-            for (var i = 0; i < that.assesmentList.length; i++) {
-                _asslist = that.assesmentList[i];
-                _asslist.ayid = that.ayid;
-                _asslist.clsid = that.clsid;
-                _asslist.asstypid = asstypid;
-                _asslist.studid = that.studid;
-                _asslist.frmdt = that.frmdt;
-                _asslist.todt = that.todt;
-                _asslist.enttid = that._enttdetails.enttid;
-                _asslist.wsautoid = that._enttdetails.wsautoid;
-                _asslist.cuid = that.loginUser.ucode;
-            }
-
             var params = {
-                "assid": that.assparamid, "ayid": that.ayid, "clsid": that.clsid, "asstypid": asstypid, "asstyp": asstypname, "studid": that.studid,
-                "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "mode": that.mode, "assid": that.assparamid, "ayid": that.ayid, "clsid": that.clsid,
+                "asstypid": asstypid, "asstyp": asstypname, "asstypname": $("#asstypid option:selected").text().trim(),
+                "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                 "issendemail": that.issendemail, "assesmentresult": that.assesmentList, "remark": that.remark
             }
 
@@ -321,15 +336,53 @@ export class AddAssesmentResultComponent implements OnInit {
 
     getAssesmentResult() {
         var that = this;
+        var params = {};
+
+        var editassres = Cookie.get("_editassres_");
+
+        if (editassres == null) {
+            $("#divfields *").removeAttr("disabled");
+            that.mode = "add";
+
+            var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
+            var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
+
+            params = {
+                "flag": "aded", "mode": "add", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid,
+                "asstypid": asstypid, "asstyp": asstypname, "studid": that.studid,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            }
+        }
+        else {
+            $("#divfields *").attr("disabled", "disabled");
+            that.mode = "edit";
+
+            that.ayid = that._editassres.ayid;
+            that.clsid = that._editassres.classid;
+
+            that.fillAssesmentTypeDropDown();
+            that.asstype = that._editassres.asstyp + "~" + that._editassres.asstypid;
+
+            that.studid = that._editassres.studid;
+            that.studname = that._editassres.studname;
+
+            that.selectedStudent = { value: that.studid, label: that.studname };
+            that.frmdt = that._editassres.frmdt;
+            that.todt = that._editassres.todt;
+
+            var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
+            var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
+
+            params = {
+                "flag": "aded", "mode": "edit", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid,
+                "asstypid": asstypid, "asstyp": asstypname, "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            }
+        }
+
         commonfun.loader();
 
-        var asstypid = that.asstype == "" ? "0" : that.asstype.split('~')[1];
-        var asstypname = that.asstype == "" ? "" : that.asstype.split('~')[0];
-
-        that._assservice.getAssesmentResult({
-            "flag": "aded", "assid": that.assparamid, "ayid": that.ayid, "classid": that.clsid, "asstypid": asstypid, "asstyp": asstypname,
-            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
-        }).subscribe(data => {
+        that._assservice.getAssesmentResult(params).subscribe(data => {
             try {
                 that.assesmentList = data.data;
 

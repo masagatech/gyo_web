@@ -18,7 +18,7 @@
     </div>
 
     <div class="body">
-        <div class="row clearfix">
+        <div id="divfields">
             <div class="row clearfix">
                 <div class="col-md-2">
                     <div class="form-group">
@@ -69,14 +69,14 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <div class="form-line">
-                            <label class="control-label">Student <strong>*</strong></label>
-                            <p-autoComplete id="studid" name="studname" [(ngModel)]="studsdata" [tabindex]="4" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                            <label class="control-label">Student <strong>*</strong> {{studname}}</label>
+                            <p-autoComplete id="studid" name="studname" [(ngModel)]="selectedStudent" [tabindex]="4" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
                             <span class="material-icons inputlinkico"></span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-group" style="padding-top: 20px;">
+                    <div class="form-group pad-20">
                         <button type="button" class="btn btn-theme btn-xs" (click)="getAssesmentResult()">
                             <i class="material-icons">arrow_forward</i>
                         </button>
@@ -102,71 +102,71 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <table class="table table-bordered reports">
-                <thead>
-                    <tr>
-                        <th>
-                            Heading
-                        </th>
-                        <th width="100px">
-                            Previous Grade
-                        </th>
-                        <th width="330px">
-                            Previous Remark
-                        </th>
-                        <th width="120px">
-                            Grade
-                        </th>
-                        <th width="330px">
-                            Remark
-                        </th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let row of assesmentList | groupBy: 'heading'">
-                    <tr class="tr-table">
-                        <th colspan="5">
-                            {{row.key}}
-                        </th>
-                    </tr>
-                    <tr *ngFor="let drow of row.value">
-                        <td>
-                            {{drow.subheading}}
-                        </td>
-                        <td>
-                            {{drow.prevgrade}}
-                        </td>
-                        <td>
-                            {{drow.prevresremark}}
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control {{'grade' + drow.assresid}}" tabindex="7">
-                                        <option [value]="0">Select Grade</option>
-                                        <option *ngFor="let mdrow of drow.gradelist" [value]="mdrow.gradeid">
-                                            {{mdrow.gradename}}
-                                        </option>
-                                    </select>
-                                </div>
+        <table class="table table-bordered reports">
+            <thead>
+                <tr>
+                    <th>
+                        Heading
+                    </th>
+                    <th width="100px">
+                        Previous Grade
+                    </th>
+                    <th width="330px">
+                        Previous Remark
+                    </th>
+                    <th width="120px">
+                        Grade
+                    </th>
+                    <th width="330px">
+                        Remark
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let row of assesmentList | groupBy: 'heading'">
+                <tr class="tr-table">
+                    <th colspan="5">
+                        {{row.key}}
+                    </th>
+                </tr>
+                <tr *ngFor="let drow of row.value">
+                    <td>
+                        {{drow.assresid}} {{drow.subheading}}
+                    </td>
+                    <td>
+                        {{drow.prevgrade}}
+                    </td>
+                    <td>
+                        {{drow.prevresremark}}
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control {{'grade' + drow.assresid}}" tabindex="7">
+                                    <option [value]="0">Select Grade</option>
+                                    <option *ngFor="let mdrow of drow.gradelist" [value]="mdrow.gradeid">
+                                        {{mdrow.gradename}}
+                                    </option>
+                                </select>
                             </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control msg" [(ngModel)]="drow.resremark" tabindex="8">
-                                </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" class="form-control msg" [(ngModel)]="drow.resremark" tabindex="8">
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-            <div class="form-group">
-                <div class="form-line">
-                    <label class="control-label">Remark</label>
-                    <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
-                </div>
+        <div class="form-group">
+            <div class="form-line">
+                <label class="control-label">Remark</label>
+                <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
             </div>
         </div>
     </div>

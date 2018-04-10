@@ -4,6 +4,7 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { AssesmentService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewassres.comp.html',
@@ -120,7 +121,7 @@ export class ViewAssesmentResultComponent implements OnInit {
         commonfun.loader();
 
         that._assservice.getAssesmentResult({
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "classid": that.clsid, "studid": that.studid,
+            "flag": "view", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "classid": that.clsid, "studid": that.studid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -141,10 +142,20 @@ export class ViewAssesmentResultComponent implements OnInit {
     }
 
     public addAssesmentResult() {
+        Cookie.delete("_editassres_");
         this._router.navigate(['/transaction/assesmentresult/add']);
     }
 
     public editAssesmentResult(row) {
-        this._router.navigate(['/transaction/assesmentresult/edit', row.assresid]);
+        var that = this;
+        Cookie.delete("_editassres_");
+
+        var params = {
+            "flag": "aded", "mode": "edit", "assid": 0, "ayid": row.ayid, "classid": row.classid, "asstypid": row.asstypid, "asstyp": row.asstyp,
+            "studid": row.studid, "frmdt": row.frmdt, "todt": row.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }
+
+        Cookie.set("_editassres_", JSON.stringify(params));
+        this._router.navigate(['/transaction/assesmentresult/edit']);
     }
 }

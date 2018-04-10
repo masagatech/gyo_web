@@ -605,7 +605,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.mthrsalary = "";
     }
 
-    getParentAndSibling(_mobile) {
+    getParentAndSibling(_mobile, _type) {
         var that = this;
 
         var _mthrfld: any = [];
@@ -623,43 +623,48 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 that.siblingDT = data.data.filter(a => a.fmltyp == "sibling");
 
                 if (that.parentDT.length != 0) {
-                    _fthrfld = that.parentDT.filter(a => a.relation == "father");
-                    _mthrfld = that.parentDT.filter(a => a.relation == "mother");
+                    if (_type == "father") {
+                        _fthrfld = that.parentDT.filter(a => a.relation == "father");
 
-                    if (_fthrfld.length != 0) {
-                        that.fthrloginid = _fthrfld[0].loginid;
-                        that.fthrfmlid = _fthrfld[0].fmlid;
-                        that.fthrcode = _fthrfld[0].fmlcode;
-                        that.fthrname = _fthrfld[0].fullname;
-                        that.fthrmobile = _fthrfld[0].mobile;
-                        that.fthremail = _fthrfld[0].email;
-                        that.fthrschid = _fthrfld[0].schid;
-                        that.fthrenrlmntid = _fthrfld[0].enrlmntid;
-                        that.fthrothschname = _fthrfld[0].othschname;
-                        that.fthrqlfid = _fthrfld[0].qlfid;
-                        that.fthrocptn = _fthrfld[0].occupation;
-                        that.fthrsalary = _fthrfld[0].salary;
-                    }
-                    else {
-                        that.resetFatherFields();
+                        if (_fthrfld.length != 0) {
+                            that.fthrloginid = _fthrfld[0].loginid;
+                            that.fthrfmlid = _fthrfld[0].fmlid;
+                            that.fthrcode = _fthrfld[0].fmlcode;
+                            that.fthrname = _fthrfld[0].fullname;
+                            that.fthrmobile = _fthrfld[0].mobile;
+                            that.fthremail = _fthrfld[0].email;
+                            that.fthrschid = _fthrfld[0].schid;
+                            that.fthrenrlmntid = _fthrfld[0].enrlmntid;
+                            that.fthrothschname = _fthrfld[0].othschname;
+                            that.fthrqlfid = _fthrfld[0].qlfid;
+                            that.fthrocptn = _fthrfld[0].occupation;
+                            that.fthrsalary = _fthrfld[0].salary;
+                        }
+                        else {
+                            that.resetFatherFields();
+                        }
                     }
 
-                    if (_mthrfld.length != 0) {
-                        that.mthrloginid = _mthrfld[0].loginid;
-                        that.mthrfmlid = _mthrfld[0].fmlid;
-                        that.mthrcode = _mthrfld[0].fmlcode;
-                        that.mthrname = _mthrfld[0].fullname;
-                        that.mthrmobile = _mthrfld[0].mobile;
-                        that.mthremail = _mthrfld[0].email;
-                        that.mthrschid = _mthrfld[0].schid;
-                        that.mthrenrlmntid = _mthrfld[0].enrlmntid;
-                        that.mthrothschname = _mthrfld[0].othschname;
-                        that.mthrqlfid = _mthrfld[0].qlfid;
-                        that.mthrocptn = _mthrfld[0].occupation;
-                        that.mthrsalary = _mthrfld[0].salary;
-                    }
-                    else {
-                        that.resetMotherFields();
+                    if (_type == "mother") {
+                        _mthrfld = that.parentDT.filter(a => a.relation == "mother");
+    
+                        if (_mthrfld.length != 0) {
+                            that.mthrloginid = _mthrfld[0].loginid;
+                            that.mthrfmlid = _mthrfld[0].fmlid;
+                            that.mthrcode = _mthrfld[0].fmlcode;
+                            that.mthrname = _mthrfld[0].fullname;
+                            that.mthrmobile = _mthrfld[0].mobile;
+                            that.mthremail = _mthrfld[0].email;
+                            that.mthrschid = _mthrfld[0].schid;
+                            that.mthrenrlmntid = _mthrfld[0].enrlmntid;
+                            that.mthrothschname = _mthrfld[0].othschname;
+                            that.mthrqlfid = _mthrfld[0].qlfid;
+                            that.mthrocptn = _mthrfld[0].occupation;
+                            that.mthrsalary = _mthrfld[0].salary;
+                        }
+                        else {
+                            that.resetMotherFields();
+                        }
                     }
                 }
             }
@@ -996,7 +1001,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.mthrname = that.parentDT[0].prnttyp == "mother" ? that.parentDT[0].prntname : "";
                         that.mthrmobile = that.parentDT[0].prnttyp == "mother" ? that.parentDT[0].prntmob : "";
 
-                        that.getParentAndSibling(that.parentDT[0].prntmob);
+                        that.getParentAndSibling(that.parentDT[0].prntmob, that.parentDT[0].prnttyp);
                     }
                     else {
                         that.fthrfmlid = 0;

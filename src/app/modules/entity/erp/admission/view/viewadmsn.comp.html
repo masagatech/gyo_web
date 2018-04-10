@@ -1,9 +1,27 @@
 <div class="card">
     <div class="header">
-        <h4>Student</h4>
+        <div class="row clearfix">
+            <div class="col-md-4 col-xs-4">
+                <h4>Student</h4>
+            </div>
+            <div class="col-md-8 col-xs-8 text-right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="isshStudent('grid')">
+                    <i class="material-icons">apps</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="isshStudent('list')">
+                    <i class="material-icons">list</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
+                    <i class="material-icons">add</i> <i class="font-no-italic">Add New</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
+                    <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
+                </button>
+            </div>
+        </div>
 
-        <div class="row clearfix" id="fltrstuds">
-            <div class="col-md-2">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
@@ -16,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-4">
+            <div class="col-md-2 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class</label>
@@ -29,28 +47,23 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-xs-8">
+            <div class="col-md-4 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Student Name <strong>*</strong></label>
-                        <p-autoComplete id="studname" name="studname" [(ngModel)]="studsdata" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <p-autoComplete id="studname" name="studname" [(ngModel)]="selectStudent" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
                         <span class="material-icons inputlinkico">
                             <a role="button" (click)="getStudentDetails()" class="btn btn-theme btn-search">search</a>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 col-xs-12 pad-20 text-right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshStudent('grid')">
-                    <i class="material-icons">apps</i></button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshStudent('list')">
-                    <i class="material-icons">list</i></button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
-                    <i class="material-icons">add</i> <i class="font-no-italic">Add New</i>
-                </button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
-                    <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
-                </button>
+            <div class="col-md-2 col-xs-6 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="resetStudentData()">
+                        <span class="material-icons">restore</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
