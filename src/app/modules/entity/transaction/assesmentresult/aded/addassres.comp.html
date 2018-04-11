@@ -105,11 +105,30 @@
         </div>
 
         <div *ngIf="mode == 'edit'">
-            <p>Academic Year : {{ayname}}</p>
-            <p>Class : {{clsname}}</p>
-            <p>Assesment Type : {{asstyphead}} - {{asstypname}}</p>
-            <p>Student : {{studname}}</p>
-            <p>{{assdate}}</p>
+            <div class="row clearfix">
+                <div class="col-md-3">
+                    <b>Academic Year :</b> {{ayname}}
+                </div>
+                <div class="col-md-2">
+                    <b>Class :</b> {{clsname}}
+                </div>
+                <div class="col-md-7">
+                    <b>Assesment Type :</b> {{asstyphead}} - {{asstypname}}
+                </div>
+            </div>
+
+            <hr class="hr" />
+
+            <div class="row clearfix">
+                <div class="col-md-5">
+                    <b>Student :</b> {{studname}}
+                </div>
+                <div class="col-md-7">
+                    <b>Assesment Date :</b> {{assdate}}
+                </div>
+            </div>
+
+            <hr class="hr" />
         </div>
 
         <table class="table table-bordered reports">
