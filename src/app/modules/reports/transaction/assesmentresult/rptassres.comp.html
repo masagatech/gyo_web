@@ -1,14 +1,11 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2">
-                <h4>Assesment Result</h4>
-            </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" (ngModelChange)="getAssesmentResult();" class="form-control ayname" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -17,11 +14,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="getAssesmentResult();" class="form-control class" tabindex="2">
+                        <select id="clsid" name="clsname" [(ngModel)]="clsid" class="form-control class" tabindex="2">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -30,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Student <strong>*</strong></label>
@@ -39,79 +36,30 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-3" style="padding-top: 20px;" align="right">
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getAssesmentResultReports('html')">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                        <li><a role="button" (click)="getAssesmentResultReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getAssesmentResultReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="body no-padding" *ngIf="assesmentDT.length">
-        <div class="row clearfix">
-            <div class="col-md-12 reports">
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr>
-                            <th width="80px">
-                                Roll No
-                            </th>
-                            <th width="200px">
-                                Student Name
-                            </th>
-                            <th width="250px">
-                                Heading
-                            </th>
-                            <th width="250px">
-                                Sub Heading
-                            </th>
-                            <th width="120px">
-                                Grade
-                            </th>
-                            <th>
-                                Remark
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let row of assesmentDT | groupBy: 'asstypehead'">
-                        <tr class="tr-table">
-                            <th colspan="6">
-                                {{row.key}}
-                            </th>
-                        </tr>
-                        <tr *ngFor="let drow of row.value">
-                            <td>
-                                {{drow.rollno}}
-                            </td>
-                            <td>
-                                {{drow.studentname}}
-                            </td>
-                            <td>
-                                {{drow.heading}}
-                            </td>
-                            <td>
-                                {{drow.subheading}}
-                            </td>
-                            <td>
-                                {{drow.gradename}}
-                            </td>
-                            <td>
-                                {{drow.resremark}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="body no-padding">
+        <div id="divrptassres">
         </div>
-    </div>
-    <div class="body" *ngIf="!assesmentDT.length">
-        No records found
     </div>
 </div>

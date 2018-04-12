@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { AssesmentService } from '@services/erp';
-import jsPDF from 'jspdf'
+import { AssesmentReportService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptassres.comp.html',
-    providers: [CommonService]
+    templateUrl: 'rptassres.comp.html'
 })
 
 export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
@@ -25,16 +24,13 @@ export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
     studid: number = 0;
     studname: string = "";
 
-    assesmentDT: any = [];
-    @ViewChild('assesmentresult') assesmentresult: ElementRef;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _assservice: AssesmentService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _assservice: AssesmentService,
+        private _assrptservice: AssesmentReportService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillAYAndClassDropDown();
-        this.getAssesmentResult();
     }
 
     public ngOnInit() {
@@ -117,51 +113,41 @@ export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
         this.studid = event.value;
         this.studname = event.label;
 
-        this.getAssesmentResult();
+        this.getAssesmentResultReports("html");
     }
 
-    getAssesmentResult() {
-        var that = this;
-        commonfun.loader();
+    private getAssesmentResultReports(format) {
+        let that = this;
+        let params = {};
 
-        that._assservice.getAssesmentResult({
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": that.ayid, "classid": that.clsid, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.assesmentDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        params = {
+            "flag": "reports", "ayid": that.ayid, "classid": that.clsid, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": format
+        }
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+        if (format == "html") {
+            commonfun.loader();
 
-        })
-    }
+            that._assrptservice.getAssesmentResultReports(params).subscribe(data => {
+                try {
+                    $("#divrptassres").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-    // Export
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-    public exportToCSV() {
-        var that = this;
-        that._autoservice.exportToCSV(that.assesmentDT, "Assesment Result Reports");
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF();
-
-        let options = {
-            pagesplit: true
-        };
-
-        pdf.addHTML(this.assesmentresult.nativeElement, 0, 0, options, () => {
-            pdf.save("Assesment Result Reports.pdf");
-        });
+            });
+        }
+        else {
+            window.open(Common.getReportUrl("getAssesmentResultReports", params));
+        }
     }
 
     public ngOnDestroy() {

@@ -62,7 +62,7 @@ export class AddAssesmentResultComponent implements OnInit {
         this.fillAYAndClassDropDown();
         this.fillAssesmentTypeDropDown();
         this.setFromDateAndToDate();
-        
+
         this.getAssesmentResult();
     }
 
@@ -267,14 +267,10 @@ export class AddAssesmentResultComponent implements OnInit {
             for (var i = 0; i < that.assesmentList.length; i++) {
                 var _asslist = that.assesmentList[i];
 
-                for (var j = 0; j < _asslist.gradelist.length; j++) {
-                    var _gradelist = _asslist.gradelist[j];
-
-                    if (_gradelist.gradeid == null || _gradelist.gradeid == "0") {
-                        that._msg.Show(messageType.error, "Error", "Select " + _asslist.subheading + " Grade");
-                        $(".grade" + _asslist.assresid).focus();
-                        return false;
-                    }
+                if (_asslist.gradeid == null || _asslist.gradeid == "0") {
+                    that._msg.Show(messageType.error, "Error", "Select " + _asslist.subheading + " Grade");
+                    $(".grade" + _asslist.assresid).focus();
+                    return false;
                 }
             }
         }

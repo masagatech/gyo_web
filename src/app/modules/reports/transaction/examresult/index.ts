@@ -6,6 +6,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 
 import { ExamResultReportsComponent } from './rptexres.comp';
 import { ExamService } from '@services/erp';
+import { ExamReportService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
 
@@ -30,7 +31,7 @@ export const routes = [
     AutoCompleteModule, ScheduleModule
   ],
 
-  providers: [AuthGuard, ExamService]
+  providers: [AuthGuard, ExamService, ExamReportService]
 })
 
 export class ExamResultReportsModule {

@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AssesmentResultReportsComponent } from './rptassres.comp';
 import { AssesmentService } from '@services/erp';
+import { AssesmentReportService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
 
@@ -30,7 +31,7 @@ export const routes = [
     AutoCompleteModule, ScheduleModule
   ],
 
-  providers: [AuthGuard, AssesmentService]
+  providers: [AuthGuard, AssesmentService, AssesmentReportService, CommonService]
 })
 
 export class AssesmentResultReportsModule {

@@ -26,8 +26,4 @@ export class ExamService {
     getExamResult(req: any) {
         return this._dataserver.post(Globals.erproute + "getExamResult", req)
     }
-
-    downloadExamResult(req: any) {
-        return this._dataserver.rawget(Globals.reporturl + "downloadExamResult", req)
-    }
 }

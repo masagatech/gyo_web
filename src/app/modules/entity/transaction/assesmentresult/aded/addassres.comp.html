@@ -170,7 +170,7 @@
                     <td>
                         <div class="form-group">
                             <div class="form-line">
-                                <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control {{'grade' + drow.assresid}}" tabindex="7">
+                                <select id="gradeid" name="grade" [(ngModel)]="drow.gradeid" class="form-control {{'grade' + drow.id}}" tabindex="7">
                                     <option [value]="0">Select Grade</option>
                                     <option *ngFor="let mdrow of drow.gradelist" [value]="mdrow.gradeid">
                                         {{mdrow.gradename}}

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { ExamService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { ExamReportService } from '@services/reports';
 
 @Component({
     templateUrl: 'viewexamres.comp.html',
@@ -38,7 +38,8 @@ export class ViewExamResultComponent implements OnInit {
     uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _examservice: ExamService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _examservice: ExamService,
+        private _examrptservice: ExamReportService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -136,7 +137,7 @@ export class ViewExamResultComponent implements OnInit {
         if (format == "html") {
             commonfun.loader();
 
-            that._examservice.downloadExamResult(params).subscribe(data => {
+            that._examrptservice.downloadExamResult(params).subscribe(data => {
                 try {
                     $("#divexmresrpt").html(data._body);
                 }
