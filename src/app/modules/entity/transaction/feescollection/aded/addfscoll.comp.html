@@ -136,69 +136,77 @@
             </div>
         </div>
 
-        <div class="row clearfix" *ngIf="feesCollDT.length">
-            <div class="col-md-12">
-                <h4>Payment History</h4>
+        <div *ngIf="feesCollDT.length">
+            <div class="row clearfix">
+                <div class="col-md-6">
+                    <h4>Payment History</h4>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="saveNotification()">
+                        <i class="material-icons">email</i> Send Mail History</button>
+                </div>
             </div>
 
-            <div class="col-md-12">
-                <table class="table table-bordered table-responsive reports">
-                    <thead>
-                        <tr>
-                            <th width="220px">Category</th>
-                            <th width="120px">Receive Date</th>
-                            <th width="100px">Fees</th>
-                            <th width="300px">Payment Mode</th>
-                            <th>Remark</th>
-                            <th width="40px"></th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let row of feesCollDT | groupBy: 'receivedate'">
-                        <tr class="tr-table">
-                            <th colspan="6">
-                                {{row.key}}
-                            </th>
-                        </tr>
-                        <tr *ngFor="let drow of row.value">
-                            <td>
-                                {{drow.catname}} {{drow.subcatname == '' ? '' : ' - ' || drow.subcatname}}
-                            </td>
-                            <td>
-                                {{drow.receivedate}}
-                            </td>
-                            <td align="right">
-                                {{drow.fees | _currency:loginUser.globsettings[0]}}
-                            </td>
-                            <td>
-                                {{drow.paymentmodenm}}
-                                <div *ngIf="drow.paymentmode == 'cheque'">
-                                    <br /> Cheque Date : {{drow.chequedate}}, Cheque No : {{drow.chequeno}}
-                                    <br /> Cheque Status : {{drow.chequestatus}}
-                                </div>
-                            </td>
-                            <td>
-                                {{drow.remark1}}
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editFeesCollection(drow)">
-                                        <i class="material-icons">edit</i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="tr-table">
-                            <th colspan="2">
-                                <b>Total</b>
-                            </th>
-                            <th align="right">
-                                <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
-                            </th>
-                            <th colspan="3"></th>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-responsive reports">
+                        <thead>
+                            <tr>
+                                <th width="220px">Category</th>
+                                <th width="120px">Receive Date</th>
+                                <th width="100px">Fees</th>
+                                <th width="300px">Payment Mode</th>
+                                <th>Remark</th>
+                                <th width="40px"></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let row of feesCollDT | groupBy: 'receivedate'">
+                            <tr class="tr-table">
+                                <th colspan="6">
+                                    {{row.key}}
+                                </th>
+                            </tr>
+                            <tr *ngFor="let drow of row.value">
+                                <td>
+                                    {{drow.catname}} {{drow.subcatname == '' ? '' : ' - ' || drow.subcatname}}
+                                </td>
+                                <td>
+                                    {{drow.receivedate}}
+                                </td>
+                                <td align="right">
+                                    {{drow.fees | _currency:loginUser.globsettings[0]}}
+                                </td>
+                                <td>
+                                    {{drow.paymentmodenm}}
+                                    <div *ngIf="drow.paymentmode == 'cheque'">
+                                        <br /> Cheque Date : {{drow.chequedate}}, Cheque No : {{drow.chequeno}}
+                                        <br /> Cheque Status : {{drow.status}}
+                                    </div>
+                                </td>
+                                <td>
+                                    {{drow.remark1}}
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-theme btn-xs" (click)="editFeesCollection(drow)">
+                                            <i class="material-icons">edit</i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="tr-table">
+                                <th colspan="2">
+                                    <b>Total</b>
+                                </th>
+                                <th align="right">
+                                    <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
+                                </th>
+                                <th colspan="3"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

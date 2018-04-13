@@ -7,7 +7,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { AddFeesCollectionComponent } from './aded/addfscoll.comp';
 import { ViewFeesCollectionComponent } from './view/viewfscoll.comp';
 
-import { FeesService } from '@services/erp';
+import { NotificationService, FeesService } from '@services/erp';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
@@ -37,7 +37,7 @@ export const routes = [
     DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, FeesService]
+  providers: [AuthGuard, NotificationService, FeesService]
 })
 
 export class FeesCollectionModule {

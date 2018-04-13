@@ -333,6 +333,7 @@ export class AddNotificationComponent implements OnInit {
                 "ntftype": "other",
                 "title": that.title,
                 "msg": that.msg,
+                "mailmsg": that.msg,
                 "issendsms": that.issendsms,
                 "issendemail": that.issendemail,
                 "grpid": that.grpid,

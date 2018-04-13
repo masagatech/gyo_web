@@ -53,7 +53,7 @@
                             <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default-female.png';" height="40px" width="40px" class="img-sm">
                         </ng-template>
                     </p-column>
-                    <p-column field="psngrid" header="Enrollment No" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
+                    <p-column field="grno" header="GR No" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
                     <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
                     <p-column field="psngrname" header="{{psngrtypenm}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
@@ -80,81 +80,6 @@
                     </p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'60px', 'text-align':'left','vertical-align':'top'}"></p-column>
                 </p-dataTable>
-            </div>
-        </div>
-
-        <div id="render_me" class="row clearfix" style="display: none;">
-            <div class="col-md-4" *ngFor="let row of passengerDT">
-                <table>
-                    <tr>
-                        <td>{{psngrtypenm}} Name</td>
-                        <td>{{row.passengername}}</td>
-                    </tr>
-                    <tr>
-                        <td>Gender</td>
-                        <td>{{row.gndrval}}</td>
-                    </tr>
-                    <tr>
-                        <td>Standard</td>
-                        <td>{{row.standard}}</td>
-                    </tr>
-                    <tr>
-                        <td>Division</td>
-                        <td>{{row.division}}</td>
-                    </tr>
-                    <tr>
-                        <td>Mother Name</td>
-                        <td>{{row.mothername}}</td>
-                    </tr>
-                    <tr>
-                        <td>Father Name</td>
-                        <td>{{row.fathername}}</td>
-                    </tr>
-                    <tr>
-                        <td>Mobile</td>
-                        <td>{{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span></td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td>{{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span></td>
-                    </tr>
-                    <tr>
-                        <td>Alert</td>
-                        <td>{{row.alert}}</td>
-                    </tr>
-                    <tr>
-                        <td>Residental Address</td>
-                        <td>{{row.address}}</td>
-                    </tr>
-                    <tr>
-                        <td>Pick-up Address</td>
-                        <td>{{row.pickupaddr}}</td>
-                    </tr>
-                    <tr>
-                        <td>Drop Address</td>
-                        <td>{{row.dropaddr}}</td>
-                    </tr>
-                    <tr>
-                        <td>Pick Route Name</td>
-                        <td>{{row.pickrtname}}</td>
-                    </tr>
-                    <tr>
-                        <td>Drop Route Name</td>
-                        <td>{{row.droprtname}}</td>
-                    </tr>
-                    <tr>
-                        <td>Pick Stop Name</td>
-                        <td>{{row.pickstpname}}</td>
-                    </tr>
-                    <tr>
-                        <td>Drop Stop Name</td>
-                        <td>{{row.dropstpname}}</td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td>{{row.mode}}</td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>

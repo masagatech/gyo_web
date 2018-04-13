@@ -67,6 +67,7 @@
                             <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default-female.png';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
+                    <p-column field="grno" header="GR No" [style]="{'width':'150px', 'text-align':'left'}" *ngIf="psngrtype == 'student'"></p-column>
                     <p-column field="rollno" header="Roll No" [style]="{'width':'150px', 'text-align':'left'}" *ngIf="psngrtype == 'student'"></p-column>
                     <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align':'left'}"></p-column>
                     <p-column field="classname" header="Class Name" [style]="{'width':'150px', 'text-align':'left'}" *ngIf="psngrtype == 'student'"></p-column>

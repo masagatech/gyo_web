@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
-import { FeesService } from '@services/erp';
+import { LoginUserModel, Globals, Common } from '@models';
+import { NotificationService, FeesService } from '@services/erp';
 
 declare var google: any;
 
@@ -30,6 +30,7 @@ export class AddFeesCollectionComponent implements OnInit {
     studname: string = "";
     studphoto: string = "";
     classid: number = 0;
+    classcode: number = 0;
     classname: string = "";
     gndrkey: string = "";
     gndrval: string = "";
@@ -51,7 +52,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
+    constructor(private _ntfservice: NotificationService, private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -88,7 +89,9 @@ export class AddFeesCollectionComponent implements OnInit {
                 if (data.data.length > 0) {
                     that.studname = data.data[0].studname;
                     that.studphoto = data.data[0].studphoto;
+                    that.ayid = data.data[0].ayid;
                     that.classid = data.data[0].classid;
+                    that.classcode = data.data[0].classcode;
                     that.classname = data.data[0].classname;
                     that.gndrkey = data.data[0].gndrkey;
                     that.gndrval = data.data[0].gndrval;
@@ -102,7 +105,9 @@ export class AddFeesCollectionComponent implements OnInit {
                 else {
                     that.studname = "";
                     that.studphoto = "";
+                    that.ayid = 0;
                     that.classid = 0;
+                    that.classcode = 0;
                     that.classname = "";
                     that.gndrkey = "";
                     that.gndrval = "";
@@ -353,6 +358,78 @@ export class AddFeesCollectionComponent implements OnInit {
                 // console.log("Complete");
             });
         }
+    }
+
+    // Save Notification
+
+    saveNotification() {
+        var that = this;
+
+        commonfun.loader();
+
+        var feesparams = {
+            "flag": "studentwise", "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
+        }
+
+        var _mailmsg = "";
+
+        _mailmsg += "<p>Name : " + that.studname + "</p>";
+        _mailmsg += "<p>Roll No : " + that.rollno + "</p>";
+        _mailmsg += "<p>Standard : " + that.classname + "</p>";
+        _mailmsg += "<p>See, Attachment File, Fees sleep for your child.</p>";
+
+        var _path = Common.getReportUrl("getFeesReports", feesparams);
+        var _attachments = [{ "filename": that.studname + " Fees Sleep.pdf", "path": _path, contentType: 'application/pdf' }];
+
+        var ntfparams = {
+            "ntfid": 0,
+            "ntftype": "studentfees",
+            "title": "Student Fees : " + that.studname,
+            "msg": "Sended Email, on your registered email, to Fees Sleep of your child - " + that.studname + " " + that.classname + ". so, please check your email",
+            "mailmsg": _mailmsg,
+            "issendsms": false,
+            "issendemail": true,
+            "grpid": 170,
+            "frmid": that.loginUser.uid,
+            "frmtype": that.loginUser.utype,
+            "issendparents": true,
+            "issendteacher": false,
+            "sendtype": "{parents}",
+            "classid": "{" + that.classcode + "}",
+            "studid": "{" + that.studid + "}",
+            "tchrid": "{0}",
+            "cuid": that.loginUser.ucode,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "attachments": _attachments
+        }
+
+        that._ntfservice.saveNotification(ntfparams).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_notification;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
+
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", "Mail send successfully !!!!");
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+
+                commonfun.loaderhide();
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Get Fees Collection
