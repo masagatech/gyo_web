@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getAttendance()" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getAttendance()" tabindex="2">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2">
                             <option [value]="0">{{psngrtype == 'student' ? 'Select Class' : 'All'}}</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -43,7 +43,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2" style="padding-top: 20px;">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Attendance Type <strong>*</strong></label>
+                        <select id="attndtype" name="attndtype" [(ngModel)]="attndtype" class="form-control attndtype" tabindex="4">
+                            <option *ngFor="let row of attndtypeDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="getAttendance()">
                         <i class="material-icons">arrow_forward</i></button>

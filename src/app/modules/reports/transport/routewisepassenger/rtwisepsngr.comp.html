@@ -4,15 +4,15 @@
             <div class="col-md-9 col-xs-9">
                 <h4>Route Wise {{_enttdetails.psngrtype}}</h4>
             </div>
-            <div class="col-md-3 col-xs-3" style="padding-top: 20px; text-align: right;">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Export <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
+            <div class="col-md-3 col-xs-3 pad-20 text-right">
+                <div class="btn-group " role="group ">
+                    <button type="button " class="btn btn-info dropdown-toggle " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">
+                        Export <span class="caret "></span>
+                        <span class="sr-only ">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    <ul class="dropdown-menu ">
+                        <li><a role="button " (click)="exportToCSV() "><i class="fa fa-file-excel-o "></i> CSV</a></li>
+                        <li><a role="button " (click)="exportToPDF() "><i class="fa fa-file-pdf-o "></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
@@ -20,28 +20,28 @@
     </div>
 </div>
 
-<div #rtwisepsngr class="row clearfix">
-    <div *ngFor="let row of routesDT | groupBy:'rtname'; let i = index;" class="col-md-3 col-xs-6">
-        <div class="card">
-            <div class="header">
+<div #rtwisepsngr class="row clearfix ">
+    <div *ngFor="let row of routesDT | groupBy: 'rtname'; let i=i ndex; " class="col-md-3 col-xs-6 ">
+        <div class="card ">
+            <div class="header ">
                 <h4>{{row.key}}</h4>
             </div>
-            <div class="body">
-                <div *ngFor="let drow of row.value">
-                    <div class="row clearfix">
-                        <div class="col-md-10">
+            <div class="body ">
+                <div *ngFor="let drow of row.value ">
+                    <div class="row clearfix ">
+                        <div class="col-md-10 ">
                             <b>Batch :</b> {{drow.batchname}}
                             <br /> <b>Timing :</b> {{drow.batchtime}}
                             <br /> <b>Stops :</b> ({{drow.countstops}})
                             <br /> <b>{{_enttdetails.psngrtype}} :</b> ({{drow.countstuds}})
                         </div>
-                        <div class="col-md-2" align="right">
-                            <a href="javascript:void(0);" (click)="getRouteWiseStops(drow)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="material-icons">more_vert</i>
+                        <div class="col-md-2 " align="right ">
+                            <a href="javascript:void(0); " (click)="getRouteWiseStops(drow) " class="dropdown-toggle " data-toggle="dropdown " role="button " aria-haspopup="true " aria-expanded="false ">
+                                <i class="material-icons ">more_vert</i>
                             </a>
-                            <ul id="ddlstops" class="dropdown-menu pull-right">
-                                <li *ngFor="let srow of drow.stopsDT; let i = index;">
-                                    <a role="button" (click)="getStopsWisePassenger(srow)"><b>{{srow.stpname}} :</b> {{srow.countstuds}}</a>
+                            <ul id="ddlstops " class="dropdown-menu pull-right ">
+                                <li *ngFor="let srow of drow.stopsDT; let i=i ndex; ">
+                                    <a role="button " (click)="getStopsWisePassenger(srow) "><b>{{srow.stpname}} :</b> {{srow.countstuds}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -53,49 +53,49 @@
     </div>
 </div>
 
-<div class="modal fade" id="passengerModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="width: 1050px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="largeModalLabel">
+<div class="modal fade " id="passengerModal " tabindex="-1 " role="dialog ">
+    <div class="modal-dialog " role="document " style="width: 1050px; ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h4 class="modal-title " id="largeModalLabel ">
                     Route : {{rtname}} > Stops : {{stpname}} > Batch : {{batchname}}
                 </h4>
             </div>
-            <div class="modal-body" id="passenger">
-                <p-dataTable [value]="passengerDT">
-                    <p-column field="psngrname" header="{{_enttdetails.psngrtype}} Name" [style]="{'text-align': 'left'}"></p-column>
-                    <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left'}"></p-column>
-                    <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left'}"></p-column>
-                    <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left'}"></p-column>
-                    <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left'}"></p-column>
-                    <p-column header="P" [style]="{'width': '30px', 'text-align': 'left'}">
-                        <ng-template let-drow="rowData" pTemplate type="body">
-                            <span class="material-icons {{drow.pdtype.p === 'check' ? 'act-green' : 'act-red'}}">{{drow.pdtype.p == null ? 'cancel' : drow.pdtype.p}}</span>
+            <div class="modal-body " id="passenger ">
+                <p-dataTable [value]="passengerDT ">
+                    <p-column field="psngrname " header="{{_enttdetails.psngrtype}} Name " [style]="{ 'text-align': 'left'} "></p-column>
+                    <p-column field="classname " header="Class " [style]="{ 'width': '80px', 'text-align': 'left'} "></p-column>
+                    <p-column field="mothername " header="Mother Name " [style]="{ 'width': '150px', 'text-align': 'left'} "></p-column>
+                    <p-column field="mobileno1 " header="Mobile " [style]="{ 'width': '120px', 'text-align': 'left'} "></p-column>
+                    <p-column field="email1 " header="Email " [style]="{ 'width': '200px', 'text-align': 'left'} "></p-column>
+                    <p-column header="P " [style]="{ 'width': '30px', 'text-align': 'left'} ">
+                        <ng-template let-drow="rowData " pTemplate type="body ">
+                            <span class="material-icons {{drow.pdtype.p==='check' ? 'act-green' : 'act-red'}} ">{{drow.pdtype.p == null ? 'cancel' : drow.pdtype.p}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column header="D" [style]="{'width': '30px', 'text-align': 'left'}">
-                        <ng-template let-drow="rowData" pTemplate type="body">
-                            <span class="material-icons {{drow.pdtype.d === 'check' ? 'act-green' : 'act-red'}}">{{drow.pdtype.d == null ? 'cancel' : drow.pdtype.d}}</span>
+                    <p-column header="D " [style]="{ 'width': '30px', 'text-align': 'left'} ">
+                        <ng-template let-drow="rowData " pTemplate type="body ">
+                            <span class="material-icons {{drow.pdtype.d==='check' ? 'act-green' : 'act-red'}} ">{{drow.pdtype.d == null ? 'cancel' : drow.pdtype.d}}</span>
                         </ng-template>
                     </p-column>
                 </p-dataTable>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <div class="modal-footer ">
+                <button type="button " class="btn btn-danger " data-dismiss="modal ">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<!--<div class="row clearfix">
-    <div class="col-md-2">
-        <div class="card" *ngIf="stopsDT.length">
-            <div class="header">
+<!--<div class="row clearfix ">
+    <div class="col-md-2 ">
+        <div class="card " *ngIf="stopsDT.length ">
+            <div class="header ">
                 <h4>{{rtname}}</h4>
             </div>
-            <div class="body">
-                <p *ngFor="let row of stopsDT; let i = index;">
-                    <a role="button" (click)="getStopsWisePassenger(row)">
+            <div class="body ">
+                <p *ngFor="let row of stopsDT; let i=i ndex; ">
+                    <a role="button " (click)="getStopsWisePassenger(row) ">
                         <b>{{row.stpname}} :</b> {{row.countstuds}}
                     </a>
                 </p>
@@ -103,14 +103,14 @@
         </div>
     </div>
 
-    <div class="col-md-10" *ngIf="passengerDT.length">
-        <div class="card">
-            <div class="header">
+    <div class="col-md-10 " *ngIf="passengerDT.length ">
+        <div class="card ">
+            <div class="header ">
                 <h4>{{stpname}}</h4>
             </div>
-            <div class="body no-padding">
-                <div class="row clearfix">
-                    <div class="col-md-12">
+            <div class="body no-padding ">
+                <div class="row clearfix ">
+                    <div class="col-md-12 ">
 
                     </div>
                 </div>

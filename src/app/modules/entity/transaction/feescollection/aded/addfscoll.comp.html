@@ -142,8 +142,12 @@
                     <h4>Payment History</h4>
                 </div>
                 <div class="col-md-6 text-right">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="printFeeReceipt()">
+                        <i class="material-icons">print</i>
+                    </button>
                     <button type="button" class="btn btn-theme btn-xs" (click)="saveNotification()">
-                        <i class="material-icons">email</i> Send Mail History</button>
+                        <i class="material-icons">email</i> <i class="font-no-italic">Send Email To Parent</i>
+                    </button>
                 </div>
             </div>
 
@@ -207,6 +211,26 @@
                         </tfoot>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="feeReceiptModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 1050px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">
+                    Fee Receipt
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="feereceipt">
+                    <iframe id="ifeereceipt" width="1000" height="500" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

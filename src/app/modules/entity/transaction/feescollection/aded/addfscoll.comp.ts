@@ -360,6 +360,23 @@ export class AddFeesCollectionComponent implements OnInit {
         }
     }
 
+    printFeeReceipt() {
+        var that = this;
+
+        var feesparams = {
+            "flag": "studentwise", "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
+        }
+
+        var _path = Common.getReportUrl("getFeesReports", feesparams);
+
+        $("#feeReceiptModel").modal('show');
+
+        commonfun.loader("#feereceipt");
+        $("#ifeereceipt")[0].src = _path;
+        commonfun.loaderhide("#feereceipt");
+    }
+
     // Save Notification
 
     saveNotification() {

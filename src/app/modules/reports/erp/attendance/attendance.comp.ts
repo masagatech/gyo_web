@@ -27,6 +27,9 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     attndmonthDT: any = [];
     attndmonth: string = "";
 
+    attndtypeDT: any = [];
+    attndtype: string = "class";
+
     attendanceColumn: any = [];
     attendanceDT: any = [];
     exportAttendanceDT: any = [];
@@ -99,6 +102,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.attndtypeDT = data.data.filter(a => a.group == "attendancetype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -187,9 +191,9 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             }
 
             params = {
-                "flag": rpttyp, "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attndmonth": that.attndmonth,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                "flag": rpttyp, "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
+                "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin
             }
 
             that._attndservice.getAttendance(params).subscribe(data => {

@@ -46,52 +46,52 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-2" style="padding-top: 20px;">
+            <div class="col-md-1 col-xs-2 pad-20 ">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="getTimeTable()">
                         <i class="material-icons">arrow_forward</i></button>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-2" style="padding-top: 20px; text-align: right;">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Export <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
+            <div class="col-md-2 col-xs-2 pad-20 text-right">
+                <div class="btn-group " role="group ">
+                    <button type="button " class="btn btn-info dropdown-toggle " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">
+                        Export <span class="caret "></span>
+                        <span class="sr-only ">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    <ul class="dropdown-menu ">
+                        <li><a role="button " (click)="exportToCSV() "><i class="fa fa-file-excel-o "></i> CSV</a></li>
+                        <li><a role="button " (click)="exportToPDF() "><i class="fa fa-file-pdf-o "></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="body" *ngIf="timetableDT.length">
-        <div class="row clearfix" *ngIf="statusid == 0">
-            <div class="col-md-12">
+    <div class="body " *ngIf="timetableDT.length ">
+        <div class="row clearfix " *ngIf="statusid==0 ">
+            <div class="col-md-12 ">
                 <h4>{{statusdesc}}</h4>
             </div>
         </div>
 
-        <div class="row clearfix" *ngIf="statusid != 0">
-            <div class="col-md-12">
-                <table class="table table-bordered table-responsive reports">
+        <div class="row clearfix " *ngIf="statusid !=0 ">
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-responsive reports ">
                     <thead>
                         <tr>
-                            <th width="100px">
+                            <th width="100px ">
                                 Class
                             </th>
-                            <th width="200px">
+                            <th width="200px ">
                                 Teacher
                             </th>
-                            <th *ngIf="psngrtype == 'student'" width="200px">
+                            <th *ngIf="psngrtype=='student' " width="200px ">
                                 Student Name
                             </th>
-                            <th width="100px">
+                            <th width="100px ">
                                 From Time
                             </th>
-                            <th width="100px">
+                            <th width="100px ">
                                 To Time
                             </th>
                             <th>
@@ -100,14 +100,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of timetableDT">
+                        <tr *ngFor="let row of timetableDT ">
                             <td>
                                 {{row.classname}}
                             </td>
                             <td>
                                 {{row.tchrname}}
                             </td>
-                            <td *ngIf="psngrtype == 'student'">
+                            <td *ngIf="psngrtype=='student' ">
                                 {{row.studname}}
                             </td>
                             <td>
@@ -125,7 +125,7 @@
             </div>
         </div>
     </div>
-    <div class="body" *ngIf="!timetableDT.length">
+    <div class="body " *ngIf="!timetableDT.length ">
         No records found
     </div>
 </div>

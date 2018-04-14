@@ -3188,6 +3188,17 @@ section.content {
     color: #777;
 }
 
+.header-title {
+    color: #555;
+    padding: 8px 10px;
+    position: relative;
+    background: rgba(204, 204, 204, 0.35);
+}
+
+.border-radius {
+    border: solid 1px rgba(204, 204, 204, 0.35);
+}
+
 .card .body {
     font-size: 14px;
     color: #555;

@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-5">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
@@ -41,13 +41,25 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-3" style="padding-top: 20px;">
+            <div class="col-md-2 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Attendance Type <strong>*</strong></label>
+                        <select id="attndtype" name="attndtype" [(ngModel)]="attndtype" class="form-control attndtype" tabindex="4">
+                            <option *ngFor="let row of attndtypeDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceColumn()">
                         <i class="material-icons">arrow_forward</i></button>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-3" style="padding-top: 20px; text-align: right;">
+            <div class="col-md-2 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>

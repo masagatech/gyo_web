@@ -85,14 +85,23 @@ export class AddEntityComponent implements OnInit {
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
+
+        this.getEntityDetails();
     }
 
     public ngOnInit() {
         setTimeout(function () {
             $(".schcd").focus();
         }, 100);
+    }
 
-        this.getEntityDetails();
+    hideWhenEntityFields() {
+        if (this.entttype == "School") {
+            $("#diventtfields").prop("class", "row clearfix show");
+        }
+        else{
+            $("#diventtfields").prop("class", "row clearfix hide");
+        }
     }
 
     // get lat and long by address form google map
@@ -206,10 +215,12 @@ export class AddEntityComponent implements OnInit {
                             }
                             else {
                                 that.isvalidentt = true;
+                                that.hideWhenEntityFields();
                             }
                         }
                         else {
                             that.isvalidentt = false;
+                            that.hideWhenEntityFields();
                         }
                     }
                     catch (e) {
@@ -778,7 +789,7 @@ export class AddEntityComponent implements OnInit {
         }
     }
 
-    // Get entity Data
+    // Get Entity Data
 
     getEntityDetails() {
         var that = this;
@@ -796,6 +807,7 @@ export class AddEntityComponent implements OnInit {
                         if (data.data.length > 0) {
                             that.schid = data.data[0].autoid;
                             that.entttype = data.data[0].entttype;
+                            that.hideWhenEntityFields();
                             that.schcd = data.data[0].schoolcode;
                             that.schnm = data.data[0].schoolname;
 
@@ -892,7 +904,7 @@ export class AddEntityComponent implements OnInit {
                                 else {
                                     $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
                                 }
-                                
+
                                 // Board
 
                                 _boardrights = null;

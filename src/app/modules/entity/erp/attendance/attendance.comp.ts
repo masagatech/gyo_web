@@ -23,6 +23,9 @@ export class AttendanceComponent implements OnInit {
     classDT: any = [];
     classid: number = 0;
 
+    attndtypeDT: any = [];
+    attndtype: string = "class";
+
     avlattnddate: any = "";
     attnddate: any = "";
 
@@ -108,6 +111,7 @@ export class AttendanceComponent implements OnInit {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.attndtypeDT = data.data.filter(a => a.group == "attendancetype");
 
                 that.getAttendance();
             }
@@ -153,9 +157,9 @@ export class AttendanceComponent implements OnInit {
             }
 
             _params = {
-                "flag": "attendance", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin, "ayid": that.ayid, "classid": that.classid, "attnddate": that.attnddate,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+                "flag": "attendance", "psngrtype": that.psngrtype, "attnddate": that.attnddate, "attndtype": that.attndtype,
+                "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin
             }
 
             that._attndservice.getAttendance(_params).subscribe(data => {
@@ -231,6 +235,11 @@ export class AttendanceComponent implements OnInit {
                 return false;
             }
         }
+        if (that.attndtype == "") {
+            that._msg.Show(messageType.info, "Info", "Select Attendance Type");
+            $(".attndtype").focus();
+            return false;
+        }
         if (!$("#selectall").is(':checked') && that.absentDT.length == 0) {
             that._msg.Show(messageType.error, "Error", "Select All Checkbox / Select Atleast 1 " + that.psngrtypenm + " For Absent");
             return false;
@@ -261,6 +270,7 @@ export class AttendanceComponent implements OnInit {
 
             params = {
                 "attndid": _attndid,
+                "attndtype": that.attndtype,
                 "psngrid": _psngrid,
                 "psngrtype": that.psngrtype,
                 "attnddate": that.attnddate,

@@ -8,6 +8,7 @@ import { AddExamResultComponent } from './aded/addexamres.comp';
 import { ViewExamResultComponent } from './view/viewexamres.comp';
 
 import { ExamService } from '@services/erp';
+import { ExamReportService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
@@ -41,7 +42,7 @@ export const routes = [
     DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, ExamService]
+  providers: [AuthGuard, ExamService, ExamReportService]
 })
 
 export class ExamResultModule {
