@@ -22,8 +22,9 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     grpcd: string = "";
     key: string = "";
     val: string = "";
+    typ: string = "";
     isactive: boolean = true;
-    
+
     headertitle: string = "";
     mtype: string = "";
     isdynmenu: boolean = false;
@@ -176,16 +177,26 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         }
     }
 
-    // get mom by id
+    // Get MOM Details By ID
 
     getMOMByID(pmomid: number) {
-        this._commonservice.getMOM({ "flag": "id", "autoid": pmomid }).subscribe(data => {
+        var that = this;
+
+        that._commonservice.getMOM({ "flag": "id", "autoid": pmomid }).subscribe(data => {
             var dataresult = data.data;
 
-            this.momid = dataresult[0].autoid;
-            this.grpcd = dataresult[0].group;
-            this.key = dataresult[0].key;
-            this.val = dataresult[0].val;
+            that.momid = dataresult[0].autoid;
+            that.grpcd = dataresult[0].group;
+            that.key = dataresult[0].key;
+            that.val = dataresult[0].val;
+            that.typ = dataresult[0].typ;
+        
+            if (that.typ == "global") {
+                $('#val').prop('disabled', true);
+            }
+            else {
+                $('#val').prop('disabled', false);
+            }
         }, err => {
             this._msg.Show(messageType.error, 'Error', err);
         }, () => {

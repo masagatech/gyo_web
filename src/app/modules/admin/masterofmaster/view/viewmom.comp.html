@@ -10,16 +10,31 @@
     </div>
 
     <div class="body">
-        <p-dataTable #dt [value]="momDT">
-            <p-column field="key" header="Key" [style]="{'width':'150px','text-align':'left'}"></p-column>
-            <p-column field="val" header="Value" [style]="{'text-align':'left'}"></p-column>
-            <p-column styleClass="col-button" [style]="{'width':'60px','text-align':'left'}">
-                <ng-template let-row="rowData" pTemplate type="body">
-                    <button type="button" (click)="editMOMForm(row)" class="btn btn-theme btn-xs">
-                        <span class="material-icons">edit</span>
-                    </button>
-                </ng-template>
-            </p-column>
-        </p-dataTable>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of momDT">
+                    <td width="150px">
+                        {{row.key}}
+                    </td>
+                    <td>
+                        {{row.val}}
+                    </td>
+                    <td width="50px">
+                        <div class="form-group" *ngIf="row.typ != 'global'">
+                            <button type="button" (click)="editMOMForm(row)" class="btn btn-theme btn-xs">
+                                <span class="material-icons">edit</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
