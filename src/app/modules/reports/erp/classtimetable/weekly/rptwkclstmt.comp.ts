@@ -133,8 +133,8 @@ export class WeeklyClassTimeTableReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsrstservice.getClassTimeTable({
-            "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
                 that._autoservice.exportToCSV(data.data, "Weekly Class TimeTable");

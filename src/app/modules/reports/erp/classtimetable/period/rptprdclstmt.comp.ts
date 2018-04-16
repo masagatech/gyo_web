@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { ClassTimeTableService } from '@services/erp';
 import jsPDF from 'jspdf'
 
@@ -290,39 +290,18 @@ export class PeriodClassTimeTableReportsComponent implements OnInit, OnDestroy {
 
     // Export
 
-    public exportToCSV() {
+    public downloadReports(format) {
         var that = this;
         commonfun.loader();
 
-        that._clsrstservice.getClassTimeTable({
-            "flag": "weekly", "ayid": that.ayid, "classid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that._autoservice.exportToCSV(data.data, "Weekly Class TimeTable");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        var params = {
+            "ayid": that.ayid, "weekno": that.weekno, "weekid": that.weekid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin,
+            "viewby": "portal", "format": format
+        }
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Weekly Class TimeTable.pdf");
-        });
+        window.open(Common.getReportUrl("getClassTimeTableReports", params));
+        commonfun.loaderhide();
     }
 
     resetClassTimeTableDetails() {
