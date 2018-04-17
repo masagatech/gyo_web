@@ -252,10 +252,44 @@ export class AddHolidayComponent implements OnInit {
 
     // Save Data
 
+    isValidationHoliday(_hldforrights) {
+        var that = this;
+
+        if (that.frmdt == "") {
+            that._msg.Show(messageType.error, "Error", "Enter From Date");
+            $(".frmdt").focus();
+            return false;
+        }
+        if (that.todt == "") {
+            that._msg.Show(messageType.error, "Error", "Enter To Date");
+            $(".todt").focus();
+            return false;
+        }
+        if (that.hldnm == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Holiday Title");
+            $(".hldnm").focus();
+            return false;
+        }
+
+        if (that._enttdetails.psngrtype != 'Passenger') {
+            if (_hldforrights == null) {
+                that._msg.Show(messageType.error, "Error", "Please Select Holiday For");
+                return false;
+            }
+            else if (that.classDT.length == 0) {
+                that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     saveHolidayInfo() {
         var that = this;
         var _hldforrights = null;
         var _clsrights = null;
+        var _isvalid: boolean = false;
 
         if (that._enttdetails.psngrtype != 'Passenger') {
             _hldforrights = that.getHolidayForRights();
@@ -272,28 +306,9 @@ export class AddHolidayComponent implements OnInit {
             _clsrights = 0;
         }
 
-        if (that.frmdt == "") {
-            that._msg.Show(messageType.error, "Error", "Enter From Date");
-            $(".frmdt").focus();
-        }
-        else if (that.todt == "") {
-            that._msg.Show(messageType.error, "Error", "Enter To Date");
-            $(".todt").focus();
-        }
-        else if (that.hldnm == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Holiday Title");
-            $(".hldnm").focus();
-        }
-        else {
-            if (that._enttdetails.psngrtype != 'Passenger') {
-                if (_hldforrights == null) {
-                    that._msg.Show(messageType.error, "Error", "Please Select Holiday For");
-                }
-                else if (that.classDT.length == 0) {
-                    that._msg.Show(messageType.error, "Error", "No any Class Entry on this " + that._enttdetails.enttname);
-                }
-            }
+        _isvalid = that.isValidationHoliday(_hldforrights);
 
+        if (_isvalid) {
             commonfun.loader();
 
             var saveholiday = {

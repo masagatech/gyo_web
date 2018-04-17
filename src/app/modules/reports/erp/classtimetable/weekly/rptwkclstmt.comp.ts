@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { ClassTimeTableService } from '@services/erp';
-import jsPDF from 'jspdf'
+import { TimeTableReportService } from '@services/reports';
 
 @Component({
     templateUrl: 'rptwkclstmt.comp.html',
@@ -25,21 +25,13 @@ export class WeeklyClassTimeTableReportsComponent implements OnInit, OnDestroy {
     tchrid: number = 0;
     tchrname: string = "";
 
-    classTimeTableColumn: any = [];
-    classTimeTableDT: any = [];
-    @ViewChild('class') class: ElementRef;
-
-    gridTotal: any = {
-        strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-    };
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService,
+        private _tmtservice: TimeTableReportService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getWeeklyClassTimeTable();
     }
 
     public ngOnInit() {
@@ -71,7 +63,6 @@ export class WeeklyClassTimeTableReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getWeeklyClassTimeTable();
                     }
                     else {
                         that.ayid = 0;
@@ -123,94 +114,49 @@ export class WeeklyClassTimeTableReportsComponent implements OnInit, OnDestroy {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getWeeklyClassTimeTable();
     }
 
-    // Export
+    // Get Class TimeTable Data
 
-    public exportToCSV() {
+    public getWeeklyClassTimeTable(format) {
         var that = this;
-        commonfun.loader();
 
-        that._clsrstservice.getClassTimeTable({
-            "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
-        }).subscribe(data => {
-            try {
-                that._autoservice.exportToCSV(data.data, "Weekly Class TimeTable");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        var params = {
+            "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin, "viewby": "portal", "format": format
+        }
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+        if (format == "html") {
+            commonfun.loader();
 
-        })
-    }
+            that._tmtservice.getClassTimeTableWeekly(params).subscribe(data => {
+                try {
+                    $("#divtimetable").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Weekly Class TimeTable.pdf");
-        });
-    }
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-    // Get Class Scedule Data
-
-    getWeeklyClassTimeTable() {
-        var that = this;
-        commonfun.loader();
-
-        that._clsrstservice.getClassTimeTable({
-            "flag": "weekly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
-        }).subscribe(data => {
-            try {
-                that.classTimeTableDT = data.data;
-                that.grandTotal();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    grandTotal() {
-        var that = this;
-        that.gridTotal = {
-            strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-        };
-
-        for (var i = 0; i < this.classDT.length; i++) {
-            var items = this.classDT[i];
-
-            that.gridTotal.strenthTotal += parseFloat(items.strength);
-            that.gridTotal.studentsTotal += parseFloat(items.totstuds);
-            that.gridTotal.openingTotal += parseFloat(items.opening);
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getClassTimeTableWeekly", params));
         }
     }
 
-    resetClassTimeTableDetails() {
+    resetWeeklyClassTimeTable() {
         this.tchrdata = [];
         this.tchrid = 0;
-        this.tchrname = ""
-        this.getWeeklyClassTimeTable();
+        this.tchrname = "";
+        this.getWeeklyClassTimeTable("html");
     }
 
     public ngOnDestroy() {

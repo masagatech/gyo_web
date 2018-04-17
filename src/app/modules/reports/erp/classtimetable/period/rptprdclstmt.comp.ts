@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { ClassTimeTableService } from '@services/erp';
-import jsPDF from 'jspdf'
 
 @Component({
     templateUrl: 'rptprdclstmt.comp.html',
@@ -43,11 +42,6 @@ export class PeriodClassTimeTableReportsComponent implements OnInit, OnDestroy {
     sundate: string = "";
 
     classTimeTableDT: any = [];
-    @ViewChild('class') class: ElementRef;
-
-    gridTotal: any = {
-        strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-    };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService) {
@@ -288,7 +282,7 @@ export class PeriodClassTimeTableReportsComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Export
+    // Download
 
     public downloadReports(format) {
         var that = this;
@@ -300,7 +294,7 @@ export class PeriodClassTimeTableReportsComponent implements OnInit, OnDestroy {
             "viewby": "portal", "format": format
         }
 
-        window.open(Common.getReportUrl("getClassTimeTableReports", params));
+        window.open(Common.getReportUrl("getClassTimeTablePeriod", params));
         commonfun.loaderhide();
     }
 

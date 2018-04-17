@@ -9,6 +9,7 @@ import { WeeklyClassTimeTableReportsComponent } from './weekly/rptwkclstmt.comp'
 import { PeriodClassTimeTableReportsComponent } from './period/rptprdclstmt.comp';
 
 import { ClassTimeTableService } from '@services/erp';
+import { TimeTableReportService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -42,7 +43,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, ClassTimeTableService]
+  providers: [AuthGuard, ClassTimeTableService, TimeTableReportService]
 })
 
 export class ClassTimeTableReportsModule {

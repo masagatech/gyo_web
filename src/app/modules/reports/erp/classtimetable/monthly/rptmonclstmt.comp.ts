@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { ClassTimeTableService } from '@services/erp';
-import jsPDF from 'jspdf'
+import { TimeTableReportService } from '@services/reports';
 
 @Component({
     templateUrl: 'rptmonclstmt.comp.html',
@@ -25,16 +25,9 @@ export class MonthlyClassTimeTableReportsComponent implements OnInit, OnDestroy 
     tchrid: number = 0;
     tchrname: string = "";
 
-    classTimeTableColumn: any = [];
-    classTimeTableDT: any = [];
-    @ViewChild('class') class: ElementRef;
-
-    gridTotal: any = {
-        strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-    };
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clstmtservice: ClassTimeTableService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _clstmtservice: ClassTimeTableService,
+        private _tmtservice: TimeTableReportService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -64,7 +57,7 @@ export class MonthlyClassTimeTableReportsComponent implements OnInit, OnDestroy 
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-                
+
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
@@ -121,110 +114,49 @@ export class MonthlyClassTimeTableReportsComponent implements OnInit, OnDestroy 
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.getMonthlyClassTimeTable();
     }
 
-    // Export
+    // Get Class TimeTable Data
 
-    public exportToCSV() {
-        var that = this;
-        commonfun.loader();
-
-        that._clstmtservice.getClassTimeTable({
-            "flag": "monthly", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that._autoservice.exportToCSV(data.data, "Monthly Class TimeTable");
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.class.nativeElement, 0, 0, options, () => {
-            pdf.save("Class TimeTable.pdf");
-        });
-    }
-
-    // Get Class Scedule Data
-
-    getMonthlyClassTimeTable() {
+    public getMonthlyClassTimeTable(format) {
         var that = this;
 
-        that._clstmtservice.getClassTimeTable({
-            "flag": "column", "ayid": that.ayid
-        }).subscribe(data => {
-            if (data.data.length !== 0) {
-                that.classTimeTableColumn = data.data;
-                that.getClassTimeTable();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-        })
-    }
+        var params = {
+            "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin, "viewby": "portal", "format": format
+        }
 
-    getClassTimeTable() {
-        var that = this;
-        commonfun.loader();
+        if (format == "html") {
+            commonfun.loader();
 
-        that._clstmtservice.getClassTimeTable({
-            "flag": "monthly", "ayid": that.ayid, "classid": that.classid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
-        }).subscribe(data => {
-            try {
-                that.classTimeTableDT = data.data;
-                that.grandTotal();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+            that._tmtservice.getClassTimeTableMonthly(params).subscribe(data => {
+                try {
+                    $("#divtimetable").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-        })
-    }
-
-    grandTotal() {
-        var that = this;
-        that.gridTotal = {
-            strenthTotal: 0, studentsTotal: 0, openingTotal: 0
-        };
-
-        for (var i = 0; i < this.classDT.length; i++) {
-            var items = this.classDT[i];
-
-            that.gridTotal.strenthTotal += parseFloat(items.strength);
-            that.gridTotal.studentsTotal += parseFloat(items.totstuds);
-            that.gridTotal.openingTotal += parseFloat(items.opening);
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getClassTimeTableMonthly", params));
         }
     }
 
-    resetClassTimeTableDetails() {
+    resetMonthlyClassTimeTable() {
         this.tchrdata = [];
         this.tchrid = 0;
         this.tchrname = ""
-        this.getMonthlyClassTimeTable();
+        this.getMonthlyClassTimeTable("html");
     }
 
     public ngOnDestroy() {
