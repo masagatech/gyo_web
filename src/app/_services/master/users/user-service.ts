@@ -25,8 +25,4 @@ export class UserService {
     saveUserRights(req: any) {
         return this._dataserver.post("SaveUserRights", req)
     }
-
-    getUserLoginLog(req: any) {
-        return this._dataserver.post("getUserLoginLog", req)
-    }
 }

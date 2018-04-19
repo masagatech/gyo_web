@@ -27,7 +27,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-2 pad-20 " align="right">
+            <div class="col-md-1 col-xs-2 pad-20 hide" align="right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
@@ -43,15 +43,65 @@
     </div>
 
     <div class="body no-padding">
-        <div #holiday class="row clearfix">
-            <div class="col-md-12">
-                <p-dataTable [value]="loginlogDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="ucode" header="User Code " [style]="{ 'width':'100px', 'text-align': 'left'}"></p-column>
-                    <p-column field="fullname" header="User Name" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
-                    <p-column field="lastdate" header="Last Date" [style]="{'width': '130px', 'text-align': 'left'}"></p-column>
-                    <p-column field="howmany" header="How Many" [style]="{'width':'130px', 'text-align':'left'}"></p-column>
-                </p-dataTable>
-            </div>
-        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        User Code
+                    </th>
+                    <th>
+                        Full Name
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Mobile
+                    </th>
+                    <th>
+                        How Many
+                    </th>
+                    <th>
+                        Login Time
+                    </th>
+                    <th>
+                        Logout Time
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of loginlogDT">
+                    <td width="140px">
+                        {{row.ucode}}
+                    </td>
+                    <td width="250px">
+                        {{row.fullname}}
+                    </td>
+                    <td width="200px">
+                        {{row.email}}<br />{{row.altemail}}
+                    </td>
+                    <td width="100px">
+                        {{row.mobile}}<br />{{row.altemail}}
+                    </td>
+                    <td width="100px">
+                        {{row.howmany}}
+                    </td>
+                    <td width="120px">
+                        {{row.logintime}}
+                    </td>
+                    <td width="120px">
+                        {{row.logouttime}}
+                    </td>
+                    <td width="120px">
+                        <button type="button" class="btn btn-theme btn-xs" (click)="downloadReports(row, 'xls')">
+                            <i class="fa fa-file-excel-o"></i></button>
+                        <button type="button" class="btn btn-theme btn-xs" (click)="downloadReports(row, 'pdf')">
+                            <i class="fa fa-file-pdf-o"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

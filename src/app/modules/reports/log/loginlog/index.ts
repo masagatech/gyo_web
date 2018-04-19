@@ -6,7 +6,7 @@ import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
 import { LoginLogReportsComponent } from './rptlog.comp';
-import { UserService } from '@services/master';
+import { LogReportService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -30,7 +30,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, UserService]
+  providers: [AuthGuard, LogReportService]
 })
 
 export class LoginLogModule {
