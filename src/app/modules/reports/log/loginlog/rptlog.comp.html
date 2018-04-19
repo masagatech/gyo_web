@@ -20,23 +20,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-2 pad-20 ">
+            <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="getLoginLog()">
                         <i class=" material-icons ">arrow_forward</i>
                     </button>
-                </div>
-            </div>
-            <div class="col-md-1 col-xs-2 pad-20 hide" align="right">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Export <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -53,19 +41,13 @@
                         Full Name
                     </th>
                     <th>
-                        Email
-                    </th>
-                    <th>
-                        Mobile
-                    </th>
-                    <th>
                         How Many
                     </th>
                     <th>
-                        Login Time
+                        Last Login Date
                     </th>
                     <th>
-                        Logout Time
+                        Last Logout Date
                     </th>
                     <th>
                     </th>
@@ -73,28 +55,22 @@
             </thead>
             <tbody>
                 <tr *ngFor="let row of loginlogDT">
-                    <td width="140px">
+                    <td width="150px">
                         {{row.ucode}}
                     </td>
-                    <td width="250px">
-                        {{row.fullname}}
+                    <td width="350px">
+                        {{row.fullname}}<br /> {{row.email}}, {{row.altemail}}<br /> {{row.mobile}}, {{row.altemail}}
                     </td>
-                    <td width="200px">
-                        {{row.email}}<br />{{row.altemail}}
-                    </td>
-                    <td width="100px">
-                        {{row.mobile}}<br />{{row.altemail}}
-                    </td>
-                    <td width="100px">
+                    <td width="100px" class="text-right">
                         {{row.howmany}}
                     </td>
-                    <td width="120px">
+                    <td width="150px">
                         {{row.logintime}}
                     </td>
-                    <td width="120px">
+                    <td width="150px">
                         {{row.logouttime}}
                     </td>
-                    <td width="120px">
+                    <td width="100px">
                         <button type="button" class="btn btn-theme btn-xs" (click)="downloadReports(row, 'xls')">
                             <i class="fa fa-file-excel-o"></i></button>
                         <button type="button" class="btn btn-theme btn-xs" (click)="downloadReports(row, 'pdf')">

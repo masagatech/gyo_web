@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
-import jsPDF from 'jspdf'
+import { MessageService, messageType, LoginService } from '@services';
+import { LogReportService } from '@services/reports';
+import { LoginUserModel, Globals, Common } from '@models';
 
 @Component({
-    templateUrl: 'rptmnlg.comp.html',
-    providers: [MenuService, CommonService]
+    templateUrl: 'rptmnlg.comp.html'
 })
 
 export class MenuLogReportsComponent implements OnInit, OnDestroy {
@@ -19,11 +18,8 @@ export class MenuLogReportsComponent implements OnInit, OnDestroy {
 
     menulogDT: any = [];
 
-    @ViewChild('menulog') menulog: ElementRef;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        public _menuservice: MenuService, private _loginservice: LoginService,
-        private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _logrptservice: LogReportService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
@@ -69,14 +65,11 @@ export class MenuLogReportsComponent implements OnInit, OnDestroy {
 
     getMenuLog() {
         var that = this;
-
         commonfun.loader();
 
-        that._menuservice.getMenuLog({
-            "flag": "maxlog", "frmdt": that.frmdt, "todt": that.todt, "uid": that.uid, "wsautoid": that._wsdetails.wsautoid
-        }).subscribe(data => {
+        that._logrptservice.getMenuLogReports({ "flag": "all", "frmdt": that.frmdt, "todt": that.todt }).subscribe(data => {
             try {
-                that.menulogDT = data.data;
+                that.menulogDT = JSON.parse(data._body).data[0];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -92,20 +85,13 @@ export class MenuLogReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Export
+    // Download
 
-    public exportToCSV() {
-        this._autoservice.exportToCSV(this.menulogDT, "Menu Log Details");
-    }
+    public downloadReports(row, format) {
+        var that = this;
+        var params = { "flag": "reports", "uid": row.uid, "mid": row.mid, "frmdt": that.frmdt, "todt": that.todt, "format": format }
 
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.menulog.nativeElement, 0, 0, options, () => {
-            pdf.save("MenuLogDetail.pdf");
-        });
+        window.open(Common.getReportUrl("getMenuLogReports", params));
     }
 
     public ngOnDestroy() {

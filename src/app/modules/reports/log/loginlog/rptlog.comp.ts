@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LogReportService } from '@services/reports';
 import { LoginUserModel, Globals, Common } from '@models';
-import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptlog.comp.html',
-    providers: [CommonService]
+    templateUrl: 'rptlog.comp.html'
 })
 
 export class LoginLogReportsComponent implements OnInit, OnDestroy {
@@ -23,8 +21,7 @@ export class LoginLogReportsComponent implements OnInit, OnDestroy {
     @ViewChild('loginlog') loginlog: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _logrptservice: LogReportService,
-        private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _logrptservice: LogReportService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
@@ -66,12 +63,13 @@ export class LoginLogReportsComponent implements OnInit, OnDestroy {
         this.todt = this.formatDate(today);
     }
 
-    // Get Menu Log
+    // Get Login Log
 
     getLoginLog() {
         var that = this;
+        commonfun.loader();
 
-        that._logrptservice.getLoginLogReports({ "flag": "all", "frmdt": that.frmdt, "todt": that.todt, "format":"html" }).subscribe(data => {
+        that._logrptservice.getLoginLogReports({ "flag": "all", "frmdt": that.frmdt, "todt": that.todt }).subscribe(data => {
             try {
                 that.loginlogDT = JSON.parse(data._body).data[0];
             }
