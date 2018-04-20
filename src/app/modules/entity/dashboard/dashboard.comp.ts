@@ -68,11 +68,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        setTimeout(function () {
-            $.AdminBSB.islocked = true;
-            $.AdminBSB.leftSideBar.Close();
-            $.AdminBSB.rightSideBar.activate();
-        }, 100);
+        if (this._enttdetails.entttype == "Company") {
+            setTimeout(function () {
+                $.AdminBSB.islocked = true;
+                $.AdminBSB.leftSideBar.Close();
+                $.AdminBSB.rightSideBar.activate();
+            }, 100);
+        }
     }
 
     // Dashboard
@@ -83,8 +85,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         var dbparams = {
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that._enttdetails.wsautoid,
-            "enttid": that._enttdetails.enttid, "psngrtype": that._enttdetails.psngrtype, "dbview": "entt"
+            "psngrtype": that._enttdetails.psngrtype, "entttype": that._enttdetails.entttype, "dbview": "entt",
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 
         that._autoservice.getDashboard(dbparams).subscribe(data => {
@@ -459,7 +461,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        $.AdminBSB.islocked = false;
-        $.AdminBSB.leftSideBar.Open();
+        if (this._enttdetails.entttype == "Company") {
+            $.AdminBSB.islocked = false;
+            $.AdminBSB.leftSideBar.Open();
+        }
     }
 }

@@ -144,7 +144,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
 
             if (mitem !== null) {
                 var actrights = "";
-        
+
                 $("#M" + mitem.mid).find("input[type=checkbox]").each(function () {
                     actrights += (this.checked ? $(this).val() + "," : "");
                 });
@@ -235,7 +235,10 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         var that = this;
         this.clearcheckboxes();
 
-        that._userservice.getUserRights({ "flag": "menumap", "uid": _uid, "utype": _utype }).subscribe(data => {
+        that._userservice.getUserRights({
+            "flag": "menumap", "uid": _uid, "utype": _utype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 var viewUR = data.data;
 
