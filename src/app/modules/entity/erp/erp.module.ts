@@ -27,6 +27,8 @@ export const routes = [
                     { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
                     { path: 'erp/:psngrtype/rollover', loadChildren: './rollover#RolloverModule' },
+                    
+                    { path: 'erp/:psngrtype/noticeboard', loadChildren: '../communication/noticeboard#NoticeboardModule' },
                 ]
             }
         ]

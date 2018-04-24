@@ -1,0 +1,66 @@
+<div class="card">
+    <div class="header">
+        <h4>{{nbtypenm}} Noticeboard</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveNoticeboard()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong></label>
+                        <input [(ngModel)]="nbtitle" class="form-control nbtitle" maxlength="50" tabindex="1" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Description <strong>*</strong> (500 Character Limit)</label>
+                        <textarea [(ngModel)]="nbdesc" rows="5" class="form-control no-resize auto-growth nbdesc" maxlength="500" tabindex="2"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="nbdate" class="form-control nbdate" tabindex="3" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix" *ngIf="nbtypeDT.length">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <label for="selectall">Select All</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="allcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of nbtypeDT; let i = index;">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <span id="nb{{row.key}}">
+                                                <input id="{{row.key}}" name="nb{{i + 1}}" type="checkbox" value="{{row.key}}" class="filled-in" />
+                                                <label for="{{row.key}}">{{row.val}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

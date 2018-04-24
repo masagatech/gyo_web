@@ -1,0 +1,60 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-3 col-xs-3">
+                <h4>{{nbtypenm}} Noticeboard</h4>
+            </div>
+            <div class="col-md-9 col-xs-9" style="text-align: right;">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addNoticeboard()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="250px">Date</th>
+                            <th>Title</th>
+                            <th width="250px">Created Date</th>
+                            <th width="50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let nbrow of noticeboardDT">
+                        <tr class="tr-table">
+                            <th>
+                                {{nbrow.nbdate}}
+                            </th>
+                            <th>
+                                {{nbrow.nbtitle}}
+                            </th>
+                            <th>
+                                {{nbrow.createddate}}
+                            </th>
+                            <th>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editNoticeboard(nbrow)">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div *ngIf="nbtype !== 'school'">
+                                    <label class="control-label">{{nbtypenm}} :</label> {{nbrow.recvname}}
+                                    <hr class="m-05 no-line" />
+                                </div>
+
+                                <label class="control-label">Message :</label> {{nbrow.nbdesc}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

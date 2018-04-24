@@ -19,6 +19,8 @@ export const routes = [
                     { path: 'announcement', loadChildren: './announcement#AnnouncementModule' },
                     { path: 'homework', loadChildren: './assignment#AssignmentModule' },
                     { path: 'teacherremark', loadChildren: './teacherremark#TeacherRemarkModule' },
+
+                    { path: 'noticeboard/:psngrtype', loadChildren: './noticeboard#NoticeboardModule' },
                 ]
             }
         ]

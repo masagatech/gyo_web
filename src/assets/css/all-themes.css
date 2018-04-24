@@ -74,7 +74,7 @@
     color: #F44336;
 }
 
-.theme-red .sidebar .menu .list .toggled {
+.theme-red .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -167,7 +167,7 @@
     color: #E91E63;
 }
 
-.theme-pink .sidebar .menu .list .toggled {
+.theme-pink .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -260,7 +260,7 @@
     color: #9C27B0;
 }
 
-.theme-purple .sidebar .menu .list .toggled {
+.theme-purple .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -361,7 +361,7 @@
     color: #673AB7;
 }
 
-.theme-deep-purple .sidebar .menu .list .toggled {
+.theme-deep-purple .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -462,7 +462,7 @@
     color: #3F51B5;
 }
 
-.theme-indigo .sidebar .menu .list .toggled {
+.theme-indigo .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -563,7 +563,7 @@
     color: #2196F3;
 }
 
-.theme-blue .sidebar .menu .list .toggled {
+.theme-blue .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -664,7 +664,7 @@
     color: #03A9F4;
 }
 
-.theme-light-blue .sidebar .menu .list .toggled {
+.theme-light-blue .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -765,7 +765,7 @@
     color: #00BCD4;
 }
 
-.theme-cyan .sidebar .menu .list .toggled {
+.theme-cyan .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -869,7 +869,7 @@
     color: #009688;
 }
 
-.theme-teal .sidebar .menu .list .toggled {
+.theme-teal .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -986,7 +986,7 @@
     color: #4CAF50;
 }
 
-.theme-green .sidebar .menu .list .toggled {
+.theme-green .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1087,7 +1087,7 @@
     color: #8BC34A;
 }
 
-.theme-light-green .sidebar .menu .list .toggled {
+.theme-light-green .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1188,7 +1188,7 @@
     color: #CDDC39;
 }
 
-.theme-lime .sidebar .menu .list .toggled {
+.theme-lime .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1289,7 +1289,7 @@
     color: #FFEB3B;
 }
 
-.theme-yellow .sidebar .menu .list .toggled {
+.theme-yellow .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1390,7 +1390,7 @@
     color: #FFC107;
 }
 
-.theme-amber .sidebar .menu .list .toggled {
+.theme-amber .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1491,7 +1491,7 @@
     color: #FF9800;
 }
 
-.theme-orange .sidebar .menu .list .toggled {
+.theme-orange .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1592,7 +1592,7 @@
     color: #FF5722;
 }
 
-.theme-deep-orange .sidebar .menu .list .toggled {
+.theme-deep-orange .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1693,7 +1693,7 @@
     color: #795548;
 }
 
-.theme-brown .sidebar .menu .list .toggled {
+.theme-brown .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1798,7 +1798,7 @@
     color: #9E9E9E;
 }
 
-.theme-grey .sidebar .menu .list .toggled {
+.theme-grey .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -1899,7 +1899,7 @@
     color: #607D8B;
 }
 
-.theme-blue-grey .sidebar .menu .list .toggled {
+.theme-blue-grey .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 
@@ -2000,7 +2000,7 @@
     color: #000;
 }
 
-.theme-black .sidebar .menu .list .toggled {
+.theme-black .sidebar .menu .list .toggled2 {
     background: transparent;
 }
 

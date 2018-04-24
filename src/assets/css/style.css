@@ -1693,6 +1693,11 @@
     color: #fff !important;
 }
 
+.bg-light-pink {
+    background: #debbd0bd !important;
+    color: #000000 !important;
+}
+
 .bg-purple {
     background-color: #9C27B0 !important;
     color: #fff;
@@ -3141,6 +3146,14 @@ section.content {
     color: #555;
     padding: 8px 10px;
     position: relative;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.35);
+}
+
+.card .sm-header {
+    color: #555;
+    padding: 3px 10px;
+    position: relative;
+    background: #debbd0bd;
     border-bottom: 1px solid rgba(204, 204, 204, 0.35);
 }
 
@@ -8986,12 +8999,19 @@ fieldset[disabled] .form-control {
 }
 
 .sidebar .menu .list a {
-    color: #747474;
+    color: #000000;
     position: relative;
     display: inline-flex;
     vertical-align: middle;
     width: 100%;
     padding: 10px 13px;
+    background: #debbd0bd;
+    border: solid 1px #eee;
+}
+
+.sidebar .menu .list ul li a {
+    background: #ffffff;
+    border: solid 1px #eee;
 }
 
 .sidebar .menu .list a:hover,
@@ -9008,7 +9028,7 @@ fieldset[disabled] .form-control {
 
 .sidebar .menu .list a span {
     margin: 4px;
-    color: #333;
+    color: #000000;
     font-weight: bold;
     font-size: 12px;
     overflow: hidden;

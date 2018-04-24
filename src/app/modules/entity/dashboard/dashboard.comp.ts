@@ -52,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     classFeesDT: any = [];
     feesCategoryDT: any = [];
+    noticeboardDT: any = [];
 
     @ViewChild('piechart')
     piechart: UIChart;
@@ -262,6 +263,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getERPDashboardData("tchrattnd");
             this.getERPDashboardData("classtype");
             this.getERPDashboardData("classfees");
+            this.getERPDashboardData("noticeboard");
         }
     }
 
@@ -337,6 +339,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
                 else if (dbtype == "examstatus") {
                     that.examStatusDT = data.data;
+                }
+                else if (dbtype == "noticeboard") {
+                    that.noticeboardDT = data.data;
                 }
 
                 _dashboardDT = data.data;
