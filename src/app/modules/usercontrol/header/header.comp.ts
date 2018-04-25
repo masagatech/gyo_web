@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router, ActivatedRoute, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService, AuthenticationService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AppState } from '../../../app.service';
@@ -72,8 +72,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { nm: 'black', disp: 'black' }
   ];
 
-  constructor(private _authservice: AuthenticationService, public _menuservice: MenuService, private _loginservice: LoginService,
-    private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService) {
+  constructor(private _router: Router, private _authservice: AuthenticationService, public _menuservice: MenuService,
+    private _loginservice: LoginService, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
     this._enttdetails = Globals.getEntityDetails();
 

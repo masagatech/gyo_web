@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { DashboardComponent } from './dashboard.comp';
 import { ERPDashboardService } from '@services/erp';
@@ -25,8 +25,8 @@ export const routes = [
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule, ChartModule
   ],
-  
-    providers: [AuthGuard, ERPDashboardService]
+
+  providers: [AuthGuard, ERPDashboardService, CommonService]
 })
 
 export class DashboardModule {

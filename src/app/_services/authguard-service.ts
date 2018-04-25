@@ -1,16 +1,14 @@
-import { Injectable, Inject } from '@angular/core';
-import { CanActivate, CanLoad, CanActivateChild } from '@angular/router';
-import { AuthenticationService } from '../_services/auth-service';
-import { LoginService } from '../_services/login/login-service'
-import { GlobalSharedVariableService } from '../_services/sharedvariableglobal-service'
+import { Injectable } from '@angular/core';
+import { CanActivate, CanLoad, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { MessageService, messageType } from '../_services/messages/message-service';
+import { AuthenticationService } from '../_services/auth-service';
+import { LoginService } from '../_services/login/login-service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
-  constructor(private authser: AuthenticationService, private _loginservice: LoginService, private _router: Router) {
+  constructor(private _router: Router, private authser: AuthenticationService, private _loginservice: LoginService, private _msg: MessageService) {
 
   }
 
@@ -27,9 +25,10 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
   }
 
   private checkFun(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    var routeconfig = route.data;
-    var checks = this.authser.checkCredentials();
-    var that = this;
+    let that = this;
+
+    let routeconfig = route.data;
+    let checks = that.authser.checkCredentials();
 
     return Observable.create((observer: Subject<boolean>) => {
       if (checks.status) {
@@ -37,6 +36,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
           if (e) {
             observer.next(true);
           } else {
+            that._msg.Show(messageType.error, "Error", "No Access !!!!");
             that._router.navigate(['/']);
             observer.next(true);
           }
@@ -48,6 +48,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
               if (e) {
                 observer.next(true);
               } else {
+                that._msg.Show(messageType.error, "Error", "No Access !!!!");
                 that._router.navigate(['/']);
                 observer.next(true);
               }
@@ -58,7 +59,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
           }
         }, checks);
       } else {
-        this._router.navigate(['login']);
+        that._router.navigate(['login']);
         observer.next(true);
       }
     }).first();

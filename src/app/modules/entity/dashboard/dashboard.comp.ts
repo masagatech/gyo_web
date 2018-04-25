@@ -7,8 +7,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { UIChart } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'dashboard.comp.html',
-    providers: [CommonService]
+    templateUrl: 'dashboard.comp.html'
 })
 
 export class DashboardComponent implements OnInit, OnDestroy {
