@@ -49,6 +49,7 @@ export class AddFeesCollectionComponent implements OnInit {
     statusid: number = 0;
 
     feesCollDT: any = [];
+    modalHeader: string = "";
 
     private subscribeParameters: any;
 
@@ -319,6 +320,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 "receivedate": that.receivedate,
                 "paymentmode": that.paymentmode,
                 "iscomplete": that.chequestatus == "pending" ? false : true,
+                "chequestatus": that.chequestatus,
                 "chequeno": that.chequeno,
                 "chequedate": that.chequedate,
                 "remark": that.remark,
@@ -360,32 +362,42 @@ export class AddFeesCollectionComponent implements OnInit {
         }
     }
 
-    printFeeReceipt() {
+    getFeesReports(typ) {
         var that = this;
 
         var feesparams = {
-            "flag": "studentwise", "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
+            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 
+        that.modalHeader = typ == "ledger" ? "Fees Ledger" : "Fees Receipt";
+
         var _path = Common.getReportUrl("getFeesReports", feesparams);
 
-        $("#feeReceiptModel").modal('show');
+        $("#feesReportsModal").modal('show');
 
-        commonfun.loader("#feereceipt");
-        $("#ifeereceipt")[0].src = _path;
-        commonfun.loaderhide("#feereceipt");
+        commonfun.loader("#feesreports");
+        $("#ifeesreports")[0].src = _path;
+        commonfun.loaderhide("#feesreports");
     }
 
     // Save Notification
 
-    saveNotification() {
+    saveNotification(typ) {
         var that = this;
+        var typname = "";
+
+        if (typ == "ledger") {
+            typname = "Ledger Fees";
+        }
+        else {
+            typname = "Receipt Fees"
+        }
 
         commonfun.loader();
 
         var feesparams = {
-            "flag": "studentwise", "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
+            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 
@@ -394,16 +406,16 @@ export class AddFeesCollectionComponent implements OnInit {
         _mailmsg += "<p>Name : " + that.studname + "</p>";
         _mailmsg += "<p>Roll No : " + that.rollno + "</p>";
         _mailmsg += "<p>Standard : " + that.classname + "</p>";
-        _mailmsg += "<p>See, Attachment File, Fees sleep for your child.</p>";
+        _mailmsg += "<p>See, Attachment File, " + typname + " Sleep of your child.</p>";
 
         var _path = Common.getReportUrl("getFeesReports", feesparams);
-        var _attachments = [{ "filename": that.studname + " Fees Sleep.pdf", "path": _path, contentType: 'application/pdf' }];
+        var _attachments = [{ "filename": that.studname + " " + typname + ".pdf", "path": _path, "contentType": "application/pdf" }];
 
         var ntfparams = {
             "ntfid": 0,
             "ntftype": "studentfees",
-            "title": "Student Fees : " + that.studname,
-            "msg": "Sended Email, on your registered email, to Fees Sleep of your child - " + that.studname + " " + that.classname + ". so, please check your email",
+            "title": "Student " + typname + " : " + that.studname,
+            "msg": "Sent Email, on your registered email, to " + typname + " Sleep of your child - " + that.studname + " " + that.classname + ". so, please check your email",
             "mailmsg": _mailmsg,
             "issendsms": false,
             "issendemail": true,
@@ -429,7 +441,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 var msgid = dataResult.msgid;
 
                 if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", "Mail send successfully !!!!");
+                    that._msg.Show(messageType.success, "Success", typname + " Mail send successfully !!!!");
                 }
                 else {
                     that._msg.Show(messageType.error, "Error", msg);
@@ -493,7 +505,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 that.fees = data.data[0].fees;
                 that.receivedate = data.data[0].receivedate;
                 that.paymentmode = data.data[0].paymentmode;
-                that.chequestatus = data.data[0].iscomplete == true ? "complete" : "pending";
+                that.chequestatus = data.data[0].chequestatus;
                 that.chequeno = data.data[0].chequeno;
                 that.chequedate = data.data[0].chequedate;
                 that.remark = data.data[0].remark1;
