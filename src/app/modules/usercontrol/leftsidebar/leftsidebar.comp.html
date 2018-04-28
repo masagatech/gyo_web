@@ -24,6 +24,12 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">Menu</li>
+                <li routerLinkActive="active">
+                    <a href="javascript:void(0);" class="dashboard" [routerLink]="['/']">
+                        <i class="material-icons">dashboard</i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
                 <li *ngFor="let row of mainMenuDT" routerLinkActive="active">
                     <a href="javascript:void(0);" class="{{row.mclass}}" (click)="openMainMenu(row)">
                         <i class="material-icons">{{row.micon}}</i>

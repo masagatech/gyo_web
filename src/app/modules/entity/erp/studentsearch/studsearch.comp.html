@@ -1,0 +1,30 @@
+<div class="row clearfix">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-6">
+                        <h2>Student Attendance</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <nvd3 [options]="attndOptions" [data]="attendaceDT"></nvd3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-6">
+                        <h2>Exam Result</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <nvd3 [options]="resultOptions" [data]="resultDT"></nvd3>
+            </div>
+        </div>
+    </div>
+</div>

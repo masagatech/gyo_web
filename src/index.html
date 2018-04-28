@@ -8,6 +8,8 @@
 
     <title>GOYO Admin</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.min.css" />
+
     <script src="assets/js/jquery-2.2.4.min.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/bootstrap-select.js"></script>
@@ -29,25 +31,27 @@
     <script src="assets/js/common.js?v=8"></script>
     <script src="assets/js/markerclusterer.min.js?v=8"></script>
     <script src="assets/js/polyline.js?v=8"></script>
-    
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA82-J9f4u3b0uYLEHHQ_MwoQXUCGGGqys&libraries=geometry" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/vendor/markerAnimate.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marker-animate-unobtrusive/0.2.8/SlidingMarker.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.min.js"></script>
 
     <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
     <% if (webpackConfig.htmlElements.headTags) { %>
         <%= webpackConfig.htmlElements.headTags %>
             <% } %>
-                <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>"&
-</head>
+                <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>" & </head>
 
-<body class="theme-teal">
-    <app>Loading...</app>
+                <body class="theme-teal">
+                    <app>Loading...</app>
 
-    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true){ %>
-        <script src="/webpack-dev-server.js"></script>
-        <% } %>
-</body>
+                    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true){ %>
+                        <script src="/webpack-dev-server.js"></script>
+                        <% } %>
+                </body>
 
 </html>

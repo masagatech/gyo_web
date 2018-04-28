@@ -10,4 +10,8 @@ export class ERPDashboardService {
     getERPDashboard(req: any) {
         return this._dataserver.post(Globals.erproute + "getERPDashboard", req)
     }
+
+    getStudentDashboard(req: any) {
+        return this._dataserver.post(Globals.erproute + "getStudentDashboard", req)
+    }
 }
