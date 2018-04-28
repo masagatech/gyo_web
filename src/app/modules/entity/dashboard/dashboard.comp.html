@@ -47,8 +47,9 @@
             <div class="row clearfix">
                 <div *ngFor="let row of dashboardDT" class="col-md-4">
                     <a role="button" (click)="openForm(row)">
-                        <div class="{{row.dbcss}} pad-10 m-05">
-                            {{row.dbhead}}
+                        <div class="{{row.dbcss}} pad-10 m-05 text-center">
+                            <img src="{{row.dbicon}}" height="100px" />
+                            <hr class="hr" /> {{row.dbhead}}
                         </div>
                     </a>
                 </div>
