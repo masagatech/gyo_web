@@ -3231,6 +3231,21 @@ section.content {
     padding: 0;
 }
 
+.box-md-4 {
+    width: 32%;
+}
+
+.box-md-6 {
+    width: 48%;
+}
+
+.box {
+    border: 1px solid rgba(204, 204, 204, 0.35);
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
 .border {
     border-right: 1px solid rgba(204, 204, 204, 0.35);
 }

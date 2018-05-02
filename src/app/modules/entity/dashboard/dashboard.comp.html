@@ -42,129 +42,132 @@
 </div>
 
 <div *ngIf="_enttdetails.entttype == 'School'">
-    <div class="col-md-8">
-        <div class="card">
+    <div class="row clearfix">
+        <div class="col-md-8">
             <div class="row clearfix">
                 <div *ngFor="let row of dashboardDT" class="col-md-4">
-                    <a role="button" (click)="openForm(row)">
-                        <div class="{{row.dbcss}} pad-10 m-05 text-center">
-                            <img src="{{row.dbicon}}" height="100px" />
-                            <hr class="hr" /> {{row.dbhead}}
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="sm-header">
-                <h6>Today's Student Attendance</h6>
-            </div>
-
-            <div class="body no-padding">
-                <p-chart type="bar" [data]="classStatusChartDT" height="100px"></p-chart>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="sm-header">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <h6>Exam Status</h6>
-                    </div>
-
-                    <div class="col-md-6" align="right">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getERPDashboardData('examstatus')" tabindex="3">
-                                    <option *ngFor="let row of semesterDT" [value]="row.id">
-                                        {{row.val}}
-                                    </option>
-                                </select>
+                    <div class="card">
+                        <a role="button" (click)="openForm(row)">
+                            <div class="pad-10 m-05 text-center">
+                                <img src="{{row.dbicon}}" height="100px" />
+                                <hr class="hr" /> {{row.dbhead}}
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="body no-padding">
-                <p-chart type="bar" [data]="examStatusChartDT" height="100px"></p-chart>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="sm-header">
-                <h6>Fees Structure</h6>
-            </div>
-
-            <div class="body no-padding">
-                <p-chart type="bar" [data]="classFeesDT" height="100px"></p-chart>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="sm-header">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <h6>School Noticeboard</h6>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <a role="button" [routerLink]="['/erp/school/noticeboard/add']">
-                            <i class="material-icons font-18">add</i>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div class="body" *ngIf="noticeboardDT.length">
-                <div *ngFor="let row of noticeboardDT">
+            <div class="card">
+                <div class="sm-header">
+                    <h6>Today's Student Attendance</h6>
+                </div>
+
+                <div class="body no-padding">
+                    <p-chart type="bar" [data]="classStatusChartDT" height="100px"></p-chart>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="sm-header">
                     <div class="row clearfix">
-                        <div class="col-md-9">
-                            <b>Date : </b>{{row.nbdate}}
+                        <div class="col-md-6">
+                            <h6>Exam Status</h6>
                         </div>
-                        <div class="col-md-3 text-right">
-                            <a role="button" [routerLink]="['/erp/school/noticeboard/edit/' + row.nbid]">
-                                <i class="material-icons font-18">edit</i>
+
+                        <div class="col-md-6" align="right">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getERPDashboardData('examstatus')" tabindex="3">
+                                        <option *ngFor="let row of semesterDT" [value]="row.id">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="body no-padding">
+                    <p-chart type="bar" [data]="examStatusChartDT" height="100px"></p-chart>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="sm-header">
+                    <h6>Fees Structure</h6>
+                </div>
+
+                <div class="body no-padding">
+                    <p-chart type="bar" [data]="classFeesDT" height="100px"></p-chart>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="sm-header">
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <h6>School Noticeboard</h6>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a role="button" [routerLink]="['/erp/school/noticeboard/add']">
+                                <i class="material-icons font-18">add</i>
                             </a>
                         </div>
                     </div>
-                    <div class="row clearfix">
-                        <div class="col-md-12">
-                            <p><b>Title : </b>{{row.nbtitle}}</p>
-                            <p>{{row.nbdesc}}</p>
+                </div>
+
+                <div class="body" *ngIf="noticeboardDT.length">
+                    <div *ngFor="let row of noticeboardDT">
+                        <div class="row clearfix">
+                            <div class="col-md-9">
+                                <b>Date : </b>{{row.nbdate}}
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <a role="button" [routerLink]="['/erp/school/noticeboard/edit/' + row.nbid]">
+                                    <i class="material-icons font-18">edit</i>
+                                </a>
+                            </div>
                         </div>
+                        <div class="row clearfix">
+                            <div class="col-md-12">
+                                <p><b>Title : </b>{{row.nbtitle}}</p>
+                                <p>{{row.nbdesc}}</p>
+                            </div>
+                        </div>
+
+                        <hr class="hr" />
                     </div>
 
-                    <hr class="hr" />
+                    <div class="col-md-12 text-right" *ngIf="noticeboardDT.length > 5">
+                        <a role="button" class="btn btn-theme btn-xs" [routerLink]="['/erp/school/noticeboard']">View More....</a>
+                    </div>
+                </div>
+                <div class="body" *ngIf="!noticeboardDT.length">
+                    No Data Found
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="sm-header">
+                    <h6>Today's Teacher Attendance</h6>
                 </div>
 
-                <div class="col-md-12 text-right" *ngIf="noticeboardDT.length > 5">
-                    <a role="button" class="btn btn-theme btn-xs" [routerLink]="['/erp/school/noticeboard']">View More....</a>
+                <div class="body no-padding">
+                    <p-chart type="pie" #piechart [data]="tchrattndDT" height="150px"></p-chart>
                 </div>
             </div>
-            <div class="body" *ngIf="!noticeboardDT.length">
-                No Data Found
-            </div>
-        </div>
 
-        <div class="card">
-            <div class="sm-header">
-                <h6>Today's Teacher Attendance</h6>
-            </div>
+            <div class="card">
+                <div class="sm-header">
+                    <h6>Class Teacher</h6>
+                </div>
 
-            <div class="body no-padding">
-                <p-chart type="pie" #piechart [data]="tchrattndDT" height="150px"></p-chart>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="sm-header">
-                <h6>Class Teacher</h6>
-            </div>
-
-            <div class="body no-padding">
-                <p-chart type="pie" #piechart [data]="classtypeDT"></p-chart>
+                <div class="body no-padding">
+                    <p-chart type="pie" #piechart [data]="classtypeDT"></p-chart>
+                </div>
             </div>
         </div>
     </div>

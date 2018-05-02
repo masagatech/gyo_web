@@ -122,7 +122,8 @@ export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "reports", "ayid": that.ayid, "classid": that.clsid, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": format
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "isshheader": "Y", "format": format
         }
 
         if (format == "html") {

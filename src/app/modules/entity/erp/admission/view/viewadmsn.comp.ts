@@ -245,8 +245,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "studid": that.studid, "classid": that.classid, "issysadmin": that.loginUser.issysadmin,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "studid": that.studid, "classid": that.classid, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 
         that._admsnservice.getStudentDetails(params).subscribe(data => {

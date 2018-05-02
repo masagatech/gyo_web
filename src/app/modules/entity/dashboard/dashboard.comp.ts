@@ -329,7 +329,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         that._dbservice.getERPDashboard({
             "flag": dbtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "ayid": that.ayid, "classid": 0, "smstrid": that.smstrid, "enttid": that._enttdetails.enttid,
+            "ayid": that.ayid, "smstrid": that.smstrid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {

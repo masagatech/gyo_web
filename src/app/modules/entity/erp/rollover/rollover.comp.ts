@@ -23,6 +23,7 @@ export class RolloverComponent implements OnInit {
 
     ayDT: any = [];
     classDT: any = [];
+    classRowDT: any = [];
 
     ayid: number = 0;
     classid: number = 0;
@@ -70,6 +71,7 @@ export class RolloverComponent implements OnInit {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.classRowDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -84,6 +86,29 @@ export class RolloverComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    copyAcrossClass() {
+        var selectedStudentDT = [];
+
+        selectedStudentDT = this.studentDT.filter(a => a.classid !== 0);
+
+        if (selectedStudentDT[0].classid == 0) {
+            this._msg.Show(messageType.error, "Error", "Select Atleast 1 Class");
+        }
+        else {
+            for (var i = 0; i < this.studentDT.length; i++) {
+                var stdflds = this.studentDT[i];
+                stdflds.classid = selectedStudentDT[0].classid;
+            }
+        }
+    }
+
+    copyOldRollNo() {
+        for (var i = 0; i < this.studentDT.length; i++) {
+            var stdflds = this.studentDT[i];
+            stdflds.rollno = stdflds.currrollno;
+        }
     }
 
     // Clear Fields
