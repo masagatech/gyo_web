@@ -6,7 +6,7 @@ import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { NvD3Module } from 'ng2-nvd3';
 
-import { StudentSearchComponent } from './studsearch.comp';
+import { StudentDashboardComponent } from './studsdb.comp';
 import { ERPDashboardService } from '@services/erp';
 import { AssesmentReportService } from '@services/reports';
 
@@ -16,8 +16,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: StudentSearchComponent, canActivate: [AuthGuard],
-        data: { "module": "erppsngr", "submodule": "studsearch", "rights": "allowed", "urlname": "/studentsearch" }
+        path: '', component: StudentDashboardComponent, canActivate: [AuthGuard],
+        data: { "module": "erppsngr", "submodule": "psngrdb", "rights": "allowed", "urlname": "/dashboard" }
       }
     ]
   },
@@ -26,7 +26,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    StudentSearchComponent
+    StudentDashboardComponent
   ],
 
   imports: [
@@ -36,6 +36,6 @@ export const routes = [
   providers: [AuthGuard, ERPDashboardService, AssesmentReportService, CommonService]
 })
 
-export class StudentSearchModule {
+export class StudentDashboardModule {
   public static routes = routes;
 }

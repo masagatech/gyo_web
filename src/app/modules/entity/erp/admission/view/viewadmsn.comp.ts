@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
@@ -193,6 +192,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].key;
+                        that.getStudentDetails();
                     }
                     else {
                         that.ayid = 0;
@@ -286,6 +286,13 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     public editAdmissionForm(row) {
         this._router.navigate(['/erp/student/edit', row.enrlmntid]);
+    }
+
+    viewStudentDashboard(row) {
+        Cookie.set("_studid_", row.enrlmntid);
+        Cookie.set("_studname_", row.studentname);
+        
+        this._router.navigate(['/erp/student/dashboard']);
     }
 
     openBulkUploadPopup() {

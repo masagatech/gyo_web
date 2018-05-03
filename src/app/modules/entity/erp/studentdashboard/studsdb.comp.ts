@@ -3,12 +3,13 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { ERPDashboardService } from '@services/erp';
 import { AssesmentReportService } from '@services/reports';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: './studsearch.comp.html'
+    templateUrl: './studsdb.comp.html'
 })
 
-export class StudentSearchComponent implements OnInit, OnDestroy {
+export class StudentDashboardComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -23,6 +24,7 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
     barchart;
 
     attendaceDT: any = [];
+    holidayDT: any = [];
     resultDT: any = [];
     feesDT: any = [];
 
@@ -31,13 +33,17 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.getClassDetails();
+        this.viewStudentDashboard();
 
-        this.getChartOptions("discreteBarChart");
+        this.barchart = this.getChartType("discreteBarChart");
     }
 
     ngOnInit() {
-
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
     }
 
     // Auto Completed Student
@@ -69,7 +75,23 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
         this.studid = event.value;
         this.studname = event.label;
 
-        this.getClassDetails();
+        Cookie.set("_studid_", this.studid.toString());
+        Cookie.set("_studname_", this.studname);
+
+        this.viewStudentDashboard();
+    }
+
+    public viewStudentDashboard() {
+        var that = this;
+
+        if (Cookie.get('_studname_') != null) {
+            that.studid = parseInt(Cookie.get('_studid_'));
+            that.studname = Cookie.get('_studname_');
+
+            that.selectStudent = { value: that.studid, label: that.studname }
+        }
+
+        that.getClassDetails();
     }
 
     getClassDetails() {
@@ -105,12 +127,13 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
 
     // Dashboard
 
-    getChartOptions(charttype) {
+    getChartType(typ) {
         var that = this;
 
-        that.barchart = {
+        return {
             chart: {
-                type: charttype,
+                type: typ,
+                height: 200,
 
                 margin: {
                     top: 20,
@@ -124,7 +147,6 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
 
                 useInteractiveGuideline: true,
                 transitionDuration: 1500,
-
                 showValues: true,
 
                 valueFormat: function (d) {
@@ -132,13 +154,10 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
                 },
 
                 xAxis: {
-                    axisLabel: '',
                     rotateLabels: 10
                 },
 
                 yAxis: {
-                    axisLabel: '',
-
                     tickFormat: function (d) {
                         return d3.format('0')(d);
                     },
@@ -149,9 +168,8 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
         };
     }
 
-    getChartDetails(_data) {
+    getChartDetails(_data, charttype) {
         var that = this;
-        var _data_compare = [];
         var sin = [];
 
         for (var i = 0; i < _data.length; i++) {
@@ -161,7 +179,7 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
 
         return [{
             values: sin,
-            key: "Cumulative Return"
+            key: ""
         }];
     }
 
@@ -179,7 +197,7 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
         that._dbservice.getStudentDashboard(dbparams).subscribe(data => {
             try {
                 if (charttype == "attendance") {
-                    that.attendaceDT = that.getChartDetails(data.data);
+                    that.attendaceDT = that.getChartDetails(data.data, charttype);
                 }
                 else if (charttype == "examresult") {
                     that.resultDT = data.data;
@@ -254,6 +272,7 @@ export class StudentSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

@@ -92,7 +92,7 @@
                                     <div class="col-md-4 col-xs-4 border">
                                         <div class="row clearfix">
                                             <div class="col-md-12">
-                                                <a role="button">
+                                                <a role="button" (click)="viewStudentDashboard(row)">
                                                     <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
                                                     <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
                                                 </a>

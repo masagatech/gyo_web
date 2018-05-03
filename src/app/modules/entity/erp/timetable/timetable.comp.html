@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getTimeTable()" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="classid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getTimeTable()" tabindex="2">
+                        <select id="classid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2">
                             <option [value]="0">{{psngrtype == 'student' ? 'Select Class' : 'All'}}</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}

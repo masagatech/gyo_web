@@ -48,7 +48,6 @@ export class TimetableComponent implements OnInit {
 
         this.fillDropDownList();
         this.getCalendarDate();
-        this.getTimeTable();
     }
 
     public ngOnInit() {
@@ -75,7 +74,6 @@ export class TimetableComponent implements OnInit {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getTimeTable();
                     }
                     else {
                         that.ayid = 0;
