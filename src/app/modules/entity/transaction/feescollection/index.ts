@@ -19,7 +19,7 @@ export const routes = [
         data: { "module": "erp", "submodule": "feescoll", "rights": "view", "urlname": "/feescollection" }
       },
       {
-        path: 'student/:id', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
+        path: 'student', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "feescoll", "rights": "add", "urlname": "/student" }
       }
     ]

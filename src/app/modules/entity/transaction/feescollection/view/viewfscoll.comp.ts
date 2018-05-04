@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { FeesService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -106,11 +107,25 @@ export class ViewFeesCollectionComponent implements OnInit {
     // Add Fees Collection
 
     addFeesCollection(row) {
-        this._router.navigate(['/transaction/feescollection/student', row.studid]);
+        Cookie.delete("filterStudent");
+
+        var studrow = {
+            "ayid": row.ayid, "classid": row.classid, "studid": row.studid
+        }
+
+        Cookie.set("filterStudent", JSON.stringify(studrow));
+        this._router.navigate(['/transaction/feescollection/student']);
     }
 
     viewFeesCollection(row) {
-        this._router.navigate(['/transaction/feescollection/student', row.studid]);
+        Cookie.delete("filterStudent");
+
+        var studrow = {
+            "ayid": row.ayid, "classid": row.classid, "studid": row.studid
+        }
+
+        Cookie.set("filterStudent", JSON.stringify(studrow));
+        this._router.navigate(['/transaction/feescollection/student']);
     }
 
     totalFees() {
@@ -139,7 +154,7 @@ export class ViewFeesCollectionComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.feesCollDT = data.data;
-                
+
                 if (data.data.length > 0) {
                     that.classfees = data.data[0].classfees;
                 }

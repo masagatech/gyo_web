@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { NotificationService, FeesService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addfscoll.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addfscoll.comp.html'
 })
 
 export class AddFeesCollectionComponent implements OnInit {
@@ -49,45 +49,51 @@ export class AddFeesCollectionComponent implements OnInit {
     statusid: number = 0;
 
     feesCollDT: any = [];
+    studsFilterDT: any = [];
     modalHeader: string = "";
 
     private subscribeParameters: any;
 
     constructor(private _ntfservice: NotificationService, private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.getStudentFeesHistory();
     }
 
     public ngOnInit() {
-        var that = this;
-        commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.studid = params['id'];
-                that.getStudentDetails();
-                that.getFeesCollection();
-            }
-            else {
-                that.resetFeesCollFields();
-                commonfun.loaderhide();
-            }
-        });
+    }
+
+    getStudentFeesHistory() {
+        let studsFilterDT = JSON.parse(Cookie.get("filterStudent"));
+
+        console.log(studsFilterDT);
+
+        if (studsFilterDT !== null) {
+            this.getStudentDetails(studsFilterDT);
+            this.getFeesCollection(studsFilterDT);
+        }
+        else {
+            this.resetFeesCollFields();
+            this._router.navigate(['/transaction/feescollection']);
+        }
     }
 
     // Get Student Details
 
-    getStudentDetails() {
+    getStudentDetails(row) {
         var that = this;
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "all", "studid": that.studid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "classid": -1,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
+            "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
+                    that.studid = data.data[0].studid;
                     that.studname = data.data[0].studname;
                     that.studphoto = data.data[0].studphoto;
                     that.ayid = data.data[0].ayid;
@@ -104,6 +110,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.fillCategoryAndPaymentModeDropDown();
                 }
                 else {
+                    that.studid = 0;
                     that.studname = "";
                     that.studphoto = "";
                     that.ayid = 0;
@@ -231,6 +238,8 @@ export class AddFeesCollectionComponent implements OnInit {
         that.catid = 0;
         that.subcatid = 0;
         that.fees = 0;
+        that.classfees = 0;
+        that.pendingfees = 0;
         that.receivedate = "";
         that.paymentmode = "";
         that.chequestatus = "";
@@ -340,8 +349,7 @@ export class AddFeesCollectionComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
                         that.resetFeesCollFields();
 
-                        that.getStudentDetails();
-                        that.getFeesCollection();
+                        that.getStudentFeesHistory();
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -397,7 +405,7 @@ export class AddFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         var feesparams = {
-            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "classid": that.classid, "studid": that.studid,
+            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "studid": that.studid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 
@@ -463,13 +471,13 @@ export class AddFeesCollectionComponent implements OnInit {
 
     // Get Fees Collection
 
-    getFeesCollection() {
+    getFeesCollection(row) {
         var that = this;
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "history", "studid": that.studid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
+            "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.feesCollDT = data.data;
