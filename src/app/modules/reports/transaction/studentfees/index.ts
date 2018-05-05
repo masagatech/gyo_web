@@ -4,18 +4,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
-import { ExamResultReportsComponent } from './rptexres.comp';
-import { ExamService } from '@services/erp';
-import { ExamReportService } from '@services/reports';
+import { StudentFeesReportsComponent } from './rptstudfees.comp';
+import { FeesService } from '@services/erp';
+import { FeesReportsService } from '@services/reports';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ExamResultReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptexamres", "rights": "view", "urlname": "/examresult" }
+        path: '', component: StudentFeesReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptstudfees", "rights": "view", "urlname": "/studentfees" }
       }
     ]
   },
@@ -23,17 +24,17 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    ExamResultReportsComponent
+    StudentFeesReportsComponent
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
-    AutoCompleteModule, ScheduleModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
+    AutoCompleteModule, MultiselectDropdownModule
   ],
 
-  providers: [AuthGuard, ExamService, ExamReportService, CommonService]
+  providers: [AuthGuard, FeesService, FeesReportsService, CommonService]
 })
 
-export class ExamResultReportsModule {
+export class StudentFeesReportsModule {
   public static routes = routes;
 }

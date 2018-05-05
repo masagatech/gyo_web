@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
+import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
 declare var google: any;
 
@@ -15,19 +15,23 @@ export class StudentFeesReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    classDT: any = [];
-    classid: number = 0;
+    classDT: IMultiSelectOption[];
+    classids: number[];
 
     studentDT: any = [];
     studid: number = 0;
     studname: string = "";
 
-    constructor(private _feesservice: FeesService, private _feesrptservice: FeesReportsService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+    frmdt: string = "";
+    todt: string = "";
+
+    constructor(private _router: Router, private _routeParams: ActivatedRoute, private _msg: MessageService,
+        private _loginservice: LoginService, private _feesrptservice: FeesReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillClassDropDown();
+        this.setFromDateAndToDate();
     }
 
     public ngOnInit() {
@@ -42,12 +46,12 @@ export class StudentFeesReportsComponent implements OnInit {
 
         commonfun.loader();
 
-        that._feesservice.getClassFees({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+        that._feesrptservice.getFeesReports({
+            "flag": "classddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classDT = data.data[0].filter(a => a.group == "class");
+                that.classDT = JSON.parse(data._body).data[0];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -63,6 +67,31 @@ export class StudentFeesReportsComponent implements OnInit {
         })
     }
 
+    onChange() {
+        console.log(this.classids);
+    }
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var before1month = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        this.frmdt = this.formatDate(before1month);
+        this.todt = this.formatDate(today);
+    }
+
     // Get Fees Reports
 
     getFeesReports() {
@@ -70,7 +99,7 @@ export class StudentFeesReportsComponent implements OnInit {
         commonfun.loader();
 
         var feesparams = {
-            "flag": "studentwise", "typ": "ledger", "stdid": 0, "classid": that.classid, "studid": that.studid,
+            "flag": "studentwise", "typ": "ledger", "stdid": 0, "classid": that.classids, "studid": that.studid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
 

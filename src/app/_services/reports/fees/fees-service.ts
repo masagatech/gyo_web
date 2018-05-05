@@ -8,6 +8,6 @@ export class FeesReportsService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     getFeesReports(req: any) {
-        return this._dataserver.post(Globals.reporturl + "getFeesReports", req)
+        return this._dataserver.rawget(Globals.reporturl + "getFeesReports", req)
     }
 }

@@ -4,18 +4,8 @@
             <div class="col-md-2">
                 <h4>Fees Collection</h4>
             </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getFeesReports();" tabindex="1">
-                            <option [value]="0">Select Class</option>
-                            <option *ngFor="let row of classDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
+            <div class="col-md-6">
+                <ss-multiselect-dropdown [options]="classDT" [(ngModel)]="classids" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
