@@ -149,8 +149,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a role="button" (click)="getFeesReports('ledger')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                            <li><a role="button" (click)="getFeesReports('receipt')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                            <li><a role="button" (click)="getFeesReports('all', 'ledger')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
+                            <li><a role="button" (click)="getFeesReports('all', 'receipt')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
                         </ul>
                     </div>
 
@@ -192,8 +192,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="getFeesReports('ledger', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                                            <li><a role="button" (click)="getFeesReports('receipt', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                                            <li><a role="button" (click)="getFeesReports('', 'ledger', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
+                                            <li><a role="button" (click)="getFeesReports('', 'receipt', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
                                         </ul>
                                     </div>
 
