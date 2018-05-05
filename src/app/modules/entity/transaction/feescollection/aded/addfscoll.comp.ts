@@ -370,11 +370,19 @@ export class AddFeesCollectionComponent implements OnInit {
         }
     }
 
-    getFeesReports(typ, row) {
+    getFeesReports(flag, typ, row) {
         var that = this;
+        var _receivedate = "";
+
+        if (flag == "all") {
+            _receivedate = "";
+        }
+        else {
+            _receivedate = row.key;
+        }
 
         var feesparams = {
-            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": row.key,
+            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
             "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 
@@ -396,6 +404,8 @@ export class AddFeesCollectionComponent implements OnInit {
     saveNotification(flag, typ, row) {
         var that = this;
         var typname = "";
+        var _receivedate = "";
+        var _datehead = "";
 
         if (typ == "ledger") {
             typname = "Ledger Fees";
@@ -404,27 +414,28 @@ export class AddFeesCollectionComponent implements OnInit {
             typname = "Receipt Fees";
         }
 
+        if (flag == "all") {
+            _receivedate = "";
+            _datehead = "";
+        }
+        else {
+            _receivedate = row.key;
+            _datehead = "of Date : " + row.key;
+        }
+
         commonfun.loader();
 
         var feesparams = {
-            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": row.key,
+            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
             "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 
         var _mailmsg = "";
-        var _receivedate = "";
-
-        if (flag == "all") {
-            _receivedate = "";
-        }
-        else {
-            _receivedate = "of Date : " + row.key;
-        }
 
         _mailmsg += "<p>Name : " + that.studname + "</p>";
         _mailmsg += "<p>Roll No : " + that.rollno + "</p>";
         _mailmsg += "<p>Standard : " + that.classname + "</p>";
-        _mailmsg += "<p>See, Attachment File, " + typname + " Sleep of your child " + _receivedate + ".</p>";
+        _mailmsg += "<p>See, Attachment File, " + typname + " Sleep of your child " + _datehead + ".</p>";
 
         var _path = Common.getReportUrl("getFeesReports", feesparams);
         var _attachments = [{ "filename": that.studname + " " + typname + ".pdf", "path": _path, "contentType": "application/pdf" }];

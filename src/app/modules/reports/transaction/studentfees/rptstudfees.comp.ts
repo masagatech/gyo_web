@@ -67,8 +67,44 @@ export class StudentFeesReportsComponent implements OnInit {
         })
     }
 
-    onChange() {
-        console.log(this.classids);
+    // Auto Completed Student
+
+    getStudentData(event) {
+        let query = event.query;
+
+        let _classid = "";
+
+        if (this.classids == []) {
+            _classid = "";
+        }
+        else {
+            _classid = this.classids.toString().replace('["', '').replace('", "', '').replace('"]', '');
+        }
+
+        this._autoservice.getAutoData({
+            "flag": "classstudent",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "classid": _classid,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.studentDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Student
+
+    selectStudentData(event) {
+        this.studid = event.value;
+        this.studname = event.label;
     }
 
     formatDate(date) {
@@ -98,8 +134,10 @@ export class StudentFeesReportsComponent implements OnInit {
         var that = this;
         commonfun.loader();
 
+        let _classid = that.classids.toString().replace('["', '').replace('", "', '').replace('"]', '');
+
         var feesparams = {
-            "flag": "studentwise", "typ": "ledger", "stdid": 0, "classid": that.classids, "studid": that.studid,
+            "flag": "studentwise", "typ": "ledger", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
 
