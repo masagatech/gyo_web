@@ -372,9 +372,10 @@ export class AddFeesCollectionComponent implements OnInit {
 
     getFeesReports(flag, typ, row) {
         var that = this;
+        var _flag = "";
         var _receivedate = "";
 
-        if (flag == "all") {
+        if (typ == "all") {
             _receivedate = "";
         }
         else {
@@ -382,13 +383,11 @@ export class AddFeesCollectionComponent implements OnInit {
         }
 
         var feesparams = {
-            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
+            "flag": flag, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
             "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 
-        console.log(feesparams);
-
-        that.modalHeader = typ == "ledger" ? "Fees Ledger" : "Fees Receipt";
+        that.modalHeader = flag == "ledger" ? "Ledger Fees" : "Receipt Fees";
 
         var _path = Common.getReportUrl("getFeesReports", feesparams);
 
@@ -407,14 +406,14 @@ export class AddFeesCollectionComponent implements OnInit {
         var _receivedate = "";
         var _datehead = "";
 
-        if (typ == "ledger") {
+        if (flag == "ledger") {
             typname = "Ledger Fees";
         }
         else {
             typname = "Receipt Fees";
         }
 
-        if (flag == "all") {
+        if (typ == "all") {
             _receivedate = "";
             _datehead = "";
         }
@@ -426,7 +425,7 @@ export class AddFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         var feesparams = {
-            "flag": "studentwise", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
+            "flag": flag, "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
             "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
         }
 

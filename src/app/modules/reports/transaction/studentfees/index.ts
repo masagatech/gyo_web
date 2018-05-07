@@ -9,7 +9,7 @@ import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
 
 import { AutoCompleteModule } from 'primeng/primeng';
-import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 export const routes = [
   {
@@ -29,7 +29,7 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    AutoCompleteModule, MultiselectDropdownModule
+    AutoCompleteModule, AngularMultiSelectModule
   ],
 
   providers: [AuthGuard, FeesService, FeesReportsService, CommonService]

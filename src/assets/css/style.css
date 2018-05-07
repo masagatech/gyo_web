@@ -10998,3 +10998,28 @@ td {
     height: 40px;
     max-width: 40px;
 }
+
+.selected-list[_ngcontent-c1] .c-list[_ngcontent-c1] .c-token[_ngcontent-c1] {
+    margin: 0 4px !important;
+}
+
+.selected-list[_ngcontent-c1] .c-angle-down[_ngcontent-c1],
+.selected-list[_ngcontent-c1] .c-angle-up[_ngcontent-c1] {
+    width: 12px !important;
+    height: 12px !important;
+    right: 8px !important;
+    top: 40% !important;
+}
+
+.selected-list[_ngcontent-c1] .c-btn[_ngcontent-c1] {
+    box-shadow: none !important;
+    padding: 3px 10px !important;
+}
+
+.c-btn[_ngcontent-c1] {
+    border-top: 1px solid rgb(199, 199, 199) !important;
+    border-left: 1px solid rgb(199, 199, 199) !important;
+    border-right: 1px solid rgb(199, 199, 199) !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+}

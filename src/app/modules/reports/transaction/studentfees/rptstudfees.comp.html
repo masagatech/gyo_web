@@ -4,11 +4,11 @@
             <div class="col-md-2">
                 <h4>Fees Collection</h4>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <ss-multiselect-dropdown [options]="classDT" [(ngModel)]="classids" title="Select Class"></ss-multiselect-dropdown>
+                        <angular2-multiselect [data]="classDT" [(ngModel)]="selectedClass" [settings]="classSettings" (onSelect)="onClassSelect($event)"></angular2-multiselect>
                     </div>
                 </div>
             </div>
@@ -21,11 +21,23 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 pad-20">
+            <div class="col-md-1 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getFeesReports()">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getFeesReports('html')">
                         <i class="material-icons">arrow_forward</i>
                     </button>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-2 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getFeesReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getFeesReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

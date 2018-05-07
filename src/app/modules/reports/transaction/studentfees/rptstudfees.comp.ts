@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { FeesReportsService } from '@services/reports';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
@@ -15,8 +15,10 @@ export class StudentFeesReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    classDT: IMultiSelectOption[];
-    classids: number[];
+    classDT = [];
+    selectedClass = [];
+    classSettings = {};
+    classIDs: string = "";
 
     studentDT: any = [];
     studid: number = 0;
@@ -30,12 +32,20 @@ export class StudentFeesReportsComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillClassDropDown();
         this.setFromDateAndToDate();
     }
 
     public ngOnInit() {
+        this.fillClassDropDown();
 
+        this.classSettings = {
+            singleSelection: false,
+            text: "Select Class",
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All Class',
+            enableSearchFilter: true,
+            classes: "myclass custom-class"
+        };
     }
 
     // Fill Academic Year, Class
@@ -67,34 +77,38 @@ export class StudentFeesReportsComponent implements OnInit {
         })
     }
 
+    onClassSelect(row: any) {
+        var _classid = "";
+
+        for (var i = 0; i < this.selectedClass.length; i++) {
+            _classid = this.selectedClass[i].id;
+        }
+
+        this.classIDs += _classid + ",";
+    }
+
     // Auto Completed Student
 
     getStudentData(event) {
+        let that = this;
         let query = event.query;
 
-        let _classid = "";
+        let _classid = that.classIDs;
 
-        if (this.classids == []) {
-            _classid = "";
-        }
-        else {
-            _classid = this.classids.toString().replace('["', '').replace('", "', '').replace('"]', '');
-        }
-
-        this._autoservice.getAutoData({
+        that._autoservice.getAutoData({
             "flag": "classstudent",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
+            "uid": that.loginUser.uid,
+            "ucode": that.loginUser.ucode,
+            "utype": that.loginUser.utype,
             "classid": _classid,
-            "enttid": this._enttdetails.enttid,
-            "wsautoid": this._enttdetails.wsautoid,
-            "issysadmin": this.loginUser.issysadmin,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.studentDT = data.data;
+            that.studentDT = data.data;
         }, err => {
-            this._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
         }, () => {
 
         });
@@ -105,6 +119,8 @@ export class StudentFeesReportsComponent implements OnInit {
     selectStudentData(event) {
         this.studid = event.value;
         this.studname = event.label;
+
+        this.getFeesReports("html");
     }
 
     formatDate(date) {
@@ -130,32 +146,38 @@ export class StudentFeesReportsComponent implements OnInit {
 
     // Get Fees Reports
 
-    getFeesReports() {
+    getFeesReports(format) {
         var that = this;
-        commonfun.loader();
-
-        let _classid = that.classids.toString().replace('["', '').replace('", "', '').replace('"]', '');
+        let _classid = that.classIDs;
 
         var feesparams = {
-            "flag": "studentwise", "typ": "ledger", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
+            "flag": "ledger", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "isschlogo": format == "pdf" ? true : false, "format": format
         }
 
-        that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
-            try {
-                $("#divrptstudfees").html(data._body);
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        if (format == "html") {
+            commonfun.loader();
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+            that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
+                try {
+                    $("#divrptstudfees").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-        })
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getFeesReports", feesparams));
+        }
     }
 }

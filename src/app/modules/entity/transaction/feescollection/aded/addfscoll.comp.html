@@ -149,8 +149,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a role="button" (click)="getFeesReports('all', 'ledger')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                            <li><a role="button" (click)="getFeesReports('all', 'receipt')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                            <li><a role="button" (click)="getFeesReports('ledger', 'all')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
+                            <li><a role="button" (click)="getFeesReports('receipt', 'all')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
                         </ul>
                     </div>
 
@@ -160,8 +160,8 @@
                             <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a role="button" (click)="saveNotification('all','ledger')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                            <li><a role="button" (click)="saveNotification('all','receipt')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                            <li><a role="button" (click)="saveNotification('ledger', 'all')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
+                            <li><a role="button" (click)="saveNotification('receipt', 'all')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
                         </ul>
                     </div>
                 </div>
@@ -192,8 +192,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="getFeesReports('', 'ledger', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                                            <li><a role="button" (click)="getFeesReports('', 'receipt', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                                            <li><a role="button" (click)="getFeesReports('ledger', '', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
+                                            <li><a role="button" (click)="getFeesReports('receipt', '', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
                                         </ul>
                                     </div>
 
@@ -203,8 +203,8 @@
                                             <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="saveNotification('', 'ledger', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                                            <li><a role="button" (click)="saveNotification('', 'receipt', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                                            <li><a role="button" (click)="saveNotification('ledger', '', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
+                                            <li><a role="button" (click)="saveNotification('receipt', '', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
                                         </ul>
                                     </div>
                                 </th>
