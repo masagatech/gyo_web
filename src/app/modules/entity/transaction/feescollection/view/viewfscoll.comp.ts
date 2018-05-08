@@ -16,6 +16,8 @@ export class ViewFeesCollectionComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    global = new Globals();
+
     ayDT: any = [];
     classDT: any = [];
 
@@ -26,6 +28,11 @@ export class ViewFeesCollectionComponent implements OnInit {
 
     feesCollDT: any = [];
 
+    // Upload File
+
+    uploadFileDT: any = [];
+    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+
     private subscribeParameters: any;
 
     constructor(private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -33,6 +40,7 @@ export class ViewFeesCollectionComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.getUploadConfig();
         this.fillAYAndClassDropDown();
     }
 
@@ -50,6 +58,63 @@ export class ViewFeesCollectionComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
+    }
+
+    // Bulk Upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that.uploadfileconfig.server = that.global.serviceurl + "bulkUpload";
+        that.uploadfileconfig.serverpath = that.global.serviceurl;
+        that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
+        that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
+            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // File Upload
+
+    onBeforeUpload(event) {
+        event.formData.append("bulktype", "studentfees");
+        event.formData.append("ayid", this.ayid);
+        event.formData.append("clsid", this.classid);
+        event.formData.append("enttid", this._enttdetails.enttid);
+        event.formData.append("wsautoid", this._enttdetails.wsautoid);
+        event.formData.append("cuid", this.loginUser.ucode);
+    }
+
+    onFileUpload(event) {
+        var that = this;
+        that.uploadFileDT = [];
+
+        console.log(JSON.parse(event.xhr.response));
+
+        var xlsfile = JSON.parse(event.xhr.response).data.funsave_multistudentfees;
+
+        if (xlsfile.msgid == 401) {
+            that._msg.Show(messageType.error, "Error", xlsfile.msg);
+        }
+        else if (xlsfile.msgid == 1) {
+            for (var i = 0; i < xlsfile.length; i++) {
+                that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            }
+            
+            that._msg.Show(messageType.success, "Success", xlsfile.msg);
+
+            that.closeBulkUploadPopup();
+            that.getFeesCollection();
+        }
+        else {
+            that._msg.Show(messageType.warn, "Warning", xlsfile.msg);
+        }
     }
 
     // Reset Fees Details
@@ -174,5 +239,23 @@ export class ViewFeesCollectionComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    openBulkUploadPopup() {
+        var that = this;
+
+        if (that.ayid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Academic Year");
+        }
+        else if (that.classid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Class");
+        }
+        else {
+            $("#bulkUploadModal").modal('show');
+        }
+    }
+
+    closeBulkUploadPopup() {
+        $("#bulkUploadModal").modal("hide");
     }
 }

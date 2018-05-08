@@ -103,6 +103,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             for (var i = 0; i < xlsfile.length; i++) {
                 that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
             }
+            
+            that._msg.Show(messageType.success, "Success", xlsfile.msg);
 
             that.closeBulkUploadPopup();
             that.getStudentDetails();
@@ -278,10 +280,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
     public addAdmissionForm() {
         this._router.navigate(['/erp/student/admission']);
-    }
-
-    public uploadAdmissionForm() {
-        this._router.navigate(['/erp/student/upload']);
     }
 
     public editAdmissionForm(row) {

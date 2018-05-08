@@ -1,12 +1,6 @@
 <div class="card">
     <div class="header">
         <h4>Fees Collection</h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesCollection()">
-                    <i class="material-icons">save</i></a>
-            </li>
-        </ul>
     </div>
 
     <div class="body">
@@ -40,6 +34,13 @@
             <div class="col-md-2" *ngIf="classid != 0">
                 <div class="form-group" style="padding-top: 20px">
                     Class Fees : {{classfees | _currency:loginUser.globsettings[0]}}
+                </div>
+            </div>
+            <div class="col-md-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
+                        <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -97,6 +98,127 @@
                             </th>
                         </tr>
                     </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog full-width" role="document">
+        <div class="modal-lg modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-8 col-xs-8">
+                        <h4>Student : Bulk Upload</h4>
+                    </div>
+                    <div class="col-md-4 col-xs-4 text-right">
+                        <a role="button" (click)="closeBulkUploadPopup()">
+                            <i class="material-icons">cancel</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" id="user">
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadFileDT.length">
+                        <div *ngFor="let file of uploadFileDT" class="box">
+                            {{file.athurl}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <h4>View : Excel Format</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a role="button" target="_blank" href="assets\file\tblstudentfees.xlsx">
+                            <i class="material-icons">file_download</i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body table-overflow">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                gr_no
+                            </th>
+                            <th>
+                                roll_no
+                            </th>
+                            <th>
+                                student_name
+                            </th>
+                            <th>
+                                category
+                            </th>
+                            <th>
+                                sub_category
+                            </th>
+                            <th>
+                                fees
+                            </th>
+                            <th>
+                                receive_date
+                            </th>
+                            <th>
+                                payment_mode
+                            </th>
+                            <th>
+                                cheque_no
+                            </th>
+                            <th>
+                                cheque_date
+                            </th>
+                            <th>
+                                remark
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                Nimit Nilesh Shah
+                            </td>
+                            <td>
+                                Admission Fees
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                500
+                            </td>
+                            <td>
+                                01-May-2018
+                            </td>
+                            <td>
+                                Cash
+                            </td>
+                            <td>
+                                1234321
+                            </td>
+                            <td>
+                                05-May-2018
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -99,6 +99,8 @@ export class ViewExamResultComponent implements OnInit {
                 that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
             }
 
+            that._msg.Show(messageType.success, "Success", xlsfile.msg);
+            
             that.closeBulkUploadPopup();
             that.getExamResult();
         }
