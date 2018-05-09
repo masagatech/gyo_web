@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-8">
+            <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Student <strong>*</strong></label>
@@ -21,14 +21,34 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-2 pad-20">
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">From Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="frmdt" class="form-control frmdt">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">To Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="todt" class="form-control todt">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="getFeesReports('html')">
                         <i class="material-icons">arrow_forward</i>
                     </button>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-2 pad-20 text-right">
+            <div class="col-md-4 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>

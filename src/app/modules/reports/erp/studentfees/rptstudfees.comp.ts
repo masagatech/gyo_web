@@ -152,8 +152,8 @@ export class StudentFeesReportsComponent implements OnInit {
 
         var feesparams = {
             "flag": "ledger", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "isschlogo": format == "pdf" ? true : false, "format": format
+            "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
         }
 
         if (format == "html") {

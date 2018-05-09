@@ -8662,22 +8662,12 @@ fieldset[disabled] .form-control {
 }
 
 .dropdown-menu a {
-    margin: 5px 0;
-    display: block;
+    margin: 0;
 }
 
 .dropdown-menu a:hover {
     text-decoration: none;
 }
-
-
-/*.dropdown-menu a span span {
-    width: 20px !important;
-    height: 20px !important;
-    border: solid 1px #000000;
-    margin: 3px;
-    padding: 0 1px 0 1px;
-}*/
 
 .dropdown-menu .divider {
     margin: 5px 0;
