@@ -149,8 +149,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a role="button" (click)="getFeesReports('ledger', 'all')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                            <li><a role="button" (click)="getFeesReports('receipt', 'all')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                            <li><a role="button" (click)="getFeesReports('summary', 'all')">Summary</a></li>
+                            <li><a role="button" (click)="getFeesReports('details', 'all')">Details</a></li>
                         </ul>
                     </div>
 
@@ -160,8 +160,8 @@
                             <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a role="button" (click)="saveNotification('ledger', 'all')"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                            <li><a role="button" (click)="saveNotification('receipt', 'all')"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                            <li><a role="button" (click)="saveNotification('summary', 'all')">Summary</a></li>
+                            <li><a role="button" (click)="saveNotification('details', 'all')">Details</a></li>
                         </ul>
                     </div>
                 </div>
@@ -192,8 +192,8 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="getFeesReports('ledger', '', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                                            <li><a role="button" (click)="getFeesReports('receipt', '', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                                            <li><a role="button" (click)="getFeesReports('summary', '', row)">Summary</a></li>
+                                            <li><a role="button" (click)="getFeesReports('details', '', row)">Details</a></li>
                                         </ul>
                                     </div>
 
@@ -203,8 +203,8 @@
                                             <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="saveNotification('ledger', '', row)"><i class="fa fa-file-excel-o"></i> Ledger</a></li>
-                                            <li><a role="button" (click)="saveNotification('receipt', '', row)"><i class="fa fa-file-pdf-o"></i> Receipt</a></li>
+                                            <li><a role="button" (click)="saveNotification('summary', '', row)">Summary</a></li>
+                                            <li><a role="button" (click)="saveNotification('details', '', row)">Details</a></li>
                                         </ul>
                                     </div>
                                 </th>
@@ -256,16 +256,11 @@
 </div>
 
 <div class="modal fade" id="feesReportsModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="width: 1050px;">
+    <div class="modal-dialog" role="document" style="width: 600px;">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="largeModalLabel">
-                    {{modalHeader}}
-                </h4>
-            </div>
             <div class="modal-body">
                 <div id="feesreports">
-                    <iframe id="ifeesreports" width="1000" height="500" frameborder="0" allowfullscreen></iframe>
+                    <iframe id="ifeesreports" width="550" height="450" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="modal-footer">

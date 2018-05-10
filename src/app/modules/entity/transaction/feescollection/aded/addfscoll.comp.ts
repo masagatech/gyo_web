@@ -50,7 +50,9 @@ export class AddFeesCollectionComponent implements OnInit {
 
     feesCollDT: any = [];
     studsFilterDT: any = [];
-    modalHeader: string = "";
+
+    fltr_recvdate: string = "";
+    fltr_rpttype: string = "";
 
     private subscribeParameters: any;
 
@@ -370,32 +372,46 @@ export class AddFeesCollectionComponent implements OnInit {
         }
     }
 
-    getFeesReports(flag, typ, row) {
+    getFeesReports(rpttype, type, row) {
         var that = this;
-        var _flag = "";
-        var _receivedate = "";
 
-        if (typ == "all") {
-            _receivedate = "";
+        if (type == "all") {
+            that.fltr_recvdate = "";
         }
         else {
-            _receivedate = row.key;
+            that.fltr_recvdate = row.key;
         }
+        
+        that.fltr_rpttype = rpttype;
 
         var feesparams = {
-            "flag": flag, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
-            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
+            "flag": "receipt", "rpttype": that.fltr_rpttype, "ayid": that.ayid, "stdid": that.classid, "classid": "",
+            "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
 
-        that.modalHeader = flag == "ledger" ? "Ledger Fees" : "Receipt Fees";
-
-        var _path = Common.getReportUrl("getFeesReports", feesparams);
+        var url = Common.getReportUrl("getFeesReports", feesparams);
 
         $("#feesReportsModal").modal('show');
 
         commonfun.loader("#feesreports");
-        $("#ifeesreports")[0].src = _path;
+        $("#ifeesreports")[0].src = url;
         commonfun.loaderhide("#feesreports");
+    }
+
+    printCopy() {
+        var that = this;
+
+        var feesparams = {
+            "flag": "receipt", "rpttype": that.fltr_rpttype, "ayid": that.ayid, "stdid": that.classid, "classid": "",
+            "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
+        }
+
+        var url = Common.getReportUrl("getFeesReports", feesparams);
+        
+        var W = window.open(url);
+        W.window.print();
     }
 
     // Save Notification
@@ -437,7 +453,7 @@ export class AddFeesCollectionComponent implements OnInit {
         _mailmsg += "<p>See, Attachment File, " + typname + " Sleep of your child " + _datehead + ".</p>";
 
         var _path = Common.getReportUrl("getFeesReports", feesparams);
-        var _attachments = [{ "filename": that.studname + " " + typname + ".pdf", "path": _path, "contentType": "application/pdf" }];
+        var _attachments = [{ "filename": that.studname + " " + typname + ".pdf", "path": _path, "contentType": "application/pdf", "orientation": "portrait" }];
 
         var ntfparams = {
             "ntfid": 0,
