@@ -14,13 +14,13 @@ export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
     _enttdetails: any = [];
 
     ayDT: any = [];
-    classDT: any = [];
-    studentDT: any = [];
-    studsdata: any = [];
-
     ayid: number = 0;
+
+    classDT: any = [];
     clsid: number = 0;
 
+    studentDT: any = [];
+    selectedStudent = [];
     studid: number = 0;
     studname: string = "";
 
@@ -41,7 +41,7 @@ export class AssesmentResultReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Fill AY And Class Drop Down
+    // Fill Academic Year And Class Drop Down
 
     fillAYAndClassDropDown() {
         var that = this;

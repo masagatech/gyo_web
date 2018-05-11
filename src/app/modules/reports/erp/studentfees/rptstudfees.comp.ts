@@ -21,6 +21,7 @@ export class StudentFeesReportsComponent implements OnInit {
     classIDs: string = "";
 
     studentDT: any = [];
+    selectedStudent = [];
     studid: number = 0;
     studname: string = "";
 
@@ -119,8 +120,6 @@ export class StudentFeesReportsComponent implements OnInit {
     selectStudentData(event) {
         this.studid = event.value;
         this.studname = event.label;
-
-        this.getFeesReports("html");
     }
 
     formatDate(date) {
@@ -150,34 +149,48 @@ export class StudentFeesReportsComponent implements OnInit {
         var that = this;
         let _classid = that.classIDs;
 
-        var feesparams = {
-            "flag": "ledger", "rpttype": "view", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
-            "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+        if (_classid == "") {
+            that._msg.Show(messageType.warn, "Warning", "Select Class");
         }
-
-        if (format == "html") {
-            commonfun.loader();
-
-            that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
-                try {
-                    $("#divrptstudfees").html(data._body);
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            })
+        else if (that.studid == 0) {
+            that._msg.Show(messageType.warn, "Warning", "Enter Student");
+        }
+        else if (that.frmdt == "") {
+            that._msg.Show(messageType.warn, "Warning", "Enter From Date");
+        }
+        else if (that.todt == "") {
+            that._msg.Show(messageType.warn, "Warning", "Enter To Date");
         }
         else {
-            window.open(Common.getReportUrl("getFeesReports", feesparams));
+            var feesparams = {
+                "flag": "ledger", "rpttype": "view", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
+                "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+            }
+
+            if (format == "html") {
+                commonfun.loader();
+
+                that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
+                    try {
+                        $("#divrptstudfees").html(data._body);
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+            else {
+                window.open(Common.getReportUrl("getFeesReports", feesparams));
+            }
         }
     }
 }

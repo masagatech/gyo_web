@@ -134,6 +134,10 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     mode: string = "";
     isactive: boolean = true;
 
+    isadd: boolean = false;
+    isedit: boolean = false;
+    isdetails: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _admsnservice: AdmissionService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
@@ -146,9 +150,28 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.fillCityDropDown();
         this.fillQualificationDropDown();
         this.getUploadConfig();
+
+        this.isadd = _router.url.indexOf("/add") > -1;
+        this.isedit = _router.url.indexOf("/edit") > -1;
+        this.isdetails = _router.url.indexOf("/details") > -1;
     }
 
     public ngOnInit() {
+        if (this.isdetails) {
+            $('.form-control').prop("disabled", true);
+            $('.prospectus').prop("class", "hide");
+            $('.profile-photo').prop("class", "hide");
+            $('.profile-dob').prop("class", "hide");
+            $('.profile-addr').prop("class", "hide");
+        }
+        else {
+            $('.form-control').prop("disabled", false);
+            $('.prospectus').prop("class", "show");
+            $('.profile-photo').prop("class", "show");
+            $('.profile-dob').prop("class", "show");
+            $('.profile-addr').prop("class", "show");
+        }
+
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -162,12 +185,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (that.isprspct) {
-            $('#prspctid').prop('disabled', false);
-            $('#prspctno').prop('disabled', false);
+            $('#prspctid').prop("disabled", false);
+            $('#prspctno').prop("disabled", false);
         }
         else {
-            $('#prspctid').prop('disabled', true);
-            $('#prspctno').prop('disabled', true);
+            $('#prspctid').prop("disabled", true);
+            $('#prspctno').prop("disabled", true);
         }
     }
 
@@ -1062,13 +1085,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             if (params['id'] !== undefined) {
                 that.paramsid = params['id'];
                 that.getStudentDetails();
-                $('#prspctid').prop('disabled', true);
-                $('#prspctno').prop('disabled', true);
+                $('#prspctid').prop("disabled", true);
+                $('#prspctno').prop("disabled", true);
             }
             else {
                 that.resetStudentFields();
-                $('#prspctid').prop('disabled', false);
-                $('#prspctno').prop('disabled', false);
+                $('#prspctid').prop("disabled", false);
+                $('#prspctno').prop("disabled", false);
             }
         });
     }

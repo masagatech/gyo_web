@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
-import { StudentFeesReportsComponent } from './rptstudfees.comp';
+import { FeesCollectionReportsComponent } from './rptfeescoll.comp';
 import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
 
@@ -15,8 +15,8 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: StudentFeesReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptstudfees", "rights": "view", "urlname": "/studentfees" }
+        path: '', component: FeesCollectionReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptstudfees", "rights": "view", "urlname": "/feescollection" }
       }
     ]
   },
@@ -24,7 +24,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    StudentFeesReportsComponent
+    FeesCollectionReportsComponent
   ],
 
   imports: [
@@ -35,6 +35,6 @@ export const routes = [
   providers: [AuthGuard, FeesService, FeesReportsService, CommonService]
 })
 
-export class StudentFeesReportsModule {
+export class FeesCollectionReportsModule {
   public static routes = routes;
 }

@@ -29,6 +29,10 @@ export const routes = [
       {
         path: 'edit/:id', component: AddAdmissionComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "album", "rights": "edit", "urlname": "/edit" }
+      },
+      {
+        path: 'details/:id', component: AddAdmissionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "album", "rights": "edit", "urlname": "/edit" }
       }
     ]
   },

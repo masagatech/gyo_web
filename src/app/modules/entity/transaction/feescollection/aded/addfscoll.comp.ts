@@ -71,8 +71,6 @@ export class AddFeesCollectionComponent implements OnInit {
     getStudentFeesHistory() {
         let studsFilterDT = JSON.parse(Cookie.get("filterStudent"));
 
-        console.log(studsFilterDT);
-
         if (studsFilterDT !== null) {
             this.getStudentDetails(studsFilterDT);
             this.getFeesCollection(studsFilterDT);
@@ -90,7 +88,7 @@ export class AddFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid, "receivedate": row.receivedate,
             "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -512,7 +510,7 @@ export class AddFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
+            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid, "receivedate": row.receivedate,
             "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {

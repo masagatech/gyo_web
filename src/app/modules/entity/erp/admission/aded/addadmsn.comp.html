@@ -18,14 +18,14 @@
     <div class="col-md-6">
         <div class="card">
             <div class="body">
-                <div class="row clearfix">
+                <div class="row clearfix prospectus">
                     <div class="col-md-8 col-xs-8">
                         <div class="form-group">
                             <input id="isprspct" name="isprspct" [(ngModel)]="isprspct" type="checkbox" (change)="isWithProspectus()" class="filled-in">
                             <label for="isprspct">With Prospectus</label>
                         </div>
                     </div>
-                    <div class="col-md-4 col-xs-4" align="right" *ngIf="enrlmntid != 0">
+                    <div class="col-md-4 col-xs-4 hide text-right" *ngIf="enrlmntid != 0">
                         <b>Enrollment No : </b> {{enrlmntid}}
                     </div>
                 </div>
@@ -197,8 +197,10 @@
                 <div class="form-group">
                     <div class="row clearfix">
                         <div class="col-md-8">
-                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
-                                auto="true"></p-fileUpload>
+                            <div class="profile-photo">
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                                    auto="true"></p-fileUpload>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div *ngIf="uploadPhotoDT.length">
@@ -228,7 +230,9 @@
                 <div class="form-group">
                     <div class="row clearfix">
                         <div class="col-md-8">
-                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddobconfig.server}}" chooseLabel="{{chooseDOBLabel}}" (onUpload)="onDOBUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            <div class="profile-dob">
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddobconfig.server}}" chooseLabel="{{chooseDOBLabel}}" (onUpload)="onDOBUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div *ngIf="uploadDOBCertificate.length">
@@ -256,7 +260,9 @@
                 <div class="form-group">
                     <div class="row clearfix">
                         <div class="col-md-8">
-                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadaddrconfig.server}}" chooseLabel="{{chooseAddrLabel}}" (onUpload)="onAddressUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            <div class="profile-addr">
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadaddrconfig.server}}" chooseLabel="{{chooseAddrLabel}}" (onUpload)="onAddressUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div *ngIf="uploadAddrProof.length">

@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { ExamService } from '@services/erp';
 import { ExamReportService } from '@services/reports';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'rptexres.comp.html'
@@ -20,6 +21,11 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
+    autoStudentDT: any = [];
+    selectStudent: any = {};
+    studid: number = 0;
+    studname: string = "";
+
     subjectDT: any = [];
 
     gridTotal: any = {
@@ -27,13 +33,14 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
     };
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _examservice: ExamService,
+        private _loginservice: LoginService, private _examservice: ExamService, private _autoservice: CommonService,
         private _examrptservice: ExamReportService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
         this.getSubjectList();
+        this.getExamResultReports("html");
     }
 
     public ngOnInit() {
@@ -87,6 +94,36 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Auto Completed Student
+
+    getStudentData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "student",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "enttid": this._enttdetails.enttid,
+            "wsautoid": this._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.autoStudentDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Student
+
+    selectStudentData(event) {
+        this.studid = event.value;
+        this.studname = event.label;
+    }
+
     // Get Subject List
 
     getSubjectList() {
@@ -106,11 +143,31 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
         let that = this;
         let params = {};
 
+        let examFilterDT = JSON.parse(Cookie.get("filterExam"));
+
+        if (examFilterDT !== null) {
+            that.ayid = examFilterDT.ayid;
+            that.smstrid = examFilterDT.smstrid;
+            that.classid = examFilterDT.classid;
+            that.studid = examFilterDT.studid;
+            that.studname = examFilterDT.studname;
+            that.selectStudent = { "value": that.studid, "label": that.studname }
+        }
+        else {
+            that.ayid = 0;
+            that.smstrid = 0;
+            that.classid = 0;
+            that.studid = 0;
+            that.studname = "";
+            that.selectStudent = {};
+        }
+
+        console.log(examFilterDT);
+        
         params = {
-            "flag": "reports", "ayid": that.ayid, "smstrid": that.smstrid, "classid": that.classid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin, "format": format
+            "flag": "reports", "ayid": that.ayid, "smstrid": that.smstrid, "classid": that.classid, "studid": that.studid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
         if (format == "html") {

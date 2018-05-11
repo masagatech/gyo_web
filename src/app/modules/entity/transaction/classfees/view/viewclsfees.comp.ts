@@ -27,8 +27,8 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+    constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService,
+        private _feesservice: FeesService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

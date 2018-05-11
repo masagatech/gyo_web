@@ -1,0 +1,108 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Collection</h4>
+
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">View Type <strong>*</strong></label>
+                        <select id="rpttype" name="rpttype" [(ngModel)]="rpttype" class="form-control rpttype" tabindex="2">
+                            <option [value]="'summary'">Summary</option>
+                            <option [value]="'details'">Details</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-8">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <angular2-multiselect [data]="classDT" [(ngModel)]="selectedClass" [settings]="classSettings" (onSelect)="onClassSelect($event)"></angular2-multiselect>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getFeesReports('html')">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getFeesReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getFeesReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th width="150px">
+                        Class
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th width="150px">
+                        Paid Fees
+                    </th>
+                    <th width="150px">
+                        Pending Fees
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of feesCollectionDT">
+                    <td>
+                        {{row.classname}}
+                    </td>
+                    <td>
+                        {{row.catname}}
+                    </td>
+                    <td align="right">
+                        {{row.paidfees | _currency:loginUser.globsettings[0]}}
+                    </td>
+                    <td align="right">
+                        {{row.pendfees | _currency:loginUser.globsettings[0]}}
+                    </td>
+                </tr>
+                <tr class="tr-table">
+                    <td></td>
+                    <td align="right">
+                        <b>Total Amount</b>
+                    </td>
+                    <td align="right">
+                        {{totpaidfees | _currency:loginUser.globsettings[0]}}
+                    </td>
+                    <td align="right">
+                        {{totpendfees | _currency:loginUser.globsettings[0]}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
