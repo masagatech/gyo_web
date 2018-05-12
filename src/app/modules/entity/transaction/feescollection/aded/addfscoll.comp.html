@@ -28,66 +28,31 @@
         </div>
 
         <div class="row clearfix">
-            <div class="col-md-3">
-                <img *ngIf="gndrkey == 'M'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
-                <img *ngIf="gndrkey == 'F'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
-                <br />{{studname}} - {{classname}}
-                <br /><b>Gender :</b> {{gndrval}}
-                <br /><b>Roll No :</b> {{rollno}}
+            <div class="col-md-4">
+                <p>
+                    <img *ngIf="gndrkey == 'M'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
+                    <img *ngIf="gndrkey == 'F'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
+                </p>
+                <p><b>Name :</b> {{studname}} </p>
+                <p><b>Class :</b> {{classname}}</p>
+                <p><b>Gender :</b> {{gndrval}}</p>
+                <p><b>Roll No :</b> {{rollno}}</p>
             </div>
             <div class="col-md-6">
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Category <strong>*</strong></label>
-                                <select id="catid" name="catname" [(ngModel)]="catid" (ngModelChange)="fillSubCateogryDropDown();getClassFees();" class="form-control catname" tabindex="1">
-                                    <option [value]="0">Select</option>
-                                    <option *ngFor="let crow of categoryDT" [value]="crow.key">
-                                        {{crow.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Sub Category <strong>*</strong></label>
-                                <select id="subcatid" name="subcatname" [(ngModel)]="subcatid" (ngModelChange)="getClassFees()" class="form-control subcatname" tabindex="2">
-                                    <option [value]="0">Select</option>
-                                    <option *ngFor="let scrow of subCategoryDT" [value]="scrow.key">
-                                        {{scrow.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Fees <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="fees" class="form-control text-right fees" tabindex="3">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
                                 <label class="control-label">Receive Date <strong>*</strong></label>
-                                <input type="date" [(ngModel)]="receivedate" class="form-control receivedate" tabindex="4">
+                                <input type="date" [(ngModel)]="receivedate" class="form-control receivedate" tabindex="1">
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Payment Mode <strong>*</strong></label>
-                                <select id="paymentmode" name="paymentmode" [(ngModel)]="paymentmode" class="form-control paymentmode" tabindex="5">
+                                <select id="paymentmode" name="paymentmode" [(ngModel)]="paymentmode" class="form-control paymentmode" tabindex="2">
                                     <option [value]="''">Select</option>
                                     <option *ngFor="let pmrow of paymentmodeDT" [value]="pmrow.key">
                                         {{pmrow.val}}
@@ -96,11 +61,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" *ngIf="paymentmode == 'cheque'">
+                </div>
+                <div class="row clearfix" *ngIf="paymentmode == 'cheque'">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Cheque Status <strong>*</strong></label>
-                                <select id="chequestatus" name="chequestatus" [(ngModel)]="chequestatus" class="form-control chequestatus" tabindex="6">
+                                <select id="chequestatus" name="chequestatus" [(ngModel)]="chequestatus" class="form-control chequestatus" tabindex="3">
                                     <option [value]="''">Select Cheque Status</option>
                                     <option [value]="'pending'">Pending</option>
                                     <option [value]="'complete'">Complete</option>
@@ -109,162 +76,127 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row clearfix" *ngIf="paymentmode == 'cheque'">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Cheque No <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="chequeno" class="form-control text-right chequeno" tabindex="7">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="chequeno" class="form-control text-right chequeno" tabindex="4">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Cheque Date <strong>*</strong></label>
-                                <input type="date" [(ngModel)]="chequedate" class="form-control chequedate" tabindex="8">
+                                <input type="date" [(ngModel)]="chequedate" class="form-control chequedate" tabindex="5">
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Remark</label>
-                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="9"></textarea>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth msg" maxlength="500" tabindex="6"></textarea>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div *ngIf="feesCollDT.length">
-            <div class="row clearfix">
-                <div class="col-md-6">
-                    <h4>Payment History</h4>
-                </div>
-                <div class="col-md-6 text-right">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-theme btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">print</i> <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a role="button" (click)="getFeesReports('summary', 'all')">Summary</a></li>
-                            <li><a role="button" (click)="getFeesReports('details', 'all')">Details</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-theme btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">email</i> <span>Send Email To Parent</span>
-                            <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a role="button" (click)="saveNotification('summary', 'all')">Summary</a></li>
-                            <li><a role="button" (click)="saveNotification('details', 'all')">Details</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row clearfix">
-                <div class="col-md-12">
-                    <table class="table table-bordered table-responsive reports">
-                        <thead>
-                            <tr>
-                                <th width="220px">Category</th>
-                                <th width="120px">Receive Date</th>
-                                <th width="100px">Fees</th>
-                                <th width="300px">Payment Mode</th>
-                                <th>Remark</th>
-                                <th width="40px"></th>
-                            </tr>
-                        </thead>
-                        <tbody *ngFor="let row of feesCollDT | groupBy: 'receivedate'">
-                            <tr class="tr-table">
-                                <th colspan="4">
-                                    {{row.key}}
-                                </th>
-                                <th colspan="2" class="text-right">
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-theme btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">print</i> <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="getFeesReports('summary', '', row)">Summary</a></li>
-                                            <li><a role="button" (click)="getFeesReports('details', '', row)">Details</a></li>
-                                        </ul>
+        <div class="row clearfix">
+            <div class="col-md-10">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th width="40px"></th>
+                            <th width="300px">Category</th>
+                            <th width="300px">Sub Category</th>
+                            <th width="80px" align="right">Fees</th>
+                            <th width="80px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="ddlcatname" name="catname" [(ngModel)]="catid" (ngModelChange)="fillSubCateogryDropDown();getClassFees();" class="form-control catname" tabindex="7">
+                                            <option [value]="0">Select Category</option>
+                                            <option *ngFor="let crow of categoryDT" [value]="crow.key">
+                                                {{crow.val}}
+                                            </option>
+                                        </select>
                                     </div>
-
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-theme btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">email</i> <span>Send Email To Parent</span>
-                                            <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a role="button" (click)="saveNotification('summary', '', row)">Summary</a></li>
-                                            <li><a role="button" (click)="saveNotification('details', '', row)">Details</a></li>
-                                        </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="ddlscatname" name="scatname" [(ngModel)]="scatid" (ngModelChange)="getClassFees()" class="form-control scatname" tabindex="8">
+                                            <option [value]="0">Select Sub Category</option>
+                                            <option *ngFor="let scrow of subCategoryDT" [value]="scrow.key">
+                                                {{scrow.val}}
+                                            </option>
+                                        </select>
                                     </div>
-                                </th>
-                            </tr>
-                            <tr *ngFor="let drow of row.value">
-                                <td>
-                                    {{drow.catname}} {{drow.subcatname == '' ? '' : ' - ' || drow.subcatname}}
-                                </td>
-                                <td>
-                                    {{drow.receivedate}}
-                                </td>
-                                <td align="right">
-                                    {{drow.fees | _currency:loginUser.globsettings[0]}}
-                                </td>
-                                <td>
-                                    {{drow.paymentmodenm}}
-                                    <div *ngIf="drow.paymentmode == 'cheque'">
-                                        <br /> Cheque Date : {{drow.chequedate}}, Cheque No : {{drow.chequeno}}
-                                        <br /> Cheque Status : {{drow.status}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="fees" class="form-control text-right fees" tabindex="9">
                                     </div>
-                                </td>
-                                <td>
-                                    {{drow.remark1}}
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-theme btn-xs" (click)="editFeesCollection(drow)">
-                                            <i class="material-icons">edit</i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr class="tr-table">
-                                <th colspan="2">
-                                    <b>Total</b>
-                                </th>
-                                <th align="right">
-                                    <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
-                                </th>
-                                <th colspan="3"></th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="feesReportsModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" style="width: 600px;">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div id="feesreports">
-                    <iframe id="ifeesreports" width="550" height="450" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group text-right" *ngIf="isaddfees">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="addFeesCollection()">
+                                        <i class="material-icons">add</i></button>
+                                </div>
+                                <div class="form-group text-right" *ngIf="iseditfees">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="updateFeesCollection()">
+                                        <i class="material-icons">done</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="resetFeesCollection()">
+                                        <i class="material-icons">cancel</i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of studentFeesDT; let i = index">
+                            <td>
+                                {{i + 1}}
+                            </td>
+                            <td>
+                                {{row.catname}}
+                            </td>
+                            <td>
+                                {{row.scatname}}
+                            </td>
+                            <td align="right">
+                                {{row.fees | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <td>
+                                <div class="form-group text-right">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editFeesCollection(row)">
+                                        <i class="material-icons">edit</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteFeesCollection(row)">
+                                        <i class="material-icons">delete</i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="tr-table">
+                            <th colspan="2">
+                                <b>Total</b>
+                            </th>
+                            <th align="right">
+                                <b>{{totalFees() | _currency:loginUser.globsettings[0]}}</b>
+                            </th>
+                            <th colspan="2"></th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </div>

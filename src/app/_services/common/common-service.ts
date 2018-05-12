@@ -3,6 +3,8 @@ import { DataService } from '../dataconnect';
 import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
+declare let swal: any;
+
 @Injectable()
 export class CommonService {
     constructor(private _dataserver: DataService, private _router: Router) { }
@@ -94,5 +96,15 @@ export class CommonService {
 
     sendEmail(req: any) {
         return this._dataserver.post("sendEmail", req)
+    }
+
+    messagebox(title, msg, msgtyp, isconfirm) {
+      swal({
+        title: title,
+        text: msg,
+        type: msgtyp,
+        showConfirmButton: isconfirm,
+        timer: 3000
+      })
     }
 }

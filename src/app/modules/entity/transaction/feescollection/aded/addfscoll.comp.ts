@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { NotificationService, FeesService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -37,7 +37,7 @@ export class AddFeesCollectionComponent implements OnInit {
     rollno: string = "";
 
     catid: number = 0;
-    subcatid: number = 0;
+    scatid: number = 0;
     catfees: any = "";
     fees: any = "";
     receivedate: any = "";
@@ -48,18 +48,29 @@ export class AddFeesCollectionComponent implements OnInit {
     remark: string = "";
     statusid: number = 0;
 
-    feesCollDT: any = [];
     studsFilterDT: any = [];
+    studentFeesDT: any = [];
+    selectedFees: any = {};
+    isaddfees: boolean = false;
+    iseditfees: boolean = false;
 
     fltr_recvdate: string = "";
     fltr_rpttype: string = "";
 
+    isadd: boolean = false;
+    isedit: boolean = false;
+    isdetails: boolean = false;
+
     private subscribeParameters: any;
 
-    constructor(private _ntfservice: NotificationService, private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
+        private _ntfservice: NotificationService, private _feesservice: FeesService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.isadd = _router.url.indexOf("/add") > -1;
+        this.isedit = _router.url.indexOf("/edit") > -1;
+        this.isdetails = _router.url.indexOf("/details") > -1;
 
         this.getStudentFeesHistory();
     }
@@ -71,12 +82,21 @@ export class AddFeesCollectionComponent implements OnInit {
     getStudentFeesHistory() {
         let studsFilterDT = JSON.parse(Cookie.get("filterStudent"));
 
+        console.log(studsFilterDT);
+
         if (studsFilterDT !== null) {
             this.getStudentDetails(studsFilterDT);
-            this.getFeesCollection(studsFilterDT);
+
+            if (this.isedit) {
+                this.getFeesCollection(studsFilterDT);
+            }
+            else {
+                this.resetSaveFees();
+                this.resetFeesCollection();
+            }
         }
         else {
-            this.resetFeesCollFields();
+            this.resetSaveFees();
             this._router.navigate(['/transaction/feescollection']);
         }
     }
@@ -104,7 +124,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.gndrval = data.data[0].gndrval;
                     that.rollno = data.data[0].rollno;
                     that.classfees = data.data[0].classfees;
-                    that.pendingfees = data.data[0].classfees - that.totalFees();
+                    that.pendingfees = data.data[0].classfees - data.data[0].feescoll;
                     that.statusid = data.data[0].statusid;
 
                     that.fillCategoryAndPaymentModeDropDown();
@@ -202,7 +222,7 @@ export class AddFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "fees", "catid": that.catid, "subcatid": that.subcatid, "classid": that.classid,
+            "flag": "fees", "catid": that.catid, "scatid": that.scatid, "classid": that.classid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -229,14 +249,14 @@ export class AddFeesCollectionComponent implements OnInit {
         })
     }
 
-    // Fill Fees Collection
+    // Reset Save Fees
 
-    resetFeesCollFields() {
+    resetSaveFees() {
         var that = this;
 
         that.fclid = 0;
         that.catid = 0;
-        that.subcatid = 0;
+        that.scatid = 0;
         that.fees = 0;
         that.classfees = 0;
         that.pendingfees = 0;
@@ -248,20 +268,61 @@ export class AddFeesCollectionComponent implements OnInit {
         that.remark = "";
     }
 
-    // Save Class Fees
+    // Get Fees Collection
 
-    isValidClassFees() {
+    getFeesCollection(row) {
+        var that = this;
+        commonfun.loader();
+
+        that._feesservice.getFeesCollection({
+            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
+            "studid": row.studid, "receiptno": row.receiptno, "receivedate": row.receivedate,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.receivedate = data.data[0].editrecvdate;
+                    that.paymentmode = data.data[0].paymentmode;
+                    that.remark = data.data[0].remark1;
+
+                    that.studentFeesDT = data.data;
+                }
+                else {
+                    that.resetFeesCollection();
+                    that.resetSaveFees();
+                    that.studentFeesDT = [];
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Valid Add Fees Collection
+
+    isValidAddFees() {
         var that = this;
 
         if (that.catid == 0) {
-            that._msg.Show(messageType.info, "Info", "Select Category");
+            that._msg.Show(messageType.error, "Error", "Select Category");
             $(".catname").focus();
+
             return false;
         }
 
         if (that.fees == "") {
-            that._msg.Show(messageType.info, "Info", "Enter Fees");
+            that._msg.Show(messageType.error, "Error", "Enter Fees");
             $(".fees").focus();
+
             return false;
         }
 
@@ -269,9 +330,106 @@ export class AddFeesCollectionComponent implements OnInit {
             if (parseInt(that.catfees) < parseInt(that.fees)) {
                 that._msg.Show(messageType.info, "Info", "Should Be Enter Fees Less Than / Equal " + that.catfees);
                 $(".fees").focus();
+
                 return false;
             }
         }
+
+        for (var i = 0; i < that.studentFeesDT.length; i++) {
+            var _studfees = that.studentFeesDT[i];
+
+            if (that.catid == _studfees.catid && that.scatid == _studfees.scatid) {
+                that._msg.Show(messageType.warn, "Warning", "Duplicate Record Not Allowed !!!!");
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Reset Add Fees
+
+    resetFeesCollection() {
+        var that = this;
+
+        that.fclid = 0;
+        that.catid = 0;
+        that.scatid = 0;
+        that.fees = 0;
+
+        that.isaddfees = true;
+        that.iseditfees = false;
+    }
+
+    // Add Fees Collection
+
+    addFeesCollection() {
+        var that = this;
+        var isvalid = false;
+
+        isvalid = that.isValidAddFees();
+
+        if (isvalid) {
+            var catname = $("#ddlcatname option:selected").text().trim();
+            var scatname = $("#ddlscatname option:selected").text().trim();
+
+            that.studentFeesDT.push({
+                "fclid": "0", "catid": that.catid, "catname": catname,
+                "scatid": that.scatid, "scatname": scatname, "fees": that.fees,
+                "isactive": true
+            });
+            that.resetFeesCollection();
+        }
+    }
+
+    // Edit Fees Collection
+
+    editFeesCollection(row) {
+        var that = this;
+        commonfun.loader();
+
+        try {
+            that.selectedFees = row;
+            that.isaddfees = false;
+            that.iseditfees = true;
+
+            that.fclid = row.fclid;
+            that.catid = row.catid;
+            that.fillSubCateogryDropDown();
+            that.scatid = row.scatid;
+            that.fees = row.fees;
+
+            commonfun.loaderhide();
+        }
+        catch (e) {
+            that._msg.Show(messageType.error, "Error", e);
+            commonfun.loaderhide();
+        }
+    }
+
+    // Edit Fees Collection
+
+    updateFeesCollection() {
+        this.isedit = false;
+        this.selectedFees.fclid = this.fclid;
+        this.selectedFees.catid = this.catid;
+        this.selectedFees.scatid = this.scatid;
+        this.selectedFees.fees = this.fees;
+        this.resetFeesCollection();
+        this.selectedFees = [];
+    }
+
+    // Delete Stops List
+
+    deleteFeesCollection(row) {
+        row.isactive = false;
+    }
+
+    // Valid Save Fees Collection
+
+    isValidSaveFees() {
+        var that = this;
 
         if (that.receivedate == "") {
             that._msg.Show(messageType.info, "Info", "Enter Receive Date");
@@ -303,14 +461,21 @@ export class AddFeesCollectionComponent implements OnInit {
             }
         }
 
+        if (that.studentFeesDT.length == 0) {
+            that._msg.Show(messageType.info, "Info", "Fill Atleast 1 Fees Details");
+            return false;
+        }
+
         return true;
     }
+
+    // Save Fees Collection
 
     saveFeesCollection() {
         var that = this;
         var isvalid = false;
 
-        isvalid = that.isValidClassFees();
+        isvalid = that.isValidSaveFees();
 
         if (isvalid) {
             commonfun.loader();
@@ -319,20 +484,14 @@ export class AddFeesCollectionComponent implements OnInit {
                 "fclid": that.fclid,
                 "ayid": that.ayid,
                 "clsid": that.classid,
-                "frmid": that.loginUser.uid,
-                "frmtype": that.loginUser.utype,
                 "studid": that.studid,
-                "catid": that.catid,
-                "subcatid": that.subcatid,
-                "fees": that.fees,
-                "pendfees": that.pendingfees - that.fees,
                 "receivedate": that.receivedate,
                 "paymentmode": that.paymentmode,
-                "iscomplete": that.chequestatus == "pending" ? false : true,
                 "chequestatus": that.chequestatus,
                 "chequeno": that.chequeno,
                 "chequedate": that.chequedate,
                 "remark": that.remark,
+                "studentfees": that.studentFeesDT,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode,
@@ -344,12 +503,26 @@ export class AddFeesCollectionComponent implements OnInit {
                     var dataResult = data.data[0].funsave_feescollection;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
+                    var docno = dataResult.docno;
 
                     if (msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", msg);
-                        that.resetFeesCollFields();
+                        if (msgid == "1") {
+                            if (that.isadd) {
+                                that._autoservice.messagebox("Saved Successfully !!!!", "Your Receipt No : " + docno, "success", false);
+                            }
+                            else {
+                                that._autoservice.messagebox("Updated Successfully !!!!", "", "success", false);
+                            }
 
-                        that.getStudentFeesHistory();
+                            that.resetSaveFees();
+                            that.studentFeesDT = [];
+
+                            that.getStudentFeesHistory();
+                            that.viewFeesCollection();
+                        }
+                        else {
+                            that._msg.Show(messageType.error, "Error", msg);
+                        }
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -370,210 +543,14 @@ export class AddFeesCollectionComponent implements OnInit {
         }
     }
 
-    getFeesReports(rpttype, type, row) {
-        var that = this;
-
-        if (type == "all") {
-            that.fltr_recvdate = "";
-        }
-        else {
-            that.fltr_recvdate = row.key;
-        }
-        
-        that.fltr_rpttype = rpttype;
-
-        var feesparams = {
-            "flag": "receipt", "rpttype": that.fltr_rpttype, "ayid": that.ayid, "stdid": that.classid, "classid": "",
-            "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
-        }
-
-        var url = Common.getReportUrl("getFeesReports", feesparams);
-
-        $("#feesReportsModal").modal('show');
-
-        commonfun.loader("#feesreports");
-        $("#ifeesreports")[0].src = url;
-        commonfun.loaderhide("#feesreports");
-    }
-
-    printCopy() {
-        var that = this;
-
-        var feesparams = {
-            "flag": "receipt", "rpttype": that.fltr_rpttype, "ayid": that.ayid, "stdid": that.classid, "classid": "",
-            "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
-        }
-
-        var url = Common.getReportUrl("getFeesReports", feesparams);
-        
-        var W = window.open(url);
-        W.window.print();
-    }
-
-    // Save Notification
-
-    saveNotification(flag, typ, row) {
-        var that = this;
-        var typname = "";
-        var _receivedate = "";
-        var _datehead = "";
-
-        if (flag == "ledger") {
-            typname = "Ledger Fees";
-        }
-        else {
-            typname = "Receipt Fees";
-        }
-
-        if (typ == "all") {
-            _receivedate = "";
-            _datehead = "";
-        }
-        else {
-            _receivedate = row.key;
-            _datehead = "of Date : " + row.key;
-        }
-
-        commonfun.loader();
-
-        var feesparams = {
-            "flag": flag, "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
-            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
-        }
-
-        var _mailmsg = "";
-
-        _mailmsg += "<p>Name : " + that.studname + "</p>";
-        _mailmsg += "<p>Roll No : " + that.rollno + "</p>";
-        _mailmsg += "<p>Standard : " + that.classname + "</p>";
-        _mailmsg += "<p>See, Attachment File, " + typname + " Sleep of your child " + _datehead + ".</p>";
-
-        var _path = Common.getReportUrl("getFeesReports", feesparams);
-        var _attachments = [{ "filename": that.studname + " " + typname + ".pdf", "path": _path, "contentType": "application/pdf", "orientation": "portrait" }];
-
-        var ntfparams = {
-            "ntfid": 0,
-            "ntftype": "studentfees",
-            "title": "Student " + typname + " : " + that.studname,
-            "msg": "Sent Email, on your registered email, to " + typname + " Sleep of your child - " + that.studname + " " + that.classname + " " + _receivedate + ". so, please check your email",
-            "mailmsg": _mailmsg,
-            "issendsms": false,
-            "issendemail": true,
-            "grpid": 170,
-            "frmid": that.loginUser.uid,
-            "frmtype": that.loginUser.utype,
-            "issendparents": true,
-            "issendteacher": false,
-            "sendtype": "{parents}",
-            "classid": "{" + that.classcode + "}",
-            "studid": "{" + that.studid + "}",
-            "tchrid": "{0}",
-            "cuid": that.loginUser.ucode,
-            "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid,
-            "attachments": _attachments
-        }
-
-        that._ntfservice.saveNotification(ntfparams).subscribe(data => {
-            try {
-                var dataResult = data.data[0].funsave_notification;
-                var msg = dataResult.msg;
-                var msgid = dataResult.msgid;
-
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", typname + " Mail send successfully !!!!");
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
-
-                commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
-    }
-
-    // Get Fees Collection
-
-    getFeesCollection(row) {
-        var that = this;
-        commonfun.loader();
-
-        that._feesservice.getFeesCollection({
-            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid, "receivedate": row.receivedate,
-            "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.feesCollDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    // Edit Fees Collection
-
-    editFeesCollection(row) {
-        var that = this;
-        commonfun.loader();
-
-        that._feesservice.getFeesCollection({
-            "flag": "edit", "fclid": row.fclid, "wsautoid": that._enttdetails.wsautoid
-        }).subscribe(data => {
-            try {
-                that.fclid = data.data[0].fclid;
-                that.catid = data.data[0].catid;
-                that.fillSubCateogryDropDown();
-                that.subcatid = data.data[0].scatid;
-                that.fees = data.data[0].fees;
-                that.receivedate = data.data[0].receivedate;
-                that.paymentmode = data.data[0].paymentmode;
-                that.chequestatus = data.data[0].chequestatus;
-                that.chequeno = data.data[0].chequeno;
-                that.chequedate = data.data[0].chequedate;
-                that.remark = data.data[0].remark1;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     totalFees() {
         var that = this;
         var field: any = [];
 
         var totalfees = 0;
 
-        for (var i = 0; i < that.feesCollDT.length; i++) {
-            field = that.feesCollDT[i];
+        for (var i = 0; i < that.studentFeesDT.length; i++) {
+            field = that.studentFeesDT[i];
             totalfees += parseFloat(field.fees);
         }
 
@@ -582,7 +559,23 @@ export class AddFeesCollectionComponent implements OnInit {
 
     // Back For View Data
 
+    viewFeesCollection() {
+        Cookie.delete("filterStudent");
+
+        var studrow = {
+            "ayid": this.ayid, "classid": this.classid, "studid": this.studid
+        }
+
+        Cookie.set("filterStudent", JSON.stringify(studrow));
+        this._router.navigate(['/transaction/feescollection/student/history']);
+    }
+
     backViewData() {
-        this._router.navigate(['/transaction/feescollection']);
+        if (this.isedit) {
+            this.viewFeesCollection();
+        }
+        else {
+            this._router.navigate(['/transaction/feescollection']);
+        }
     }
 }

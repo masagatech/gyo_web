@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AddFeesCollectionComponent } from './aded/addfscoll.comp';
 import { ViewFeesCollectionComponent } from './view/viewfscoll.comp';
+import { ViewFeesHistoryComponent } from './history/history.comp';
 
 import { NotificationService, FeesService } from '@services/erp';
 
@@ -19,8 +20,16 @@ export const routes = [
         data: { "module": "erp", "submodule": "feescoll", "rights": "view", "urlname": "/feescollection" }
       },
       {
-        path: 'student', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
+        path: 'student/add', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "feescoll", "rights": "add", "urlname": "/student" }
+      },
+      {
+        path: 'student/edit', component: AddFeesCollectionComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "feescoll", "rights": "edit", "urlname": "/student" }
+      },
+      {
+        path: 'student/history', component: ViewFeesHistoryComponent, canActivate: [AuthGuard],
+        data: { "module": "erp", "submodule": "feescoll", "rights": "view", "urlname": "/student" }
       }
     ]
   },
@@ -28,8 +37,9 @@ export const routes = [
 
 @NgModule({
   declarations: [
+    AddFeesCollectionComponent,
     ViewFeesCollectionComponent,
-    AddFeesCollectionComponent
+    ViewFeesHistoryComponent
   ],
 
   imports: [
@@ -37,7 +47,7 @@ export const routes = [
     DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, NotificationService, FeesService]
+  providers: [AuthGuard, NotificationService, FeesService, CommonService]
 })
 
 export class FeesCollectionModule {

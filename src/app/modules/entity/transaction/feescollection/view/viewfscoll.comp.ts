@@ -179,7 +179,7 @@ export class ViewFeesCollectionComponent implements OnInit {
         }
 
         Cookie.set("filterStudent", JSON.stringify(studrow));
-        this._router.navigate(['/transaction/feescollection/student']);
+        this._router.navigate(['/transaction/feescollection/student/add']);
     }
 
     viewFeesCollection(row) {
@@ -190,7 +190,7 @@ export class ViewFeesCollectionComponent implements OnInit {
         }
 
         Cookie.set("filterStudent", JSON.stringify(studrow));
-        this._router.navigate(['/transaction/feescollection/student']);
+        this._router.navigate(['/transaction/feescollection/student/history']);
     }
 
     totalFees() {

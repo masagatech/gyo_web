@@ -295,16 +295,17 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     viewFeesCollection(row) {
         Cookie.delete("filterStudent");
 
-        var _ayid = row.key.split('~')[1];
-        var _classid = row.key.split('~')[2];
+        var _ayid = row.key.split('~')[0];
+        var _classid = row.key.split('~')[1];
+        var _receiptno = row.key.split('~')[2];
         var _receivedate = row.key.split('~')[3];
 
         var studrow = {
-            "ayid": _ayid, "classid": _classid, "studid": this.studid, "receivedate": _receivedate
+            "ayid": _ayid, "classid": _classid, "studid": this.studid, "receiptno": _receiptno, "receivedate": _receivedate
         }
 
         Cookie.set("filterStudent", JSON.stringify(studrow));
-        this._router.navigate(['/transaction/feescollection/student']);
+        this._router.navigate(['/transaction/feescollection/student/history']);
     }
 
     ngOnDestroy() {
