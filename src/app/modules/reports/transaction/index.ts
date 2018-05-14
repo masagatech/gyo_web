@@ -20,6 +20,7 @@ export const routes = [
                     { path: 'assesmentresult', loadChildren: './assesmentresult#AssesmentResultReportsModule' },
                     
                     { path: 'feescollection', loadChildren: './feescollection#FeesCollectionReportsModule' },
+                    { path: 'studentfees', loadChildren: './studentfees#StudentFeesReportsModule' },
                 ]
             }
         ]

@@ -11,11 +11,11 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <img *ngIf="gndrkey == 'M'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
                 <img *ngIf="gndrkey == 'F'" alt="{{studname}}" src="{{global.uploadurl + studphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p><b>Name :</b> {{studname}}</p>
                 <p><b>Class :</b> {{classname}}</p>
                 <p><b>Gender :</b> {{gndrval}}</p>

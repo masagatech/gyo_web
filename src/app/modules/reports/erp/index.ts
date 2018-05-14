@@ -28,8 +28,6 @@ export const routes = [
                     { path: 'erp/:psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
                     { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayReportsModule' },
                     { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableReportsModule' },
-                    
-                    { path: 'erp/student/fees', loadChildren: './studentfees#StudentFeesReportsModule' },
                 ]
             }
         ]

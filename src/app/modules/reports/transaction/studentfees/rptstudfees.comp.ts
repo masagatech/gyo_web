@@ -32,8 +32,6 @@ export class StudentFeesReportsComponent implements OnInit {
         private _loginservice: LoginService, private _feesrptservice: FeesReportsService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
-
-        this.setFromDateAndToDate();
     }
 
     public ngOnInit() {
@@ -58,11 +56,11 @@ export class StudentFeesReportsComponent implements OnInit {
         commonfun.loader();
 
         that._feesrptservice.getFeesReports({
-            "flag": "classddl", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classDT = JSON.parse(data._body).data[0];
+                that.classDT = JSON.parse(data._body).data[1];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -78,14 +76,24 @@ export class StudentFeesReportsComponent implements OnInit {
         })
     }
 
-    onClassSelect(row: any) {
-        var _classid = "";
+    onClassSelect(row) {
+        console.log(JSON.stringify(row));
+        console.log(JSON.stringify(this.selectedClass));
+    }
 
-        for (var i = 0; i < this.selectedClass.length; i++) {
-            _classid = this.selectedClass[i].id;
-        }
+    onClassDeSelect(row) {
+        console.log(JSON.stringify(row));
+        console.log(JSON.stringify(this.selectedClass));
+    }
 
-        this.classIDs += _classid + ",";
+    onSelectAll(row) {
+        console.log(JSON.stringify(row));
+        console.log(JSON.stringify(this.selectedClass));
+    }
+
+    onDeSelectAll(row) {
+        console.log(JSON.stringify(row));
+        console.log(JSON.stringify(this.selectedClass));
     }
 
     // Auto Completed Student
@@ -94,14 +102,11 @@ export class StudentFeesReportsComponent implements OnInit {
         let that = this;
         let query = event.query;
 
-        let _classid = that.classIDs;
-
         that._autoservice.getAutoData({
-            "flag": "classstudent",
+            "flag": "student",
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "classid": _classid,
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin,
@@ -147,25 +152,15 @@ export class StudentFeesReportsComponent implements OnInit {
 
     getFeesReports(format) {
         var that = this;
-        let _classid = that.classIDs;
 
-        if (_classid == "") {
+        if (this.selectedClass.length == 0) {
             that._msg.Show(messageType.warn, "Warning", "Select Class");
-        }
-        else if (that.studid == 0) {
-            that._msg.Show(messageType.warn, "Warning", "Enter Student");
-        }
-        else if (that.frmdt == "") {
-            that._msg.Show(messageType.warn, "Warning", "Enter From Date");
-        }
-        else if (that.todt == "") {
-            that._msg.Show(messageType.warn, "Warning", "Enter To Date");
         }
         else {
             var feesparams = {
-                "flag": "ledger", "rpttype": "view", "ayid": 0, "stdid": 0, "classid": _classid, "studid": that.studid,
-                "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+                "flag": "studentwise", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": this.selectedClass, "studid": that.studid,
+                "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "isschlogo": format == "pdf" ? true : false, "format": format
             }
 
             if (format == "html") {

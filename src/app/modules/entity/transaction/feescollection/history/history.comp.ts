@@ -183,7 +183,7 @@ export class ViewFeesHistoryComponent implements OnInit {
 
         var feesparams = {
             "flag": flag, "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
-            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "pdf"
+            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "vwtype": "parent", "format": "pdf"
         }
 
         var _mailmsg = "";
