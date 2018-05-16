@@ -84,10 +84,14 @@
                         {{row.catname}}
                     </td>
                     <td align="right">
-                        {{row.paidfees | _currency:loginUser.globsettings[0]}}
+                        <a role="button" (click)="openStudentFeesPopup(row, 'paid')">
+                            {{row.paidfees | _currency:loginUser.globsettings[0]}}
+                        </a>
                     </td>
                     <td align="right">
-                        {{row.pendfees | _currency:loginUser.globsettings[0]}}
+                        <a role="button" (click)="openStudentFeesPopup(row, 'pending')">
+                            {{row.pendfees | _currency:loginUser.globsettings[0]}}
+                        </a>
                     </td>
                 </tr>
                 <tr class="tr-table">
@@ -104,5 +108,66 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="studentFeesModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog full-width" role="document">
+        <div class="modal-lg modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-8 col-xs-8">
+                        <h4>Fees Collection</h4>
+                    </div>
+                    <div class="col-md-4 col-xs-4 text-right">
+                        <a role="button" (click)="closeStudentFeesPopup()">
+                            <i class="material-icons">cancel</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Student Name
+                            </th>
+                            <th width="150px" *ngIf="selectedType == 'paid'">
+                                Paid Fees
+                            </th>
+                            <th width="150px" *ngIf="selectedType == 'pending'">
+                                Pending Fees
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of studentFeesDT">
+                            <td>
+                                {{row.studname}}
+                            </td>
+                            <td align="right" *ngIf="selectedType == 'paid'">
+                                {{row.totpaidfees | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <th align="right" *ngIf="selectedType == 'pending'">
+                                {{row.totpendfees | _currency:loginUser.globsettings[0]}}
+                            </th>
+                        </tr>
+                        <tr class="tr-table">
+                            <td align="right">
+                                <b>Total Amount</b>
+                            </td>
+                            <td align="right" *ngIf="selectedType == 'paid'">
+                                {{totalPaidFees() | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <td align="right" *ngIf="selectedType == 'pending'">
+                                {{totalPendingFees() | _currency:loginUser.globsettings[0]}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

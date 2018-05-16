@@ -15,6 +15,8 @@ export class StudentFeesReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    rpttype: string = "clswise";
+
     classDT = [];
     selectedClass = [];
     classSettings = {};
@@ -130,17 +132,51 @@ export class StudentFeesReportsComponent implements OnInit {
 
     // Get Fees Reports
 
-    getFeesReports(format) {
+    isValidReports() {
         var that = this;
 
-        if (this.selectedClass.length == 0) {
-            that._msg.Show(messageType.warn, "Warning", "Select Class");
+        if (that.rpttype == "clswise") {
+            if (that.selectedClass.length == 0) {
+                that._msg.Show(messageType.warn, "Warning", "Select Class");
+                return false;
+            }
         }
-        else {
-            var feesparams = {
-                "flag": "studentwise", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": this.selectedClass, "studid": that.studid,
-                "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "isschlogo": format == "pdf" ? true : false, "format": format
+
+        if (that.rpttype == "studwise") {
+            if (that.studid == 0) {
+                that._msg.Show(messageType.warn, "Warning", "Enter Student");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    getFeesReports(format) {
+        var that = this;
+        var isvalid: boolean = false;
+        var feesparams = {};
+
+        isvalid = that.isValidReports();
+
+        if (isvalid) {
+            if (that.rpttype == "clswise") {
+                that.studid = 0;
+                
+                feesparams = {
+                    "flag": "studentwise", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": that.selectedClass, "studid": that.studid,
+                    "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "isschlogo": format == "pdf" ? true : false, "format": format
+                }
+            }
+            else{
+                that.selectedClass = [];
+
+                feesparams = {
+                    "flag": "studentwise", "rpttype": "view", "ayid": 0, "stdid": 0, "studid": that.studid,
+                    "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "isschlogo": format == "pdf" ? true : false, "format": format
+                }
             }
 
             if (format == "html") {
