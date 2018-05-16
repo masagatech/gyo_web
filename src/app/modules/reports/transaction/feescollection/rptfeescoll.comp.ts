@@ -152,9 +152,9 @@ export class FeesCollectionReportsComponent implements OnInit {
         var that = this;
 
         var feesparams = {
-            "flag": "studentwise", "ayid": that.ayid, "stdid": "0", "filterClass": row.fltrclass, "studid": 0,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "feestype": feestype,
-            "isschlogo": false, "format": "html"
+            "flag": "feesdetails", "rpttype": that.rpttype, "ayid": that.ayid, "stdid": "0", "classid": row.classid,
+            "studid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "feestype": feestype,
+            "catid": row.catid, "scatid": row.scatid, "isschlogo": false
         }
 
         commonfun.loader();

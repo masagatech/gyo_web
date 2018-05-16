@@ -173,7 +173,7 @@ export class AddVehicleComponent implements OnInit {
                 "devtype": that.devtype,
                 "simno": that.simno,
                 "imei": that.imei,
-                "allowspd": that.speedAllow
+                "allowspd": parseInt("" + that.speedAllow)
             }
 
             that._vehservice.saveVehicleInfo(savevehicle).subscribe(data => {
