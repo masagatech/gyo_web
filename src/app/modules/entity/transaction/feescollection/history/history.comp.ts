@@ -22,6 +22,7 @@ export class ViewFeesHistoryComponent implements OnInit {
 
     classfees: any = "";
     pendingfees: any = "";
+    feescoll: any = "";
     ayid: number = 0;
 
     studid: number = 0;
@@ -103,7 +104,8 @@ export class ViewFeesHistoryComponent implements OnInit {
                     that.gndrval = data.data[0].gndrval;
                     that.rollno = data.data[0].rollno;
                     that.classfees = data.data[0].classfees;
-                    that.pendingfees = data.data[0].classfees - that.totalFees();
+                    that.pendingfees = data.data[0].classfees - data.data[0].feescoll;
+                    that.feescoll = data.data[0].feescoll;
                 }
                 else {
                     that.studid = 0;
@@ -272,20 +274,6 @@ export class ViewFeesHistoryComponent implements OnInit {
         }, () => {
 
         })
-    }
-
-    totalFees() {
-        var that = this;
-        var field: any = [];
-
-        var totalfees = 0;
-
-        for (var i = 0; i < that.feesHistoryDT.length; i++) {
-            field = that.feesHistoryDT[i];
-            totalfees += parseFloat(field.fees);
-        }
-
-        return totalfees;
     }
 
     // Back For View Data

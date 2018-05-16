@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getAttendanceColumn()" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getAttendanceColumn()" tabindex="2">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="2">
                             <option [value]="0">{{psngrtype == 'student' ? 'Select Class' : 'All'}}</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
-                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control" (ngModelChange)="getAttendanceColumn()">
+                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control">
                             <option *ngFor="let row of attndmonthDT" [value]="row.val">
                                 {{row.val}}
                             </option>
@@ -55,7 +55,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceColumn()">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
                         <i class="material-icons">arrow_forward</i></button>
                 </div>
             </div>
@@ -66,71 +66,76 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                        <li><a role="button" (click)="downloadReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="downloadReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row clearfix">
-        <div class="col-md-12 reports">
-            <table id="attendance" class="table table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th width="100px" *ngIf="psngrtype == 'student'">GR No</th>
-                        <th width="80px" *ngIf="psngrtype == 'student'">Roll No</th>
-                        <th width="200px">{{psngrtypenm}} Name</th>
-                        <th *ngFor="let atcol of attendanceColumn">
-                            {{atcol.day}}
-                        </th>
-                        <th width="30px">P</th>
-                        <th width="30px">A</th>
-                        <th width="30px">LV</th>
-                        <th width="30px">WO</th>
-                        <th width="30px">H</th>
-                    </tr>
-                </thead>
-                <tbody *ngIf="attendanceDT.length">
-                    <tr *ngFor="let row of attendanceDT">
-                        <td *ngIf="psngrtype == 'student'">
-                            {{row.grno}}
-                        </td>
-                        <td *ngIf="psngrtype == 'student'">
-                            {{row.rollno}}
-                        </td>
-                        <td>
-                            {{row.psngrname}}
-                        </td>
-                        <td *ngFor="let atcol of attendanceColumn" align="center" class="{{row[atcol.day]}}">
-                            {{row[atcol.day]}}
-                        </td>
-                        <td align="center" class="P">
-                            {{row.P == null ? '0' : row.P}}
-                        </td>
-                        <td align="center" class="A">
-                            {{row.A == null ? '0' : row.A}}
-                        </td>
-                        <td align="center" class="LV">
-                            {{row.LV == null ? '0' : row.LV}}
-                        </td>
-                        <td align="center" class="WO">
-                            {{row.WO == null ? '0' : row.WO}}
-                        </td>
-                        <td align="center" class="H">
-                            {{row.H == null ? '0' : row.H}}
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody *ngIf="!attendanceDT.length">
-                    <tr>
-                        <td colspan="40">
-                            No records found
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="body">
+        <div id="divattendance hide">
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12 reports">
+                <table id="attendance" class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="60px" *ngIf="psngrtype == 'student'">GR No</th>
+                            <th width="60px" *ngIf="psngrtype == 'student'">Roll No</th>
+                            <th width="300px">{{psngrtypenm}} Name</th>
+                            <th *ngFor="let atcol of attendanceColumn">
+                                {{atcol.day}}
+                            </th>
+                            <th width="30px">P</th>
+                            <th width="30px">A</th>
+                            <th width="30px">LV</th>
+                            <th width="30px">WO</th>
+                            <th width="30px">H</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="attendanceDT.length">
+                        <tr *ngFor="let row of attendanceDT">
+                            <td *ngIf="psngrtype == 'student'">
+                                {{row.grno}}
+                            </td>
+                            <td *ngIf="psngrtype == 'student'">
+                                {{row.rollno}}
+                            </td>
+                            <td>
+                                {{row.psngrname}}
+                            </td>
+                            <td *ngFor="let atcol of attendanceColumn" align="center" class="{{row[atcol.day]}}">
+                                {{row[atcol.day]}}
+                            </td>
+                            <td align="center" class="P">
+                                {{row.P == null ? '0' : row.P}}
+                            </td>
+                            <td align="center" class="A">
+                                {{row.A == null ? '0' : row.A}}
+                            </td>
+                            <td align="center" class="LV">
+                                {{row.LV == null ? '0' : row.LV}}
+                            </td>
+                            <td align="center" class="WO">
+                                {{row.WO == null ? '0' : row.WO}}
+                            </td>
+                            <td align="center" class="H">
+                                {{row.H == null ? '0' : row.H}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!attendanceDT.length">
+                        <tr>
+                            <td colspan="40">
+                                No records found
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

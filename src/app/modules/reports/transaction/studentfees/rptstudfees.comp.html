@@ -1,14 +1,29 @@
 <div class="card">
     <div class="header">
+        <h4>Fees Collection</h4>
+
         <div class="row clearfix">
-            <div class="col-md-2">
-                <h4>Fees Collection</h4>
-            </div>
             <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <angular2-multiselect [data]="classDT" [(ngModel)]="selectedClass" [settings]="classSettings" (onSelect)="onClassSelect($event)" (onDeSelect)="onClassDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                        <angular2-multiselect [data]="classDT" [(ngModel)]="selectedClass" [settings]="classSettings"></angular2-multiselect>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">From Date</label>
+                        <input type="date" [(ngModel)]="frmdt" class="form-control frmdt">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">To Date</label>
+                        <input type="date" [(ngModel)]="todt" class="form-control todt">
                     </div>
                 </div>
             </div>
@@ -32,28 +47,10 @@
                 </div>
             </div>
         </div>
-        <div class="row clearfix">
-            <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">From Date</label>
-                        <input type="date" [(ngModel)]="frmdt" class="form-control frmdt">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">To Date</label>
-                        <input type="date" [(ngModel)]="todt" class="form-control todt">
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
 
-    <div class="body no-padding">
-        <div id="divrptstudfees">
-        </div>
+<div class="body no-padding">
+    <div id="divrptstudfees">
     </div>
 </div>

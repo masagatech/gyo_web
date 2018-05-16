@@ -324,19 +324,22 @@ export class AddProspectusIssuedComponent implements OnInit {
         else {
             commonfun.loader();
 
-            for (var i = 0; i < that.prospectusIssuedDT.length; i++) {
-                that.prospectusIssuedDT[i].prspctid = that.prspctid;
-                that.prospectusIssuedDT[i].ayid = that.ayid;
-                that.prospectusIssuedDT[i].prntname = that.prntname;
-                that.prospectusIssuedDT[i].prntmob = that.prntmob;
-                that.prospectusIssuedDT[i].fees = that.prspctfees;
-                that.prospectusIssuedDT[i].remark = that.remark;
-                that.prospectusIssuedDT[i].cuid = that.loginUser.ucode;
-                that.prospectusIssuedDT[i].enttid = that._enttdetails.enttid;
-                that.prospectusIssuedDT[i].wsautoid = that._enttdetails.wsautoid;
+            var params = {
+                "typ": "aded",
+                "ayid": that.ayid,
+                "prspctid": that.prspctid,
+                "prnttyp": that.prnttyp,
+                "prntname": that.prntname,
+                "prntmob": that.prntmob,
+                "fees": that.prspctfees,
+                "remark": that.remark,
+                "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
+                "prospectusissued": that.prospectusIssuedDT
             }
 
-            this._prspctservice.saveProspectusIssued({ "typ": "aded", "prospectusissued": that.prospectusIssuedDT }).subscribe(data => {
+            that._prspctservice.saveProspectusIssued(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_prospectusissued;
                     var msg = dataResult.msg;
@@ -405,7 +408,7 @@ export class AddProspectusIssuedComponent implements OnInit {
                     that.ayid = viewissd[0].ayid;
                     that.prspctid = viewissd[0].prspctid;
                     that.getFormNo();
-                    
+
                     that.prspctfees = viewissd[0].fees;
 
                     that.prntname = viewissd[0].prntname;

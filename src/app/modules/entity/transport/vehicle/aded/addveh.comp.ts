@@ -169,14 +169,14 @@ export class AddVehicleComponent implements OnInit {
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": "",
-                "istrack": this.istrackenabled,
-                "devtype": this.devtype,
-                "simno": this.simno,
-                "imei": this.imei,
-                "allowspd": this.speedAllow
+                "istrack": that.istrackenabled,
+                "devtype": that.devtype,
+                "simno": that.simno,
+                "imei": that.imei,
+                "allowspd": that.speedAllow
             }
 
-            this._vehservice.saveVehicleInfo(savevehicle).subscribe(data => {
+            that._vehservice.saveVehicleInfo(savevehicle).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_vehicleinfo.msg;
@@ -192,13 +192,13 @@ export class AddVehicleComponent implements OnInit {
                             that.backViewData();
                         }
                         try {
+                            // Saving Data To VTS
 
-                            //saving data to vts
-                            this.saveToVTS({
+                            that.saveToVTS({
                                 "vhid": savevehicle.imei,
                                 "vhname": savevehicle.vehno,
                                 "alwspeed": savevehicle.allowspd,
-                                "Vhd":{
+                                "Vhd": {
                                     "vehregno": that.vehregno,
                                     "vehtype": that.vehtype,
                                     "vehmake": that.vehmake,
@@ -213,7 +213,6 @@ export class AddVehicleComponent implements OnInit {
                         } catch (error) {
 
                         }
-
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -235,7 +234,6 @@ export class AddVehicleComponent implements OnInit {
 
     saveToVTS(vhdata) {
         this._vehservice.saveVehicleInfoToVts(vhdata).subscribe(data => {
-
 
         }, err => {
 
@@ -272,11 +270,11 @@ export class AddVehicleComponent implements OnInit {
                         that.vehfclt = _vehicledata[0].vehiclefacility;
                         that.isactive = _vehicledata[0].isactive;
                         that.mode = _vehicledata[0].mode;
-                        this.istrackenabled = _vehicledata[0].istrack;
-                        this.devtype = _vehicledata[0].devtype;
-                        this.simno = _vehicledata[0].simno;
-                        this.imei = _vehicledata[0].imei;
-                        this.speedAllow = _vehicledata[0].vhspeed;
+                        that.istrackenabled = _vehicledata[0].istrack;
+                        that.devtype = _vehicledata[0].devtype;
+                        that.simno = _vehicledata[0].simno;
+                        that.imei = _vehicledata[0].imei;
+                        that.speedAllow = _vehicledata[0].vhspeed;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

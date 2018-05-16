@@ -7,6 +7,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { AttendanceReportsComponent } from './attendance.comp';
 
 import { AttendanceService } from '@services/erp';
+import { AttendanceReportsService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -30,8 +31,8 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
     DataTableModule, AutoCompleteModule
   ],
-  
-    providers: [AuthGuard, AttendanceService]
+
+  providers: [AuthGuard, AttendanceService, AttendanceReportsService]
 })
 
 export class AttendanceReportsModule {

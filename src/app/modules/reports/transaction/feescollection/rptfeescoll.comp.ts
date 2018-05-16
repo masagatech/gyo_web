@@ -23,7 +23,6 @@ export class FeesCollectionReportsComponent implements OnInit {
     classDT = [];
     selectedClass = [];
     classSettings = {};
-    selclsids: string = "";
 
     feesCollectionDT: any = [];
     totalFeesDT: any = [];
@@ -91,16 +90,6 @@ export class FeesCollectionReportsComponent implements OnInit {
         })
     }
 
-    onClassSelect(row: any) {
-        var _classid = "";
-
-        for (var i = 0; i < this.selectedClass.length; i++) {
-            _classid = this.selectedClass[i].id;
-        }
-
-        this.selclsids += _classid + ",";
-    }
-
     // Get Fees Reports
 
     getFeesReports(format) {
@@ -111,8 +100,8 @@ export class FeesCollectionReportsComponent implements OnInit {
         }
         else {
             var feesparams = {
-                "flag": "reports", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "ctype": that.loginUser.ctype, "ayid": that.ayid, "selclsids": that.selclsids, "enttid": that._enttdetails.enttid,
+                "flag": "classwise", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
             }
 

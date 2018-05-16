@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { MessageService, messageType, LoginService } from '@services';
+import { LoginUserModel, Globals, Common } from '@models';
 import { AttendanceService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
-import jsPDF from 'jspdf';
+import { AttendanceReportsService } from '@services/reports';
 
 @Component({
-    templateUrl: 'attendance.comp.html',
-    providers: [CommonService]
+    templateUrl: 'attendance.comp.html'
 })
 
 export class AttendanceReportsComponent implements OnInit, OnDestroy {
@@ -40,19 +38,16 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
     global = new Globals();
 
-    @ViewChild('attendance') attendance: ElementRef;
-
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _attndservice: AttendanceService, private _autoservice: CommonService) {
+        private _attndservice: AttendanceService, private _attndrptservice: AttendanceReportsService, ) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
         this.fillMonthDropDown();
         this.getDefaultMonth();
-        this.getAttendanceColumn();
     }
 
     public ngOnInit() {
@@ -71,7 +66,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         this.attndmonth = mname;
     }
 
-    // Fill Academic Year, Class Drop Down
+    // Fill Academic Year, Class And Attendance Type Drop Down
 
     fillDropDownList() {
         var that = this;
@@ -91,10 +86,10 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
+                        
                         that.fillMonthDropDown();
                         that.getDefaultMonth();
-
-                        that.getAttendanceColumn();
+                        that.getAttendanceReports();
                     }
                     else {
                         that.ayid = 0;
@@ -148,13 +143,13 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
     // Get Attendent Data
 
-    getAttendanceColumn() {
+    getAttendanceReports() {
         var that = this;
 
         that._attndservice.getAttendance({ "flag": "column", "attndmonth": that.attndmonth }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attendanceColumn = data.data;
-                that.getAttendanceReports("reports");
+                that.getPassengerAttendance();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -162,7 +157,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getAttendanceReports(rpttyp) {
+    getPassengerAttendance() {
         var that = this;
         var params = {};
 
@@ -191,7 +186,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             }
 
             params = {
-                "flag": rpttyp, "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
+                "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
                 "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                 "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin
             }
@@ -199,19 +194,13 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
             that._attndservice.getAttendance(params).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
-                        if (rpttyp == "export") {
-                            that.exportAttendanceDT = data.data;
-                            that._autoservice.exportToCSV(that.exportAttendanceDT, that.psngrtypenm + " Attendance Reports");
-                        }
-                        else {
-                            that.attendanceDT = data.data;
+                        that.attendanceDT = data.data;
 
-                            that.statusid = data.data[0].statusid;
-                            that.status = data.data[0].status;
+                        that.statusid = data.data[0].statusid;
+                        that.status = data.data[0].status;
 
-                            if (that.statusid == 0 && that.status != "lv") {
-                                that.statusdesc = data.data[0].statusdesc;
-                            }
+                        if (that.statusid == 0 && that.status != "lv") {
+                            that.statusdesc = data.data[0].statusdesc;
                         }
                     }
                     else {
@@ -236,44 +225,71 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Absent
+    // Get passenger Type
 
-    absentPassenger(row) {
-        row.status = "a";
+    getPassengerType() {
+        var that = this;
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
+
+                if (that.psngrtype == "student") {
+                    that.psngrtypenm = 'Student';
+                }
+                else if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                    that.classid = 0;
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                    that.classid = 0;
+                }
+            }
+            else {
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
+                that.classid = 0;
+            }
+        }, () => {
+
+        })
     }
 
-    // Present
+    // Download Reports In Excel And PDF
 
-    presentPassenger(row) {
-        row.status = "p";
-    }
+    public downloadReports(format) {
+        var that = this;
 
-    public exportToCSV() {
-        this.getAttendanceReports("export");
-    }
+        var dparams = {
+            "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
+            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
+        }
 
-    public exportToPDF() {
-        var specialElementHandlers = {
-            '#editor': function (element, renderer) { return true; }
-        };
+        if (format == "html") {
+            commonfun.loader();
 
-        var doc = new jsPDF();
+            that._attndrptservice.getAttendanceReports(dparams).subscribe(data => {
+                try {
+                    $("#divattendance").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-        doc.fromHTML($('#attendance').html(), 15, 15, {
-            'width': 500, 'elementHandlers': specialElementHandlers
-        });
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-        doc.save(this.psngrtypenm + " Attendance Reports.pdf");
-
-        // let pdf = new jsPDF();
-
-        // let options = {
-        //     pagesplit: true
-        // };
-
-        // pdf.addHTML(this.attendance.nativeElement, 0, 0, options, () => {
-        //     pdf.save(this.psngrtypenm + " Attendance Reports.pdf");
-        // });
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getAttendanceReports", dparams));
+        }
     }
 
     public ngOnDestroy() {

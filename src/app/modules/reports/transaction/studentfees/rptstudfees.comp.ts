@@ -76,26 +76,6 @@ export class StudentFeesReportsComponent implements OnInit {
         })
     }
 
-    onClassSelect(row) {
-        console.log(JSON.stringify(row));
-        console.log(JSON.stringify(this.selectedClass));
-    }
-
-    onClassDeSelect(row) {
-        console.log(JSON.stringify(row));
-        console.log(JSON.stringify(this.selectedClass));
-    }
-
-    onSelectAll(row) {
-        console.log(JSON.stringify(row));
-        console.log(JSON.stringify(this.selectedClass));
-    }
-
-    onDeSelectAll(row) {
-        console.log(JSON.stringify(row));
-        console.log(JSON.stringify(this.selectedClass));
-    }
-
     // Auto Completed Student
 
     getStudentData(event) {
