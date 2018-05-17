@@ -152,8 +152,8 @@ export class FeesCollectionReportsComponent implements OnInit {
         var that = this;
 
         var feesparams = {
-            "flag": "feesdetails", "rpttype": that.rpttype, "ayid": that.ayid, "stdid": "0", "classid": row.classid,
-            "studid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "feestype": feestype,
+            "flag": "classwise", "rpttype": "student", "vwtype": that.rpttype, "ayid": that.ayid, "stdid": "0",
+            "filterClass": row.fltrclass, "studid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "catid": row.catid, "scatid": row.scatid, "isschlogo": false
         }
 
@@ -191,7 +191,7 @@ export class FeesCollectionReportsComponent implements OnInit {
         var _totpaidfees = 0;
 
         for (var i = 0; i < this.studentFeesDT.length; i++) {
-            _totpaidfees += parseFloat(this.studentFeesDT[i].totpaidfees);
+            _totpaidfees += parseFloat(this.studentFeesDT[i].paidfees);
         }
 
         return _totpaidfees;
@@ -201,7 +201,7 @@ export class FeesCollectionReportsComponent implements OnInit {
         var _totpendfees = 0;
 
         for (var i = 0; i < this.studentFeesDT.length; i++) {
-            _totpendfees += parseFloat(this.studentFeesDT[i].totpendfees);
+            _totpendfees += parseFloat(this.studentFeesDT[i].pendfees);
         }
 
         return _totpendfees;

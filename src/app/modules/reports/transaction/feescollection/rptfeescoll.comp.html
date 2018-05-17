@@ -148,10 +148,10 @@
                                 {{row.studname}}
                             </td>
                             <td align="right" *ngIf="selectedType == 'paid'">
-                                {{row.totpaidfees | _currency:loginUser.globsettings[0]}}
+                                {{row.paidfees | _currency:loginUser.globsettings[0]}}
                             </td>
                             <th align="right" *ngIf="selectedType == 'pending'">
-                                {{row.totpendfees | _currency:loginUser.globsettings[0]}}
+                                {{row.pendfees | _currency:loginUser.globsettings[0]}}
                             </th>
                         </tr>
                         <tr class="tr-table">
