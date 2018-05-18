@@ -172,13 +172,13 @@ export class ViewFeesCollectionComponent implements OnInit {
     // Add Fees Collection
 
     addFeesCollection(row) {
-        Cookie.delete("filterStudent");
+        Cookie.delete("addeditfees");
 
         var studrow = {
             "ayid": row.ayid, "classid": row.classid, "studid": row.studid
         }
 
-        Cookie.set("filterStudent", JSON.stringify(studrow));
+        Cookie.set("addeditfees", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/add']);
     }
 

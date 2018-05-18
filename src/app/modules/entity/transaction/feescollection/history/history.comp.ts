@@ -65,13 +65,13 @@ export class ViewFeesHistoryComponent implements OnInit {
     }
 
     editFeesCollection(row) {
-        Cookie.delete("editfees");
+        Cookie.delete("addeditfees");
 
         var studrow = {
             "ayid": row.ayid, "classid": row.clsid, "studid": row.studid, "receiptno": row.receiptno, "receivedate": row.receivedate
         }
 
-        Cookie.set("editfees", JSON.stringify(studrow));
+        Cookie.set("addeditfees", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/edit']);
     }
 

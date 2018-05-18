@@ -80,15 +80,13 @@ export class AddFeesCollectionComponent implements OnInit {
     }
 
     getStudentFeesHistory() {
-        let studsFilterDT = JSON.parse(Cookie.get("editfees"));
+        let addeditFeesDT = JSON.parse(Cookie.get("addeditfees"));
 
-        console.log(studsFilterDT);
-
-        if (studsFilterDT !== null) {
-            this.getStudentDetails(studsFilterDT);
+        if (addeditFeesDT !== null) {
+            this.getStudentDetails(addeditFeesDT);
 
             if (this.isedit) {
-                this.getFeesCollection(studsFilterDT);
+                this.getFeesCollection(addeditFeesDT);
             }
             else {
                 this.resetSaveFees();
