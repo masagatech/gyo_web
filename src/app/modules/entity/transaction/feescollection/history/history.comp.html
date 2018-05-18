@@ -95,7 +95,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="row.paymodecode == 'cheque'">
                         <td>
                             <b>Cheque Status :</b> {{row.chequestatus}}
                         </td>

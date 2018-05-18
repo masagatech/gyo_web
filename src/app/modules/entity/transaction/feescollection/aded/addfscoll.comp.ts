@@ -274,7 +274,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
         that._feesservice.getFeesCollection({
             "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
-            "studid": row.studid, "receiptno": row.receiptno, "receivedate": row.receivedate,
+            "studid": row.studid, "paymentmode": row.paymentmode, "receiptno": row.receiptno, "receivedate": row.receivedate,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {

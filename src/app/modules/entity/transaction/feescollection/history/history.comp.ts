@@ -68,7 +68,8 @@ export class ViewFeesHistoryComponent implements OnInit {
         Cookie.delete("addeditfees");
 
         var studrow = {
-            "ayid": row.ayid, "classid": row.clsid, "studid": row.studid, "receiptno": row.receiptno, "receivedate": row.receivedate
+            "ayid": row.ayid, "classid": row.clsid, "studid": row.studid, "paymentmode": row.paymodecode,
+            "receiptno": row.receiptno, "receivedate": row.receivedate
         }
 
         Cookie.set("addeditfees", JSON.stringify(studrow));
