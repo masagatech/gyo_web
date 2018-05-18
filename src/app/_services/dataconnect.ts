@@ -52,6 +52,16 @@ export class DataService {
             .catch(this.handleError);
     }
 
+    public rawpost(api: string, params: any) {
+        let body = JSON.stringify(params);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this._http.post(api, body, options)
+            .map(res => { return res; })
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || ' error');

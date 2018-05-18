@@ -146,8 +146,6 @@ export class SpeedReportsComponent implements OnInit, OnDestroy {
         let that = this;
         let params = {};
 
-        // "351777090309137"
-
         params = {
             "flag": that.flag, "rpttype": "speed", "vhid": that.vehids, "frmdt": that.frmdt, "todt": that.todt,
             "vwtype": "download", "format": format

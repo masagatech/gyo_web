@@ -150,9 +150,9 @@
                             <td align="right" *ngIf="selectedType == 'paid'">
                                 {{row.paidfees | _currency:loginUser.globsettings[0]}}
                             </td>
-                            <th align="right" *ngIf="selectedType == 'pending'">
+                            <td align="right" *ngIf="selectedType == 'pending'">
                                 {{row.pendfees | _currency:loginUser.globsettings[0]}}
-                            </th>
+                            </td>
                         </tr>
                         <tr class="tr-table">
                             <td align="right">

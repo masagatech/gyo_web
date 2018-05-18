@@ -65,19 +65,13 @@ export class ViewFeesHistoryComponent implements OnInit {
     }
 
     editFeesCollection(row) {
-        Cookie.delete("filterStudent");
-
-        var _ayid = row.key.split('~')[0];
-        var _classid = row.key.split('~')[1];
-        var _studid = row.key.split('~')[2];
-        var _receiptno = row.key.split('~')[3];
-        var _receivedate = row.key.split('~')[4];
+        Cookie.delete("editfees");
 
         var studrow = {
-            "ayid": _ayid, "classid": _classid, "studid": _studid, "receiptno": _receiptno, "receivedate": _receivedate
+            "ayid": row.ayid, "classid": row.clsid, "studid": row.studid, "receiptno": row.receiptno, "receivedate": row.receivedate
         }
 
-        Cookie.set("filterStudent", JSON.stringify(studrow));
+        Cookie.set("editfees", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/edit']);
     }
 
@@ -138,6 +132,28 @@ export class ViewFeesHistoryComponent implements OnInit {
 
     // Download Fees Sleep
 
+    openFeesSleep(rpttype, type, row) {
+        var that = this;
+
+        var paystatus = row.paymodecode;
+
+        if (paystatus == "cheque") {
+            var chequestatus = row.chequestatus;
+
+            if (chequestatus == "bounce") {
+                that._msg.Show(messageType.error, "Error", "Cheque is Bounced");
+            }
+            else {
+                that.getFeesReports(rpttype, type, row);
+            }
+        }
+        else {
+            that.getFeesReports(rpttype, type, row);
+        }
+    }
+
+    // Get Fees Reports
+
     getFeesReports(rpttype, type, row) {
         var that = this;
 
@@ -145,15 +161,15 @@ export class ViewFeesHistoryComponent implements OnInit {
             that.fltr_recvdate = "";
         }
         else {
-            that.fltr_recvdate = row.key.split('~')[4];
+            that.fltr_recvdate = row.receivedate;
         }
 
         that.fltr_rpttype = rpttype;
 
         var feesparams = {
-            "flag": "receipt", "rpttype": that.fltr_rpttype, "ayid": that.ayid, "stdid": that.classid, "classid": "",
-            "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate, "studid": that.studid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
+            "flag": "receipt", "frmtype": "server", "rpttype": that.fltr_rpttype, "ayid": that.ayid,
+            "stdid": that.classid, "classid": "", "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate,
+            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
 
         var url = Common.getReportUrl("getFeesReports", feesparams);
@@ -163,6 +179,28 @@ export class ViewFeesHistoryComponent implements OnInit {
         commonfun.loader("#feesreports");
         $("#ifeesreports")[0].src = url;
         commonfun.loaderhide("#feesreports");
+    }
+
+    // Email Sleep To Parent
+
+    emailSleepToParent(rpttype, type, row) {
+        var that = this;
+
+        var paystatus = row.key.paymodecode;
+
+        if (paystatus == "cheque") {
+            var chequestatus = row.chequestatus;
+
+            if (chequestatus == "bounce") {
+                that._msg.Show(messageType.error, "Error", "Cheque is Bounced");
+            }
+            else {
+                that.saveNotification(rpttype, type, row);
+            }
+        }
+        else {
+            that.saveNotification(rpttype, type, row);
+        }
     }
 
     // Save Notification
@@ -177,14 +215,14 @@ export class ViewFeesHistoryComponent implements OnInit {
             _datehead = "";
         }
         else {
-            _receivedate = row.key.split('~')[4];
-            _datehead = "of Date : " + row.key.split('~')[4];
+            _receivedate = row.receivedate;
+            _datehead = "of Date : " + row.receivedate;
         }
 
         commonfun.loader();
 
         var feesparams = {
-            "flag": flag, "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
+            "flag": flag, "frmtype": "server", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
             "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "vwtype": "parent", "format": "pdf"
         }
 

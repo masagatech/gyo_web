@@ -25,9 +25,13 @@ export class ReportsService {
         return this._dataserver.post("getPassengerTripReports", req)
     }
 
-    // Reports
+    // Speed And Milege Reports
 
     getReports(req: any) {
         return this._dataserver.rawget(Globals.reporturl + "getReports", req)
+    }
+
+    postReports(req: any) {
+        return this._dataserver.rawpost(Globals.reporturl + "postReports", req)
     }
 }

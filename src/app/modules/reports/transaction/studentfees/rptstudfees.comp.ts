@@ -84,7 +84,7 @@ export class StudentFeesReportsComponent implements OnInit {
         let that = this;
         let query = event.query;
 
-        that._autoservice.getAutoData({
+        that._autoservice.getERPAutoData({
             "flag": "student",
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
@@ -162,20 +162,20 @@ export class StudentFeesReportsComponent implements OnInit {
         if (isvalid) {
             if (that.rpttype == "clswise") {
                 that.studid = 0;
-                
+
                 feesparams = {
-                    "flag": "studentwise", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": that.selectedClass, "studid": that.studid,
-                    "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                    "isschlogo": format == "pdf" ? true : false, "format": format
+                    "flag": "studentwise", "frmtype": "server", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": that.selectedClass,
+                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
                 }
             }
-            else{
+            else {
                 that.selectedClass = [];
 
                 feesparams = {
-                    "flag": "studentwise", "rpttype": "view", "ayid": 0, "stdid": 0, "studid": that.studid,
-                    "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                    "isschlogo": format == "pdf" ? true : false, "format": format
+                    "flag": "studentwise", "frmtype": "server", "rpttype": "view", "ayid": 0, "stdid": 0,
+                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
                 }
             }
 

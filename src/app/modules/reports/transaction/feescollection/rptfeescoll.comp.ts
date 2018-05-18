@@ -104,13 +104,13 @@ export class FeesCollectionReportsComponent implements OnInit {
             that._msg.Show(messageType.warn, "Warning", "Select Academic Year");
         }
         else {
-            var feesparams = {
-                "flag": "classwise", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
-            }
-
             if (format == "html") {
+                var feesparams = {
+                    "flag": "classwise", "frmtype": "web", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
+                }
+    
                 commonfun.loader();
 
                 that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
@@ -141,6 +141,12 @@ export class FeesCollectionReportsComponent implements OnInit {
                 })
             }
             else {
+                var feesparams = {
+                    "flag": "classwise", "frmtype": "server", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
+                }
+    
                 window.open(Common.getReportUrl("getFeesReports", feesparams));
             }
         }

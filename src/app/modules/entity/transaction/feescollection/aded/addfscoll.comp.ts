@@ -80,7 +80,7 @@ export class AddFeesCollectionComponent implements OnInit {
     }
 
     getStudentFeesHistory() {
-        let studsFilterDT = JSON.parse(Cookie.get("filterStudent"));
+        let studsFilterDT = JSON.parse(Cookie.get("editfees"));
 
         console.log(studsFilterDT);
 
@@ -282,10 +282,21 @@ export class AddFeesCollectionComponent implements OnInit {
             try {
                 if (data.data.length > 0) {
                     that.receivedate = data.data[0].editrecvdate;
-                    that.paymentmode = data.data[0].paymentmode;
-                    that.remark = data.data[0].remark1;
+                    that.paymentmode = data.data[0].paymodecode;
 
-                    that.studentFeesDT = data.data;
+                    if (that.paymentmode == "cheque") {
+                        that.chequestatus = data.data[0].chequestatus;
+                        that.chequeno = data.data[0].chequeno;
+                        that.chequedate = data.data[0].editchqdate;
+                    }
+                    else {
+                        that.chequestatus = "";
+                        that.chequeno = 0;
+                        that.chequedate = "";
+                    }
+
+                    that.remark = data.data[0].remark1;
+                    that.studentFeesDT = data.data[0].catdetails;
                 }
                 else {
                     that.resetFeesCollection();
@@ -379,6 +390,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 "scatid": that.scatid, "scatname": scatname, "fees": that.fees,
                 "isactive": true
             });
+
             that.resetFeesCollection();
         }
     }
