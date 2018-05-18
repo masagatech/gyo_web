@@ -421,13 +421,25 @@ export class AddFeesCollectionComponent implements OnInit {
     // Edit Fees Collection
 
     updateFeesCollection() {
-        this.isedit = false;
-        this.selectedFees.fclid = this.fclid;
-        this.selectedFees.catid = this.catid;
-        this.selectedFees.scatid = this.scatid;
-        this.selectedFees.fees = this.fees;
-        this.resetFeesCollection();
-        this.selectedFees = [];
+        var that = this;
+        var isvalid = false;
+
+        isvalid = that.isValidAddFees();
+
+        if (isvalid) {
+            var catname = $("#ddlcatname option:selected").text().trim();
+            var scatname = $("#ddlscatname option:selected").text().trim();
+
+            that.isedit = false;
+            that.selectedFees.fclid = that.fclid;
+            that.selectedFees.catid = that.catid;
+            that.selectedFees.catname = catname;
+            that.selectedFees.scatid = that.scatid;
+            that.selectedFees.scatname = scatname;
+            that.selectedFees.fees = that.fees;
+            that.resetFeesCollection();
+            that.selectedFees = [];
+        }
     }
 
     // Delete Stops List
