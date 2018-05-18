@@ -279,6 +279,9 @@ export class AddFeesCollectionComponent implements OnInit {
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
+                    that.isaddfees = true;
+                    that.iseditfees = false;
+
                     that.receivedate = data.data[0].editrecvdate;
                     that.paymentmode = data.data[0].paymodecode;
 
@@ -385,8 +388,8 @@ export class AddFeesCollectionComponent implements OnInit {
 
             that.studentFeesDT.push({
                 "fclid": "0", "catid": that.catid, "catname": catname,
-                "scatid": that.scatid, "scatname": scatname, "fees": that.fees,
-                "isactive": true
+                "scatid": that.scatid, "scatname": scatname == "Select Sub Category" ? "" : scatname,
+                "fees": that.fees, "isactive": true
             });
 
             that.resetFeesCollection();
@@ -435,7 +438,7 @@ export class AddFeesCollectionComponent implements OnInit {
             that.selectedFees.catid = that.catid;
             that.selectedFees.catname = catname;
             that.selectedFees.scatid = that.scatid;
-            that.selectedFees.scatname = scatname;
+            that.selectedFees.scatname = scatname == "Select Sub Category" ? "" : scatname;
             that.selectedFees.fees = that.fees;
             that.resetFeesCollection();
             that.selectedFees = [];
