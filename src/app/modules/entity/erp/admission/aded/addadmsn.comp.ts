@@ -20,11 +20,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     prospectusDT: any = [];
     prspctnoDT: any = [];
+    boardDT: any = [];
 
     ayDT: any = [];
     classDT: any = [];
-    boardDT: any = [];
     genderDT: any = [];
+    socialCategoryDT: any = [];
 
     stateDT: any = [];
     cityDT: any = [];
@@ -159,14 +160,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         if (this.isdetails) {
             $('.form-control').prop("disabled", true);
-            $('.prospectus').prop("class", "hide");
+            $('.prospectus').addClass("hide");
             $('.profile-photo').prop("class", "hide");
             $('.profile-dob').prop("class", "hide");
             $('.profile-addr').prop("class", "hide");
         }
         else {
             $('.form-control').prop("disabled", false);
-            $('.prospectus').prop("class", "show");
+            $('.prospectus').addClass("show");
             $('.profile-photo').prop("class", "show");
             $('.profile-dob').prop("class", "show");
             $('.profile-addr').prop("class", "show");
@@ -208,6 +209,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.prospectusDT = data.data.filter(a => a.group == "prospectus");
+                that.boardDT = data.data.filter(a => a.group == "board");
+
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
@@ -222,8 +225,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
-                that.boardDT = data.data.filter(a => a.group == "board");
                 that.genderDT = data.data.filter(a => a.group == "gender");
+                that.socialCategoryDT = data.data.filter(a => a.group == "soccat");
                 that.fthrocptnDT = data.data.filter(a => a.group == "occupation").filter(a => a.key != "housewife");
                 that.mthrocptnDT = data.data.filter(a => a.group == "occupation");
             }

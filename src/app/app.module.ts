@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.comp';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Application wide providers
+
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
   AppState

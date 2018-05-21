@@ -25,8 +25,8 @@
                             <label for="isprspct">With Prospectus</label>
                         </div>
                     </div>
-                    <div class="col-md-4 col-xs-4 hide text-right" *ngIf="enrlmntid != 0">
-                        <b>Enrollment No : </b> {{enrlmntid}}
+                    <div class="col-md-4 col-xs-4 text-right">
+                        <span class="hide" *ngIf="enrlmntid != 0"><b>Enrollment No : </b> {{enrlmntid}}</span>
                     </div>
                 </div>
 
@@ -83,30 +83,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row clearfix">
                     <div class="col-md-4 col-xs-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">First Name <strong>*</strong></label>
-                                <input type="text" name="fname" [(ngModel)]="fname" maxlength="50" class="form-control fname" tabindex="3" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-xs-4">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Middle Name</label>
-                                <input type="text" name="mname" [(ngModel)]="mname" maxlength="50" class="form-control mname" tabindex="4" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-xs-4">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Last Name <strong>*</strong></label>
-                                <input type="text" name="lname" [(ngModel)]="lname" maxlength="50" class="form-control lname" tabindex="5" />
+                                <label class="control-label">Child User ID <strong>*</strong></label>
+                                <input type="text" name="cuid" OnlyNumber="true" [(ngModel)]="cuid" maxlength="50" class="form-control cuid text-right" tabindex="5" />
                             </div>
                         </div>
                     </div>
@@ -117,7 +98,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Academic Year <strong>*</strong></label>
-                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="4">
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="6">
                                     <option [value]="0">Select Academic Year</option>
                                     <option *ngFor="let row of ayDT" [value]="row.key">	
                                         {{row.val}}
@@ -130,7 +111,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Class <strong>*</strong></label>
-                                <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="6">
+                                <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="7">
                                     <option [value]="0">Select Class</option>
                                     <option *ngFor="let row of classDT" [value]="row.key">	
                                         {{row.val}}
@@ -143,7 +124,58 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Roll No <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="rollno" maxlength="50" class="form-control rollno text-right" tabindex="7" />
+                                <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="rollno" maxlength="50" class="form-control rollno text-right" tabindex="8" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">First Name <strong>*</strong></label>
+                                <input type="text" name="fname" [(ngModel)]="fname" maxlength="50" class="form-control fname" tabindex="9" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Middle Name</label>
+                                <input type="text" name="mname" [(ngModel)]="mname" maxlength="50" class="form-control mname" tabindex="10" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Last Name <strong>*</strong></label>
+                                <input type="text" name="lname" [(ngModel)]="lname" maxlength="50" class="form-control lname" tabindex="11" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Aadhar No <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" name="aadharno" [(ngModel)]="aadharno" maxlength="50" class="form-control aadharno text-right" tabindex="8" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Social Category</label>
+                                <select id="soccatid" name="soccatname" [(ngModel)]="soccatid" class="form-control soccat" tabindex="6">
+                                    <option [value]="''">Select Social Category</option>
+                                    <option *ngFor="let row of socialCategoryDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
