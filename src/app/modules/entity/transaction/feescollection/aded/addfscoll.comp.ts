@@ -61,6 +61,8 @@ export class AddFeesCollectionComponent implements OnInit {
     isedit: boolean = false;
     isdetails: boolean = false;
 
+    feesData: any = {};
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
@@ -266,59 +268,6 @@ export class AddFeesCollectionComponent implements OnInit {
         that.remark = "";
     }
 
-    // Get Fees Collection
-
-    getFeesCollection(row) {
-        var that = this;
-        commonfun.loader();
-
-        that._feesservice.getFeesCollection({
-            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
-            "studid": row.studid, "paymentmode": row.paymentmode, "receiptno": row.receiptno, "receivedate": row.receivedate,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                if (data.data.length > 0) {
-                    that.isaddfees = true;
-                    that.iseditfees = false;
-
-                    that.receivedate = data.data[0].editrecvdate;
-                    that.paymentmode = data.data[0].paymodecode;
-
-                    if (that.paymentmode == "cheque") {
-                        that.chequestatus = data.data[0].chequestatus;
-                        that.chequeno = data.data[0].chequeno;
-                        that.chequedate = data.data[0].editchqdate;
-                    }
-                    else {
-                        that.chequestatus = "";
-                        that.chequeno = 0;
-                        that.chequedate = "";
-                    }
-
-                    that.remark = data.data[0].remark1;
-                    that.studentFeesDT = data.data[0].catdetails;
-                }
-                else {
-                    that.resetFeesCollection();
-                    that.resetSaveFees();
-                    that.studentFeesDT = [];
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     // Valid Add Fees Collection
 
     isValidAddFees() {
@@ -494,6 +443,46 @@ export class AddFeesCollectionComponent implements OnInit {
         return true;
     }
 
+    // Audit Log
+
+    saveAuditLog(keyid, oldval, newval) {
+        var that = this;
+
+        var auditparams = {
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "module": "studentfees", "keyid": keyid,
+            "oldval": oldval, "newval": newval, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+        };
+
+        that._autoservice.saveAuditLog(auditparams);
+    }
+
+    // Get Save Parameter
+
+    getFeesParams() {
+        var that = this;
+
+        var params = {
+            "fclid": that.fclid,
+            "ayid": that.ayid,
+            "clsid": that.classid,
+            "studid": that.studid,
+            "receivedate": that.receivedate,
+            "paymentmode": that.paymentmode,
+            "chequestatus": that.chequestatus,
+            "chequeno": that.chequeno,
+            "chequedate": that.chequedate,
+            "remark": that.remark,
+            "studentfees": that.studentFeesDT,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "cuid": that.loginUser.ucode,
+            "isactive": true
+        }
+
+        return params;
+    }
+
     // Save Fees Collection
 
     saveFeesCollection() {
@@ -503,69 +492,119 @@ export class AddFeesCollectionComponent implements OnInit {
         isvalid = that.isValidSaveFees();
 
         if (isvalid) {
-            commonfun.loader();
+            var params = that.getFeesParams();
 
-            var savefeescoll = {
-                "fclid": that.fclid,
-                "ayid": that.ayid,
-                "clsid": that.classid,
-                "studid": that.studid,
-                "receivedate": that.receivedate,
-                "paymentmode": that.paymentmode,
-                "chequestatus": that.chequestatus,
-                "chequeno": that.chequeno,
-                "chequedate": that.chequedate,
-                "remark": that.remark,
-                "studentfees": that.studentFeesDT,
-                "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid,
-                "cuid": that.loginUser.ucode,
-                "isactive": true
+            var newval = that._autoservice.getDiff2Arrays(that.feesData, params);
+            var oldval = that._autoservice.getDiff2Arrays(params, that.feesData);
+
+            if (JSON.stringify(newval) == "{}") {
+                that._msg.Show(messageType.warn, "Warning", "No any Changes");
             }
+            else {
+                commonfun.loader();
+    
+                that._feesservice.saveFeesCollection(params).subscribe(data => {
+                    try {
+                        var dataResult = data.data[0].funsave_feescollection;
+                        var msg = dataResult.msg;
+                        var msgid = dataResult.msgid;
+                        var docno = dataResult.docno;
 
-            that._feesservice.saveFeesCollection(savefeescoll).subscribe(data => {
-                try {
-                    var dataResult = data.data[0].funsave_feescollection;
-                    var msg = dataResult.msg;
-                    var msgid = dataResult.msgid;
-                    var docno = dataResult.docno;
+                        if (msgid != "-1") {
+                            if (msgid == "1") {
+                                if (that.isadd) {
+                                    that._autoservice.messagebox("Saved Successfully !!!!", "Your Receipt No : " + docno, "success", false);
+                                }
+                                else {
+                                    that.saveAuditLog(docno, oldval, newval);
+                                    that._autoservice.messagebox("Updated Successfully !!!!", "", "success", false);
 
-                    if (msgid != "-1") {
-                        if (msgid == "1") {
-                            if (that.isadd) {
-                                that._autoservice.messagebox("Saved Successfully !!!!", "Your Receipt No : " + docno, "success", false);
+                                    that.backViewData();
+                                }
+
+                                that.resetSaveFees();
+                                that.studentFeesDT = [];
+
+                                that.getStudentFeesHistory();
+                                that.viewFeesCollection();
                             }
                             else {
-                                that._autoservice.messagebox("Updated Successfully !!!!", "", "success", false);
+                                that._msg.Show(messageType.error, "Error", msg);
                             }
-
-                            that.resetSaveFees();
-                            that.studentFeesDT = [];
-
-                            that.getStudentFeesHistory();
-                            that.viewFeesCollection();
                         }
                         else {
                             that._msg.Show(messageType.error, "Error", msg);
                         }
+
+                        commonfun.loaderhide();
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+                    // console.log("Complete");
+                });
+            }
+        }
+    }
+
+    // Get Fees Collection
+
+    getFeesCollection(row) {
+        var that = this;
+        commonfun.loader();
+
+        that._feesservice.getFeesCollection({
+            "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
+            "studid": row.studid, "paymentmode": row.paymentmode, "receiptno": row.receiptno, "receivedate": row.receivedate,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.isaddfees = true;
+                    that.iseditfees = false;
+
+                    that.receivedate = data.data[0].editrecvdate;
+                    that.paymentmode = data.data[0].paymodecode;
+
+                    if (that.paymentmode == "cheque") {
+                        that.chequestatus = data.data[0].chequestatus;
+                        that.chequeno = data.data[0].chequeno;
+                        that.chequedate = data.data[0].editchqdate;
                     }
                     else {
-                        that._msg.Show(messageType.error, "Error", msg);
+                        that.chequestatus = "";
+                        that.chequeno = 0;
+                        that.chequedate = "";
                     }
 
-                    commonfun.loaderhide();
+                    that.remark = data.data[0].remark1;
+                    that.studentFeesDT = data.data[0].catdetails;
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
+                else {
+                    that.resetFeesCollection();
+                    that.resetSaveFees();
+                    that.studentFeesDT = [];
                 }
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-                // console.log("Complete");
-            });
-        }
+
+                that.feesData = that.getFeesParams();
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     totalFees() {

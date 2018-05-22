@@ -375,6 +375,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private refreshdata(data) {
         for (let i = 0; i < this.vehtypeDT.length; i++) {
+            debugger;
             let el = this.vehtypeDT[i];
             let d = data.find(f => f.vhid === el.vhid);
 
@@ -392,8 +393,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (isNaN(d.btr)) el.btr = 100;
                 else el.btr = d.btr;
 
-                if (d.loc !== undefined)
+                if (d.loc !== undefined && d.loc !== null){
                     el.loc = d.loc;
+                    this.moveMarker([el.loc[1], el.loc[0]], el.vhid, el.bearing);
+                }
+                   
                 el.sertm = d.sertm;
                 el.min = this.getTimeDiff(d.sertm);
                 el.isshow = true;
@@ -415,7 +419,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     el.acc = d.acc;
                 }
 
-                this.moveMarker([el.loc[1], el.loc[0]], el.vhid, el.bearing);
+                
             } else if (el.ju) {
 
             } else {

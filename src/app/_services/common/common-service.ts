@@ -99,12 +99,70 @@ export class CommonService {
     }
 
     messagebox(title, msg, msgtyp, isconfirm) {
-      swal({
-        title: title,
-        text: msg,
-        type: msgtyp,
-        showConfirmButton: isconfirm,
-        timer: 3000
-      })
+        swal({
+            title: title,
+            text: msg,
+            type: msgtyp,
+            showConfirmButton: isconfirm,
+            timer: 3000
+        })
+    }
+
+    // Comapre 2 Arrays
+
+    addNode(prop, value, parent) {
+        parent[prop] = value;
+    }
+
+    recursiveDiff(a, b, node) {
+        var checked = [];
+
+        for (var prop in a) {
+            if (typeof b[prop] == 'undefined') {
+                this.addNode(prop, '[[removed]]', node);
+            }
+            else if (JSON.stringify(a[prop]) != JSON.stringify(b[prop])) {
+                // if value
+                if (typeof b[prop] != 'object' || b[prop] == null) {
+                    this.addNode(prop, b[prop], node);
+                }
+                else {
+                    // if array
+                    if (this.isArray(b[prop])) {
+                        this.addNode(prop, [], node);
+                        this.recursiveDiff(a[prop], b[prop], node[prop]);
+                    }
+                    // if object
+                    else {
+                        this.addNode(prop, {}, node);
+                        this.recursiveDiff(a[prop], b[prop], node[prop]);
+                    }
+                }
+            }
+        }
+    }
+
+    isArray(obj) {
+        return (Object.prototype.toString.call(obj) === '[object Array]');
+    }
+
+    getDiff2Arrays(a, b) {
+        var diff = (this.isArray(a) ? [] : {});
+        this.recursiveDiff(a, b, diff);
+        return diff;
+    }
+
+    // Audit Log
+
+    saveAuditLog(auditparams) {
+        var that = this;
+
+        this._dataserver.post(Globals.erproute + "saveAuditLog", auditparams).subscribe(data => {
+            var dataResult = data.data[0].funsave_auditlog;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 }

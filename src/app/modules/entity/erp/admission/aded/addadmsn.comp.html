@@ -78,16 +78,16 @@
                     <div class="col-md-4 col-xs-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">GR. No. <strong>*</strong></label>
-                                <input type="text" name="grno" OnlyNumber="true" [(ngModel)]="grno" maxlength="50" class="form-control grno text-right" tabindex="4" />
+                                <label class="control-label">Child User ID <strong>*</strong></label>
+                                <input type="text" name="cuid" OnlyNumber="true" [(ngModel)]="cuid" maxlength="50" class="form-control cuid text-right" tabindex="5" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 col-xs-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Child User ID <strong>*</strong></label>
-                                <input type="text" name="cuid" OnlyNumber="true" [(ngModel)]="cuid" maxlength="50" class="form-control cuid text-right" tabindex="5" />
+                                <label class="control-label">GR. No. <strong>*</strong></label>
+                                <input type="text" name="grno" OnlyNumber="true" [(ngModel)]="grno" maxlength="50" class="form-control grno text-right" tabindex="4" />
                             </div>
                         </div>
                     </div>
@@ -171,8 +171,8 @@
                             <div class="form-line">
                                 <label class="control-label">Social Category</label>
                                 <select id="soccatid" name="soccatname" [(ngModel)]="soccatid" class="form-control soccat" tabindex="6">
-                                    <option [value]="''">Select Social Category</option>
-                                    <option *ngFor="let row of socialCategoryDT" [value]="row.key">	
+                                    <option [value]="0">Select Social Category</option>
+                                    <option *ngFor="let row of socialCategoryDT" [value]="row.id">	
                                         {{row.val}}
                                     </option>
                                 </select>
@@ -320,10 +320,52 @@
                 <hr />
 
                 <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Remark</label>
-                        <textarea name="remark1" [(ngModel)]="remark1" rows="6" class="form-control no-resize auto-growth" tabindex="11"></textarea>
-                    </div>
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Document Type</th>
+                                <th>Upload Document</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select id="doctype" name="doctype" [(ngModel)]="doctypeid" class="form-control doctype" tabindex="6">
+                                                <option [value]="0">Select Document Type</option>
+                                                <option *ngFor="let row of docTypeDT" [value]="row.id">	
+                                                    {{row.val}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server}}" chooseLabel="Upload Other Document" (onUpload)="onDocumentUpload($event)" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                                    {{docfilename}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="addDocumentFile()">
+                                        <i class="material-icons">add</i></button>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let row of documentDT">
+                                <td>
+                                    {{row.doctypename}}
+                                </td>
+                                <td>
+                                    <img src="{{uploaddocconfig.uploadurl + row.docfilename}}" onerror="this.src='assets/img/noimage.gif';" height="60px">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeDocumentFile()">
+                                        <i class="material-icons">delete</i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
