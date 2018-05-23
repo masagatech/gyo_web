@@ -5,7 +5,7 @@ import { LogReportService } from '@services/reports';
 import { LoginUserModel, Globals, Common } from '@models';
 
 @Component({
-    templateUrl: 'rptlog.comp.html'
+    templateUrl: 'rptll.comp.html'
 })
 
 export class LoginLogReportsComponent implements OnInit, OnDestroy {
@@ -17,8 +17,6 @@ export class LoginLogReportsComponent implements OnInit, OnDestroy {
     uid: number = 0;
 
     loginlogDT: any = [];
-
-    @ViewChild('loginlog') loginlog: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _logrptservice: LogReportService) {
