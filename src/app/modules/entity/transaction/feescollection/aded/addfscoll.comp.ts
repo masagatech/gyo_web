@@ -40,6 +40,7 @@ export class AddFeesCollectionComponent implements OnInit {
     scatid: number = 0;
     catfees: any = "";
     fees: any = "";
+    receiptno: number = 0;
     receivedate: any = "";
     paymentmode: string = "";
     chequestatus: string = "";
@@ -50,6 +51,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     studsFilterDT: any = [];
     studentFeesDT: any = [];
+    saveStudentFeesDT: string = "";
     selectedFees: any = {};
     isaddfees: boolean = false;
     iseditfees: boolean = false;
@@ -402,7 +404,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     // Valid Save Fees Collection
 
-    isValidSaveFees() {
+    isValidSaveFees(newval) {
         var that = this;
 
         if (that.receivedate == "") {
@@ -440,6 +442,13 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
+        if (that.isedit) {
+            if (JSON.stringify(newval) == "{}") {
+                that._msg.Show(messageType.warn, "Warning", "No any Changes");
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -466,14 +475,15 @@ export class AddFeesCollectionComponent implements OnInit {
             "fclid": that.fclid,
             "ayid": that.ayid,
             "clsid": that.classid,
-            "studid": that.studid,
+            "studid": parseInt("" + that.studid),
+            "docno": that.receiptno,
             "receivedate": that.receivedate,
             "paymentmode": that.paymentmode,
             "chequestatus": that.chequestatus,
             "chequeno": that.chequeno,
             "chequedate": that.chequedate,
             "remark": that.remark,
-            "studentfees": that.studentFeesDT,
+            "studentfees": that.saveStudentFeesDT,
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
             "cuid": that.loginUser.ucode,
@@ -489,66 +499,62 @@ export class AddFeesCollectionComponent implements OnInit {
         var that = this;
         var isvalid = false;
 
-        isvalid = that.isValidSaveFees();
+        that.saveStudentFeesDT = JSON.stringify(that.studentFeesDT);
+        var params = that.getFeesParams();
+
+        var newval = that._autoservice.getDiff2Arrays(that.feesData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.feesData);
+
+        isvalid = that.isValidSaveFees(newval);
 
         if (isvalid) {
-            var params = that.getFeesParams();
+            commonfun.loader();
 
-            var newval = that._autoservice.getDiff2Arrays(that.feesData, params);
-            var oldval = that._autoservice.getDiff2Arrays(params, that.feesData);
+            that._feesservice.saveFeesCollection(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_feescollection;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var docno = dataResult.docno;
 
-            if (JSON.stringify(newval) == "{}") {
-                that._msg.Show(messageType.warn, "Warning", "No any Changes");
-            }
-            else {
-                commonfun.loader();
-    
-                that._feesservice.saveFeesCollection(params).subscribe(data => {
-                    try {
-                        var dataResult = data.data[0].funsave_feescollection;
-                        var msg = dataResult.msg;
-                        var msgid = dataResult.msgid;
-                        var docno = dataResult.docno;
-
-                        if (msgid != "-1") {
-                            if (msgid == "1") {
-                                if (that.isadd) {
-                                    that._autoservice.messagebox("Saved Successfully !!!!", "Your Receipt No : " + docno, "success", false);
-                                }
-                                else {
-                                    that.saveAuditLog(docno, oldval, newval);
-                                    that._autoservice.messagebox("Updated Successfully !!!!", "", "success", false);
-
-                                    that.backViewData();
-                                }
-
-                                that.resetSaveFees();
-                                that.studentFeesDT = [];
-
-                                that.getStudentFeesHistory();
-                                that.viewFeesCollection();
+                    if (msgid != "-1") {
+                        if (msgid == "1") {
+                            if (that.isadd) {
+                                that._autoservice.messagebox("Fees created Successfully !!!!", "Your Receipt No : " + docno, "success", false);
                             }
                             else {
-                                that._msg.Show(messageType.error, "Error", msg);
+                                that.saveAuditLog(docno, oldval, newval);
+                                that._autoservice.messagebox("Fees updated Successfully !!!!", "", "success", false);
+
+                                that.backViewData();
                             }
+
+                            that.resetSaveFees();
+                            that.studentFeesDT = [];
+
+                            that.getStudentFeesHistory();
+                            that.viewFeesCollection();
                         }
                         else {
                             that._msg.Show(messageType.error, "Error", msg);
                         }
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
 
-                        commonfun.loaderhide();
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
                     commonfun.loaderhide();
-                }, () => {
-                    // console.log("Complete");
-                });
-            }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
         }
     }
 
@@ -568,6 +574,10 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.isaddfees = true;
                     that.iseditfees = false;
 
+                    that.ayid = data.data[0].ayid;
+                    that.classid = data.data[0].clsid;
+                    that.studid = data.data[0].studid;
+                    that.receiptno = data.data[0].receiptno;
                     that.receivedate = data.data[0].editrecvdate;
                     that.paymentmode = data.data[0].paymodecode;
 
@@ -584,11 +594,13 @@ export class AddFeesCollectionComponent implements OnInit {
 
                     that.remark = data.data[0].remark1;
                     that.studentFeesDT = data.data[0].catdetails;
+                    that.saveStudentFeesDT = JSON.stringify(that.studentFeesDT);
                 }
                 else {
                     that.resetFeesCollection();
                     that.resetSaveFees();
                     that.studentFeesDT = [];
+                    that.saveStudentFeesDT = "";
                 }
 
                 that.feesData = that.getFeesParams();

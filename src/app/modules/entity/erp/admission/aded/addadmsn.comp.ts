@@ -27,7 +27,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     socialCategoryDT: any = [];
     docTypeDT: any = [];
     documentDT: any = [];
-    saveDocumentDT: any = [];
 
     stateDT: any = [];
     cityDT: any = [];
@@ -40,7 +39,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     studentDT: any = [];
     parentDT: any = [];
     siblingDT: any = [];
-    saveSiblingDT: any = [];
     selectedSibling: any = [];
     iseditsibling: boolean = false;
 
@@ -66,6 +64,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     gender: string = "";
     dob: any = "";
     birthplace: string = "";
+    saveDocumentDT: string = "";
+    saveSiblingDT: string = "";
 
     address: string = "";
     country: string = "India";
@@ -770,7 +770,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     // Save Data
 
-    isValidAdmission() {
+    isValidAdmission(newval) {
         var that = this;
 
         if (that.boardid == 0) {
@@ -778,90 +778,97 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".boardname").focus();
             return false;
         }
-        else if (that.cuid == 0) {
+        if (that.cuid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Child User ID");
             $(".cuid").focus();
             return false;
         }
-        else if (that.grno == 0) {
+        if (that.grno == 0) {
             that._msg.Show(messageType.error, "Error", "Enter GR No");
             $(".grno").focus();
             return false;
         }
-        else if (that.ayid == 0) {
+        if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
             $(".ayname").focus();
             return false;
         }
-        else if (that.classid == 0) {
+        if (that.classid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Class");
             $(".class").focus();
             return false;
         }
-        else if (that.rollno == 0) {
+        if (that.rollno == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Roll No");
             $(".rollno").focus();
             return false;
         }
-        else if (that.fname == "") {
+        if (that.fname == "") {
             that._msg.Show(messageType.error, "Error", "Enter First Name");
             $(".fname").focus();
             return false;
         }
-        else if (that.lname == "") {
+        if (that.lname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Last Name");
             $(".lname").focus();
             return false;
         }
-        else if (that.gender == "") {
+        if (that.gender == "") {
             that._msg.Show(messageType.error, "Error", "Select Gender");
             $(".gender").focus();
             return false;
         }
-        else if (that.dob == "") {
+        if (that.dob == "") {
             that._msg.Show(messageType.error, "Error", "Enter Date Of Birth");
             $(".dob").focus();
             return false;
         }
-        else if (that.address == "") {
+        if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
             return false;
         }
-        else if (that.state == 0) {
+        if (that.state == 0) {
             that._msg.Show(messageType.error, "Error", "Select State");
             $(".state").focus();
             return false;
         }
-        else if (that.city == 0) {
+        if (that.city == 0) {
             that._msg.Show(messageType.error, "Error", "Select City");
             $(".city").focus();
             return false;
         }
-        else if (that.fthrmobile == "" && that.mthrmobile == "") {
+        if (that.fthrmobile == "" && that.mthrmobile == "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Mobile No / Mother Mobile No");
             $(".fthrmobile").focus();
             return false;
         }
-        else if (that.fthrcode == "" && that.mthrcode == "") {
+        if (that.fthrcode == "" && that.mthrcode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Code / Mother Code");
             $(".fthrcode").focus();
             return false;
         }
-        else if (that.fthrcode == that.mthrcode) {
+        if (that.fthrcode == that.mthrcode) {
             that._msg.Show(messageType.error, "Error", "Father Code and Mother Code Not Same");
             $(".fthrcode").focus();
             return false;
         }
-        else if (that.fthrname == "" && that.mthrname == "") {
+        if (that.fthrname == "" && that.mthrname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Name / Mother Name");
             $(".fthrname").focus();
             return false;
         }
-        else if (that.fthremail == "" && that.mthremail == "") {
+        if (that.fthremail == "" && that.mthremail == "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Email / Mother Email");
             $(".fthremail").focus();
             return false;
+        }
+
+        if (that.enrlmntid !== 0) {
+            if (JSON.stringify(newval) == "{}") {
+                that._msg.Show(messageType.warn, "Warning", "No any Changes");
+                return false;
+            }
         }
 
         return true;
@@ -972,66 +979,60 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     saveAdmissionInfo() {
         var that = this;
         var isvalid: boolean = false;
-        var parentDT: any = [];
 
-        isvalid = that.isValidAdmission();
+        that.saveDocumentDT = JSON.stringify(that.documentDT);
+        that.saveSiblingDT = JSON.stringify(that.siblingDT);
+
+        var params = that.getStudentParams();
+
+        var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
+
+        isvalid = that.isValidAdmission(newval);
 
         if (isvalid) {
-            var params = that.getStudentParams();
+            commonfun.loader();
 
-            var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
-            var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
+            that._admsnservice.saveAdmissionInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_admissioninfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var enrlmntid = dataResult.enrlmntid;
 
-            console.log(JSON.stringify(params));
-            console.log(JSON.stringify(that.studentData));
+                    if (msgid != "-1") {
+                        if (msgid == "1") {
+                            that._msg.Show(messageType.success, "Success", msg);
 
-            if (JSON.stringify(newval) == "{}") {
-                that._msg.Show(messageType.warn, "Warning", "No any Changes");
-            }
-            else {
-                commonfun.loader();
-    
-                that._admsnservice.saveAdmissionInfo(params).subscribe(data => {
-                    try {
-                        var dataResult = data.data[0].funsave_admissioninfo;
-                        var msg = dataResult.msg;
-                        var msgid = dataResult.msgid;
-                        var enrlmntid = dataResult.enrlmntid;
+                            that.prspctno = 0;
 
-                        if (msgid != "-1") {
-                            if (msgid == "1") {
-                                that._msg.Show(messageType.success, "Success", msg);
-
-                                that.prspctno = 0;
-
-                                that.resetStudentFields();
-                                that.resetParentFields();
-                            }
-                            else {
-                                that.saveAuditLog(enrlmntid, oldval, newval);
-                                that._msg.Show(messageType.success, "Success", msg);
-
-                                that.backViewData();
-                            }
+                            that.resetStudentFields();
+                            that.resetParentFields();
                         }
                         else {
-                            that._msg.Show(messageType.error, "Error", msg);
+                            that.saveAuditLog(enrlmntid, oldval, newval);
+                            that._msg.Show(messageType.success, "Success", msg);
+
+                            that.backViewData();
                         }
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
                     }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-                    commonfun.loaderhide();
-                }, err => {
-                    console.log(err);
-                    that._msg.Show(messageType.error, "Error", err);
+                commonfun.loaderhide();
+            }, err => {
+                console.log(err);
+                that._msg.Show(messageType.error, "Error", err);
 
-                    commonfun.loaderhide();
-                }, () => {
-                    // console.log("Complete");
-                });
-            }
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
         }
     }
 
@@ -1090,8 +1091,10 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }
 
         that.enrlmntid = 0;
+        that.cuid = 0;
         that.grno = 0;
         that.rollno = 0;
+        that.aadharno = 0;
 
         that.dob = "";
         that.birthplace = "";
@@ -1117,7 +1120,10 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         that.doctypeid = 0;
         that.documentDT = [];
-        that.saveDocumentDT = [];
+        that.saveDocumentDT = "";
+        that.siblingDT = [];
+        that.saveSiblingDT = "";
+        that.studentData = {};
     }
 
     // Reset Parent Fields
@@ -1176,6 +1182,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             that.mthrmobile = "";
         }
 
+        that.fthrcode = "";
         that.fthremail = "";
         that.fthrschid = 0;
         that.fthrothschname = "";
@@ -1184,6 +1191,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.fthrocptn = "";
         that.fthrsalary = "";
 
+        that.mthrcode = "";
         that.mthremail = "";
         that.mthrschid = 0;
         that.mthrothschname = "";
@@ -1230,7 +1238,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 that.studentDT = data.data[0];
                 that.parentDT = data.data[1].filter(a => a.fmltyp == "parent");
                 that.siblingDT = data.data[1].filter(a => a.fmltyp == "sibling");
-                that.saveSiblingDT = data.data[1].filter(a => a.fmltyp == "sibling");
+                that.saveSiblingDT = JSON.stringify(that.siblingDT);
 
                 if (that.studentDT.length != 0) {
                     that.enrlmntid = that.studentDT[0].enrlmntid;
@@ -1307,11 +1315,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
                     if (othdocfile != "" && othdocfile != null) {
                         that.documentDT = othdocfile;
-                        that.saveDocumentDT = othdocfile;
+                        that.saveDocumentDT = JSON.stringify(that.documentDT);
                     }
                     else {
                         that.documentDT = [];
-                        that.saveDocumentDT = [];
+                        that.saveDocumentDT = "";
                     }
                 }
                 else {
