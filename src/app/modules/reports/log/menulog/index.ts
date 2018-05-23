@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard } from '@services';
 
-import { MenuLogReportsComponent } from './rptmnlg.comp';
+import { MenuLogReportsComponent } from './rptml.comp';
 import { LogReportService } from '@services/reports';
 
 import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';

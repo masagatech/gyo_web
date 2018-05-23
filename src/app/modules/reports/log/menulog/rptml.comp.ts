@@ -5,7 +5,7 @@ import { LogReportService } from '@services/reports';
 import { LoginUserModel, Globals, Common } from '@models';
 
 @Component({
-    templateUrl: 'rptmnlg.comp.html'
+    templateUrl: 'rptml.comp.html'
 })
 
 export class MenuLogReportsComponent implements OnInit, OnDestroy {

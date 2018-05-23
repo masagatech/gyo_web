@@ -64,8 +64,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     gender: string = "";
     dob: any = "";
     birthplace: string = "";
-    saveDocumentDT: string = "";
-    saveSiblingDT: string = "";
+    saveDocumentDT: string = "[]";
+    saveSiblingDT: string = "[]";
 
     address: string = "";
     country: string = "India";
@@ -1120,9 +1120,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         that.doctypeid = 0;
         that.documentDT = [];
-        that.saveDocumentDT = "";
+        that.saveDocumentDT = "[]";
         that.siblingDT = [];
-        that.saveSiblingDT = "";
+        that.saveSiblingDT = "[]";
         that.studentData = {};
     }
 
@@ -1319,7 +1319,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     }
                     else {
                         that.documentDT = [];
-                        that.saveDocumentDT = "";
+                        that.saveDocumentDT = "[]";
                     }
                 }
                 else {

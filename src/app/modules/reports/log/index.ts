@@ -13,6 +13,7 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: '', loadChildren: './auditlog#AuditLogModule' },
                     { path: 'loginlog', loadChildren: './loginlog#LoginLogModule' },
                     { path: 'menulog', loadChildren: './menulog#MenuLogModule' },
                 ]

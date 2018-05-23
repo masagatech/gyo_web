@@ -18,4 +18,10 @@ export class LogReportService {
     getMenuLogReports(req: any) {
         return this._dataserver.rawget(Globals.reporturl + "getMenuLogReports", req)
     }
+
+    // Menu Log
+
+    getAuditLogReports(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getAuditLogReports", req)
+    }
 }

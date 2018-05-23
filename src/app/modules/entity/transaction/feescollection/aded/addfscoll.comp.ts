@@ -51,7 +51,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     studsFilterDT: any = [];
     studentFeesDT: any = [];
-    saveStudentFeesDT: string = "";
+    saveStudentFeesDT: string = "[]";
     selectedFees: any = {};
     isaddfees: boolean = false;
     iseditfees: boolean = false;
@@ -600,7 +600,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.resetFeesCollection();
                     that.resetSaveFees();
                     that.studentFeesDT = [];
-                    that.saveStudentFeesDT = "";
+                    that.saveStudentFeesDT = "[]";
                 }
 
                 that.feesData = that.getFeesParams();

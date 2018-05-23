@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Child User ID <strong>*</strong></label>
-                                <input type="text" name="cuid" OnlyNumber="true" [(ngModel)]="cuid" maxlength="50" class="form-control cuid text-right" tabindex="5" />
+                                <input type="text" name="cuid" OnlyNumber="true" [(ngModel)]="cuid" maxlength="50" class="form-control cuid text-right" tabindex="4" />
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">GR. No. <strong>*</strong></label>
-                                <input type="text" name="grno" OnlyNumber="true" [(ngModel)]="grno" maxlength="50" class="form-control grno text-right" tabindex="4" />
+                                <input type="text" name="grno" OnlyNumber="true" [(ngModel)]="grno" maxlength="50" class="form-control grno text-right" tabindex="5" />
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Aadhar No <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" name="aadharno" [(ngModel)]="aadharno" maxlength="50" class="form-control aadharno text-right" tabindex="8" />
+                                <input type="text" OnlyNumber="true" name="aadharno" [(ngModel)]="aadharno" maxlength="50" class="form-control aadharno text-right" tabindex="12" />
                             </div>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Social Category</label>
-                                <select id="soccatid" name="soccatname" [(ngModel)]="soccatid" class="form-control soccat" tabindex="6">
+                                <select id="soccatid" name="soccatname" [(ngModel)]="soccatid" class="form-control soccat" tabindex="13">
                                     <option [value]="0">Select Social Category</option>
                                     <option *ngFor="let row of socialCategoryDT" [value]="row.id">	
                                         {{row.val}}
@@ -186,7 +186,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Gender</label>
-                                <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="6">
+                                <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="14">
                                     <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">	
                                         {{row.val}}
@@ -199,7 +199,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Date Of Birth <strong>*</strong></label>
-                                <input type="date" name="dob" [(ngModel)]="dob" maxlength="50" class="form-control dob" tabindex="8" />
+                                <input type="date" name="dob" [(ngModel)]="dob" maxlength="50" class="form-control dob" tabindex="15" />
                             </div>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Birth Place</label>
-                                <input type="text" name="birthplace" [(ngModel)]="birthplace" maxlength="50" class="form-control dob" tabindex="9" />
+                                <input type="text" name="birthplace" [(ngModel)]="birthplace" maxlength="50" class="form-control dob" tabindex="16" />
                             </div>
                         </div>
                     </div>
@@ -216,7 +216,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Other Info</label>
-                        <textarea name="otherinfo" [(ngModel)]="otherinfo" rows="6" class="form-control no-resize auto-growth" tabindex="10"></textarea>
+                        <textarea name="otherinfo" [(ngModel)]="otherinfo" rows="6" class="form-control no-resize auto-growth" tabindex="17"></textarea>
                     </div>
                 </div>
             </div>
@@ -333,7 +333,7 @@
                                 <td>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <select id="doctype" name="doctype" [(ngModel)]="doctypeid" class="form-control doctype" tabindex="6">
+                                            <select id="doctype" name="doctype" [(ngModel)]="doctypeid" class="form-control doctype" tabindex="18">
                                                 <option [value]="0">Select Document Type</option>
                                                 <option *ngFor="let row of docTypeDT" [value]="row.id">	
                                                     {{row.val}}
@@ -349,7 +349,8 @@
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-theme btn-xs" (click)="addDocumentFile()">
-                                        <i class="material-icons">add</i></button>
+                                        <i class="material-icons">add</i>
+                                    </button>
                                 </td>
                             </tr>
                             <tr *ngFor="let row of documentDT">
@@ -383,7 +384,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Address <strong>*</strong></label>
-                        <textarea name="address" [(ngModel)]="address" rows="4" class="form-control no-resize auto-growth address" tabindex="12"></textarea>
+                        <textarea name="address" [(ngModel)]="address" rows="4" class="form-control no-resize auto-growth address" tabindex="19"></textarea>
                     </div>
                 </div>
 
@@ -392,7 +393,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="13" disabled />
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="20" disabled />
                             </div>
                         </div>
                     </div>
@@ -400,7 +401,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State <strong>*</strong></label>
-                                <select id="state" [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="14">
+                                <select id="state" [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="21">
                                     <option [value]="0">Select State</option>
                                     <option *ngFor="let row of stateDT" [value]="row.key">
                                         {{row.val}}
@@ -416,7 +417,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City <strong>*</strong></label>
-                                <select id="area" [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="15">
+                                <select id="area" [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="22">
                                     <option [value]="0">Select City</option>
                                     <option *ngFor="let row of cityDT" [value]="row.key">
                                         {{row.val}}
@@ -429,7 +430,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Area <strong>*</strong></label>
-                                <select id="city" [(ngModel)]="area" class="form-control area" tabindex="16">
+                                <select id="city" [(ngModel)]="area" class="form-control area" tabindex="23">
                                     <option [value]="0">Select Area</option>
                                     <option *ngFor="let row of areaDT" [value]="row.key">
                                         {{row.val}}
@@ -445,7 +446,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="17" />
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="24" />
                             </div>
                         </div>
                     </div>
@@ -471,31 +472,31 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Mobile No <strong>*</strong></label>
-                                        <input type="text" OnlyNumber="true" name="fthrmobile" [(ngModel)]="fthrmobile" maxlength="10" class="form-control fthrmobile" (blur)="getParentAndSibling(fthrmobile, 'father')" tabindex="18">
+                                        <input type="text" OnlyNumber="true" name="fthrmobile" [(ngModel)]="fthrmobile" maxlength="10" class="form-control fthrmobile" (blur)="getParentAndSibling(fthrmobile, 'father')" tabindex="25">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Code <strong>*</strong></label>
-                                        <input type="text" name="fthrcode" [(ngModel)]="fthrcode" class="form-control" tabindex="19" />
+                                        <input type="text" name="fthrcode" [(ngModel)]="fthrcode" class="form-control" maxlength="10" tabindex="26" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Full Name <strong>*</strong></label>
-                                        <input type="text" name="fthrname" [(ngModel)]="fthrname" class="form-control" tabindex="20" />
+                                        <input type="text" name="fthrname" [(ngModel)]="fthrname" class="form-control" tabindex="27" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Email <strong>*</strong></label>
-                                        <input type="text" name="fthremail" [(ngModel)]="fthremail" class="form-control fthremail" tabindex="21">
+                                        <input type="text" name="fthremail" [(ngModel)]="fthremail" class="form-control fthremail" tabindex="28">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">School</label>
-                                        <select id="fthrschid" name="fthrschname" [(ngModel)]="fthrschid" class="form-control fthrschname" tabindex="22">
+                                        <select id="fthrschid" name="fthrschname" [(ngModel)]="fthrschid" class="form-control fthrschname" tabindex="29">
                                             <option [value]="0">Other</option>
                                             <option [value]="_enttdetails.enttid">{{_enttdetails.enttname}}</option>
                                         </select>
@@ -504,19 +505,19 @@
                                 <div class="form-group" *ngIf="fthrschid == 0">
                                     <div class="form-line">
                                         <label class="control-label">School Name</label>
-                                        <input type="text" [(ngModel)]="fthrothschname" class="form-control fthrothschname" maxlength="100" tabindex="23" />
+                                        <input type="text" [(ngModel)]="fthrothschname" class="form-control fthrothschname" maxlength="100" tabindex="30" />
                                     </div>
                                 </div>
                                 <div class="form-group" *ngIf="fthrschid != 0">
                                     <div class="form-line">
                                         <label class="control-label">Enrollment No</label>
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="fthrenrlmntid" class="form-control fthrenrlmntid" maxlength="20" tabindex="24" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="fthrenrlmntid" class="form-control fthrenrlmntid" maxlength="20" tabindex="31" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Qualification</label>
-                                        <select id="fthrqlfid" name="fthrqlftitle" [(ngModel)]="fthrqlfid" class="form-control fthrqlftitle" tabindex="25">
+                                        <select id="fthrqlfid" name="fthrqlftitle" [(ngModel)]="fthrqlfid" class="form-control fthrqlftitle" tabindex="32">
                                             <option value="0">-- Select Qualification --</option>
                                             <optgroup *ngFor="let row of qualificationDT | groupBy: 'qlfgrpname'" label="{{row.key}}">
                                                 <option *ngFor="let drow of row.value" [value]="drow.qlfid">
@@ -529,7 +530,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Occupation</label>
-                                        <select id="fthrocptn" name="fthrocptn" [(ngModel)]="fthrocptn" class="form-control fthrocptn" tabindex="26">
+                                        <select id="fthrocptn" name="fthrocptn" [(ngModel)]="fthrocptn" class="form-control fthrocptn" tabindex="33">
                                             <option [value]="''">-- Select Occupation --</option>
                                             <option *ngFor="let row of fthrocptnDT" [value]="row.key">
                                                 {{row.val}}
@@ -540,7 +541,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Salary</label>
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="fthrsalary" class="form-control fthrsalary" maxlength="20" tabindex="27" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="fthrsalary" class="form-control fthrsalary" maxlength="20" tabindex="34" />
                                     </div>
                                 </div>
                             </div>
@@ -557,31 +558,31 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Mobile No <strong>*</strong></label>
-                                        <input type="text" OnlyNumber="true" name="mthrmobile" [(ngModel)]="mthrmobile" maxlength="10" class="form-control mthrmobile" (blur)="getParentAndSibling(mthrmobile, 'mother')" tabindex="28">
+                                        <input type="text" OnlyNumber="true" name="mthrmobile" [(ngModel)]="mthrmobile" maxlength="10" class="form-control mthrmobile" (blur)="getParentAndSibling(mthrmobile, 'mother')" tabindex="35">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Code <strong>*</strong></label>
-                                        <input type="text" name="mthrcode" [(ngModel)]="mthrcode" class="form-control" tabindex="29" />
+                                        <input type="text" name="mthrcode" [(ngModel)]="mthrcode" class="form-control" maxlength="10" tabindex="36" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Full Name <strong>*</strong></label>
-                                        <input type="text" name="mthrname" [(ngModel)]="mthrname" class="form-control" tabindex="30" />
+                                        <input type="text" name="mthrname" [(ngModel)]="mthrname" class="form-control" tabindex="37" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Email <strong>*</strong></label>
-                                        <input type="text" name="mthremail" [(ngModel)]="mthremail" class="form-control mthremail" tabindex="31">
+                                        <input type="text" name="mthremail" [(ngModel)]="mthremail" class="form-control mthremail" tabindex="38">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">School</label>
-                                        <select id="mthrschid" name="mthrschname" [(ngModel)]="mthrschid" class="form-control mthrschname" tabindex="32">
+                                        <select id="mthrschid" name="mthrschname" [(ngModel)]="mthrschid" class="form-control mthrschname" tabindex="39">
                                             <option [value]="_enttdetails.enttid">{{_enttdetails.enttname}}</option>
                                             <option [value]="0">Other</option>
                                         </select>
@@ -590,19 +591,19 @@
                                 <div class="form-group" *ngIf="mthrschid == 0">
                                     <div class="form-line">
                                         <label class="control-label">School Name</label>
-                                        <input type="text" [(ngModel)]="mthrothschname" class="form-control mthrothschname" maxlength="100" tabindex="33" />
+                                        <input type="text" [(ngModel)]="mthrothschname" class="form-control mthrothschname" maxlength="100" tabindex="40" />
                                     </div>
                                 </div>
                                 <div class="form-group" *ngIf="mthrschid != 0">
                                     <div class="form-line">
                                         <label class="control-label">Enrollment No</label>
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="mthrenrlmntid" class="form-control mthrenrlmntid" maxlength="50" tabindex="34" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="mthrenrlmntid" class="form-control mthrenrlmntid" maxlength="50" tabindex="41" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Qualification</label>
-                                        <select id="mthrqlfid" name="mthrqlftitle" [(ngModel)]="mthrqlfid" class="form-control mthrqlftitle" tabindex="35">
+                                        <select id="mthrqlfid" name="mthrqlftitle" [(ngModel)]="mthrqlfid" class="form-control mthrqlftitle" tabindex="42">
                                             <option value="0">-- Select Qualification --</option>
                                             <optgroup *ngFor="let row of qualificationDT | groupBy: 'qlfgrpname'" label="{{row.key}}">
                                                 <option *ngFor="let drow of row.value" [value]="drow.qlfid">	
@@ -615,7 +616,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Occupation</label>
-                                        <select id="mthrocptn" name="mthrocptn" [(ngModel)]="mthrocptn" class="form-control mthrocptn" tabindex="36">
+                                        <select id="mthrocptn" name="mthrocptn" [(ngModel)]="mthrocptn" class="form-control mthrocptn" tabindex="43">
                                             <option [value]="''">-- Select Occupation --</option>
                                             <option *ngFor="let row of mthrocptnDT" [value]="row.key">
                                                 {{row.val}}
@@ -626,7 +627,7 @@
                                 <div class="form-group" *ngIf="mthrocptn != 'housewife'">
                                     <div class="form-line">
                                         <label class="control-label">Salary <strong>*</strong></label>
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="mthrsalary" class="form-control mthrsalary" maxlength="20" tabindex="37" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="mthrsalary" class="form-control mthrsalary" maxlength="20" tabindex="44" />
                                     </div>
                                 </div>
                             </div>
@@ -676,7 +677,7 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="sibrelation" [(ngModel)]="sibrelation" class="form-control sibrelation" tabindex="38">
+                                        <select id="sibrelation" [(ngModel)]="sibrelation" class="form-control sibrelation" tabindex="45">
                                             <option [value]="''">Select Relation</option>
                                             <option [value]="'brother'">Brother</option>
                                             <option [value]="'sister'">Sister</option>
@@ -687,63 +688,64 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" [(ngModel)]="sibfullname" class="form-control sibfullname" maxlength="20" tabindex="39" />
+                                        <input type="text" [(ngModel)]="sibfullname" class="form-control sibfullname" maxlength="20" tabindex="46" />
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="sibage" class="form-control sibage" maxlength="20" tabindex="40" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="sibage" class="form-control sibage" maxlength="20" tabindex="47" />
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="sibclassid" name="sibclassname" [(ngModel)]="sibclassid" class="form-control sibclassname" tabindex="41">
-                                        <option [value]="0">Select Class</option>
-                                        <option *ngFor="let row of classDT" [value]="row.key">	
-                                            {{row.val}}
-                                        </option>
-                                    </select>
+                                        <select id="sibclassid" name="sibclassname" [(ngModel)]="sibclassid" class="form-control sibclassname" tabindex="48">
+                                            <option [value]="0">Select Class</option>
+                                            <option *ngFor="let row of classDT" [value]="row.key">	
+                                                {{row.val}}
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="sibschid" name="sibschname" [(ngModel)]="sibschid" class="form-control sibschname" tabindex="42">
-                                        <option [value]="0">Other</option>
-                                        <option [value]="_enttdetails.enttid">{{_enttdetails.enttname}}</option>
-                                    </select>
+                                        <select id="sibschid" name="sibschname" [(ngModel)]="sibschid" class="form-control sibschname" tabindex="49">
+                                            <option [value]="0">Other</option>
+                                            <option [value]="_enttdetails.enttid">{{_enttdetails.enttname}}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group" *ngIf="sibschid == 0">
                                     <div class="form-line">
-                                        <input type="text" [(ngModel)]="sibothschname" class="form-control sibothschname" maxlength="20" tabindex="43" />
+                                        <input type="text" [(ngModel)]="sibothschname" class="form-control sibothschname" maxlength="20" tabindex="50" />
                                     </div>
                                 </div>
                                 <div class="form-group" *ngIf="sibschid != 0">
                                     <div class="form-line">
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="sibenrlmntid" class="form-control sibenrlmntid" maxlength="20" tabindex="44" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="sibenrlmntid" class="form-control sibenrlmntid" maxlength="20" tabindex="51" />
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group" *ngIf="!iseditsibling">
                                     <button type="button" (click)="addSibling()" class="btn btn-theme btn-xs btn-xs-sm">
-                                    <i class="material-icons">add</i></button>
+                                        <i class="material-icons">add</i>
+                                    </button>
                                 </div>
                                 <div class="form-group" *ngIf="iseditsibling">
                                     <button type="button" (click)="updateSibling()" class="btn btn-theme btn-xs btn-xs-sm">
-                                    <i class="material-icons">done</i>
-                                </button>
+                                        <i class="material-icons">done</i>
+                                    </button>
                                     <button type="button" (click)="resetSibling()" class="btn btn-danger btn-xs btn-xs-sm">
-                                    <i class="material-icons">cancel</i>
-                                </button>
+                                        <i class="material-icons">cancel</i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
