@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AddExamResultComponent } from './aded/addexamres.comp';
 import { ViewExamResultComponent } from './view/viewexamres.comp';
@@ -42,7 +42,7 @@ export const routes = [
     DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, ExamService, ExamReportService]
+  providers: [AuthGuard, ExamService, ExamReportService, CommonService]
 })
 
 export class ExamResultModule {

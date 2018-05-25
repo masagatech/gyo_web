@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Add Sim</h4>
+            </div>
+            <div class="col-md-4 text-right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="saveSimInfo()">
+                    <i class="material-icons">save</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" OnlyNumber="true" [(ngModel)]="simno" class="form-control simno" maxlength="20" tabindex="5" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" OnlyNumber="true" [(ngModel)]="mobileno" class="form-control mobileno" maxlength="10" tabindex="5" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" [(ngModel)]="simcmpname" class="form-control simcmpname" maxlength="50" tabindex="7" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="date" [(ngModel)]="simpurdate" class="form-control simpurdate" tabindex="8" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

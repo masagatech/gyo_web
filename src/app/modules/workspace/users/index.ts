@@ -20,10 +20,10 @@ export const routes = [
   {
     path: '',
     children: [
-      { path: '', component: ViewUserComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "usr", "rights": "view", "urlname": "/user" } },
-      { path: 'profile/:id', component: ViewProfileComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "usr", "rights": "view", "urlname": "/user" } },
-      { path: 'add', component: AddUserComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "usr", "rights": "add", "urlname": "/add" } },
-      { path: 'edit/:id', component: AddUserComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "usr", "rights": "edit", "urlname": "/edit" } }
+      { path: '', component: ViewUserComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "usr", "rights": "view", "urlname": "/user" } },
+      { path: 'profile/:id', component: ViewProfileComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "usr", "rights": "view", "urlname": "/user" } },
+      { path: 'add', component: AddUserComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "usr", "rights": "add", "urlname": "/add" } },
+      { path: 'edit/:id', component: AddUserComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "usr", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];

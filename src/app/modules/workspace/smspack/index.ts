@@ -15,10 +15,10 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, Sch
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "smspack", "rights": "view", "urlname": "/smspack" } },
-      { path: 'add', component: AddSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "smspack", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "smspack", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "smspack", "rights": "edit", "urlname": "/edit" } }
+      { path: '', component: ViewSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "smspack", "rights": "view", "urlname": "/smspack" } },
+      { path: 'add', component: AddSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "smspack", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "smspack", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddSMSPackComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "smspack", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];

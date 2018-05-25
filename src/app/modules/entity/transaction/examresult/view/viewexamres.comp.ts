@@ -6,8 +6,7 @@ import { ExamService } from '@services/erp';
 import { ExamReportService } from '@services/reports';
 
 @Component({
-    templateUrl: 'viewexamres.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewexamres.comp.html'
 })
 
 export class ViewExamResultComponent implements OnInit {

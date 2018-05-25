@@ -16,15 +16,15 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewContentComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "cls", "rights": "view", "urlname": "/content" }
+        data: { "module": "pws", "submodule": "cls", "rights": "view", "urlname": "/content" }
       },
       {
         path: 'add', component: AddContentComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "cls", "rights": "add", "urlname": "/add" }
+        data: { "module": "pws", "submodule": "cls", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'edit/:id', component: AddContentComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "cls", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "pws", "submodule": "cls", "rights": "edit", "urlname": "/edit" }
       }
     ]
   },

@@ -21,6 +21,9 @@ export const routes = [
                     // Workspace
                     { path: 'workspace', loadChildren: './workspace#WorkspaceModule' },
 
+                    // Inventory
+                    { path: 'inventory', loadChildren: './inventory#InventoryModule' },
+
                     // Entity
                     { path: '', loadChildren: './entity#EntityModule' },
 

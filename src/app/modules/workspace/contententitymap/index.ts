@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: AddContentEntityMapComponent, canActivate: [AuthGuard],
-        data: { "module": "ws", "submodule": "cntenttmap", "rights": "view", "urlname": "/contententitymap" }
+        data: { "module": "pws", "submodule": "cntenttmap", "rights": "view", "urlname": "/contententitymap" }
       }
     ]
   },

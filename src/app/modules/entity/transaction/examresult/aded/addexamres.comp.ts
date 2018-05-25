@@ -7,8 +7,7 @@ import { ExamService } from '@services/erp';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addexamres.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addexamres.comp.html'
 })
 
 export class AddExamResultComponent implements OnInit {

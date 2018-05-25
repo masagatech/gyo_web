@@ -18,10 +18,10 @@ import {
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "view", "urlname": "/entity" } },
-      { path: 'add', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "entt", "rights": "edit", "urlname": "/edit" } }
+      { path: '', component: ViewEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "view", "urlname": "/entity" } },
+      { path: 'add', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "add", "urlname": "/add" } },
+      { path: 'details/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "edit", "urlname": "/edit" } },
+      { path: 'edit/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "edit", "urlname": "/edit" } }
     ]
   },
 ];

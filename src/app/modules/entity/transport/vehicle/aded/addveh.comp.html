@@ -134,21 +134,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Device Type
-                                    <strong>*</strong>
-                                </label>
-                                <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
-                                    <option [value]="''">GPS Device Type</option>
-                                    <option *ngFor="let row of devtypeDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row clearfix">

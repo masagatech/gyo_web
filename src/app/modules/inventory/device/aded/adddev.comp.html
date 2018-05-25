@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Add Device</h4>
+            </div>
+            <div class="col-md-4 text-right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="saveDeviceInfo()">
+                    <i class="material-icons">save</i>
+                </button>
+                <button type="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Device Type <strong>*</strong></label>
+                        <select id="devtype" name="devtype" [(ngModel)]="devtype" class="form-control devtype" tabindex="1">
+                            <option [value]="''">Device Type</option>
+                            <option *ngFor="let row of devtypeDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">IMEI No <strong>*</strong></label>
+                        <input type="text" OnlyNumber="true" [(ngModel)]="devimeino" class="form-control devimeino" maxlength="20" tabindex="2" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Company Name <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="devcmpname" class="form-control devcmpname" maxlength="50" tabindex="3" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Purchase Date <strong>*</strong></label>
+                        <input type="date" [(ngModel)]="devpurdate" class="form-control devpurdate" tabindex="4" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

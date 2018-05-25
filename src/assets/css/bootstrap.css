@@ -4882,11 +4882,14 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 
 .nav-tabs {
     border-bottom: 1px solid #ddd;
+    margin: 0!Important;
+    padding: 0!Important;
 }
 
 .nav-tabs>li {
     float: left;
-    margin-bottom: -1px;
+    margin: 0!Important;
+    padding: 0!Important;
 }
 
 .nav-tabs>li>a {

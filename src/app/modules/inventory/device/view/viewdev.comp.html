@@ -1,0 +1,101 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Device Master</h4>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="form-group">
+                    <a role="button" target="_blank" href="assets\file\tbldevice.xlsx" class="btn btn-theme btn-xs">
+                        <i class="material-icons">file_download</i> Download Format
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddeviceconfig.server}}" chooseLabel="Device Bulk Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onAfterUpload($event)" accept="{{uploaddeviceconfig.acceptedFiles}}" maxFileSize="{{uploaddeviceconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+                </div>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addDevice()">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <table cellspacing="0" cellpadding="0" class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th width="200px">Purchase Date</th>
+                    <th width="250px">Device Type</th>
+                    <th width="350px">IMEI No</th>
+                    <th>Company Name</th>
+                    <th width="100px"></th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="purdate" class="form-control devpurdate" tabindex="1" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <select id="devtype" name="devtype" [(ngModel)]="devtype" class="form-control devtype" tabindex="2">
+                                    <option [value]="''">All</option>
+                                    <option *ngFor="let row of devtypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="imeino" class="form-control devimeino" maxlength="20" tabindex="3" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="cmpname" class="form-control devcmpname" maxlength="50" tabindex="4" />
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of deviceDT | filterBy: {'disppurdate': purdate,'devtype': devtype,'imeino': imeino,'cmpname': cmpname}">
+                    <td>
+                        {{row.disppurdate}}
+                    </td>
+                    <td>
+                        {{row.devtype}}
+                    </td>
+                    <td>
+                        {{row.imeino}}
+                    </td>
+                    <td>
+                        {{row.cmpname}}
+                    </td>
+                    <td class="text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editDevice(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

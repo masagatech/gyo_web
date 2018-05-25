@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>SIM Master</h4>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="form-group">
+                    <a role="button" target="_blank" href="assets\file\tblsim.xlsx" class="btn btn-theme btn-xs">
+                        <i class="material-icons">file_download</i> Download Format
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadsimconfig.server}}" chooseLabel="SIM Bulk Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onAfterUpload($event)" accept="{{uploadsimconfig.acceptedFiles}}" maxFileSize="{{uploadsimconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+                </div>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addSim()">
+                        <span class="material-icons">add</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <table cellspacing="0" cellpadding="0" class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th width="200px">Purchase Date</th>
+                    <th width="250px">SIM No</th>
+                    <th width="350px">Mobile No</th>
+                    <th>Company Name</th>
+                    <th width="100px"></th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="purdate" class="form-control simpurdate" tabindex="1" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="simno" class="form-control simno" maxlength="20" tabindex="2" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="mobileno" class="form-control mobileno" maxlength="20" tabindex="3" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="cmpname" class="form-control simcmpname" maxlength="50" tabindex="4" />
+                            </div>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of simDT | filterBy: {'disppurdate': purdate,'simno': simno,'mobileno': mobileno,'cmpname': cmpname}">
+                    <td>
+                        {{row.disppurdate}}
+                    </td>
+                    <td>
+                        {{row.simno}}
+                    </td>
+                    <td>
+                        {{row.mobileno}}
+                    </td>
+                    <td>
+                        {{row.cmpname}}
+                    </td>
+                    <td class="text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editSim(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
