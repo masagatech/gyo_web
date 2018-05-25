@@ -118,67 +118,105 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">Enable Tracking
-                                <strong>*</strong>
-                            </label>
-                            <span class="switch">
-                                <label>
-                                    <input type="checkbox"  tabindex="-1" [(ngModel)]="istrackenabled" >
-                                    <span class="lever"></span>
-                            </label>
-                            </span>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Enable Tracking
+                                    <strong>*</strong>
+                                </label>
+                                <span class="switch">
+                                    <label>
+                                        <input type="checkbox"  tabindex="-1" [(ngModel)]="istrackenabled" >
+                                        <span class="lever"></span>
+                                </label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Device Type
+                                    <strong>*</strong>
+                                </label>
+                                <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
+                                    <option [value]="''">GPS Device Type</option>
+                                    <option *ngFor="let row of devtypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">Device Type
-                                <strong>*</strong>
-                            </label>
-                            <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
-                                <option [value]="''">GPS Device Type</option>
-                                <option *ngFor="let row of devtypeDT" [value]="row.key">
-                                    {{row.val}}
-                                </option>
-                            </select>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Device Type
+                                    <strong>*</strong>
+                                </label>
+                                <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
+                                    <option [value]="''">GPS Device Type</option>
+                                    <option *ngFor="let row of devtypeDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">IMEI
+                                    <strong>*</strong>
+                                </label>
+                                <input type="text" [disabled]="!istrackenabled" [(ngModel)]="imei" class="form-control vehno" maxlength="50" tabindex="11" />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">IMEI
-                                <strong>*</strong>
-                            </label>
-                            <input type="text" [disabled]="!istrackenabled" [(ngModel)]="imei" class="form-control vehno" maxlength="50" tabindex="11" />
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">SIM No. (eg. 9009090009)
+                                    <strong>*</strong>
+                                </label>
+                                <input type="text" [disabled]="!istrackenabled" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="12" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Speed Alert(Above km/h)
+                                    <strong>*</strong>
+                                </label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="11" />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">SIM No. (eg. 9009090009)
-                                <strong>*</strong>
-                            </label>
-                            <input type="text" [disabled]="!istrackenabled" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="12" />
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">D1 Function</label>
+                                <select id="d1str" [disabled]="!istrackenabled" name="d1str" [(ngModel)]="d1str" class="form-control d1str" tabindex="10">
+                                    <option [value]="''">None</option>
+                                    <option *ngFor="let row of d1strDT" [value]="row.key">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">Speed Alert(Above km/h)
-                                <strong>*</strong>
-                            </label>
-                            <input type="text"  OnlyNumber="true"  [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="11" />
-                        </div>
-                    </div>
-                </div>
-                
             </div>
         </div>
     </div>

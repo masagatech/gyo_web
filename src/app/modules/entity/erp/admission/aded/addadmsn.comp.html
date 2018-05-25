@@ -186,7 +186,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Gender</label>
-                                <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="14">
+                                <select id="gender" name="gender" [(ngModel)]="gndrkey" class="form-control gender" tabindex="14">
                                     <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">	
                                         {{row.val}}
@@ -230,8 +230,7 @@
                     <div class="row clearfix">
                         <div class="col-md-8">
                             <div class="profile-photo">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
-                                    auto="true"></p-fileUpload>
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="true"></p-fileUpload>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -267,8 +266,8 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div *ngIf="uploadDOBCertificate.length">
-                                <div *ngFor="let file of uploadDOBCertificate">
+                            <div *ngIf="birthcrtfctDT.length">
+                                <div *ngFor="let file of birthcrtfctDT">
                                     <div class="row clearfix">
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-danger btn-xs" (click)="removeDOBUpload()">
@@ -280,7 +279,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngIf="!uploadDOBCertificate.length" align="right">
+                            <div *ngIf="!birthcrtfctDT.length" align="right">
                                 <img src="assets/img/birthcrtfct.gif" height="60px" />
                             </div>
                         </div>
@@ -297,8 +296,8 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div *ngIf="uploadAddrProof.length">
-                                <div *ngFor="let file of uploadAddrProof">
+                            <div *ngIf="addrproofDT.length">
+                                <div *ngFor="let file of addrproofDT">
                                     <div class="row clearfix">
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-danger btn-xs" (click)="removeAddressUpload()">
@@ -310,7 +309,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngIf="!uploadAddrProof.length" align="right">
+                            <div *ngIf="!addrproofDT.length" align="right">
                                 <img src="assets/img/addrproof.gif" height="60px" />
                             </div>
                         </div>

@@ -26,7 +26,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     genderDT: any = [];
     socialCategoryDT: any = [];
     docTypeDT: any = [];
-    documentDT: any = [];
 
     stateDT: any = [];
     cityDT: any = [];
@@ -48,30 +47,38 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     isprspct: boolean = false;
     prspctid: number = 0;
+    prspctname: string = "";
     prspctno: number = 0;
     boardid: number = 0;
+    boardname: string = "";
 
     cuid: number = 0;
     grno: number = 0;
     ayid: number = 0;
+    ayname: string = "";
     classid: number = 0;
+    classname: string = "";
     rollno: number = 0;
     fname: string = "";
     mname: string = "";
     lname: string = "";
     aadharno: number = 0;
     soccatid: number = 0;
-    gender: string = "";
+    soccatname: string = "";
+    gndrkey: string = "";
+    gndrval: string = "";
     dob: any = "";
     birthplace: string = "";
-    saveDocumentDT: string = "[]";
     saveSiblingDT: string = "[]";
 
     address: string = "";
     country: string = "India";
     state: number = 0;
+    stname: string = "";
     city: number = 0;
+    ctname: string = "";
     area: number = 0;
+    arname: string = "";
     pincode: number = 0;
     otherinfo: string = "";
 
@@ -96,9 +103,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     fthrmobile: string = "";
     fthremail: string = "";
     fthrqlfid: number = 0;
+    fthrqlfname: string = "";
     fthrocptn: string = "";
+    fthrocptnname: string = "";
     fthrsalary: any = "";
     fthrschid: number = 0;
+    fthrschname: string = "";
     fthrothschname: string = "";
     fthrenrlmntid: number = 0;
 
@@ -111,9 +121,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     mthrmobile: string = "";
     mthremail: string = "";
     mthrqlfid: number = 0;
+    mthrqlfname: string = "";
     mthrocptn: string = "";
+    mthrocptnname: string = "";
     mthrsalary: any = "";
     mthrschid: number = 0;
+    mthrschname: string = "";
     mthrothschname: string = "";
     mthrenrlmntid: number = 0;
 
@@ -127,20 +140,25 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     // Upload DOB Certificate
 
-    uploadDOBCertificate: any = [];
+    birthcrtfctDT: any = [];
+    saveBirthCrtfctDT: string = "[]";
     uploaddobconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseDOBLabel: string = "";
 
     // Upload Address Proof
 
-    uploadAddrProof: any = [];
+    addrproofDT: any = [];
+    saveAddrProofDT: string = "[]";
     uploadaddrconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseAddrLabel: string = "";
 
     // Upload Other Document
 
+    documentDT: any = [];
+    saveDocumentDT: string = "[]";
     doctypeid: number = 0;
     docfilename: string = "";
+    doctype: string = "";
     uploaddocconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     mode: string = "";
@@ -151,6 +169,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     isdetails: boolean = false;
 
     studentData: any = {};
+    oldStudentData: any = [];
+    newStudentData: any = [];
 
     private subscribeParameters: any;
 
@@ -443,11 +463,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         imgfile = JSON.parse(event.xhr.response);
 
-        setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, "") })
-            }
-        }, 1000);
+        for (var i = 0; i < imgfile.length; i++) {
+            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, ""), "athtype": imgfile[i].type })
+        }
     }
 
     removePhotoUpload() {
@@ -459,19 +477,17 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     onDOBUpload(event) {
         var that = this;
         var imgfile = [];
-        that.uploadDOBCertificate = [];
+        that.birthcrtfctDT = [];
 
         imgfile = JSON.parse(event.xhr.response);
 
-        setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadDOBCertificate.push({ "athurl": imgfile[i].path.replace(that.uploaddobconfig.filepath, "") })
-            }
-        }, 1000);
+        for (var i = 0; i < imgfile.length; i++) {
+            that.birthcrtfctDT.push({ "athurl": imgfile[i].path.replace(that.uploaddobconfig.filepath, ""), "athtype": imgfile[i].type })
+        }
     }
 
     removeDOBUpload() {
-        this.uploadDOBCertificate.splice(0, 1);
+        this.birthcrtfctDT.splice(0, 1);
     }
 
     // Address Proof Upload
@@ -479,19 +495,17 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     onAddressUpload(event) {
         var that = this;
         var imgfile = [];
-        that.uploadAddrProof = [];
+        that.addrproofDT = [];
 
         imgfile = JSON.parse(event.xhr.response);
 
-        setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadAddrProof.push({ "athurl": imgfile[i].path.replace(that.uploadaddrconfig.filepath, "") })
-            }
-        }, 1000);
+        for (var i = 0; i < imgfile.length; i++) {
+            that.addrproofDT.push({ "athurl": imgfile[i].path.replace(that.uploadaddrconfig.filepath, ""), "athtype": imgfile[i].type })
+        }
     }
 
     removeAddressUpload() {
-        this.uploadAddrProof.splice(0, 1);
+        this.addrproofDT.splice(0, 1);
     }
 
     // Other Document Upload
@@ -505,6 +519,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         setTimeout(function () {
             for (var i = 0; i < imgfile.length; i++) {
                 that.docfilename = imgfile[i].path.replace(that.uploaddocconfig.filepath, "");
+                that.doctype = imgfile[i].type;
             }
         }, 1000);
     }
@@ -522,10 +537,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }
         else {
             var doctypename = $("#doctype option:selected").text().trim();
-            that.documentDT.push({ "doctypeid": that.doctypeid, "doctypename": doctypename, "docfilename": that.docfilename });
+            that.documentDT.push({ "doctypeid": that.doctypeid, "doctypename": doctypename, "docfilename": that.docfilename, "doctype": that.doctype });
 
             that.doctypeid = 0;
             that.docfilename = "";
+            that.doctype = "";
         }
     }
 
@@ -813,7 +829,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".lname").focus();
             return false;
         }
-        if (that.gender == "") {
+        if (that.gndrkey == "") {
             that._msg.Show(messageType.error, "Error", "Select Gender");
             $(".gender").focus();
             return false;
@@ -874,14 +890,98 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         return true;
     }
 
+    // Get Audit Parameter
+
+    getAuditData(ddltype) {
+        var that = this;
+        var _auditdt = [];
+
+        _auditdt = [
+            { "key": "Prospectus Name", "val": ddltype == "old" ? that.prspctname : $("#prspctid option:selected").text().trim(), "fldname": "prspctid", "fldtype": "ddl" },
+            { "key": "Prospectus No", "val": that.prspctno, "fldname": "prspctno", "fldtype": "ddl" },
+            { "key": "Board Name", "val": ddltype == "old" ? that.boardname : $("#boardid option:selected").text().trim(), "fldname": "boardid", "fldtype": "ddl" },
+            { "key": "Child User ID", "val": that.cuid, "fldname": "cuid", "fldtype": "text" },
+            { "key": "GR No", "val": that.grno, "fldname": "grno", "fldtype": "text" },
+            { "key": "Academic Year", "val": that.ayname, "fldname": "ayid", "fldtype": "text" },
+            { "key": "Class Name", "val": ddltype == "old" ? that.classname : $("#classid option:selected").text().trim(), "fldname": "classid", "fldtype": "ddl" },
+            { "key": "Roll No", "val": that.rollno, "fldname": "rollno", "fldtype": "text" },
+            { "key": "First Name", "val": that.fname, "fldname": "fname", "fldtype": "text" },
+            { "key": "Middle Name", "val": that.mname, "fldname": "mname", "fldtype": "text" },
+            { "key": "Last Name", "val": that.lname, "fldname": "lname", "fldtype": "text" },
+            { "key": "Aadhar No", "val": that.aadharno, "fldname": "aadharno", "fldtype": "text" },
+            { "key": "Social Category", "val": ddltype == "old" ? that.soccatname : $("#soccatid option:selected").text().trim(), "fldname": "soccatid", "fldtype": "ddl" },
+            { "key": "Gender", "val": ddltype == "old" ? that.gndrval : $("#gender option:selected").text().trim(), "fldname": "gender" },
+            { "key": "Date of Birth", "val": that.dob, "fldname": "dob", "fldtype": "date" },
+            { "key": "Birth Place", "val": that.birthplace, "fldname": "birthplace", "fldtype": "text" },
+            { "key": "Other Info", "val": that.otherinfo, "fldname": "otherinfo", "fldtype": "text" },
+
+            // Upload File
+
+            { "key": "Student Photo", "val": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "", "fldname": "filepath", "fldtype": "img" },
+            { "key": "Birth Certificate", "val": that.saveBirthCrtfctDT, "fldname": "birthcrfct", "fldtype": "file" },
+            { "key": "Address Proof", "val": that.saveAddrProofDT, "fldname": "addrproof", "fldtype": "file" },
+            { "key": "Other Document", "val": that.saveDocumentDT, "fldname": "othdocfile", "fldtype": "table" },
+
+            // Contact Details
+
+            { "key": "Address", "val": that.address, "fldname": "address", "fldtype": "text" },
+            { "key": "Country", "val": that.country, "fldname": "country", "fldtype": "text" },
+            { "key": "State", "val": ddltype == "old" ? that.stname : $("#state option:selected").text().trim(), "fldname": "state", "fldtype": "ddl" },
+            { "key": "City", "val": ddltype == "old" ? that.ctname : $("#city option:selected").text().trim(), "fldname": "city", "fldtype": "ddl" },
+            { "key": "Area", "val": ddltype == "old" ? that.arname : $("#area option:selected").text().trim(), "fldname": "area", "fldtype": "ddl" },
+            { "key": "Pin Code", "val": that.pincode.toString() == "" ? 0 : that.pincode, "fldname": "pincode", "fldtype": "text" },
+
+            // Father Details
+
+            { "key": "Father Code", "val": that.fthrcode, "fldname": "fthrcode", "fldtype": "text" },
+            { "key": "Father Name", "val": that.fthrname, "fldname": "fthrfullname", "fldtype": "text" },
+            { "key": "Father Mobile", "val": that.fthrmobile, "fldname": "fthrmobile", "fldtype": "text" },
+            { "key": "Father Email", "val": that.fthremail, "fldname": "fthremail", "fldtype": "text" },
+            { "key": "Father School Name", "val": ddltype == "old" ? that.fthrschname : $("#fthrschname option:selected").text().trim(), "fldname": "fthrschid", "fldtype": "ddl" },
+            { "key": "Father Enrollment No", "val": that.fthrenrlmntid, "fldname": "fthrenrlmntid", "fldtype": "text" },
+            { "key": "Father Other School Name", "val": that.fthrothschname, "fldname": "fthrothschname", "fldtype": "text" },
+            { "key": "Father Qualification", "val": ddltype == "old" ? that.fthrqlfname : $("#fthrqlfid option:selected").text().trim(), "fldname": "fthrqlfid", "fldtype": "ddl" },
+            { "key": "Father Occupation", "val": ddltype == "old" ? that.fthrocptnname : $("#fthrocptn option:selected").text().trim(), "fldname": "fthrocptn", "fldtype": "ddl" },
+            { "key": "Father Salary", "val": that.fthrsalary, "fldname": "fthrsalary", "fldtype": "text" },
+
+            // Mother Details
+
+            { "key": "Mother Code", "val": that.mthrcode, "fldname": "mthrcode", "fldtype": "text" },
+            { "key": "Mother Name", "val": that.mthrname, "fldname": "mthrfullname", "fldtype": "text" },
+            { "key": "Mother Mobile", "val": that.mthrmobile, "fldname": "mthrmobile", "fldtype": "text" },
+            { "key": "Mother Email", "val": that.mthremail, "fldname": "mthremail", "fldtype": "text" },
+            { "key": "Mother School Name", "val": ddltype == "old" ? that.mthrschname : $("#fthrschname option:selected").text().trim(), "fldname": "mthrschid", "fldtype": "ddl" },
+            { "key": "Mother Enrollment No", "val": that.mthrenrlmntid, "fldname": "mthrenrlmntid", "fldtype": "text" },
+            { "key": "Mother Other School Name", "val": that.mthrothschname, "fldname": "mthrothschname", "fldtype": "text" },
+            { "key": "Mother Qualification", "val": ddltype == "old" ? that.mthrqlfname : $("#mthrqlfid option:selected").text().trim(), "fldname": "mthrqlfid", "fldtype": "ddl" },
+            { "key": "Mother Occupation", "val": ddltype == "old" ? that.mthrocptnname : $("#mthrocptn option:selected").text().trim(), "fldname": "mthrocptn", "fldtype": "ddl" },
+            { "key": "Mother Salary", "val": that.mthrsalary, "fldname": "mthrsalary", "fldtype": "text" },
+
+            { "key": "Sibling", "val": that.saveSiblingDT, "fldname": "studentsibling", "fldtype": "table" }
+        ]
+
+        return _auditdt;
+    }
+
     // Audit Log
 
-    saveAuditLog(keyid, oldval, newval) {
+    saveAuditLog(id, name, oldval, newval) {
         var that = this;
 
+        var _oldvaldt = [];
+        var _newvaldt = [];
+
+        for (var i = 0; i < Object.keys(oldval).length; i++) {
+            _oldvaldt.push(that.oldStudentData.filter(a => a.fldname == Object.keys(oldval)[i]));
+        }
+
+        for (var i = 0; i < Object.keys(newval).length; i++) {
+            _newvaldt.push(that.newStudentData.filter(a => a.fldname == Object.keys(newval)[i]));
+        }
+
         var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "module": "student", "keyid": keyid,
-            "oldval": oldval, "newval": newval, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "module": "student", "id": id, "name": name,
+            "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
         };
 
@@ -913,15 +1013,15 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "lname": that.lname,
             "aadharno": that.aadharno,
             "soccatid": that.soccatid,
-            "gender": that.gender,
+            "gender": that.gndrkey,
             "dob": that.dob,
             "birthplace": that.birthplace,
             "otherinfo": that.otherinfo,
 
             "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
-            "birthcrfct": that.uploadDOBCertificate.length > 0 ? that.uploadDOBCertificate[0].athurl : "",
-            "addrproof": that.uploadAddrProof.length > 0 ? that.uploadAddrProof[0].athurl : "",
-            "othdocfile": that.saveDocumentDT,
+            "birthcrtfct": that.saveBirthCrtfctDT.length > 0 ? that.saveBirthCrtfctDT : [],
+            "addrproof": that.saveAddrProofDT.length > 0 ? that.saveAddrProofDT : [],
+            "othdocfile": that.saveDocumentDT.length > 0 ? that.saveDocumentDT : [],
 
             "address": that.address,
             "country": that.country,
@@ -980,10 +1080,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
         var isvalid: boolean = false;
 
+        that.saveBirthCrtfctDT = JSON.stringify(that.birthcrtfctDT);
+        that.saveAddrProofDT = JSON.stringify(that.addrproofDT);
         that.saveDocumentDT = JSON.stringify(that.documentDT);
         that.saveSiblingDT = JSON.stringify(that.siblingDT);
 
         var params = that.getStudentParams();
+        that.newStudentData = that.getAuditData("new");
 
         var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
@@ -1003,14 +1106,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     if (msgid != "-1") {
                         if (msgid == "1") {
                             that._msg.Show(messageType.success, "Success", msg);
-
                             that.prspctno = 0;
 
                             that.resetStudentFields();
                             that.resetParentFields();
                         }
                         else {
-                            that.saveAuditLog(enrlmntid, oldval, newval);
+                            var _mname = that.mname == "" ? "" : " " + that.mname;
+                            that.saveAuditLog(enrlmntid, that.fname + _mname + " " + that.lname, oldval, newval);
                             that._msg.Show(messageType.success, "Success", msg);
 
                             that.backViewData();
@@ -1053,18 +1156,26 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.mname = that.studentDT[0].mname;
                         that.lname = that.studentDT[0].lname;
                         that.ayid = that.studentDT[0].ayid;
+                        that.ayname = that.studentDT[0].ayname;
                         that.classid = that.studentDT[0].classid;
+                        that.classname = that.studentDT[0].classname;
                         that.boardid = that.studentDT[0].boardid;
-                        that.gender = that.studentDT[0].gender;
+                        that.boardname = that.studentDT[0].boardname;
+                        that.gndrkey = that.studentDT[0].gndrkey;
+                        that.gndrval = that.studentDT[0].gndrval;
                     }
                     else {
                         that.fname = "";
                         that.mname = "";
                         that.lname = "";
                         that.ayid = 0;
+                        that.ayname = "";
                         that.classid = 0;
+                        that.classname = "";
                         that.boardid = 0;
-                        that.gender = "";
+                        that.boardname = "";
+                        that.gndrkey = "";
+                        that.gndrval = "";
                     }
                 }
                 catch (e) {
@@ -1085,9 +1196,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             that.mname = "";
             that.lname = "";
             that.ayid = 0;
+            that.ayname = "";
             that.classid = 0;
+            that.classname = "";
             that.boardid = 0;
-            that.gender = "";
+            that.boardname = "";
+            that.gndrkey = "";
+            that.gndrval = "";
         }
 
         that.enrlmntid = 0;
@@ -1112,10 +1227,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.uploadPhotoDT = [];
         that.chooseLabel = "Upload Student Photo";
 
-        that.uploadDOBCertificate = [];
+        that.birthcrtfctDT = [];
+        that.saveBirthCrtfctDT = "[]";
         that.chooseDOBLabel = "Upload Birth Certificate";
 
-        that.uploadAddrProof = [];
+        that.addrproofDT = [];
+        that.saveAddrProofDT = "[]";
         that.chooseAddrLabel = "Upload Address Proof";
 
         that.doctypeid = 0;
@@ -1255,17 +1372,22 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     }
 
                     that.boardid = that.studentDT[0].boardid;
+                    that.boardname = that.studentDT[0].boardname;
                     that.cuid = that.studentDT[0].cuid;
                     that.grno = that.studentDT[0].grno;
                     that.ayid = that.studentDT[0].ayid;
+                    that.ayname = that.studentDT[0].ayname;
                     that.classid = that.studentDT[0].classid;
+                    that.classname = that.studentDT[0].classname;
                     that.rollno = that.studentDT[0].rollno;
                     that.fname = that.studentDT[0].fname;
                     that.mname = that.studentDT[0].mname;
                     that.lname = that.studentDT[0].lname;
                     that.aadharno = that.studentDT[0].aadharno;
                     that.soccatid = that.studentDT[0].soccatid;
-                    that.gender = that.studentDT[0].gndrkey;
+                    that.soccatname = that.studentDT[0].soccatname;
+                    that.gndrkey = that.studentDT[0].gndrkey;
+                    that.gndrval = that.studentDT[0].gndrval;
                     that.dob = that.studentDT[0].dob;
                     that.birthplace = that.studentDT[0].birthplace;
                     that.otherinfo = that.studentDT[0].otherinfo;
@@ -1273,10 +1395,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.address = that.studentDT[0].address;
                     that.country = that.studentDT[0].country;
                     that.state = that.studentDT[0].state;
+                    that.stname = that.studentDT[0].stname;
                     that.fillCityDropDown();
                     that.city = that.studentDT[0].city;
+                    that.ctname = that.studentDT[0].ctname;
                     that.fillAreaDropDown();
                     that.area = that.studentDT[0].area;
+                    that.arname = that.studentDT[0].arname;
                     that.pincode = that.studentDT[0].pincode;
                     that.isactive = that.studentDT[0].isactive;
                     that.mode = that.studentDT[0].mode;
@@ -1296,20 +1421,24 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     }
 
                     if (birthcrtfct != "" && birthcrtfct != null) {
-                        that.uploadDOBCertificate.push({ "athurl": birthcrtfct });
+                        that.birthcrtfctDT = birthcrtfct;
+                        that.saveBirthCrtfctDT = JSON.stringify(that.birthcrtfctDT);
                         that.chooseDOBLabel = "Change Birth Certificate";
                     }
                     else {
-                        that.uploadDOBCertificate = [];
+                        that.birthcrtfctDT = [];
+                        that.saveBirthCrtfctDT = "[]";
                         that.chooseDOBLabel = "Upload Birth Certificate";
                     }
 
                     if (addrproof != "" && addrproof != null) {
-                        that.uploadAddrProof.push({ "athurl": addrproof });
+                        that.addrproofDT = addrproof;
+                        that.saveAddrProofDT = JSON.stringify(that.addrproofDT);
                         that.chooseAddrLabel = "Change Address Proof";
                     }
                     else {
-                        that.uploadAddrProof = [];
+                        that.addrproofDT = [];
+                        that.saveAddrProofDT = "[]";
                         that.chooseAddrLabel = "Upload Address Proof";
                     }
 
@@ -1338,10 +1467,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.fthrmobile = _fthrfld[0].mobile;
                         that.fthremail = _fthrfld[0].email;
                         that.fthrschid = _fthrfld[0].schid;
+                        that.fthrschname = _fthrfld[0].schname;
                         that.fthrenrlmntid = _fthrfld[0].enrlmntid;
                         that.fthrothschname = _fthrfld[0].othschname;
                         that.fthrqlfid = _fthrfld[0].qlfid;
-                        that.fthrocptn = _fthrfld[0].occupation;
+                        that.fthrqlfname = _fthrfld[0].qlftitle;
+                        that.fthrocptn = _fthrfld[0].ocptnid;
+                        that.fthrocptnname = _fthrfld[0].ocptnname;
                         that.fthrsalary = _fthrfld[0].salary;
                     }
                     else {
@@ -1356,10 +1488,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.mthrmobile = _mthrfld[0].mobile;
                         that.mthremail = _mthrfld[0].email;
                         that.mthrschid = _mthrfld[0].schid;
+                        that.mthrschname = _mthrfld[0].schname;
                         that.mthrenrlmntid = _mthrfld[0].enrlmntid;
                         that.mthrothschname = _mthrfld[0].othschname;
                         that.mthrqlfid = _mthrfld[0].qlfid;
-                        that.mthrocptn = _mthrfld[0].occupation;
+                        that.mthrqlfname = _mthrfld[0].qlftitle;
+                        that.mthrocptn = _mthrfld[0].ocptnid;
+                        that.mthrocptnname = _mthrfld[0].ocptnname;
                         that.mthrsalary = _mthrfld[0].salary;
                     }
                     else {
@@ -1371,6 +1506,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 }
 
                 that.studentData = that.getStudentParams();
+                that.oldStudentData = that.getAuditData("old");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

@@ -16,6 +16,7 @@ export class AddVehicleComponent implements OnInit {
 
     vehtypeDT: any = [];
     devtypeDT: any = [];
+    d1strDT: any = [];
 
     vehid: number = 0;
     vehno: string = "";
@@ -26,6 +27,7 @@ export class AddVehicleComponent implements OnInit {
     capacity: number = 0;
     vehcond: string = "";
     vehfclt: string = "";
+    d1str: string = "";
 
     devtype: string = "";
     simno: string = "";
@@ -64,6 +66,7 @@ export class AddVehicleComponent implements OnInit {
             try {
                 that.vehtypeDT = data.data.filter(a => a.group == "vehtype");
                 that.devtypeDT = data.data.filter(a => a.group == "devtyp");
+                that.d1strDT = data.data.filter(a => a.group == "d1str");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -123,6 +126,7 @@ export class AddVehicleComponent implements OnInit {
         this.capacity = 0;
         this.vehcond = "";
         this.vehfclt = "";
+        this.d1str = "";
         this.devtype = "";
         this.simno = "";
         this.imei = "";
@@ -165,6 +169,7 @@ export class AddVehicleComponent implements OnInit {
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
+                "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
@@ -208,6 +213,7 @@ export class AddVehicleComponent implements OnInit {
                                     "capacity": that.capacity,
                                     "vehcond": that.vehcond,
                                     "vehfclt": that.vehfclt,
+                                    "d1str": that.d1str
                                 }
                             })
                         } catch (error) {
@@ -268,6 +274,7 @@ export class AddVehicleComponent implements OnInit {
                         that.capacity = _vehicledata[0].capacity;
                         that.vehcond = _vehicledata[0].vehiclecondition;
                         that.vehfclt = _vehicledata[0].vehiclefacility;
+                        that.d1str = _vehicledata[0].extra == null ? "" : _vehicledata[0].extra.d1str;
                         that.isactive = _vehicledata[0].isactive;
                         that.mode = _vehicledata[0].mode;
                         that.istrackenabled = _vehicledata[0].istrack;

@@ -28,7 +28,6 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.setFromDateAndToDate();
         this.fillDropDownList();
     }
 
@@ -54,7 +53,8 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
             "flag": "dropdown","enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.ayDT = data.data.filter(a => a.group == "ay");
+                var ddldata = JSON.parse(data._body).data;
+                that.ayDT = ddldata.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
@@ -105,7 +105,7 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
         this.todt = this.formatDate(today);
     }
 
-    // Audit Log
+    // Get Audit Log
     
     getAuditLogReports(format) {
         var that = this;
@@ -123,7 +123,7 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
             }
 
             params = {
-                "flag": "reports", "module":"student", "keyid":"0", "ayid":that.ayid, "frmdt": that.frmdt, "todt": that.todt,
+                "flag": "reports", "module":"student", "id":"0", "ayid":that.ayid, "frmdt": that.frmdt, "todt": that.todt,
                 "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
             }
@@ -152,6 +152,11 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
                 window.open(Common.getReportUrl("getAuditLogReports", params));
             }
         });
+    }
+
+    // Reset Audit Log
+    
+    resetAuditLogReports() {
     }
 
     public ngOnDestroy() {
