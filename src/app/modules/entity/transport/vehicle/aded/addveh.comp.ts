@@ -64,8 +64,8 @@ export class AddVehicleComponent implements OnInit {
 
         that._vehservice.getVehicleDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.vehtypeDT = data.data.filter(a => a.group == "vehtype");
-                that.devtypeDT = data.data.filter(a => a.group == "devtyp");
+                that.vehtypeDT = data.data.filter(a => a.group == "vehicletype");
+                that.devtypeDT = data.data.filter(a => a.group == "devicetype");
                 that.d1strDT = data.data.filter(a => a.group == "d1str");
             }
             catch (e) {

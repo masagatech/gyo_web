@@ -9,20 +9,20 @@ import { AddSimComponent } from './aded/addsim.comp';
 
 import { InventoryService } from '@services/master';
 
-import { AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: ViewSimComponent, canActivate: [AuthGuard],
-        data: { "module": "pws", "submodule": "inv", "rights": "view", "urlname": "/sim" }
+        data: { "module": "inv", "submodule": "sim", "rights": "view", "urlname": "/sim" }
       },{
         path: 'add', component: AddSimComponent, canActivate: [AuthGuard],
-        data: { "module": "pws", "submodule": "inv", "rights": "add", "urlname": "/add" }
+        data: { "module": "inv", "submodule": "sim", "rights": "add", "urlname": "/add" }
       },{
         path: 'edit/:id', component: AddSimComponent, canActivate: [AuthGuard],
-        data: { "module": "pws", "submodule": "inv", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "inv", "submodule": "sim", "rights": "edit", "urlname": "/edit" }
       },
     ]
   },
@@ -35,7 +35,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), AutoCompleteModule, FileUploadModule, SharedComponentModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), FileUploadModule, SharedComponentModule
   ],
 
   providers: [AuthGuard, InventoryService, CommonService]

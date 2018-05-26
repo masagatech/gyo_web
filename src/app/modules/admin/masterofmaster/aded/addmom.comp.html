@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Group</label>
-                                <select id="group" name="group" [(ngModel)]="grpcd" class="form-control grpcd">
+                                <select id="group" name="group" [(ngModel)]="grpcd" class="form-control grpcd" tabindex="1">
                                     <option value="">-- Select Group --</option>
                                     <option *ngFor="let grow of groupdt" [value]="grow.grpcd">
                                         {{grow.grpnm}}
@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Key</label>
-                                <input id="key" name="key" type="text" [(ngModel)]="key" class="form-control" />
+                                <input id="key" name="key" type="text" [(ngModel)]="key" class="form-control" tabindex="2" />
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,39 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Value</label>
-                        <input id="val" name="val" type="text" [(ngModel)]="val" class="form-control" />
+                        <input id="val" name="val" type="text" [(ngModel)]="val" class="form-control" tabindex="3" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea name="remark" [(ngModel)]="remark" rows="6" class="form-control no-resize auto-growth" tabindex="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" *ngFor="let row of fieldDT">
+                    <div class="form-line">
+                        <label class="control-label">{{row.fldname}}</label>
+                        <div *ngIf="row.fldtype == 'input'">
+                            <input name="{{row.fldname}}" [(ngModel)]="row.fldval" class="form-control">
+                        </div>
+                        <div *ngIf="row.fldtype == 'textarea'">
+                            <textarea name="{{row.fldname}}" [(ngModel)]="row.fldval" rows="6" class="form-control no-resize auto-growth"></textarea>
+                        </div>
+                        <div *ngIf="row.fldtype == 'image'">
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadiconconfig.server}}" chooseLabel="Upload Icon" (onUpload)="onIconUpload($event, row)" accept="{{uploadiconconfig.acceptedFiles}}" maxFileSize="{{uploadiconconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <img src="{{uploadiconconfig.uploadurl + row.fldval}}" onerror="this.src='assets/img/noimage.gif';" height="60px">
+                                </div>
+                                <div class="col-md-6" align="right">
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeIconUpload(row)">
+                                        <i class="material-icons">delete</i></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

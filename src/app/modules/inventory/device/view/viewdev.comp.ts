@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
 import { InventoryService } from '@services/master';
+import { LoginUserModel, Globals } from '@models';
 
 @Component({
     templateUrl: 'viewdev.comp.html'
@@ -25,12 +25,13 @@ export class ViewDeviceComponent implements OnInit {
 
     uploaddeviceconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-    constructor(private _invservice: InventoryService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+        private _invservice: InventoryService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
         this.fillDropDownList();
+        this.getUploadConfig();
         this.getDeviceDetails();
     }
 
@@ -48,7 +49,7 @@ export class ViewDeviceComponent implements OnInit {
 
         that._invservice.getDeviceDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.devtypeDT = data.data.filter(a => a.group == "devtyp");
+                that.devtypeDT = data.data.filter(a => a.group == "devicetype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

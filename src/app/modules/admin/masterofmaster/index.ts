@@ -7,7 +7,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { ViewMOMComponent } from './view/viewmom.comp';
 import { AddMOMComponent } from './aded/addmom.comp';
 
-import { LazyLoadEvent, DataTableModule, DataListModule } from 'primeng/primeng';
+import { FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -63,8 +63,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataListModule
-  ],
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), FileUploadModule ],
 
   providers: [AuthGuard]
 })

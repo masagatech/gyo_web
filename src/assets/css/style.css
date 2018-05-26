@@ -3364,7 +3364,7 @@ section.content {
 
 .info-box {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    height: 80px;
+    height: 100px;
     display: flex;
     cursor: default;
     background-color: #fff;
@@ -3382,7 +3382,11 @@ section.content {
     display: inline-block;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.12);
-    width: 80px;
+    width: 100px;
+}
+
+.info-box .icon-pad {
+    padding: 10px 0;
 }
 
 .info-box .icon i {

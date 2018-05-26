@@ -19,6 +19,7 @@ export const routes = [
                     { path: '', loadChildren: './dashboard#DashboardModule' },
                     { path: 'device', loadChildren: './device#DeviceModule' },
                     { path: 'sim', loadChildren: './sim#SimModule' },
+                    { path: 'devicesimmap', loadChildren: './devicesimmap#DeviceSimMapModule' },
                 ]
             }
         ]

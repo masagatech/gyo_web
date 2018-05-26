@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { LazyLoadEvent, DataTable } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'viewMOM.comp.html',

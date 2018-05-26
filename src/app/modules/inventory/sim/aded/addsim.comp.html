@@ -1,18 +1,16 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-4">
-                <h4>Add Sim</h4>
-            </div>
-            <div class="col-md-4 text-right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="saveSimInfo()">
-                    <i class="material-icons">save</i>
-                </button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i>
-                </button>
-            </div>
-        </div>
+        <h4>Add Sim</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveSimInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_forward</i></a>
+            </li>
+        </ul>
     </div>
     <div class="body">
         <div class="row clearfix">

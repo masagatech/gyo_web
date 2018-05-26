@@ -17,7 +17,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: StudentDashboardComponent, canActivate: [AuthGuard],
-        data: { "module": "erppsngr", "submodule": "psngrdb", "rights": "allowed", "urlname": "/dashboard" }
+        data: { "module": "erppsngr", "submodule": "rptpsngrdb", "rights": "allowed", "urlname": "/dashboard" }
       }
     ]
   },

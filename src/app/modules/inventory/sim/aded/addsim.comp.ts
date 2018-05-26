@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { InventoryService } from '@services/master';
 
@@ -14,7 +14,7 @@ export class AddSimComponent implements OnInit {
 
     global = new Globals();
 
-    devsimid: number = 0;
+    simparamid: number = 0;
     simid: number = 0;
     simno: string = "";
     mobileno: string = "";
@@ -24,7 +24,7 @@ export class AddSimComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _invservice: InventoryService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
+        private _msg: MessageService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
     }
@@ -122,9 +122,9 @@ export class AddSimComponent implements OnInit {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.devsimid = params['id'];
+                that.simparamid = params['id'];
 
-                that._invservice.getSimDetails({ "flag": "edit", "id": that.devsimid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
+                that._invservice.getSimDetails({ "flag": "edit", "id": that.simparamid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
                     try {
                         that.simid = data.data[0].simid;
                         that.simno = data.data[0].simno;

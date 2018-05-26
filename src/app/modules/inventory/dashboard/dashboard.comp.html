@@ -6,4 +6,25 @@
             </div>
         </div>
     </div>
+    <div class="body">
+        <div class="row clearfix">
+            <div *ngFor="let row of dashboardDT" class="col-md-3">
+                <div class="info-box bg-blue hover-expand-effect">
+                    <div class="icon icon-pad">
+                        <img src="{{global.uploadurl + row.icon}}" height="80px">
+                    </div>
+                    <div class="content">
+                        <div class="font-16">
+                            {{row.devtype}}
+                        </div>
+                        <div class="hr-border"></div>
+                        <div class="font-14">
+                            Device ({{row.countdev}})
+                            <br /> SIM Map ({{row.countsim}})
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -14,6 +14,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    global = new Globals();
+
     title: any;
     validSuccess: Boolean = true;
 
@@ -23,18 +25,24 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     key: string = "";
     val: string = "";
     typ: string = "";
+    remark: string = "";
     isactive: boolean = true;
+    fieldDT: any = [];
 
     headertitle: string = "";
     mtype: string = "";
     isdynmenu: boolean = false;
 
+    uploadiconconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
-        private _commonservice: CommonService, private _msg: MessageService) {
+        private _autoservice: CommonService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.getUploadConfig();
         this.getMOMGroup();
     }
 
@@ -60,30 +68,69 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Bulk Upload Device and SIM
+
+    getUploadConfig() {
+        var that = this;
+
+        that.uploadiconconfig.server = that.global.serviceurl + "uploads";
+        that.uploadiconconfig.serverpath = that.global.serviceurl;
+        that.uploadiconconfig.uploadurl = that.global.uploadurl;
+        that.uploadiconconfig.filepath = that.global.filepath;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
+            that.uploadiconconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadiconconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // Icon Upload
+
+    onIconUpload(event, row) {
+        var that = this;
+        var imgfile = [];
+
+        imgfile = JSON.parse(event.xhr.response);
+
+        row.fldval = imgfile[0].path.replace(that.uploadiconconfig.filepath, "");
+    }
+
+    removeIconUpload(row) {
+        row.fldval = "";
+    }
+
     resetMOMFields() {
         this.momid = 0;
         this.key = "";
         this.val = "";
+        this.remark = "";
     }
 
     getMOMGroup() {
         var that = this;
+        commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['grpcd'] !== undefined) {
                 that.grpcd = params['grpcd'];
 
-                that._commonservice.getMOM({ "flag": "group", "grpcd": that.grpcd }).subscribe(data => {
+                that._autoservice.getMOM({ "flag": "group", "grpcd": that.grpcd }).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
                             that.headertitle = data.data[0].grpnm;
                             that.mtype = data.data[0].typ;
                             that.isdynmenu = data.data[0].isdynmenu;
+                            that.fieldDT = data.data[0].field;
                         }
                         else {
                             that.headertitle = "";
                             that.mtype = "";
                             that.isdynmenu = false;
+                            that.fieldDT = [];
                         }
                     }
                     catch (e) {
@@ -101,10 +148,12 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             }
         });
 
-        that._commonservice.getMOM({ "flag": "group", "grpcd": "" }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "group", "grpcd": "" }).subscribe(data => {
             that.groupdt = data.data;
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, 'Error', err);
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         })
@@ -132,13 +181,15 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
     saveMOMInfo() {
         var that = this;
-        that.validSuccess = that.isValidateFields()
+        that.validSuccess = that.isValidateFields();
 
         var saveMOM = {
             "autoid": that.momid,
             "group": that.grpcd,
             "key": that.key,
             "val": that.val,
+            "remark": that.remark,
+            "extra": that.fieldDT.filter(a => a.fldval != undefined).filter(a => a.fldval != ""),
             "typ": that.mtype,
             "enttid": that.mtype == "enttwise" ? that._enttdetails.enttid : 0,
             "wsautoid": that.mtype == "wswise" ? that._enttdetails.wsautoid : that.mtype == "enttwise" ? that._enttdetails.wsautoid : 0,
@@ -146,7 +197,9 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         }
 
         if (that.validSuccess) {
-            that._commonservice.saveMOM(saveMOM).subscribe(data => {
+            commonfun.loader();
+            
+            that._autoservice.saveMOM(saveMOM).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_mom;
                     var msg = dataResult.msg;
@@ -169,8 +222,11 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                 catch (e) {
                     that._msg.Show(messageType.error, 'Error', e.message);
                 }
+                
+                commonfun.loaderhide();
             }, err => {
                 that._msg.Show(messageType.error, 'Error', err);
+                commonfun.loaderhide();
             }, () => {
                 // console.log("Complete");
             });
@@ -182,23 +238,38 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     getMOMByID(pmomid: number) {
         var that = this;
 
-        that._commonservice.getMOM({ "flag": "id", "autoid": pmomid }).subscribe(data => {
+        that._autoservice.getMOM({ "flag": "id", "autoid": pmomid }).subscribe(data => {
             var dataresult = data.data;
 
             that.momid = dataresult[0].autoid;
             that.grpcd = dataresult[0].group;
             that.key = dataresult[0].key;
             that.val = dataresult[0].val;
+            that.remark = dataresult[0].remark;
             that.typ = dataresult[0].typ;
-        
+
+            for (var i = 0; i < that.fieldDT.length; i++) {
+                var ifldrow = that.fieldDT[i];
+                var extraflddt = dataresult[0].extra.filter(a => a.fldname == ifldrow.fldname).filter(a => a.fldtype == ifldrow.fldtype);
+
+                for (var j = 0; j < extraflddt.length; j++) {
+                    var jfldrow = extraflddt[j];
+
+                    ifldrow.fldval = jfldrow.fldval;
+                }
+            }
+
             if (that.typ == "global") {
                 $('#val').prop('disabled', true);
             }
             else {
                 $('#val').prop('disabled', false);
             }
+            
+            commonfun.loaderhide();
         }, err => {
-            this._msg.Show(messageType.error, 'Error', err);
+            that._msg.Show(messageType.error, 'Error', err);
+            commonfun.loaderhide();
         }, () => {
             // console.log("Complete");
         })

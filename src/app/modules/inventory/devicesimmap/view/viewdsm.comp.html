@@ -1,0 +1,106 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <h4>View Device Sim Map</h4>
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addDeviceSimMap()">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <table cellspacing="0" cellpadding="0" class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th width="250px">IMEI No</th>
+                    <th width="250px">SIM No</th>
+                    <th width="250px">Mobile No</th>
+                    <th width="100px">From Date</th>
+                    <th width="150px">To Date</th>
+                    <th width="250px">Next Reneual Date</th>
+                    <th width="50px"></th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="simno" class="form-control imeino" maxlength="20" tabindex="7" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="simno" class="form-control simno" maxlength="20" tabindex="7" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" OnlyNumber="true" [(ngModel)]="mobileno" class="form-control mobileno" maxlength="20" tabindex="8" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="frmdt" class="form-control frmdt" maxlength="50" tabindex="9" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="todt" class="form-control todt" maxlength="50" tabindex="10" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" [(ngModel)]="nextrenldt" class="form-control nextrenldt" maxlength="50" tabindex="11" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of devsimDT | filterBy: {'imeino': imeino,'simno': simno,'mobileno': mobileno,'frmdt': frmdt,'todt': todt,'nextrenldt': nextrenldt}">
+                    <td>
+                        {{row.imeino}}
+                    </td>
+                    <td>
+                        {{row.simno}}
+                    </td>
+                    <td>
+                        {{row.mobileno}}
+                    </td>
+                    <td>
+                        {{row.frmdt}}
+                    </td>
+                    <td>
+                        {{row.todt}}
+                    </td>
+                    <td>
+                        {{row.nextrenldt}}
+                    </td>
+                    <td class="text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editDeviceSimMap(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
