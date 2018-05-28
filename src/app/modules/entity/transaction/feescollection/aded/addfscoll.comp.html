@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Payment Mode <strong>*</strong></label>
-                                <select id="paymentmode" name="paymentmode" [(ngModel)]="paymentmode" class="form-control paymentmode" tabindex="2">
+                                <select id="paymodecode" name="paymodename" [(ngModel)]="paymodecode" class="form-control paymentmode" tabindex="2">
                                     <option [value]="''">Select</option>
                                     <option *ngFor="let pmrow of paymentmodeDT" [value]="pmrow.key">
                                         {{pmrow.val}}
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row clearfix" *ngIf="paymentmode == 'cheque'">
+                <div class="row clearfix" *ngIf="paymodecode == 'cheque'">
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">

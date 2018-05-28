@@ -24,7 +24,11 @@ export const routes = [
                     { path: 'communication', loadChildren: './communication#CommunicationReportsModule' },
                     { path: 'transport', loadChildren: './transport#TransportReportsModule' },
 
+                    // Log
                     { path: 'log', loadChildren: './log#LogReportsModule' },
+                    { path: 'auditlog/:module', loadChildren: './auditlog#AuditLogModule' },
+
+                    // Distance
                     { path: 'distance', loadChildren: './distance#DistanceReportsModule' },
                 ]
             }

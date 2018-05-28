@@ -187,7 +187,6 @@
                             <div class="form-line">
                                 <label class="control-label">Gender</label>
                                 <select id="gender" name="gender" [(ngModel)]="gndrkey" class="form-control gender" tabindex="14">
-                                    <option [value]="''">Select Gender</option>
                                     <option *ngFor="let row of genderDT" [value]="row.key">	
                                         {{row.val}}
                                     </option>
@@ -242,15 +241,15 @@
                                                 <i class="material-icons">delete</i></button>
                                         </div>
                                         <div class="col-md-6" align="right">
-                                            <img *ngIf="gender == 'M'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px">
-                                            <img *ngIf="gender == 'F'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px">
+                                            <img *ngIf="gndrkey == 'M'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px">
+                                            <img *ngIf="gndrkey == 'F'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div *ngIf="!uploadPhotoDT.length" align="right">
-                                <img *ngIf="gender == 'M'" src="assets/img/default-male.png" height="60px" />
-                                <img *ngIf="gender == 'F'" src="assets/img/default-female.png" height="60px" />
+                                <img *ngIf="gndrkey == 'M'" src="assets/img/default-male.png" height="60px" />
+                                <img *ngIf="gndrkey == 'F'" src="assets/img/default-female.png" height="60px" />
                             </div>
                         </div>
                     </div>

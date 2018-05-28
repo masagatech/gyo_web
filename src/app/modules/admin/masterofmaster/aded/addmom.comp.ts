@@ -43,10 +43,16 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.getUploadConfig();
-        this.getMOMGroup();
     }
 
     ngOnInit() {
+        this.getMOMGroup();
+        this.editMasterOfMaster();
+    }
+
+    // Edit MOM
+
+    editMasterOfMaster() {
         this.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 this.momid = params['id'];
@@ -68,7 +74,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Bulk Upload Device and SIM
+    // Upload File Details
 
     getUploadConfig() {
         var that = this;
@@ -99,9 +105,13 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         row.fldval = imgfile[0].path.replace(that.uploadiconconfig.filepath, "");
     }
 
+    // Remove Icon
+
     removeIconUpload(row) {
         row.fldval = "";
     }
+
+    // Reset Fields
 
     resetMOMFields() {
         this.momid = 0;
@@ -109,6 +119,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         this.val = "";
         this.remark = "";
     }
+
+    // Get MOM Group
 
     getMOMGroup() {
         var that = this;
@@ -159,6 +171,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Validation MOM Fields
+
     isValidateFields() {
         if (this.grpcd === "") {
             this._msg.Show(messageType.error, 'Error', "Please Select Group");
@@ -179,6 +193,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         return true;
     }
 
+    // Save MOM Fields
+
     saveMOMInfo() {
         var that = this;
         that.validSuccess = that.isValidateFields();
@@ -198,7 +214,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
         if (that.validSuccess) {
             commonfun.loader();
-            
+
             that._autoservice.saveMOM(saveMOM).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_mom;
@@ -222,7 +238,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                 catch (e) {
                     that._msg.Show(messageType.error, 'Error', e.message);
                 }
-                
+
                 commonfun.loaderhide();
             }, err => {
                 that._msg.Show(messageType.error, 'Error', err);
@@ -265,7 +281,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             else {
                 $('#val').prop('disabled', false);
             }
-            
+
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, 'Error', err);

@@ -32,17 +32,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isenttmenu: boolean = false;
   ismstmenu: boolean = false;
   isrptmenu: boolean = false;
+  isalmenu: boolean = false;
 
   mname: string = "";
 
   global = new Globals();
 
-  mastersMenuDT: any = [];
-  settingsMenuDT: any = [];
   enttMenuDT: any = [];
   reportsMenuDT: any = [];
-  erpReportsMenuDT: any = [];
+  mastersMenuDT: any = [];
+  auditlogMenuDT: any = [];
   adminMenuDT: any = [];
+  settingsMenuDT: any = [];
 
   wsautoid: number = 0;
   enttid: number = 0;
@@ -121,11 +122,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.ismstmenu = false;
         this.isenttmenu = false;
         this.isrptmenu = false;
+        this.isalmenu = false;
       }
       else {
         this.ismstmenu = true;
         this.isenttmenu = false;
         this.isrptmenu = false;
+        this.isalmenu = true;
       }
     }
     else {
@@ -136,6 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.ismstmenu = true;
       this.isenttmenu = true;
       this.isrptmenu = true;
+      this.isalmenu = true;
     }
   }
 
@@ -146,12 +150,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype,
       "entttype": that.entttype, "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
     }).subscribe(data => {
-      that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
-      that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
       that.enttMenuDT = data.data.filter(a => a.mptype === "erp");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
-      that.erpReportsMenuDT = data.data.filter(a => a.mptype === "erprpt");
+      that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
+      that.auditlogMenuDT = data.data.filter(a => a.mptype === "auditlog");
       that.adminMenuDT = data.data.filter(a => a.mptype === "admin");
+      that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
     }, err => {
       that._msg.Show(messageType.error, "Error", err);
     }, () => {

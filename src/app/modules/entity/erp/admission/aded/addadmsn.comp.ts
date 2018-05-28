@@ -65,7 +65,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     aadharno: number = 0;
     soccatid: number = 0;
     soccatname: string = "";
-    gndrkey: string = "";
+    gndrkey: string = "M";
     gndrval: string = "";
     dob: any = "";
     birthplace: string = "";
@@ -910,7 +910,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             { "key": "Last Name", "val": that.lname, "fldname": "lname", "fldtype": "text" },
             { "key": "Aadhar No", "val": that.aadharno, "fldname": "aadharno", "fldtype": "text" },
             { "key": "Social Category", "val": ddltype == "old" ? that.soccatname : $("#soccatid option:selected").text().trim(), "fldname": "soccatid", "fldtype": "ddl" },
-            { "key": "Gender", "val": ddltype == "old" ? that.gndrval : $("#gender option:selected").text().trim(), "fldname": "gender" },
+            { "key": "Gender", "val": ddltype == "old" ? that.gndrval : $("#gender option:selected").text().trim(), "fldname": "gender", "fldtype": "ddl" },
             { "key": "Date of Birth", "val": that.dob, "fldname": "dob", "fldtype": "date" },
             { "key": "Birth Place", "val": that.birthplace, "fldname": "birthplace", "fldtype": "text" },
             { "key": "Other Info", "val": that.otherinfo, "fldname": "otherinfo", "fldtype": "text" },
@@ -979,10 +979,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newStudentData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
+        var dispflds = [{ "key": "Student Name", "val": name }];
+
         var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "module": "student", "id": id, "name": name,
-            "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "student", "mdlname": "Student",
+            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
         };
 
         that._autoservice.saveAuditLog(auditparams);

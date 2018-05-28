@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
-
-import { AuditLogReportsComponent } from './rptal.comp';
+import { SharedComponentModule, AuthGuard } from '@services';
 import { LogReportService } from '@services/reports';
+
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { AuditLogComponent } from './auditlog.comp';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: 'auditlog/:module', component: AuditLogReportsComponent, canActivate: [AuthGuard],
+        path: '', component: AuditLogComponent, canActivate: [AuthGuard],
         data: { "module": "auditlog", "submodule": "rptal", "rights": "view", "urlname": "/auditlog" }
       }
     ]
@@ -21,7 +21,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    AuditLogReportsComponent
+    AuditLogComponent
   ],
 
   imports: [

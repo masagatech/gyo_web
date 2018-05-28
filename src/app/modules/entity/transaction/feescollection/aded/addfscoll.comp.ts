@@ -25,6 +25,7 @@ export class AddFeesCollectionComponent implements OnInit {
     classfees: any = "";
     pendingfees: any = "";
     ayid: number = 0;
+    ayname: string = "";
 
     studid: number = 0;
     studname: string = "";
@@ -42,8 +43,10 @@ export class AddFeesCollectionComponent implements OnInit {
     fees: any = "";
     receiptno: number = 0;
     receivedate: any = "";
-    paymentmode: string = "";
+    paymodecode: string = "";
+    paymodename: string = "";
     chequestatus: string = "";
+    chequestatusnm: string = "";
     chequeno: number = 0;
     chequedate: any = null;
     remark: string = "";
@@ -64,6 +67,8 @@ export class AddFeesCollectionComponent implements OnInit {
     isdetails: boolean = false;
 
     feesData: any = {};
+    oldFeesData: any = [];
+    newFeesData: any = [];
 
     private subscribeParameters: any;
 
@@ -263,8 +268,10 @@ export class AddFeesCollectionComponent implements OnInit {
         that.classfees = 0;
         that.pendingfees = 0;
         that.receivedate = "";
-        that.paymentmode = "";
+        that.paymodecode = "";
+        that.paymodename = "";
         that.chequestatus = "";
+        that.chequestatusnm = "";
         that.chequeno = 0;
         that.chequedate = null;
         that.remark = "";
@@ -378,7 +385,12 @@ export class AddFeesCollectionComponent implements OnInit {
         var that = this;
         var isvalid = false;
 
-        isvalid = that.isValidAddFees();
+        if (that.iseditfees == true) {
+            isvalid = true;
+        }
+        else {
+            isvalid = that.isValidAddFees();
+        }
 
         if (isvalid) {
             var catname = $("#ddlcatname option:selected").text().trim();
@@ -413,13 +425,13 @@ export class AddFeesCollectionComponent implements OnInit {
             return false;
         }
 
-        if (that.paymentmode == "") {
+        if (that.paymodecode == "") {
             that._msg.Show(messageType.info, "Info", "Select Payment Mode");
             $(".paymentmode").focus();
             return false;
         }
 
-        if (that.paymentmode == "cheque") {
+        if (that.paymodecode == "cheque") {
             if (that.chequestatus == "") {
                 that._msg.Show(messageType.info, "Info", "Select Cheque Status");
                 $(".chequestatus").focus();
@@ -452,15 +464,56 @@ export class AddFeesCollectionComponent implements OnInit {
         return true;
     }
 
-    // Audit Log
+    // Get Audit Parameter
 
-    saveAuditLog(keyid, oldval, newval) {
+    getAuditData() {
         var that = this;
 
+        var _auditdt = [];
+        var field = null;
+
+        _auditdt = [
+            { "key": "Academic Year", "val": that.ayname, "fldname": "ayid", "fldtype": "label" },
+            { "key": "Class Name", "val": that.classname, "fldname": "clsid", "fldtype": "label" },
+            { "key": "Student Name", "val": that.studname, "fldname": "studid", "fldtype": "label" },
+            { "key": "Receipt No", "val": that.receiptno, "fldname": "docno", "fldtype": "label" },
+            { "key": "Receive Date", "val": that.receivedate, "fldname": "receivedate", "fldtype": "date" },
+            { "key": "Payment Mode", "val": that.paymodename, "fldname": "paymentmode", "fldtype": "ddl" },
+            { "key": "Cheque Status", "val": that.chequestatusnm, "fldname": "chequestatus", "fldtype": "ddl" },
+            { "key": "Cheque No", "val": that.chequeno, "fldname": "chequeno", "fldtype": "text" },
+            { "key": "Cheque Date", "val": that.chequedate, "fldname": "chequedate", "fldtype": "date" },
+            { "key": "Remark", "val": that.remark, "fldname": "remark", "fldtype": "text" },
+
+            // Upload Student Fees
+
+            { "key": "Student Fees", "val": that.saveStudentFeesDT, "fldname": "studentfees", "fldtype": "table" },
+        ]
+
+        return _auditdt;
+    }
+
+    // Audit Log
+
+    saveAuditLog(id, name, oldval, newval) {
+        var that = this;
+
+        var _oldvaldt = [];
+        var _newvaldt = [];
+
+        for (var i = 0; i < Object.keys(oldval).length; i++) {
+            _oldvaldt.push(that.oldFeesData.filter(a => a.fldname == Object.keys(oldval)[i]));
+        }
+
+        for (var i = 0; i < Object.keys(newval).length; i++) {
+            _newvaldt.push(that.newFeesData.filter(a => a.fldname == Object.keys(newval)[i]));
+        }
+
+        var dispflds = [{ "key": "Student Name", "val": name }, { "key": "Receipt No", "val": that.receiptno }];
+
         var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "module": "studentfees", "keyid": keyid,
-            "oldval": oldval, "newval": newval, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "studentfees", "mdlname": "Student Fees",
+            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
         };
 
         that._autoservice.saveAuditLog(auditparams);
@@ -478,7 +531,7 @@ export class AddFeesCollectionComponent implements OnInit {
             "studid": parseInt("" + that.studid),
             "docno": that.receiptno,
             "receivedate": that.receivedate,
-            "paymentmode": that.paymentmode,
+            "paymentmode": that.paymodecode,
             "chequestatus": that.chequestatus,
             "chequeno": that.chequeno,
             "chequedate": that.chequedate,
@@ -500,7 +553,9 @@ export class AddFeesCollectionComponent implements OnInit {
         var isvalid = false;
 
         that.saveStudentFeesDT = JSON.stringify(that.studentFeesDT);
+
         var params = that.getFeesParams();
+        that.newFeesData = that.getAuditData();
 
         var newval = that._autoservice.getDiff2Arrays(that.feesData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.feesData);
@@ -523,7 +578,7 @@ export class AddFeesCollectionComponent implements OnInit {
                                 that._autoservice.messagebox("Fees created Successfully !!!!", "Your Receipt No : " + docno, "success", false);
                             }
                             else {
-                                that.saveAuditLog(docno, oldval, newval);
+                                that.saveAuditLog(that.studid, that.studname, oldval, newval);
                                 that._autoservice.messagebox("Fees updated Successfully !!!!", "", "success", false);
 
                                 that.backViewData();
@@ -579,15 +634,18 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.studid = data.data[0].studid;
                     that.receiptno = data.data[0].receiptno;
                     that.receivedate = data.data[0].editrecvdate;
-                    that.paymentmode = data.data[0].paymodecode;
+                    that.paymodecode = data.data[0].paymodecode;
+                    that.paymodename = data.data[0].paymodename;
 
-                    if (that.paymentmode == "cheque") {
+                    if (that.paymodecode == "cheque") {
                         that.chequestatus = data.data[0].chequestatus;
+                        that.chequestatusnm = data.data[0].chequestatusnm;
                         that.chequeno = data.data[0].chequeno;
                         that.chequedate = data.data[0].editchqdate;
                     }
                     else {
                         that.chequestatus = "";
+                        that.chequestatusnm = "";
                         that.chequeno = 0;
                         that.chequedate = "";
                     }
@@ -604,6 +662,7 @@ export class AddFeesCollectionComponent implements OnInit {
                 }
 
                 that.feesData = that.getFeesParams();
+                that.oldFeesData = that.getAuditData();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -621,7 +680,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     totalFees() {
         var that = this;
-        var field: any = [];
+        var field = null;
 
         var totalfees = 0;
 

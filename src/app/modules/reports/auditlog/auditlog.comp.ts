@@ -5,15 +5,14 @@ import { LoginUserModel, Globals, Common } from '@models';
 import { LogReportService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptal.comp.html'
+    templateUrl: 'auditlog.comp.html'
 })
 
-export class AuditLogReportsComponent implements OnInit, OnDestroy {
+export class AuditLogComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     module: string = "";
-    modulename: string = "";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -50,10 +49,10 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._logrptservice.getAuditLogReports({
-            "flag": "dropdown","enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                var ddldata = JSON.parse(data._body).data;
+                var ddldata = JSON.parse(data._body).data[0];
                 that.ayDT = ddldata.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
@@ -106,7 +105,7 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
     }
 
     // Get Audit Log
-    
+
     getAuditLogReports(format) {
         var that = this;
         var params = {};
@@ -116,21 +115,17 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['module'] !== undefined) {
                 that.module = params['module'];
-
-                if (that.module == "student") {
-                    that.modulename = 'Student';
-                }
             }
 
             params = {
-                "flag": "reports", "module":"student", "id":"0", "ayid":that.ayid, "frmdt": that.frmdt, "todt": that.todt,
+                "flag": "reports", "module": that.module, "id": "0", "ayid": that.ayid, "frmdt": that.frmdt, "todt": that.todt,
                 "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
             }
-    
+
             if (format == "html") {
                 commonfun.loader();
-    
+
                 that._logrptservice.getAuditLogReports(params).subscribe(data => {
                     try {
                         $("#divauditlog").html(data._body);
@@ -138,24 +133,25 @@ export class AuditLogReportsComponent implements OnInit, OnDestroy {
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
                     }
-    
+
                     commonfun.loaderhide();
                 }, err => {
                     that._msg.Show(messageType.error, "Error", err);
                     console.log(err);
                     commonfun.loaderhide();
                 }, () => {
-    
+
                 })
             }
             else {
                 window.open(Common.getReportUrl("getAuditLogReports", params));
+                commonfun.loaderhide();
             }
         });
     }
 
     // Reset Audit Log
-    
+
     resetAuditLogReports() {
     }
 
