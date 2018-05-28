@@ -58,128 +58,208 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-6 pad-20">
+            <div class="col-md-1 col-xs-6 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="resetStudentData()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
             </div>
+            <div class="col-md-3 col-xs-6 pad-20 text-right">
+            </div>
         </div>
     </div>
 
-    <div class="body no-padding">
-        <div class="row clearfix" *ngIf="isShowGrid">
-            <div class="col-md-12" *ngIf="studentDT.length">
-                <p-dataGrid [value]="studentDT" [paginator]="true" [rows]="20">
-                    <ng-template let-row pTemplate="item">
-                        <div style="padding:3px" class="ui-g-12 ui-md-3">
-                            <p-panel [style]="{'text-align':'center'}">
-                                <p-header>
-                                    <div class="row clearfix">
-                                        <div class="col-md-1 col-xs-2">
-                                            <i class="material-icons sm-font">{{row.isactive ? 'done' : ''}}</i>
-                                        </div>
-                                        <div class="col-md-10 col-xs-8">
-                                            {{row.studentname}}
-                                        </div>
-                                        <div class="col-md-1 col-xs-2">
-                                            <a role="button" (click)="editAdmissionForm(row)"><i class="material-icons sm-font">edit</i></a>
-                                        </div>
-                                    </div>
-                                </p-header>
-                                <div class="row clearfix">
-                                    <div class="col-md-4 col-xs-4 border">
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <h4>Academic Year wise Student</h4>
+
+                <table class="table table-bordered table-responsive">
+                    <tr *ngFor="let row of ayDT">
+                        <td>
+                            <b>{{row.val}} : </b>
+                        </td>
+                        <td>
+                            {{row.countstud}}
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+
+                <h4>Board wise Student</h4>
+
+                <table class="table table-bordered table-responsive">
+                    <tr *ngFor="let row of boardDT">
+                        <td>
+                            <b>{{row.val}} : </b>
+                        </td>
+                        <td>
+                            {{row.countstud}}
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+
+                <h4>Class wise Student</h4>
+
+                <table class="table table-bordered table-responsive">
+                    <tr *ngFor="let row of boardDT">
+                        <td>
+                            <b>{{row.val}} : </b>
+                        </td>
+                        <td>
+                            {{row.countstud}}
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+
+                <h4>Social Category wise Student</h4>
+
+                <table class="table table-bordered table-responsive">
+                    <tr *ngFor="let row of socialCategoryDT">
+                        <td>
+                            <b>{{row.val}} : </b>
+                        </td>
+                        <td>
+                            {{row.countstud}}
+                        </td>
+                    </tr>
+                </table>
+
+                <hr />
+
+                <h4>Gender wise Student</h4>
+
+                <table class="table table-bordered table-responsive">
+                    <tr *ngFor="let row of genderDT">
+                        <td>
+                            <b>{{row.val}} : </b>
+                        </td>
+                        <td>
+                            {{row.countstud}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-9">
+                <div class="row clearfix" *ngIf="isShowGrid">
+                    <div class="col-md-12" *ngIf="studentDT.length">
+                        <p-dataGrid [value]="studentDT" [paginator]="true" [rows]="20">
+                            <ng-template let-row pTemplate="item">
+                                <div style="padding:3px" class="ui-g-12 ui-md-4">
+                                    <p-panel [style]="{'text-align':'center'}">
+                                        <p-header>
+                                            <div class="row clearfix">
+                                                <div class="col-md-1 col-xs-2">
+                                                    <i class="material-icons sm-font">{{row.isactive ? 'done' : ''}}</i>
+                                                </div>
+                                                <div class="col-md-10 col-xs-8">
+                                                    {{row.studentname}}
+                                                </div>
+                                                <div class="col-md-1 col-xs-2">
+                                                    <a role="button" (click)="editAdmissionForm(row)"><i class="material-icons sm-font">edit</i></a>
+                                                </div>
+                                            </div>
+                                        </p-header>
                                         <div class="row clearfix">
-                                            <div class="col-md-12">
-                                                <a role="button" (click)="viewStudentDashboard(row)">
-                                                    <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
-                                                    <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
-                                                </a>
+                                            <div class="col-md-4 col-xs-4 border">
+                                                <div class="row clearfix">
+                                                    <div class="col-md-12">
+                                                        <a role="button" (click)="viewStudentDashboard(row)">
+                                                            <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
+                                                            <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="row.gndrval != ''">
+                                                        {{row.gndrval}}
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <b>Roll No :</b> {{row.rollno == null ? 0 : row.rollno}}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.gndrval != ''">
-                                                {{row.gndrval}}
-                                            </div>
-                                            <div class="col-md-12">
-                                                <b>Roll No :</b> {{row.rollno == null ? 0 : row.rollno}}
+                                            <div class="col-md-8 col-xs-8" align="left">
+                                                <div class="row clearfix">
+                                                    <div class="col-md-12 hide">
+                                                        <b>Enrollment No :</b> {{row.enrlmntid}}
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="row.classname != ''">
+                                                        <b>GR. No. :</b> {{row.grno}}
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="row.classname != ''">
+                                                        <b>Standard :</b> {{row.classname}}
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="row.dob != ''">
+                                                        <span class="material-icons sm-font">date_range</span> {{row.dob}}
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="row.mobileno1 != ''">
+                                                        <span class="material-icons sm-font">phone_iphone</span> {{row.mobileno1}}
+                                                        <span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="row.email1 != ''">
+                                                        <span class="material-icons sm-font">email</span> {{row.email1}}
+                                                        <span *ngIf="row.email1 != '' && row.email2 !== ''">, </span>{{row.email2}}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-8 col-xs-8" align="left">
-                                        <div class="row clearfix">
-                                            <div class="col-md-12 hide">
-                                                <b>Enrollment No :</b> {{row.enrlmntid}}
+                                        <p-footer>
+                                            <div class="row clearfix">
+                                                <div class="col-md-12">
+                                                    <span class="font-bold">Class Teacher : </span> {{row.clstchrname}}
+                                                </div>
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.classname != ''">
-                                                <b>GR. No. :</b> {{row.grno}}
-                                            </div>
-                                            <div class="col-md-12" *ngIf="row.classname != ''">
-                                                <b>Standard :</b> {{row.classname}}
-                                            </div>
-                                            <div class="col-md-12" *ngIf="row.dob != ''">
-                                                <span class="material-icons sm-font">date_range</span> {{row.dob}}
-                                            </div>
-                                            <div class="col-md-12" *ngIf="row.mobileno1 != ''">
-                                                <span class="material-icons sm-font">phone_iphone</span> {{row.mobileno1}}
-                                                <span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
-                                            </div>
-                                            <div class="col-md-12" *ngIf="row.email1 != ''">
-                                                <span class="material-icons sm-font">email</span> {{row.email1}}
-                                                <span *ngIf="row.email1 != '' && row.email2 !== ''">, </span>{{row.email2}}
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </p-footer>
+                                    </p-panel>
                                 </div>
-                                <p-footer>
-                                    <div class="row clearfix">
-                                        <div class="col-md-12">
-                                            <span class="font-bold">Class Teacher : </span> {{row.clstchrname}}
-                                        </div>
-                                    </div>
-                                </p-footer>
-                            </p-panel>
-                        </div>
-                    </ng-template>
-                </p-dataGrid>
-            </div>
-            <div class="col-md-12" *ngIf="!studentDT.length">
-                No records found
-            </div>
-        </div>
-        <div class="row clearfix" *ngIf="isShowList">
-            <div class="col-md-12">
-                <p-dataTable [value]="studentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">
-                            <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
-                        </ng-template>
-                    </p-column>
-                    <p-column field="enrlmntid" header="Enrollment No" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="studentname" header="Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="classname" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column header="Email" [style]="{'width':'250px','text-align':'left','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column field="mode" header="Status" [style]="{'width':'80px', 'text-align':'left','vertical-align':'top'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editAdmissionForm(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
-                </p-dataTable>
+                            </ng-template>
+                        </p-dataGrid>
+                    </div>
+                    <div class="col-md-12" *ngIf="!studentDT.length">
+                        No records found
+                    </div>
+                </div>
+                <div class="row clearfix" *ngIf="isShowList">
+                    <div class="col-md-12">
+                        <p-dataTable [value]="studentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                            <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
+                                <ng-template let-row="rowData" pTemplate type="body">
+                                    <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">
+                                    <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
+                                </ng-template>
+                            </p-column>
+                            <p-column field="enrlmntid" header="Enrollment No" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="studentname" header="Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="classname" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
+                                <ng-template let-row="rowData" pTemplate type="body">
+                                    {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column header="Email" [style]="{'width':'250px','text-align':'left','vertical-align':'top'}">
+                                <ng-template let-row="rowData" pTemplate type="body">
+                                    {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="mode" header="Status" [style]="{'width':'80px', 'text-align':'left','vertical-align':'top'}"></p-column>
+                            <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
+                                <ng-template let-row="rowData" pTemplate type="body">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editAdmissionForm(row)">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

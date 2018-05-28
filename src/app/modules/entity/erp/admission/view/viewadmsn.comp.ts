@@ -21,11 +21,17 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
+    prospectusDT: any = [];
+    boardDT: any = [];
+
     ayDT: any = [];
     ayid: number = 0;
 
     classDT: any = [];
     classid: number = 0;
+    
+    genderDT: any = [];
+    socialCategoryDT: any = [];
 
     autoStudentDT: any = [];
     selectStudent: any = {};
@@ -33,6 +39,9 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     studname: string = "";
 
     studentDT: any = [];
+    maleStudentDT: any = [];
+    femaleStudentDT: any = [];
+    otherStudentDT: any = [];
 
     // Upload File
 
@@ -58,6 +67,55 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    // Fill Academic Year, Class And Occupation DropDown
+
+    fillDropDownList() {
+        var that = this;
+        var defayDT: any = [];
+
+        commonfun.loader();
+
+        that._admsnservice.getStudentDetails({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
+                that.boardDT = data.data.filter(a => a.group == "board");
+
+                that.ayDT = data.data.filter(a => a.group == "ay");
+                that.classDT = data.data.filter(a => a.group == "class");
+
+                if (that.ayDT.length > 0) {
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].key;
+                        that.getStudentDetails();
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
+                }
+
+                that.genderDT = data.data.filter(a => a.group == "gender");
+                that.socialCategoryDT = data.data.filter(a => a.group == "socialcategory");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Bulk Upload
@@ -173,49 +231,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this.getStudentDetails();
     }
 
-    // Fill Entity, Standard, Month DropDown
-
-    fillDropDownList() {
-        var that = this;
-        var defayDT: any = [];
-
-        commonfun.loader();
-
-        that._admsnservice.getStudentDetails({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.classDT = data.data.filter(a => a.group === "class");
-                that.ayDT = data.data.filter(a => a.group == "ay");
-
-                if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
-                        that.getStudentDetails();
-                    }
-                    else {
-                        that.ayid = 0;
-                    }
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     // View Data Rights
 
     public viewStudentDataRights() {
@@ -254,6 +269,9 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         that._admsnservice.getStudentDetails(params).subscribe(data => {
             try {
                 that.studentDT = data.data;
+                that.maleStudentDT = data.data.filter(a => a.gndrkey == "M");
+                that.femaleStudentDT = data.data.filter(a => a.gndrkey == "F");
+                that.otherStudentDT = data.data.filter(a => a.gndrkey == "O");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

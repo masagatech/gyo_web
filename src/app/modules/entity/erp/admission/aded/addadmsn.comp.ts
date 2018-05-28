@@ -1176,7 +1176,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.classname = "";
                         that.boardid = 0;
                         that.boardname = "";
-                        that.gndrkey = "";
+                        that.gndrkey = "M";
                         that.gndrval = "";
                     }
                 }
@@ -1203,7 +1203,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             that.classname = "";
             that.boardid = 0;
             that.boardname = "";
-            that.gndrkey = "";
+            that.gndrkey = "M";
             that.gndrval = "";
         }
 
