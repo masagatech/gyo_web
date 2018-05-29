@@ -22,6 +22,9 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
+    genderDT: any = [];
+    gender: string = "";
+
     attndmonthDT: any = [];
     attndmonth: string = "";
 
@@ -86,7 +89,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        
+
                         that.fillMonthDropDown();
                         that.getDefaultMonth();
                         that.getAttendanceReports();
@@ -97,6 +100,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
+                that.genderDT = data.data.filter(a => a.group == "gender");
                 that.attndtypeDT = data.data.filter(a => a.group == "attendancetype");
             }
             catch (e) {
@@ -187,8 +191,9 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
             params = {
                 "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
-                "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin
+                "ayid": that.ayid, "classid": that.classid, "gender": that.gender, "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+                "issysadmin": that.loginUser.issysadmin
             }
 
             that._attndservice.getAttendance(params).subscribe(data => {

@@ -8,8 +8,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 declare var $: any;
 
 @Component({
-    templateUrl: 'viewadmsn.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewadmsn.comp.html'
 })
 
 export class ViewAdmissionComponent implements OnInit, OnDestroy {
@@ -21,17 +20,19 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
+    ayDT: any = [];
     prospectusDT: any = [];
     boardDT: any = [];
-
-    ayDT: any = [];
-    ayid: number = 0;
-
     classDT: any = [];
-    classid: number = 0;
-    
     genderDT: any = [];
     socialCategoryDT: any = [];
+
+    ayid: number = 0;
+    prspctid: number = 0;
+    boardid: number = 0;
+    classid: number = 0;
+    gender: string = "";
+    soccatid: number = 0;
 
     autoStudentDT: any = [];
     selectStudent: any = {};
@@ -39,9 +40,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     studname: string = "";
 
     studentDT: any = [];
-    maleStudentDT: any = [];
-    femaleStudentDT: any = [];
-    otherStudentDT: any = [];
+    selectefFilterRow: any = {};
 
     // Upload File
 
@@ -55,6 +54,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
         this.getUploadConfig();
         this.fillDropDownList();
+
         this.viewStudentDataRights();
     }
 
@@ -82,26 +82,30 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
+                that.ayDT = data.data.filter(a => a.group == "ay");
+
                 that.prospectusDT = data.data.filter(a => a.group == "prospectus");
                 that.boardDT = data.data.filter(a => a.group == "board");
-
-                that.ayDT = data.data.filter(a => a.group == "ay");
                 that.classDT = data.data.filter(a => a.group == "class");
-
-                if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
-                        that.getStudentDetails();
-                    }
-                    else {
-                        that.ayid = 0;
-                    }
-                }
-
                 that.genderDT = data.data.filter(a => a.group == "gender");
                 that.socialCategoryDT = data.data.filter(a => a.group == "socialcategory");
+
+                if (that.ayDT.length > 0) {
+                    if (Cookie.get('_ayid_') == null) {
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                            that.getStudentDetails();
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
+                    }
+                    else {
+                        that.ayid = parseInt(Cookie.get('_ayid_'));
+                    }
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -116,6 +120,24 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
+    }
+
+    // Reset Student
+
+    resetStudentData() {
+        this.prspctid = 0;
+        this.boardid = 0;
+        this.classid = 0;
+        this.gender = "";
+        this.soccatid = 0;
+
+        Cookie.delete("_studid_");
+        Cookie.delete("_studname_");
+        this.studid = 0;
+        this.studname = "";
+        this.selectStudent = {};
+
+        this.getStudentDetails();
     }
 
     // Bulk Upload
@@ -161,7 +183,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             for (var i = 0; i < xlsfile.length; i++) {
                 that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
             }
-            
+
             that._msg.Show(messageType.success, "Success", xlsfile.msg);
 
             that.closeBulkUploadPopup();
@@ -243,6 +265,35 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
             that.selectStudent = { value: that.studid, label: that.studname }
         }
 
+        if (Cookie.get('_ayid_') != null) {
+            that.ayid = parseInt(Cookie.get('_ayid_'));
+
+            if (Cookie.get('_fltrid_') != null) {
+                if (Cookie.get('_fltrtype_') == "prospectus") {
+                    that.prspctid = parseInt(Cookie.get('_fltrid_'));
+                }
+                else if (Cookie.get('_fltrtype_') == "board") {
+                    that.boardid = parseInt(Cookie.get('_fltrid_'));
+                }
+                else if (Cookie.get('_fltrtype_') == "class") {
+                    that.classid = parseInt(Cookie.get('_fltrid_'));
+                }
+                else if (Cookie.get('_fltrtype_') == "gender") {
+                    that.gender = Cookie.get('_fltrid_');
+                }
+                else if (Cookie.get('_fltrtype_') == "socialcategory") {
+                    that.soccatid = parseInt(Cookie.get('_fltrid_'));
+                }
+            }
+            else {
+                that.prspctid = 0;
+                that.boardid = 0;
+                that.classid = 0;
+                that.gender = "";
+                that.soccatid = 0;
+            }
+        }
+
         that.getStudentDetails();
     }
 
@@ -262,16 +313,14 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "studid": that.studid, "classid": that.classid, "ayid": that.ayid, "enttid": that._enttdetails.enttid,
+            "ayid": that.ayid, "prspctid": that.prspctid, "boardid": that.boardid, "classid": that.classid,
+            "gender": that.gender, "soccatid": that.soccatid, "studid": that.studid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 
         that._admsnservice.getStudentDetails(params).subscribe(data => {
             try {
                 that.studentDT = data.data;
-                that.maleStudentDT = data.data.filter(a => a.gndrkey == "M");
-                that.femaleStudentDT = data.data.filter(a => a.gndrkey == "F");
-                that.otherStudentDT = data.data.filter(a => a.gndrkey == "O");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -287,17 +336,12 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         })
     }
 
-    resetStudentData() {
-        Cookie.delete("_studid_");
-        Cookie.delete("_studname_");
-        this.studid = 0;
-        this.studname = "";
-        this.selectStudent = {};
-        this.getStudentDetails();
+    public viewDashboardForm() {
+        this._router.navigate(['/erp/student/dashboard']);
     }
 
     public addAdmissionForm() {
-        this._router.navigate(['/erp/student/admission']);
+        this._router.navigate(['/erp/student']);
     }
 
     public editAdmissionForm(row) {
@@ -307,8 +351,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     viewStudentDashboard(row) {
         Cookie.set("_studid_", row.enrlmntid);
         Cookie.set("_studname_", row.studentname);
-        
-        this._router.navigate(['/erp/student/dashboard']);
+
+        this._router.navigate(['/reports/erp/student/dashboard']);
     }
 
     openBulkUploadPopup() {

@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-8">
+                <h4>Student Dashboard</h4>
+            </div>
+
+            <div class="col-md-2" align="right">
+                <div class="form-group">
+                    <div class="form-line">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getStudentDashboard()">
+                            <option [value]="0">Select Academic year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" align="right">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="viewStudentProfile(null)">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div *ngFor="let row of dashboardDT | groupBy: 'grpname'" class="col-md-3">
+                    <div class="info-box bg-orange">
+                        <div class="icon">
+                            <img src="{{row.key.split('~')[1]}}" height="100px" width="100px">
+                        </div>
+                        <div class="content">
+                            <div class="font-18">{{row.key.split('~')[0]}}</div>
+
+                            <div *ngFor="let drow of row.value">
+                                <div class="font-15">
+                                    <a role="button" (click)="viewStudentProfile(drow)">
+                                       {{drow.val}} ({{drow.countstud}})
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

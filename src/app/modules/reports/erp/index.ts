@@ -19,6 +19,8 @@ export const routes = [
 
                     { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
                     
+                    { path: 'erp/student/dashboard', loadChildren: './studentdashboard#StudentDashboardModule' },
+                    
                     { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
 

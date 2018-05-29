@@ -9,13 +9,14 @@ declare var loader: any;
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'addadmsn.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addadmsn.comp.html'
 })
 
 export class AddAdmissionComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
+
+    global = new Globals();
 
     prospectusDT: any = [];
     prspctnoDT: any = [];
@@ -130,8 +131,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     mthrothschname: string = "";
     mthrenrlmntid: number = 0;
 
-    global = new Globals();
-
     // Upload Photo
 
     uploadPhotoDT: any = [];
@@ -174,8 +173,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _admsnservice: AdmissionService, private _autoservice: CommonService,
-        private _routeParams: ActivatedRoute, private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

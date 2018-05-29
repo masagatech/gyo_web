@@ -29,11 +29,24 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Gender</label>
+                        <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="3" (ngModelChange)="getStudentDetails()">
+                            <option [value]="''">Select Gender</option>
+                            <option *ngFor="let row of genderDT" [value]="row.id">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-2 col-xs-5">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
-                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control">
+                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control" tabindex="4">
                             <option *ngFor="let row of attndmonthDT" [value]="row.val">
                                 {{row.val}}
                             </option>
@@ -45,7 +58,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Attendance Type <strong>*</strong></label>
-                        <select id="attndtype" name="attndtype" [(ngModel)]="attndtype" class="form-control attndtype" tabindex="4">
+                        <select id="attndtype" name="attndtype" [(ngModel)]="attndtype" class="form-control attndtype" tabindex="5">
                             <option *ngFor="let row of attndtypeDT" [value]="row.id">
                                 {{row.val}}
                             </option>
@@ -53,13 +66,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-2 pad-20">
+            <div class="col-md-1 col-xs-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
                         <i class="material-icons">arrow_forward</i></button>
                 </div>
             </div>
-            <div class="col-md-2 pad-20 text-right">
+            <div class="col-md-1 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
@@ -86,6 +99,7 @@
                             <th width="60px" *ngIf="psngrtype == 'student'">GR No</th>
                             <th width="60px" *ngIf="psngrtype == 'student'">Roll No</th>
                             <th width="300px">{{psngrtypenm}} Name</th>
+                            <th width="60px">Gender</th>
                             <th *ngFor="let atcol of attendanceColumn">
                                 {{atcol.day}}
                             </th>
@@ -106,6 +120,9 @@
                             </td>
                             <td>
                                 {{row.psngrname}}
+                            </td>
+                            <td>
+                                {{row.gndrval}}
                             </td>
                             <td *ngFor="let atcol of attendanceColumn" align="center" class="{{row[atcol.day]}}">
                                 {{row[atcol.day]}}
