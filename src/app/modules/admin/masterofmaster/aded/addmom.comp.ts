@@ -24,6 +24,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     grpcd: string = "";
     key: string = "";
     val: string = "";
+    icon: string = "";
     typ: string = "";
     remark: string = "";
     isactive: boolean = true;
@@ -117,6 +118,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         this.momid = 0;
         this.key = "";
         this.val = "";
+        this.icon = "";
         this.remark = "";
     }
 
@@ -204,6 +206,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             "group": that.grpcd,
             "key": that.key,
             "val": that.val,
+            "icon": that.icon,
             "remark": that.remark,
             "extra": that.fieldDT.filter(a => a.fldval != undefined).filter(a => a.fldval != ""),
             "typ": that.mtype,
@@ -261,6 +264,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             that.grpcd = dataresult[0].group;
             that.key = dataresult[0].key;
             that.val = dataresult[0].val;
+            that.icon = dataresult[0].icon;
             that.remark = dataresult[0].remark;
             that.typ = dataresult[0].typ;
 

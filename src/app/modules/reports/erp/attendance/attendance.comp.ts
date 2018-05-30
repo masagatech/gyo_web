@@ -13,6 +13,8 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    global = new Globals();
+
     psngrtype: string = "";
     psngrtypenm: string = "";
 
@@ -32,14 +34,13 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
     attndtype: string = "class";
 
     attendanceColumn: any = [];
+    monthColumn: any = [];
     attendanceDT: any = [];
     exportAttendanceDT: any = [];
 
     statusid: number = 0;
     status: string = "";
     statusdesc: string = "";
-
-    global = new Globals();
 
     private subscribeParameters: any;
 
@@ -50,7 +51,8 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
         this.fillDropDownList();
         this.fillMonthDropDown();
-        this.getDefaultMonth();
+        // this.getDefaultMonth();
+        this.getAttendanceReports();
     }
 
     public ngOnInit() {
@@ -91,7 +93,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                         that.ayid = defayDT[0].id;
 
                         that.fillMonthDropDown();
-                        that.getDefaultMonth();
+                        // that.getDefaultMonth();
                         that.getAttendanceReports();
                     }
                     else {
@@ -145,15 +147,51 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Attendent Data
+    // Get Attendance Reports
 
     getAttendanceReports() {
         var that = this;
 
-        that._attndservice.getAttendance({ "flag": "column", "attndmonth": that.attndmonth }).subscribe(data => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
+
+                if (that.psngrtype == "student") {
+                    that.psngrtypenm = 'Student';
+                }
+                else if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                    that.classid = 0;
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                    that.classid = 0;
+                }
+            }
+            else {
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
+                that.classid = 0;
+            }
+
+            that.getAttendanceColumn();
+        }, () => {
+
+        })
+    }
+
+    // Get Attendent Column
+
+    getAttendanceColumn() {
+        var that = this;
+
+        that._attndservice.getAttendance({
+            "flag": "column", "ayid": that.ayid, "enttid": that._enttdetails.enttid, "attndmonth": that.attndmonth
+        }).subscribe(data => {
             if (data.data.length !== 0) {
                 that.attendanceColumn = data.data;
-                that.getPassengerAttendance();
+                that.monthColumn = data.data.filter(a => a.id == 1);
+                that.getAttendanceData();
             }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -161,101 +199,49 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getPassengerAttendance() {
+    // Get Attendent Data
+
+    getAttendanceData() {
         var that = this;
         var params = {};
 
         commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['psngrtype'] !== undefined) {
-                that.psngrtype = params['psngrtype'];
+        params = {
+            "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
+            "ayid": that.ayid, "classid": that.classid, "gender": that.gender, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin
+        }
 
-                if (that.psngrtype == "student") {
-                    that.psngrtypenm = 'Student';
-                }
-                else if (that.psngrtype == "teacher") {
-                    that.psngrtypenm = 'Teacher';
-                    that.classid = 0;
-                }
-                else {
-                    that.psngrtypenm = 'Employee';
-                    that.classid = 0;
-                }
-            }
-            else {
-                that.psngrtype = "passenger";
-                that.psngrtypenm = 'Passenger';
-                that.classid = 0;
-            }
+        that._attndservice.getAttendance(params).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.attendanceDT = data.data;
 
-            params = {
-                "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
-                "ayid": that.ayid, "classid": that.classid, "gender": that.gender, "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                "issysadmin": that.loginUser.issysadmin
-            }
+                    that.statusid = data.data[0].statusid;
+                    that.status = data.data[0].status;
 
-            that._attndservice.getAttendance(params).subscribe(data => {
-                try {
-                    if (data.data.length > 0) {
-                        that.attendanceDT = data.data;
-
-                        that.statusid = data.data[0].statusid;
-                        that.status = data.data[0].status;
-
-                        if (that.statusid == 0 && that.status != "lv") {
-                            that.statusdesc = data.data[0].statusdesc;
-                        }
-                    }
-                    else {
-                        that.attendanceDT = [];
-                        that.statusid = 0;
-                        that.status = "";
-                        that.statusdesc = "";
+                    if (that.statusid == 0 && that.status != "lv") {
+                        that.statusdesc = data.data[0].statusdesc;
                     }
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            })
-        });
-    }
-
-    // Get passenger Type
-
-    getPassengerType() {
-        var that = this;
-
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['psngrtype'] !== undefined) {
-                that.psngrtype = params['psngrtype'];
-
-                if (that.psngrtype == "student") {
-                    that.psngrtypenm = 'Student';
-                }
-                else if (that.psngrtype == "teacher") {
-                    that.psngrtypenm = 'Teacher';
-                    that.classid = 0;
-                }
                 else {
-                    that.psngrtypenm = 'Employee';
-                    that.classid = 0;
+                    that.attendanceDT = [];
+                    that.statusid = 0;
+                    that.status = "";
+                    that.statusdesc = "";
                 }
             }
-            else {
-                that.psngrtype = "passenger";
-                that.psngrtypenm = 'Passenger';
-                that.classid = 0;
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
         }, () => {
 
         })
@@ -268,8 +254,9 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
         var dparams = {
             "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
-            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
+            "ayid": that.ayid, "classid": that.classid, "gender": that.gender, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
         if (format == "html") {

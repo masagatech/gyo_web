@@ -1606,26 +1606,6 @@
     font-size: 50px!important;
 }
 
-.align-left {
-    text-align: left;
-}
-
-.align-center {
-    text-align: center;
-}
-
-.align-right {
-    text-align: right;
-}
-
-.align-justify {
-    text-align: justify;
-}
-
-.no-resize {
-    resize: none;
-}
-
 .font-bold {
     font-weight: bold;
 }
@@ -1648,6 +1628,78 @@
 
 .font-overline {
     text-decoration: overline;
+}
+
+.pad-01 {
+    padding: 1px;
+}
+
+.pad-02 {
+    padding: 2px;
+}
+
+.pad-03 {
+    padding: 3px;
+}
+
+.pad-04 {
+    padding: 4px;
+}
+
+.pad-05 {
+    padding: 5px;
+}
+
+.pad-06 {
+    padding: 6px;
+}
+
+.pad-07 {
+    padding: 7px;
+}
+
+.pad-08 {
+    padding: 8px;
+}
+
+.pad-09 {
+    padding: 9px;
+}
+
+.pad-10 {
+    padding: 10px;
+}
+
+.pad-20 {
+    padding-top: 20px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-justify {
+    text-align: justify;
+}
+
+.no-resize {
+    resize: none;
 }
 
 .block-header {
@@ -1695,6 +1747,10 @@
 
 .bg-light-pink {
     background: #debbd0bd !important;
+    color: #000000 !important;
+}
+
+.bg-light-pink a {
     color: #000000 !important;
 }
 
@@ -10557,53 +10613,6 @@ body.waitMe_body .waitMe_container.text>div {
     border-radius: 5px;
 }
 
-.passed,
-.Passed {
-    background-color: rgb(10, 243, 80);
-    color: #FFFFFF;
-    padding: 5px 8px;
-    font-size: 11px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.absent,
-.Absent,
-.failed,
-.Failed,
-.wo,
-.WO {
-    background-color: #E91E63;
-    color: #FFFFFF;
-    padding: 5px 8px;
-    font-size: 11px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.holiday,
-.hld,
-.HLD {
-    background-color: #03A9F4;
-    color: #FFFFFF;
-    padding: 5px 8px;
-    font-size: 10px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.leave,
-.Leave,
-.lv,
-.LV {
-    background-color: #FF9800;
-    color: #FFFFFF;
-    padding: 5px 10px;
-    font-size: 10px;
-    text-align: center;
-    vertical-align: middle;
-}
-
 .pickdrop {
     background-color: #8BC34A;
     color: #FFFFFF;
@@ -10685,11 +10694,58 @@ body.waitMe_body .waitMe_container.text>div {
     font-size: 10px;
 }
 
+.passed,
+.Passed {
+    background-color: rgb(10, 243, 80);
+    color: #FFFFFF;
+    padding: 5px 8px;
+    font-size: 11px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.absent,
+.Absent,
+.failed,
+.Failed,
+.wo,
+.WO {
+    background-color: #e8bbbb;
+    color: #000000;
+    padding: 5px 8px;
+    font-size: 11px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.holiday,
+.hld,
+.HLD {
+    background-color: #bbdce8;
+    color: #000000;
+    padding: 5px 8px;
+    font-size: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.leave,
+.Leave,
+.lv,
+.LV {
+    background-color: #e6d38f;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    font-size: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
 .P,
 .D,
 .PD {
-    background-color: #8BC34A;
-    color: #FFFFFF;
+    background-color: #d3e8bb;
+    color: #000000;
     padding: 13px 13px;
     margin-left: -5px;
     font-size: 10px;
@@ -10706,8 +10762,8 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .A {
-    background-color: #E91E63;
-    color: #FFFFFF;
+    background-color: #e8bbbb;
+    color: #000000;
     padding: 13px 13px;
     margin-left: -5px;
     font-size: 10px;
@@ -10715,8 +10771,8 @@ body.waitMe_body .waitMe_container.text>div {
 }
 
 .H {
-    background-color: #03A9F4;
-    color: #FFFFFF;
+    background-color: #bbdce8;
+    color: #000000;
     padding: 13px 13px;
     margin-left: -5px;
     font-size: 10px;
@@ -10964,22 +11020,6 @@ td {
 
 .m-05 {
     margin: 5px;
-}
-
-.pad-04 {
-    padding: 4px;
-}
-
-.pad-06 {
-    padding: 6px;
-}
-
-.pad-10 {
-    padding: 10px;
-}
-
-.pad-20 {
-    padding-top: 20px;
 }
 
 .img-lg {
