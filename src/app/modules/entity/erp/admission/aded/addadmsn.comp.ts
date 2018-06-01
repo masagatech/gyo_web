@@ -259,6 +259,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         this.admdate = this.formatDate(today);
         this.dob = this.formatDate(before4year);
+        this.formatDateToWord(this.dob);
     }
 
     isWithProspectus() {
@@ -279,13 +280,18 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "July", "August", "September", "October", "November", "December"
         ];
 
-        var _dob = new Date(date);
+        if (date == "") {
+            this.dobword = "This is not a valid date";
+        }
+        else {
+            var _dob = new Date(date);
 
-        var day = this._autoservice.numToWords(_dob.getDate());
-        var month = monthNames[_dob.getMonth()];
-        var year = this._autoservice.numToWords(_dob.getFullYear());
+            var day = this._autoservice.numToWords(_dob.getDate());
+            var month = monthNames[_dob.getMonth()];
+            var year = this._autoservice.numToWords(_dob.getFullYear());
 
-        this.dobword = day + " " + month + " " + year;
+            this.dobword = day + " " + month + " " + year;
+        }
     }
 
     // Fill Academic Year, Class And Occupation DropDown
@@ -976,9 +982,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             { "key": "First Name", "val": that.fname, "fldname": "fname", "fldtype": "text" },
             { "key": "Middle Name", "val": that.mname, "fldname": "mname", "fldtype": "text" },
             { "key": "Last Name", "val": that.lname, "fldname": "lname", "fldtype": "text" },
-            
+
             // Personal Details
-            
+
             { "key": "Date of Birth", "val": that.dob, "fldname": "dob", "fldtype": "date" },
             { "key": "Birth Place", "val": that.birthplace, "fldname": "birthplace", "fldtype": "text" },
             { "key": "Aadhar No", "val": that.aadharno, "fldname": "aadharno", "fldtype": "text" },
@@ -1095,7 +1101,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "lname": that.lname,
 
             // Personal Details
-            
+
             "dob": that.dob,
             "birthplace": that.birthplace,
             "aadharno": that.aadharno,
@@ -1503,6 +1509,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     // Personal Information
 
                     that.dob = that.studentDT[0].dob;
+                    that.formatDateToWord(that.dob);
                     that.birthplace = that.studentDT[0].birthplace;
                     that.aadharno = that.studentDT[0].aadharno;
                     that.gndrkey = that.studentDT[0].gndrkey;

@@ -18,18 +18,27 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
     global = new Globals();
 
     ayDT: any = [];
+    admissionCategoryDT: any = [];
     prospectusDT: any = [];
     boardDT: any = [];
     classDT: any = [];
     genderDT: any = [];
     castCategoryDT: any = [];
+    bloodGroupDT: any = [];
+    religionDT: any = [];
 
+    frmage: any = "";
+    toage: any = "";
     ayid: number = 0;
+    status: string = "";
+    admcatid: string = "";
     prspctid: number = 0;
     boardid: number = 0;
     classid: number = 0;
     gender: string = "";
     castcatid: string = "";
+    bldgrpid: string = "";
+    relgnid: string = "";
 
     autoPassengerDT: any = [];
     selectedPassenger: any = [];
@@ -118,11 +127,14 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
                     }
                 }
 
+                that.admissionCategoryDT = data.data.filter(a => a.group == "admissioncategory");
                 that.prospectusDT = data.data.filter(a => a.group == "prospectus");
                 that.boardDT = data.data.filter(a => a.group == "board");
                 that.classDT = data.data.filter(a => a.group == "class");
                 that.genderDT = data.data.filter(a => a.group == "gender");
                 that.castCategoryDT = data.data.filter(a => a.group == "castcategory");
+                that.bloodGroupDT = data.data.filter(a => a.group == "bloodgroup");
+                that.religionDT = data.data.filter(a => a.group == "religion");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -183,8 +195,10 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
 
         var dparams = {
             "flag": _flag, "psngrtype": that.psngrtype, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid,
-            "ayid": that.ayid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "prspctid": that.prspctid, "boardid": that.boardid, "classid": that.classid, "gndrkey": that.gender, "castcatid": that.castcatid,
+            "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "ayid": that.ayid,
+            "status": that.status, "admcatid": that.admcatid, "prspctid": that.prspctid, "boardid": that.boardid, "classid": that.classid,
+            "gndrkey": that.gender, "castcatid": that.castcatid, "bldgrpid": that.bldgrpid, "relgnid": that.relgnid,
+            "frmage": that.frmage, "toage": that.toage == "" ? that.frmage : that.toage,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
@@ -222,7 +236,9 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
         this.classid = 0;
         this.gender = "";
         this.castcatid = "";
-        
+        this.frmage = "";
+        this.toage = ""
+
         this.psngrid = 0;
         this.psngrname = "";
         this.selectedPassenger = {};

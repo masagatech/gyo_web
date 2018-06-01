@@ -341,7 +341,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     }
 
     public addAdmissionForm() {
-        this._router.navigate(['/erp/student']);
+        this._router.navigate(['/erp/student/admission']);
     }
 
     public editAdmissionForm(row) {

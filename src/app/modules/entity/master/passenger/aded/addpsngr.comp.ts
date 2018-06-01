@@ -18,6 +18,7 @@ export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    ayDT: any = [];
     genderDT: any = [];
     alertDT: any = [];
 
@@ -26,6 +27,7 @@ export class AddPassengerComponent implements OnInit {
     pickstopsDT: any = [];
     dropstopsDT: any = [];
 
+    ayid: number = 0;
     psngrid: number = 0;
     psngrcode: string = "";
     psngrname: string = "";
@@ -92,10 +94,30 @@ export class AddPassengerComponent implements OnInit {
 
     fillDropDownList() {
         var that = this;
+        var defayDT: any = [];
+        
         commonfun.loader();
 
-        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
+        var dparams = {
+            "flag": "dropdown", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, 
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }
+
+        that._psngrservice.getPassengerDetails(dparams).subscribe(data => {
             try {
+                that.ayDT = data.data.filter(a => a.group == "ay");
+
+                if (that.ayDT.length > 0) {
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].key;
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
+                }
+
                 that.genderDT = data.data.filter(a => a.group === "gender");
                 that.alertDT = data.data.filter(a => a.group === "alert");
                 that.alert = that.alertDT.filter(a => a.isselected === true)[0].key;
@@ -371,6 +393,7 @@ export class AddPassengerComponent implements OnInit {
     resetPassengerFields() {
         var that = this;
 
+        that.ayid = 0;
         that.psngrid = 0;
         that.psngrcode = "";
         that.psngrname = "";
@@ -484,7 +507,12 @@ export class AddPassengerComponent implements OnInit {
     isValidPassenger() {
         var that = this;
 
-        if (that.psngrname === "") {
+        if (that.ayid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Academic Year");
+            $(".ayname").focus();
+            return false;
+        }
+        else if (that.psngrname === "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
             $(".psngrname").focus();
             return false;
@@ -559,17 +587,11 @@ export class AddPassengerComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            var passengerprofiledata = {};
-
-            passengerprofiledata = {
-                  
-                 "otherinfo": that.otherinfo
-            }
-
             var savePassenger = {
                 "psngrid": that.psngrid,
                 "psngrcode": that.psngrid,
                 "psngrname": that.psngrname,
+                "ayid": that.ayid,
                 "gender": that.gender,
                 "dob": that.dob,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
@@ -651,6 +673,7 @@ export class AddPassengerComponent implements OnInit {
                 }).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
+                            that.ayid = data.data[0].ayid;
                             that.psngrid = data.data[0].psngrid;
                             that.psngrcode = data.data[0].psngrcode;
                             that.psngrname = data.data[0].psngrname;

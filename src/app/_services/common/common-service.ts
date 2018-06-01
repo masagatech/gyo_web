@@ -169,7 +169,7 @@ export class CommonService {
     // numToWords :: (Number a, String a) => a -> String
 
     numToWords(number) {
-        //Validates the number input and makes it a string
+        // Validates the number input and makes it a string
 
         if (typeof number === 'string') {
             number = parseInt(number, 10);
@@ -181,9 +181,9 @@ export class CommonService {
             return 'This is not a valid number';
         }
 
-        //Creates an array with the number'S digits and
-        //adds the necessary amount of 0 to make it fully 
-        //divisible by 3
+        // Creates an array with the number'S digits and
+        // adds the necessary amount of 0 to make it fully 
+        // divisible by 3
 
         var digits = number.split('');
         var digitsNeeded = 3 - digits.length % 3;
@@ -195,7 +195,7 @@ export class CommonService {
             }
         }
 
-        //Groups the digits in groups of three
+        // Groups the digits in groups of three
 
         var digitsGroup = [];
         var numberOfGroups = digits.length / 3;
@@ -204,7 +204,7 @@ export class CommonService {
             digitsGroup[i] = digits.splice(0, 3);
         }
 
-        //Change the group's numerical values to text
+        // Change the group's numerical values to text
 
         var digitsGroupLen = digitsGroup.length;
 
@@ -223,7 +223,8 @@ export class CommonService {
         for (var j = 0; j < digitsGroupLen; j++) {
             for (var k = 0; k < 3; k++) {
                 var currentValue = digitsGroup[j][k];
-                digitsGroup[j][k] = numTxt[k][currentValue]
+                digitsGroup[j][k] = numTxt[k][currentValue];
+
                 if (k === 0 && currentValue !== '0') { // !==0 avoids creating a string "null hundred"
                     digitsGroup[j][k] += ' hundred ';
                 }
@@ -234,22 +235,24 @@ export class CommonService {
             }
         }
 
-        //Adds '-' for grammar, cleans all null values, joins the group'S elements into a string
+        // Adds '-' for grammar, cleans all null values, joins the group'S elements into a string
 
         for (var l = 0; l < digitsGroupLen; l++) {
             if (digitsGroup[l][1] && digitsGroup[l][2]) {
                 digitsGroup[l][1] += '-';
             }
+
             digitsGroup[l].filter(function (e) { return e !== null });
             digitsGroup[l] = digitsGroup[l].join('');
         }
 
-        //Adds thousand, millions, billion and etc to the respective string.
+        // Adds thousand, millions, billion and etc to the respective string.
 
         var posfix = [null, 'Thousand', 'Million', 'Billion', 'Trillion', 'Quadrillion', 'Quintillion', 'Sextillion'];
 
         if (digitsGroupLen > 1) {
             var posfixRange = posfix.splice(0, digitsGroupLen).reverse();
+
             for (var m = 0; m < digitsGroupLen - 1; m++) { //'-1' prevents adding a null posfix to the last group
                 if (digitsGroup[m]) { // avoids 10000000 being read (one billion million)
                     digitsGroup[m] += ' ' + posfixRange[m];
@@ -257,7 +260,8 @@ export class CommonService {
             }
         }
 
-        //Joins all the string into one and returns it
+        // Joins all the string into one and returns it
+
         return digitsGroup.join(' ');
     };
 }
