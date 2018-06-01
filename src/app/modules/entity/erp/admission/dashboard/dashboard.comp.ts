@@ -129,8 +129,8 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             else if (row.grpcode == "gender") {
                 Cookie.set("_fltrid_", row.key);
             }
-            else if (row.grpcode == "socialcategory") {
-                Cookie.set("_fltrid_", row.id);
+            else if (row.grpcode == "castcategory") {
+                Cookie.set("_fltrid_", row.key);
             }
 
             Cookie.set("_fltrtype_", row.grpcode);

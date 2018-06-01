@@ -25,14 +25,14 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     boardDT: any = [];
     classDT: any = [];
     genderDT: any = [];
-    socialCategoryDT: any = [];
+    castCategoryDT: any = [];
 
     ayid: number = 0;
     prspctid: number = 0;
     boardid: number = 0;
     classid: number = 0;
     gender: string = "";
-    soccatid: number = 0;
+    castcatid: string = "";
 
     autoStudentDT: any = [];
     selectStudent: any = {};
@@ -69,7 +69,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Fill Academic Year, Class And Occupation DropDown
+    // Fill Academic Year, Prospectus, Board, Class, Gender And Cast Category DropDown
 
     fillDropDownList() {
         var that = this;
@@ -83,12 +83,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-
-                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
-                that.boardDT = data.data.filter(a => a.group == "board");
-                that.classDT = data.data.filter(a => a.group == "class");
-                that.genderDT = data.data.filter(a => a.group == "gender");
-                that.socialCategoryDT = data.data.filter(a => a.group == "socialcategory");
 
                 if (that.ayDT.length > 0) {
                     if (Cookie.get('_ayid_') == null) {
@@ -106,6 +100,12 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                         that.ayid = parseInt(Cookie.get('_ayid_'));
                     }
                 }
+
+                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
+                that.boardDT = data.data.filter(a => a.group == "board");
+                that.classDT = data.data.filter(a => a.group == "class");
+                that.genderDT = data.data.filter(a => a.group == "gender");
+                that.castCategoryDT = data.data.filter(a => a.group == "castcategory");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -129,7 +129,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this.boardid = 0;
         this.classid = 0;
         this.gender = "";
-        this.soccatid = 0;
+        this.castcatid = "";
 
         Cookie.delete("_studid_");
         Cookie.delete("_studname_");
@@ -281,8 +281,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                 else if (Cookie.get('_fltrtype_') == "gender") {
                     that.gender = Cookie.get('_fltrid_');
                 }
-                else if (Cookie.get('_fltrtype_') == "socialcategory") {
-                    that.soccatid = parseInt(Cookie.get('_fltrid_'));
+                else if (Cookie.get('_fltrtype_') == "castcategory") {
+                    that.castcatid = Cookie.get('_fltrid_');
                 }
             }
             else {
@@ -290,7 +290,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                 that.boardid = 0;
                 that.classid = 0;
                 that.gender = "";
-                that.soccatid = 0;
+                that.castcatid = "";
             }
         }
 
@@ -314,7 +314,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "ayid": that.ayid, "prspctid": that.prspctid, "boardid": that.boardid, "classid": that.classid,
-            "gender": that.gender, "soccatid": that.soccatid, "studid": that.studid, "enttid": that._enttdetails.enttid,
+            "gender": that.gender, "castcatid": that.castcatid, "studid": that.studid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 

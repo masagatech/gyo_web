@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="fillMonthDropDown()" tabindex="1">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Month</label>
-                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" (ngModelChange)="getAttendanceReports()" class="form-control" tabindex="4">
+                        <select id="attndmonth" name="attndmonth" [(ngModel)]="attndmonth" class="form-control" tabindex="4">
                             <option [value]="''">All Month</option>
                             <option *ngFor="let row of attndmonthDT" [value]="row.val">
                                 {{row.val}}
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-1 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports()">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getAttendanceReports('html')">
                         <i class="material-icons">arrow_forward</i></button>
                 </div>
             </div>
@@ -80,8 +80,8 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="downloadReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
-                        <li><a role="button" (click)="downloadReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                        <li><a role="button" (click)="getAttendanceReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getAttendanceReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
@@ -89,10 +89,10 @@
     </div>
 
     <div class="body">
-        <div id="divattendance hide">
+        <div id="divattendance">
         </div>
 
-        <div class="row clearfix">
+        <div class="row clearfix hide">
             <div class="col-md-12 reports">
                 <table id="attendance" class="table table-bordered table-responsive">
                     <thead>

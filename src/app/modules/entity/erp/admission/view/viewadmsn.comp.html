@@ -48,7 +48,7 @@
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
                         <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1" (ngModelChange)="getStudentDetails()">
-                            <option [value]="0">Select Academic Year</option>
+                            <option [value]="0">None</option>
                             <option *ngFor="let row of ayDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -60,7 +60,7 @@
                     <div class="form-line">
                         <label class="control-label">Prospectus</label>
                         <select id="prspctid" name="prspctname" [(ngModel)]="prspctid" class="form-control ayname" tabindex="2" (ngModelChange)="getStudentDetails()">
-                            <option [value]="0">Select Prospectus</option>
+                            <option [value]="0">All</option>
                             <option *ngFor="let row of prospectusDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -72,7 +72,7 @@
                     <div class="form-line">
                         <label class="control-label">Board</label>
                         <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="3" (ngModelChange)="getStudentDetails()">
-                            <option [value]="0">Select Board</option>
+                            <option [value]="0">All</option>
                             <option *ngFor="let row of boardDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -84,7 +84,7 @@
                     <div class="form-line">
                         <label class="control-label">Class</label>
                         <select id="classid" name="classname" [(ngModel)]="classid" class="form-control classname" tabindex="4" (ngModelChange)="getStudentDetails()">
-                            <option [value]="0">Select Class</option>
+                            <option [value]="0">All</option>
                             <option *ngFor="let row of classDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -96,7 +96,7 @@
                     <div class="form-line">
                         <label class="control-label">Gender</label>
                         <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="5" (ngModelChange)="getStudentDetails()">
-                            <option [value]="''">Select Gender</option>
+                            <option [value]="''">All</option>
                             <option *ngFor="let row of genderDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
@@ -106,10 +106,10 @@
 
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Social Category</label>
-                        <select id="soccatid" name="soccatname" [(ngModel)]="soccatid" class="form-control soccatname" tabindex="6" (ngModelChange)="getStudentDetails()">
-                            <option [value]="0">Select Social Category</option>
-                            <option *ngFor="let row of socialCategoryDT" [value]="row.id">	
+                        <label class="control-label">Cast Category</label>
+                        <select id="castcatid" name="castcatname" [(ngModel)]="castcatid" class="form-control castcatid" tabindex="6" (ngModelChange)="getStudentDetails()">
+                            <option [value]="''">All</option>
+                            <option *ngFor="let row of castCategoryDT" [value]="row.key">	
                                 {{row.val}}
                             </option>
                         </select>

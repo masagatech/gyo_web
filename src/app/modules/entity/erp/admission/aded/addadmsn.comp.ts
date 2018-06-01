@@ -18,19 +18,23 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     global = new Globals();
 
+    ayDT: any = [];
+    admissionCategoryDT: any = [];
     prospectusDT: any = [];
     prspctnoDT: any = [];
     boardDT: any = [];
 
-    ayDT: any = [];
     classDT: any = [];
     genderDT: any = [];
-    socialCategoryDT: any = [];
-    docTypeDT: any = [];
+    castCategoryDT: any = [];
+    bloodGroupDT: any = [];
+    religionDT: any = [];
 
     stateDT: any = [];
     cityDT: any = [];
     areaDT: any = [];
+
+    docTypeDT: any = [];
 
     qualificationDT: any = [];
     fthrocptnDT: any = [];
@@ -47,29 +51,48 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     autoid: number = 0;
 
     isprspct: boolean = false;
+
+    // Admission Variables
+
+    ayid: number = 0;
+    ayname: string = "";
+    admdate: string = "";
+    admcatid: string = "";
+    admcatname: string = "";
     prspctid: number = 0;
     prspctname: string = "";
     prspctno: number = 0;
     boardid: number = 0;
     boardname: string = "";
-
     cuid: number = 0;
     grno: number = 0;
-    ayid: number = 0;
-    ayname: string = "";
     classid: number = 0;
     classname: string = "";
     rollno: number = 0;
+    status: string = "active";
+    statusnm: string = "Active";
     fname: string = "";
     mname: string = "";
     lname: string = "";
+
+    // Personal Variables
+
+    dob: any = "";
+    dobword: string = "";
+    birthplace: string = "";
     aadharno: number = 0;
-    soccatid: number = 0;
-    soccatname: string = "";
     gndrkey: string = "M";
     gndrval: string = "";
-    dob: any = "";
-    birthplace: string = "";
+    familycast: string = "";
+    castcatid: string = "";
+    castcatname: string = "";
+    bldgrpid: string = "";
+    bldgrpname: string = "";
+    nationality: string = "";
+    relgnid: string = "";
+    relgnname: string = "";
+    mthrtng: string = "";
+
     saveSiblingDT: string = "[]";
 
     address: string = "";
@@ -178,6 +201,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.setFromDateAndToDate();
         this.fillDropDownList();
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -214,6 +238,29 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.getAdmissionDetails();
     }
 
+    // Selected Calendar Date
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        var before4year = new Date(date.getFullYear() - 4, date.getMonth(), date.getDate());
+
+        this.admdate = this.formatDate(today);
+        this.dob = this.formatDate(before4year);
+    }
+
     isWithProspectus() {
         var that = this;
 
@@ -225,6 +272,20 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $('#prspctid').prop("disabled", true);
             $('#prspctno').prop("disabled", true);
         }
+    }
+
+    formatDateToWord(date) {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        var _dob = new Date(date);
+
+        var day = this._autoservice.numToWords(_dob.getDate());
+        var month = monthNames[_dob.getMonth()];
+        var year = this._autoservice.numToWords(_dob.getFullYear());
+
+        this.dobword = day + " " + month + " " + year;
     }
 
     // Fill Academic Year, Class And Occupation DropDown
@@ -240,9 +301,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
-                that.boardDT = data.data.filter(a => a.group == "board");
-
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
@@ -256,9 +314,15 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     }
                 }
 
+                that.admissionCategoryDT = data.data.filter(a => a.group == "admissioncategory");
+                that.prospectusDT = data.data.filter(a => a.group == "prospectus");
+                that.boardDT = data.data.filter(a => a.group == "board");
                 that.classDT = data.data.filter(a => a.group == "class");
+
                 that.genderDT = data.data.filter(a => a.group == "gender");
-                that.socialCategoryDT = data.data.filter(a => a.group == "socialcategory");
+                that.castCategoryDT = data.data.filter(a => a.group == "castcategory");
+                that.bloodGroupDT = data.data.filter(a => a.group == "bloodgroup");
+                that.religionDT = data.data.filter(a => a.group == "religion");
                 that.docTypeDT = data.data.filter(a => a.group == "doctype");
                 that.fthrocptnDT = data.data.filter(a => a.group == "occupation").filter(a => a.key != "housewife");
                 that.mthrocptnDT = data.data.filter(a => a.group == "occupation");
@@ -896,22 +960,35 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var _auditdt = [];
 
         _auditdt = [
+            // Admission Details
+
+            { "key": "Academic Year", "val": ddltype == "old" ? that.ayname : $("#ayid option:selected").text().trim(), "fldname": "ayid", "fldtype": "ddl" },
+            { "key": "Admission Date", "val": that.admdate, "fldname": "admdate", "fldtype": "date" },
+            { "key": "Admission Category", "val": ddltype == "old" ? that.admcatname : $("#admcatid option:selected").text().trim(), "fldname": "admcatid", "fldtype": "ddl" },
             { "key": "Prospectus Name", "val": ddltype == "old" ? that.prspctname : $("#prspctid option:selected").text().trim(), "fldname": "prspctid", "fldtype": "ddl" },
             { "key": "Prospectus No", "val": that.prspctno, "fldname": "prspctno", "fldtype": "ddl" },
             { "key": "Board Name", "val": ddltype == "old" ? that.boardname : $("#boardid option:selected").text().trim(), "fldname": "boardid", "fldtype": "ddl" },
             { "key": "Child User ID", "val": that.cuid, "fldname": "cuid", "fldtype": "text" },
             { "key": "GR No", "val": that.grno, "fldname": "grno", "fldtype": "text" },
-            { "key": "Academic Year", "val": that.ayname, "fldname": "ayid", "fldtype": "text" },
             { "key": "Class Name", "val": ddltype == "old" ? that.classname : $("#classid option:selected").text().trim(), "fldname": "classid", "fldtype": "ddl" },
             { "key": "Roll No", "val": that.rollno, "fldname": "rollno", "fldtype": "text" },
+            { "key": "Status", "val": ddltype == "old" ? that.statusnm : $("#status option:selected").text().trim(), "fldname": "status", "fldtype": "ddl" },
             { "key": "First Name", "val": that.fname, "fldname": "fname", "fldtype": "text" },
             { "key": "Middle Name", "val": that.mname, "fldname": "mname", "fldtype": "text" },
             { "key": "Last Name", "val": that.lname, "fldname": "lname", "fldtype": "text" },
-            { "key": "Aadhar No", "val": that.aadharno, "fldname": "aadharno", "fldtype": "text" },
-            { "key": "Social Category", "val": ddltype == "old" ? that.soccatname : $("#soccatid option:selected").text().trim(), "fldname": "soccatid", "fldtype": "ddl" },
-            { "key": "Gender", "val": ddltype == "old" ? that.gndrval : $("#gender option:selected").text().trim(), "fldname": "gender", "fldtype": "ddl" },
+            
+            // Personal Details
+            
             { "key": "Date of Birth", "val": that.dob, "fldname": "dob", "fldtype": "date" },
             { "key": "Birth Place", "val": that.birthplace, "fldname": "birthplace", "fldtype": "text" },
+            { "key": "Aadhar No", "val": that.aadharno, "fldname": "aadharno", "fldtype": "text" },
+            { "key": "Gender", "val": ddltype == "old" ? that.gndrval : $("#gender option:selected").text().trim(), "fldname": "gender", "fldtype": "ddl" },
+            { "key": "Family Cast", "val": that.familycast, "fldname": "familycast", "fldtype": "text" },
+            { "key": "Cast Category", "val": ddltype == "old" ? that.castcatname : $("#castcatid option:selected").text().trim(), "fldname": "castcatid", "fldtype": "ddl" },
+            { "key": "Blood Group", "val": ddltype == "old" ? that.bldgrpname : $("#bldgrpid option:selected").text().trim(), "fldname": "bldgrpid", "fldtype": "ddl" },
+            { "key": "Nationality", "val": that.nationality, "fldname": "nationality", "fldtype": "text" },
+            { "key": "Religion", "val": ddltype == "old" ? that.relgnname : $("#relgnid option:selected").text().trim(), "fldname": "relgnid", "fldtype": "ddl" },
+            { "key": "Mother Tongue", "val": that.mthrtng, "fldname": "mthrtng", "fldtype": "text" },
             { "key": "Other Info", "val": that.otherinfo, "fldname": "otherinfo", "fldtype": "text" },
 
             // Upload File
@@ -1000,23 +1077,35 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "enrlmntid": that.enrlmntid,
             "autoid": that.autoid,
 
+            // Admission Details
+
+            "ayid": that.ayid,
+            "admdate": that.admdate,
+            "admcatid": that.admcatid,
             "prspctid": that.prspctid,
             "prspctno": that.prspctno,
             "boardid": that.boardid,
-
             "cuid": that.cuid,
             "grno": that.grno,
-            "ayid": that.ayid,
             "classid": that.classid,
             "rollno": that.rollno,
+            "status": that.status,
             "fname": that.fname,
             "mname": that.mname,
             "lname": that.lname,
-            "aadharno": that.aadharno,
-            "soccatid": that.soccatid,
-            "gender": that.gndrkey,
+
+            // Personal Details
+            
             "dob": that.dob,
             "birthplace": that.birthplace,
+            "aadharno": that.aadharno,
+            "gender": that.gndrkey,
+            "familycast": that.familycast,
+            "castcatid": that.castcatid,
+            "bldgrpid": that.bldgrpid,
+            "nationality": that.nationality,
+            "relgnid": that.relgnid,
+            "mthrtng": that.mthrtng,
             "otherinfo": that.otherinfo,
 
             "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
@@ -1153,28 +1242,28 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.studentDT = data.data[0];
 
                     if (that.studentDT.length != 0) {
+                        that.ayid = that.studentDT[0].ayid;
+                        that.ayname = that.studentDT[0].ayname;
+                        that.boardid = that.studentDT[0].boardid;
+                        that.boardname = that.studentDT[0].boardname;
+                        that.classid = that.studentDT[0].classid;
+                        that.classname = that.studentDT[0].classname;
                         that.fname = that.studentDT[0].fname;
                         that.mname = that.studentDT[0].mname;
                         that.lname = that.studentDT[0].lname;
-                        that.ayid = that.studentDT[0].ayid;
-                        that.ayname = that.studentDT[0].ayname;
-                        that.classid = that.studentDT[0].classid;
-                        that.classname = that.studentDT[0].classname;
-                        that.boardid = that.studentDT[0].boardid;
-                        that.boardname = that.studentDT[0].boardname;
                         that.gndrkey = that.studentDT[0].gndrkey;
                         that.gndrval = that.studentDT[0].gndrval;
                     }
                     else {
+                        that.ayid = 0;
+                        that.ayname = "";
+                        that.boardid = 0;
+                        that.boardname = "";
+                        that.classid = 0;
+                        that.classname = "";
                         that.fname = "";
                         that.mname = "";
                         that.lname = "";
-                        that.ayid = 0;
-                        that.ayname = "";
-                        that.classid = 0;
-                        that.classname = "";
-                        that.boardid = 0;
-                        that.boardname = "";
                         that.gndrkey = "M";
                         that.gndrval = "";
                     }
@@ -1193,27 +1282,45 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             })
         }
         else {
+            that.ayid = 0;
+            that.ayname = "";
+            that.boardid = 0;
+            that.boardname = "";
+            that.classid = 0;
+            that.classname = "";
             that.fname = "";
             that.mname = "";
             that.lname = "";
-            that.ayid = 0;
-            that.ayname = "";
-            that.classid = 0;
-            that.classname = "";
-            that.boardid = 0;
-            that.boardname = "";
             that.gndrkey = "M";
             that.gndrval = "";
         }
 
+        that.setFromDateAndToDate();
+
+        // Admission Information
+
         that.enrlmntid = 0;
+        that.admcatid = "";
+        that.admcatname = "";
         that.cuid = 0;
         that.grno = 0;
         that.rollno = 0;
-        that.aadharno = 0;
+        that.status = "active";
+        that.statusnm = "Active";
 
-        that.dob = "";
+        // Personal Information
+
         that.birthplace = "";
+        that.aadharno = 0;
+        that.familycast = "";
+        that.castcatid = "";
+        that.castcatname = "";
+        that.bldgrpid = "";
+        that.bldgrpname = "";
+        that.nationality = "";
+        that.relgnid = "";
+        that.relgnname = "";
+        that.mthrtng = "";
         that.otherinfo = "";
 
         that.address = that._enttdetails.address;
@@ -1362,6 +1469,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.enrlmntid = that.studentDT[0].enrlmntid;
                     that.autoid = that.studentDT[0].autoid;
 
+                    // Admission Details
+
+                    that.ayid = that.studentDT[0].ayid;
+                    that.ayname = that.studentDT[0].ayname;
+                    that.admdate = that.studentDT[0].admdate;
+                    that.admcatid = that.studentDT[0].admcatid;
+                    that.admcatname = that.studentDT[0].admcatname;
+
                     if (that.paramsid == 0) {
                         // that.prspctid = 0;
                         // that.prspctno = 0;
@@ -1376,22 +1491,34 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.boardname = that.studentDT[0].boardname;
                     that.cuid = that.studentDT[0].cuid;
                     that.grno = that.studentDT[0].grno;
-                    that.ayid = that.studentDT[0].ayid;
-                    that.ayname = that.studentDT[0].ayname;
                     that.classid = that.studentDT[0].classid;
                     that.classname = that.studentDT[0].classname;
                     that.rollno = that.studentDT[0].rollno;
+                    that.status = that.studentDT[0].status;
+                    that.statusnm = that.studentDT[0].statusnm;
                     that.fname = that.studentDT[0].fname;
                     that.mname = that.studentDT[0].mname;
                     that.lname = that.studentDT[0].lname;
-                    that.aadharno = that.studentDT[0].aadharno;
-                    that.soccatid = that.studentDT[0].soccatid;
-                    that.soccatname = that.studentDT[0].soccatname;
-                    that.gndrkey = that.studentDT[0].gndrkey;
-                    that.gndrval = that.studentDT[0].gndrval;
+
+                    // Personal Information
+
                     that.dob = that.studentDT[0].dob;
                     that.birthplace = that.studentDT[0].birthplace;
+                    that.aadharno = that.studentDT[0].aadharno;
+                    that.gndrkey = that.studentDT[0].gndrkey;
+                    that.gndrval = that.studentDT[0].gndrval;
+                    that.familycast = that.studentDT[0].familycast;
+                    that.castcatid = that.studentDT[0].castcatid;
+                    that.castcatname = that.studentDT[0].castcatname;
+                    that.bldgrpid = that.studentDT[0].bldgrpid;
+                    that.bldgrpname = that.studentDT[0].bldgrpname;
+                    that.nationality = that.studentDT[0].nationality;
+                    that.relgnid = that.studentDT[0].relgnid;
+                    that.relgnname = that.studentDT[0].relgnname;
+                    that.mthrtng = that.studentDT[0].mthrtng;
                     that.otherinfo = that.studentDT[0].otherinfo;
+
+                    // Contact Information
 
                     that.address = that.studentDT[0].address;
                     that.country = that.studentDT[0].country;

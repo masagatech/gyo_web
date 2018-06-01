@@ -49,10 +49,9 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.getAttendanceType();
         this.fillDropDownList();
         this.fillMonthDropDown();
-        // this.getDefaultMonth();
-        this.getAttendanceReports();
     }
 
     public ngOnInit() {
@@ -63,12 +62,35 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    getDefaultMonth() {
-        let date = new Date();
-        let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        let mname = monthNames[date.getMonth()] + "-" + date.getFullYear().toString().substr(-2);
+    // Get Attendance Type
 
-        this.attndmonth = mname;
+    getAttendanceType() {
+        var that = this;
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['psngrtype'] !== undefined) {
+                that.psngrtype = params['psngrtype'];
+
+                if (that.psngrtype == "student") {
+                    that.psngrtypenm = 'Student';
+                }
+                else if (that.psngrtype == "teacher") {
+                    that.psngrtypenm = 'Teacher';
+                    that.classid = 0;
+                }
+                else {
+                    that.psngrtypenm = 'Employee';
+                    that.classid = 0;
+                }
+            }
+            else {
+                that.psngrtype = "passenger";
+                that.psngrtypenm = 'Passenger';
+                that.classid = 0;
+            }
+        }, () => {
+
+        })
     }
 
     // Fill Academic Year, Class And Attendance Type Drop Down
@@ -91,10 +113,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-
                         that.fillMonthDropDown();
-                        // that.getDefaultMonth();
-                        that.getAttendanceReports();
                     }
                     else {
                         that.ayid = 0;
@@ -147,38 +166,44 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Attendance Reports
+    // Download Reports In Excel And PDF
 
-    getAttendanceReports() {
+    public getAttendanceReports(format) {
         var that = this;
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['psngrtype'] !== undefined) {
-                that.psngrtype = params['psngrtype'];
+        var dparams = {
+            "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
+            "ayid": that.ayid, "classid": that.classid, "gender": that.gender, "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "format": format
+        }
 
-                if (that.psngrtype == "student") {
-                    that.psngrtypenm = 'Student';
-                }
-                else if (that.psngrtype == "teacher") {
-                    that.psngrtypenm = 'Teacher';
-                    that.classid = 0;
-                }
-                else {
-                    that.psngrtypenm = 'Employee';
-                    that.classid = 0;
-                }
-            }
-            else {
-                that.psngrtype = "passenger";
-                that.psngrtypenm = 'Passenger';
-                that.classid = 0;
-            }
+        if (format == "html") {
+            commonfun.loader();
 
-            that.getAttendanceColumn();
-        }, () => {
+            that._attndrptservice.getAttendanceReports(dparams).subscribe(data => {
+                try {
+                    $("#divattendance").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-        })
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getAttendanceReports", dparams));
+        }
     }
+
+    // Reports For Attendance
 
     // Get Attendent Column
 
@@ -245,43 +270,6 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
-    }
-
-    // Download Reports In Excel And PDF
-
-    public downloadReports(format) {
-        var that = this;
-
-        var dparams = {
-            "flag": "reports", "psngrtype": that.psngrtype, "attndmonth": that.attndmonth, "attndtype": that.attndtype,
-            "ayid": that.ayid, "classid": that.classid, "gender": that.gender, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "format": format
-        }
-
-        if (format == "html") {
-            commonfun.loader();
-
-            that._attndrptservice.getAttendanceReports(dparams).subscribe(data => {
-                try {
-                    $("#divattendance").html(data._body);
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            })
-        }
-        else {
-            window.open(Common.getReportUrl("getAttendanceReports", dparams));
-        }
     }
 
     public ngOnDestroy() {

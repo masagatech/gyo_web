@@ -1,85 +1,123 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix" id="fltrstud">
-            <div class="col-md-5 col-xs-5">
+            <div class="col-md-2">
                 <h4>{{psngrtypenm}}</h4>
             </div>
-            <div class="col-md-2 col-xs-2">
-                <div class="form-group" *ngIf="psngrtype == 'student'">
-                    <div class="form-line">
-                        <label class="control-label">Class</label>
-                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" (ngModelChange)="getPassengerReports()">
-                            <option [value]="0">All</option>
-                            <option *ngFor="let row of classDT" [value]="row.key">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-xs-3">
+            <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">{{psngrtypenm}} Name <strong>*</strong></label>
-                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectedPassenger" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete psngrname"></p-autoComplete>
                         <span class="material-icons inputlinkico">
-                            <a role="button" (click)="getPassengerReports()" class="btn btn-theme btn-search">search</a>
+                            <a role="button" (click)="getPassengerReports('html')" class="btn btn-theme btn-search">search</a>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-2 pad-20 text-right">
+            <div class="col-md-6 col-xs-4 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                        <li><a role="button" (click)="getPassengerReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getPassengerReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="body no-padding">
-        <div #passenger class="row clearfix">
-            <div class="col-md-12">
-                <p-dataTable [value]="passengerDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column header="" [style]="{'width':'60px','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <img *ngIf="row.gndrkey == 'M'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default-male.png';" height="40px" width="40px" class="img-sm">
-                            <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.psngrphoto}}" onerror="this.src='assets/img/default-female.png';" height="40px" width="40px" class="img-sm">
-                        </ng-template>
-                    </p-column>
-                    <p-column field="grno" header="GR No" [style]="{'width': '120px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
-                    <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
-                    <p-column field="psngrname" header="{{psngrtypenm}} Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="classname" header="Class" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}" *ngIf="psngrtype == 'student'"></p-column>
-                    <p-column header="Parents" [style]="{'width':'150px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype == 'student' && psngrtype == 'passenger'">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.fathername}}<span *ngIf="row.fathername != '' && row.mothername !== ''"><br/></span>{{row.mothername}}
-                        </ng-template>
-                    </p-column>
-                    <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.mobileno1}}<span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
-                        </ng-template>
-                    </p-column>
-                    <p-column header="Email" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.email1}}<span *ngIf="row.email1 !== '' && row.email2 !== ''">, </span>{{row.email2}}
-                        </ng-template>
-                    </p-column>
-                    <p-column field="address" header="Address 1" [style]="{'width': '240px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column header="Address 2" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}" *ngIf="psngrtype != 'passenger'">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.city + ', ' + row.state + ', ' + row.country}}
-                        </ng-template>
-                    </p-column>
-                    <p-column field="mode" header="Status" [style]="{'width':'60px', 'text-align':'left','vertical-align':'top'}"></p-column>
-                </p-dataTable>
+<div class="row clearfix">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="header">
+                <h4><a role="button" (click)="resetStudentData()">All {{psngrtypenm}}</a></h4>
+            </div>
+
+            <div class="body">
+                <div class="form-group" *ngIf="psngrtype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1" (ngModelChange)="getPassengerReports('html')">
+                            <option [value]="0">None</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="psngrtype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Prospectus</label>
+                        <select id="prspctid" name="prspctname" [(ngModel)]="prspctid" class="form-control ayname" tabindex="2" (ngModelChange)="getPassengerReports('html')">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of prospectusDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="psngrtype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Board</label>
+                        <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="3" (ngModelChange)="getPassengerReports('html')">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of boardDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="psngrtype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Class</label>
+                        <select id="classid" name="classname" [(ngModel)]="classid" class="form-control classname" tabindex="4" (ngModelChange)="getPassengerReports('html')">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Gender</label>
+                        <select id="gender" name="gender" [(ngModel)]="gender" class="form-control gender" tabindex="5" (ngModelChange)="getPassengerReports('html')">
+                            <option [value]="''">All</option>
+                            <option *ngFor="let row of genderDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="psngrtype == 'student'">
+                    <div class="form-line">
+                        <label class="control-label">Cast Category</label>
+                        <select id="castcatid" name="castcatname" [(ngModel)]="castcatid" class="form-control castcatid" tabindex="6" (ngModelChange)="getPassengerReports('html')">
+                            <option [value]="''">All</option>
+                            <option *ngFor="let row of castCategoryDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="body no-padding">
+                <div id="divrptpsngr"></div>
             </div>
         </div>
     </div>
