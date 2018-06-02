@@ -17,23 +17,51 @@
 <div class="row clearfix">
     <div class="col-md-6">
         <div class="card">
-            <div class="body">
-                <h4>Admission Details</h4>
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-md-9 col-xs-9">
+                        <h4>Admission Details</h4>
 
-                <div class="row clearfix prospectus">
-                    <div class="col-md-8 col-xs-8">
-                        <div class="form-group">
+                        <div class="form-group prospectus">
                             <input id="isprspct" name="isprspct" [(ngModel)]="isprspct" type="checkbox" (change)="isWithProspectus()" class="filled-in">
                             <label for="isprspct">With Prospectus</label>
                         </div>
                     </div>
-                    <div class="col-md-4 col-xs-4 text-right">
+                    <div class="col-md-3 col-xs-3 text-center">
                         <span class="hide" *ngIf="enrlmntid != 0"><b>Enrollment No : </b> {{enrlmntid}}</span>
+
+                        <div class="form-group">
+                            <div *ngIf="uploadPhotoDT.length">
+                                <div *ngFor="let file of uploadPhotoDT">
+                                    <div class="row clearfix">
+                                        <div class="col-md-6">
+                                            <img *ngIf="gndrkey == 'M'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px" width="60px">
+                                            <img *ngIf="gndrkey == 'F'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px" width="60px">
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="!uploadPhotoDT.length">
+                                <img *ngIf="gndrkey == 'M'" src="assets/img/default-male.png" height="60px" width="60px" />
+                                <img *ngIf="gndrkey == 'F'" src="assets/img/default-female.png" height="60px" width="60px" />
+                            </div>
+
+                            <div class="profile-photo">
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="body">
                 <div class="row clearfix">
-                    <div class="col-md-4 col-xs-4">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Academic Year <strong>*</strong></label>
@@ -46,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-xs-4">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Admission Date <strong>*</strong></label>
@@ -83,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-xs-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Admission Form No</label>
@@ -96,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-xs-4">
+                    <div class="col-md-4 col-xs-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Board <strong>*</strong></label>
@@ -112,7 +140,7 @@
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-4 col-xs-4">
+                    <div class="col-md-4 col-xs-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Child User ID <strong>*</strong></label>
@@ -120,7 +148,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-xs-4">
+                    <div class="col-md-4 col-xs-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">GR. No. <strong>*</strong></label>
@@ -192,11 +220,16 @@
                         </div>
                     </div>
                 </div>
-
-                <hr />
-
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
                 <h4>Personal Information</h4>
+            </div>
 
+            <div class="body">
                 <div class="row clearfix">
                     <div class="col-md-4 col-xs-4">
                         <div class="form-group">
@@ -325,154 +358,6 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-6">
-        <div class="card">
-            <div class="body">
-                <div class="form-group">
-                    <div class="row clearfix">
-                        <div class="col-md-8">
-                            <div class="profile-photo">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="true"></p-fileUpload>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div *ngIf="uploadPhotoDT.length">
-                                <div *ngFor="let file of uploadPhotoDT">
-                                    <div class="row clearfix">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
-                                                <i class="material-icons">delete</i></button>
-                                        </div>
-                                        <div class="col-md-6" align="right">
-                                            <img *ngIf="gndrkey == 'M'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px">
-                                            <img *ngIf="gndrkey == 'F'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div *ngIf="!uploadPhotoDT.length" align="right">
-                                <img *ngIf="gndrkey == 'M'" src="assets/img/default-male.png" height="60px" />
-                                <img *ngIf="gndrkey == 'F'" src="assets/img/default-female.png" height="60px" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div class="form-group">
-                    <div class="row clearfix">
-                        <div class="col-md-8">
-                            <div class="profile-dob">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddobconfig.server}}" chooseLabel="{{chooseDOBLabel}}" (onUpload)="onDOBUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div *ngIf="birthcrtfctDT.length">
-                                <div *ngFor="let file of birthcrtfctDT">
-                                    <div class="row clearfix">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeDOBUpload()">
-                                                <i class="material-icons">delete</i></button>
-                                        </div>
-                                        <div class="col-md-6" align="right">
-                                            <img src="{{uploaddobconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/birthcrtfct.gif';" height="60px" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div *ngIf="!birthcrtfctDT.length" align="right">
-                                <img src="assets/img/birthcrtfct.gif" height="60px" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div class="form-group">
-                    <div class="row clearfix">
-                        <div class="col-md-8">
-                            <div class="profile-addr">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadaddrconfig.server}}" chooseLabel="{{chooseAddrLabel}}" (onUpload)="onAddressUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div *ngIf="addrproofDT.length">
-                                <div *ngFor="let file of addrproofDT">
-                                    <div class="row clearfix">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeAddressUpload()">
-                                                <i class="material-icons">delete</i></button>
-                                        </div>
-                                        <div class="col-md-6" align="right">
-                                            <img src="{{uploadaddrconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/addrproof.gif';" height="60px" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div *ngIf="!addrproofDT.length" align="right">
-                                <img src="assets/img/addrproof.gif" height="60px" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                <div class="form-group">
-                    <table class="table table-bordered table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Document Type</th>
-                                <th>Upload Document</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <select id="doctype" name="doctype" [(ngModel)]="doctypeid" class="form-control doctype" tabindex="26">
-                                                <option [value]="0">Select Document Type</option>
-                                                <option *ngFor="let row of docTypeDT" [value]="row.id">	
-                                                    {{row.val}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server}}" chooseLabel="Upload Other Document" (onUpload)="onDocumentUpload($event)" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="true"></p-fileUpload>
-
-                                    {{docfilename}}
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="addDocumentFile()">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr *ngFor="let row of documentDT">
-                                <td>
-                                    {{row.doctypename}}
-                                </td>
-                                <td>
-                                    <img src="{{uploaddocconfig.uploadurl + row.docfilename}}" onerror="this.src='assets/img/noimage.gif';" height="60px">
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeDocumentFile()">
-                                        <i class="material-icons">delete</i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="row clearfix">
@@ -552,6 +437,125 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="header">
+                <h4>Upload Other Document</h4>
+            </div>
+
+            <div class="body">
+                <div class="form-group">
+                    <div class="row clearfix">
+                        <div class="col-md-8 col-xs-8">
+                            <div class="profile-dob">
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddobconfig.server}}" chooseLabel="{{chooseDOBLabel}}" (onUpload)="onDOBUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-4">
+                            <div *ngIf="birthcrtfctDT.length">
+                                <div *ngFor="let file of birthcrtfctDT">
+                                    <div class="row clearfix">
+                                        <div class="col-md-6 col-xs-6">
+                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeDOBUpload()">
+                                                <i class="material-icons">delete</i></button>
+                                        </div>
+                                        <div class="col-md-6 col-xs-6" align="right">
+                                            <img src="{{uploaddobconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/birthcrtfct.gif';" height="60px" width="60px" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!birthcrtfctDT.length" align="right">
+                                <img src="assets/img/birthcrtfct.gif" height="60px" width="60px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <div class="row clearfix">
+                        <div class="col-md-8 col-xs-8">
+                            <div class="profile-addr">
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadaddrconfig.server}}" chooseLabel="{{chooseAddrLabel}}" (onUpload)="onAddressUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-4">
+                            <div *ngIf="addrproofDT.length">
+                                <div *ngFor="let file of addrproofDT">
+                                    <div class="row clearfix">
+                                        <div class="col-md-6 col-xs-6">
+                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeAddressUpload()">
+                                                <i class="material-icons">delete</i></button>
+                                        </div>
+                                        <div class="col-md-6 col-xs-6" align="right">
+                                            <img src="{{uploadaddrconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/addrproof.gif';" height="60px" width="60px" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!addrproofDT.length" align="right">
+                                <img src="assets/img/addrproof.gif" height="60px" width="60px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Document Type</th>
+                                <th>Upload Document</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <select id="doctype" name="doctype" [(ngModel)]="doctypeid" class="form-control doctype" tabindex="26">
+                                                <option [value]="0">Select Document Type</option>
+                                                <option *ngFor="let row of docTypeDT" [value]="row.id">	
+                                                    {{row.val}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server}}" chooseLabel="Upload Other Document" (onUpload)="onDocumentUpload($event)" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                                    {{docfilename}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="addDocumentFile()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let row of documentDT">
+                                <td>
+                                    {{row.doctypename}}
+                                </td>
+                                <td>
+                                    <img src="{{uploaddocconfig.uploadurl + row.docfilename}}" onerror="this.src='assets/img/noimage.gif';" height="60px" width="60px">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeDocumentFile()">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -865,7 +869,8 @@
                                 {{row.classname}}
                             </td>
                             <td>
-                                {{row.schname}}
+                                <span *ngIf="row.schid != 0">{{row.othschname}}</span>
+                                <span *ngIf="row.schid == 0">{{row.schname}}</span>
                             </td>
                             <td>
                                 <span *ngIf="row.schid != 0">{{row.enrlmntid}}</span>

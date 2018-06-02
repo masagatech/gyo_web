@@ -1815,7 +1815,7 @@ a.bg-danger:focus {
 
 ul,
 ol {
-    margin-top: 5px;
+    margin-top: 0;
     margin-bottom: 10px;
 }
 

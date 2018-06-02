@@ -693,12 +693,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         that.selectedSibling = row;
         that.sibrelation = row.relation;
-        that.sibfullname = row.sibfullname;
-        that.sibage = row.sibage;
-        that.sibclassid = row.sibclassid;
-        that.sibschid = row.sibschid;
-        that.sibothschname = row.sibothschname;
-        that.sibenrlmntid = row.sibenrlmntid;
+        that.sibfullname = row.fullname;
+        that.sibage = row.age;
+        that.sibclassid = row.classid;
+        that.sibschid = row.schid;
+        that.sibothschname = row.othschname;
+        that.sibenrlmntid = row.enrlmntid;
 
         that.iseditsibling = true;
     }
@@ -715,12 +715,13 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.selectedSibling.relation = that.sibrelation;
-        that.selectedSibling.sibfullname = that.sibfullname;
-        that.selectedSibling.sibage = that.sibage;
-        that.selectedSibling.sibclassid = that.sibclassid;
-        that.selectedSibling.sibschid = that.sibschid;
-        that.selectedSibling.sibothschname = that.sibothschname;
-        that.selectedSibling.sibenrlmntid = that.sibenrlmntid;
+        that.selectedSibling.fullname = that.sibfullname;
+        that.selectedSibling.age = that.sibage;
+        that.selectedSibling.classid = that.sibclassid;
+        that.selectedSibling.classname = $(".sibclassname option:selected").text().trim();
+        that.selectedSibling.schid = that.sibschid;
+        that.selectedSibling.othschname = $(".sibschname option:selected").text().trim();
+        that.selectedSibling.enrlmntid = that.sibenrlmntid;
         that.iseditsibling = false;
 
         that.resetSibling();
@@ -1339,7 +1340,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.pincode = that._enttdetails.pincode;
 
         that.uploadPhotoDT = [];
-        that.chooseLabel = "Upload Student Photo";
+        that.chooseLabel = "Upload Photo";
 
         that.birthcrtfctDT = [];
         that.saveBirthCrtfctDT = "[]";
@@ -1548,11 +1549,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
                     if (filepath != "" && filepath != null) {
                         that.uploadPhotoDT.push({ "athurl": filepath });
-                        that.chooseLabel = "Change Student Photo";
+                        that.chooseLabel = "Change Photo";
                     }
                     else {
                         that.uploadPhotoDT = [];
-                        that.chooseLabel = "Upload Student Photo";
+                        that.chooseLabel = "Upload Photo";
                     }
 
                     if (birthcrtfct != "" && birthcrtfct != null) {

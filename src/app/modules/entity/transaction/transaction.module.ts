@@ -22,6 +22,7 @@ export const routes = [
                     { path: 'assesmentresult', loadChildren: './assesmentresult#AssesmentResultModule' },
                     { path: 'exam', loadChildren: './exam#ExamModule' },
                     { path: 'examresult', loadChildren: './examresult#ExamResultModule' },
+                    { path: 'examgrade', loadChildren: './examgrade#ExamGradeModule' },
                 ]
             }
         ]

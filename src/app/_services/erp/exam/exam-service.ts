@@ -7,6 +7,16 @@ import { Router } from '@angular/router';
 export class ExamService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
+    // Exam Grade
+
+    saveExamGrade(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveExamGrade", req)
+    }
+
+    getExamGrade(req: any) {
+        return this._dataserver.post(Globals.erproute + "getExamGrade", req)
+    }
+
     // Exam Bench
 
     saveExamInfo(req: any) {

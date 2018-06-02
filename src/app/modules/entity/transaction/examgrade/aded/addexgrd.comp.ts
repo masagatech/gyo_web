@@ -7,11 +7,11 @@ import { ExamService } from '@services/erp';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addexam.comp.html',
+    templateUrl: 'addexgrd.comp.html',
     providers: [CommonService]
 })
 
-export class AddExamComponent implements OnInit {
+export class AddExamGradeComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
