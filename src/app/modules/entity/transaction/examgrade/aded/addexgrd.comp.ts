@@ -127,17 +127,17 @@ export class AddExamGradeComponent implements OnInit {
 
         if (that.frmmarks == 0) {
             that._msg.Show(messageType.warn, "Warning", "Enter From Marks");
-            return false
+            return false;
         }
 
         if (that.tomarks == 0) {
             that._msg.Show(messageType.warn, "Warning", "Enter To Marks");
-            return false
+            return false;
         }
 
         if (that.grade == 0) {
             that._msg.Show(messageType.warn, "Warning", "Select Grade");
-            return false
+            return false;
         }
 
         for (var i = 0; i < that.examGradeList.length; i++) {
@@ -147,9 +147,14 @@ export class AddExamGradeComponent implements OnInit {
             var selfrmmarks = parseInt(that.frmmarks);
             var seltomarks = parseInt(that.tomarks);
 
-            if (rowfrmmarks > selfrmmarks || rowtomarks <= seltomarks) {
-                that._msg.Show(messageType.warn, "Warning", "Dupliace From Marks and To Marks Not Allowed !!!!");
-                return false
+            if (selfrmmarks > rowfrmmarks && selfrmmarks <= rowtomarks) {
+                that._msg.Show(messageType.warn, "Warning", selfrmmarks + " To " + seltomarks + " Already Exists !!!!");
+                return false;
+            }
+
+            if (seltomarks > rowfrmmarks && seltomarks <= rowtomarks) {
+                that._msg.Show(messageType.warn, "Warning", selfrmmarks + " To " + seltomarks + " Already Exists !!!!");
+                return false;
             }
         }
 
