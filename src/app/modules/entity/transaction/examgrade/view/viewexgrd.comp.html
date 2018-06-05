@@ -1,96 +1,70 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-1">
-                <h4>Exam</h4>
+            <div class="col-md-6 col-xs-6">
+                <h4>Exam Grade</h4>
             </div>
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-6 col-xs-6 text-right pad-05">
                 <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
-                            <option [value]="0">Select Academic Year</option>
-                            <option *ngFor="let row of ayDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Exam Type <strong>*</strong></label>
-                        <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getExamDetails()" tabindex="2">
-                            <option [value]="0">Select Exam Type</option>
-                            <option *ngFor="let row of semesterDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="getExamDetails()" class="form-control class" tabindex="3">
-                            <option [value]="0">Select Class</option>
-                            <option *ngFor="let row of classDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-3 pad-20">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getExamDetails()">
-                        <i class="material-icons">arrow_forward</i></button>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-3 pad-20 text-right">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="addExam()">
-                        <i class="material-icons">add</i></button>
+                    <button type="button" class="btn btn-theme btn-xs" (click)="addExamGrade()">
+                        <i class="material-icons">add</i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="body no-padding">
+    <div class="body">
         <div class="row clearfix">
-            <div class="col-md-12">
+            <div class="col-md-6" *ngFor="let row of examGradeDT | groupBy: 'grpflds'">
                 <table class="table table-bordered reports">
                     <thead>
                         <tr>
-                            <th>
-                                Subject
-                            </th>
-                            <th width="150px">
-                                Exam Date
-                            </th>
-                            <th width="150px">
-                                Exam Time
-                            </th>
-                            <th width="150px">
-                                Out Of Marks
+                            <th colspan="3">
+                                <h4><b>Standard : </b>{{getKeys(row)[2].stdname}}</h4>
                             </th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of examDT">
+                    <tbody>
                         <tr>
+                            <td class="text-center" colspan="2">
+                                <h5><b>Total Marks : </b>{{getKeys(row)[0].totmarks}}</h5>
+                            </td>
+                            <td class="text-right">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editExamGrade(getKeys(row)[1])">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="tr-table">
+                            <th width="150px">
+                                From Marks
+                            </th>
+                            <th width="150px">
+                                To Marks
+                            </th>
+                            <th width="150px">
+                                Grade
+                            </th>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td class="text-right">
+                                {{drow.frmmarks}}
+                            </td>
+                            <td class="text-right">
+                                {{drow.tomarks}}
+                            </td>
                             <td>
-                                {{row.subname}}
+                                {{drow.gradename}}
                             </td>
-                            <td class="text-center">
-                                {{row.examdate}}
-                            </td>
-                            <td class="text-center">
-                                {{row.examtime}}
-                            </td>
-                            <td class="text-center">
-                                {{row.outofmarks}}
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr *ngIf="!examGradeDT.length">
+                            <td colspan="3">
+                                <h4><strong>No Data Found</strong></h4>
                             </td>
                         </tr>
                     </tbody>

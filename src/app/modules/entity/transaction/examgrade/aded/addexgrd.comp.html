@@ -4,110 +4,32 @@
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveExamGrade()">
-                    <i class="material-icons">save</i></a>
+                    <i class="material-icons">save</i>
+                </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
+                    <i class="material-icons">arrow_back</i>
+                </a>
             </li>
         </ul>
     </div>
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-10">
+            <div class="col-md-6">
                 <div class="row clearfix">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Class <strong>*</strong></label>
-                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillExamList();" class="form-control class" tabindex="1">
-                                    <option [value]="0">Select Class</option>
-                                    <option *ngFor="let row of classDT" [value]="row.id">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="form-line">
+                                <label class="control-label">Total Marks <strong>*</strong></label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="totmarks" class="form-control text-right totmarks" tabindex="2">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <table class="table table-bordered table-responsive">
-            <thead>
-                <tr>
-                    <th width="120px">From Marks</th>
-                    <th width="120px">To Of Marks</th>
-                    <th width="120px">Grade</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <div class="form-line">
-                                <input type="text" OnlyNumber="true" [(ngModel)]="frmmarks" class="form-control text-right passmarks{{row.subid}}" tabindex="7">
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <div class="form-line">
-                                <input type="text" OnlyNumber="true" [(ngModel)]="tomarks" class="form-control text-right outofmarks{{row.subid}}" tabindex="8">
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Class <strong>*</strong></label>
-                                <select id="clsid" name="clsname" [(ngModel)]="clsid" (ngModelChange)="fillExamList();" class="form-control class" tabindex="1">
-                                    <option [value]="0">Select Class</option>
-                                    <option *ngFor="let row of classDT" [value]="row.id">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr *ngFor="let row of examGradeDT">
-
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="modal fade" id="viewChapterModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog full-width" role="document">
-        <div class="modal-lg modal-content">
-            <div class="modal-header">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <h4>Chapter</h4>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-danger btn-xs" (click)="cancelChapterForExam()">
-                            <span class="material-icons">cancel</span>
-                        </button>
-                        <button type="button" class="btn btn-theme btn-xs" (click)="getSubjectChapterRights()">
-                            <span class="material-icons">arrow_forward</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-body">
-                <div class="row clearfix">
+                <div class="row clearfix" *ngIf="classDT.length">
                     <div class="col-md-12">
                         <div class="form-group">
                             <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
@@ -117,12 +39,12 @@
                     <div class="col-md-12">
                         <div class="allcheckboxes">
                             <div class="row clearfix">
-                                <div class="col-md-6" *ngFor="let row of chapterDT; let i = index;">
+                                <div class="col-md-4" *ngFor="let row of classDT; let i = index;">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <span id="chapter{{row.chptrid}}">
-                                                <input id="{{row.chptrid}}" name="chapter{{i + 1}}" type="checkbox" value="{{row.chptrid}}" class="filled-in" />
-                                                <label for="{{row.chptrid}}">{{row.chptrname}}</label>
+                                            <span id="cls{{row.id}}">
+                                                <input id="{{row.id}}" name="cls{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <label for="{{row.id}}">{{row.val}}</label>
                                             </span>
                                         </div>
                                     </div>
@@ -131,6 +53,82 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="120px">From Marks</th>
+                            <th width="120px">To Marks</th>
+                            <th width="120px">Grade</th>
+                            <th width="60px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="frmmarks" class="form-control text-right frmmarks" tabindex="3">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="tomarks" class="form-control text-right tomarks" tabindex="4">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select id="ddlgrade" name="grade" [(ngModel)]="grade" class="form-control grade" tabindex="5">
+                                            <option [value]="0">Select Grade</option>
+                                            <option *ngFor="let row of gradeDT" [value]="row.id">
+                                                {{row.val}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" *ngIf="isaddexgrd">
+                                    <button type="button" (click)="addExamGrade()" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <span class="material-icons">add</span>
+                                    </button>
+                                </div>
+                                <div class="form-group" *ngIf="iseditexgrd">
+                                    <button type="button" (click)="updateExamGrade()" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <span class="material-icons">done</span>
+                                    </button>
+                                    <button type="button" (click)="cancelExamGrade()" class="btn btn-danger btn-xs btn-xs-sm">
+                                        <span class="material-icons">cancel</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let row of examGradeList">
+                            <td align="right">
+                                {{row.frmmarks}}
+                            </td>
+                            <td align="right">
+                                {{row.tomarks}}
+                            </td>
+                            <td align="right">
+                                {{row.gradename}}
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <button type="button" (click)="editExamGrade(row)" class="btn btn-theme btn-xs btn-xs-sm">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

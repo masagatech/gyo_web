@@ -9,22 +9,20 @@ import { ViewExamGradeComponent } from './view/viewexgrd.comp';
 
 import { ExamService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
-
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: ViewExamGradeComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "exam", "rights": "view", "urlname": "/exam" }
+        data: { "module": "erp", "submodule": "exgrd", "rights": "view", "urlname": "/exam" }
       },
       {
         path: 'add', component: AddExamGradeComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "exam", "rights": "add", "urlname": "/add" }
+        data: { "module": "erp", "submodule": "exgrd", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'edit/:id', component: AddExamGradeComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "exam", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "erp", "submodule": "exgrd", "rights": "edit", "urlname": "/edit" }
       }
     ]
   },
@@ -37,8 +35,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
   providers: [AuthGuard, ExamService]

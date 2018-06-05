@@ -120,6 +120,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     // Parents - Father
 
+    fthrid: number = 0;
     fthrloginid: number = 0;
     fthrfmlid: number = 0;
     fthrcode: string = "";
@@ -138,6 +139,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     // Parents - Mother
 
+    mthrid: number = 0;
     mthrloginid: number = 0;
     mthrfmlid: number = 0;
     mthrcode: string = "";
@@ -1083,6 +1085,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
             "enrlmntid": that.enrlmntid,
             "autoid": that.autoid,
+            "fthrid": that.fthrid,
+            "mthrid": that.mthrid,
 
             // Admission Details
 
@@ -1187,6 +1191,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
+
+        console.log(newval);
+        console.log(oldval);
 
         isvalid = that.isValidAdmission(newval);
 
@@ -1475,6 +1482,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 if (that.studentDT.length != 0) {
                     that.enrlmntid = that.studentDT[0].enrlmntid;
                     that.autoid = that.studentDT[0].autoid;
+                    that.fthrid = that.studentDT[0].fthrid;
+                    that.mthrid = that.studentDT[0].mthrid;
 
                     // Admission Details
 

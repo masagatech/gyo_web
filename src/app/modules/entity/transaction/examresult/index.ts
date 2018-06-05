@@ -10,7 +10,7 @@ import { ViewExamResultComponent } from './view/viewexamres.comp';
 import { ExamService } from '@services/erp';
 import { ExamReportService } from '@services/reports';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -38,8 +38,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule
   ],
 
   providers: [AuthGuard, ExamService, ExamReportService, CommonService]

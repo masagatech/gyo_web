@@ -5738,6 +5738,17 @@ section.content {
     font-size: 13px;
 }
 
+.table-bordered tbody tr.tr-table-head th {
+    padding: 5px 10px!important;
+    background-color: #009688!important;
+    color: #ffffff!important;
+    font-size: 13px;
+}
+
+.table-bordered tbody tr.tr-table-head th a {
+    color: #ffffff!important;
+}
+
 .table-bordered tfoot tr.tr-table th {
     padding: 5px 10px!important;
     background-color: #eeeeee!important;
@@ -6422,6 +6433,11 @@ section.content {
 
 .form-group {
     width: 100%;
+    margin-bottom: 11px!important;
+}
+
+.form-group .material-icons {
+    font-size: 18px;
 }
 
 .form-group-only {
@@ -10909,14 +10925,6 @@ body.waitMe_body .waitMe_container.text>div {
 .def-box {
     padding: 10px;
     border-bottom: 1px solid #ccc;
-}
-
-.form-group {
-    margin-bottom: 11px!important;
-}
-
-.form-group .material-icons {
-    font-size: 18px!important;
 }
 
 #bodyofcards {
