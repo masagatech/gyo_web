@@ -3,7 +3,7 @@
         <h4>Student Rollover</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveStudentInfo()">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveChangeStandard()">
                     <i class="material-icons">save</i></a>
             </li>
         </ul>
@@ -62,14 +62,6 @@
                                     </a>
                                     </span>
                                 </th>
-                                <th>
-                                    <span class="pull-left">New Roll No</span>
-                                    <span class="pull-right">
-                                    <a class="col-white" role="button" title="Copy Old Roll No" (click)="copyOldRollNo()">
-                                        <span class="material-icons">content_copy</span>
-                                    </a>
-                                    </span>
-                                </th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let row of studentDT">
@@ -92,13 +84,6 @@
                                                     {{clsrow.val}}
                                                 </option>
                                             </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="row.rollno" class="form-control {{'rollno' + row.studentid}} text-right" tabindex="4" />
                                         </div>
                                     </div>
                                 </td>

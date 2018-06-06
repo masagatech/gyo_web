@@ -629,8 +629,8 @@ export class AddScheduleComponent implements OnInit {
                     }
 
                     if (dropdata.length !== 0) {
-                        that.dropfromdate = pickdata[0].frmdt;
-                        that.droptodate = pickdata[0].todt;
+                        that.dropfromdate = dropdata[0].frmdt;
+                        that.droptodate = dropdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropvehicleid = dropdata[0].vehicleno;
                         that.droppsngrtype = dropdata[0].psngrtype;
@@ -879,16 +879,23 @@ export class AddScheduleComponent implements OnInit {
                 });
             }
 
-            savepickdrop = { "pickdropdata": _pickdrop };
+            savepickdrop = {
+                "pickdropdata": _pickdrop, "isedit": false
+            };
 
             that._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
                 try {
                     var dataResult = data.data[0].funsave_pickdropinfo;
 
                     if (dataResult.msgid != "-1") {
-                        that.saveTrackingInfo();
-                        that._msg.Show(messageType.success, "Success", dataResult.msg);
-                        that.resetPickDropFields();
+                        if (dataResult.msgid == "2") {
+                            that._msg.Show(messageType.error, "Error", dataResult.msg);
+                        }
+                        else {
+                            that.saveTrackingInfo();
+                            that._msg.Show(messageType.success, "Success", dataResult.msg);
+                            that.resetPickDropFields();
+                        }
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", dataResult.msg);

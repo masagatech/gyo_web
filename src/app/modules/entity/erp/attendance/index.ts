@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: AttendanceComponent, canActivate: [AuthGuard],
-        data: { "module": "erppsngr", "submodule": "psngrattnd", "rights": "view", "urlname": "/attendance" }
+        data: { "module": "erp", "submodule": "psngrattnd", "rights": "view", "urlname": "/attendance" }
       },
     ]
   },

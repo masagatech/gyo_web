@@ -920,16 +920,23 @@ export class EditScheduleComponent implements OnInit {
                 });
             }
 
-            savepickdrop = { "pickdropdata": _pickdrop };
+            savepickdrop = {
+                "pickdropdata": _pickdrop, "isedit": true
+            };
 
             that._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
                 try {
                     var dataResult = data.data[0].funsave_pickdropinfo;
 
                     if (dataResult.msgid != "-1") {
-                        that.saveTrackingInfo();
-                        that._msg.Show(messageType.success, "Success", dataResult.msg);
-                        that.getPDCalendar();
+                        if (dataResult.msgid == "2") {
+                            that._msg.Show(messageType.error, "Error", dataResult.msg);
+                        }
+                        else {
+                            that.saveTrackingInfo();
+                            that._msg.Show(messageType.success, "Success", dataResult.msg);
+                            that.getPDCalendar();
+                        }
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", dataResult.msg);

@@ -5,12 +5,9 @@ import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
 
 declare var google: any;
-declare var loader: any;
-declare var adminloader: any;
 
 @Component({
-    templateUrl: 'addstudsveh.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addstudsveh.comp.html'
 })
 
 export class AddStudentVehicleComponent implements OnInit {
@@ -45,8 +42,11 @@ export class AddStudentVehicleComponent implements OnInit {
     picklong: any = "0.00";
     droplet: any = "0.00";
     droplong: any = "0.00";
+
+    oldpickrtid: number = 0;
     pickrtid: number = 0;
     pickstpid: number = 0;
+    olddroprtid: number = 0;
     droprtid: number = 0;
     dropstpid: number = 0;
 
@@ -594,9 +594,13 @@ export class AddStudentVehicleComponent implements OnInit {
                     that.resilong = _vhcldata[0].resilon;
 
                     that.fillRoutesDDL();
+
+                    that.oldpickrtid = _vhcldata[0].pickrtid;
                     that.pickrtid = _vhcldata[0].pickrtid;
                     that.fillPickStopsDDL();
                     that.pickstpid = _vhcldata[0].pickstpid;
+
+                    that.olddroprtid = _vhcldata[0].droprtid;
                     that.droprtid = _vhcldata[0].droprtid;
                     that.fillDropStopsDDL();
                     that.dropstpid = _vhcldata[0].dropstpid;
@@ -615,6 +619,31 @@ export class AddStudentVehicleComponent implements OnInit {
                 else {
                     that.resetVehicleFields();
                 }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    getStudentSchedule(pdtype) {
+        var that = this;
+        commonfun.loader();
+
+        that._admsnservice.viewStudentDetails({
+            "flag": "schedule", "rtid": pdtype == "p" ? that.oldpickrtid : that.olddroprtid, "studid": that.studid, "ayid": that.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

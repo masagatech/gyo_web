@@ -2,16 +2,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AddStudentVehicleComponent } from './addstudsveh.comp';
 
 import { AdmissionService } from '@services/erp';
 
-import {
-  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
-  AutoCompleteModule, FileUploadModule
-} from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -31,11 +28,10 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule,
-    CheckboxModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule
   ],
 
-  providers: [AuthGuard, AdmissionService]
+  providers: [AuthGuard, AdmissionService, CommonService]
 })
 
 export class StudentVehicleModule {

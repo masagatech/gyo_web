@@ -1,25 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
 
-declare var google: any;
-declare var loader: any;
-declare var adminloader: any;
-
 @Component({
-    templateUrl: 'rollover.comp.html',
-    providers: [CommonService]
+    templateUrl: 'chstd.comp.html'
 })
 
-export class RolloverComponent implements OnInit {
+export class ChangeStandardComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     studentDT: any = [];
-
-    autoid: number = 0;
 
     ayDT: any = [];
     classDT: any = [];
@@ -27,12 +20,9 @@ export class RolloverComponent implements OnInit {
 
     ayid: number = 0;
     classid: number = 0;
-    rollno: number = 0;
 
-    private subscribeParameters: any;
-
-    constructor(private _admsnservice: AdmissionService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+    constructor(private _router: Router, private _routeParams: ActivatedRoute, private _msg: MessageService,
+        private _loginservice: LoginService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -88,6 +78,8 @@ export class RolloverComponent implements OnInit {
         })
     }
 
+    // Copy Across Class
+
     copyAcrossClass() {
         var selectedStudentDT = [];
 
@@ -102,22 +94,6 @@ export class RolloverComponent implements OnInit {
                 stdflds.classid = selectedStudentDT[0].classid;
             }
         }
-    }
-
-    copyOldRollNo() {
-        for (var i = 0; i < this.studentDT.length; i++) {
-            var stdflds = this.studentDT[i];
-            stdflds.rollno = stdflds.currrollno;
-        }
-    }
-
-    // Clear Fields
-
-    resetStudentFields() {
-        var that = this;
-
-        that.classid = 0;
-        that.rollno = 0;
     }
 
     // Save Data
@@ -146,8 +122,6 @@ export class RolloverComponent implements OnInit {
     isValidStudent() {
         var that = this;
         var isduplicaterollno: boolean = false;
-
-        isduplicaterollno = that.checkIfRollnoIsUnique();
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.error, "Error", "Select Academic Year");
@@ -197,12 +171,58 @@ export class RolloverComponent implements OnInit {
             }
         }
 
-        // if (isduplicaterollno) {
-        //     that._msg.Show(messageType.error, "Error", "Duplicate Roll No not Allowed");
-        //     return false;
-        // }
-
         return true;
+    }
+
+    // Save Change Standard
+
+    saveChangeStandard() {
+        var that = this;
+        var params = {};
+        var isvalid: boolean = false;
+
+        params = {
+            "flag": "change_standard",
+            "ayid": that.ayid,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "cuis": that.loginUser.ucode,
+            "changestandard": that.studentDT
+        }
+
+        isvalid = that.isValidStudent();
+
+        if (isvalid) {
+            commonfun.loader();
+
+            that._admsnservice.saveStudentRollover(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_studentrollover;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+                        that.getStudentDetails();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                console.log(err);
+                that._msg.Show(messageType.error, "Error", err);
+
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get Student Data
@@ -235,44 +255,5 @@ export class RolloverComponent implements OnInit {
         }, () => {
 
         })
-    }
-
-    saveStudentInfo() {
-        var that = this;
-        var isvalid: boolean = false;
-
-        isvalid = that.isValidStudent();
-
-        if (isvalid) {
-            commonfun.loader();
-
-            that._admsnservice.saveStudentRollover({ "studentrollover": that.studentDT }).subscribe(data => {
-                try {
-                    var dataResult = data.data[0].funsave_studentrollover;
-                    var msg = dataResult.msg;
-                    var msgid = dataResult.msgid;
-
-                    if (msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", msg);
-                        that.getStudentDetails();
-                    }
-                    else {
-                        that._msg.Show(messageType.error, "Error", msg);
-                    }
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide();
-            }, err => {
-                console.log(err);
-                that._msg.Show(messageType.error, "Error", err);
-
-                commonfun.loaderhide();
-            }, () => {
-                // console.log("Complete");
-            });
-        }
     }
 }
