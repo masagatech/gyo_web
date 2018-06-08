@@ -114,6 +114,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
                         that.fillMonthDropDown();
+                        that.getAttendanceReports('html');
                     }
                     else {
                         that.ayid = 0;
