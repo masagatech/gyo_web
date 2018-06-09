@@ -1,0 +1,92 @@
+<div class="card">
+    <div class="header">
+        <h4>Receipt Book</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveReceiptBook()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Short Name <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="rbcode" class="form-control rbcode" maxlength="10" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Full Name <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="rbname" class="form-control rbname" maxlength="100" tabindex="2">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Header</label>
+                        <textarea [(ngModel)]="rbheader" rows="5" class="form-control no-resize auto-growth rbheader" maxlength="1000" tabindex="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Footer</label>
+                        <textarea [(ngModel)]="rbfooter" rows="5" class="form-control no-resize auto-growth rbfooter" maxlength="1000" tabindex="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Bank Name <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="bankname" class="form-control bankname" maxlength="50" tabindex="5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Account No <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="acno" class="form-control acno" maxlength="20" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">IFSC <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="ifsc" class="form-control ifsc" maxlength="20" tabindex="7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea [(ngModel)]="remark" rows="5" class="form-control no-resize auto-growth remark" maxlength="1000" tabindex="8"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

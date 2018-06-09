@@ -23,6 +23,8 @@ export class ViewFeesHistoryComponent implements OnInit {
     classfees: any = "";
     pendingfees: any = "";
     feescoll: any = "";
+    enttid: number = 0;
+    enttname: string = "";
     ayid: number = 0;
 
     studid: number = 0;
@@ -84,13 +86,15 @@ export class ViewFeesHistoryComponent implements OnInit {
 
         that._feesservice.getFeesCollection({
             "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid, "receivedate": row.receivedate,
-            "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "studid": row.studid, "enttid": row.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
                     that.studid = data.data[0].studid;
                     that.studname = data.data[0].studname;
                     that.studphoto = data.data[0].studphoto;
+                    that.enttid = data.data[0].enttid;
+                    that.enttname = data.data[0].enttname;
                     that.ayid = data.data[0].ayid;
                     that.classid = data.data[0].classid;
                     that.classcode = data.data[0].classcode;
@@ -106,6 +110,8 @@ export class ViewFeesHistoryComponent implements OnInit {
                     that.studid = 0;
                     that.studname = "";
                     that.studphoto = "";
+                    that.enttid = that._enttdetails.enttid;
+                    that.enttname = that._enttdetails.enttname;
                     that.ayid = 0;
                     that.classid = 0;
                     that.classcode = 0;
@@ -170,7 +176,7 @@ export class ViewFeesHistoryComponent implements OnInit {
         var feesparams = {
             "flag": "receipt", "frmtype": "server", "rpttype": that.fltr_rpttype, "ayid": that.ayid,
             "stdid": that.classid, "classid": "", "frmdt": that.fltr_recvdate, "todt": that.fltr_recvdate,
-            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
+            "studid": that.studid, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
 
         var url = Common.getReportUrl("getFeesReports", feesparams);
@@ -224,7 +230,7 @@ export class ViewFeesHistoryComponent implements OnInit {
 
         var feesparams = {
             "flag": flag, "frmtype": "server", "typ": typ, "ayid": that.ayid, "stdid": that.classid, "classid": "", "receivedate": _receivedate,
-            "studid": that.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "vwtype": "parent", "format": "pdf"
+            "studid": that.studid, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "vwtype": "parent", "format": "pdf"
         }
 
         var _mailmsg = "";
@@ -255,7 +261,7 @@ export class ViewFeesHistoryComponent implements OnInit {
             "studid": "{" + that.studid + "}",
             "tchrid": "{0}",
             "cuid": that.loginUser.ucode,
-            "enttid": that._enttdetails.enttid,
+            "enttid": that.enttid,
             "wsautoid": that._enttdetails.wsautoid,
             "attachments": _attachments
         }
@@ -296,7 +302,7 @@ export class ViewFeesHistoryComponent implements OnInit {
         that._feesservice.getFeesCollection({
             "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
             "studid": row.studid, "receiptno": row.receiptno, "receivedate": row.receivedate,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": row.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.feesHistoryDT = data.data;

@@ -17,16 +17,23 @@ export class AddFeesCollectionComponent implements OnInit {
 
     global = new Globals();
 
+    receiptbookDT: any = [];
+    paymentmodeDT: any = [];
     categoryDT: any = [];
     subCategoryDT: any = [];
-    paymentmodeDT: any = [];
+
+    // Default Fields
 
     fclid: number = 0;
     classfees: any = "";
     pendingfees: any = "";
+
+    // Student Fields
+
+    enttid: number = 0;
+    enttname: string = "";
     ayid: number = 0;
     ayname: string = "";
-
     studid: number = 0;
     studname: string = "";
     studphoto: string = "";
@@ -37,10 +44,10 @@ export class AddFeesCollectionComponent implements OnInit {
     gndrval: string = "";
     rollno: string = "";
 
-    catid: number = 0;
-    scatid: number = 0;
-    catfees: any = "";
-    fees: any = "";
+    // Fees Collection Fields
+
+    rbid: number = 0;
+    rbname: string = "";
     receiptno: number = 0;
     receivedate: any = "";
     paymodecode: string = "";
@@ -51,6 +58,11 @@ export class AddFeesCollectionComponent implements OnInit {
     chequedate: any = null;
     remark: string = "";
     statusid: number = 0;
+
+    catid: number = 0;
+    scatid: number = 0;
+    catfees: any = "";
+    fees: any = "";
 
     studsFilterDT: any = [];
     studentFeesDT: any = [];
@@ -116,13 +128,15 @@ export class AddFeesCollectionComponent implements OnInit {
 
         that._feesservice.getFeesCollection({
             "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid, "receivedate": row.receivedate,
-            "studid": row.studid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "studid": row.studid, "enttid": row.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
                     that.studid = data.data[0].studid;
                     that.studname = data.data[0].studname;
                     that.studphoto = data.data[0].studphoto;
+                    that.enttid = data.data[0].enttid;
+                    that.enttname = data.data[0].enttname;
                     that.ayid = data.data[0].ayid;
                     that.classid = data.data[0].classid;
                     that.classcode = data.data[0].classcode;
@@ -134,12 +148,14 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.pendingfees = data.data[0].classfees - data.data[0].feescoll;
                     that.statusid = data.data[0].statusid;
 
-                    that.fillCategoryAndPaymentModeDropDown();
+                    that.fillDropDownList();
                 }
                 else {
                     that.studid = 0;
                     that.studname = "";
                     that.studphoto = "";
+                    that.enttid = that._enttdetails.enttid;
+                    that.enttname = that._enttdetails.enttname;
                     that.ayid = 0;
                     that.classid = 0;
                     that.classcode = 0;
@@ -166,19 +182,19 @@ export class AddFeesCollectionComponent implements OnInit {
         })
     }
 
-    // Fill Cateogry And Payment Mode
+    // Fill Receipt Book, Payment Mode And Cateogry
 
-    fillCategoryAndPaymentModeDropDown() {
+    fillDropDownList() {
         var that = this;
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "dropdown", "classid": that.classid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "flag": "dropdown", "classid": that.classid, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                that.categoryDT = data.data.filter(a => a.group == "category");
+                that.receiptbookDT = data.data.filter(a => a.group == "receiptbook");
                 that.paymentmodeDT = data.data.filter(a => a.group == "paymentmode");
+                that.categoryDT = data.data.filter(a => a.group == "category");
                 that.subCategoryDT = data.data.filter(a => a.group == "subcategory");
             }
             catch (e) {
@@ -203,7 +219,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
         that._feesservice.getFeesCollection({
             "flag": "subcategory", "catid": that.catid, "classid": that.classid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.subCategoryDT = data.data;
@@ -230,7 +246,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
         that._feesservice.getFeesCollection({
             "flag": "fees", "catid": that.catid, "scatid": that.scatid, "classid": that.classid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
@@ -262,11 +278,7 @@ export class AddFeesCollectionComponent implements OnInit {
         var that = this;
 
         that.fclid = 0;
-        that.catid = 0;
-        that.scatid = 0;
-        that.fees = 0;
-        that.classfees = 0;
-        that.pendingfees = 0;
+        that.rbid = 0;
         that.receivedate = "";
         that.paymodecode = "";
         that.paymodename = "";
@@ -274,6 +286,11 @@ export class AddFeesCollectionComponent implements OnInit {
         that.chequestatusnm = "";
         that.chequeno = 0;
         that.chequedate = null;
+        that.catid = 0;
+        that.scatid = 0;
+        that.fees = 0;
+        that.classfees = 0;
+        that.pendingfees = 0;
         that.remark = "";
     }
 
@@ -476,6 +493,7 @@ export class AddFeesCollectionComponent implements OnInit {
             { "key": "Academic Year", "val": that.ayname, "fldname": "ayid", "fldtype": "label" },
             { "key": "Class Name", "val": that.classname, "fldname": "clsid", "fldtype": "label" },
             { "key": "Student Name", "val": that.studname, "fldname": "studid", "fldtype": "label" },
+            { "key": "Receipt Book", "val": that.rbname, "fldname": "rbid", "fldtype": "ddl" },
             { "key": "Receipt No", "val": that.receiptno, "fldname": "docno", "fldtype": "label" },
             { "key": "Receive Date", "val": that.receivedate, "fldname": "receivedate", "fldtype": "date" },
             { "key": "Payment Mode", "val": that.paymodename, "fldname": "paymentmode", "fldtype": "ddl" },
@@ -513,7 +531,7 @@ export class AddFeesCollectionComponent implements OnInit {
         var auditparams = {
             "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "studentfees", "mdlname": "Student Fees",
             "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
         };
 
         that._autoservice.saveAuditLog(auditparams);
@@ -529,6 +547,7 @@ export class AddFeesCollectionComponent implements OnInit {
             "ayid": that.ayid,
             "clsid": that.classid,
             "studid": parseInt("" + that.studid),
+            "rbid": that.rbid,
             "docno": that.receiptno,
             "receivedate": that.receivedate,
             "paymentmode": that.paymodecode,
@@ -537,7 +556,7 @@ export class AddFeesCollectionComponent implements OnInit {
             "chequedate": that.chequedate,
             "remark": that.remark,
             "studentfees": that.saveStudentFeesDT,
-            "enttid": that._enttdetails.enttid,
+            "enttid": that.enttid,
             "wsautoid": that._enttdetails.wsautoid,
             "cuid": that.loginUser.ucode,
             "isactive": true
@@ -622,7 +641,7 @@ export class AddFeesCollectionComponent implements OnInit {
         that._feesservice.getFeesCollection({
             "flag": "history", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ayid": row.ayid, "classid": row.classid,
             "studid": row.studid, "paymentmode": row.paymentmode, "receiptno": row.receiptno, "receivedate": row.receivedate,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": row.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 if (data.data.length > 0) {
@@ -632,6 +651,7 @@ export class AddFeesCollectionComponent implements OnInit {
                     that.ayid = data.data[0].ayid;
                     that.classid = data.data[0].clsid;
                     that.studid = data.data[0].studid;
+                    that.rbid = data.data[0].rbid;
                     that.receiptno = data.data[0].receiptno;
                     that.receivedate = data.data[0].editrecvdate;
                     that.paymodecode = data.data[0].paymodecode;
@@ -698,7 +718,7 @@ export class AddFeesCollectionComponent implements OnInit {
         Cookie.delete("filterStudent");
 
         var studrow = {
-            "ayid": this.ayid, "classid": this.classid, "studid": this.studid
+            "enttid": this.enttid, "ayid": this.ayid, "classid": this.classid, "studid": this.studid
         }
 
         Cookie.set("filterStudent", JSON.stringify(studrow));

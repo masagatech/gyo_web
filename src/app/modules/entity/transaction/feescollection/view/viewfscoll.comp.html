@@ -5,11 +5,23 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-2">
+            <div class="col-md-4 col-xs-8">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">School <strong>*</strong></label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="fillDropDownList();getFeesCollection();" tabindex="1">
+                            <option *ngFor="let row of schoolDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" (ngModelChange)="getFeesCollection()" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getFeesCollection()" tabindex="2">
                             <option [value]="0">Select Academic Year</option>
                             <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
@@ -18,11 +30,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-4">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
-                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getFeesCollection();" tabindex="2">
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getFeesCollection();" tabindex="3">
                             <option [value]="0">Select Class</option>
                             <option *ngFor="let row of classDT" [value]="row.id">
                                 {{row.val}}
@@ -31,12 +43,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2" *ngIf="classid != 0">
+            <div class="col-md-4 col-xs-8">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Student Name <strong>*</strong></label>
+                        <p-autoComplete id="studid" name="studname" [(ngModel)]="selectedStudent" [tabindex]="3" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <span class="material-icons inputlinkico"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 text-right" *ngIf="classid != 0">
                 <div class="form-group" style="padding-top: 20px">
                     Class Fees : {{classfees | _currency:loginUser.globsettings[0]}}
                 </div>
             </div>
-            <div class="col-md-2 pad-20">
+            <div class="col-md-2 pad-20 text-right">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
                         <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>

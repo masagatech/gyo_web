@@ -153,17 +153,7 @@ export class ExamResultReportsComponent implements OnInit, OnDestroy {
             that.studname = examFilterDT.studname;
             that.selectStudent = { "value": that.studid, "label": that.studname }
         }
-        else {
-            that.ayid = 0;
-            that.smstrid = 0;
-            that.classid = 0;
-            that.studid = 0;
-            that.studname = "";
-            that.selectStudent = {};
-        }
 
-        console.log(examFilterDT);
-        
         params = {
             "flag": "reports", "ayid": that.ayid, "smstrid": that.smstrid, "classid": that.classid, "studid": that.studid,
             "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid,

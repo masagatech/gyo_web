@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 export class FeesService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
+    // Fees Structure
+
     saveClassFees(req: any) {
         return this._dataserver.post(Globals.erproute + "saveClassFees", req)
     }
@@ -18,6 +20,8 @@ export class FeesService {
     getFeesReports(req: any) {
         return this._dataserver.post(Globals.erproute + "getFeesReports", req)
     }
+
+    // Fees Collection
 
     saveFeesCollection(req: any) {
         return this._dataserver.post(Globals.erproute + "saveFeesCollection", req)

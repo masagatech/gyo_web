@@ -1,6 +1,22 @@
 <div class="card">
     <div class="header">
-        <h4>Fees Collection</h4>
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <h4>Fees Collection</h4>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">School <strong>*</strong></label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="fillClassDropDown();" tabindex="1">
+                            <option *ngFor="let row of schoolDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row clearfix">
             <div class="col-md-2 col-xs-4">

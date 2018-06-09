@@ -10,7 +10,7 @@ import { ViewExamResultComponent } from './view/viewexamres.comp';
 import { ExamService } from '@services/erp';
 import { ExamReportService } from '@services/reports';
 
-import { AutoCompleteModule } from 'primeng/primeng';
+import { AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -38,7 +38,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, FileUploadModule
   ],
 
   providers: [AuthGuard, ExamService, ExamReportService, CommonService]

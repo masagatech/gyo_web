@@ -18,13 +18,19 @@ export class ViewFeesCollectionComponent implements OnInit {
 
     global = new Globals();
 
+    schoolDT: any = [];
     ayDT: any = [];
     classDT: any = [];
 
-    fclid: number = 0;
+    studentDT: any = [];
+    selectedStudent = [];
+    studid: number = 0;
+
+    enttid: number = 0;
     ayid: number = 0;
     classid: number = 0;
     classfees: any = "";
+    studname: string = "";
 
     feesCollDT: any = [];
 
@@ -41,23 +47,11 @@ export class ViewFeesCollectionComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.getUploadConfig();
-        this.fillAYAndClassDropDown();
+        this.fillSchoolDropDown();
     }
 
     public ngOnInit() {
-        var that = this;
-        commonfun.loader();
-
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.classid = params['id'];
-                that.getFeesCollection();
-            }
-            else {
-                that.resetAllFields();
-                commonfun.loaderhide();
-            }
-        });
+        
     }
 
     // Bulk Upload
@@ -86,7 +80,7 @@ export class ViewFeesCollectionComponent implements OnInit {
         event.formData.append("bulktype", "studentfees");
         event.formData.append("ayid", this.ayid);
         event.formData.append("clsid", this.classid);
-        event.formData.append("enttid", this._enttdetails.enttid);
+        event.formData.append("enttid", this.enttid);
         event.formData.append("wsautoid", this._enttdetails.wsautoid);
         event.formData.append("cuid", this.loginUser.ucode);
     }
@@ -117,43 +111,33 @@ export class ViewFeesCollectionComponent implements OnInit {
         }
     }
 
-    // Reset Fees Details
+    // Fill School Drop Down
 
-    resetAllFields() {
+    fillSchoolDropDown() {
         var that = this;
-
-        that.classid = 0;
-        that.feesCollDT = [];
-    }
-
-    // Fill Academic Year, Class
-
-    fillAYAndClassDropDown() {
-        var that = this;
-        var defayDT: any = [];
+        var defschoolDT: any = [];
 
         commonfun.loader();
 
         that._feesservice.getClassFees({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.ayDT = data.data[0].filter(a => a.group == "ay");
+                that.schoolDT = data.data[0];
 
-                if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+                if (that.schoolDT.length > 0) {
+                    defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);
 
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
-                        that.getFeesCollection();
+                    if (defschoolDT.length > 0) {
+                        that.enttid = defschoolDT[0].enttid;
                     }
                     else {
-                        that.ayid = 0;
+                        that.enttid = that._enttdetails.enttid;
                     }
+                    
+                    that.fillDropDownList();
                 }
-
-                that.classDT = data.data[0].filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -169,13 +153,87 @@ export class ViewFeesCollectionComponent implements OnInit {
         })
     }
 
+    // Fill Academic Year, And Class
+
+    fillDropDownList() {
+        var that = this;
+        var defayDT: any = [];
+
+        commonfun.loader();
+
+        that._feesservice.getClassFees({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.ayDT = data.data[1].filter(a => a.group == "ay");
+
+                if (that.ayDT.length > 0) {
+                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                    if (defayDT.length > 0) {
+                        that.ayid = defayDT[0].id;
+                        that.getFeesCollection();
+                    }
+                    else {
+                        that.ayid = 0;
+                    }
+                }
+
+                that.classDT = data.data[1].filter(a => a.group == "class");
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Auto Completed Student
+
+    getStudentData(event) {
+        let that = this;
+        let query = event.query;
+
+        that._autoservice.getERPAutoData({
+            "flag": "student",
+            "uid": that.loginUser.uid,
+            "ucode": that.loginUser.ucode,
+            "utype": that.loginUser.utype,
+            "enttid": that.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            that.studentDT = data.data;
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Student
+
+    selectStudentData(event) {
+        this.studid = event.value;
+        this.studname = event.label;
+    }
+
     // Add Fees Collection
 
     addFeesCollection(row) {
         Cookie.delete("addeditfees");
 
         var studrow = {
-            "ayid": row.ayid, "classid": row.classid, "studid": row.studid
+            "enttid": row.enttid, "ayid": row.ayid, "classid": row.classid, "studid": row.studid
         }
 
         Cookie.set("addeditfees", JSON.stringify(studrow));
@@ -186,7 +244,7 @@ export class ViewFeesCollectionComponent implements OnInit {
         Cookie.delete("filterStudent");
 
         var studrow = {
-            "ayid": row.ayid, "classid": row.classid, "studid": row.studid
+            "enttid": row.enttid, "ayid": row.ayid, "classid": row.classid, "studid": row.studid
         }
 
         Cookie.set("filterStudent", JSON.stringify(studrow));
@@ -214,8 +272,8 @@ export class ViewFeesCollectionComponent implements OnInit {
         commonfun.loader();
 
         that._feesservice.getFeesCollection({
-            "flag": "all", "ayid": that.ayid, "classid": that.classid, "studid": -1, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "flag": "all", "ayid": that.ayid, "classid": that.classid, "studid": that.studid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.feesCollDT = data.data;

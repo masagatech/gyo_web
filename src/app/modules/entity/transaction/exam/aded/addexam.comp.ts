@@ -74,7 +74,7 @@ export class AddExamComponent implements OnInit {
                 }
 
                 that.semesterDT = data.data.filter(a => a.group == "semester");
-                that.classDT = data.data.filter(a => a.group == "class");
+                that.classDT = data.data.filter(a => a.group == "standard");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

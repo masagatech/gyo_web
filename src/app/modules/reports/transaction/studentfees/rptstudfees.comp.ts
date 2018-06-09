@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
+import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
@@ -14,6 +15,9 @@ declare var google: any;
 export class StudentFeesReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
+
+    schoolDT: any = [];
+    enttid: number = 0;
 
     rpttype: string = "clswise";
 
@@ -31,13 +35,14 @@ export class StudentFeesReportsComponent implements OnInit {
     todt: string = "";
 
     constructor(private _router: Router, private _routeParams: ActivatedRoute, private _msg: MessageService,
-        private _loginservice: LoginService, private _feesrptservice: FeesReportsService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _feesservice: FeesService, private _feesrptservice: FeesReportsService,
+        private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
     }
 
     public ngOnInit() {
-        this.fillClassDropDown();
+        this.fillSchoolDropDown();
 
         this.classSettings = {
             singleSelection: false,
@@ -47,6 +52,50 @@ export class StudentFeesReportsComponent implements OnInit {
             enableSearchFilter: true,
             classes: "myclass custom-class"
         };
+    }
+
+    // Fill School Drop Down
+
+    fillSchoolDropDown() {
+        var that = this;
+        var defschoolDT: any = [];
+
+        that.selectedClass = [];
+
+        commonfun.loader();
+
+        that._feesservice.getClassFees({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.schoolDT = data.data[0];
+
+                if (that.schoolDT.length > 0) {
+                    defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);
+
+                    if (defschoolDT.length > 0) {
+                        that.enttid = defschoolDT[0].enttid;
+                    }
+                    else {
+                        that.enttid = that._enttdetails.enttid;
+                    }
+                    
+                    that.fillClassDropDown();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Fill Academic Year, Class
@@ -59,7 +108,7 @@ export class StudentFeesReportsComponent implements OnInit {
 
         that._feesrptservice.getFeesReports({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = JSON.parse(data._body).data[1];
@@ -89,7 +138,7 @@ export class StudentFeesReportsComponent implements OnInit {
             "uid": that.loginUser.uid,
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid,
+            "enttid": that.enttid,
             "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin,
             "search": query
@@ -165,7 +214,7 @@ export class StudentFeesReportsComponent implements OnInit {
 
                 feesparams = {
                     "flag": "studentwise", "frmtype": "server", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": that.selectedClass,
-                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
+                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that.enttid,
                     "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
                 }
             }
@@ -174,7 +223,7 @@ export class StudentFeesReportsComponent implements OnInit {
 
                 feesparams = {
                     "flag": "studentwise", "frmtype": "server", "rpttype": "view", "ayid": 0, "stdid": 0,
-                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that._enttdetails.enttid,
+                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that.enttid,
                     "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
                 }
             }

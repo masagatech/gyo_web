@@ -16,6 +16,9 @@ export class FeesCollectionReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    schoolDT: any = [];
+    enttid: number = 0;
+
     ayDT: any = [];
     ayid: number = 0;
 
@@ -41,7 +44,7 @@ export class FeesCollectionReportsComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.fillAYAndClassDropDown();
+        this.fillSchoolDropDown();
 
         this.classSettings = {
             singleSelection: false,
@@ -51,6 +54,50 @@ export class FeesCollectionReportsComponent implements OnInit {
             enableSearchFilter: true,
             classes: "myclass custom-class"
         };
+    }
+
+    // Fill School Drop Down
+
+    fillSchoolDropDown() {
+        var that = this;
+        var defschoolDT: any = [];
+
+        that.selectedClass = [];
+
+        commonfun.loader();
+
+        that._feesservice.getClassFees({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.schoolDT = data.data[0];
+
+                if (that.schoolDT.length > 0) {
+                    defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);
+
+                    if (defschoolDT.length > 0) {
+                        that.enttid = defschoolDT[0].enttid;
+                    }
+                    else {
+                        that.enttid = that._enttdetails.enttid;
+                    }
+                    
+                    that.fillAYAndClassDropDown();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Fill Academic Year And Class Drop Down
@@ -63,7 +110,7 @@ export class FeesCollectionReportsComponent implements OnInit {
 
         that._feesrptservice.getFeesReports({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.ayDT = JSON.parse(data._body).data[0];
@@ -103,11 +150,14 @@ export class FeesCollectionReportsComponent implements OnInit {
         if (that.ayid == 0) {
             that._msg.Show(messageType.warn, "Warning", "Select Academic Year");
         }
+        else if (that.selectedClass.length == 0) {
+            that._msg.Show(messageType.warn, "Warning", "Select Class");
+        }
         else {
             if (format == "html") {
                 var feesparams = {
                     "flag": "classwise", "frmtype": "web", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that._enttdetails.enttid,
+                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that.enttid,
                     "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
                 }
     
@@ -143,7 +193,7 @@ export class FeesCollectionReportsComponent implements OnInit {
             else {
                 var feesparams = {
                     "flag": "classwise", "frmtype": "server", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that._enttdetails.enttid,
+                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that.enttid,
                     "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
                 }
     
@@ -159,7 +209,7 @@ export class FeesCollectionReportsComponent implements OnInit {
 
         var feesparams = {
             "flag": "classwise", "rpttype": "student", "vwtype": that.rpttype, "ayid": that.ayid, "stdid": "0",
-            "filterClass": row.fltrclass, "studid": 0, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "filterClass": row.fltrclass, "studid": 0, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
             "catid": row.catid, "scatid": row.scatid, "isschlogo": false
         }
 

@@ -8,7 +8,7 @@ import { StudentFeesReportsComponent } from './rptstudfees.comp';
 import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
 
-import { LazyLoadEvent, AutoCompleteModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 export const routes = [

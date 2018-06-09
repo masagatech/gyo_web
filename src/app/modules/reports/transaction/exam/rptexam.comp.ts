@@ -66,7 +66,7 @@ export class ExamReportsComponent implements OnInit {
                     }
                 }
 
-                that.classDT = data.data.filter(a => a.group == "class");
+                that.classDT = data.data.filter(a => a.group == "standard");
                 that.semesterDT = data.data.filter(a => a.group == "semester");
             }
             catch (e) {

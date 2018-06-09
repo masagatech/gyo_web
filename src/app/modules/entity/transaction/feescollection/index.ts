@@ -10,7 +10,7 @@ import { ViewFeesHistoryComponent } from './history/history.comp';
 
 import { NotificationService, FeesService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -44,7 +44,7 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, AutoCompleteModule, FileUploadModule
+    AutoCompleteModule, FileUploadModule
   ],
 
   providers: [AuthGuard, NotificationService, FeesService, CommonService]
