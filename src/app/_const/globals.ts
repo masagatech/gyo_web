@@ -17,13 +17,13 @@ export class Globals {
     static socketurl: string = "http://" + Globals.weburl + ":" + Globals.port + "/";
     static reporturl: string = "http://" + Globals.weburl + ":8085/";
 
-    // filepath: string = "www\\uploads\\";
-    // xlsfilepath: string = "www\\exceluploads\\";
-    // static trkserv :string = "127.0.0.1";
+    filepath: string = "www\\uploads\\";
+    xlsfilepath: string = "www\\exceluploads\\";
+    static trkserv :string = "127.0.0.1";
 
-    filepath: string = "www/uploads/";
-    xlsfilepath: string = "www/uploads/bulkupload/";
-    static trkserv: string = "35.154.114.229";
+    // filepath: string = "www/uploads/";
+    // xlsfilepath: string = "www/uploads/bulkupload/";
+    // static trkserv: string = "35.154.114.229";
 
     static socketurl_trk: string = "http://" + Globals.trkserv + ":6979/";
     trackurl_trk: string = "http://" + Globals.trkserv + ":6979/goyoapi/";

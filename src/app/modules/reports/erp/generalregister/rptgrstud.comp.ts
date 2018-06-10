@@ -6,18 +6,18 @@ import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptpsngrbirth.comp.html',
+    templateUrl: 'rptgrstud.comp.html',
     providers: [CommonService]
 })
 
-export class PassengerBirthdayReportsComponent implements OnInit {
+export class GeneralRegisterReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     global = new Globals();
 
-    psngrtype: any = "";
-    psngrtypenm: any = "";
+    grtype: any = "";
+    grtypenm: any = "";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -25,18 +25,10 @@ export class PassengerBirthdayReportsComponent implements OnInit {
     classDT: any = [];
     classid: number = 0;
 
-    autoPassengerDT: any = [];
-    selectedPassenger: any = [];
-    psngrid: number = 0;
-    psngrname: string = "";
-
-    frmdt: any = "";
-    todt: any = "";
-
-    frmday: number = 0;
-    today: number = 0;
-    frmmonth: number = 0;
-    tomonth: number = 0;
+    autoStudentDT: any = [];
+    selectedStudent: any = [];
+    studid: number = 0;
+    studname: string = "";
 
     private subscribeParameters: any;
 
@@ -46,7 +38,6 @@ export class PassengerBirthdayReportsComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.setFromDateAndToDate();
     }
 
     public ngOnInit() {
@@ -59,7 +50,7 @@ export class PassengerBirthdayReportsComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": this.psngrtype,
+            "flag": this.grtype,
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -68,7 +59,7 @@ export class PassengerBirthdayReportsComponent implements OnInit {
             "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
+            this.autoStudentDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -78,11 +69,11 @@ export class PassengerBirthdayReportsComponent implements OnInit {
 
     // Selected passenger
 
-    selectPassengerData(event) {
-        this.psngrid = event.value;
-        this.psngrname = event.label;
+    selectStudentData(event) {
+        this.studid = event.value;
+        this.studname = event.label;
 
-        this.getPassengerBirthday("html");
+        this.getGeneralRegister("html");
     }
 
     // Fill Standard DropDown
@@ -105,7 +96,7 @@ export class PassengerBirthdayReportsComponent implements OnInit {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].key;
-                        that.getPassengerBirthday("html");
+                        that.getGeneralRegister("html");
                     }
                     else {
                         that.ayid = 0;
@@ -129,75 +120,35 @@ export class PassengerBirthdayReportsComponent implements OnInit {
         })
     }
 
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
-    setFromDateAndToDate() {
-        var date = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        var after15days = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 15);
-
-        this.frmdt = this.formatDate(today);
-        this.todt = this.formatDate(after15days);
-
-        var _frmdt = this.frmdt.split('-');
-        var _todt = this.todt.split('-');
-
-        this.frmday = _frmdt[2];
-        this.frmmonth = _frmdt[1];
-        this.today = _todt[2];
-        this.tomonth = _todt[1];
-    }
-
-    getPassengerBirthday(format) {
+    getGeneralRegister(format) {
         var that = this;
         var params = {};
 
         commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['psngrtype'] !== undefined) {
-                that.psngrtype = params['psngrtype'];
+            if (params['grtype'] !== undefined) {
+                that.grtype = params['grtype'];
 
-                if (that.psngrtype == "student") {
-                    that.psngrtypenm = 'Student';
-                }
-                else if (that.psngrtype == "teacher") {
-                    that.psngrtypenm = 'Teacher';
-                    that.classid = 0;
+                if (that.grtype == "provisional") {
+                    that.grtypenm = 'Provisional';
                 }
                 else {
-                    that.psngrtypenm = 'Employee';
-                    that.classid = 0;
+                    that.grtypenm = 'Original';
                 }
             }
-            else {
-                that.psngrtype = "passenger";
-                that.psngrtypenm = "Passenger";
-                that.classid = 0;
-            }
 
-            that.downloadPassengerBirthday(format);
+            that.downloadGeneralRegister(format);
         });
     }
 
     // Download Reports In Excel And PDF
 
-    public downloadPassengerBirthday(format) {
+    public downloadGeneralRegister(format) {
         var that = this;
 
         var dparams = {
-            "flag": "birthday", "psngrtype": that.psngrtype, "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid,
-            "frmday": that.frmday, "frmmonth": that.frmmonth, "today": that.today, "tomonth": that.tomonth,
+            "flag": "gr_report", "grtype": that.grtype, "studid": that.studid.toString() == "" ? 0 : that.studid,
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "format": format
@@ -208,7 +159,7 @@ export class PassengerBirthdayReportsComponent implements OnInit {
         if (format == "html") {
             that._psngrrptservice.getPassengerReports(dparams).subscribe(data => {
                 try {
-                    $("#divrptbday").html(data._body);
+                    $("#divrptgrstud").html(data._body);
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
@@ -229,13 +180,12 @@ export class PassengerBirthdayReportsComponent implements OnInit {
         }
     }
 
-    resetBirthdayList() {
+    resetGeneralRegister() {
         this.ayid = 0;
         this.classid = 0;
-        this.selectedPassenger = {};
-        this.psngrid = 0;
-        this.psngrname = "";
-        this.setFromDateAndToDate();
-        this.getPassengerBirthday("html");
+        this.selectedStudent = {};
+        this.studid = 0;
+        this.studname = "";
+        this.getGeneralRegister("html");
     }
 }

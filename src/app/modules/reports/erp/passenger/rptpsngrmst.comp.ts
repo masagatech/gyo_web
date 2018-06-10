@@ -151,7 +151,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
         })
     }
 
-    getPassengerReports(html) {
+    getPassengerReports(format) {
         var that = this;
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
@@ -176,7 +176,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
                 that.classid = 0;
             }
 
-            that.downloadPassengerReports(html)
+            that.downloadPassengerReports(format)
         });
     }
 
