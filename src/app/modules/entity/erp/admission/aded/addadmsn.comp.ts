@@ -66,6 +66,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     boardname: string = "";
     cuid: number = 0;
     grno: number = 0;
+    isprvsnl: boolean = false;
     classid: number = 0;
     classname: string = "";
     rollno: number = 0;
@@ -979,6 +980,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             { "key": "Board Name", "val": ddltype == "old" ? that.boardname : $("#boardid option:selected").text().trim(), "fldname": "boardid", "fldtype": "ddl" },
             { "key": "Child User ID", "val": that.cuid, "fldname": "cuid", "fldtype": "text" },
             { "key": "GR No", "val": that.grno, "fldname": "grno", "fldtype": "text" },
+            { "key": "Is Provisional", "val": that.isprvsnl, "fldname": "isprvsnl", "fldtype": "boolean" },
             { "key": "Class Name", "val": ddltype == "old" ? that.classname : $("#classid option:selected").text().trim(), "fldname": "classid", "fldtype": "ddl" },
             { "key": "Roll No", "val": that.rollno, "fldname": "rollno", "fldtype": "text" },
             { "key": "Status", "val": ddltype == "old" ? that.statusnm : $("#status option:selected").text().trim(), "fldname": "status", "fldtype": "ddl" },
@@ -1098,6 +1100,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "boardid": that.boardid,
             "cuid": that.cuid,
             "grno": that.grno,
+            "isprvsnl": that.isprvsnl,
             "classid": that.classid,
             "rollno": that.rollno,
             "status": that.status,
@@ -1318,6 +1321,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.admcatname = "";
         that.cuid = 0;
         that.grno = 0;
+        that.isprvsnl = false;
         that.rollno = 0;
         that.status = "active";
         that.statusnm = "Active";
@@ -1507,6 +1511,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.boardname = that.studentDT[0].boardname;
                     that.cuid = that.studentDT[0].cuid;
                     that.grno = that.studentDT[0].grno;
+                    that.isprvsnl = that.studentDT[0].isprvsnl;
                     that.classid = that.studentDT[0].classid;
                     that.classname = that.studentDT[0].classname;
                     that.rollno = that.studentDT[0].rollno;
