@@ -29,46 +29,51 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-xs-8">
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Month</label>
+                        <select id="option" name="birthmonth" [(ngModel)]="birthmonth" class="form-control" tabindex="4">
+                            <option [value]="0">All Month</option>
+                            <option *ngFor="let row of birthmonthDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">{{psngrtypenm}} Name <strong>*</strong></label>
-                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="3" (onSelect)="selectPassengerData($event)"
-                            [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
-                            [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="psngrdata" [tabindex]="3" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
                         <span class="material-icons inputlinkico">
                             <a role="button" (click)="getBirthdayList()" class="btn btn-theme btn-search">search</a>
                         </span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row clearfix">
-            <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">From Date</label>
-                        <input id="inputfrmdt" [(ngModel)]="frmdt" type="date" tabindex="4" class="form-control" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">To Date</label>
-                        <input id="inputtodt" [(ngModel)]="todt" type="date" tabindex="5" class="form-control" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-2 pad-20">
+            <div class="col-md-1 col-xs-2 pad-20">
                 <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getPassengerBirthday('html')">
                     <i class="material-icons">arrow_forward</i>
                 </button>
 
                 <button type="button" class="btn btn-primary waves-effect" (click)="resetBirthdayList()">Reset</button>
+            </div>
+
+            <div class="col-md-1 col-xs-2 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getPassengerBirthday('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getPassengerBirthday('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

@@ -34,7 +34,13 @@ export class ReportsComponent implements OnDestroy {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            commonfun.navistyle();
 
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 0);
     }
 
     getHeaderDetails() {
@@ -51,6 +57,7 @@ export class ReportsComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
-
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

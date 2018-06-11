@@ -19,9 +19,10 @@ export const routes = [
 
                     { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
                     
-                    { path: 'erp/student/dashboard', loadChildren: './studentdashboard#StudentDashboardModule' },
+                    { path: 'erp/student/generalregister', loadChildren: './generalregister#GeneralRegisterReportsModule' },
+                    { path: 'erp/student/categorywise', loadChildren: './categorywise#CategoryWiseReportsModule' },
                     
-                    { path: 'erp/student/generalregister/:grtype', loadChildren: './generalregister#GeneralRegisterReportsModule' },
+                    { path: 'erp/student/dashboard', loadChildren: './studentdashboard#StudentDashboardModule' },
                     
                     { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },

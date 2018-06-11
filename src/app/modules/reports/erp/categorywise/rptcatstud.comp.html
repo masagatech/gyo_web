@@ -32,31 +32,16 @@
             <div class="col-md-2 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">GR Type</label>
-                        <select id="grtype" name="grtype" [(ngModel)]="grtype" class="form-control grtype" tabindex="3">
-                            <option [value]="''">All</option>
-                            <option [value]="'original'">Original</option>
-                            <option [value]="'provisional'">Provisional</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-2 col-xs-6">
-                <div class="form-group">
-                    <div class="form-line">
                         <label class="control-label">View Type</label>
                         <select id="vwtype" name="vwtype" [(ngModel)]="vwtype" class="form-control vwtype" tabindex="3">
-                            <option [value]="'gr_summary'">Summary</option>
-                            <option [value]="'gr_details'">Details</option>
+                            <option [value]="'catwise_summary'">Summary</option>
+                            <option [value]="'catwise_details'">Details</option>
                         </select>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row clearfix">
-            <div class="col-md-6 col-xs-8">
+            <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Student Name</label>
@@ -68,22 +53,23 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-xs-2 pad-20">
-                <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getGeneralRegister('html')">
+            <div class="col-md-1 col-xs-2 pad-20">
+                <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getCategoryWiseStudent('html')">
                     <i class="material-icons">arrow_forward</i>
                 </button>
 
-                <button type="button" class="btn btn-primary waves-effect" (click)="resetGeneralRegister()">Reset</button>
+                <button type="button" class="btn btn-primary waves-effect" (click)="resetCategoryWiseStudent()">Reset</button>
             </div>
-            <div class="col-md-4 col-xs-2 pad-20 text-right">
+
+            <div class="col-md-1 col-xs-2 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="getGeneralRegister('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
-                        <li><a role="button" (click)="getGeneralRegister('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                        <li><a role="button" (click)="getCategoryWiseStudent('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getCategoryWiseStudent('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
@@ -91,6 +77,6 @@
     </div>
 
     <div class="body">
-        <div id="divrptgrstud"></div>
+        <div id="divrptcatstud"></div>
     </div>
 </div>

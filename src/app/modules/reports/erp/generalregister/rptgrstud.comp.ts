@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
@@ -10,13 +10,15 @@ import { PassengerReportsService } from '@services/reports';
     providers: [CommonService]
 })
 
-export class GeneralRegisterReportsComponent implements OnInit {
+export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     global = new Globals();
 
-    grtype: any = "";
+    vwtype: string = "gr_summary";
+    
+    grtype: string = "";
     grtypenm: any = "";
 
     ayDT: any = [];
@@ -41,7 +43,13 @@ export class GeneralRegisterReportsComponent implements OnInit {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            commonfun.navistyle();
 
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 0);
     }
 
     // Auto Completed Passenger
@@ -50,7 +58,7 @@ export class GeneralRegisterReportsComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": this.grtype,
+            "flag": "student",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -72,8 +80,6 @@ export class GeneralRegisterReportsComponent implements OnInit {
     selectStudentData(event) {
         this.studid = event.value;
         this.studname = event.label;
-
-        this.getGeneralRegister("html");
     }
 
     // Fill Standard DropDown
@@ -120,35 +126,13 @@ export class GeneralRegisterReportsComponent implements OnInit {
         })
     }
 
-    getGeneralRegister(format) {
-        var that = this;
-        var params = {};
-
-        commonfun.loader();
-
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['grtype'] !== undefined) {
-                that.grtype = params['grtype'];
-
-                if (that.grtype == "provisional") {
-                    that.grtypenm = 'Provisional';
-                }
-                else {
-                    that.grtypenm = 'Original';
-                }
-            }
-
-            that.downloadGeneralRegister(format);
-        });
-    }
-
     // Download Reports In Excel And PDF
 
-    public downloadGeneralRegister(format) {
+    public getGeneralRegister(format) {
         var that = this;
 
         var dparams = {
-            "flag": "gr_report", "grtype": that.grtype, "studid": that.studid.toString() == "" ? 0 : that.studid,
+            "flag": that.vwtype, "grtype": that.grtype, "studid": that.studid.toString() == "" ? 0 : that.studid,
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "format": format
@@ -181,11 +165,15 @@ export class GeneralRegisterReportsComponent implements OnInit {
     }
 
     resetGeneralRegister() {
-        this.ayid = 0;
         this.classid = 0;
         this.selectedStudent = {};
         this.studid = 0;
         this.studname = "";
-        this.getGeneralRegister("html");
+        this.fillDropDownList();
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }
