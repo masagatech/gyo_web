@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptgrstud.comp.html',
-    providers: [CommonService]
+    templateUrl: 'rptgrstud.comp.html'
 })
 
 export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
@@ -17,7 +16,7 @@ export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
     global = new Globals();
 
     vwtype: string = "gr_summary";
-    
+
     grtype: string = "";
     grtypenm: any = "";
 
@@ -27,15 +26,10 @@ export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    autoStudentDT: any = [];
-    selectedStudent: any = [];
-    studid: number = 0;
-    studname: string = "";
-
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _admsnservice: AdmissionService, private _psngrrptservice: PassengerReportsService, private _autoservice: CommonService) {
+        private _admsnservice: AdmissionService, private _psngrrptservice: PassengerReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -50,36 +44,6 @@ export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 0);
-    }
-
-    // Auto Completed Passenger
-
-    getPassengerData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "student",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "enttid": this._enttdetails.enttid,
-            "wsautoid": this._enttdetails.wsautoid,
-            "issysadmin": this.loginUser.issysadmin,
-            "search": query
-        }).subscribe((data) => {
-            this.autoStudentDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected passenger
-
-    selectStudentData(event) {
-        this.studid = event.value;
-        this.studname = event.label;
     }
 
     // Fill Standard DropDown
@@ -132,8 +96,7 @@ export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": that.vwtype, "grtype": that.grtype, "studid": that.studid.toString() == "" ? 0 : that.studid,
-            "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "flag": that.vwtype, "grtype": that.grtype, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "format": format
         }
@@ -162,14 +125,6 @@ export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
             window.open(Common.getReportUrl("getPassengerReports", dparams));
             commonfun.loaderhide();
         }
-    }
-
-    resetGeneralRegister() {
-        this.classid = 0;
-        this.selectedStudent = {};
-        this.studid = 0;
-        this.studname = "";
-        this.fillDropDownList();
     }
 
     public ngOnDestroy() {

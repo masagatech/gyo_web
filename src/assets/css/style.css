@@ -130,9 +130,10 @@
     margin-left: 5px;
 }
 
-.navbar-nav .dropdown-menu {
+
+/* .navbar-nav .dropdown-menu {
     margin-top: -40px !important;
-}
+} */
 
 .label-count {
     position: absolute;

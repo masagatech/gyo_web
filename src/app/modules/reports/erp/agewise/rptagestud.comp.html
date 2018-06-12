@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">None</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-xs-3 pad-20">
+                <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getAgeWiseStudent('html')">
+                    <i class="material-icons">arrow_forward</i>
+                </button>
+            </div>
+
+            <div class="col-md-8 col-xs-3 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getAgeWiseStudent('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getAgeWiseStudent('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div id="divrptagestud"></div>
+    </div>
+</div>

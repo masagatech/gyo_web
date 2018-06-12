@@ -9,8 +9,6 @@ import { PassengerReportsService } from '@services/reports';
 
 import { CategoryWiseReportsComponent } from './rptcatstud.comp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
-
 export const routes = [
   {
     path: '', children: [
@@ -28,7 +26,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
   providers: [AuthGuard, AdmissionService, PassengerReportsService]

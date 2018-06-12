@@ -21,6 +21,7 @@ export const routes = [
                     
                     { path: 'erp/student/generalregister', loadChildren: './generalregister#GeneralRegisterReportsModule' },
                     { path: 'erp/student/categorywise', loadChildren: './categorywise#CategoryWiseReportsModule' },
+                    { path: 'erp/student/agewise', loadChildren: './agewise#AgeWiseReportsModule' },
                     
                     { path: 'erp/student/dashboard', loadChildren: './studentdashboard#StudentDashboardModule' },
                     

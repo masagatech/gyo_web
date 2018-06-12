@@ -6,10 +6,10 @@ import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptcatstud.comp.html'
+    templateUrl: 'rptagestud.comp.html'
 })
 
-export class CategoryWiseReportsComponent implements OnInit, OnDestroy {
+export class AgeWiseReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -63,7 +63,7 @@ export class CategoryWiseReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].key;
-                        that.getCategoryWiseStudent("html");
+                        that.getAgeWiseStudent("html");
                     }
                     else {
                         that.ayid = 0;
@@ -89,13 +89,13 @@ export class CategoryWiseReportsComponent implements OnInit, OnDestroy {
 
     // Download Reports In Excel And PDF
 
-    public getCategoryWiseStudent(format) {
+    public getAgeWiseStudent(format) {
         var that = this;
 
         var dparams = {
-            "flag": that.vwtype, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
+            "flag": "agewise", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "ayid": that.ayid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
         commonfun.loader();
@@ -103,7 +103,7 @@ export class CategoryWiseReportsComponent implements OnInit, OnDestroy {
         if (format == "html") {
             that._psngrrptservice.getPassengerReports(dparams).subscribe(data => {
                 try {
-                    $("#divrptcatstud").html(data._body);
+                    $("#divrptagestud").html(data._body);
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
