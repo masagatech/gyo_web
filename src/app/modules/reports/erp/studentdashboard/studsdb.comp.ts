@@ -21,6 +21,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
 
     classDT: any = [];
     selclassid: number = 0;
+    selayid: number = 0;
     selectedRow: any = {};
 
     barchart;
@@ -197,6 +198,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         }
 
         that.selclassid = row.classid;
+        that.selayid = row.ayid;
 
         that._dbservice.getStudentDashboard(dbparams).subscribe(data => {
             try {
@@ -306,7 +308,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         let that = this;
 
         let params = {
-            "flag": type, "ayid": that.selectedRow.ayid, "classid": that.selectedRow.classid, "studid": that.studid,
+            "flag": type, "ayid": that.selayid, "classid": that.selclassid, "studid": that.studid,
             "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
@@ -347,7 +349,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     viewExamResult(row) {
         Cookie.delete("filterExam");
 
-        var _ayid = row.key.split('~')[0];
+        var _ayid = this.selayid;
         var _classid = this.selclassid;
         var _smstrid = row.key.split('~')[1];
         var _studid = this.studid;
