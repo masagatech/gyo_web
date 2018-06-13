@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { ERPDashboardService } from '@services/erp';
-import { AssesmentReportService } from '@services/reports';
+import { PassengerReportsService, AssesmentReportService } from '@services/reports';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
@@ -21,6 +21,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
 
     classDT: any = [];
     selclassid: number = 0;
+    selectedRow: any = {};
 
     barchart;
 
@@ -30,7 +31,8 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     feesDT: any = [];
 
     constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService,
-        private _dbservice: ERPDashboardService, private _autoservice: CommonService, private _assrptservice: AssesmentReportService) {
+        private _dbservice: ERPDashboardService, private _psngrrptservice: PassengerReportsService,
+        private _assrptservice: AssesmentReportService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -109,6 +111,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
                     that.classDT = data.data;
 
                     that.getStudentDashboard(data.data[0]);
+                    that.selectedRow = data.data[0];
                 }
             }
             catch (e) {
@@ -229,6 +232,8 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         this.getDashboard("fees", row);
     }
 
+    // Get Student Assesment Result
+
     private getAssesmentResult(row) {
         let that = this;
 
@@ -258,6 +263,65 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Get Student Certificate
+
+    private getStudentCertificate(row, format) {
+        let that = this;
+
+        let params = {
+            "flag": "bonafied", "ayid": row.ayid, "classid": row.classid, "studid": that.studid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": format
+        }
+
+        if (format == "html") {
+            commonfun.loader();
+
+            that._psngrrptservice.getStudentCertificate(params).subscribe(data => {
+                try {
+                    $("#divbonafied").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            });
+        }
+        else {
+            window.open(Common.getReportUrl("getStudentCertificate", params));
+            commonfun.loaderhide();
+        }
+    }
+
+    // Open Certificate Popup
+
+    openCertificatePopup(type) {
+        let that = this;
+
+        let params = {
+            "flag": type, "ayid": that.selectedRow.ayid, "classid": that.selectedRow.classid, "studid": that.studid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
+        }
+
+        var url = Common.getReportUrl("getStudentCertificate", params);
+
+        $("#certificateModal").modal('show');
+
+        commonfun.loader("#certificate");
+        $("#icertificate")[0].src = url;
+        commonfun.loaderhide("#certificate");
+    }
+
+    // Get Random Color
+
     getRandomRolor() {
         var letters = '012345'.split('');
         var color = '#';
@@ -272,9 +336,13 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         return color;
     }
 
+    // View Student Profile Link
+
     viewProfile() {
         this._router.navigate(['/erp/student/details', this.studid]);
     }
+
+    // View Student Exam Result Link
 
     viewExamResult(row) {
         Cookie.delete("filterExam");
@@ -292,16 +360,19 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         this._router.navigate(['/reports/transaction/examresult']);
     }
 
+    // View Student Fees Collection Link
+
     viewFeesCollection(row) {
         Cookie.delete("filterStudent");
 
+        var _enttid = this._enttdetails.enttid;
         var _ayid = row.key.split('~')[0];
         var _classid = row.key.split('~')[1];
         var _receiptno = row.key.split('~')[2];
         var _receivedate = row.key.split('~')[3];
 
         var studrow = {
-            "ayid": _ayid, "classid": _classid, "studid": this.studid, "receiptno": _receiptno, "receivedate": _receivedate
+            "enttid": _enttid, "ayid": _ayid, "classid": _classid, "studid": this.studid, "receiptno": _receiptno, "receivedate": _receivedate
         }
 
         Cookie.set("filterStudent", JSON.stringify(studrow));

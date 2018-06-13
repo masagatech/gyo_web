@@ -10,4 +10,8 @@ export class AttendanceReportsService {
     getAttendanceReports(req: any) {
         return this._dataserver.rawget(Globals.reporturl + "getAttendanceReports", req)
     }
+
+    getStudentAttendanceReports(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getStudentAttendanceReports", req)
+    }
 }

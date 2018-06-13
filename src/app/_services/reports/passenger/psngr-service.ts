@@ -10,4 +10,8 @@ export class PassengerReportsService {
     getPassengerReports(req: any) {
         return this._dataserver.rawget(Globals.reporturl + "getPassengerReports", req)
     }
+
+    getStudentCertificate(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getStudentCertificate", req)
+    }
 }

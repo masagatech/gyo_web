@@ -2491,3 +2491,25 @@ select.selectpicker {
 .pliststop .ui-orderlist-list-container {
     width: calc(100% - 36px);
 }
+
+#divbonafied {
+    height: 200px;
+    overflow: hidden;
+}
+
+#divbonafied table {
+    border: 0;
+    margin: 0;
+}
+
+#divbonafied table h4 {
+    font-size: 10px;
+}
+
+#divbonafied table h6 {
+    font-size: 9px;
+}
+
+#divbonafied table td {
+    font-size: 8px;
+}

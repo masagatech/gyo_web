@@ -8,7 +8,7 @@ import { NvD3Module } from 'ng2-nvd3';
 
 import { StudentDashboardComponent } from './studsdb.comp';
 import { ERPDashboardService } from '@services/erp';
-import { AssesmentReportService } from '@services/reports';
+import { PassengerReportsService, AssesmentReportService } from '@services/reports';
 
 import { AutoCompleteModule } from 'primeng/primeng';
 
@@ -33,7 +33,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, NvD3Module
   ],
 
-  providers: [AuthGuard, ERPDashboardService, AssesmentReportService, CommonService]
+  providers: [AuthGuard, ERPDashboardService, PassengerReportsService, AssesmentReportService, CommonService]
 })
 
 export class StudentDashboardModule {

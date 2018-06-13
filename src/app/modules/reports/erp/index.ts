@@ -30,6 +30,9 @@ export const routes = [
 
                     { path: 'erp/teacher/leave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
                     
+                    { path: 'erp/student/classwiseattendance', loadChildren: './classwiseattnd#ClassWiseAttednacneReportsModule' },
+                    { path: 'erp/student/monthlypresence', loadChildren: './monthlypresence#MonthlyPresenceReportsModule' },
+
                     { path: 'erp/:psngrtype/attendance', loadChildren: './attendance#AttendanceReportsModule' },
                     { path: 'erp/:psngrtype/leave', loadChildren: './leave#ERPLeaveReportsModule' },
                     { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayReportsModule' },
