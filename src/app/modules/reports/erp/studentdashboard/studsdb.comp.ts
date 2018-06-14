@@ -17,7 +17,12 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     autoStudentDT: any = [];
     selectStudent: any = {};
     studid: number = 0;
+    studgrno: string = "";
+    studtitle: string = "";
     studname: string = "";
+    personname: string = "";
+    personcity: string = "";
+    istrialcrtfct: boolean = false;
 
     classDT: any = [];
     selclassid: number = 0;
@@ -30,6 +35,10 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     holidayDT: any = [];
     resultDT: any = [];
     feesDT: any = [];
+
+    crtfctid: number = 0;
+    trial: string = "";
+    exmseatno: string = "";
 
     constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService,
         private _dbservice: ERPDashboardService, private _psngrrptservice: PassengerReportsService,
@@ -197,8 +206,13 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 
+        that.studgrno = row.grno;
+        that.studtitle = row.studtitle;
+        that.personname = row.studentname;
+        that.personcity = row.city;
         that.selclassid = row.classid;
         that.selayid = row.ayid;
+        that.istrialcrtfct = row.istrialcrtfct;
 
         that._dbservice.getStudentDashboard(dbparams).subscribe(data => {
             try {
@@ -265,41 +279,58 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Get Student Certificate
+    // Reset Trial Certificate
 
-    private getStudentCertificate(row, format) {
+    resetTrialCertificate() {
         let that = this;
 
+        that.crtfctid = 0;
+        that.trial = "";
+        that.exmseatno = "";
+    }
+
+    // Get Student Certificate
+
+    private getStudentCertificate(type) {
+        let that = this;
+        let crtfctdata: any = [];
+
         let params = {
-            "flag": "bonafied", "ayid": row.ayid, "classid": row.classid, "studid": that.studid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": format
+            "flag": "certificate", "type": "", "ayid": that.selayid, "classid": that.selclassid, "studid": that.studid,
+            "crtfcttype": type, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
-        if (format == "html") {
-            commonfun.loader();
+        commonfun.loader();
 
-            that._psngrrptservice.getStudentCertificate(params).subscribe(data => {
-                try {
-                    $("#divbonafied").html(data._body);
+        that._psngrrptservice.getStudentCertificate(params).subscribe(data => {
+            try {
+                crtfctdata = JSON.parse(data._body).data;
+
+                if (crtfctdata.length !== 0) {
+                    that.crtfctid = crtfctdata[0].crtfctid;
+                    that.trial = crtfctdata[0].trial;
+                    that.exmseatno = crtfctdata[0].exmseatno;
+
+                    that.openCertificatePopup(type);
                 }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
+                else {
+                    that.resetTrialCertificate();
+                    $("#createTrialCertificateModal").modal('show');
                 }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            });
-        }
-        else {
-            window.open(Common.getReportUrl("getStudentCertificate", params));
             commonfun.loaderhide();
-        }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        });
     }
 
     // Open Certificate Popup
@@ -308,7 +339,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         let that = this;
 
         let params = {
-            "flag": type, "ayid": that.selayid, "classid": that.selclassid, "studid": that.studid,
+            "flag": type, "type": "download", "ayid": that.selayid, "classid": that.selclassid, "studid": that.studid,
             "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
@@ -320,6 +351,72 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         commonfun.loader("#certificate");
         $("#icertificate")[0].src = url;
         commonfun.loaderhide("#certificate");
+    }
+
+    // Save Certificate
+
+    saveCertificateInfo() {
+        var that = this;
+
+        if (that.trial == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Trial");
+            $(".trial").focus();
+        }
+        else if (that.exmseatno == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Exam Seat No");
+            $(".exmseatno").focus();
+        }
+        else {
+            commonfun.loader();
+
+            var crtfctdesc = { "trial": that.trial, "exmseatno": that.exmseatno }
+
+            var params = {
+                "crtfctid": that.crtfctid,
+                "crtfctname": "Trial Certificate",
+                "crtfcttype": "trial",
+                "crtfctdesc": crtfctdesc,
+                "personid": that.studid,
+                "persontype": "student",
+                "classid": that.selclassid,
+                "ayid": that.selayid,
+                "enttid": that._enttdetails.enttid,
+                "cuid": that.loginUser.ucode,
+                "wsautoid": that._enttdetails.wsautoid,
+                "mode": ""
+            }
+
+            that._psngrrptservice.saveCertificateInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_certificateinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that._msg.Show(messageType.success, "Success", msg);
+
+                        that.resetTrialCertificate();
+
+                        $("#createCertificateModal").modal('hide');
+                        that.openCertificatePopup("trial");
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+
+                    commonfun.loaderhide();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+                // console.log("Complete");
+            });
+        }
     }
 
     // Get Random Color

@@ -36,15 +36,15 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Assesment Type <strong>*</strong></label>
-                                <select id="asstypid" name="asstypname" [(ngModel)]="asstypid" class="form-control asstype" tabindex="2">
-                                    <option [value]="0">Select Assesment Type</option>
-                                    <optgroup id="subject" label="Subject">
-                                        <option *ngFor="let row of subjectDT" [value]="row.id">
+                                <select id="asstypid" name="asstypname" [(ngModel)]="asstype" class="form-control asstype" tabindex="2">
+                                    <option [value]="''">Select Assesment Type</option>
+                                    <optgroup value="subject" label="Subject">
+                                        <option *ngFor="let row of subjectDT" [value]="row.subtypeid">
                                             {{row.val}}
                                         </option>
                                     </optgroup>
-                                    <optgroup id="activity" label="Activity">
-                                        <option *ngFor="let row of activityDT" [value]="row.id">
+                                    <optgroup value="activity" label="Activity">
+                                        <option *ngFor="let row of activityDT" [value]="row.subtypeid">
                                             {{row.val}}
                                         </option>
                                     </optgroup>

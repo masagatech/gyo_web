@@ -51,6 +51,7 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
 
     fillDropDownList() {
         var that = this;
+        var ddlData: any = [];
         var defayDT: any = [];
 
         commonfun.loader();
@@ -60,7 +61,9 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.ayDT = data.data[0].filter(a => a.group == "ay");
+                ddlData = data.data[1];
+
+                that.ayDT = ddlData.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
@@ -74,7 +77,7 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                that.classDT = data.data[0].filter(a => a.group == "class");
+                that.classDT = ddlData.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

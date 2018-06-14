@@ -11,6 +11,12 @@ export class PassengerReportsService {
         return this._dataserver.rawget(Globals.reporturl + "getPassengerReports", req)
     }
 
+    // Save Certificate
+
+    saveCertificateInfo(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveCertificateInfo", req)
+    }
+
     getStudentCertificate(req: any) {
         return this._dataserver.rawget(Globals.reporturl + "getStudentCertificate", req)
     }

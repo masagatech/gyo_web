@@ -130,6 +130,14 @@
                                 <a role="button" (click)="openCertificatePopup('birth')">Birth Certificate</a>
                             </h4>
                         </div>
+
+                        <!-- Trial Cerificate -->
+
+                        <div class="sm-body" *ngIf="istrialcrtfct">
+                            <h4>
+                                <a role="button" (click)="getStudentCertificate('trial')">Trial Certificate</a>
+                            </h4>
+                        </div>
                     </div>
                 </div>
 
@@ -156,6 +164,58 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createTrialCertificateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 650px;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card">
+                    <div class="header text-center">
+                        <h4>Trial Certificate</h4>
+                    </div>
+                    <div class="body">
+                        This is to Certify that {{studtitle}} <u>{{personname}}</u> <br /> was a bonafide student of this School. She has passed SSC / HSC Exam held in <br />
+
+                        <div class="row clearfix">
+                            <div class="col-md-2 col-xs-4">
+                                Year <u>{{ayname}}</u> By
+                            </div>
+                            <div class="col-md-4 col-xs-6">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="trial" maxlength="20" class="form-control trial" tabindex="1" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-2">
+                                Trial.
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-md-7 col-xs-8">
+                                His Exam Centre was <u>{{personcity}}</u> and Exam Seat No.
+                            </div>
+                            <div class="col-md-3 col-xs-4">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <input type="text" [(ngModel)]="exmseatno" maxlength="20" class="form-control exmseatno" tabindex="2" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        Her Gr.No. is <u>{{studgrno}}</u>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-theme" (click)="saveCertificateInfo()">Print</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
