@@ -43,6 +43,25 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">From Date</label>
+                        <input type="date" [(ngModel)]="frmdt" tabindex="4" class="form-control frmdt">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">To Date</label>
+                        <input type="date" [(ngModel)]="todt" tabindex="5" class="form-control todt">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
             <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
@@ -91,7 +110,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="feesCollectionDT.length">
                 <tr *ngFor="let row of feesCollectionDT">
                     <td>
                         {{row.classname}}
@@ -120,6 +139,13 @@
                     </td>
                     <td align="right">
                         {{totpendfees | _currency:loginUser.globsettings[0]}}
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!feesCollectionDT.length">
+                <tr class="tr-table">
+                    <td colspan="4">
+                        No Data Found
                     </td>
                 </tr>
             </tbody>

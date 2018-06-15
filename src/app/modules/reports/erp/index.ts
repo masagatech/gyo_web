@@ -27,6 +27,7 @@ export const routes = [
                     
                     { path: 'erp/:psngrtype', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'erp/:psngrtype/birthday', loadChildren: './passengerbirthday#PassengerBirthdayReportsModule' },
+                    { path: 'erp/:psngrtype/left', loadChildren: './passengerleft#PassengerLeftReportsModule' },
 
                     { path: 'erp/teacher/leave', loadChildren: './teacherleave#TeacherLeaveReportsModule' },
                     

@@ -71,6 +71,13 @@ export class AddPassengerComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
+    // Left Fields
+
+    status: string = "active";
+    statusnm: string = "Active";
+    leftdate: any = "";
+    leftreason: string = "";
+
     private subscribeParameters: any;
 
     constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
@@ -397,10 +404,13 @@ export class AddPassengerComponent implements OnInit {
         that.psngrid = 0;
         that.psngrcode = "";
         that.psngrname = "";
-
         that.dob = "";
         that.aadharno = "";
         that.gender = "";
+        that.status = "active";
+        that.leftdate = "";
+        that.leftreason = "";
+
         that.fathername = "";
         that.mothername = "";
         that.primaryemail = "";
@@ -517,6 +527,28 @@ export class AddPassengerComponent implements OnInit {
             $(".psngrname").focus();
             return false;
         }
+        if (that.dob == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Birth Date");
+            $(".dob").focus();
+            return false;
+        }
+        if (that.gender == "") {
+            that._msg.Show(messageType.error, "Error", "Select Gender");
+            $(".gender").focus();
+            return false;
+        }
+        if (that.status == "left") {
+            if (that.leftdate == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Left Date");
+                $(".leftdate").focus();
+                return false;
+            }
+            if (that.leftreason == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Left Reason");
+                $(".leftreason").focus();
+                return false;
+            }
+        }
         else if (that.primaryemail === "") {
             that._msg.Show(messageType.error, "Error", "Enter Primary Email");
             $(".primaryemail").focus();
@@ -588,14 +620,18 @@ export class AddPassengerComponent implements OnInit {
             commonfun.loader();
 
             var savePassenger = {
+                "ayid": that.ayid,
                 "psngrid": that.psngrid,
                 "psngrcode": that.psngrid,
                 "psngrname": that.psngrname,
-                "ayid": that.ayid,
+                "aadharno": that.aadharno,
                 "gender": that.gender,
                 "dob": that.dob,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
-                "enttid": that._enttdetails.enttid,
+
+                "status": that.status,
+                "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason } : {},
+                
                 "name": that.mothername + ";" + that.fathername,
                 "mobileno1": that.primarymobile,
                 "mobileno2": that.secondarymobile,
@@ -612,8 +648,9 @@ export class AddPassengerComponent implements OnInit {
                 "dropstpid": that.dropstpid,
                 "pickgeoloc": (that.picklet == "" ? "0.00" : that.picklet) + "," + (that.picklong == "" ? "0.00" : that.picklong),
                 "dropgeoloc": (that.droplet == "" ? "0.00" : that.droplet) + "," + (that.droplong == "" ? "0.00" : that.droplong),
-                "aadharno": that.aadharno,
+
                 "cuid": that.loginUser.ucode,
+                "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "remark1": that.remark1,
                 "isactive": that.isactive,
@@ -677,8 +714,14 @@ export class AddPassengerComponent implements OnInit {
                             that.psngrid = data.data[0].psngrid;
                             that.psngrcode = data.data[0].psngrcode;
                             that.psngrname = data.data[0].psngrname;
-
                             that.aadharno = data.data[0].aadharno;
+                            that.dob = data.data[0].dob;
+                            that.gender = data.data[0].gndrkey;
+                            that.status = data.data[0].status;
+                            that.statusnm = data.data[0].statusnm;
+                            that.leftdate = data.data[0].leftdate;
+                            that.leftreason = data.data[0].leftreason;
+
                             that.mothername = data.data[0].mothername;
                             that.primarymobile = data.data[0].mobileno1;
                             that.primaryemail = data.data[0].email1;
@@ -710,8 +753,6 @@ export class AddPassengerComponent implements OnInit {
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;
 
-                            that.gender = data.data[0].gndrkey;
-                            that.dob = data.data[0].dob;
                             that.pickaddr = data.data[0].pickaddr;
                             that.dropaddr = data.data[0].dropaddr;
                             that.otherinfo = data.data[0].otherinfo;

@@ -41,9 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   enttMenuDT: any = [];
   reportsMenuDT: any = [];
   mastersMenuDT: any = [];
-  auditlogMenuDT: any = [];
   adminMenuDT: any = [];
-  settingsMenuDT: any = [];
 
   wsautoid: number = 0;
   enttid: number = 0;
@@ -153,9 +151,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       that.enttMenuDT = data.data.filter(a => a.mptype === "erp");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
       that.mastersMenuDT = data.data.filter(a => a.mptype === "master");
-      that.auditlogMenuDT = data.data.filter(a => a.mptype === "auditlog");
       that.adminMenuDT = data.data.filter(a => a.mptype === "admin");
-      that.settingsMenuDT = data.data.filter(a => a.mptype === "settings");
     }, err => {
       that._msg.Show(messageType.error, "Error", err);
     }, () => {

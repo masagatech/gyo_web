@@ -9,22 +9,15 @@ import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'ang
 declare var google: any;
 
 @Component({
-    templateUrl: 'rptstudfees.comp.html'
+    templateUrl: 'rptdailyfees.comp.html'
 })
 
-export class StudentFeesReportsComponent implements OnInit {
+export class DailyFeesReportsComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     schoolDT: any = [];
     enttid: number = 0;
-
-    rpttype: string = "clswise";
-
-    classDT = [];
-    selectedClass = [];
-    classSettings = {};
-    classIDs: string = "";
 
     studentDT: any = [];
     selectedStudent = [];
@@ -39,19 +32,12 @@ export class StudentFeesReportsComponent implements OnInit {
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
+
+        this.fillSchoolDropDown();
     }
 
     public ngOnInit() {
-        this.fillSchoolDropDown();
 
-        this.classSettings = {
-            singleSelection: false,
-            text: "Select Class",
-            selectAllText: 'Select All',
-            unSelectAllText: 'UnSelect All Class',
-            enableSearchFilter: true,
-            classes: "myclass custom-class"
-        };
     }
 
     // Fill School Drop Down
@@ -59,8 +45,6 @@ export class StudentFeesReportsComponent implements OnInit {
     fillSchoolDropDown() {
         var that = this;
         var defschoolDT: any = [];
-
-        that.selectedClass = [];
 
         commonfun.loader();
 
@@ -80,38 +64,9 @@ export class StudentFeesReportsComponent implements OnInit {
                     else {
                         that.enttid = that._enttdetails.enttid;
                     }
-                    
-                    that.fillClassDropDown();
+
+                    that.getFeesReports("html");
                 }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    // Fill Academic Year, Class
-
-    fillClassDropDown() {
-        var that = this;
-        var defayDT: any = [];
-
-        commonfun.loader();
-
-        that._feesrptservice.getFeesReports({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.classDT = JSON.parse(data._body).data[1];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -183,76 +138,38 @@ export class StudentFeesReportsComponent implements OnInit {
 
     // Get Fees Reports
 
-    isValidReports() {
-        var that = this;
-
-        if (that.rpttype == "clswise") {
-            if (that.selectedClass.length == 0) {
-                that._msg.Show(messageType.warn, "Warning", "Select Class");
-                return false;
-            }
-        }
-
-        if (that.rpttype == "studwise") {
-            if (that.studid == 0) {
-                that._msg.Show(messageType.warn, "Warning", "Enter Student");
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     getFeesReports(format) {
         var that = this;
         var isvalid: boolean = false;
         var feesparams = {};
 
-        isvalid = that.isValidReports();
+        feesparams = {
+            "flag": "dailywise", "type": "download", "ayid": 0, "stdid": 0, "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt,
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+        }
 
-        if (isvalid) {
-            if (that.rpttype == "clswise") {
-                that.studid = 0;
+        if (format == "html") {
+            commonfun.loader();
 
-                feesparams = {
-                    "flag": "studentwise", "type": "download", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": that.selectedClass,
-                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+            that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
+                try {
+                    $("#divrptdailyfees").html(data._body);
                 }
-            }
-            else {
-                that.selectedClass = [];
-
-                feesparams = {
-                    "flag": "studentwise", "type": "download", "rpttype": "view", "ayid": 0, "stdid": 0,
-                    "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
                 }
-            }
 
-            if (format == "html") {
-                commonfun.loader();
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-                that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
-                    try {
-                        $("#divrptstudfees").html(data._body);
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
-            }
-            else {
-                window.open(Common.getReportUrl("getFeesReports", feesparams));
-            }
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getFeesReports", feesparams));
         }
     }
 }

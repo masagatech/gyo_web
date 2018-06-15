@@ -20,6 +20,7 @@ export const routes = [
                     { path: 'passenger/attendance', loadChildren: '../erp/attendance#AttendanceReportsModule' },
                     { path: 'passenger/leave', loadChildren: '../erp/leave#ERPLeaveReportsModule' },
                     { path: 'passenger/holiday', loadChildren: '../erp/holiday#HolidayReportsModule' },
+                    { path: 'passenger/left', loadChildren: '../erp/passengerleft#PassengerLeftReportsModule' },
 
                     // Class
                     { path: 'class', loadChildren: './class#ClassReportsModule' },

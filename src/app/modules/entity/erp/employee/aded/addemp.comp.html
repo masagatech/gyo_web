@@ -116,34 +116,10 @@
                     </div>
                 </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
-
-                            <div *ngIf="uploadPhotoDT.length">
-                                <div *ngFor="let file of uploadPhotoDT" class="box">
-                                    <div class="row clearfix">
-                                        <div class="col-md-9">
-                                            <img *ngIf="gender == 'M'" alt="{{empname}}" src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="40px">
-                                            <img *ngIf="gender == 'F'" alt="{{empname}}" src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="40px">
-                                        </div>
-                                        <div class="col-md-3" align="right">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <h4>Job Profile</h4>
 
-                <div class="row clearfix">
-                    <div class="col-md-6" *ngIf="psngrtype != 'teacher'">
+                <div class="row clearfix" *ngIf="psngrtype != 'teacher'">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Department <strong>*</strong></label>
@@ -210,6 +186,40 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Status</label>
+                                <select id="status" name="status" [(ngModel)]="status" class="form-control class" tabindex="16">
+                                    <option [value]="'active'">Active</option>
+                                    <option [value]="'inactive'">InActive</option>
+                                    <option [value]="'left'">Left</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-4" *ngIf="status == 'left'">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Left Date <strong>*</strong></label>
+                                <input type="date" name="leftdate" [(ngModel)]="leftdate" maxlength="50" class="form-control leftdate" tabindex="17" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="status == 'left'">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Left Reason <strong>*</strong></label>
+                                <textarea name="leftreason" [(ngModel)]="leftreason" rows="6" class="form-control no-resize auto-growth leftreason" tabindex="19"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <h4>Contact Details</h4>
@@ -219,7 +229,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Mobile (Login No) <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="16" />
+                                <input type="text" OnlyNumber="true" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="20" />
                             </div>
                         </div>
                     </div>
@@ -227,7 +237,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Alternate Mobile</label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="17" />
+                                <input type="text" OnlyNumber="true" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="21" />
                             </div>
                         </div>
                     </div>
@@ -238,7 +248,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Email</label>
-                                <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="18" />
+                                <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="22" />
                             </div>
                         </div>
                     </div>
@@ -246,7 +256,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Alternate Email</label>
-                                <input type="text" [(ngModel)]="email2" class="form-control" tabindex="19" />
+                                <input type="text" [(ngModel)]="email2" class="form-control" tabindex="23" />
                             </div>
                         </div>
                     </div>
@@ -257,7 +267,7 @@
                         <div id="address" class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Address <strong>*</strong></label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" (keydown.tab)="getLatAndLong()" maxlength="500" tabindex="20"></textarea>
+                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" (keydown.tab)="getLatAndLong()" maxlength="500" tabindex="24"></textarea>
                             </div>
                         </div>
                     </div>
@@ -268,7 +278,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Latitude</label>
-                                <input type="text" [(ngModel)]="lat" class="form-control lat" tabindex="21" />
+                                <input type="text" [(ngModel)]="lat" class="form-control lat" tabindex="25" />
                             </div>
                         </div>
                     </div>
@@ -276,7 +286,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Longitude</label>
-                                <input type="text" [(ngModel)]="lon" class="form-control" tabindex="22" />
+                                <input type="text" [(ngModel)]="lon" class="form-control" tabindex="26" />
                             </div>
                         </div>
                     </div>
@@ -287,7 +297,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Country <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="23" disabled />
+                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="27" disabled />
                             </div>
                         </div>
                     </div>
@@ -295,7 +305,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">State <strong>*</strong></label>
-                                <select id="state" [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="24">
+                                <select id="state" [(ngModel)]="state" class="form-control state" (ngModelChange)="fillCityDropDown()" tabindex="28">
                                     <option [value]="0">Select State</option>
                                     <option *ngFor="let row of stateDT" [value]="row.key">
                                         {{row.val}}
@@ -311,7 +321,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">City <strong>*</strong></label>
-                                <select id="area" [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="25">
+                                <select id="area" [(ngModel)]="city" class="form-control city" (ngModelChange)="fillAreaDropDown()" tabindex="29">
                                     <option [value]="0">Select City</option>
                                     <option *ngFor="let row of cityDT" [value]="row.key">
                                         {{row.val}}
@@ -324,7 +334,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Area <strong>*</strong></label>
-                                <select id="city" [(ngModel)]="area" class="form-control area" tabindex="26">
+                                <select id="city" [(ngModel)]="area" class="form-control area" tabindex="30">
                                     <option [value]="0">Select Area</option>
                                     <option *ngFor="let row of areaDT" [value]="row.key">
                                         {{row.val}}
@@ -340,7 +350,31 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="27" />
+                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="31" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+
+                            <div *ngIf="uploadPhotoDT.length">
+                                <div *ngFor="let file of uploadPhotoDT" class="box">
+                                    <div class="row clearfix">
+                                        <div class="col-md-9">
+                                            <img *ngIf="gender == 'M'" alt="{{empname}}" src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="40px">
+                                            <img *ngIf="gender == 'F'" alt="{{empname}}" src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="40px">
+                                        </div>
+                                        <div class="col-md-3" align="right">
+                                            <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

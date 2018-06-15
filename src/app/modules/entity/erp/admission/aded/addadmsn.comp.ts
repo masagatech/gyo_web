@@ -70,8 +70,18 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     classid: number = 0;
     classname: string = "";
     rollno: number = 0;
+
+    // Left Fields
+
     status: string = "active";
     statusnm: string = "Active";
+    leftdate: any = "";
+    leftreason: string = "";
+    leftclassid: number = 0;
+    leftclassname: string = "";
+
+    // General Info
+
     fname: string = "";
     mname: string = "";
     lname: string = "";
@@ -892,6 +902,23 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".rollno").focus();
             return false;
         }
+        if (that.status == "left") {
+            if (that.leftdate == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Left Date");
+                $(".leftdate").focus();
+                return false;
+            }
+            if (that.leftreason == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Left Reason");
+                $(".leftreason").focus();
+                return false;
+            }
+            if (that.leftclassid == 0) {
+                that._msg.Show(messageType.error, "Error", "Select Left Class");
+                $(".leftclass").focus();
+                return false;
+            }
+        }
         if (that.fname == "") {
             that._msg.Show(messageType.error, "Error", "Enter First Name");
             $(".fname").focus();
@@ -984,6 +1011,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             { "key": "Class Name", "val": ddltype == "old" ? that.classname : $("#classid option:selected").text().trim(), "fldname": "classid", "fldtype": "ddl" },
             { "key": "Roll No", "val": that.rollno, "fldname": "rollno", "fldtype": "text" },
             { "key": "Status", "val": ddltype == "old" ? that.statusnm : $("#status option:selected").text().trim(), "fldname": "status", "fldtype": "ddl" },
+            { "key": "Left Date", "val": that.status == "left" ? that.leftdate : "", "fldname": "leftreason", "fldtype": "date" },
+            { "key": "Left Reason", "val": that.status == "left" ? that.leftreason : "", "fldname": "leftreason", "fldtype": "text" },
+            { "key": "Left Class Name", "val": ddltype == "old" ? that.leftclassname : $("#leftclassid option:selected").text().trim(), "fldname": "leftreason", "fldtype": "ddl" },
             { "key": "First Name", "val": that.fname, "fldname": "fname", "fldtype": "text" },
             { "key": "Middle Name", "val": that.mname, "fldname": "mname", "fldtype": "text" },
             { "key": "Last Name", "val": that.lname, "fldname": "lname", "fldtype": "text" },
@@ -1104,6 +1134,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "classid": that.classid,
             "rollno": that.rollno,
             "status": that.status,
+            "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason, "leftclassid": that.leftclassid } : {},
             "fname": that.fname,
             "mname": that.mname,
             "lname": that.lname,
@@ -1325,6 +1356,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.rollno = 0;
         that.status = "active";
         that.statusnm = "Active";
+        that.leftdate = "";
+        that.leftreason = "";
+        that.leftclassid = 0;
 
         // Personal Information
 
@@ -1517,6 +1551,10 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     that.rollno = that.studentDT[0].rollno;
                     that.status = that.studentDT[0].status;
                     that.statusnm = that.studentDT[0].statusnm;
+                    that.leftdate = that.studentDT[0].leftdate;
+                    that.leftreason = that.studentDT[0].leftreason;
+                    that.leftclassid = that.studentDT[0].leftclassid;
+                    that.leftclassname = that.studentDT[0].leftclassname;
                     that.fname = that.studentDT[0].fname;
                     that.mname = that.studentDT[0].mname;
                     that.lname = that.studentDT[0].lname;

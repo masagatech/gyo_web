@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
@@ -12,7 +12,7 @@ declare var google: any;
     templateUrl: 'rptfeescoll.comp.html'
 })
 
-export class FeesCollectionReportsComponent implements OnInit {
+export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -23,6 +23,9 @@ export class FeesCollectionReportsComponent implements OnInit {
     ayid: number = 0;
 
     rpttype: string = "summary";
+
+    frmdt: string = "";
+    todt: string = "";
 
     classDT = [];
     selectedClass = [];
@@ -45,6 +48,7 @@ export class FeesCollectionReportsComponent implements OnInit {
 
     public ngOnInit() {
         this.fillSchoolDropDown();
+        this.setFromDateAndToDate();
 
         this.classSettings = {
             singleSelection: false,
@@ -54,6 +58,37 @@ export class FeesCollectionReportsComponent implements OnInit {
             enableSearchFilter: true,
             classes: "myclass custom-class"
         };
+
+        setTimeout(function () {
+            commonfun.navistyle();
+
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 0);
+    }
+
+    // Set From Date And To Date
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var before1month = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        this.frmdt = this.formatDate(before1month);
+        this.todt = this.formatDate(today);
     }
 
     // Fill School Drop Down
@@ -82,7 +117,7 @@ export class FeesCollectionReportsComponent implements OnInit {
                     else {
                         that.enttid = that._enttdetails.enttid;
                     }
-                    
+
                     that.fillAYAndClassDropDown();
                 }
             }
@@ -156,9 +191,10 @@ export class FeesCollectionReportsComponent implements OnInit {
         else {
             if (format == "html") {
                 var feesparams = {
-                    "flag": "classwise", "frmtype": "web", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
+                    "flag": "classwise", "type": "", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
+                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
+                    "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "issysadmin": that.loginUser.issysadmin, "format": format
                 }
     
                 commonfun.loader();
@@ -192,9 +228,10 @@ export class FeesCollectionReportsComponent implements OnInit {
             }
             else {
                 var feesparams = {
-                    "flag": "classwise", "frmtype": "server", "rpttype": that.rpttype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-                    "ctype": that.loginUser.ctype, "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
+                    "flag": "classwise", "type": "download", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
+                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
+                    "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
+                    "issysadmin": that.loginUser.issysadmin, "format": format
                 }
     
                 window.open(Common.getReportUrl("getFeesReports", feesparams));
@@ -261,5 +298,10 @@ export class FeesCollectionReportsComponent implements OnInit {
         }
 
         return _totpendfees;
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

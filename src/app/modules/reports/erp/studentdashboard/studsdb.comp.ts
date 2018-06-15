@@ -168,7 +168,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
                 },
 
                 xAxis: {
-                    rotateLabels: 10
+                    rotateLabels: 20
                 },
 
                 yAxis: {
@@ -312,6 +312,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
                     that.trial = crtfctdata[0].trial;
                     that.exmseatno = crtfctdata[0].exmseatno;
 
+                    $("#createTrialCertificateModal").modal('hide');
                     that.openCertificatePopup(type);
                 }
                 else {

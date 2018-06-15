@@ -111,9 +111,9 @@
                             {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column header="Active" [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
+                    <p-column header="Status" [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" let-i="rowIndex" pTemplate type="body">
-                            <span class="material-icons">{{row.isactive ? 'done' : 'remove'}}</span>
+                            <span class="material-icons">{{row.statusnm}}</span>
                         </ng-template>
                     </p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">

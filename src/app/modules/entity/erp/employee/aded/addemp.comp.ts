@@ -38,6 +38,8 @@ export class AddEmployeeComponent implements OnInit {
     aadharno: string = "";
     licenseno: string = "";
 
+    // Job Profile Fields
+
     emptypeDT: any = [];
     emptype: string = "";
 
@@ -48,6 +50,15 @@ export class AddEmployeeComponent implements OnInit {
     doj: any = "";
     noticedays: number = 0;
     aboutus: string = "";
+
+    // Left Fields
+
+    status: string = "active";
+    statusnm: string = "Active";
+    leftdate: any = "";
+    leftreason: string = "";
+
+    // Contact Fields
 
     mobileno1: string = "";
     mobileno2: string = "";
@@ -61,11 +72,14 @@ export class AddEmployeeComponent implements OnInit {
     city: number = 0;
     area: number = 0;
     pincode: number = 0;
-    uploadedFiles: any = [];
-    attachDocsDT: any = [];
 
     mode: string = "";
     isactive: boolean = true;
+
+    // Upload Photo Fields
+
+    uploadedFiles: any = [];
+    attachDocsDT: any = [];
 
     uploadPhotoDT: any = [];
     global = new Globals();
@@ -372,6 +386,9 @@ export class AddEmployeeComponent implements OnInit {
         that.doj = "";
         that.noticedays = 0;
         that.aboutus = "";
+        that.status = "active";
+        that.leftdate = "";
+        that.leftreason = "";
 
         that.mobileno1 = "";
         that.mobileno2 = "";
@@ -451,6 +468,18 @@ export class AddEmployeeComponent implements OnInit {
             $(".salary").focus();
             return false;
         }
+        if (that.status == "left") {
+            if (that.leftdate == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Left Date");
+                $(".leftdate").focus();
+                return false;
+            }
+            if (that.leftreason == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Left Reason");
+                $(".leftreason").focus();
+                return false;
+            }
+        }
         if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
@@ -497,6 +526,9 @@ export class AddEmployeeComponent implements OnInit {
                 "salarymode": that.salarymode,
                 "salary": that.salary,
                 "aboutus": that.aboutus,
+
+                "status": that.status,
+                "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason } : {},
 
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
@@ -600,6 +632,11 @@ export class AddEmployeeComponent implements OnInit {
                         that.noticedays = _empdata[0].noticedays;
                         that.salarymode = _empdata[0].salarymode;
                         that.salary = _empdata[0].salary;
+                        that.aboutus = _empdata[0].aboutus;
+                        that.status = _empdata[0].status;
+                        that.statusnm = _empdata[0].statusnm;
+                        that.leftdate = _empdata[0].leftdate;
+                        that.leftreason = _empdata[0].leftreason;
 
                         that.email1 = _empdata[0].email1;
                         that.email2 = _empdata[0].email2;
@@ -615,7 +652,6 @@ export class AddEmployeeComponent implements OnInit {
                         that.fillAreaDropDown();
                         that.area = _empdata[0].area;
                         that.pincode = _empdata[0].pincode;
-                        that.aboutus = _empdata[0].aboutus;
                         that.isactive = _empdata[0].isactive;
                         that.mode = _empdata[0].mode;
                     }

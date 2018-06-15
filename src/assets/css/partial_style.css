@@ -2466,7 +2466,7 @@ select.selectpicker {
 }
 
 .table-overflow {
-    width: 99%;
+    width: 100%;
     overflow: auto;
 }
 

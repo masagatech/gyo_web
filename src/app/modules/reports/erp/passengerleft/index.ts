@@ -7,14 +7,14 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
 
-import { PassengerBirthdayReportsComponent } from './rptpsngrbirth.comp';
+import { PassengerLeftReportsComponent } from './rptpsngrleft.comp';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: PassengerBirthdayReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rptpsngr", "submodule": "rptpsngrdob", "rights": "view", "urlname": "/birthday" }
+        path: '', component: PassengerLeftReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rptpsngr", "submodule": "rptpsngrleft", "rights": "view", "urlname": "/left" }
       }
     ]
   },
@@ -22,7 +22,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    PassengerBirthdayReportsComponent
+    PassengerLeftReportsComponent
   ],
 
   imports: [
@@ -32,6 +32,6 @@ export const routes = [
   providers: [AuthGuard, AdmissionService, PassengerReportsService]
 })
 
-export class PassengerBirthdayReportsModule {
+export class PassengerLeftReportsModule {
   public static routes = routes;
 }

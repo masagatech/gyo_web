@@ -6,10 +6,10 @@ import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
 
 @Component({
-    templateUrl: 'rptpsngrbirth.comp.html'
+    templateUrl: 'rptpsngrleft.comp.html'
 })
 
-export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
+export class PassengerLeftReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -75,7 +75,7 @@ export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].key;
-                        that.getPassengerBirthday("html");
+                        that.getLeftPassenger("html");
                     }
                     else {
                         that.ayid = 0;
@@ -129,7 +129,7 @@ export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
         this.tomonth = _todt[1];
     }
 
-    getPassengerBirthday(format) {
+    getLeftPassenger(format) {
         var that = this;
         var params = {};
 
@@ -175,8 +175,7 @@ export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
         this.tomonth = _todt[1];
 
         var dparams = {
-            "flag": "birthday", "psngrtype": that.psngrtype, "birthmonth": that.birthmonth,
-            "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "flag": "left", "psngrtype": that.psngrtype, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin, "format": format
         }
@@ -186,7 +185,7 @@ export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
         if (format == "html") {
             that._psngrrptservice.getPassengerReports(dparams).subscribe(data => {
                 try {
-                    $("#divrptbdaystud").html(data._body);
+                    $("#divrptleftstud").html(data._body);
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);

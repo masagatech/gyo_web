@@ -201,6 +201,36 @@
                     </div>
                 </div>
 
+                <div class="row clearfix" *ngIf="status == 'left'">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Left Date <strong>*</strong></label>
+                                <input type="date" name="leftdate" [(ngModel)]="leftdate" maxlength="50" class="form-control leftdate" tabindex="10" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Left Class <strong>*</strong></label>
+                                <select id="leftclassid" name="leftclassname" [(ngModel)]="leftclassid" class="form-control leftclass" tabindex="9">
+                                    <option [value]="0">Select Left Class</option>
+                                    <option *ngFor="let row of classDT" [value]="row.key">	
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Left Reason <strong>*</strong></label>
+                                <textarea name="leftreason" [(ngModel)]="leftreason" rows="6" class="form-control no-resize auto-growth leftreason" tabindex="11"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row clearfix">
                     <div class="col-md-4 col-xs-4">
                         <div class="form-group">

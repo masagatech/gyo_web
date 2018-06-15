@@ -96,46 +96,15 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-large" *ngIf="isalmenu == true">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="auditlogMenuDT.length">Audit Log <b class="caret"></b></a>
-
-                    <ul class="dropdown-menu dropdown-menu-large row div-overflow">
-                        <li class="col-md-3" *ngFor="let row of auditlogMenuDT | groupBy: 'pname'">
-                            <ul>
-                                <li class="dropdown-header">{{row.key}}</li>
-                                <li class="divider"></li>
-                                <li *ngFor="let mrow of row.value | filterBy: {'mname': mname}">
-                                    <a role="button" [routerLink]="mrow.mlink">
-                                        <i class="material-icons">donut_large</i> {{mrow.mname}}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
                 <li class="dropdown dropdown-large">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="adminMenuDT.length">Admin <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="adminMenuDT.length">
+                        <i class="material-icons">settings</i>
+                    </a>
 
                     <ul class="dropdown-menu dropdown-menu-large row div-overflow">
                         <li class="col-md-4" *ngFor="let row of adminMenuDT">
                             <ul>
                                 <li>
-                                    <a role="button" [routerLink]="row.mlink">
-                                        <i class="material-icons">donut_large</i> {{row.mname}}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown dropdown-large" *ngIf="isenttmenu == true">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="settingsMenuDT.length">
-                        <i class="material-icons">settings</i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-large dropdown-small row">
-                        <li class="col-md-12">
-                            <ul>
-                                <li *ngFor="let row of settingsMenuDT">
                                     <a role="button" [routerLink]="row.mlink">
                                         <i class="material-icons">donut_large</i> {{row.mname}}
                                     </a>

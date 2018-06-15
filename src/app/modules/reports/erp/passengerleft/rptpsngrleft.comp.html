@@ -1,7 +1,7 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-2 col-xs-6">
+            <div class="col-md-2 col-xs-6" *ngIf="psngrtype == 'student' || psngrtype == 'passenger'">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
@@ -15,23 +15,37 @@
                 </div>
             </div>
 
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class</label>
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" tabindex="2">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-2 col-xs-3 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getAgeWiseStudent('html')">
+                    <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getLeftPassenger('html')">
                         <i class="material-icons">arrow_forward</i>
                     </button>
                 </div>
             </div>
 
-            <div class="col-md-8 col-xs-3 pad-20 text-right">
+            <div class="col-md-1 col-xs-2 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a role="button" (click)="getAgeWiseStudent('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
-                        <li><a role="button" (click)="getAgeWiseStudent('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                        <li><a role="button" (click)="getLeftPassenger('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getLeftPassenger('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
@@ -39,6 +53,6 @@
     </div>
 
     <div class="body">
-        <div id="divrptagestud"></div>
+        <div id="divrptleftstud"></div>
     </div>
 </div>

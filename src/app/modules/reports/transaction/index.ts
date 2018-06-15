@@ -21,6 +21,7 @@ export const routes = [
                     
                     { path: 'feescollection', loadChildren: './feescollection#FeesCollectionReportsModule' },
                     { path: 'studentfees', loadChildren: './studentfees#StudentFeesReportsModule' },
+                    { path: 'dailyfees', loadChildren: './dailyfees#DailyFeesReportsModule' },
                 ]
             }
         ]

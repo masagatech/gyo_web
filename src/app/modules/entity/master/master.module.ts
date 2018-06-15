@@ -19,8 +19,8 @@ export const routes = [
 
                     { path: 'passenger', loadChildren: './passenger#PassengerModule' },
                     { path: 'passenger/attendance', loadChildren: '../erp/attendance#AttendanceModule' },
-                    { path: 'passenger/leave', loadChildren: '../erp/leave#LeaveModule' },
                     { path: 'passenger/holiday', loadChildren: '../erp/holiday#HolidayModule' },
+                    { path: 'passenger/leave', loadChildren: '../erp/leave#LeaveModule' },
 
                     // Master
 
