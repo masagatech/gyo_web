@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
@@ -88,6 +88,10 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                 that.psngrtypenm = 'Passenger';
                 that.classid = 0;
             }
+
+            setTimeout(function () {
+                $("#divattendance").empty();
+            }, 100);
         }, () => {
 
         })
@@ -99,7 +103,7 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
         var that = this;
         var defayDT: any = [];
 
-        commonfun.loader();
+        commonfun.loader(undefined, undefined, "Loading Report...");
 
         that._attndservice.getAttendance({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
@@ -114,7 +118,6 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
                         that.fillMonthDropDown();
-                        that.getAttendanceReports('html');
                     }
                     else {
                         that.ayid = 0;

@@ -2015,3 +2015,45 @@
 .theme-black .sidebar .legal .copyright a {
     color: #000 !important;
 }
+
+
+/*new style*/
+
+.theme-teal .btn.btn-theme {
+    background-color: #607d8b!important;
+}
+
+.theme-teal .btn.btn-theme {
+    padding: 2px 5px 0px 5px !important;
+}
+
+.theme-teal .navbar {
+    background: #114ca5!important;
+}
+
+.theme-teal .ui-panel-titlebar {
+    background: #e91e63!important;
+    color: #fff!important;
+}
+
+.theme-teal .nav>li>a {
+    font-size: 13px;
+}
+
+.theme-teal .btn-theme .material-icons {
+    font-size: 16px!important;
+}
+
+.title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 3px 0;
+    padding-left: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.navbar-nav>li>a i.material-icons {
+    font-size: 18px;
+}

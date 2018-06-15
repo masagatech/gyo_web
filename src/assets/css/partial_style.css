@@ -1841,7 +1841,7 @@ select.selectpicker {
 }
 
 .navbar {
-    height: 48px!important;
+    height: 45px!important;
     min-height: 0!important;
 }
 
@@ -2470,8 +2470,18 @@ select.selectpicker {
     overflow: auto;
 }
 
-.div-overflow {
+.menu-overflow {
     max-height: 500px;
+    overflow: auto;
+}
+
+.div-overflow {
+    width: 100%;
+    overflow: auto;
+}
+
+.div-overflow table {
+    width: 2000px;
     overflow: auto;
 }
 

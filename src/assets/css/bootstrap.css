@@ -5296,7 +5296,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 @media (min-width: 768px) {
     .navbar-nav {
         float: left;
-        margin: 0;
+        margin: -5px;
     }
     .navbar-nav>li {
         float: left;
@@ -7853,8 +7853,8 @@ button.close {
 }
 
 .img-left img {
-    /* width: 42px; */
-    height: 42px;
+    width: 40px;
+    height: 40px;
 }
 
 .hide {

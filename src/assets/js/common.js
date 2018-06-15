@@ -53,7 +53,7 @@ commonfun.validate = function validate() {
 
 commonfun.loader = function(name, effects, text) {
     if (!name) name = '.maincontent';
-    if (!effects) effects = 'bounce';
+    if (!effects) effects = 'progressBar';
     if (!text) text = '';
 
     $(name).waitMe({
