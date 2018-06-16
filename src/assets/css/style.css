@@ -3232,6 +3232,16 @@ section.content {
     top: -3px;
     right: 15px;
     list-style: none;
+    background-color: #ccc;
+    margin-top: -8px;
+    border-radius: 0px 0px 5px 5px;
+    padding-bottom: 3px;
+    padding-top: 2px;
+    border: 1px inset #fff;
+    z-index: 111144;
+    border-top: 0px;
+    background-color: rgb(233, 233, 233);
+    background-image: url(/assets/img/pattern02.png);
 }
 
 .card .header .header-dropdown .dropdown-menu li {

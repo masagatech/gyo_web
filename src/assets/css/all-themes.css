@@ -2276,6 +2276,10 @@ h6,
     height: 65px;
 }
 
+.dash-panel:hover {
+    background: linear-gradient(to bottom left, #c1effd, #114ca5);
+}
+
 .dash_img_icon {
     height: 55px;
     float: left;
