@@ -2027,6 +2027,12 @@
     padding: 2px 5px 0px 5px !important;
 }
 
+.theme-teal .btn-search {
+    background: #009688!important;
+    color: #ffffff!important;
+    padding: 4px!important;
+}
+
 .theme-teal .navbar {
     background: #114ca5!important;
 }
@@ -2223,12 +2229,20 @@
     color: #fff!important;
 }
 
+.dropdown-menu li.active {
+    background-color: #ffffff!important;
+}
+
+.dropdown-menu li.active a {
+    color: #000000!important;
+}
+
 .dropdown-menu ul.menu li a {
-    color: #fff!important;
+    color: #ffffff!important;
 }
 
 .dropdown-menu ul.menu li a:hover {
-    color: #000!important;
+    color: #000000!important;
 }
 
 .card {

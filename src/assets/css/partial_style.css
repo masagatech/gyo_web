@@ -1915,12 +1915,8 @@ select.selectpicker {
 
 .inputlinkico {
     position: absolute;
-    top: 17px;
+    top: 11px;
     right: 0;
-}
-
-.btn-search {
-    padding: 4px !important;
 }
 
 .form-group .form-control {
