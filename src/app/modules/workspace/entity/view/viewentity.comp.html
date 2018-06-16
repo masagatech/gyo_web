@@ -4,7 +4,7 @@
             <div class="col-md-1">
                 <h4>Entity</h4>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-xs-3">
                 <div class="form-group form-float">
                     <div class="form-line">
                         <label class="control-label">Entity Type</label>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Name</label>
@@ -25,21 +25,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 pad-20 ">
+            <div class="col-md-2 col-xs-1 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="resetEntityDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
             </div>
-            <div id="divShow" class="col-md-2 col-xs-2" align="right" style="padding-top: 20px">
+            <div class="col-md-3 col-xs-6 pad-20 text-right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshEntity('grid')">
                     <i class="material-icons">apps</i></button>
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshEntity('list')">
                     <i class="material-icons">list</i></button>
-            </div>
-            <div class="col-md-1 pad-20 " align="right">
-                <a role="button" class="btn btn-theme btn-xs" (click)="addEntityForm()"><i class="material-icons">add</i></a>
+                <button type="button" class="btn btn-theme btn-xs" (click)="addEntityForm()">
+                    <i class="material-icons">add</i></button>
             </div>
         </div>
     </div>
@@ -53,7 +52,7 @@
                     </div>
                     <p-dataGrid [value]="row.value">
                         <ng-template let-drow pTemplate="item">
-                            <div style="padding:3px" class="col-md-3">
+                            <div style="padding:3px" class="col-md-3 col-xs-6">
                                 <p-panel [header]="drow.schoolname" [style]="{'text-align':'center'}">
                                     <a role="button" (click)="openMainForm(drow)">
                                         <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" class="img-lg">

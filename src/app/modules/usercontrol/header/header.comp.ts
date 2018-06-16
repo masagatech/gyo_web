@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
-import { MessageService, messageType, MenuService, LoginService, AuthenticationService } from '@services';
+import { MessageService, messageType, MenuService, LoginService, AuthenticationService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AppState } from '../../../app.service';
 import { EntityService } from '@services/master';
@@ -12,12 +12,16 @@ declare var loader: any;
 @Component({
   selector: '<app-head></app-head>',
   templateUrl: 'header.comp.html',
-  providers: [EntityService, MenuService]
+  providers: [EntityService, MenuService, CommonService]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
   _enttdetails: any = [];
+
+  autoMenuDT: any = [];
+  mid: number = 0;
+  mname: any = [];
 
   ufullname: string = "";
   ctypename: string = "";
@@ -34,7 +38,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isrptmenu: boolean = false;
   isalmenu: boolean = false;
 
-  mname: string = "";
+  erpmname: string = "";
+  rptmname: string = "";
+  mstmname: string = "";
+  admmname: string = "";
 
   global = new Globals();
 
@@ -71,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { nm: 'black', disp: 'black' }
   ];
 
-  constructor(private _router: Router, private _authservice: AuthenticationService, public _menuservice: MenuService,
+  constructor(private _router: Router, private _authservice: AuthenticationService, public _menuservice: MenuService, private _autoservice: CommonService,
     private _loginservice: LoginService, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
     this._enttdetails = Globals.getEntityDetails();
@@ -103,6 +110,39 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public ngAfterViewInit() {
     loader.loadall();
+  }
+
+  // Auto Completed Menus
+
+  getAutoMenuData(event) {
+    var that = this;
+
+    let query = event.query;
+
+    that._autoservice.getAutoData({
+      "flag": "menu",
+      "uid": that.loginUser.uid,
+      "utype": that.loginUser.utype,
+      "psngrtype": that._enttdetails.psngrtype,
+      "entttype": that.entttype,
+      "enttid": that.enttid,
+      "wsautoid": that.wsautoid,
+      "issysadmin": that.loginUser.issysadmin,
+      "search": query
+    }).subscribe((data) => {
+      that.autoMenuDT = data.data;
+    }, err => {
+      that._msg.Show(messageType.error, "Error", err);
+    }, () => {
+
+    });
+  }
+
+  // Selected Menus
+
+  selectEntityData(event) {
+    this.mid = event.value;
+    this.mname = event.label;
   }
 
   getHeaderDetails() {

@@ -5397,6 +5397,7 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
     padding: 5px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    right: 11px;
 }
 
 .navbar-fixed-bottom .navbar-nav>li>.dropdown-menu {
@@ -7848,8 +7849,7 @@ button.close {
 
 .img-left {
     float: left !important;
-    /* width: 50px; */
-    padding: 0;
+    padding: 0 0 0 25px;
 }
 
 .img-left img {

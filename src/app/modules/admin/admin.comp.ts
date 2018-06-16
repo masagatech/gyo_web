@@ -13,12 +13,14 @@ export class AdminComponent implements OnInit, OnDestroy {
   _wsdetails: any = [];
   _enttdetails: any = [];
 
+  global = new Globals();
+
   wsname: string = "";
   wslogo: string = "";
   enttname: string = "";
   homeurl: string = "";
 
-  global = new Globals();
+  isleftmenu: boolean = false;
 
   constructor(private _router: Router, private _loginservice: LoginService) {
     this.loginUser = this._loginservice.getUser();
@@ -33,7 +35,13 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    setTimeout(function () {
+      commonfun.navistyle();
 
+      $.AdminBSB.islocked = true;
+      $.AdminBSB.leftSideBar.Close();
+      $.AdminBSB.rightSideBar.activate();
+  }, 0);
   }
 
   getHeaderDetails() {
@@ -41,6 +49,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.wsname = this.loginUser.wsname;
       this.wslogo = this.global.uploadurl + this.loginUser.wslogo;
       this.enttname = Cookie.get('_schwsdetails_') != null ? this._wsdetails.wsname : "";
+      
+      if (Cookie.get('_schenttdetails_') != null) {
+        this.isleftmenu = true;
+      }
+      else {
+        this.isleftmenu = false;
+      }
 
       if (this.loginUser.issysadmin) {
         if (Cookie.get('_schenttdetails_') != null) {
@@ -62,6 +77,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    $.AdminBSB.islocked = false;
+    $.AdminBSB.leftSideBar.Open();
   }
 }

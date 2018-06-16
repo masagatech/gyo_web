@@ -12,8 +12,10 @@ import { ADHOST, OnlyNumber } from '@directives';
 import { TimeAgoPipe } from '@pipe/timeago';
 import { format } from '@pipe/format';
 
+import { AutoCompleteModule } from 'primeng/primeng';
+
 @NgModule({
-    imports: [RouterModule, FormsModule, CommonModule],
+    imports: [RouterModule, FormsModule, CommonModule, AutoCompleteModule],
     declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
         LeftDashboardComponent, ADHOST, OnlyNumber, TimeAgoPipe, format],
     exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,

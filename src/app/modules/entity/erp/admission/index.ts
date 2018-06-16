@@ -23,7 +23,10 @@ export const routes = [
         data: { "module": "erp", "submodule": "admsn", "rights": "view", "urlname": "dashboard" }
       },
       {
-        path: '', component: ViewAdmissionComponent, canActivate: [AuthGuard],
+        path: '', redirectTo: 'profile'
+      },
+      {
+        path: 'profile', component: ViewAdmissionComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "admsn", "rights": "view", "urlname": "student" }
       },
       {

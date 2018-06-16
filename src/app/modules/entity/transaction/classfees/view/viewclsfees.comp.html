@@ -81,9 +81,7 @@
                                         <b>Total</b>
                                     </td>
                                     <td align="right">
-                                        <div class="form-group">
-                                            {{totalFees() | _currency:loginUser.globsettings[0]}}
-                                        </div>
+                                        {{totalFees() | _currency:loginUser.globsettings[0]}}
                                     </td>
                                     <td align="right">
                                     </td>
@@ -128,16 +126,12 @@
                                         <b>Total</b>
                                     </td>
                                     <td align="right">
-                                        <div class="form-group">
-                                            {{totalInstallmentFees() | _currency:loginUser.globsettings[0]}}
-                                        </div>
+                                        {{totalInstallmentFees() | _currency:loginUser.globsettings[0]}}
                                     </td>
                                     <td>
                                     </td>
                                     <td align="right">
-                                        <div class="form-group">
-                                            {{totalPenaltyFees() | _currency:loginUser.globsettings[0]}}
-                                        </div>
+                                        {{totalPenaltyFees() | _currency:loginUser.globsettings[0]}}
                                     </td>
                                 </tr>
                             </tfoot>

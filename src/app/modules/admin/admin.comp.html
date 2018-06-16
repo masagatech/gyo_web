@@ -1,5 +1,9 @@
 <app-head [wsname]="wsname" [wslogo]="wslogo" [enttname]="enttname" [homeurl]="homeurl"></app-head>
 
+<div *ngIf="isleftmenu">
+    <leftsidebar></leftsidebar>
+</div>
+
 <section class="full-content maincontent">
     <div class="container-fluid">
         <router-outlet></router-outlet>

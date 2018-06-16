@@ -6,7 +6,7 @@
             </div>
 
             <div class="col-md-2" align="right">
-                <div class="form-group" *ngIf="_enttdetails.entttype == 'School'">
+                <div class="form-group margin-0" *ngIf="_enttdetails.entttype == 'School'">
                     <div class="form-line">
                         <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getERPDashboardDetails()">
                             <option [value]="0">Select Academic year</option>
@@ -45,12 +45,12 @@
     <div class="row clearfix">
         <div class="col-md-8">
             <div class="row clearfix">
-                <div *ngFor="let row of dashboardDT" class="col-md-4">
-                    <div class="card">
+                <div *ngFor="let row of dashboardDT" class="col-md-3 col-xs-6">
+                    <div class="card dash-panel">
                         <a role="button" (click)="openForm(row)">
-                            <div class="pad-10 m-05 text-center">
-                                <img src="{{row.dbicon}}" height="100px" />
-                                <hr class="hr" /> {{row.dbhead}}
+                            <div class="text-center">
+                                <img class="dash_img_icon" src="{{row.dbicon}}" height="100px" />
+                                <div class="dash_text"><span>{{row.dbhead}}</span></div>
                             </div>
                         </a>
                     </div>
@@ -112,16 +112,25 @@
                             <h6>School Noticeboard</h6>
                         </div>
                         <div class="col-md-6 text-right">
-                            <a role="button" [routerLink]="['/erp/school/noticeboard/add']">
+                            <button type="button" class="btn btn-theme btn-xs" [routerLink]="['/erp/school/noticeboard/add']">
                                 <i class="material-icons font-18">add</i>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="body" *ngIf="noticeboardDT.length">
+                <div class="body" id="notice_board" *ngIf="noticeboardDT.length">
                     <div *ngFor="let row of noticeboardDT">
-                        <div class="row clearfix">
+                        <div class="media border p-3">
+                            <div class="media-body">
+                                <h6>
+                                    <img src="assets/img/dashboard/notification.png" alt="{{row.nbtitle}}" class="mr-3 mt-3 rounded-circle" style="width: 18px;">{{row.nbtitle}} <small class="float-right"><i>{{row.nbdate}}</i></small>
+                                </h6>
+                                <p class="font-11">{{row.nbdesc}}</p>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row clearfix">
                             <div class="col-md-9">
                                 <b>Date : </b>{{row.nbdate}}
                             </div>
@@ -136,9 +145,9 @@
                                 <p><b>Title : </b>{{row.nbtitle}}</p>
                                 <p>{{row.nbdesc}}</p>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <hr class="hr" />
+                        <!-- <hr class="hr" /> -->
                     </div>
 
                     <div class="col-md-12 text-right" *ngIf="noticeboardDT.length > 5">

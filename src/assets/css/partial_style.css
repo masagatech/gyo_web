@@ -2116,9 +2116,9 @@ select.selectpicker {
         margin-left: 0;
         margin-right: 0;
     }
-    .dropdown-menu-large>li {
+    /* .dropdown-menu-large>li {
         margin-bottom: 30px;
-    }
+    } */
     .dropdown-menu-large>li:last-child {
         margin-bottom: 0;
     }

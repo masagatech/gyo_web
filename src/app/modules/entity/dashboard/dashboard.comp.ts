@@ -268,7 +268,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     getERPDashboardData(dbtype) {
         var that = this;
-        commonfun.loader();
+        commonfun.loader('#notice_board');
 
         // Class Status Variable
 
@@ -453,12 +453,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
-            commonfun.loaderhide();
+            commonfun.loaderhide('#notice_board');
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
 
-            commonfun.loaderhide();
+            commonfun.loaderhide('#notice_board');
         }, () => {
 
         })
