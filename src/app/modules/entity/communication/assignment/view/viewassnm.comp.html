@@ -1,33 +1,61 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-2 col-xs-4">
-                <h4>Homework</h4>
-            </div>
-            <div class="col-md-10 col-xs-8" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addAssignment()">
-                    <i class="material-icons">add</i></button>
-            </div>
-        </div>
+        <h4>Homework</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addAssignment()">
+                    <i class="material-icons">add</i></a>
+            </li>
+        </ul>
     </div>
 
-    <div class="body no-padding">
+    <div class="body">
         <div class="row clearfix">
             <div class="col-md-12">
-                <p-dataTable [value]="assignmentDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
-                    <p-column field="title" header="Title" [style]="{'width':'200px','text-align':'left'}"></p-column>
-                    <p-column field="classname" header="Class Name" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="assnmby" header="Assignment By" [style]="{'text-align':'left'}"></p-column>
-                    <p-column field="frmdt" header="From Date" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="todt" header="To Date" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editAssignment(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
-                </p-dataTable>
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="200px">Title</th>
+                            <th width="100px">Class Name</th>
+                            <th width="200px">Assignment By</th>
+                            <th width="150px">From Date</th>
+                            <th width="150px">To Date</th>
+                            <th width="50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="!assignmentDT.length">
+                        <tr>
+                            <td colspan="6">
+                                <h5>No Data Found....</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngFor="let row of assignmentDT">
+                        <tr>
+                            <td>
+                                {{row.title}}
+                            </td>
+                            <td>
+                                {{row.classname}}
+                            </td>
+                            <td>
+                                {{row.assnmby}}
+                            </td>
+                            <td>
+                                {{row.frmdt}}
+                            </td>
+                            <td>
+                                {{row.todt}}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editAssignment(row)">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

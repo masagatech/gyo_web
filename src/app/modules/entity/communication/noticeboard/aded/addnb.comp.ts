@@ -32,8 +32,33 @@ export class AddNoticeboardComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.fillDropDownList();
-        this.getNoticeboard();
+        var that = this;
+
+        that.setFromDateAndToDate();
+        that.fillDropDownList();
+        
+        that.getNoticeboard();
+    }
+
+    // Format Date Time
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var _currentdate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        this.nbdate = this.formatDate(_currentdate);
     }
 
     // Fill Group Drop Down and Checkbox List For Standard
@@ -101,8 +126,8 @@ export class AddNoticeboardComponent implements OnInit {
         that.nbid = 0;
         that.nbtitle = "";
         that.nbdesc = "";
-        that.nbdate = "";
 
+        that.setFromDateAndToDate();
         that.clearCheckboxes();
     }
 
@@ -160,7 +185,7 @@ export class AddNoticeboardComponent implements OnInit {
             return false;
         }
         if (that.nbdesc == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Message");
+            that._msg.Show(messageType.error, "Error", "Enter Description");
             $(".nbdesc").focus();
             return false;
         }
@@ -176,7 +201,7 @@ export class AddNoticeboardComponent implements OnInit {
             }
         }
         if (_nbrights == null) {
-            that._msg.Show(messageType.error, "Error", "Please Select Class");
+            that._msg.Show(messageType.error, "Error", "Please Select " + that.nbtypenm);
             return false;
         }
 
@@ -290,7 +315,7 @@ export class AddNoticeboardComponent implements OnInit {
                             var _nbrights = null;
                             var _nbitem = null;
 
-                            if (viewnb[0] != null) {
+                            if (viewnb != null) {
                                 _nbrights = null;
                                 _nbrights = viewnb[0].recvid;
 

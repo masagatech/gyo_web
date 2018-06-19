@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -11,7 +11,7 @@ declare var google: any;
     providers: [CommonService]
 })
 
-export class AddEmployeeComponent implements OnInit {
+export class AddEmployeeComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -46,9 +46,10 @@ export class AddEmployeeComponent implements OnInit {
     salarymodeDT: any = [];
     salarymode: string = "";
 
-    salary: any = "";
     doj: any = "";
     noticedays: number = 0;
+    desigid: number = 0;
+    salary: any = "";
     aboutus: string = "";
 
     // Left Fields
@@ -86,6 +87,21 @@ export class AddEmployeeComponent implements OnInit {
     uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseLabel: string = "";
 
+    // Experience
+
+    totexpyr: number = 0;
+    enttname: string = "";
+    expdoj: any = "";
+    expdor: any = "";
+    expsalary: any = "";
+
+    designationDT: any = [];
+    expdesigid: number = 0;
+
+    experienceDT: any = [];
+    selectedExperience: any = {};
+    iseditexperience: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _empservice: EmployeeService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -102,6 +118,12 @@ export class AddEmployeeComponent implements OnInit {
 
     public ngOnInit() {
         var that = this;
+
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 1000);
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['psngrtype'] !== undefined) {
@@ -170,6 +192,7 @@ export class AddEmployeeComponent implements OnInit {
 
                 that.genderDT = data.data.filter(a => a.group == "gender");
                 that.salarymodeDT = data.data.filter(a => a.group == "paymentmode");
+                that.designationDT = data.data.filter(a => a.group == "designation");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -375,7 +398,11 @@ export class AddEmployeeComponent implements OnInit {
         that.empcode = "";
         that.emppwd = "";
         that.empname = "";
-        that.gender = "";
+
+        that.uploadPhotoDT = [];
+        that.chooseLabel = "Upload Photo";
+
+        that.gender = "M";
         that.dob = "";
         that.birthplace = "";
         that.nationality = "";
@@ -385,6 +412,7 @@ export class AddEmployeeComponent implements OnInit {
         that.salarymode = "";
         that.doj = "";
         that.noticedays = 0;
+        that.desigid = 0;
         that.aboutus = "";
         that.status = "active";
         that.leftdate = "";
@@ -408,7 +436,7 @@ export class AddEmployeeComponent implements OnInit {
         that.fillAreaDropDown();
         that.area = that._enttdetails.arid;
         that.pincode = that._enttdetails.pincode;
-        that.chooseLabel = "Upload " + that.psngrtypenm + " Photo";
+        that.chooseLabel = "Upload Photo";
     }
 
     // Save Data
@@ -612,12 +640,16 @@ export class AddEmployeeComponent implements OnInit {
                         that.emppwd = _empdata[0].emppwd;
                         that.empname = _empdata[0].empname;
 
-                        if (data.data[0].empphoto !== "") {
-                            that.uploadPhotoDT.push({ "athurl": data.data[0].empphoto });
-                            that.chooseLabel = "Change " + that.psngrtypenm + " Photo";
+                        var empphoto = _empdata[0].empphoto;
+                        var othdocfile = _empdata[0].othdocfile;
+
+                        if (empphoto !== "" && empphoto !== null) {
+                            that.uploadPhotoDT.push({ "athurl": empphoto });
+                            that.chooseLabel = "Change Photo";
                         }
                         else {
-                            that.chooseLabel = "Upload " + that.psngrtypenm + " Photo";
+                            that.uploadPhotoDT = [];
+                            that.chooseLabel = "Upload Photo";
                         }
 
                         that.gender = _empdata[0].gndrkey;
@@ -626,17 +658,6 @@ export class AddEmployeeComponent implements OnInit {
                         that.dob = _empdata[0].dob;
                         that.aadharno = _empdata[0].aadharno;
                         that.licenseno = _empdata[0].licenseno;
-
-                        that.emptype = _empdata[0].emptype;
-                        that.doj = _empdata[0].doj;
-                        that.noticedays = _empdata[0].noticedays;
-                        that.salarymode = _empdata[0].salarymode;
-                        that.salary = _empdata[0].salary;
-                        that.aboutus = _empdata[0].aboutus;
-                        that.status = _empdata[0].status;
-                        that.statusnm = _empdata[0].statusnm;
-                        that.leftdate = _empdata[0].leftdate;
-                        that.leftreason = _empdata[0].leftreason;
 
                         that.email1 = _empdata[0].email1;
                         that.email2 = _empdata[0].email2;
@@ -651,6 +672,22 @@ export class AddEmployeeComponent implements OnInit {
                         that.city = _empdata[0].city;
                         that.fillAreaDropDown();
                         that.area = _empdata[0].area;
+
+                        that.emptype = _empdata[0].emptype;
+                        that.desigid = _empdata[0].desigid;
+                        that.doj = _empdata[0].doj;
+                        that.noticedays = _empdata[0].noticedays;
+                        that.salarymode = _empdata[0].salarymode;
+                        that.salary = _empdata[0].salary;
+                        that.aboutus = _empdata[0].aboutus;
+                        that.status = _empdata[0].status;
+                        that.statusnm = _empdata[0].statusnm;
+                        that.leftdate = _empdata[0].leftdate;
+                        that.leftreason = _empdata[0].leftreason;
+                        
+                        that.totexpyr = _empdata[0].totexpyr;
+                        that.experienceDT = _empdata[0].expdtls;
+                        
                         that.pincode = _empdata[0].pincode;
                         that.isactive = _empdata[0].isactive;
                         that.mode = _empdata[0].mode;
@@ -669,7 +706,7 @@ export class AddEmployeeComponent implements OnInit {
                 })
             }
             else {
-                this.dob = this.formatDate(_currdate);
+                that.dob = that.formatDate(_currdate);
 
                 that.resetEmployeeFields();
                 commonfun.loaderhide();
@@ -681,5 +718,10 @@ export class AddEmployeeComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/erp/' + this.psngrtype]);
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

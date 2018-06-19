@@ -1,15 +1,44 @@
 <div class="card">
     <div class="header">
+        <h4>{{psngrtypenm}}</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('grid')">
+                    <i class="material-icons">apps</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('list')">
+                    <i class="material-icons">list</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addEmployeeForm()">
+                    <i class="material-icons">add</i></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <div class="header">
         <div class="row clearfix">
-            <div class="col-md-5">
-                <h4>{{psngrtypenm}}</h4>
-            </div>
-            <div class="col-md-5 col-xs-8">
-                <div class="form-group" *ngIf="psngrtype != 'teacher'">
+            <div class="col-md-3 col-xs-5">
+                <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Employee Type <strong>*</strong></label>
-                        <select id="emptype" [(ngModel)]="emptype" class="form-control emptype" tabindex="3" (ngModelChange)="getEmployeeDetails()">
-                            <option [value]="''">Select Employee Type</option>
+                        <label class="control-label">Status</label>
+                        <select id="status" name="status" [(ngModel)]="status" class="form-control class" tabindex="1">
+                            <option [value]="''">All</option>
+                            <option [value]="'current'">Current</option>
+                            <option [value]="'past'">Past</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Department</label>
+                        <select id="emptype" [(ngModel)]="emptype" class="form-control emptype" tabindex="2">
+                            <option [value]="''">All</option>
                             <option *ngFor="let row of emptypeDT" [value]="row.key">
                                 {{row.val}}
                             </option>
@@ -17,15 +46,12 @@
                     </div>
                 </div>
             </div>
-            <div id="divShow" class="col-md-1 col-xs-2 pad-20">
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshEmployee('grid')">
-                    <i class="material-icons">apps</i></button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshEmployee('list')">
-                    <i class="material-icons">list</i></button>
-            </div>
-            <div class="col-md-1 col-xs-2 pad-20 text-right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addEmployeeForm()">
-                    <i class="material-icons">add</i></button>
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getEmployeeDetails()">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -39,45 +65,41 @@
                     </div>
                     <p-dataGrid [value]="row.value">
                         <ng-template let-drow pTemplate="item">
-                            <div style="padding:3px" class="ui-g-12 ui-md-3">
+                            <div style="padding: 3px" class="col-md-4 col-xs-6">
                                 <p-panel [style]="{'text-align':'center'}">
                                     <p-header>
                                         <div class="row clearfix">
-                                            <div class="col-md-1">
-                                                <i class="material-icons sm-font">{{drow.isactive ? 'done' : ''}}</i>
-                                            </div>
-                                            <div class="col-md-10">
+                                            <div class="col-md-10 col-xs-8">
                                                 {{drow.empname}}
                                             </div>
-                                            <div class="col-md-1">
-                                                <a role="button" (click)="editEmployeeForm(drow)"><i class="material-icons sm-font">edit</i></a>
+                                            <div class="col-md-2 col-xs-4">
+                                                <a role="button" (click)="editEmployeeForm(drow)"><i class="material-icons font-15 col-white">edit</i></a>
                                             </div>
                                         </div>
                                     </p-header>
                                     <div class="row clearfix">
-                                        <div class="col-md-4 border">
-                                            <div class="row clearfix">
-                                                <div class="col-md-12">
-                                                    <a role="button" (click)="viewEmployeeProfile(drow)">
-                                                        <img *ngIf="drow.gndrkey == 'M'" alt="{{drow.empname}}" src="{{global.uploadurl + drow.empphoto}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
-                                                        <img *ngIf="drow.gndrkey == 'F'" alt="{{drow.empname}}" src="{{global.uploadurl + drow.empphoto}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-12" *ngIf="drow.gndrval != ''">
-                                                    {{drow.gndrval}}
-                                                </div>
-                                            </div>
+                                        <div class="col-md-3 border">
+                                            <a role="button" (click)="viewEmployeeProfile(drow)">
+                                                <img *ngIf="drow.gndrkey == 'M'" alt="{{drow.empname}}" src="{{global.uploadurl + drow.empphoto}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
+                                                <img *ngIf="drow.gndrkey == 'F'" alt="{{drow.empname}}" src="{{global.uploadurl + drow.empphoto}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
+                                            </a>
                                         </div>
-                                        <div class="col-md-8" align="left">
+                                        <div class="col-md-9" align="left">
                                             <div class="row clearfix">
                                                 <div class="col-md-12" *ngIf="drow.dob != ''">
-                                                    <span class="material-icons sm-font">date_range</span> {{drow.dob}}
+                                                    <span class="material-icons font-15">date_range</span> {{drow.doj}}
                                                 </div>
                                                 <div class="col-md-12" *ngIf="drow.mobileno1 != ''">
-                                                    <span class="material-icons sm-font">phone_iphone</span> {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
+                                                    <span class="material-icons font-15">phone_iphone</span> {{drow.mobileno1}}
+                                                    <span *ngIf="drow.mobileno1 != '' && drow.mobileno2 !== ''">, </span>{{drow.mobileno2}}
                                                 </div>
-                                                <div class="col-md-12" *ngIf="drow.email1 != ''">
-                                                    <span class="material-icons sm-font">email</span> {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
+                                                <div class="col-md-12" *ngIf="drow.email1 != '' && drow.email1 != null">
+                                                    <span class="material-icons font-15 float-left">email</span>
+                                                    <span class="short-text font-15" title="{{drow.email1}}">{{drow.email1}}</span>
+                                                </div>
+                                                <div class="col-md-12" *ngIf="drow.email2 != '' && drow.email2 != null">
+                                                    <span class="material-icons font-15 float-left">email</span>
+                                                    <span class="short-text font-15" title="{{drow.email2}}">{{drow.email2}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,31 +114,25 @@
         <div class="row clearfix" *ngIf="isShowList">
             <div class="col-md-12">
                 <p-dataTable [value]="employeeDT">
-                    <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
+                    <p-column header="" [style]="{'width':'60px', 'text-align':'center', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <img *ngIf="row.gndrkey == 'M'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">
                             <img *ngIf="row.gndrkey == 'F'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
                         </ng-template>
                     </p-column>
-                    <p-column field="emptypname" header="Employee Type" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="empcode" header="Employee Code" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                    <p-column field="empname" header="Employee Name" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}"></p-column>
-                    <p-column header="Mobile" [style]="{'width':'100px','text-align':'left','vertical-align':'top'}">
+                    <p-column field="empname" header="Employee Name" [style]="{'width':'200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                    <p-column field="doj" header="Date of Joining" [style]="{'width':'150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
+                    <p-column header="Mobile" [style]="{'width':'100px', 'text-align':'left', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column header="Email" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
+                    <p-column header="Email" [style]="{'width':'200px', 'text-align':'left', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column header="Status" [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
-                        <ng-template let-row="rowData" let-i="rowIndex" pTemplate type="body">
-                            <span class="material-icons">{{row.statusnm}}</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
+                    <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme btn-xs" (click)="editEmployeeForm(row)">
                                 <i class="material-icons">edit</i>

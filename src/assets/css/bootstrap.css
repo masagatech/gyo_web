@@ -2897,7 +2897,6 @@ th {
 
 .table-bordered {
     border: 1px solid #ddd;
-    margin: -1px 0;
 }
 
 .table-bordered>thead>tr>th,

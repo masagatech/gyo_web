@@ -1,20 +1,22 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-6 col-xs-6">
-                <h4>Exam Grade</h4>
-            </div>
-            <div class="col-md-6 col-xs-6 text-right pad-05">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="addExamGrade()">
-                        <i class="material-icons">add</i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <h4>Exam Grade</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addExamGrade()">
+                    <span class="material-icons">add</span>
+                </a>
+            </li>
+        </ul>
     </div>
 
     <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12" *ngIf="!examGradeDT.length">
+                <h5>No Data Found</h5>
+            </div>
+        </div>
         <div class="row clearfix">
             <div class="col-md-6" *ngFor="let row of examGradeDT | groupBy: 'grpflds'">
                 <table class="table table-bordered reports">
@@ -58,13 +60,6 @@
                             </td>
                             <td>
                                 {{drow.gradename}}
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr *ngIf="!examGradeDT.length">
-                            <td colspan="3">
-                                <h4><strong>No Data Found</strong></h4>
                             </td>
                         </tr>
                     </tbody>

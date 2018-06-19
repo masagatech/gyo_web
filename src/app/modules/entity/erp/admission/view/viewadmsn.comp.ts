@@ -33,6 +33,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     classid: number = 0;
     gender: string = "";
     castcatid: string = "";
+    status: string = "";
 
     autoStudentDT: any = [];
     selectStudent: any = {};
@@ -130,6 +131,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this.classid = 0;
         this.gender = "";
         this.castcatid = "";
+        this.status = "";
 
         Cookie.delete("_studid_");
         Cookie.delete("_studname_");
@@ -284,6 +286,9 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                 else if (Cookie.get('_fltrtype_') == "castcategory") {
                     that.castcatid = Cookie.get('_fltrid_');
                 }
+                else if (Cookie.get('_fltrtype_') == "status") {
+                    that.status = Cookie.get('_fltrid_');
+                }
             }
             else {
                 that.prspctid = 0;
@@ -291,6 +296,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                 that.classid = 0;
                 that.gender = "";
                 that.castcatid = "";
+                that.status = "";
             }
         }
 
@@ -314,8 +320,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "ayid": that.ayid, "prspctid": that.prspctid, "boardid": that.boardid, "classid": that.classid,
-            "gender": that.gender, "castcatid": that.castcatid, "studid": that.studid, "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "gender": that.gender, "castcatid": that.castcatid, "status": that.status, "studid": that.studid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 
         that._admsnservice.getStudentDetails(params).subscribe(data => {

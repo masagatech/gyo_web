@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, CommonService } from '@services';
 
 import { AddAnnouncementComponent } from './aded/addannc.comp';
 import { ViewAnnouncementComponent } from './view/viewannc.comp';
@@ -36,7 +36,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, AnnouncementService]
+  providers: [AuthGuard, CommonService, AnnouncementService]
 })
 
 export class AnnouncementModule {

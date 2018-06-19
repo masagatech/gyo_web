@@ -436,6 +436,12 @@ export class AddFeesCollectionComponent implements OnInit {
     isValidSaveFees(newval) {
         var that = this;
 
+        if (that.rbid == 0) {
+            that._msg.Show(messageType.info, "Info", "Select Receipt Book");
+            $(".rbname").focus();
+            return false;
+        }
+
         if (that.receivedate == "") {
             that._msg.Show(messageType.info, "Info", "Enter Receive Date");
             $(".receivedate").focus();

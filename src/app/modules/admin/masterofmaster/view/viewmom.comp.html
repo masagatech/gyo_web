@@ -19,6 +19,11 @@
                 </tr>
             </thead>
             <tbody>
+                <tr *ngIf="!momDT.length">
+                    <td colspan="3">
+                        <h5>No Data Found</h5>
+                    </td>
+                </tr>
                 <tr *ngFor="let row of momDT">
                     <td width="150px">
                         {{row.key}}

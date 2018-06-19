@@ -23,6 +23,13 @@
                     <th width="50px" align="right"></th>
                 </tr>
             </thead>
+            <tbody *ngIf="!receiptBookDT.length">
+                <tr>
+                    <td colspan="7">
+                        <h5>No Data Found....</h5>
+                    </td>
+                </tr>
+            </tbody>
             <tbody *ngIf="receiptBookDT.length">
                 <tr *ngFor="let row of receiptBookDT">
                     <td>
@@ -55,13 +62,6 @@
                             </button>
                         </div>
                     </td>
-                </tr>
-            </tbody>
-            <tbody *ngIf="!receiptBookDT.length">
-                <tr class="tr-table">
-                    <th colspan="7">
-                        No records found
-                    </th>
                 </tr>
             </tbody>
         </table>

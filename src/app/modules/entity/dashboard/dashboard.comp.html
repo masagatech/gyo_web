@@ -129,28 +129,9 @@
                                 <p class="font-11">{{row.nbdesc}}</p>
                             </div>
                         </div>
-
-                        <!-- <div class="row clearfix">
-                            <div class="col-md-9">
-                                <b>Date : </b>{{row.nbdate}}
-                            </div>
-                            <div class="col-md-3 text-right">
-                                <a role="button" [routerLink]="['/erp/school/noticeboard/edit/' + row.nbid]">
-                                    <i class="material-icons font-18">edit</i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row clearfix">
-                            <div class="col-md-12">
-                                <p><b>Title : </b>{{row.nbtitle}}</p>
-                                <p>{{row.nbdesc}}</p>
-                            </div>
-                        </div> -->
-
-                        <!-- <hr class="hr" /> -->
                     </div>
 
-                    <div class="col-md-12 text-right" *ngIf="noticeboardDT.length > 5">
+                    <div class="media border p-3 text-right" *ngIf="noticeboardDT.length >= 5">
                         <a role="button" class="btn btn-theme btn-xs" [routerLink]="['/erp/school/noticeboard']">View More....</a>
                     </div>
                 </div>

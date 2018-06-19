@@ -43,6 +43,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row clearfix">
             <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
@@ -52,12 +55,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 text-right" *ngIf="classid != 0">
-                <div class="form-group" style="padding-top: 20px">
+            <div class="col-md-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getFeesCollection()">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 pad-20">
+                <div class="form-group" *ngIf="classid != 0">
                     Class Fees : {{classfees | _currency:loginUser.globsettings[0]}}
                 </div>
             </div>
-            <div class="col-md-2 pad-20 text-right">
+            <div class="col-md-4 pad-20 text-right">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
                         <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
@@ -76,7 +86,7 @@
                             <th width="100px">Roll No</th>
                             <th>Student Name</th>
                             <th width="100px">Fees</th>
-                            <th width="55px"></th>
+                            <th width="80px"></th>
                         </tr>
                     </thead>
                     <tbody>

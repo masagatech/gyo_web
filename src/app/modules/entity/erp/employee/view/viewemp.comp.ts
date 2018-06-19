@@ -3,12 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EmployeeService } from '@services/master';
-import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewemp.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewemp.comp.html'
 })
 
 export class ViewEmployeeComponent implements OnInit {
@@ -17,6 +15,7 @@ export class ViewEmployeeComponent implements OnInit {
 
     emptypeDT: any = [];
     emptype: string = "";
+    status: string = "";
 
     psngrtype: string = "";
     psngrtypenm: string = "";
@@ -38,7 +37,6 @@ export class ViewEmployeeComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
         this.getEmployeeDetails();
     }
 
@@ -46,15 +44,24 @@ export class ViewEmployeeComponent implements OnInit {
 
     }
 
-    // Fill DropDown List
+    // Fill Department DropDown List
 
-    fillDropDownList() {
+    fillDepartmentDropDown() {
         var that = this;
+        that.emptypeDT = [];
+        
         commonfun.loader();
 
-        that._empservice.getEmployeeDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._empservice.getEmployeeDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
-                that.emptypeDT = data.data.filter(a => a.group == "emptype").filter(a => a.key != "tchr");
+                if (that.psngrtype == "teacher") {
+                    that.emptypeDT = data.data.filter(a => a.group == "classtype");
+                }
+                else {
+                    that.emptypeDT = data.data.filter(a => a.group == "emptype").filter(a => a.key != "tchr");
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -103,6 +110,7 @@ export class ViewEmployeeComponent implements OnInit {
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['psngrtype'] !== undefined) {
                 that.psngrtype = params['psngrtype'];
+                that.fillDepartmentDropDown();
 
                 if (that.psngrtype == "teacher") {
                     that.psngrtypenm = 'Teacher';
@@ -113,7 +121,7 @@ export class ViewEmployeeComponent implements OnInit {
 
                 params = {
                     "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-                    "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype, "enttid": that._enttdetails.enttid,
+                    "emptype": that.psngrtype, "emptypid": that.emptype, "status": that.status, "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
                 }
 

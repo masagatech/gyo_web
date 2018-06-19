@@ -29,7 +29,7 @@ export class ViewExamResultComponent implements OnInit {
     studid: number = 0;
     studname: string = "";
 
-    examDT: any = [];
+    examResultDT: any = [];
 
     // Upload File
 
@@ -249,7 +249,7 @@ export class ViewExamResultComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.examDT = data.data;
+                that.examResultDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

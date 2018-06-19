@@ -4,17 +4,6 @@
             <div class="col-md-5 col-xs-9">
                 <h4>{{_enttdetails.psngrtype}}</h4>
             </div>
-            <div class="col-md-3 col-xs-8">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
-                        <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
-                        <span class="material-icons inputlinkico">
-                            <a role="button" (click)="getPassengerDetails()" class="btn btn-search">search</a>
-                        </span>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-2 col-xs-4" align="right" style="padding-top: 20px">
                 <button type="button" class="btn btn-theme btn-xs" (click)="isshPassenger('grid')">
                     <i class="material-icons">apps</i></button>
@@ -25,53 +14,87 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4 col-xs-7">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
+                        <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="1" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <span class="material-icons inputlinkico">
+                            <a role="button" (click)="getPassengerDetails()" class="btn btn-search">search</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Status</label>
+                        <select id="status" name="status" [(ngModel)]="status" class="form-control status" tabindex="2" (ngModelChange)="getStudentDetails()">
+                            <option [value]="''">All</option>
+                            <option [value]="'current'">Current</option>
+                            <option [value]="'past'">Past</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme btn-xs" (click)="getEmployeeDetails()">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="body no-padding">
         <div class="row clearfix" *ngIf="isShowGrid">
             <div class="col-md-12" *ngIf="passengerDT.length">
                 <p-dataGrid [value]="passengerDT" [paginator]="true" [rows]="20">
                     <ng-template let-row pTemplate="item">
-                        <div style="padding:3px" class="ui-g-12 ui-md-3">
+                        <div style="padding:3px" class="col-md-4 col-xs-6">
                             <p-panel [style]="{'text-align':'center'}">
                                 <p-header>
                                     <div class="row clearfix">
-                                        <div class="col-md-1">
-                                            <i class="material-icons sm-font">{{row.isactive ? 'done' : ''}}</i>
+                                        <div class="col-md-1 col-xs-2">
+                                            <i class="material-icons font-15">{{row.isactive ? 'done' : ''}}</i>
                                         </div>
-                                        <div class="col-md-10">
+                                        <div class="col-md-10 col-xs-8">
                                             {{row.psngrname}}
                                         </div>
-                                        <div class="col-md-1">
-                                            <a role="button" (click)="editPassengerForm(row)"><i class="material-icons sm-font">edit</i></a>
+                                        <div class="col-md-1 col-xs-2">
+                                            <a role="button" (click)="editPassengerForm(row)"><i class="material-icons font-15 col-white">edit</i></a>
                                         </div>
                                     </div>
                                 </p-header>
                                 <div class="row clearfix">
-                                    <div class="col-md-4 border">
-                                        <div class="row clearfix">
-                                            <div class="col-md-12">
-                                                <a role="button">
-                                                    <img *ngIf="row.gndrkey == 'M'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
-                                                    <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
-                                                </a>
-                                            </div>
-                                            <div class="col-md-12" *ngIf="row.gndrval != ''">
-                                                {{row.gndrval}}
-                                            </div>
-                                        </div>
+                                    <div class="col-md-3 border">
+                                        <a role="button">
+                                            <img *ngIf="row.gndrkey == 'M'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
+                                            <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
+                                        </a>
                                     </div>
-                                    <div class="col-md-8" align="left">
+                                    <div class="col-md-9" align="left">
                                         <div class="row clearfix">
                                             <div class="col-md-12" *ngIf="row.dob != ''">
-                                                <span class="material-icons sm-font">date_range</span> {{row.dob}}
+                                                <span class="material-icons font-15">date_range</span> {{row.dob}}
                                             </div>
                                             <div class="col-md-12" *ngIf="row.mobileno1 != ''">
-                                                <span class="material-icons sm-font">phone_iphone</span> {{row.mobileno1}}
+                                                <span class="material-icons font-15">phone_iphone</span> {{row.mobileno1}}
                                                 <span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.email1 != ''">
-                                                <span class="material-icons sm-font">email</span> {{row.email1}}
-                                                <span *ngIf="row.email1 != '' && row.email1 !== ''">, </span>{{row.email2}}
+                                            <div class="col-md-12" *ngIf="row.email1 != '' && row.email1 != null">
+                                                <span class="material-icons font-15 float-left">email</span>
+                                                <span class="short-text font-15" title="{{row.email1}}">{{row.email1}}</span>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.email2 != '' && row.email2 != null">
+                                                <span class="material-icons font-15 float-left">email</span>
+                                                <span class="short-text font-15" title="{{row.email2}}">{{row.email2}}</span>
                                             </div>
                                         </div>
                                     </div>

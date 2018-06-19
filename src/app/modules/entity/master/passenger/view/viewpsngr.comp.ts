@@ -3,14 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { PassengerService } from '@services/master';
-import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
 @Component({
-    templateUrl: 'viewpsngr.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewpsngr.comp.html'
 })
 
 export class ViewPassengerComponent implements OnInit, OnDestroy {
@@ -21,9 +19,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
-
-    standardDT: any = [];
-    standard: string = "";
+    status: string = "";
 
     autoPassengerDT: any = [];
     psngrid: number = 0;
@@ -36,7 +32,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillDropDownList();
         this.viewPassengerDataRights();
     }
 
@@ -109,32 +104,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         this.getPassengerDetails();
     }
 
-    // Fill Entity, Standard, Month DropDown
-
-    fillDropDownList() {
-        var that = this;
-        commonfun.loader();
-
-        that._psngrservice.getPassengerDetails({ "flag": "dropdown" }).subscribe(data => {
-            try {
-                that.standardDT = data.data.filter(a => a.group === "standard");
-                // setTimeout(function () { $.AdminBSB.select.refresh('standard'); }, 100);
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
     // View Data Rights
 
     public viewPassengerDataRights() {
@@ -165,7 +134,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "enttid": that._enttdetails.enttid,
+            "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "status": that.status, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 

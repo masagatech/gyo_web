@@ -8,8 +8,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addannc.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addannc.comp.html'
 })
 
 export class AddAnnouncementComponent implements OnInit {

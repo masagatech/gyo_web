@@ -910,7 +910,9 @@ button.ui-button::-moz-focus-inner {
 
 .ui-datagrid .ui-paginator {
     text-align: center;
-    border-top: 0 none
+    background: #fff;
+    border: 1px solid #114ca5;
+    margin: 3px;
 }
 
 .ui-datagrid-column {
@@ -932,14 +934,6 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-datagrid .ui-datagrid-footer {
-    border-top: 0 none
-}
-
-.ui-datagrid .ui-paginator-top {
-    border-bottom: 0 none
-}
-
-.ui-datagrid .ui-paginator-bottom {
     border-top: 0 none
 }
 
@@ -997,6 +991,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-datatable table {
+    background: #ffffff;
     border-collapse: collapse;
     width: 100%;
     table-layout: fixed

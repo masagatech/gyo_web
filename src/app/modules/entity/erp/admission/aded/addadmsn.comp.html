@@ -52,7 +52,8 @@
                             </div>
 
                             <div class="profile-photo">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server+ '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                                    auto="true"></p-fileUpload>
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Academic Year <strong>*</strong></label>
-                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1" [disabled]="paramsid !== 0">
                                     <option [value]="0">Select Academic Year</option>
                                     <option *ngFor="let row of ayDT" [value]="row.key">	
                                         {{row.val}}
@@ -78,7 +79,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Admission Date <strong>*</strong></label>
-                                <input type="date" name="dob" [(ngModel)]="admdate" maxlength="50" class="form-control dob" tabindex="2" />
+                                <input type="date" name="dob" [(ngModel)]="admdate" maxlength="50" class="form-control dob" tabindex="2" [disabled]="paramsid !== 0" />
                             </div>
                         </div>
                     </div>
@@ -86,7 +87,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Admission Category</label>
-                                <select id="admcatid" name="admcatname" [(ngModel)]="admcatid" class="form-control admcatname" tabindex="3">
+                                <select id="admcatid" name="admcatname" [(ngModel)]="admcatid" class="form-control admcatname" tabindex="3" [disabled]="paramsid !== 0">
                                     <option [value]="''">Select Admission Category</option>
                                     <option *ngFor="let row of admissionCategoryDT" [value]="row.key">
                                         {{row.val}}
@@ -128,7 +129,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Board <strong>*</strong></label>
-                                <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="6">
+                                <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="6" [disabled]="paramsid !== 0">
                                     <option [value]="0">Select Board</option>
                                     <option *ngFor="let row of boardDT" [value]="row.key">	
                                         {{row.val}}
@@ -170,7 +171,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Class <strong>*</strong></label>
-                                <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="9">
+                                <select id="classid" name="classname" [(ngModel)]="classid" class="form-control class" tabindex="9" [disabled]="paramsid !== 0">
                                     <option [value]="0">Select Class</option>
                                     <option *ngFor="let row of classDT" [value]="row.key">	
                                         {{row.val}}
@@ -183,7 +184,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Roll No <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="rollno" maxlength="50" class="form-control rollno text-right" tabindex="10" />
+                                <input type="text" OnlyNumber="true" name="rollno" [(ngModel)]="rollno" maxlength="50" class="form-control rollno text-right" tabindex="10" [disabled]="paramsid !== 0" />
                             </div>
                         </div>
                     </div>
