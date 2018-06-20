@@ -13,7 +13,8 @@
             </div>
             <div class="col-md-2 text-right">
                 <div class="form-group">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadsimconfig.server}}" chooseLabel="SIM Bulk Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onAfterUpload($event)" accept="{{uploadsimconfig.acceptedFiles}}" maxFileSize="{{uploadsimconfig.maxFilesize}}"
+                    <strong>Allowed only below 150 KB File</strong> <br />
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadsimconfig.server + '?width=150'}}" chooseLabel="SIM Bulk Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onAfterUpload($event)" accept="{{uploadsimconfig.acceptedFiles}}" maxFileSize="{{uploadsimconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
                 </div>
             </div>

@@ -52,6 +52,7 @@
                             </div>
 
                             <div class="profile-photo">
+                                <strong>Allowed only below 150 KB File</strong> <br />
                                 <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server+ '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
                                     auto="true"></p-fileUpload>
                             </div>
@@ -489,7 +490,8 @@
                     <div class="row clearfix">
                         <div class="col-md-8 col-xs-8">
                             <div class="profile-dob">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddobconfig.server}}" chooseLabel="{{chooseDOBLabel}}" (onUpload)="onDOBUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                                <strong>Allowed only below 150 KB File</strong> <br />
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddobconfig.server + '?width=150'}}" chooseLabel="{{chooseDOBLabel}}" (onUpload)="onDOBUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-4">
@@ -519,7 +521,9 @@
                     <div class="row clearfix">
                         <div class="col-md-8 col-xs-8">
                             <div class="profile-addr">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadaddrconfig.server}}" chooseLabel="{{chooseAddrLabel}}" (onUpload)="onAddressUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                                <strong>Allowed only below 150 KB File</strong> <br />
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadaddrconfig.server + '?width=150'}}" chooseLabel="{{chooseAddrLabel}}" (onUpload)="onAddressUpload($event)" accept="{{uploaddobconfig.acceptedFiles}}" maxFileSize="{{uploaddobconfig.maxFilesize}}"
+                                    auto="true"></p-fileUpload>
                             </div>
                         </div>
                         <div class="col-md-4 col-xs-4">
@@ -569,7 +573,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server}}" chooseLabel="Upload Other Document" (onUpload)="onDocumentUpload($event)" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                                    <strong>Allowed only below 150 KB File</strong> <br />
+                                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server + '?width=150'}}" chooseLabel="Upload Other Document" (onUpload)="onDocumentUpload($event)" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}"
+                                        auto="true"></p-fileUpload>
 
                                     {{docfilename}}
                                 </td>

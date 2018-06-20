@@ -210,6 +210,7 @@
 
             <div class="row clearfix">
                 <div class="col-md-6">
+                    <strong>Allowed only below 150 KB File</strong> <br />
                     <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
 

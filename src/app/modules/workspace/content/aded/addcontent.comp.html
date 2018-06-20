@@ -45,6 +45,7 @@
                     </div>
                 </div>
 
+                <strong>Allowed only below 150 KB File</strong> <br />
                 <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
 
                 <div *ngIf="uploadPhotoDT.length">

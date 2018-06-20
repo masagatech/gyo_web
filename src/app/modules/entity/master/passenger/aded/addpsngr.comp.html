@@ -81,6 +81,7 @@
                 </div>
 
                 <div class="form-group">
+                    <strong>Allowed only below 150 KB File</strong> <br />
                     <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
 

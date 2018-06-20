@@ -112,14 +112,15 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <div *ngIf="uploadPhotoDT.length">
                                 <div *ngFor="let file of uploadPhotoDT" class="text-center">
                                     <div class="row clearfix">
                                         <div class="col-md-9">
-                                            <img *ngIf="gender == 'M'" alt="{{empname}}" src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px" width="60px">
-                                            <img *ngIf="gender == 'F'" alt="{{empname}}" src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px" width="60px">
+                                            <img *ngIf="gender == 'M'" alt="{{empname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="60px" width="60px">
+                                            <img *ngIf="gender == 'F'" alt="{{empname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px" width="60px">
+                                            <br /> {{formatSizeUnits(file.athsize)}}
                                         </div>
                                         <div class="col-md-3" align="right">
                                             <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
@@ -135,7 +136,9 @@
                             </div>
 
                             <div class="text-center profile-photo">
-                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onUpload($event)" accept="{{uploadconfig.acceptedFiles}}" maxFileSize="{{uploadconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                                <strong>Allowed only below 150 KB File</strong> <br />
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{choosePhotoLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                                    auto="true"></p-fileUpload>
                             </div>
                         </div>
                     </div>
@@ -321,7 +324,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Joining Date</label>
-                                        <input type="date" [(ngModel)]="doj" class="form-control" max="{{currdate}}" maxlength="15" tabindex="23" />
+                                        <input type="date" [(ngModel)]="doj" class="form-control" max="{{currdate}}" maxlength="15" tabindex="24" />
                                     </div>
                                 </div>
                             </div>
@@ -329,7 +332,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Notice Days <strong>*</strong></label>
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="noticedays" class="form-control noticedays" maxlength="20" tabindex="24" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="noticedays" class="form-control noticedays" maxlength="20" tabindex="25" />
                                     </div>
                                 </div>
                             </div>
@@ -340,7 +343,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Salary Mode <strong>*</strong></label>
-                                        <select id="salarymode" [(ngModel)]="salarymode" class="form-control salarymode" tabindex="25">
+                                        <select id="salarymode" [(ngModel)]="salarymode" class="form-control salarymode" tabindex="26">
                                             <option [value]="''">Select Salary Mode</option>
                                             <option *ngFor="let row of salarymodeDT" [value]="row.key">
                                                 {{row.val}}
@@ -353,7 +356,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Salary <strong>*</strong></label>
-                                        <input type="text" OnlyNumber="true" [(ngModel)]="salary" class="form-control salary" maxlength="20" tabindex="26" />
+                                        <input type="text" OnlyNumber="true" [(ngModel)]="salary" class="form-control salary" maxlength="20" tabindex="27" />
                                     </div>
                                 </div>
                             </div>
@@ -364,7 +367,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">About Us</label>
-                                        <textarea [(ngModel)]="aboutus" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="27"></textarea>
+                                        <textarea [(ngModel)]="aboutus" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="28"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -375,7 +378,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Status</label>
-                                        <select id="status" name="status" [(ngModel)]="status" class="form-control class" tabindex="28">
+                                        <select id="status" name="status" [(ngModel)]="status" class="form-control class" tabindex="29">
                                             <option [value]="'active'">Active</option>
                                             <option [value]="'inactive'">InActive</option>
                                             <option [value]="'left'">Left</option>
@@ -387,7 +390,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Left Date <strong>*</strong></label>
-                                        <input type="date" name="leftdate" [(ngModel)]="leftdate" maxlength="50" class="form-control leftdate" tabindex="29" />
+                                        <input type="date" name="leftdate" [(ngModel)]="leftdate" maxlength="50" class="form-control leftdate" tabindex="30" />
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +401,7 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         <label class="control-label">Left Reason <strong>*</strong></label>
-                                        <textarea name="leftreason" [(ngModel)]="leftreason" rows="6" class="form-control no-resize auto-growth leftreason" tabindex="30"></textarea>
+                                        <textarea name="leftreason" [(ngModel)]="leftreason" rows="6" class="form-control no-resize auto-growth leftreason" tabindex="31"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -410,11 +413,11 @@
         <p-tabPanel header="Previous Experience">
             <div class="body">
                 <div class="row clearfix">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Total Experience</label>
-                                <input type="text" name="totexpyr" [(ngModel)]="totexpyr" maxlength="50" class="form-control leftdate" tabindex="29" />
+                                <label class="control-label">Total Experience (Year)</label>
+                                <input type="text" OnlyNumber="true" name="totexpyr" [(ngModel)]="totexpyr" maxlength="50" class="form-control totexpyr" tabindex="32" />
                             </div>
                         </div>
                     </div>
@@ -422,7 +425,7 @@
 
                 <div class="row clearfix">
                     <div class="col-md-12">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-responsive">
                             <thead>
                                 <tr>
                                     <th>
@@ -449,35 +452,35 @@
                                     <td>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" [(ngModel)]="enttname" class="form-control enttname" maxlength="20" tabindex="31" />
+                                                <input type="text" [(ngModel)]="enttname" class="form-control enttname" maxlength="100" tabindex="33" />
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="date" [(ngModel)]="expdoj" class="form-control expdoj" maxlength="20" tabindex="32" />
+                                                <input type="date" [(ngModel)]="expdoj" class="form-control expdoj" maxlength="20" tabindex="34" />
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="date" [(ngModel)]="expdor" class="form-control expdor" maxlength="20" tabindex="33" />
+                                                <input type="date" [(ngModel)]="expdor" class="form-control expdor" maxlength="20" tabindex="35" />
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" OnlyNumber="true" [(ngModel)]="expsalary" class="form-control expsalary" maxlength="20" tabindex="34" />
+                                                <input type="text" OnlyNumber="true" [(ngModel)]="expsalary" class="form-control expsalary" maxlength="20" tabindex="36" />
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <select id="expdesigid" [(ngModel)]="expdesigid" class="form-control expdesigid" tabindex="35">
+                                                <select id="expdesigid" [(ngModel)]="expdesigid" class="form-control expdesigid" tabindex="37">
                                                     <option [value]="0">-- Select Designation --</option>
                                                     <option *ngFor="let row of designationDT" [value]="row.autoid">
                                                         {{row.val}}
@@ -502,7 +505,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr *ngFor="let row of experienceDT | filterBy: {'isactive': true}">
+                                <tr *ngFor="let row of experienceDT">
                                     <td>
                                         {{row.enttname}}
                                     </td>
@@ -513,10 +516,10 @@
                                         {{row.dor}}
                                     </td>
                                     <td>
-                                        {{row.designame}}
+                                        {{row.salary}}
                                     </td>
                                     <td>
-                                        {{row.salary}}
+                                        {{row.designame}}
                                     </td>
                                     <td>
                                         <div class="form-group">
@@ -527,6 +530,64 @@
                                                 <i class="material-icons">delete</i>
                                             </button>
                                         </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Upload Document">
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <table class="table table-bordered table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Document Type</th>
+                                    <th>Upload Document</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <select id="doctype" name="doctype" [(ngModel)]="doctypeid" class="form-control doctype" tabindex="26">
+                                                    <option [value]="0">Select Document Type</option>
+                                                    <option *ngFor="let row of docTypeDT" [value]="row.id">	
+                                                        {{row.val}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>Allowed only below 150 KB File</strong> <br />
+                                        <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddocconfig.server + '?width=150'}}" chooseLabel="Upload Other Document" (onUpload)="onDocumentUpload($event)" accept="{{uploaddocconfig.acceptedFiles}}" maxFileSize="{{uploaddocconfig.maxFilesize}}"
+                                            auto="true"></p-fileUpload>
+
+                                        {{docfilename}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-theme btn-xs" (click)="addDocumentFile()">
+                                            <i class="material-icons">add</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let row of documentDT">
+                                    <td>
+                                        {{row.doctypename}}
+                                    </td>
+                                    <td>
+                                        <img src="{{uploaddocconfig.uploadurl + row.docfilename}}" onerror="this.src='assets/img/noimage.gif';" height="60px" width="60px">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeDocumentFile()">
+                                            <i class="material-icons">delete</i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>

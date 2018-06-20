@@ -2532,6 +2532,10 @@ select.selectpicker {
     font-size: 8px;
 }
 
+strong {
+    color: red;
+}
+
 .leftpanel {
     position: fixed;
     border: 1px solid #114ca5;

@@ -98,7 +98,9 @@
                 <div class="form-group">
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadformconfig.server}}" chooseLabel="{{chooseLabel}}" (onUpload)="onFormUpload($event)" accept="{{uploadformconfig.acceptedFiles}}" maxFileSize="{{uploadformconfig.maxFilesize}}" auto="true"></p-fileUpload>
+                            <strong>Allowed only below 150 KB File</strong> <br />
+                            <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadformconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onFormUpload($event)" accept="{{uploadformconfig.acceptedFiles}}" maxFileSize="{{uploadformconfig.maxFilesize}}"
+                                auto="true"></p-fileUpload>
                         </div>
                         <div class="col-md-12">
                             <div *ngFor="let file of uploadFormDT">

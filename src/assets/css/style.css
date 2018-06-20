@@ -5673,9 +5673,17 @@ section.content {
 
 .table tbody tr td,
 .table tbody tr th {
-    padding: 10px;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    padding: 6px 10px;
+    border: 1px solid #eee;
+}
+
+.nestable-dark-theme thead tr th {
+    padding: 6px 10px;
+    border: 1px solid #eee;
+}
+
+.table thead tr th strong {
+    color: #fb483a;
 }
 
 .table tbody tr.primary td,
@@ -5713,29 +5721,14 @@ section.content {
     border-bottom: 1px solid #eee;
 }
 
-.table-bordered {
-    border-top: 1px solid #eee;
-}
-
-.table-bordered tbody tr td,
-.table-bordered tbody tr th {
-    padding: 6px 10px;
-    border: 1px solid #eee;
-}
-
-.table-bordered thead tr th {
-    padding: 6px 10px;
-    border: 1px solid #eee;
-}
-
-.table-bordered thead tr th strong {
-    color: #fb483a;
-}
-
 .nested-table thead tr th {
     padding: 6px!important;
     background-color: #eeeeee!important;
     color: #000000!important;
+}
+
+.table-bordered {
+    border-top: 1px solid #eee;
 }
 
 .table-bordered thead tr.tr-table th {

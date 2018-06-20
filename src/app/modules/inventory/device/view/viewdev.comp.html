@@ -13,8 +13,9 @@
             </div>
             <div class="col-md-2 text-right">
                 <div class="form-group">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddeviceconfig.server}}" chooseLabel="Device Bulk Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onAfterUpload($event)" accept="{{uploaddeviceconfig.acceptedFiles}}" maxFileSize="{{uploaddeviceconfig.maxFilesize}}"
-                        auto="true"></p-fileUpload>
+                    <strong>Allowed only below 150 KB File</strong> <br />
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploaddeviceconfig.server + '?width=150'}}" chooseLabel="Device Bulk Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onAfterUpload($event)" accept="{{uploaddeviceconfig.acceptedFiles}}"
+                        maxFileSize="{{uploaddeviceconfig.maxFilesize}}" auto="true"></p-fileUpload>
                 </div>
             </div>
             <div class="col-md-2 text-right">

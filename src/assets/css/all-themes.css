@@ -2331,6 +2331,12 @@ h6,
     color: #FFFFFF!important;
 }
 
+.table-bordered tbody td {
+    padding: 5px 10px!important;
+    background-color: #FFFFFF!important;
+    color: #000000!important;
+}
+
 .table-bordered tfoot {
     background-color: #cccccc!important;
 }

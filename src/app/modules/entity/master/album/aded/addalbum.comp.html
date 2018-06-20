@@ -53,6 +53,7 @@
                 </div>
 
                 <div class="form-group">
+                    <strong>Allowed only below 150 KB File</strong> <br />
                     <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadcoverconfig.server + '?width=150'}}" chooseLabel="{{chooseCoverLabel}}" (onUpload)="onCoverUpload($event)" accept="{{uploadcoverconfig.acceptedFiles}}" maxFileSize="{{uploadcoverconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
 
@@ -91,7 +92,8 @@
 
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="photo">
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=250'}}" chooseLabel="Upload Photos" (onUpload)="onPhotoUpload($event)" multiple="multiple" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                    <strong>Allowed only below 150 KB File</strong> <br />
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="Upload Photos" (onUpload)="onPhotoUpload($event)" multiple="multiple" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
 
                     <div *ngIf="uploadPhotoDT.length">

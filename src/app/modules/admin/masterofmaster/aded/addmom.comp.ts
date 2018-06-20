@@ -27,7 +27,10 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     icon: string = "";
     typ: string = "";
     remark: string = "";
+
+    mode: string = "";
     isactive: boolean = true;
+
     fieldDT: any = [];
 
     headertitle: string = "";
@@ -54,10 +57,12 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     // Edit MOM
 
     editMasterOfMaster() {
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        var that = this;
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                this.momid = params['id'];
-                this.getMOMByID(this.momid);
+                that.momid = params['id'];
+                that.getMOMByID(that.momid);
 
                 $('#group').prop('disabled', true);
                 $('#key').prop('disabled', true);
@@ -95,15 +100,26 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Get File Size
+
+    getFileSize(bytes) {
+        return bytes = (bytes / 1024).toFixed(2);
+    }
+
     // Icon Upload
 
     onIconUpload(event, row) {
         var that = this;
-        var imgfile = [];
+        var imgfile = JSON.parse(event.xhr.response);
+        var imgpath = imgfile[0].path.replace(that.uploadiconconfig.filepath, "");
+        var imgsize = parseFloat(that.getFileSize(imgfile[0].size));
 
-        imgfile = JSON.parse(event.xhr.response);
-
-        row.fldval = imgfile[0].path.replace(that.uploadiconconfig.filepath, "");
+        if (imgsize > 150) {
+            that._msg.Show(messageType.error, "Error", "Allowed only below 150 KB File");
+        }
+        else {
+            row.fldval = imgfile[0].path.replace(that.uploadiconconfig.filepath, "");
+        }
     }
 
     // Remove Icon
@@ -120,6 +136,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         this.val = "";
         this.icon = "";
         this.remark = "";
+        this.isactive = true;
+        this.mode = "";
     }
 
     // Get MOM Group
@@ -139,12 +157,16 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                             that.mtype = data.data[0].typ;
                             that.isdynmenu = data.data[0].isdynmenu;
                             that.fieldDT = data.data[0].field;
+                            that.isactive = data.data[0].isactive;
+                            that.mode = data.data[0].mode;
                         }
                         else {
                             that.headertitle = "";
                             that.mtype = "";
                             that.isdynmenu = false;
                             that.fieldDT = [];
+                            that.isactive = true;
+                            that.mode = "";
                         }
                     }
                     catch (e) {
@@ -171,6 +193,41 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         }, () => {
             // console.log("Complete");
         })
+    }
+
+    // Active / Deactive Data
+
+    active_deactiveMOMInfo() {
+        var that = this;
+
+        var params = {
+            "autoid": that.momid,
+            "isactive": that.isactive,
+            "mode": that.mode
+        }
+
+        that._autoservice.saveMOM(params).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_mom;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
+
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+                    that.editMasterOfMaster();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Validation MOM Fields
@@ -267,6 +324,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             that.icon = dataresult[0].icon;
             that.remark = dataresult[0].remark;
             that.typ = dataresult[0].typ;
+            that.isactive = dataresult[0].isactive;
+            that.mode = dataresult[0].mode;
 
             for (var i = 0; i < that.fieldDT.length; i++) {
                 var ifldrow = that.fieldDT[i];

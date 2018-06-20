@@ -342,7 +342,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 that.castCategoryDT = data.data.filter(a => a.group == "castcategory");
                 that.bloodGroupDT = data.data.filter(a => a.group == "bloodgroup");
                 that.religionDT = data.data.filter(a => a.group == "religion");
-                that.docTypeDT = data.data.filter(a => a.group == "doctype");
+                that.docTypeDT = data.data.filter(a => a.group == "studdoctype");
                 that.fthrocptnDT = data.data.filter(a => a.group == "occupation").filter(a => a.key != "housewife");
                 that.mthrocptnDT = data.data.filter(a => a.group == "occupation");
             }
@@ -540,14 +540,31 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     onPhotoUpload(event) {
         var that = this;
-        var imgfile = [];
+
         that.uploadPhotoDT = [];
 
-        imgfile = JSON.parse(event.xhr.response);
+        var imgfile = JSON.parse(event.xhr.response);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadphotoconfig.filepath, ""), "athtype": imgfile[i].type })
-        }
+        setTimeout(function () {
+            var imgpath = imgfile[0].path.replace(that.uploadphotoconfig.filepath, "");
+            var imgtype = imgfile[0].type;
+            var imgsize = parseFloat(that.getFileSize(imgfile[0].size));
+
+            if (imgsize > 150) {
+                that._msg.Show(messageType.error, "Error", "Allowed only below 150 KB File");
+            }
+            else {
+                that.uploadPhotoDT.push({
+                    "athurl": imgpath, "athtype": imgtype, "athsize": imgsize
+                })
+            }
+        }, 1000);
+    }
+
+    // Get File Size
+
+    getFileSize(bytes) {
+        return bytes = (bytes / 1024).toFixed(2);
     }
 
     removePhotoUpload() {
@@ -558,14 +575,25 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     onDOBUpload(event) {
         var that = this;
-        var imgfile = [];
+
         that.birthcrtfctDT = [];
 
-        imgfile = JSON.parse(event.xhr.response);
+        var imgfile = JSON.parse(event.xhr.response);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.birthcrtfctDT.push({ "athurl": imgfile[i].path.replace(that.uploaddobconfig.filepath, ""), "athtype": imgfile[i].type })
-        }
+        setTimeout(function () {
+            var imgpath = imgfile[0].path.replace(that.uploaddobconfig.filepath, "");
+            var imgtype = imgfile[0].type;
+            var imgsize = parseFloat(that.getFileSize(imgfile[0].size));
+
+            if (imgsize > 150) {
+                that._msg.Show(messageType.error, "Error", "Allowed only below 150 KB File");
+            }
+            else {
+                that.birthcrtfctDT.push({
+                    "athurl": imgpath, "athtype": imgtype, "athsize": imgsize
+                })
+            }
+        }, 1000);
     }
 
     removeDOBUpload() {
@@ -576,14 +604,25 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     onAddressUpload(event) {
         var that = this;
-        var imgfile = [];
+
         that.addrproofDT = [];
 
-        imgfile = JSON.parse(event.xhr.response);
+        var imgfile = JSON.parse(event.xhr.response);
 
-        for (var i = 0; i < imgfile.length; i++) {
-            that.addrproofDT.push({ "athurl": imgfile[i].path.replace(that.uploadaddrconfig.filepath, ""), "athtype": imgfile[i].type })
-        }
+        setTimeout(function () {
+            var imgpath = imgfile[0].path.replace(that.uploadaddrconfig.filepath, "");
+            var imgtype = imgfile[0].type;
+            var imgsize = parseFloat(that.getFileSize(imgfile[0].size));
+
+            if (imgsize > 150) {
+                that._msg.Show(messageType.error, "Error", "Allowed only below 150 KB File");
+            }
+            else {
+                that.addrproofDT.push({
+                    "athurl": imgpath, "athtype": imgtype, "athsize": imgsize
+                })
+            }
+        }, 1000);
     }
 
     removeAddressUpload() {
@@ -594,14 +633,16 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     onDocumentUpload(event) {
         var that = this;
-        var imgfile = [];
-
-        imgfile = JSON.parse(event.xhr.response);
+        var imgfile = JSON.parse(event.xhr.response);
+        var imgsize = parseFloat(that.getFileSize(imgfile[0].size));
 
         setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.docfilename = imgfile[i].path.replace(that.uploaddocconfig.filepath, "");
-                that.doctype = imgfile[i].type;
+            if (imgsize > 150) {
+                that._msg.Show(messageType.error, "Error", "Allowed only below 150 KB File");
+            }
+            else {
+                that.docfilename = imgfile[0].path.replace(that.uploaddocconfig.filepath, "");
+                that.doctype = imgfile[0].type;
             }
         }, 1000);
     }

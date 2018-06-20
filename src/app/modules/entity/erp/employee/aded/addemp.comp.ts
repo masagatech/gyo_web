@@ -15,6 +15,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    global = new Globals();
+
     stateDT: any = [];
     cityDT: any = [];
     areaDT: any = [];
@@ -79,13 +81,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
     // Upload Photo Fields
 
-    uploadedFiles: any = [];
-    attachDocsDT: any = [];
-
     uploadPhotoDT: any = [];
-    global = new Globals();
-    uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
-    chooseLabel: string = "";
+    uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+    choosePhotoLabel: string = "";
 
     // Experience
 
@@ -99,8 +97,21 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     expdesigid: number = 0;
 
     experienceDT: any = [];
-    selectedExperience: any = {};
+    selectedExperience: any = [];
+    isaddexperience: boolean = false;
     iseditexperience: boolean = false;
+
+    // Upload Other Document
+
+    documentDT: any = [];
+    saveDocumentDT: string = "[]";
+    doctypeid: number = 0;
+    docfilename: string = "";
+
+    docTypeDT: any = [];
+    doctype: string = "";
+
+    uploaddocconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
     private subscribeParameters: any;
 
@@ -109,7 +120,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.getUploadConfig();
+        this.getPhotoUploadConfig();
+        this.getDocumentUploadConfig();
 
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -193,6 +205,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                 that.genderDT = data.data.filter(a => a.group == "gender");
                 that.salarymodeDT = data.data.filter(a => a.group == "paymentmode");
                 that.designationDT = data.data.filter(a => a.group == "designation");
+                that.docTypeDT = data.data.filter(a => a.group == "empdoctype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -328,17 +341,17 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
     // File Upload
 
-    getUploadConfig() {
+    getPhotoUploadConfig() {
         var that = this;
 
-        that.uploadconfig.server = that.global.serviceurl + "uploads";
-        that.uploadconfig.serverpath = that.global.serviceurl;
-        that.uploadconfig.uploadurl = that.global.uploadurl;
-        that.uploadconfig.filepath = that.global.filepath;
+        that.uploadphotoconfig.server = that.global.serviceurl + "uploads";
+        that.uploadphotoconfig.serverpath = that.global.serviceurl;
+        that.uploadphotoconfig.uploadurl = that.global.uploadurl;
+        that.uploadphotoconfig.filepath = that.global.filepath;
 
         that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
-            that.uploadconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadconfig.acceptedFiles = data.data[0]._filetype;
+            that.uploadphotoconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadphotoconfig.acceptedFiles = data.data[0]._filetype;
         }, err => {
             console.log("Error");
         }, () => {
@@ -346,18 +359,30 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         })
     }
 
-    onUpload(event) {
+    onPhotoUpload(event) {
         var that = this;
-        var imgfile = [];
+
         that.uploadPhotoDT = [];
 
-        imgfile = JSON.parse(event.xhr.response);
+        var imgfile = JSON.parse(event.xhr.response);
 
         setTimeout(function () {
-            for (var i = 0; i < imgfile.length; i++) {
-                that.uploadPhotoDT.push({ "athurl": imgfile[i].path.replace(that.uploadconfig.filepath, "") })
+            var imgpath = imgfile[0].path.replace(that.uploadphotoconfig.filepath, "");
+            var imgsize = parseFloat(that.getFileSize(imgfile[0].size));
+
+            if (imgsize > 150) {
+                that._msg.Show(messageType.error, "Error", "Allowed only below 150 KB File");
+            }
+            else {
+                that.uploadPhotoDT.push({ "athurl": imgpath, "athsize": imgsize })
             }
         }, 1000);
+    }
+
+    // Get File Size
+
+    getFileSize(bytes) {
+        return bytes = (bytes / 1024).toFixed(2);
     }
 
     // Get File Size
@@ -389,7 +414,216 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         this.uploadPhotoDT.splice(0, 1);
     }
 
-    // Clear Fields
+    // Valid Add Experience
+
+    isValidExperienceFields() {
+        var that = this;
+
+        if (that.enttname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Entity Name");
+            $(".enttname").focus();
+
+            return false;
+        }
+
+        if (that.expdoj == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Date of Joining");
+            $(".expdoj").focus();
+
+            return false;
+        }
+
+        if (that.expdor == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Date of Resigning");
+            $(".expdor").focus();
+
+            return false;
+        }
+
+        if (that.expsalary == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Salary");
+            $(".expsalary").focus();
+
+            return false;
+        }
+
+        if (that.expdesigid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Designation");
+            $(".expdesigid").focus();
+
+            return false;
+        }
+
+        for (var i = 0; i < that.experienceDT.length; i++) {
+            var _expdt = that.experienceDT[i];
+
+            if (that.enttname == _expdt.enttname && that.expdoj == _expdt.doj && that.expdor == _expdt.dor && that.expsalary == _expdt.salary && that.expdesigid == _expdt.desigid) {
+                that._msg.Show(messageType.warn, "Warning", "Duplicate Record Not Allowed !!!!");
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Reset Add Experience
+
+    resetExperienceFields() {
+        var that = this;
+
+        that.enttname = "";
+        that.expdoj = "";
+        that.expdor = "";
+        that.expsalary = "";
+        that.expdesigid = 0;
+
+        that.isaddexperience = true;
+        that.iseditexperience = false;
+    }
+
+    // Add FeExperience
+
+    addExperience() {
+        var that = this;
+        var isvalid = false;
+
+        isvalid = that.isValidExperienceFields();
+
+        if (isvalid) {
+            var expdesigname = $("#expdesigid option:selected").text().trim();
+
+            that.experienceDT.push({
+                "enttname": that.enttname, "doj": that.expdoj, "dor": that.expdor, "salary": that.expsalary,
+                "desigid": that.expdesigid, "designame": expdesigname == "Select Designation" ? "" : expdesigname
+            });
+
+            that.resetExperienceFields();
+        }
+    }
+
+    // Edit Experience
+
+    editExperience(row) {
+        var that = this;
+        commonfun.loader();
+
+        try {
+            that.selectedExperience = row;
+            that.isaddexperience = false;
+            that.iseditexperience = true;
+
+            that.enttname = row.enttname;
+            that.expdoj = row.doj;
+            that.expdor = row.dor;
+            that.expsalary = row.salary;
+            that.expdesigid = row.desigid;
+
+            commonfun.loaderhide();
+        }
+        catch (e) {
+            that._msg.Show(messageType.error, "Error", e);
+            commonfun.loaderhide();
+        }
+    }
+
+    // Update Experience
+
+    updateExperience() {
+        var that = this;
+        var isvalid = false;
+
+        if (that.iseditexperience == true) {
+            isvalid = true;
+        }
+        else {
+            isvalid = that.isValidExperienceFields();
+        }
+
+        if (isvalid) {
+            var expdesigname = $("#expdesigid option:selected").text().trim();
+
+            that.iseditexperience = false;
+            that.selectedExperience.enttname = that.enttname;
+            that.selectedExperience.doj = that.expdoj;
+            that.selectedExperience.dor = that.expdor;
+            that.selectedExperience.desigid = that.expdesigid;
+            that.selectedExperience.designame = expdesigname == "Select Designation" ? "" : expdesigname;
+            that.selectedExperience.salary = that.expsalary;
+            that.resetExperienceFields();
+            that.selectedExperience = [];
+        }
+    }
+
+    // Delete Experience List
+
+    deleteExperience(row) {
+        this.experienceDT.splice(this.experienceDT.indexOf(row), 1);
+    }
+
+    // Upload Document
+
+    getDocumentUploadConfig() {
+        var that = this;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.photoid }).subscribe(data => {
+            that.uploaddocconfig.server = that.global.serviceurl + "uploads";
+            that.uploaddocconfig.serverpath = that.global.serviceurl;
+            that.uploaddocconfig.uploadurl = that.global.uploadurl;
+            that.uploaddocconfig.filepath = that.global.filepath;
+            that.uploaddocconfig.maxFilesize = data.data[0]._filesize;
+            that.uploaddocconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // Document Upload
+
+    onDocumentUpload(event) {
+        var that = this;
+        var imgfile = [];
+
+        imgfile = JSON.parse(event.xhr.response);
+
+        setTimeout(function () {
+            for (var i = 0; i < imgfile.length; i++) {
+                that.docfilename = imgfile[i].path.replace(that.uploaddocconfig.filepath, "");
+                that.doctype = imgfile[i].type;
+            }
+        }, 1000);
+    }
+
+    // Add Document File
+
+    addDocumentFile() {
+        var that = this;
+
+        if (that.doctypeid == 0) {
+            that._msg.Show(messageType.error, "Error", "Select Document Type");
+        }
+        else if (that.docfilename == "") {
+            that._msg.Show(messageType.error, "Error", "Upload Document");
+        }
+        else {
+            var doctypename = $("#doctype option:selected").text().trim();
+            that.documentDT.push({ "doctypeid": that.doctypeid, "doctypename": doctypename, "docfilename": that.docfilename, "doctype": that.doctype });
+
+            that.doctypeid = 0;
+            that.docfilename = "";
+            that.doctype = "";
+        }
+    }
+
+    // Remove Document File
+
+    removeDocumentFile() {
+        this.documentDT.splice(0, 1);
+    }
+
+    // Clear Employee Fields
 
     resetEmployeeFields() {
         var that = this;
@@ -400,7 +634,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         that.empname = "";
 
         that.uploadPhotoDT = [];
-        that.chooseLabel = "Upload Photo";
+        that.choosePhotoLabel = "Upload Photo";
 
         that.gender = "M";
         that.dob = "";
@@ -436,7 +670,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         that.fillAreaDropDown();
         that.area = that._enttdetails.arid;
         that.pincode = that._enttdetails.pincode;
-        that.chooseLabel = "Upload Photo";
+        that.choosePhotoLabel = "Upload Photo";
     }
 
     // Save Data
@@ -535,6 +769,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             var saveemp = {
+                // General Details
+
                 "empid": that.empid,
                 "loginid": that.loginid,
                 "empcode": that.empcode,
@@ -548,15 +784,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                 "licenseno": that.licenseno,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
 
-                "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype,
-                "doj": that.doj,
-                "noticedays": that.noticedays,
-                "salarymode": that.salarymode,
-                "salary": that.salary,
-                "aboutus": that.aboutus,
-
-                "status": that.status,
-                "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason } : {},
+                // Contact Details
 
                 "mobileno1": that.mobileno1,
                 "mobileno2": that.mobileno2,
@@ -569,15 +797,35 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                 "city": that.city,
                 "area": that.area,
                 "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
+
+                // Job Profile
+
+                "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype,
+                "doj": that.doj,
+                "noticedays": that.noticedays,
+                "salarymode": that.salarymode,
+                "salary": that.salary,
+                "aboutus": that.aboutus,
+                "status": that.status,
+                "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason } : {},
+
+                // Previous Experience
+
+                "totexpyr": that.totexpyr,
+                "expdtls": that.experienceDT,
+
+                // Upload Document
+
+                "docfile": that.documentDT,
+
                 "enttid": that._enttdetails.enttid,
-                "attachdocs": that.attachDocsDT,
-                "cuid": that.loginUser.ucode,
                 "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
                 "mode": ""
             }
 
-            this._empservice.saveEmployeeInfo(saveemp).subscribe(data => {
+            that._empservice.saveEmployeeInfo(saveemp).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_employeeinfo;
                     var msg = dataResult.msg;
@@ -634,6 +882,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                     try {
                         var _empdata = data.data;
 
+                        // General Details
+
                         that.empid = _empdata[0].empid;
                         that.loginid = _empdata[0].loginid;
                         that.empcode = _empdata[0].empcode;
@@ -645,11 +895,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
                         if (empphoto !== "" && empphoto !== null) {
                             that.uploadPhotoDT.push({ "athurl": empphoto });
-                            that.chooseLabel = "Change Photo";
+                            that.choosePhotoLabel = "Change Photo";
                         }
                         else {
                             that.uploadPhotoDT = [];
-                            that.chooseLabel = "Upload Photo";
+                            that.choosePhotoLabel = "Upload Photo";
                         }
 
                         that.gender = _empdata[0].gndrkey;
@@ -658,6 +908,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                         that.dob = _empdata[0].dob;
                         that.aadharno = _empdata[0].aadharno;
                         that.licenseno = _empdata[0].licenseno;
+
+                        // Contact Details
 
                         that.email1 = _empdata[0].email1;
                         that.email2 = _empdata[0].email2;
@@ -672,6 +924,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                         that.city = _empdata[0].city;
                         that.fillAreaDropDown();
                         that.area = _empdata[0].area;
+                        that.pincode = _empdata[0].pincode;
+
+                        // Job Profile
 
                         that.emptype = _empdata[0].emptype;
                         that.desigid = _empdata[0].desigid;
@@ -684,11 +939,16 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                         that.statusnm = _empdata[0].statusnm;
                         that.leftdate = _empdata[0].leftdate;
                         that.leftreason = _empdata[0].leftreason;
-                        
-                        that.totexpyr = _empdata[0].totexpyr;
+
+                        // Experience Details
+
                         that.experienceDT = _empdata[0].expdtls;
-                        
-                        that.pincode = _empdata[0].pincode;
+                        that.totexpyr = _empdata[0].totexpyr;
+
+                        // Upload Document
+
+                        that.documentDT = _empdata[0].docfile;
+
                         that.isactive = _empdata[0].isactive;
                         that.mode = _empdata[0].mode;
                     }
