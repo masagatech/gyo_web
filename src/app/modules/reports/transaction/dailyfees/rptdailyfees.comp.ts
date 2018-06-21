@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
-import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
 declare var google: any;
 
@@ -12,7 +11,7 @@ declare var google: any;
     templateUrl: 'rptdailyfees.comp.html'
 })
 
-export class DailyFeesReportsComponent implements OnInit {
+export class DailyFeesReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -37,7 +36,11 @@ export class DailyFeesReportsComponent implements OnInit {
     }
 
     public ngOnInit() {
-
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
     }
 
     // Fill School Drop Down
@@ -171,5 +174,10 @@ export class DailyFeesReportsComponent implements OnInit {
         else {
             window.open(Common.getReportUrl("getFeesReports", feesparams));
         }
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

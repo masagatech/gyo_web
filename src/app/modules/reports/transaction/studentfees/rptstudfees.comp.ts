@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
@@ -12,7 +12,7 @@ declare var google: any;
     templateUrl: 'rptstudfees.comp.html'
 })
 
-export class StudentFeesReportsComponent implements OnInit {
+export class StudentFeesReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -43,6 +43,12 @@ export class StudentFeesReportsComponent implements OnInit {
 
     public ngOnInit() {
         this.fillSchoolDropDown();
+
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
 
         this.classSettings = {
             singleSelection: false,
@@ -254,5 +260,10 @@ export class StudentFeesReportsComponent implements OnInit {
                 window.open(Common.getReportUrl("getFeesReports", feesparams));
             }
         }
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }
