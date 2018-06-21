@@ -22,11 +22,11 @@
                     <div class="form-line">
                         <label class="control-label">User Name</label>
                         <p-autoComplete id="autouname" name="autouname" [(ngModel)]="autouname" [tabindex]="1" (onSelect)="selectUserData($event, 1)" [suggestions]="autoUserDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
+                        <span class="material-icons inputsearchico">search</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 pad-20 ">
+            <div class="col-md-1 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="resetUserDetails()">
                         <span class="material-icons">restore</span>
@@ -34,50 +34,50 @@
                 </div>
             </div>
             <div class="col-md-3 pad-20 text-right">
-                <div class="btn-group " role="group ">
-                    <button type="button " class="btn btn-info dropdown-toggle " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">
-                        Export <span class="caret "></span>
-                        <span class="sr-only ">Toggle Dropdown</span>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu ">
-                        <li><a role="button " (click)="exportToCSV() "><i class="fa fa-file-excel-o "></i> CSV</a></li>
-                        <li><a role="button " (click)="exportToPDF() "><i class="fa fa-file-pdf-o "></i> PDF</a></li>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="body no-padding ">
-        <div #users class="row clearfix ">
-            <div class="col-md-12 ">
-                <p-dataTable [value]="usersDT " [rows]="20 " [paginator]="true " [pageLinks]="3 " [rowsPerPageOptions]="[10,20,30,40] ">
-                    <p-column header=" " [style]="{ 'width': '60px', 'text-align': 'center'} ">
-                        <ng-template let-row="rowData " pTemplate type="body ">
-                            <img *ngIf="row.gndrkey=='M' " alt="{{row.fullname}} " src="{{global.uploadurl + row.FilePath}} " onerror="this.src='assets/img/default-male.png' ; " class="img-sm ">
-                            <img *ngIf="row.gndrkey=='F' " alt="{{row.fullname}} " src="{{global.uploadurl + row.FilePath}} " onerror="this.src='assets/img/default-female.png' ; " class="img-sm ">
+    <div class="body no-padding">
+        <div #users class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="usersDT">
+                    <p-column header="" [style]="{ 'width': '60px', 'text-align': 'center'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <img *ngIf="row.gndrkey=='M'" alt="{{row.fullname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png' ;" class="img-sm">
+                            <img *ngIf="row.gndrkey=='F'" alt="{{row.fullname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png' ;" class="img-sm">
                         </ng-template>
                     </p-column>
-                    <p-column field="utypename " header="User Type " [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'} "></p-column>
-                    <p-column field="ucode " header="User Code " [style]="{ 'width': '100px', 'text-align': 'left', 'vertical-align': 'top'} "></p-column>
-                    <p-column field="fullname " header="User Name " [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'} "></p-column>
-                    <p-column header="Mobile " [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'} ">
-                        <ng-template let-row="rowData " pTemplate type="body ">
-                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !=='' ">{{", " + row.mobileno2}}</span>
+                    <p-column field="utypename" header="User Type" [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
+                    <p-column field="ucode" header="User Code" [style]="{ 'width': '100px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
+                    <p-column field="fullname" header="User Name" [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
+                    <p-column header="Mobile" [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !==''">{{"," + row.mobileno2}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column header="Email " [style]="{ 'width': '250px', 'text-align': 'left', 'vertical-align': 'top'} ">
-                        <ng-template let-row="rowData " pTemplate type="body ">
-                            {{row.email1}}<span *ngIf="row.email2 !=='' ">{{", " + row.email2}}</span>
+                    <p-column header="Email" [style]="{ 'width': '250px', 'text-align': 'left', 'vertical-align': 'top'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.email1}}<span *ngIf="row.email2 !==''">{{"," + row.email2}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column field="address " header="Address 1 " [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'} "></p-column>
-                    <p-column header="Address 2 " [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'} ">
-                        <ng-template let-row="rowData " pTemplate type="body ">
-                            {{row.area}}<span *ngIf="row.city !=='' ">{{" " + row.city}}</span><span *ngIf="row.state !=='' ">{{" " + row.state}}</span><span *ngIf="row.country !=='' ">{{" " + row.country}}</span>
+                    <p-column field="address" header="Address 1" [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
+                    <p-column header="Address 2" [style]="{ 'width': '200px', 'text-align': 'left', 'vertical-align': 'top'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.area}}<span *ngIf="row.city !==''">{{"" + row.city}}</span><span *ngIf="row.state !==''">{{"" + row.state}}</span><span *ngIf="row.country !==''">{{"" + row.country}}</span>
                         </ng-template>
                     </p-column>
-                    <p-column field="mode " header="Status " [style]="{ 'width': '100px', 'text-align': 'left', 'vertical-align': 'top'} "></p-column>
+                    <p-column field="mode" header="Status" [style]="{ 'width': '100px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
                 </p-dataTable>
             </div>
         </div>

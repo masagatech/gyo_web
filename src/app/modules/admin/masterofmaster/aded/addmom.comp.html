@@ -1,8 +1,9 @@
 <div class="card">
     <div class="header">
-        <h4>Master Of Master : {{headertitle}}</h4>
+        <h4>{{headertitle}}</h4>
+
         <ul class="header-dropdown m-r--5">
-            <li>
+            <li *ngIf="momid != 0">
                 <span class="switch">
                     <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveMOMInfo()"><span class="lever"></span></label>
                 </span>

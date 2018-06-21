@@ -9,7 +9,7 @@
                     <div class="form-line">
                         <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectedPassenger" [tabindex]="1" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30"
                             class="form-controlAutoComplete psngrname"></p-autoComplete>
-                        <span class="material-icons inputabsoluteserachico">
+                        <span class="material-icons inputabsolutesearchico">
                             <a role="button" (click)="getPassengerReports('html')" class="btn btn-search">search</a>
                         </span>
                     </div>
@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-2 col-xs-4">
                 <div class="form-group">
-                    <span class="material-icons inputrelativeserachico">
+                    <span class="material-icons inputrelativesearchico">
                         <a role="button" (click)="resetPassengerFilter()" class="btn btn-search">arrow_forward</a>
                     </span>
                 </div>

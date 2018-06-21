@@ -16,7 +16,8 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'receiptbook', loadChildren: './receiptbook#ReceiptBookModule' },
-                    { path: 'classfees', loadChildren: './classfees#ClassFeesModule' },
+                    { path: 'feesstructure', loadChildren: './feesstructure#FeesStructureModule' },
+                    { path: 'feesexcemption', loadChildren: './feesexcemption#FeesExcemptionModule' },
                     { path: 'feescollection', loadChildren: './feescollection#FeesCollectionModule' },
                     
                     { path: 'assesment', loadChildren: './assesment#AssesmentModule' },

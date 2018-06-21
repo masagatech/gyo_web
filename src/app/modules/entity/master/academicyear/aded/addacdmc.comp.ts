@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AcademicYearService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -9,8 +9,7 @@ declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addacdmc.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addacdmc.comp.html'
 })
 
 export class AddAcademicYearComponent implements OnInit {
@@ -26,8 +25,8 @@ export class AddAcademicYearComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _acdmcservice: AcademicYearService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _acdmcservice: AcademicYearService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
     }
@@ -82,13 +81,8 @@ export class AddAcademicYearComponent implements OnInit {
             return false;
         }
         else if (that.frmdt > that.todt) {
-            that._msg.Show(messageType.error, "Error", "Sholul Be To Date Greater Than From Date");
+            that._msg.Show(messageType.error, "Error", "Sholuld Be To Date Greater Than From Date");
             $(".todt").focus();
-            return false;
-        }
-        else if (that.remark == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Remark");
-            $(".remark").focus();
             return false;
         }
 

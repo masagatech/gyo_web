@@ -240,7 +240,7 @@ export class AddFeesCollectionComponent implements OnInit {
 
     // Get Class Fees
 
-    getClassFees() {
+    getFeesStructure() {
         var that = this;
         commonfun.loader();
 

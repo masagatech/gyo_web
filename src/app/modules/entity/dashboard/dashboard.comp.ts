@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     classtypeDT: any = [];
     tchrattndDT: any = [];
 
-    classFeesDT: any = [];
+    feesstructureDT: any = [];
     feesCategoryDT: any = [];
     noticeboardDT: any = [];
 
@@ -261,7 +261,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.getERPDashboardData("examstatus");
             this.getERPDashboardData("tchrattnd");
             this.getERPDashboardData("classtype");
-            this.getERPDashboardData("classfees");
+            this.getERPDashboardData("feesstructure");
             this.getERPDashboardData("noticeboard");
         }
     }
@@ -439,8 +439,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 else if (dbtype == "classtype") {
                     that.classtypeDT = _dbChartDT;
                 }
-                else if (dbtype == "classfees") {
-                    that.classFeesDT = _dbChartDT;
+                else if (dbtype == "feesstructure") {
+                    that.feesstructureDT = _dbChartDT;
                     _dbChartDT.datasets[0].label = "Class Fees";
                 }
 

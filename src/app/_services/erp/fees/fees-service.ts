@@ -7,18 +7,30 @@ import { Router } from '@angular/router';
 export class FeesService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
-    // Fees Structure
-
-    saveClassFees(req: any) {
-        return this._dataserver.post(Globals.erproute + "saveClassFees", req)
-    }
-
-    getClassFees(req: any) {
-        return this._dataserver.post(Globals.erproute + "getClassFees", req)
-    }
+    // Reports
 
     getFeesReports(req: any) {
         return this._dataserver.post(Globals.erproute + "getFeesReports", req)
+    }
+
+    // Fees Structure
+
+    saveFeesStructure(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveFeesStructure", req)
+    }
+
+    getFeesStructure(req: any) {
+        return this._dataserver.post(Globals.erproute + "getFeesStructure", req)
+    }
+
+    // Fees Excemption
+
+    saveFeesExcemption(req: any) {
+        return this._dataserver.post(Globals.erproute + "saveFeesExcemption", req)
+    }
+
+    getFeesExcemption(req: any) {
+        return this._dataserver.post(Globals.erproute + "getFeesExcemption", req)
     }
 
     // Fees Collection

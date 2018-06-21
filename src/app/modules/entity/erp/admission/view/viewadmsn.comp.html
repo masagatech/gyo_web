@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <p-autoComplete id="studname" name="studname" [(ngModel)]="selectStudent" [tabindex]="3" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
-                        <span class="material-icons inputabsoluteserachico">
+                        <span class="material-icons inputabsolutesearchico">
                             <a role="button" (click)="getStudentDetails()" class="btn btn-search">search</a>
                         </span>
                     </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="col-md-2 col-xs-4">
                 <div class="form-group">
-                    <span class="material-icons inputrelativeserachico">
+                    <span class="material-icons inputrelativesearchico">
                         <a role="button" (click)="resetStudentData()" class="btn btn-search">arrow_forward</a>
                     </span>
                 </div>

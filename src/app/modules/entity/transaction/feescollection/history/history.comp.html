@@ -24,7 +24,9 @@
             </div>
             <div class="col-md-4">
                 <p><b>Class Fees :</b> {{classfees | _currency:loginUser.globsettings[0]}}</p>
-                <p><b>Pending Fees :</b> {{pendingfees | _currency:loginUser.globsettings[0]}}</p>
+                <p><b>Collect Fees:</b> {{feescoll | _currency:loginUser.globsettings[0]}}</p>
+                <p><b>Pending Fees :</b> {{pendfees | _currency:loginUser.globsettings[0]}}</p>
+                <p><b>Extra Fees :</b> {{extrafees | _currency:loginUser.globsettings[0]}}</p>
             </div>
         </div>
 

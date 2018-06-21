@@ -21,7 +21,8 @@ export class ViewFeesHistoryComponent implements OnInit {
     studsFilterDT: any = [];
 
     classfees: any = "";
-    pendingfees: any = "";
+    pendfees: any = "";
+    extrafees: any = "";
     feescoll: any = "";
     enttid: number = 0;
     enttname: string = "";
@@ -103,7 +104,8 @@ export class ViewFeesHistoryComponent implements OnInit {
                     that.gndrval = data.data[0].gndrval;
                     that.rollno = data.data[0].rollno;
                     that.classfees = data.data[0].classfees;
-                    that.pendingfees = data.data[0].classfees - data.data[0].feescoll;
+                    that.pendfees = data.data[0].pendfees;
+                    that.extrafees = data.data[0].extrafees;
                     that.feescoll = data.data[0].feescoll;
                 }
                 else {
@@ -120,7 +122,9 @@ export class ViewFeesHistoryComponent implements OnInit {
                     that.gndrval = "";
                     that.rollno = "";
                     that.classfees = "";
-                    that.pendingfees = "";
+                    that.pendfees = "";
+                    that.extrafees = "";
+                    that.feescoll = "";
                 }
             }
             catch (e) {

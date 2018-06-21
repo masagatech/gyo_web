@@ -1,6 +1,6 @@
 <section>
     <aside id="leftsidebar" class="sidebar">
-        <div class="user-info">
+        <div class="user-info hide">
             <div class="text-center">
                 <img *ngIf="gender == 'M'" alt="{{ufullname}}" height="50" src="{{uphoto}}" onerror="this.src='assets/img/default-male.png';">
                 <img *ngIf="gender == 'F'" alt="{{ufullname}}" height="50" src="{{uphoto}}" onerror="this.src='assets/img/default-female.png';">
@@ -21,6 +21,7 @@
         </div>
 
         <!-- Menu -->
+
         <div class="menu">
             <ul class="list">
                 <li class="header">Menu</li>

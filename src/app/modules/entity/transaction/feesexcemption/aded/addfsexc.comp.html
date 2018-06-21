@@ -1,0 +1,105 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Excemption</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesExcemption()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Academic Year <strong>*</strong></label>
+                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                                    <option [value]="0">Select Academic Year</option>
+                                    <option *ngFor="let row of ayDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Class <strong>*</strong></label>
+                                <select id="clsid" name="clsname" [(ngModel)]="clsid" class="form-control clsname" (ngModelChange)="getOriginalFees()" tabindex="2">
+                                    <option [value]="0">Select Class</option>
+                                    <option *ngFor="let clsrow of classDT" [value]="clsrow.id">
+                                        {{clsrow.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Original Fees <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="orgfees" class="form-control text-right orgfees" disabled tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Excemption Fees <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="excfees" class="form-control text-right excfees" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <input id="allstuds" name="allstuds" [(ngModel)]="isallstuds" type="checkbox" class="filled-in">
+                        <label class="control-label" for="allstuds">All Students</label>
+
+                        <div *ngIf="!isallstuds">
+                            <p-autoComplete id="studid" name="studname" [(ngModel)]="selectedStudent" [tabindex]="5" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                            <span class="material-icons inputsearchico pad-20">search</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" *ngIf="!isallstuds">
+                    <div *ngIf="studentList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let row of studentList">
+                                {{row.studname}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteStudentList(row)">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Remark</label>
+                        <textarea [(ngModel)]="remark" rows="4" class="form-control no-resize auto-growth" [tabindex]="6"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -24,7 +24,7 @@
                     <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
                         <p-autoComplete id="psngrname" name="psngrname" [(ngModel)]="psngrname" [tabindex]="1" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
-                        <span class="material-icons inputlinkico">
+                        <span class="material-icons inputsearchico pad-20">
                             <a role="button" (click)="getPassengerDetails()" class="btn btn-search">search</a>
                         </span>
                     </div>

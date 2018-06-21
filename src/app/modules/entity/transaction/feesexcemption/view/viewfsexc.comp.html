@@ -1,0 +1,103 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Excemption</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addFeesExcemption()">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ay" (ngModelChange)="getFeesExcemption()" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" (ngModelChange)="getFeesExcemption()" tabindex="2">
+                            <option [value]="0">Select Class</option>
+                            <option *ngFor="let row of classDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive reports">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th width="100px">Original Fees</th>
+                            <th width="120px">Excemption Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let row of excemptionfeesDT | groupBy: 'fsexgroup'">
+                        <tr class="tr-table">
+                            <td colspan="2">
+                                {{row.key}}
+                            </td>
+                            <td align="right">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editFeesExcemption(row)">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let drow of row.value">
+                            <td>
+                                {{drow.studname}}
+                            </td>
+                            <td align="right">
+                                {{drow.orgfees | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <td align="right">
+                                {{drow.excfees | _currency:loginUser.globsettings[0]}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!excemptionfeesDT.length">
+                        <tr>
+                            <td colspan="3">
+                                No records found
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot *ngIf="excemptionfeesDT.length">
+                        <tr>
+                            <td>
+                                <b>Total</b>
+                            </td>
+                            <td align="right">
+                                {{totalOriginalFees() | _currency:loginUser.globsettings[0]}}
+                            </td>
+                            <td align="right">
+                                {{totalExcemptionFees() | _currency:loginUser.globsettings[0]}}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

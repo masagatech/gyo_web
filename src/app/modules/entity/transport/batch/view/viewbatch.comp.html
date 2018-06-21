@@ -6,14 +6,15 @@
             </div>
             <div class="col-md-2 col-xs-2" align="right">
                 <button type="button" class="btn btn-theme btn-xs" (click)="addBatchForm()">
-                    <i class="material-icons">add</i></button>
+                    <i class="material-icons">add</i>
+                </button>
             </div>
         </div>
 
         <div class="body no-padding">
             <div class="row clearfix">
                 <div class="col-md-12">
-                    <p-dataTable [value]="batchDT" [rows]="20" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                    <p-dataTable [value]="batchDT">
                         <p-column field="batchcode" header="Batch Code" [style]="{'width': '100px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
                         <p-column field="batchname" header="Batch Name" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align': 'top'}"></p-column>
                         <p-column header="Working Days" [style]="{'text-align':'left', 'vertical-align': 'top'}">

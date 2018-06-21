@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { ViewMOMComponent } from './view/viewmom.comp';
 import { AddMOMComponent } from './aded/addmom.comp';
@@ -65,7 +65,7 @@ export const routes = [
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), FileUploadModule ],
 
-  providers: [AuthGuard]
+  providers: [AuthGuard, CommonService]
 })
 
 export class MOMModule {

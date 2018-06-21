@@ -1,26 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { FeesService } from '@services/erp';
 
-declare var google: any;
-
 @Component({
-    templateUrl: 'viewclsfees.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewfsexc.comp.html'
 })
 
-export class ViewClassFeesComponent implements OnInit, OnDestroy {
+export class ViewFeesExcemptionComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     ayDT: any = [];
     classDT: any = [];
 
-    feesDT: any = [];
-
-    installmentDT: any = [];
+    excemptionfeesDT: any = [];
 
     ayid: number = 0;
     classid: number = 0;
@@ -28,12 +23,12 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
     private subscribeParameters: any;
 
     constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService,
-        private _feesservice: FeesService, private _autoservice: CommonService) {
+        private _feesservice: FeesService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getClassFees();
+        this.getFeesExcemption();
     }
 
     public ngOnInit() {
@@ -47,37 +42,34 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    // Fill Academic Year, Class, Sub Category Drop Down
+    // Fill Academic Year, Class Drop Down
 
     fillDropDownList() {
         var that = this;
-        var ddlData: any = [];
         var defayDT: any = [];
 
         commonfun.loader();
 
-        that._feesservice.getClassFees({
+        that._feesservice.getFeesExcemption({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                ddlData = data.data[1];
-
-                that.ayDT = ddlData.filter(a => a.group == "ay");
+                that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
                     defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                     if (defayDT.length > 0) {
                         that.ayid = defayDT[0].id;
-                        that.getClassFees();
+                        that.getFeesExcemption();
                     }
                     else {
                         that.ayid = 0;
                     }
                 }
 
-                that.classDT = ddlData.filter(a => a.group == "class");
+                that.classDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -93,20 +85,19 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Class Fees
+    // Get Fees Excemption
 
-    getClassFees() {
+    getFeesExcemption() {
         var that = this;
         commonfun.loader();
 
-        that._feesservice.getClassFees({
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "catid": 0,
+        that._feesservice.getFeesExcemption({
+            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "classid": that.classid, "ayid": that.ayid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
             "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.feesDT = data.data[0];
-                that.installmentDT = data.data[1];
+                that.excemptionfeesDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -122,56 +113,48 @@ export class ViewClassFeesComponent implements OnInit, OnDestroy {
         })
     }
 
-    totalFees() {
+    // Total Original Fees
+
+    totalOriginalFees() {
         var that = this;
         var field: any = [];
 
-        var totalfees = 0;
+        var totalorgfees = 0;
 
-        for (var i = 0; i < that.feesDT.length; i++) {
-            field = that.feesDT[i];
-            totalfees += parseFloat(field.fees);
+        for (var i = 0; i < that.excemptionfeesDT.length; i++) {
+            field = that.excemptionfeesDT[i];
+            totalorgfees += parseFloat(field.orgfees);
         }
 
-        return totalfees;
+        return totalorgfees;
     }
 
-    totalInstallmentFees() {
+    // Total Excemption Fees
+
+    totalExcemptionFees() {
         var that = this;
         var field: any = [];
-        var totalinstlfees = 0;
 
-        for (var i = 0; i < that.installmentDT.length; i++) {
-            field = that.installmentDT[i];
-            totalinstlfees += parseInt(field.instlfees);
+        var totalexcfees = 0;
+
+        for (var i = 0; i < that.excemptionfeesDT.length; i++) {
+            field = that.excemptionfeesDT[i];
+            totalexcfees += parseFloat(field.excfees);
         }
 
-        return totalinstlfees;
+        return totalexcfees;
     }
 
-    totalPenaltyFees() {
-        var that = this;
-        var field: any = [];
-        var totalpnltyfees = 0;
+    // Add Fees Excemption
 
-        for (var i = 0; i < that.installmentDT.length; i++) {
-            field = that.installmentDT[i];
-            totalpnltyfees += parseInt(field.pnltyfees);
-        }
-
-        return totalpnltyfees;
+    addFeesExcemption() {
+        this._router.navigate(['/transaction/feesexcemption/add']);
     }
 
-    // Add Class Fees
+    // Edit Fees Excemption
 
-    addClassFees() {
-        this._router.navigate(['/transaction/classfees/add']);
-    }
-
-    // Edit Class Fees
-
-    editFeesDetails(row) {
-        this._router.navigate(['/transaction/classfees/edit', row.cfid]);
+    editFeesExcemption(row) {
+        this._router.navigate(['/transaction/feesexcemption/edit', row.key.split('-')[1]]);
     }
 
     public ngOnDestroy() {

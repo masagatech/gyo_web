@@ -1901,33 +1901,21 @@ select.selectpicker {
     margin-left: 0px;
 }
 
-.inputserachico {
-    position: absolute;
-    top: 25px;
-    right: 0;
-}
-
-.inputinlineserachico {
+.inputsearchico {
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.inputabsoluteserachico {
+.inputabsolutesearchico {
     position: absolute;
     top: -10px;
     right: 0;
 }
 
-.inputrelativeserachico {
+.inputrelativesearchico {
     position: relative;
     top: -10px;
-    right: 0;
-}
-
-.inputlinkico {
-    position: absolute;
-    top: 11px;
     right: 0;
 }
 

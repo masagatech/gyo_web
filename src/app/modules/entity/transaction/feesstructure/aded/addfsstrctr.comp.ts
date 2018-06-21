@@ -1,17 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { FeesService } from '@services/erp';
 
-declare var google: any;
-
 @Component({
-    templateUrl: 'addclsfees.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addfsstrctr.comp.html'
 })
 
-export class AddClassFeesComponent implements OnInit, OnDestroy {
+export class AddFeesStructureComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -42,7 +39,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     private subscribeParameters: any;
 
     constructor(private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -62,7 +59,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 that.cfid = params['id'];
-                that.getClassFees();
+                that.getFeesStructure();
             }
             else {
                 that.resetAllFields();
@@ -90,7 +87,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._feesservice.getClassFees({
+        that._feesservice.getFeesStructure({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -278,9 +275,9 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         return clsrights;
     }
 
-    // Save Class Fees
+    // Save Fees Structure
 
-    isValidClassFees() {
+    isValidFeesStructure() {
         var that = this;
 
         var totalinstlfees = that.totalInstallmentFees();
@@ -307,14 +304,14 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    saveClassFees() {
+    saveFeesStructure() {
         var that = this;
         var isvalid = false;
 
         var _clsrights = null;
         _clsrights = that.getClassRights();
 
-        isvalid = that.isValidClassFees();
+        isvalid = that.isValidFeesStructure();
 
         if (isvalid) {
             if (_clsrights == null) {
@@ -323,16 +320,16 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
             else {
                 commonfun.loader();
 
-                var saveclassfees = {
+                var params = {
                     "cfid": that.cfid, "ayid": that.ayid, "clsid": "{" + _clsrights + "}", "catid": that.catid, "subcatid": that.subcatid,
                     "fees": that.fees, "iscompulsory": that.iscompulsory, "isonline": that.isonline,
                     "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                     "feesinstallment": that.installmentDT, "cuid": that.loginUser.ucode, "isactive": true
                 }
 
-                that._feesservice.saveClassFees(saveclassfees).subscribe(data => {
+                that._feesservice.saveFeesStructure(params).subscribe(data => {
                     try {
-                        var dataResult = data.data[0].funsave_classfees;
+                        var dataResult = data.data[0].funsave_feesstructure;
                         var msg = dataResult.msg;
                         var msgid = dataResult.msgid;
 
@@ -366,13 +363,13 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Get Class Fees
+    // Get Fees Structure
 
-    getClassFees() {
+    getFeesStructure() {
         var that = this;
         commonfun.loader();
 
-        that._feesservice.getClassFees({ "flag": "edit", "id": that.cfid }).subscribe(data => {
+        that._feesservice.getFeesStructure({ "flag": "edit", "id": that.cfid }).subscribe(data => {
             try {
                 var viewfees = data.data[0];
 
@@ -430,7 +427,7 @@ export class AddClassFeesComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/transaction/classfees']);
+        this._router.navigate(['/transaction/feesstructure']);
     }
 
     public ngOnDestroy() {

@@ -130,7 +130,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Board <strong>*</strong></label>
-                                <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="6" [disabled]="paramsid !== 0">
+                                <select id="boardid" name="boardname" [(ngModel)]="boardid" class="form-control boardname" tabindex="6">
                                     <option [value]="0">Select Board</option>
                                     <option *ngFor="let row of boardDT" [value]="row.key">	
                                         {{row.val}}

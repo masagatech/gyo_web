@@ -1,21 +1,38 @@
 <div class="card">
     <div class="header">
+        <h4>
+            <a role="button" (click)="openForm()">{{headertitle}}</a>
+            <a role="button" class="btn btn-theme btn-xs" (click)="openForm()">
+                <i class="material-icons">arrow_forward</i>
+            </a>
+        </h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('grid')">
+                    <i class="material-icons">apps</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('list')">
+                    <i class="material-icons">list</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+
         <div class="row clearfix">
-            <div class="col-md-4 col-xs-12">
-                <h4>
-                    <a role="button" (click)="openForm()">{{headertitle}}</a>
-                    <a role="button" class="btn btn-theme btn-xs" (click)="openForm()">
-                        <i class="material-icons">arrow_forward</i>
-                    </a>
-                </h4>
-            </div>
             <div class="col-md-5 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Search Workspace Name : </label>
                         <p-autoComplete id="autowsname" name="autowsname" [(ngModel)]="autowsname" [tabindex]="1" (onSelect)="selectAutoWorkspaceData($event)" [suggestions]="autoWorkspaceDT" (completeMethod)="getAutoWorkspaceData($event)" field="label" [minLength]="1" [size]="30"
                             class="form-controlAutoComplete autowsname"></p-autoComplete>
-                        <span class="material-icons inputserachico">search</span>
+                        <span class="material-icons inputsearchico">search</span>
                     </div>
                 </div>
             </div>
@@ -23,23 +40,6 @@
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
                         <span class="material-icons">restore</span>
-                    </button>
-                </div>
-            </div>
-            <div id="divShow" class="col-md-1 col-xs-2 pad-20 text-right">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('grid')">
-                        <span class="material-icons">apps</span>
-                    </button>
-                    <button type="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('list')">
-                        <span class="material-icons">list</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-1 col-xs-2 pad-20 text-right">
-                <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
-                        <span class="material-icons">add</span>
                     </button>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                         <a role="button" (click)="openEntityForm(row)">{{row.wsname}}</a>
                         <small>{{row.wstype}}</small>
                     </h2>
-                    <ul class="header-dropdown m-r--5" style="top:20px">
+                    <ul class="header-dropdown" style="top:2px">
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">more_vert</i>

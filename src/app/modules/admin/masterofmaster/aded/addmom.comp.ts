@@ -6,8 +6,7 @@ import { LoginUserModel, Globals } from '@models';
 declare var $: any;
 
 @Component({
-    templateUrl: 'addmom.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addmom.comp.html'
 })
 
 export class AddMOMComponent implements OnInit, OnDestroy {

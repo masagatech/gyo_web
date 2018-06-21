@@ -139,7 +139,7 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="ddlcatname" name="catname" [(ngModel)]="catid" (ngModelChange)="fillSubCateogryDropDown();getClassFees();" class="form-control catname" tabindex="7">
+                                        <select id="ddlcatname" name="catname" [(ngModel)]="catid" (ngModelChange)="fillSubCateogryDropDown();getFeesStructure();" class="form-control catname" tabindex="7">
                                             <option [value]="0">Select Category</option>
                                             <option *ngFor="let crow of categoryDT" [value]="crow.key">
                                                 {{crow.val}}
@@ -151,7 +151,7 @@
                             <td>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <select id="ddlscatname" name="scatname" [(ngModel)]="scatid" (ngModelChange)="getClassFees()" class="form-control scatname" tabindex="8">
+                                        <select id="ddlscatname" name="scatname" [(ngModel)]="scatid" (ngModelChange)="getFeesStructure()" class="form-control scatname" tabindex="8">
                                             <option [value]="0">Select Sub Category</option>
                                             <option *ngFor="let scrow of subCategoryDT" [value]="scrow.key">
                                                 {{scrow.val}}

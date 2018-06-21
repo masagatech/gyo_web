@@ -4,8 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { ExamService } from '@services/erp';
 
-declare var google: any;
-
 @Component({
     templateUrl: 'addexamres.comp.html'
 })
@@ -20,7 +18,7 @@ export class AddExamResultComponent implements OnInit {
     subjectDT: any = [];
 
     studentDT: any = [];
-    studsdata: any = [];
+    selectedStudent: any = [];
 
     examparamid: number = 0;
     examid: number = 0;
@@ -129,7 +127,7 @@ export class AddExamResultComponent implements OnInit {
     resetStudentData() {
         this.studid = 0;
         this.studname = "";
-        this.studsdata = [];
+        this.selectedStudent = [];
     }
 
     // Save Exam Result

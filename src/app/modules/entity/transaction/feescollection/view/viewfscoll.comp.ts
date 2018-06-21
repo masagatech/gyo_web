@@ -119,7 +119,7 @@ export class ViewFeesCollectionComponent implements OnInit {
 
         commonfun.loader();
 
-        that._feesservice.getClassFees({
+        that._feesservice.getFeesStructure({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
@@ -161,7 +161,7 @@ export class ViewFeesCollectionComponent implements OnInit {
 
         commonfun.loader();
 
-        that._feesservice.getClassFees({
+        that._feesservice.getFeesStructure({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
