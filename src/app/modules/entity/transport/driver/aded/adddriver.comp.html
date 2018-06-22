@@ -1,6 +1,7 @@
 <div class="card">
     <div class="header">
         <h4>Driver</h4>
+
         <ul class="header-dropdown m-r--5">
             <li *ngIf="driverid !== 0">
                 <span class="switch">
@@ -9,11 +10,13 @@
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveDriverInfo()">
-                    <i class="material-icons">save</i></a>
+                    <i class="material-icons">save</i>
+                </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
+                    <i class="material-icons">arrow_back</i>
+                </a>
             </li>
         </ul>
     </div>

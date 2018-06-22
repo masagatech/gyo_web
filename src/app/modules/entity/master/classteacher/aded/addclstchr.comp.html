@@ -1,0 +1,74 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Class</h4>
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassInfo()">
+                    <i class="material-icons">save</i></a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Standard <strong>*</strong></label>
+                                <select id="stdid" name="stdname" [(ngModel)]="stdid" class="form-control stdname" tabindex="1">
+                                    <option [value]="0">Select Standard</option>
+                                    <option *ngFor="let row of standardDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Division <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="divname" class="form-control divname" tabindex="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class Teacher</label> {{clstchrname}}
+                        <p-autoComplete id="clstchrid" name="clstchrname" [(ngModel)]="clstchrdata" [tabindex]="5" (onSelect)="selectClassTeacherData($event)" [suggestions]="classTeacherDT" (completeMethod)="getTeacherData($event, 'class')" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete clstchrname"></p-autoComplete>
+                        <span class="material-icons inputsearchico pad-20">search</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Other Teacher</label>
+                        <p-autoComplete id="othtchrid" name="othtchrname" [(ngModel)]="othtchrdata" [tabindex]="6" (onSelect)="selectOtherTeacherData($event)" [suggestions]="otherTeacherDT" (completeMethod)="getTeacherData($event, 'other')" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete othtchrname"></p-autoComplete>
+                        <span class="material-icons inputsearchico pad-20">search</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div *ngIf="otherTeacherList.length">
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let row of otherTeacherList">
+                                {{row.othtchrname}}
+                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteOtherTeacher(row)">
+                                    <i class="material-icons">delete</i></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

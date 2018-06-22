@@ -21,7 +21,7 @@
 </div>
 
 <div #rtwisepsngr class="row clearfix ">
-    <div *ngFor="let row of routesDT | groupBy: 'rtname'; let i=i ndex; " class="col-md-3 col-xs-6 ">
+    <div *ngFor="let row of routesDT | groupBy: 'rtname'; let i = index" class="col-md-3 col-xs-6 ">
         <div class="card ">
             <div class="header ">
                 <h4>{{row.key}}</h4>
@@ -40,7 +40,7 @@
                                 <i class="material-icons ">more_vert</i>
                             </a>
                             <ul id="ddlstops " class="dropdown-menu pull-right ">
-                                <li *ngFor="let srow of drow.stopsDT; let i=i ndex; ">
+                                <li *ngFor="let srow of drow.stopsDT; let i = index">
                                     <a role="button " (click)="getStopsWisePassenger(srow) "><b>{{srow.stpname}} :</b> {{srow.countstuds}}</a>
                                 </li>
                             </ul>
@@ -94,7 +94,7 @@
                 <h4>{{rtname}}</h4>
             </div>
             <div class="body ">
-                <p *ngFor="let row of stopsDT; let i=i ndex; ">
+                <p *ngFor="let row of stopsDT; let i = index">
                     <a role="button " (click)="getStopsWisePassenger(row) ">
                         <b>{{row.stpname}} :</b> {{row.countstuds}}
                     </a>

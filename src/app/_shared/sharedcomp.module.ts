@@ -9,7 +9,7 @@ import { HeaderComponent } from '../modules/usercontrol/header/header.comp';
 import { LeftSideBarComponent } from '../modules/usercontrol/leftsidebar/leftsidebar.comp';
 import { LeftDashboardComponent } from '../modules/usercontrol/leftdashboard/leftdb.comp';
 import { ADHOST, OnlyNumber } from '@directives';
-import { TimeAgoPipe } from '@pipe/timeago';
+import { TimesAgoPipe } from '@pipe/timeago';
 import { format } from '@pipe/format';
 
 import { AutoCompleteModule } from 'primeng/primeng';
@@ -17,9 +17,9 @@ import { AutoCompleteModule } from 'primeng/primeng';
 @NgModule({
     imports: [RouterModule, FormsModule, CommonModule, AutoCompleteModule],
     declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
-        LeftDashboardComponent, ADHOST, OnlyNumber, TimeAgoPipe, format],
+        LeftDashboardComponent, ADHOST, OnlyNumber, TimesAgoPipe, format],
     exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
-        LeftDashboardComponent, ADHOST, OnlyNumber, TimeAgoPipe, format]
+        LeftDashboardComponent, ADHOST, OnlyNumber, TimesAgoPipe, format]
 })
 
 export class SharedComponentModule { }

@@ -34,7 +34,10 @@ export const routes = [
 
                     // Class
 
+                    { path: 'standard', loadChildren: './standard#StandardModule' },
                     { path: 'class', loadChildren: './class#ClassModule' },
+                    { path: 'classteacher', loadChildren: './classteacher#ClassTeacherModule' },
+                    { path: 'classsubject', loadChildren: './classteacher#ClassSubjectModule' },
                     { path: 'classbooks', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },

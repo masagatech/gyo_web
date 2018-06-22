@@ -91,7 +91,7 @@
                     <div class="col-md-12">
                         <div class="allvehiclecheckboxes">
                             <div class="row clearfix">
-                                <div *ngFor="let row of vehicleDT; let i = index;" class="col-md-6">
+                                <div *ngFor="let row of vehicleDT; let i = index" class="col-md-6">
                                     <span id="vehicle{{row.imei}}">
                                         <input id="{{row.imei}}" name="vehicle{{i + 1}}" type="checkbox" value="{{row.imei}}" class="filled-in" />
                                         <label for="{{row.imei}}">{{row.vehicleno}}</label>

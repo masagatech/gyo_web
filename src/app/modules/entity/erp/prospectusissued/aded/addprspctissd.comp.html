@@ -1,6 +1,7 @@
 <div class="card">
     <div class="header">
-        <h4>Prospectus</h4>
+        <h4>Prospectus Issued</h4>
+
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectusIssued()">
@@ -151,7 +152,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr *ngFor="let row of prospectusIssuedDT | filterBy: {'isactive': true}; let i = index;">
+                        <tr *ngFor="let row of prospectusIssuedDT | filterBy: {'isactive': true}; let i = index">
                             <td>
                                 {{row.childname}}
                             </td>

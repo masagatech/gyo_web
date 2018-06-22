@@ -14,16 +14,15 @@
                     </a>
                     <span class="vhbatr">
                         <span class="vhbtrper">{{btr | _currency:{'decimals':0, 'currsym': '' } }}%</span>
-                        <span class="btr" style="border:1px solid #000;">
+                    <span class="btr" style="border:1px solid #000;">
                             <span class="btr-line" title="{{btr}}%" [ngStyle]="{'width': btr+'%'}"></span>
-                        </span>
+                    </span>
                     </span>
                 </div>
                 <div style=" margin-left: 56px; margin-right: 12px;">
                     <p-slider [(ngModel)]="val" [animate]="true" [max]="maxrange" (mousedown)="mousedown()" [style]="{'margin-top': '6px'}" (onChange)="onSliderChnage($event)"></p-slider>
                     <span class="timer">{{servertimer}}</span>
-                    <p-slider [(ngModel)]="speedval" [animate]="true" [min]="1" [max]="10" [step]="1" [style]="{  'margin-top': '20px', 'position': 'absolute','width': '61px','right': '40px'}"
-                        (onChange)="onSpeedSliderChnage($event)"></p-slider>
+                    <p-slider [(ngModel)]="speedval" [animate]="true" [min]="1" [max]="10" [step]="1" [style]="{  'margin-top': '20px', 'position': 'absolute','width': '61px','right': '40px'}" (onChange)="onSpeedSliderChnage($event)"></p-slider>
                     <span class="speedtext">{{speedval + "x"}}</span>
                 </div>
             </div>
@@ -63,8 +62,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <p-calendar [(ngModel)]="dateToValue" [showTime]="false" [readonlyInput]="true" placeholder="To Date" inputStyleClass="form-control form-control-bordered"
-                            dateFormat="dd-mm-yy"></p-calendar>
+                        <p-calendar [(ngModel)]="dateToValue" [showTime]="false" [readonlyInput]="true" placeholder="To Date" inputStyleClass="form-control form-control-bordered" dateFormat="dd-mm-yy"></p-calendar>
                     </div>
                 </div>
                 <div class="col-md-6 text-center">
@@ -113,8 +111,7 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="lineitem {{row.trktyp}}" *ngFor="let row of timelineTrack; let i = index;" (mouseover)="onsegover(i, row)" (mouseout)="onsegleave(i, row)"
-                    (click)="onsegclick(i,row)">
+                <div class="lineitem {{row.trktyp}}" *ngFor="let row of timelineTrack; let i = index" (mouseover)="onsegover(i, row)" (mouseout)="onsegleave(i, row)" (click)="onsegclick(i,row)">
                     <div class="contLeft">
                         <div class="text">
                             <span> {{row.sttm | format :{'format':'DD MMM'} }}</span>

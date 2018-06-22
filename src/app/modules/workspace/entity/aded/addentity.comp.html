@@ -89,7 +89,7 @@
                 </h4>
 
                 <div id="week">
-                    <span *ngFor="let week of weekDT; let i = index;">
+                    <span *ngFor="let week of weekDT; let i = index">
                         <input type="checkbox" id="{{week.key}}" value="{{week.key}}" name="week{{i + 1}}" data-menuid="week.key" data-right="item" class="actrights filled-in" />
                         <label for="{{week.key}}">{{week.val}}</label>
                     </span>
@@ -318,13 +318,13 @@
                             </div>
                         </div>
 
-                        <div class="allcheckboxes" *ngFor="let row of standardDT | groupBy:'grpname'; let i = index;">
+                        <div class="allcheckboxes" *ngFor="let row of standardDT | groupBy:'grpname'; let i = index">
                             <div class="block-header">
                                 <input id="{{row.key.split('~')[0]}}" name="std{{i + 1}}" type="checkbox" value="{{row.key.split('~')[0]}}" (change)="selectAndDeselectGroupWiseCheckboxes(row)" class="filled-in" />
                                 <label for="{{row.key.split('~')[0]}}"><h4 style="margin: 0;">{{row.key.split('~')[1]}}</h4></label>
                             </div>
                             <div id="std{{row.key.split('~')[0]}}" style="margin-left: 15px;">
-                                <span *ngFor="let drow of row.value; let i = index;" id="stditem{{drow.key}}">
+                                <span *ngFor="let drow of row.value; let i = index" id="stditem{{drow.key}}">
                                     <input id="std{{drow.key}}" name="std{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
                                     <label for="std{{drow.key}}">{{drow.val}}</label>
                                 </span>
@@ -352,13 +352,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="allsubcheckboxes" *ngFor="let row of subjectDT | groupBy:'grpname'; let i = index;">
+                        <div class="allsubcheckboxes" *ngFor="let row of subjectDT | groupBy:'grpname'; let i = index">
                             <div class="block-header">
                                 <input id="{{row.key}}" name="sub{{i + 1}}" type="checkbox" value="{{row.key}}" (change)="selectAndDeselectGroupWiseSubCheckboxes(row)" class="filled-in" />
                                 <label for="{{row.key}}"><h4 style="margin: 0;">{{row.key}}</h4></label>
                             </div>
                             <div id="sub{{row.key}}" style="margin-left: 15px;">
-                                <span *ngFor="let drow of row.value; let i = index;" id="subitem{{drow.key}}">
+                                <span *ngFor="let drow of row.value; let i = index" id="subitem{{drow.key}}">
                                     <input id="sub{{drow.key}}" name="sub{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
                                     <label for="sub{{drow.key}}">{{drow.val}}</label>
                                 </span>
@@ -387,7 +387,7 @@
                             </div>
                         </div>
                         <div class="allboardcheckboxes">
-                            <div *ngFor="let row of boardDT; let i = index;" id="boarditem{{row.key}}">
+                            <div *ngFor="let row of boardDT; let i = index" id="boarditem{{row.key}}">
                                 <input id="board{{row.key}}" name="board{{i + 1}}" type="checkbox" value="{{row.key}}" class="filled-in" />
                                 <label for="board{{row.key}}">{{row.val}}</label>
                             </div>

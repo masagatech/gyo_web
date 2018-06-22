@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-4">
+                <h4>Class</h4>
+            </div>
+            <div class="col-md-10 col-xs-8" align="right">
+                <button type="button" class="btn btn-theme btn-xs" (click)="addClass()">
+                    <i class="material-icons">add</i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <p-dataTable [value]="classDT">
+                    <p-column field="stdname" header="Standard" [style]="{'width':'80px','text-align':'left'}"></p-column>
+                    <p-column field="divname" header="Division" [style]="{'width':'80px', 'text-align':'left'}"></p-column>
+                    <p-column field="clstypname" header="Class Type" [style]="{'width':'140px', 'text-align':'left'}"></p-column>
+                    <p-column field="subject" header="Subjects" [style]="{'text-align':'left'}"></p-column>
+                    <p-column field="strength" header="Strength" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column field="clstchrname" header="Teacher" [style]="{'width':'200px', 'text-align':'left'}"></p-column>
+                    <p-column [style]="{'width': '50px', 'align': 'left'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="editClass(row)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>

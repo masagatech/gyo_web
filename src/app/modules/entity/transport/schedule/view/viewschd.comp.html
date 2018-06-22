@@ -1,18 +1,19 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <h4>Pick Up and Drop</h4>
-            </div>
-            <div class="col-md-6" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addPickDropInfo()">
+        <h4>View Pick Up and Drop</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addPickDropInfo()">
                     <i class="material-icons">add</i>
-                </button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="editPickDropInfo()">
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="editPickDropInfo()">
                     <i class="material-icons">edit</i>
-                </button>
-            </div>
-        </div>
+                </a>
+            </li>
+        </ul>
     </div>
     <div class="body">
         <div class="row clearfix">

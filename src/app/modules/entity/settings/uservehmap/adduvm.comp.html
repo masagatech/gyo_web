@@ -16,14 +16,14 @@
                     <div class="form-line">
                         <label class="control-label">User Name</label>
                         <p-autoComplete id="uname" name="uname" [(ngModel)]="selecteudUser" [tabindex]="1" (onSelect)="selectUserData($event, 1)" [suggestions]="usersDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
-                        <span class="material-icons inputsearchico">search</span>
+                        <span class="material-icons inputsearchico pad-20">search</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Vehicle</label>
                         <p-autoComplete id="vehname" name="vehname" [(ngModel)]="selectedvehicle" [tabindex]="2" (onSelect)="selectVehicleData($event, 1)" [suggestions]="usersDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
-                        <span class="material-icons inputsearchico">search</span>
+                        <span class="material-icons inputsearchico pad-20">search</span>
                     </div>
                 </div>
             </div>

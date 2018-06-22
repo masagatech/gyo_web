@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { NoContentComponent } from './no-content';
-import { HomeComponent } from './home';
 import { SharedModule, GlobalShared } from './_shared/shared.module';
 import { GrowlModule, ConfirmDialogModule } from 'primeng/primeng';
 import { LoginComponent } from './login/login.comp';
@@ -38,7 +37,6 @@ type StoreType = {
   bootstrap: [AppComponent],
   declarations: [
     AppComponent,
-    HomeComponent,
     LoginComponent,
     NoContentComponent,
   ],

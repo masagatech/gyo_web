@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="header">
+        <h4>Standard</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveStandardInfo()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Standard <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="stdname" class="form-control stdname" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Group <strong>*</strong></label>
+                                <select id="stdgrpid" name="stdgrpname" [(ngModel)]="stdgrpid" class="form-control stdgrpname" tabindex="2">
+                                    <option [value]="0">Select Group</option>
+                                    <option *ngFor="let row of stdgroupDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Strength <strong>*</strong></label>
+                                <input type="text" OnlyNumber="true" [(ngModel)]="strength" class="form-control strength" tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Class Type <strong>*</strong></label>
+                                <select id="clstypid" name="clstypname" [(ngModel)]="clstypid" class="form-control clstypname" tabindex="4">
+                                    <option [value]="0">Select Class Type</option>
+                                    <option *ngFor="let row of classTypeDT" [value]="row.id">
+                                        {{row.val}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="subjectDT.length">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <label for="selectall">Select All</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="allcheckboxes">
+                            <div class="row clearfix">
+                                <div class="col-md-4" *ngFor="let row of subjectDT; let i = index">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <span id="sub{{row.id}}">
+                                                <input id="{{row.id}}" name="sub{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <label for="{{row.id}}">{{row.val}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 <div class="card">
     <div class="header">
         <h4>Exam Grade</h4>
+
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveExamGrade()">
@@ -39,7 +40,7 @@
                     <div class="col-md-12">
                         <div class="allcheckboxes">
                             <div class="row clearfix">
-                                <div class="col-md-4" *ngFor="let row of classDT; let i = index;">
+                                <div class="col-md-4" *ngFor="let row of classDT; let i = index">
                                     <div class="form-group">
                                         <div class="form-line">
                                             <span id="cls{{row.id}}">

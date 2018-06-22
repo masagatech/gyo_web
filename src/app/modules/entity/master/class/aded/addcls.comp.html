@@ -1,0 +1,63 @@
+<div class="card">
+    <div class="header">
+        <h4>Add Class</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassInfo()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">More Division</label>
+                        <select id="divno" name="divno" [(ngModel)]="divno" class="form-control divno" (ngModelChange)="getDivisionData()" tabindex="1">
+                            <option *ngFor="let row of divData" [value]="row.id">
+                                {{row.id}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        Standard
+                    </th>
+                    <th *ngFor="let divcol of divColumn" width="80px">
+                        {{divcol.divname}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let clsrow of classDT">
+                    <td>
+                        {{clsrow.stdname}}
+                    </td>
+                    <td *ngFor="let divcol of divColumn">
+                        <div class="form-group">
+                            <div class="form-line">
+                                {{clsrow[divcol.divid].split('~')[0]}}
+                                <input type="text" [(ngModel)]="clsrow[divcol.divid].split('~')[1]" class="form-control divname" tabindex="2">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

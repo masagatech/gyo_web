@@ -100,7 +100,7 @@
                             <div id="divteacher" class="col-md-12 hide">
                                 <div class="allteachercheckboxes">
                                     <div class="row clearfix">
-                                        <div class="col-md-4" *ngFor="let row of teacherDT; let i = index;">
+                                        <div class="col-md-4" *ngFor="let row of teacherDT; let i = index">
                                             <div class="form-group">
                                                 <span id="tchr{{row.id}}">
                                                     <input id="t{{row.id}}" name="tchr{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
@@ -129,7 +129,7 @@
                     <div class="col-md-12">
                         <div class="allstandardcheckboxes">
                             <div class="row clearfix">
-                                <div class="col-md-4" *ngFor="let row of standardDT; let i = index;">
+                                <div class="col-md-4" *ngFor="let row of standardDT; let i = index">
                                     <div class="form-group">
                                         <span id="std{{row.id}}">
                                             <input id="s{{row.id}}" name="std{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />

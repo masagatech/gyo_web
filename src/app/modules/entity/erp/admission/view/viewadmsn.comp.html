@@ -265,8 +265,7 @@
             </div>
             <div class="modal-body" id="user">
                 <div class="form-group">
-                    <strong>Allowed only below 150 KB File</strong> <br />
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server + '?width=150'}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
                         auto="true"></p-fileUpload>
 
                     <div *ngIf="uploadFileDT.length">

@@ -16,7 +16,7 @@
                     <div class="form-line">
                         <label class="control-label">User Name</label>
                         <p-autoComplete id="uname" name="uname" [(ngModel)]="userdata" [tabindex]="1" (onSelect)="selectUserData($event, 1)" [suggestions]="usersDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
-                        <span class="material-icons inputsearchico">search</span>
+                        <span class="material-icons inputsearchico pad-20">search</span>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                     <div class="form-line">
                         <label class="control-label">Reference User Name</label>
                         <p-autoComplete id="refuname" name="refuname" [(ngModel)]="refuserdata" [tabindex]="2" (onSelect)="selectRefUserData($event, 1)" [suggestions]="usersDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete refuname"></p-autoComplete>
-                        <span class="material-icons inputsearchico">search</span>
+                        <span class="material-icons inputsearchico pad-20">search</span>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let mrow of menudetails | groupBy:'pname'; let i = index;">
+        <div *ngFor="let mrow of menudetails | groupBy:'pname'; let i = index">
             <div class="block-header">
                 <h4>{{mrow.key}}</h4>
             </div>

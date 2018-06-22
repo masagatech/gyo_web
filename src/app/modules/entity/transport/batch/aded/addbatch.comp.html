@@ -67,7 +67,7 @@
                     <th>Drop To Time</th>
                 </tr>
             </thead>
-            <tbody *ngFor="let wkrow of weekDT; let i = index;">
+            <tbody *ngFor="let wkrow of weekDT; let i = index">
                 <tr>
                     <td>
                         <input id="{{wkrow.id}}" name="week{{i + 1}}" class="{{wkrow.name}}" type="checkbox" [(ngModel)]="wkrow.isopen" (ngModelChange)="selectWeekRow(wkrow)" />
