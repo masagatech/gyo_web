@@ -42,7 +42,7 @@ export class ViewSubjectComponent implements OnInit {
 
         that._subservice.getSubjectDetails({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.standardDT = data.data.filter(a => a.group == "standard");
@@ -70,7 +70,7 @@ export class ViewSubjectComponent implements OnInit {
 
         that._subservice.getSubjectDetails({
             "flag": "all", "stdid": that.stdid, "subtype": that.subtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.subjectDT = data.data;
