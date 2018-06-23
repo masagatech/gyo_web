@@ -14,11 +14,6 @@ export class AddClassComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    clsid: number = 0;
-    stdid: number = 0;
-    divname: string = "";
-    strength: number = 0;
-
     divno: number = 5;
     divData: any = [];
     divColumn: any = [];
@@ -26,8 +21,8 @@ export class AddClassComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _clsservice: ClassService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
+        private _msg: MessageService, private _clsservice: ClassService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -36,8 +31,6 @@ export class AddClassComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-        this.getClassDetails();
-
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -105,22 +98,10 @@ export class AddClassComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Clear Fields
-
-    resetClassFields() {
-        var that = this;
-
-        that.stdid = 0;
-        that.divname = "";
-        that.strength = 0;
-    }
-
     // Save Class
 
     saveClassInfo() {
         var that = this;
-
-        commonfun.loader();
 
         var _classstr = "";
         var _classdt = [];
@@ -128,6 +109,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
         var _divcol = null;
 
         var _clsid = 0;
+        var _stdid = 0;
         var _divname = "";
 
         for (var i = 0; i < that.classDT.length; i++) {
@@ -135,20 +117,20 @@ export class AddClassComponent implements OnInit, OnDestroy {
 
             for (var j = 0; j < that.divColumn.length; j++) {
                 _divcol = that.divColumn[j];
-                _clsid = _clsrow[_divcol.divid] == "" ? 0 : _clsrow[_divcol.divid].split('~')[0];
 
-                if (_clsrow[_divcol.divid].split('~')[1] == null) {
-                    _divname = _clsrow[_divcol.divid];
-                }
-                else {
-                    _divname = _clsrow[_divcol.divid].split('~')[1];
-                }
+                _clsid = _clsrow[_divcol.divid];
+                _stdid = _clsrow.stdid;
+                _divname = _clsrow[_divcol.divcode];
 
-                _classstr += '"clsid": "' + _clsid + '", "stdid":"' + _clsrow.stdid + '", "divname":"' + _divname + '",';
+                _classstr += '"clsid": "' + _clsid + '", "stdid":"' + _stdid + '", "divname":"' + _divname + '",';
+
+                if (_divname != "") {
+                    _classdt.push(JSON.parse("{" + _classstr.substring(0, _classstr.length - 1) + "}"));
+                }
             }
-
-            _classdt.push(JSON.parse("{" + _classstr.substring(0, _classstr.length - 1) + "}"));
         }
+
+        commonfun.loader();
 
         var params = {
             "flag": "class",
@@ -166,13 +148,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
-
-                    if (msgid === "1") {
-                        that.resetClassFields();
-                    }
-                    else {
-                        that.backViewData();
-                    }
+                    that.getDivisionData();
                 }
                 else {
                     that._msg.Show(messageType.error, "Error", msg);

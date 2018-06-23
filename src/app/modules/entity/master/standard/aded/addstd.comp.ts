@@ -42,10 +42,11 @@ export class AddStandardComponent implements OnInit {
 
     // Clear Fields
 
-    resetClassFields() {
+    resetStandardFields() {
         var that = this;
 
         that.stdid = 0;
+        that.stdname = "";
         that.stdgrpid = 0;
         that.strength = 0;
         that.clstypid = 0;
@@ -143,12 +144,6 @@ export class AddStandardComponent implements OnInit {
             that._msg.Show(messageType.error, "Error", "Select Class Type");
             $(".strength").focus();
         }
-        else if (that.subjectDT.length == 0) {
-            that._msg.Show(messageType.error, "Error", "No any Subject Entry on this " + that._enttdetails.enttname);
-        }
-        else if (_subrights == null) {
-            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Subject");
-        }
         else {
             commonfun.loader();
 
@@ -156,9 +151,9 @@ export class AddStandardComponent implements OnInit {
                 "stdid": that.stdid,
                 "stdname": that.stdname,
                 "strength": that.strength,
+                "stdgrpid": that.stdgrpid,
                 "clstypid": that.clstypid,
                 "stddesc": that.stddesc,
-                "subid": "{" + _subrights + "}",
                 "cuid": that.loginUser.ucode,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid
@@ -174,7 +169,7 @@ export class AddStandardComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.resetClassFields();
+                            that.resetStandardFields();
                         }
                         else {
                             that.backViewData();
@@ -260,7 +255,7 @@ export class AddStandardComponent implements OnInit {
                 })
             }
             else {
-                that.resetClassFields();
+                that.resetStandardFields();
                 commonfun.loaderhide();
             }
         });

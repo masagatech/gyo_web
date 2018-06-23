@@ -7,24 +7,24 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { AddSubjectComponent } from './aded/addsub.comp';
 import { ViewSubjectComponent } from './view/viewsub.comp';
 
-import { SubjectService } from '@services/master';
+import { ClassService, SubjectService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
+import { DataTableModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: ViewSubjectComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "subject", "rights": "view", "urlname": "/subject" }
+        data: { "module": "mst", "submodule": "subject", "rights": "view", "urlname": "/subject" }
       },
       {
         path: 'add', component: AddSubjectComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "subject", "rights": "add", "urlname": "/add" }
+        data: { "module": "mst", "submodule": "subject", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'edit/:id', component: AddSubjectComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "subject", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "mst", "submodule": "subject", "rights": "edit", "urlname": "/edit" }
       },
     ]
   },
@@ -40,7 +40,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule
   ],
 
-  providers: [AuthGuard, SubjectService]
+  providers: [AuthGuard, ClassService, SubjectService]
 })
 
 export class SubjectModule {

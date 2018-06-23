@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -9,10 +9,12 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     templateUrl: 'viewcls.comp.html'
 })
 
-export class ViewClassComponent implements OnInit {
+export class ViewClassComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    divno: number = 0;
+    divColumn: any = [];
     classDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -20,19 +22,42 @@ export class ViewClassComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.getClassDetails();
+        this.getDivisionData();
     }
 
     public ngOnInit() {
-
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
     }
+
+    // Get Division Data
+
+    getDivisionData() {
+        var that = this;
+
+        that._clsservice.getStandardDetails({
+            "flag": "division",
+            "divno": that.divno
+        }).subscribe(data => {
+            that.divColumn = data.data;
+            that.getClassDetails();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+        }, () => {
+        })
+    }
+
+    // Get Class
 
     getClassDetails() {
         var that = this;
         commonfun.loader();
 
-        that._clsservice.getClassDetails({
-            "flag": "all", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+        that._clsservice.getStandardDetails({
+            "flag": "divmap", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
@@ -56,7 +81,8 @@ export class ViewClassComponent implements OnInit {
         this._router.navigate(['/master/class/add']);
     }
 
-    public editClass(row) {
-        this._router.navigate(['/master/class/edit', row.classid]);
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

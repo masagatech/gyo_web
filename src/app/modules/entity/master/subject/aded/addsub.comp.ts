@@ -185,6 +185,6 @@ export class AddSubjectComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/admin/subject']);
+        this._router.navigate(['/master/subject']);
     }
 }

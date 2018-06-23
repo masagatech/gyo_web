@@ -1023,21 +1023,12 @@ button.ui-button::-moz-focus-inner {
 .ui-datatable tbody td,
 .ui-datatable tfoot td,
 .ui-datatable tfoot th {
-    padding: 4px 10px;
-    overflow: hidden;
-    border-width: 1px;
-    border-style: solid
+    padding: 4px 7px;
+    border: 1px solid #cccccc;
 }
 
 .ui-datatable thead tr {
     border-width: 0
-}
-
-.ui-datatable thead th,
-.ui-datatable tfoot td,
-.ui-datatable tbody td {
-    border-color: inherit;
-    box-sizing: border-box
 }
 
 .ui-datatable tbody {

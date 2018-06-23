@@ -1,0 +1,89 @@
+<div class="card">
+    <div class="header">
+        <h4>Subject</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li *ngIf="stdid != 0">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassSubject()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="addSubject()">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="row clearfix">
+            <div class="col-md-3 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Subject Type</label>
+                        <select id="subtype" [(ngModel)]="subtype" (ngModelChange)="getSubjectDetails()" class="form-control subtype" tabindex="2">
+                            <option [value]="''">Select Subject Type</option>
+                            <option *ngFor="let row of subtypeDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-2">
+            </div>
+            <div class="col-md-3 col-xs-5">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Standard</label>
+                        <select id="stdid" [(ngModel)]="stdid" (ngModelChange)="getSubjectDetails()" class="form-control stdid" tabindex="1">
+                            <option [value]="0">Select Standard</option>
+                            <option *ngFor="let row of standardDT" [value]="row.id">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th *ngIf="stdid != 0">
+                        Subject
+                    </th>
+                    <th *ngIf="stdid == 0">
+                        Subject
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of subjectDT">
+                    <td *ngIf="stdid != 0">
+                        <span id="sub{{row.subid}}">
+                            <input id="{{row.subid}}" name="sub{{i + 1}}" [(ngModel)]="row.isclssub" type="checkbox" value="{{row.id}}" class="filled-in" />
+                            <label for="{{row.subid}}">{{row.subname}}</label>
+                        </span>
+                    </td>
+                    <td *ngIf="stdid == 0">
+                        {{row.subname}}
+                    </td>
+                    <td>
+                        {{row.subdesc}}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-theme btn-xs" (click)="editSubject(row)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

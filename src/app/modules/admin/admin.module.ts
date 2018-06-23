@@ -18,8 +18,6 @@ export const routes = [
                     { path: 'location', loadChildren: './location#LocationModule' },
 
                     { path: 'qualification', loadChildren: './qualification#QualificationModule' },
-
-                    { path: 'subject', loadChildren: './subject#SubjectModule' },
                     
                     { path: '', loadChildren: './masterofmaster#MOMModule' },
 
