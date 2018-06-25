@@ -3244,6 +3244,12 @@ section.content {
     background-image: url(/assets/img/pattern02.png);
 }
 
+.card .header .hdr-ddl {
+    background: none!important;
+    border: 0!important;
+    right: 0!important;
+}
+
 .card .header .header-dropdown .dropdown-menu li {
     display: block !important;
 }
@@ -3263,14 +3269,14 @@ section.content {
 
 .card .header h2 {
     margin: 0;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: normal;
     color: #111;
 }
 
 .card .header h2 small {
     display: block;
-    font-size: 12px;
+    font-size: 11px;
     margin-top: 5px;
     color: #999;
     line-height: 15px;
