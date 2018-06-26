@@ -131,12 +131,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         var that = this;
 
-        setTimeout(function () {
-            $.AdminBSB.islocked = true;
-            $.AdminBSB.leftSideBar.Close();
-            $.AdminBSB.rightSideBar.activate();
-        }, 1000);
-
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['psngrtype'] !== undefined) {
                 that.psngrtype = params['psngrtype'];
@@ -196,10 +190,15 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._empservice.getEmployeeDetails({ "flag": "dropdown" }).subscribe(data => {
+        that._empservice.getEmployeeDetails({
+            "flag": "dropdown", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
             try {
                 if (that.psngrtype == "employee") {
                     that.emptypeDT = data.data.filter(a => a.group == "emptype").filter(a => a.key != "tchr");
+                }
+                if (that.psngrtype == "teacher") {
+                    that.emptypeDT = data.data.filter(a => a.group == "classtype").filter(a => a.key != "tchr");
                 }
 
                 that.genderDT = data.data.filter(a => a.group == "gender");
@@ -703,12 +702,10 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
             $(".dob").focus();
             return false;
         }
-        if (that.psngrtype == "employee") {
-            if (that.emptype == "") {
-                that._msg.Show(messageType.error, "Error", "Select Department");
-                $(".emptype").focus();
-                return false;
-            }
+        if (that.emptype == "") {
+            that._msg.Show(messageType.error, "Error", "Select Department");
+            $(".emptype").focus();
+            return false;
         }
         if (that.doj == "") {
             that._msg.Show(messageType.error, "Error", "Enter Joining Date");
@@ -800,7 +797,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
                 // Job Profile
 
-                "emptype": that.psngrtype == "teacher" ? "tchr" : that.emptype,
+                "emptype": that.emptype,
                 "doj": that.doj,
                 "noticedays": that.noticedays,
                 "salarymode": that.salarymode,
@@ -981,7 +978,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        $.AdminBSB.islocked = false;
-        $.AdminBSB.leftSideBar.Open();
+        
     }
 }
