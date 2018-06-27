@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AddSubjectMapToTeacherComponent } from './aded/addsmt.comp';
 import { ViewSubjectMapToTeacherComponent } from './view/viewsmt.comp';
 
 import { SubjectMapToTeacherService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -38,10 +38,10 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, AutoCompleteModule, FileUploadModule
+    DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, SubjectMapToTeacherService]
+  providers: [AuthGuard, SubjectMapToTeacherService, CommonService]
 })
 
 export class SubjectMapToTeacherModule {

@@ -8,9 +8,9 @@ import { AddEmployeeComponent } from './aded/addemp.comp';
 import { ViewEmployeeComponent } from './view/viewemp.comp';
 import { ViewProfileComponent } from './profile/viewprofile.comp';
 
-import { EmployeeService } from '@services/master';
+import { EmployeeService, ClassService } from '@services/master';
 
-import { DataTableModule, DataGridModule, PanelModule, TabViewModule, FileUploadModule } from 'primeng/primeng';
+import { DataGridModule, PanelModule, TabViewModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -44,10 +44,10 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, DataGridModule, PanelModule, TabViewModule, FileUploadModule
+    DataGridModule, PanelModule, TabViewModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, CommonService, EmployeeService]
+  providers: [AuthGuard, CommonService, EmployeeService, ClassService]
 })
 
 export class EmployeeModule {

@@ -17,9 +17,10 @@
             </li>
         </ul>
     </div>
-    <div class="body" *ngIf="isvalidentt">
+
+    <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity Type</label>
@@ -30,7 +31,11 @@
                         </select>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="row clearfix" *ngIf="isvalidentt">
+            <div class="col-md-6 border">
                 <div class="row clearfix">
                     <div class="col-md-4">
                         <div class="form-group">

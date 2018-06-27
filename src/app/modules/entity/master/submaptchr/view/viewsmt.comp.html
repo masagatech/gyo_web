@@ -19,7 +19,7 @@
                         <label class="control-label">Class <strong>*</strong></label>
                         <select id="classid" name="classname" [(ngModel)]="classid" class="form-control classname" (ngModelChange)="getSubjectMapToTeacher()" tabindex="1">
                             <option [value]="0">Select Class</option>
-                            <option *ngFor="let row of classDT" [value]="row.id">
+                            <option *ngFor="let row of classDT" [value]="row.key">
                                 {{row.val}}
                             </option>
                         </select>
@@ -29,7 +29,8 @@
             <div class="col-md-2 col-xs-2 pad-20 text-right">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme btn-xs" (click)="addSubjectMapToTeacher()">
-                        <i class="material-icons">add</i></button>
+                        <i class="material-icons">add</i>
+                    </button>
                 </div>
             </div>
         </div>

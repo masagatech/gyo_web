@@ -3,14 +3,19 @@
         <h4>{{psngrtypenm}}</h4>
 
         <ul class="header-dropdown m-r--5">
-            <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('grid')">
-                    <i class="material-icons">apps</i>
+            <li *ngIf="classid != 0">
+                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassTeacher()">
+                    <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('list')">
                     <i class="material-icons">list</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('grid')">
+                    <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
@@ -25,11 +30,24 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
+            <div class="col-md-2" *ngIf="psngrtype == 'teacher'">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class</label>
+                        <select id="clsid" name="clsname" [(ngModel)]="classid" class="form-control class" tabindex="1" (ngModelChange)="getEmployeeDetails()">
+                            <option [value]="0">{{psngrtype == 'student' ? 'Select Class' : 'All'}}</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-3 col-xs-5">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Status</label>
-                        <select id="status" name="status" [(ngModel)]="status" class="form-control class" tabindex="1">
+                        <select id="status" name="status" [(ngModel)]="status" class="form-control status" tabindex="2">
                             <option [value]="''">All</option>
                             <option [value]="'current'">Current</option>
                             <option [value]="'past'">Past</option>
@@ -41,7 +59,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Department</label>
-                        <select id="emptype" [(ngModel)]="emptype" class="form-control emptype" tabindex="2">
+                        <select id="emptype" [(ngModel)]="emptype" class="form-control emptype" tabindex="3">
                             <option [value]="''">All</option>
                             <option *ngFor="let row of emptypeDT" [value]="row.key">
                                 {{row.val}}
@@ -60,7 +78,57 @@
         </div>
     </div>
 
-    <div class="body no-padding">
+    <div class="body">
+        <div class="row clearfix" *ngIf="isShowList">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="30px" *ngIf="classid != 0"></th>
+                            <th width="50px"></th>
+                            <th width="300px">Employee Name</th>
+                            <th width="120px">Date of Joining</th>
+                            <th width="200px">Mobile</th>
+                            <th>Email</th>
+                            <th width="50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of employeeDT">
+                            <td *ngIf="classid != 0">
+                                <div class="nlJQl p-0" (click)="getClassTeacher(row)">
+                                    <div class="D2QfN {{row.selempid == row.empid ? 'bg-green' : ''}}">
+                                        <span class="NkcEF"><i class="fa fa-check"></i></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <img *ngIf="row.gndrkey == 'M'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">
+                                <img *ngIf="row.gndrkey == 'F'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
+                            </td>
+                            <td>
+                                {{row.empname}}
+                            </td>
+                            <td>
+                                {{row.doj}}
+                            </td>
+                            <td>
+                                {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
+                            </td>
+                            <td>
+                                {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-theme btn-xs" (click)="editEmployeeForm(row)">
+                                    <i class="material-icons">edit</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="row clearfix" *ngIf="isShowGrid">
             <div class="col-md-12" *ngIf="employeeDT.length">
                 <div *ngFor="let row of employeeDT | groupBy: 'emptypname'">
@@ -113,37 +181,6 @@
                         </ng-template>
                     </p-dataGrid>
                 </div>
-            </div>
-        </div>
-        <div class="row clearfix" *ngIf="isShowList">
-            <div class="col-md-12">
-                <p-dataTable [value]="employeeDT">
-                    <p-column header="" [style]="{'width':'60px', 'text-align':'center', 'vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <img *ngIf="row.gndrkey == 'M'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">
-                            <img *ngIf="row.gndrkey == 'F'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
-                        </ng-template>
-                    </p-column>
-                    <p-column field="empname" header="Employee Name" [style]="{'width':'200px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-                    <p-column field="doj" header="Date of Joining" [style]="{'width':'150px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
-                    <p-column header="Mobile" [style]="{'width':'100px', 'text-align':'left', 'vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.mobileno1}}<span *ngIf="row.mobileno2 !== ''">{{", " + row.mobileno2}}</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column header="Email" [style]="{'width':'200px', 'text-align':'left', 'vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editEmployeeForm(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
-                </p-dataTable>
             </div>
         </div>
     </div>

@@ -3248,6 +3248,7 @@ section.content {
     background: none!important;
     border: 0!important;
     right: 0!important;
+    top: 10px!important;
 }
 
 .card .header .header-dropdown .dropdown-menu li {
@@ -11065,10 +11066,54 @@ td {
     padding: 3px 10px !important;
 }
 
+
+/* Radio Button Style */
+
 .c-btn[_ngcontent-c1] {
     border-top: 1px solid rgb(199, 199, 199) !important;
     border-left: 1px solid rgb(199, 199, 199) !important;
     border-right: 1px solid rgb(199, 199, 199) !important;
     border-bottom: none !important;
     border-radius: 0 !important;
+}
+
+.nlJQl {
+    display: table-cell;
+    vertical-align: top;
+    padding: 8px;
+    width: 15px;
+}
+
+.D2QfN {
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    border: 1px solid rgba(40, 44, 63, .3);
+    text-align: center;
+    color: #bebfc5;
+    background-color: #fff;
+    transition: all .3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.NkcEF {
+    font-size: 15px;
+    position: absolute;
+    top: 2px;
+    line-height: 15px;
+    left: 2px;
+    font-weight: 600;
+}
+
+.icon-tickRound:before {
+    content: "\E93E";
+}
+
+.auto-height {
+    height: auto;
+}
+
+.auto-width {
+    width: auto;
 }

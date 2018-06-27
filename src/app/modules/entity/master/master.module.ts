@@ -37,8 +37,6 @@ export const routes = [
                     { path: 'standard', loadChildren: './standard#StandardModule' },
                     { path: 'class', loadChildren: './class#ClassModule' },
                     { path: 'subject', loadChildren: './subject#SubjectModule' },
-                    { path: 'classsubject', loadChildren: './classsubject#ClassSubjectModule' },
-                    { path: 'classteacher', loadChildren: './classteacher#ClassTeacherModule' },
                     { path: 'classbooks', loadChildren: './books#BooksModule' },
                     { path: 'chapter', loadChildren: './chapter#ChapterModule' },
                     { path: 'subjectmaptoteacher', loadChildren: './submaptchr#SubjectMapToTeacherModule' },

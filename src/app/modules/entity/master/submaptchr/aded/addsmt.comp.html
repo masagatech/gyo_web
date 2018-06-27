@@ -1,29 +1,134 @@
 <div class="card">
     <div class="header">
         <h4>Add Subject Map To Teacher</h4>
+
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveSubjectMapToTeacher()">
-                    <i class="material-icons">save</i></a>
+                    <i class="material-icons">save</i>
+                </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
+                    <i class="material-icons">arrow_back</i>
+                </a>
             </li>
         </ul>
     </div>
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-2">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Teacher</label> {{tchrname}}
-                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="5" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
-                        <span class="material-icons inputsearchico pad-20">search</span>
+                        <label class="control-label">Academic Year</label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">Select Academic Year</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Teacher</label>
+                        <p-autoComplete id="tchrid" name="tchrname" [(ngModel)]="tchrdata" [tabindex]="2" (onSelect)="selectTeacherData($event)" [suggestions]="teacherDT" (completeMethod)="getTeacherData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete tchrname"></p-autoComplete>
+                        <span class="material-icons inputabsolutesearchico pad-20">
+                            <a role="button" (click)="getSubjectMapToTeacher()" class="btn btn-search">search</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            Class Name / Time
+                        </th>
+                        <th>
+                            Monday
+                        </th>
+                        <th>
+                            Tuesday
+                        </th>
+                        <th>
+                            Wednesday
+                        </th>
+                        <th>
+                            Thursday
+                        </th>
+                        <th>
+                            Friday
+                        </th>
+                        <th>
+                            Saturday
+                        </th>
+                        <th>
+                            Sunday
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let row of tchrsubmapDT | groupBy: 'classname'">
+                    <tr>
+                        <th colspan="8">
+                            {{row.key}}
+                        </th>
+                    </tr>
+                    <tr *ngFor="let drow of row.value">
+                        <td>
+                            {{drow.frmtm}} to {{drow.totm}}
+                        </td>
+                        <td>
+                            <span id="monsub{{drow.monsubid}}" *ngIf="drow.monsubid != 0">
+                                <input id="mon{{drow.monsubid}}" name="mon{{drow.monsubid}}" [(ngModel)]="drow.ismonsub" type="checkbox" class="filled-in" *ngIf="drow.ismonsub != null">
+                                <label for="mon{{drow.monsubid}}">{{drow.monsubname}}</label>
+                            </span>
+                        </td>
+                        <td>
+                            <span id="tursub{{drow.tuesubid}}" *ngIf="drow.tuesubid != 0">
+                                <input id="tue{{drow.tuesubid}}" name="tue{{drow.tuesubid}}" [(ngModel)]="drow.istuesub" type="checkbox" class="filled-in" *ngIf="drow.istuesub != null">
+                                <label for="tue{{drow.tuesubid}}">{{drow.tuesubname}}</label>
+                            </span>
+                        </td>
+                        <td>
+                            <span id="wedsub{{drow.wedsubid}}" *ngIf="drow.wedsubid != 0">
+                                <input id="wed{{drow.wedsubid}}" name="wed{{drow.wedsubid}}" [(ngModel)]="drow.iswedsub" type="checkbox" class="filled-in" *ngIf="drow.iswedsub != null">
+                                <label for="wed{{drow.wedsubid}}">{{drow.wedsubname}}</label>
+                            </span>
+                        </td>
+                        <td>
+                            <span id="thusub{{drow.thusubid}}" *ngIf="drow.thusubid != 0">
+                                <input id="thu{{drow.thusubid}}" name="thu{{drow.thusubid}}" [(ngModel)]="drow.isthusub" type="checkbox" class="filled-in" *ngIf="drow.isthusub != null">
+                                <label for="thu{{drow.thusubid}}">{{drow.thusubname}}</label>
+                            </span>
+                        </td>
+                        <td>
+                            <span id="frisub{{drow.frisubid}}" *ngIf="drow.frisubid != 0">
+                                <input id="fri{{drow.frisubid}}" name="fri{{drow.frisubid}}" [(ngModel)]="drow.isfrisub" type="checkbox" class="filled-in" *ngIf="drow.isfrisub != null">
+                                <label for="fri{{drow.frisubid}}">{{drow.frisubname}}</label>
+                            </span>
+                        </td>
+                        <td>
+                            <span id="satsub{{drow.satsubid}}" *ngIf="drow.satsubid != 0">
+                                <input id="sat{{drow.satsubid}}" name="sat{{drow.satsubid}}" [(ngModel)]="drow.issatsub" type="checkbox" class="filled-in" *ngIf="drow.issatsub != null">
+                                <label for="sat{{drow.satsubid}}">{{drow.satsubname}}</label>
+                            </span>
+                        </td>
+                        <td>
+                            <span id="sunsub{{drow.sunsubid}}" *ngIf="drow.sunsubid != 0">
+                                <input id="sun{{drow.sunsubid}}" name="sun{{drow.sunsubid}}" [(ngModel)]="drow.issunsub" type="checkbox" class="filled-in" *ngIf="drow.issunsub != null">
+                                <label for="sun{{drow.sunsubid}}">{{drow.sunsubname}}</label>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="col-md-6 hide">
                 <div class="row clearfix">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -39,8 +144,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
+
                 <div class="row clearfix" *ngIf="subjectDT.length">
                     <div class="col-md-12">
                         <div class="form-group">

@@ -7,8 +7,7 @@ import { EmployeeService } from '@services/master';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addemp.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addemp.comp.html'
 })
 
 export class AddEmployeeComponent implements OnInit, OnDestroy {

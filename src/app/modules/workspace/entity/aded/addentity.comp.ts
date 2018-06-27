@@ -215,12 +215,10 @@ export class AddEntityComponent implements OnInit {
                             }
                             else {
                                 that.isvalidentt = true;
-                                that.hideWhenEntityFields();
                             }
                         }
                         else {
                             that.isvalidentt = false;
-                            that.hideWhenEntityFields();
                         }
                     }
                     catch (e) {
@@ -807,7 +805,6 @@ export class AddEntityComponent implements OnInit {
                         if (data.data.length > 0) {
                             that.schid = data.data[0].autoid;
                             that.entttype = data.data[0].entttype;
-                            that.hideWhenEntityFields();
                             that.schcd = data.data[0].schoolcode;
                             that.schnm = data.data[0].schoolname;
 

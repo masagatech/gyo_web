@@ -1909,13 +1909,13 @@ select.selectpicker {
 
 .inputabsolutesearchico {
     position: absolute;
-    top: -10px;
+    top: -9px;
     right: 0;
 }
 
 .inputrelativesearchico {
     position: relative;
-    top: -10px;
+    top: -9px;
     right: 0;
 }
 

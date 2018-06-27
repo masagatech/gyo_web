@@ -45,11 +45,11 @@ export class ViewSubjectMapToTeacherComponent implements OnInit {
         commonfun.loader();
 
         that._smtservice.getSubjectMapToTeacher({
-            "flag": "classddl", "tchrid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "flag": "dropdown", "tchrid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classDT = data.data;
+                that.classDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

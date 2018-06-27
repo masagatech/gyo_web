@@ -21,11 +21,14 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
     tchrid: number = 0;
     tchrname: string = "";
 
+    tchrsubmapDT: any = [];
+
+    ayDT: any = [];
     classDT: any = [];
     subjectDT: any = [];
 
     smtid: number = 0;
-    clsid: number = 0;
+    ayid: number = 0;
 
     private subscribeParameters: any;
 
@@ -34,26 +37,48 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillClassDropDown();
-        this.fillSubjectDropDown();
+        this.fillAcademicYearDropDown();
     }
 
     public ngOnInit() {
-        var that = this;
 
-        that.onEditMode();
-
-        setTimeout(function () {
-        }, 200);
     }
 
-    // Clear Fields
+    // Fill Class Drop Down
 
-    resetClassFields() {
+    fillAcademicYearDropDown() {
         var that = this;
+        var defayDT: any = [];
 
-        that.clsid = 0;
-        that.clearcheckboxes();
+        commonfun.loader();
+
+        that._smtservice.getSubjectMapToTeacher({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.ayDT = data.data.filter(a => a.group == "ay");
+                defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                if (defayDT.length > 0) {
+                    that.ayid = defayDT[0].key;
+                }
+                else {
+                    that.ayid = 0;
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Auto Completed Teacher
@@ -62,11 +87,9 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         let query = event.query;
 
         this._autoservice.getERPAutoData({
-            "flag": "classwiseteacher",
+            "flag": "teacher",
             "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
-            "classid": 0,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -85,21 +108,21 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
     selectTeacherData(event) {
         this.tchrid = event.value;
         this.tchrname = event.label;
-        this.fillClassDropDown();
+        this.getSubjectMapToTeacher();
     }
 
-    // Fill Class Drop Down
+    // Get Subject Map To Teacher
 
-    fillClassDropDown() {
+    getSubjectMapToTeacher() {
         var that = this;
         commonfun.loader();
 
         that._smtservice.getSubjectMapToTeacher({
-            "flag": "classddl", "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "flag": "tchrsub", "ayid": that.ayid, "tchrid": that.tchrid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.classDT = data.data;
+                that.tchrsubmapDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -115,31 +138,50 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         })
     }
 
-    // Fill Subject Drop Down
+    // Save Subject Map To Teacher
 
-    fillSubjectDropDown() {
+    saveSubjectMapToTeacher() {
         var that = this;
+        var _subrights = null;
+
         commonfun.loader();
 
-        that._smtservice.getSubjectMapToTeacher({
-            "flag": "subjectddl", "classid": that.clsid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
-        }).subscribe(data => {
+        var saveClass = {
+            "smtid": that.smtid,
+            "tchrid": that.tchrid,
+            "subid": "{" + _subrights + "}",
+            "cuid": that.loginUser.ucode,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid
+        }
+
+        this._smtservice.saveSubjectMapToTeacher(saveClass).subscribe(data => {
             try {
-                that.subjectDT = data.data;
+                var dataResult = data.data[0].funsave_submapteacher;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
+
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+
+                commonfun.loaderhide();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
-
-            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {
-
-        })
+            // console.log("Complete");
+        });
     }
+
 
     // Get Subject Rights
 
@@ -162,7 +204,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                 if (actrights != "") {
                     subrights = actrights.slice(0, -1);
                 }
-                else{
+                else {
                     subrights = null;
                 }
             }
@@ -180,111 +222,18 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         }
     }
 
-    private clearcheckboxes(): void {
+    private clearcheckboxes() {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
-    }
-
-    // Save Subject Map To Teacher
-
-    saveSubjectMapToTeacher() {
-        var that = this;
-        var _subrights = null;
-
-        _subrights = that.getSubjectRights();
-
-        if (that.tchrid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Class Teacher");
-            $(".tchrname input").focus();
-        }
-        else if (that.clsid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Class");
-            $(".clsname").focus();
-        }
-        else if (that.subjectDT.length == 0) {
-            that._msg.Show(messageType.error, "Error", "No any Subject on this " + $(".clsname option:selected").text().trim() +" Class");
-        }
-        else if (_subrights == null) {
-            that._msg.Show(messageType.error, "Error", "Please Select atleast 1 Subject");
-        }
-        else {
-            commonfun.loader();
-
-            var saveClass = {
-                "smtid": that.smtid,
-                "tchrid": that.tchrid,
-                "clsid": that.clsid,
-                "subid": "{" + _subrights + "}",
-                "cuid": that.loginUser.ucode,
-                "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid
-            }
-
-            this._smtservice.saveSubjectMapToTeacher(saveClass).subscribe(data => {
-                try {
-                    var dataResult = data.data[0].funsave_submapteacher;
-                    var msg = dataResult.msg;
-                    var msgid = dataResult.msgid;
-
-                    if (msgid != "-1") {
-                        that._msg.Show(messageType.success, "Success", msg);
-
-                        if (msgid === "1") {
-                            that.resetClassFields();
-                        }
-                        else {
-                            that.backViewData();
-                        }
-                    }
-                    else {
-                        that._msg.Show(messageType.error, "Error", msg);
-                    }
-
-                    commonfun.loaderhide();
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-                // console.log("Complete");
-            });
-        }
     }
 
     // Get Subject Map To Teacher
 
-    onEditMode() {
-        var that = this;
-
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.smtid = params['id'];
-                that.getSubjectMapToTeacher();
-            }
-            else {
-                that.resetClassFields();
-                commonfun.loaderhide();
-            }
-        });
-    }
-
-    onChangeClass() {
-        var that = this;
-
-        if (that.smtid == 0) {
-            that.getSubjectMapToTeacher();
-        }
-    }
-
-    getSubjectMapToTeacher() {
+    editSubjectMapToTeacher() {
         var that = this;
         commonfun.loader();
 
         that._smtservice.getSubjectMapToTeacher({
-            "flag": "edit", "smtid": that.smtid, "tchrid": that.tchrid, "clsid": that.clsid,
+            "flag": "edit", "smtid": that.smtid, "tchrid": that.tchrid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
@@ -294,11 +243,6 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     that.tchrname = data.data[0].tchrname;
                     that.tchrdata.value = that.tchrid;
                     that.tchrdata.label = that.tchrname;
-
-                    that.fillClassDropDown();
-                    that.clsid = data.data[0].clsid;
-
-                    that.fillSubjectDropDown();
 
                     var _subrights = null;
                     var _subitem = null;

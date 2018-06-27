@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassService, SubjectService } from '@services/master';
