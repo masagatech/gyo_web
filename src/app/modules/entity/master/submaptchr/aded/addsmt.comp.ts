@@ -149,7 +149,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         var saveClass = {
             "smtid": that.smtid,
             "tchrid": that.tchrid,
-            "subid": "{" + _subrights + "}",
+            "submaptchr": "{" + _subrights + "}",
             "cuid": that.loginUser.ucode,
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
