@@ -4,6 +4,7 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { SubjectMapToTeacherService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { element } from 'protractor';
 
 declare var google: any;
 
@@ -21,7 +22,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
     tchrid: number = 0;
     tchrname: string = "";
 
-    tchrsubmapDT: any = [];
+    submaptchrDT: any = [];
 
     ayDT: any = [];
     classDT: any = [];
@@ -122,7 +123,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.tchrsubmapDT = data.data;
+                that.submaptchrDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -138,19 +139,105 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         })
     }
 
+    // On Change Subject
+
+    onChangeSubject(drow) {
+        var that = this;
+        var smtrow = null;
+
+        if (drow.ismonsub || drow.istuesub || drow.iswedsub || drow.isthusub || drow.isfrisub || drow.issatsub || drow.issunsub) {
+            drow.subid = 1;
+        }
+        else {
+            drow.subid = 0;
+        }
+
+        for (var i = 0; i < that.submaptchrDT.length; i++) {
+            smtrow = that.submaptchrDT[i];
+
+            if (smtrow.clsid != drow.clsid && smtrow.frmtm == drow.frmtm) {
+                if (smtrow.monsubcode == drow.monsubcode && smtrow.monsubname != "Lunch" && smtrow.ismonsub != null) {
+                    if (drow.ismonsub) {
+                        smtrow.ismonsub = null;
+                    }
+                    else {
+                        smtrow.ismonsub = false;
+                    }
+                }
+
+                if (smtrow.tuesubcode == drow.tuesubcode && smtrow.tuesubname != "Lunch" && smtrow.istuesub != null) {
+                    if (drow.istuesub) {
+                        smtrow.istuesub = null;
+                    }
+                    else {
+                        smtrow.istuesub = false;
+                    }
+                }
+
+                if (smtrow.wedsubcode == drow.wedsubcode && smtrow.wedsubname != "Lunch" && smtrow.iswedsub != null) {
+                    if (drow.iswedsub) {
+                        smtrow.iswedsub = null;
+                    }
+                    else {
+                        smtrow.iswedsub = false;
+                    }
+                }
+
+                if (smtrow.thusubcode == drow.thusubcode && smtrow.thusubname != "Lunch" && smtrow.isthusub != null) {
+                    if (drow.isthusub) {
+                        smtrow.isthusub = null;
+                    }
+                    else {
+                        smtrow.isthusub = false;
+                    }
+                }
+
+                if (smtrow.frisubcode == drow.frisubcode && smtrow.frisubname != "Lunch" && smtrow.isfrisub != null) {
+                    if (drow.isfrisub) {
+                        smtrow.isfrisub = null;
+                    }
+                    else {
+                        smtrow.isfrisub = false;
+                    }
+                }
+
+                if (smtrow.satsubcode == drow.satsubcode && smtrow.satsubname != "Lunch" && smtrow.issatsub != null) {
+                    if (drow.issatsub) {
+                        smtrow.issatsub = null;
+                    }
+                    else {
+                        smtrow.issatsub = false;
+                    }
+                }
+
+                if (smtrow.sunsubcode == drow.sunsubcode && smtrow.sunsubname != "Lunch" && smtrow.issunsub != null) {
+                    if (drow.issunsub) {
+                        smtrow.issunsub = null;
+                    }
+                    else {
+                        smtrow.issunsub = false;
+                    }
+                }
+            }
+        }
+    }
+
     // Save Subject Map To Teacher
 
     saveSubjectMapToTeacher() {
         var that = this;
-        var _subrights = null;
+        var submaptchr = [];
 
         commonfun.loader();
+
+        submaptchr = that.submaptchrDT.filter(a => a.subid == 1);
 
         var saveClass = {
             "smtid": that.smtid,
             "tchrid": that.tchrid,
-            "submaptchr": "{" + _subrights + "}",
+            "submaptchr": submaptchr,
             "cuid": that.loginUser.ucode,
+            "ayid": that.ayid,
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
         }

@@ -2522,6 +2522,7 @@ select.selectpicker {
 
 strong {
     color: red;
+    font-size: 11px;
 }
 
 .leftpanel {

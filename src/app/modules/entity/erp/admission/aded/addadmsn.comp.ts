@@ -1267,9 +1267,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
 
-        console.log(newval);
-        console.log(oldval);
-
         isvalid = that.isValidAdmission(newval);
 
         if (isvalid) {

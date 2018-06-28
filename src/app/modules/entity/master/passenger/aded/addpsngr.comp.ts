@@ -10,8 +10,7 @@ declare var loader: any;
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'addpsngr.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addpsngr.comp.html'
 })
 
 export class AddPassengerComponent implements OnInit {

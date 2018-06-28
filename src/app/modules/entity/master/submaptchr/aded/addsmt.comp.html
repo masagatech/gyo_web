@@ -72,7 +72,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let row of tchrsubmapDT | groupBy: 'classname'">
+                <tbody *ngFor="let row of submaptchrDT | groupBy: 'classname'">
                     <tr>
                         <th colspan="8">
                             {{row.key}}
@@ -83,46 +83,48 @@
                             {{drow.frmtm}} to {{drow.totm}}
                         </td>
                         <td>
-                            <span id="monsub{{drow.monsubid}}" *ngIf="drow.monsubid != 0">
-                                <input id="mon{{drow.monsubid}}" name="mon{{drow.monsubid}}" [(ngModel)]="drow.ismonsub" type="checkbox" class="filled-in" *ngIf="drow.ismonsub != null">
-                                <label for="mon{{drow.monsubid}}">{{drow.monsubname}}</label>
+                            <span id="sub{{drow.monsubval}}" *ngIf="drow.monsubid != 0">
+                                <input id="{{drow.monsubval}}" name="mon{{drow.monsubval}}" type="checkbox" [(ngModel)]="drow.ismonsub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.ismonsub != null">
+                                <label for="{{drow.monsubval}}">{{drow.monsubname}}</label>
                             </span>
                         </td>
                         <td>
-                            <span id="tursub{{drow.tuesubid}}" *ngIf="drow.tuesubid != 0">
-                                <input id="tue{{drow.tuesubid}}" name="tue{{drow.tuesubid}}" [(ngModel)]="drow.istuesub" type="checkbox" class="filled-in" *ngIf="drow.istuesub != null">
-                                <label for="tue{{drow.tuesubid}}">{{drow.tuesubname}}</label>
+                            <span id="sub{{drow.tuesubval}}" *ngIf="drow.tuesubid != 0">
+                                <input id="{{drow.tuesubval}}" name="tue{{drow.tuesubval}}" type="checkbox" [(ngModel)]="drow.istuesub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.istuesub != null">
+                                <label for="{{drow.tuesubval}}">{{drow.tuesubname}}</label>
                             </span>
                         </td>
                         <td>
-                            <span id="wedsub{{drow.wedsubid}}" *ngIf="drow.wedsubid != 0">
-                                <input id="wed{{drow.wedsubid}}" name="wed{{drow.wedsubid}}" [(ngModel)]="drow.iswedsub" type="checkbox" class="filled-in" *ngIf="drow.iswedsub != null">
-                                <label for="wed{{drow.wedsubid}}">{{drow.wedsubname}}</label>
+                            <span id="sub{{drow.wedsubval}}" *ngIf="drow.wedsubid != 0">
+                                <input id="{{drow.wedsubval}}" name="wed{{drow.wedsubval}}" type="checkbox" [(ngModel)]="drow.iswedsub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.iswedsub != null">
+                                <label for="{{drow.wedsubval}}">{{drow.wedsubname}}</label>
                             </span>
                         </td>
                         <td>
-                            <span id="thusub{{drow.thusubid}}" *ngIf="drow.thusubid != 0">
-                                <input id="thu{{drow.thusubid}}" name="thu{{drow.thusubid}}" [(ngModel)]="drow.isthusub" type="checkbox" class="filled-in" *ngIf="drow.isthusub != null">
-                                <label for="thu{{drow.thusubid}}">{{drow.thusubname}}</label>
+                            <span id="sub{{drow.thusubval}}" *ngIf="drow.thusubid != 0">
+                                <input id="{{drow.thusubval}}" name="thu{{drow.thusubval}}" type="checkbox" [(ngModel)]="drow.isthusub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.isthusub != null">
+                                <label for="{{drow.thusubval}}">{{drow.thusubname}}</label>
                             </span>
                         </td>
                         <td>
-                            <span id="frisub{{drow.frisubid}}" *ngIf="drow.frisubid != 0">
-                                <input id="fri{{drow.frisubid}}" name="fri{{drow.frisubid}}" [(ngModel)]="drow.isfrisub" type="checkbox" class="filled-in" *ngIf="drow.isfrisub != null">
-                                <label for="fri{{drow.frisubid}}">{{drow.frisubname}}</label>
+                            <span id="sub{{drow.frisubval}}" *ngIf="drow.frisubid != 0">
+                                <input id="{{drow.frisubval}}" name="fri{{drow.frisubval}}" type="checkbox" [(ngModel)]="drow.isfrisub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.isfrisub != null">
+                                <label for="{{drow.frisubval}}">{{drow.frisubname}}</label>
                             </span>
                         </td>
                         <td>
-                            <span id="satsub{{drow.satsubid}}" *ngIf="drow.satsubid != 0">
-                                <input id="sat{{drow.satsubid}}" name="sat{{drow.satsubid}}" [(ngModel)]="drow.issatsub" type="checkbox" class="filled-in" *ngIf="drow.issatsub != null">
-                                <label for="sat{{drow.satsubid}}">{{drow.satsubname}}</label>
+                            <span id="sub{{drow.satsubval}}" *ngIf="drow.satsubid != 0">
+                                <input id="{{drow.satsubval}}" name="sat{{drow.satsubval}}" type="checkbox" [(ngModel)]="drow.issatsub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.issatsub != null">
+                                <label for="{{drow.satsubval}}">{{drow.satsubname}}</label>
                             </span>
                         </td>
                         <td>
-                            <span id="sunsub{{drow.sunsubid}}" *ngIf="drow.sunsubid != 0">
-                                <input id="sun{{drow.sunsubid}}" name="sun{{drow.sunsubid}}" [(ngModel)]="drow.issunsub" type="checkbox" class="filled-in" *ngIf="drow.issunsub != null">
-                                <label for="sun{{drow.sunsubid}}">{{drow.sunsubname}}</label>
+                            <span id="sub{{drow.sunsubval}}" *ngIf="drow.sunsubid != 0">
+                                <input id="{{drow.sunsubval}}" name="sun{{drow.sunsubval}}" type="checkbox" [(ngModel)]="drow.issunsub" (ngModelChange)="onChangeSubject(drow)" *ngIf="drow.issunsub != null">
+                                <label for="{{drow.sunsubval}}">{{drow.sunsubname}}</label>
                             </span>
+
+                            <input type="text" [(ngModel)]="drow.subid" class="form-control hide">
                         </td>
                     </tr>
                 </tbody>
@@ -148,7 +150,7 @@
                 <div class="row clearfix" *ngIf="subjectDT.length">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()">
                             <label for="selectall">Select All</label>
                         </div>
                     </div>
@@ -159,7 +161,7 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <span id="sub{{row.id}}">
-                                                <input id="{{row.id}}" name="sub{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <input id="{{row.id}}" name="sub{{i + 1}}" type="checkbox" value="{{row.id}}" />
                                                 <label for="{{row.id}}">{{row.val}}</label>
                                             </span>
                                         </div>

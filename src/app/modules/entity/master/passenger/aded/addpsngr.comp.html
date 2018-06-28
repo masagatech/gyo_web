@@ -1,12 +1,8 @@
 <div class="card">
     <div class="header">
         <h4>{{_enttdetails.psngrtype}}</h4>
+
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="psngrid !== 0">
-                <span class="switch">
-                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactivePassengerInfo()"><span class="lever"></span></label>
-                </span>
-            </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="savePassengerInfo()">
                     <i class="material-icons">save</i></a>
@@ -38,15 +34,62 @@
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
-                                <input type="text" name="psngrname" [(ngModel)]="psngrname" maxlength="50" class="form-control psngrname" tabindex="3" />
+                                <label class="control-label">First Name <strong>*</strong></label>
+                                <input type="text" name="fname" [(ngModel)]="fname" maxlength="50" class="form-control fname" tabindex="11" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Middle Name</label>
+                                <input type="text" name="mname" [(ngModel)]="mname" maxlength="50" class="form-control mname" tabindex="12" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Last Name <strong>*</strong></label>
+                                <input type="text" name="lname" [(ngModel)]="lname" maxlength="50" class="form-control lname" tabindex="13" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Date Of Birth <strong>*</strong></label>
+                                <input type="date" name="dob" [(ngModel)]="dob" maxlength="50" class="form-control dob" (change)="formatDateToWord(dob)" tabindex="14" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-8">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Birth Date in Words</label>
+                                <input type="text" name="dob" [(ngModel)]="dobword" maxlength="50" disabled class="form-control" tabindex="15" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-md-4 col-xs-4">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Birth Place</label>
+                                <input type="text" name="birthplace" [(ngModel)]="birthplace" maxlength="50" class="form-control dob" tabindex="16" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-4">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Aadhar No</label>
@@ -54,10 +97,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-xs-4">
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Gender</label>
@@ -67,14 +107,6 @@
                                         {{row.val}}
                                     </option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Date of Birth</label>
-                                <input type="date" name="dob" [(ngModel)]="dob" class="form-control date" tabindex="6">
                             </div>
                         </div>
                     </div>
@@ -142,7 +174,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Father Name</label>
-                                <input type="text" name="fathername" [(ngModel)]="fathername" class="form-control" tabindex="8" />
+                                <input type="text" name="fthrname" [(ngModel)]="fthrname" class="form-control" tabindex="8" />
                             </div>
                         </div>
                     </div>
@@ -150,7 +182,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Mother Name</label>
-                                <input type="text" name="mothername" [(ngModel)]="mothername" class="form-control" tabindex="9" />
+                                <input type="text" name="mthrname" [(ngModel)]="mthrname" class="form-control" tabindex="9" />
                             </div>
                         </div>
                     </div>
@@ -161,7 +193,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Primary Mobile <strong>*</strong></label>
-                                <input type="text" name="primarymobile" [(ngModel)]="primarymobile" maxlength="10" class="form-control email primarymobile" tabindex="10">
+                                <input type="text" name="fthrmobile" [(ngModel)]="fthrmobile" maxlength="10" class="form-control email fthrmobile" tabindex="10">
                             </div>
                         </div>
                     </div>
@@ -169,7 +201,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Secondary Mobile</label>
-                                <input type="text" name="secondarymobile" [(ngModel)]="secondarymobile" maxlength="10" class="form-control email" tabindex="11">
+                                <input type="text" name="mthrmobile" [(ngModel)]="mthrmobile" maxlength="10" class="form-control mthrmobile" tabindex="11">
                             </div>
                         </div>
                     </div>
@@ -180,7 +212,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Primary Email <strong>*</strong></label>
-                                <input type="text" name="primaryemail" [(ngModel)]="primaryemail" class="form-control email primaryemail" tabindex="12">
+                                <input type="text" name="fthremail" [(ngModel)]="primaryemail" class="form-control fthremail" tabindex="12">
                             </div>
                         </div>
                     </div>
@@ -188,7 +220,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <label class="control-label">Secondary Email</label>
-                                <input type="text" name="secondaryemail" [(ngModel)]="secondaryemail" class="form-control email" tabindex="13">
+                                <input type="text" name="mthremail" [(ngModel)]="mthremail" class="form-control mthremail" tabindex="13">
                             </div>
                         </div>
                     </div>

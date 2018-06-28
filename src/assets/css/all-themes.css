@@ -2183,7 +2183,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    border-top: 1px solid #fe9700;
+    border-top: 10px solid #fe9700;
     padding: 6px;
     overflow: hidden;
     background: transparent!important;

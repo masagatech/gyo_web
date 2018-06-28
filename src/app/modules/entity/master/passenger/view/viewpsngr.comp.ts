@@ -40,8 +40,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         that.refreshButtons();
 
         setTimeout(function () {
-            $(".enttname input").focus();
-
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
@@ -122,7 +120,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         var that = this;
         var params = {};
 
-        commonfun.loader("#fltrpsngr");
+        commonfun.loader();
 
         if (that.psngrid == 0) {
             Cookie.set("_psngrid_", "0");
@@ -146,11 +144,11 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
-            commonfun.loaderhide("#fltrpsngr");
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide("#fltrpsngr");
+            commonfun.loaderhide();
         }, () => {
 
         })

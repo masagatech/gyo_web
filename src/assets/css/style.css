@@ -1632,43 +1632,63 @@
 }
 
 .pad-01 {
-    padding: 1px;
+    padding-top: 1px;
 }
 
 .pad-02 {
-    padding: 2px;
+    padding-top: 2px;
 }
 
 .pad-03 {
-    padding: 3px;
+    padding-top: 3px;
 }
 
 .pad-04 {
-    padding: 4px;
+    padding-top: 4px;
 }
 
 .pad-05 {
-    padding: 5px;
+    padding-top: 5px;
 }
 
 .pad-06 {
-    padding: 6px;
+    padding-top: 6px;
 }
 
 .pad-07 {
-    padding: 7px;
+    padding-top: 7px;
 }
 
 .pad-08 {
-    padding: 8px;
+    padding-top: 8px;
 }
 
 .pad-09 {
-    padding: 9px;
+    padding-top: 9px;
 }
 
 .pad-10 {
-    padding: 10px;
+    padding-top: 10px;
+}
+
+.pad-11 {
+    padding-top: 11px;
+}
+
+.pad-12 {
+    padding-top: 12px;
+}
+
+.pad-13 {
+    padding-top: 13px;
+}
+
+.pad-14 {
+    padding-top: 14px;
+}
+
+.pad-15 {
+    padding-top: 15px;
 }
 
 .pad-20 {

@@ -845,16 +845,36 @@ export class AddEntityComponent implements OnInit {
                             }
 
                             if (that.entttype == "School") {
-                                var _stdrights = null;
-                                var _stdids = null;
-
-                                var _subrights = null;
-                                var _subids = null;
+                                // Board
 
                                 var _boardrights = null;
                                 var _boardids = null;
 
+                                _boardrights = null;
+                                _boardrights = data.data[0].board;
+
+                                if (_boardrights != null) {
+                                    for (var i = 0; i < _boardrights.length; i++) {
+                                        _boardids = null;
+                                        _boardids = _boardrights[i];
+
+                                        if (_boardids != null) {
+                                            $("#board" + _boardids).prop('checked', true);
+                                            $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', true);
+                                        }
+                                        else {
+                                            $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
+                                        }
+                                    }
+                                }
+                                else {
+                                    $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
+                                }
+
                                 // Standard
+
+                                /*var _stdrights = null;
+                                var _stdids = null;
 
                                 _stdrights = null;
                                 _stdrights = data.data[0].standard;
@@ -881,6 +901,9 @@ export class AddEntityComponent implements OnInit {
 
                                 // Subject
 
+                                var _subrights = null;
+                                var _subids = null;
+
                                 _subrights = null;
                                 _subrights = data.data[0].subject;
 
@@ -900,30 +923,7 @@ export class AddEntityComponent implements OnInit {
                                 }
                                 else {
                                     $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
-                                }
-
-                                // Board
-
-                                _boardrights = null;
-                                _boardrights = data.data[0].board;
-
-                                if (_boardrights != null) {
-                                    for (var i = 0; i < _boardrights.length; i++) {
-                                        _boardids = null;
-                                        _boardids = _boardrights[i];
-
-                                        if (_boardids != null) {
-                                            $("#board" + _boardids).prop('checked', true);
-                                            $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', true);
-                                        }
-                                        else {
-                                            $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
-                                        }
-                                    }
-                                }
-                                else {
-                                    $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
-                                }
+                                }*/
                             }
 
                             that.remark1 = data.data[0].remark1;
