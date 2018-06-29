@@ -41,7 +41,7 @@
         <div class="row clearfix">
             <div class="col-md-3">
                 <div class="leftpanel">
-                    <div class="form-group" *ngIf="psngrtype == 'student' || psngrtype == 'passenger'">
+                    <div class="form-group" *ngIf="psngrtype == 'student'">
                         <div class="form-line">
                             <label class="control-label">Academic Year <strong>*</strong></label>
                             <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1" (ngModelChange)="getPassengerReports('html')">

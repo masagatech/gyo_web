@@ -7,6 +7,18 @@ import { Router } from '@angular/router';
 export class AdmissionService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
+    // Passenger
+
+    savePassengerInfo(req: any) {
+        return this._dataserver.post("savePassengerInfo", req)
+    }
+
+    getPassengerReports(req: any) {
+        return this._dataserver.post("getPassengerReports", req)
+    }
+
+    // Student
+
     saveAdmissionInfo(req: any) {
         return this._dataserver.post(Globals.erproute + "saveAdmissionInfo", req)
     }

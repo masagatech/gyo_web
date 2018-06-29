@@ -7,11 +7,10 @@ import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 import { AddPassengerComponent } from './aded/addpsngr.comp';
 import { ViewPassengerComponent } from './view/viewpsngr.comp';
 
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 
 import {
-  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
-  AutoCompleteModule, FileUploadModule
+  DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule
 } from 'primeng/primeng';
 
 export const routes = [
@@ -34,10 +33,10 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule,
-    CheckboxModule, AutoCompleteModule, FileUploadModule
+    AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, CommonService, PassengerService]
+  providers: [AuthGuard, CommonService, AdmissionService]
 })
 
 export class PassengerModule {

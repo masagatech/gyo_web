@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerService } from '@services/master';
+import { AdmissionService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
@@ -22,13 +22,14 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     status: string = "";
 
     autoPassengerDT: any = [];
+    selectedPassenger: any = {};
     psngrid: number = 0;
     psngrname: any = [];
 
     passengerDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _psngrservice: PassengerService) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -37,8 +38,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         var that = this;
-        that.refreshButtons();
-
+        
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -60,14 +60,6 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
             that.isShowList = true;
             commonfun.loaderhide("#divShow");
         }
-
-        that.refreshButtons();
-    }
-
-    refreshButtons() {
-        setTimeout(function () {
-            commonfun.navistyle();
-        }, 0);
     }
 
     // Auto Completed Passenger
@@ -75,8 +67,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     getPassengerData(event) {
         let query = event.query;
 
-        this._autoservice.getERPAutoData({
-            "flag": "passenger",
+        this._autoservice.getAutoData({
+            "flag": "student",
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
@@ -96,8 +88,11 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     // Selected Passenger
 
     selectPassengerData(event) {
+        this.psngrid = event.value;
+        this.psngrname = event.label;
+
         Cookie.set("_psngrid_", event.value);
-        Cookie.set("_psngrnm_", event.label);
+        Cookie.set("_psngrname_", event.label);
 
         this.getPassengerDetails();
     }
@@ -107,10 +102,10 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     public viewPassengerDataRights() {
         var that = this;
 
-        if (Cookie.get('_psngrnm_') != null) {
+        if (Cookie.get('_psngrname_') != null) {
             that.psngrid = parseInt(Cookie.get('_psngrid_'));
             that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrnm_');
+            that.psngrname.label = Cookie.get('_psngrname_');
         }
 
         that.getPassengerDetails();
@@ -124,19 +119,19 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         if (that.psngrid == 0) {
             Cookie.set("_psngrid_", "0");
-            Cookie.set("_psngrnm_", "");
+            Cookie.set("_psngrname_", "");
 
             that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrnm_');
+            that.psngrname.label = Cookie.get('_psngrname_');
         }
 
         params = {
-            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "psngrid": that.psngrid.toString() == "" ? 0 : that.psngrid, "status": that.status, "enttid": that._enttdetails.enttid,
+            "flag": "all", "admtype": "passenger", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "studid": that.psngrid.toString() == "" ? 0 : that.psngrid, "status": that.status, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 
-        that._psngrservice.getPassengerDetails(params).subscribe(data => {
+        that._admsnservice.getStudentDetails(params).subscribe(data => {
             try {
                 that.passengerDT = data.data;
             }
@@ -159,7 +154,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     }
 
     public editPassengerForm(row) {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.psngrid]);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.enrlmntid]);
     }
 
     public ngOnDestroy() {

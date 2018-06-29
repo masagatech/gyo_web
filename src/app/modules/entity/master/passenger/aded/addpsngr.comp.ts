@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { PassengerService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { AdmissionService } from '@services/erp';
 
 declare var google: any;
 declare var loader: any;
@@ -17,31 +16,57 @@ export class AddPassengerComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    ayDT: any = [];
     genderDT: any = [];
     alertDT: any = [];
+
+    stateDT: any = [];
+    cityDT: any = [];
+    areaDT: any = [];
 
     pickrouteDT: any = [];
     droprouteDT: any = [];
     pickstopsDT: any = [];
     dropstopsDT: any = [];
 
-    ayid: number = 0;
-    psngrid: number = 0;
-    psngrcode: string = "";
-    psngrname: string = "";
-    gender: string = "";
-    alert: string = "";
+    enrlmntid: number = 0;
+    svhautoid: number = 0;
+    fname: string = "";
+    mname: string = "";
+    lname: string = "";
     dob: any = "";
+    dobword: string = "";
+    birthplace: string = "";
     aadharno: any = "";
+    gender: string = "";
 
-    mothername: string = "";
-    secondarymobile: string = "";
-    secondaryemail: string = "";
-    fathername: string = "";
-    primarymobile: string = "";
-    primaryemail: string = "";
+    // Left Fields
 
+    status: string = "active";
+    statusnm: string = "Active";
+    leftdate: any = "";
+    leftreason: string = "";
+
+    mthrname: string = "";
+    mthrmobile: string = "";
+    mthremail: string = "";
+    fthrname: string = "";
+    fthrmobile: string = "";
+    fthremail: string = "";
+
+    // Contact
+
+    country: string = "India";
+    state: number = 0;
+    stname: string = "";
+    city: number = 0;
+    ctname: string = "";
+    area: number = 0;
+    arname: string = "";
+    pincode: number = 0;
+
+    // Vehicle Mapping
+
+    alert: string = "";
     resiaddr: string = "";
     pickaddr: string = "";
     dropaddr: string = "";
@@ -70,30 +95,70 @@ export class AddPassengerComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
 
-    // Left Fields
-
-    status: string = "active";
-    statusnm: string = "Active";
-    leftdate: any = "";
-    leftreason: string = "";
-
     private subscribeParameters: any;
 
-    constructor(private _psngrservice: PassengerService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.getPhotoUploadConfig();
+        this.setFromDateAndToDate();
         this.fillDropDownList();
+        this.fillStateDropDown();
+        this.fillCityDropDown();
+        this.fillAreaDropDown();
+
+        this.fillRoutesDDL();
+        this.fillPickStopsDDL();
+        this.fillDropStopsDDL();
+
+        this.getPassengerDetails();
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 1000);
+        
+    }
 
-        this.getPassengerDetails();
+    // Selected Calendar Date
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var before18year = new Date(date.getFullYear() - 18, date.getMonth(), date.getDate());
+
+        this.dob = this.formatDate(before18year);
+        this.formatDateToWord(this.dob);
+    }
+
+    formatDateToWord(date) {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        if (date == "") {
+            this.dobword = "This is not a valid date";
+        }
+        else {
+            var _dob = new Date(date);
+
+            var day = this._autoservice.numToWords(_dob.getDate());
+            var month = monthNames[_dob.getMonth()];
+            var year = this._autoservice.numToWords(_dob.getFullYear());
+
+            this.dobword = day + " " + month + " " + year;
+        }
     }
 
     // Fill Standard, Division, Gender, Pick Up Route and Drop Route DropDown
@@ -101,29 +166,16 @@ export class AddPassengerComponent implements OnInit {
     fillDropDownList() {
         var that = this;
         var defayDT: any = [];
-        
+
         commonfun.loader();
 
         var dparams = {
-            "flag": "dropdown", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, 
+            "flag": "dropdown", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 
-        that._psngrservice.getPassengerDetails(dparams).subscribe(data => {
+        that._admsnservice.getStudentDetails(dparams).subscribe(data => {
             try {
-                that.ayDT = data.data.filter(a => a.group == "ay");
-
-                if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
-                    }
-                    else {
-                        that.ayid = 0;
-                    }
-                }
-
                 that.genderDT = data.data.filter(a => a.group === "gender");
                 that.alertDT = data.data.filter(a => a.group === "alert");
                 that.alert = that.alertDT.filter(a => a.isselected === true)[0].key;
@@ -143,19 +195,98 @@ export class AddPassengerComponent implements OnInit {
         })
     }
 
+    // Get State DropDown
+
+    fillStateDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
+            try {
+                that.stateDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get City DropDown
+
+    fillCityDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.cityDT = [];
+        that.areaDT = [];
+
+        that.city = 0;
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "city", "sid": that.state }).subscribe(data => {
+            try {
+                that.cityDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Area DropDown
+
+    fillAreaDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that.areaDT = [];
+
+        that.area = 0;
+
+        that._autoservice.getDropDownData({ "flag": "area", "ctid": that.city, "sid": that.state }).subscribe(data => {
+            try {
+                that.areaDT = data.data;
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Fill Pick Up Stops DropDown
 
     fillRoutesDDL() {
         var that = this;
         commonfun.loader("#pickrtid");
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "filterroute", "enttid": that._enttdetails.enttid }).subscribe(data => {
             try {
                 that.pickrouteDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('pickrtid'); }, 100);
-
                 that.droprouteDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('droprtid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -183,7 +314,7 @@ export class AddPassengerComponent implements OnInit {
             that.fillDropStopsDDL();
         }
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "filterstop", "rtid": that.pickrtid }).subscribe(data => {
             try {
                 that.pickstopsDT = data.data;
                 // setTimeout(function () { $.AdminBSB.select.refresh('pickstpid'); }, 100);
@@ -209,7 +340,7 @@ export class AddPassengerComponent implements OnInit {
         var that = this;
         commonfun.loader("#dropstpid");
 
-        that._psngrservice.getPassengerDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
+        that._admsnservice.getStudentDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
             try {
                 that.dropstopsDT = data.data;
                 // setTimeout(function () { $.AdminBSB.select.refresh('dropstpid'); }, 100);
@@ -254,7 +385,7 @@ export class AddPassengerComponent implements OnInit {
 
             commonfun.loader();
 
-            that._psngrservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
+            that._admsnservice.getStudentDetails({ "flag": "addr_lat_lon", "rtid": that.pickrtid, "stpid": that.pickstpid }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
                         that.pickaddr = data.data[0].address;
@@ -304,7 +435,7 @@ export class AddPassengerComponent implements OnInit {
 
             commonfun.loader();
 
-            that._psngrservice.getPassengerDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
+            that._admsnservice.getStudentDetails({ "flag": "addr_lat_lon", "rtid": that.droprtid, "stpid": that.dropstpid }).subscribe(data => {
                 try {
                     if (data.data.length > 0) {
                         that.dropaddr = data.data[0].address;
@@ -399,24 +530,35 @@ export class AddPassengerComponent implements OnInit {
     resetPassengerFields() {
         var that = this;
 
-        that.ayid = 0;
-        that.psngrid = 0;
-        that.psngrcode = "";
-        that.psngrname = "";
+        that.enrlmntid = 0;
+        that.fname = "";
+        that.mname = "";
+        that.lname = "";
         that.dob = "";
+        that.birthplace = "";
         that.aadharno = "";
         that.gender = "";
         that.status = "active";
         that.leftdate = "";
         that.leftreason = "";
 
-        that.fathername = "";
-        that.mothername = "";
-        that.primaryemail = "";
-        that.secondaryemail = "";
-        that.primarymobile = "";
-        that.secondarymobile = "";
+        that.fthrname = "";
+        that.fthremail = "";
+        that.fthrmobile = "";
+        that.mthrname = "";
+        that.mthremail = "";
+        that.mthrmobile = "";
+        that.remark1 = "";
+        that.otherinfo = "";
 
+        that.uploadPhotoDT = [];
+        that.chooseLabel = "Upload Photo";
+    }
+
+    resetVehicleMapFields() {
+        var that = this;
+
+        that.svhautoid = 0;
         that.resiaddr = that._enttdetails.address;
         that.resilet = that._enttdetails.lat;
         that.resilong = that._enttdetails.lon;
@@ -432,11 +574,6 @@ export class AddPassengerComponent implements OnInit {
         that.dropaddr = "";
         that.droplet = "0.00";
         that.droplong = "0.00";
-        that.remark1 = "";
-        that.otherinfo = "";
-
-        that.uploadPhotoDT = [];
-        that.chooseLabel = "Upload Photo";
     }
 
     // User Photo Upload
@@ -476,52 +613,12 @@ export class AddPassengerComponent implements OnInit {
         this.uploadPhotoDT.splice(0, 1);
     }
 
-    // Active / Deactive Data
-
-    active_deactivePassengerInfo() {
-        var that = this;
-
-        var act_deactPassenger = {
-            "autoid": that.psngrid,
-            "isactive": that.isactive,
-            "mode": that.mode
-        }
-
-        that._psngrservice.savePassengerInfo(act_deactPassenger).subscribe(data => {
-            try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_psngrinfo.msg;
-                var msgid = dataResult[0].funsave_psngrinfo.msgid;
-
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
-                    that.getPassengerDetails();
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-        }, () => {
-            // console.log("Complete");
-        });
-    }
-
     // Save Data
 
     isValidPassenger() {
         var that = this;
 
-        if (that.ayid == 0) {
-            that._msg.Show(messageType.error, "Error", "Select Academic Year");
-            $(".ayname").focus();
-            return false;
-        }
-        else if (that.psngrname === "") {
+        if (that.fname === "") {
             that._msg.Show(messageType.error, "Error", "Enter " + that._enttdetails.psngrtype + " Name");
             $(".psngrname").focus();
             return false;
@@ -548,14 +645,19 @@ export class AddPassengerComponent implements OnInit {
                 return false;
             }
         }
-        else if (that.primaryemail === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Primary Email");
-            $(".primaryemail").focus();
+        else if (that.fthrname === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Name");
+            $(".fthrname").focus();
             return false;
         }
-        else if (that.primarymobile === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Primary Mobile");
-            $(".primarymobile").focus();
+        else if (that.fthremail === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Email");
+            $(".fthremail").focus();
+            return false;
+        }
+        else if (that.mthrmobile === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Mobile");
+            $(".fthrmobile").focus();
             return false;
         }
         else if (that.resiaddr === "") {
@@ -618,24 +720,34 @@ export class AddPassengerComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            var savePassenger = {
-                "ayid": that.ayid,
-                "psngrid": that.psngrid,
-                "psngrcode": that.psngrid,
-                "psngrname": that.psngrname,
+            var params = {
+                "enrlmntid": that.enrlmntid,
+                "fname": that.fname,
+                "mname": that.mname,
+                "lname": that.lname,
                 "aadharno": that.aadharno,
                 "gender": that.gender,
                 "dob": that.dob,
+                "birthplace": that.birthplace,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
 
                 "status": that.status,
                 "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason } : {},
-                
-                "name": that.mothername + ";" + that.fathername,
-                "mobileno1": that.primarymobile,
-                "mobileno2": that.secondarymobile,
-                "email1": that.primaryemail,
-                "email2": that.secondaryemail,
+
+                "name": that.mthrname + ";" + that.fthrname,
+                "mobileno1": that.fthrmobile,
+                "mobileno2": that.fthrmobile,
+                "email1": that.mthremail,
+                "email2": that.mthremail,
+                "country": that.country,
+                "state": that.state,
+                "city": that.city,
+                "area": that.area,
+                "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
+
+                // Vehicle Mapping
+
+                "svhautoid": that.svhautoid,
                 "alert": that.alert,
                 "resaddr": that.resiaddr,
                 "pickaddr": that.pickaddr,
@@ -656,7 +768,7 @@ export class AddPassengerComponent implements OnInit {
                 "mode": ""
             }
 
-            that._psngrservice.savePassengerInfo(savePassenger).subscribe(data => {
+            that._admsnservice.savePassengerInfo(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_passengerinfo;
                     var msg = dataResult.msg;
@@ -667,6 +779,7 @@ export class AddPassengerComponent implements OnInit {
 
                         if (msgid === "1") {
                             that.resetPassengerFields();
+                            that.resetVehicleMapFields();
                         }
                         else {
                             that.backViewData();
@@ -696,68 +809,63 @@ export class AddPassengerComponent implements OnInit {
 
     getPassengerDetails() {
         var that = this;
+
+        var psngrDT = [];
+        var vehmapDT = [];
+
         commonfun.loader();
 
         that.subscribeParameters = this._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.psngrid = params['id'];
+                that.enrlmntid = params['id'];
 
-                that._psngrservice.getPassengerDetails({
-                    "flag": "edit",
-                    "id": that.psngrid,
+                that._admsnservice.viewStudentDetails({
+                    "flag": "editpsngr",
+                    "id": that.enrlmntid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        if (data.data.length > 0) {
-                            that.ayid = data.data[0].ayid;
-                            that.psngrid = data.data[0].psngrid;
-                            that.psngrcode = data.data[0].psngrcode;
-                            that.psngrname = data.data[0].psngrname;
-                            that.aadharno = data.data[0].aadharno;
-                            that.dob = data.data[0].dob;
-                            that.gender = data.data[0].gndrkey;
-                            that.status = data.data[0].status;
-                            that.statusnm = data.data[0].statusnm;
-                            that.leftdate = data.data[0].leftdate;
-                            that.leftreason = data.data[0].leftreason;
+                        psngrDT = data.data[0];
+                        vehmapDT = data.data[1];
 
-                            that.mothername = data.data[0].mothername;
-                            that.primarymobile = data.data[0].mobileno1;
-                            that.primaryemail = data.data[0].email1;
-                            that.secondarymobile = data.data[0].mobileno2;
-                            that.secondaryemail = data.data[0].email2;
-                            that.fathername = data.data[0].fathername;
+                        if (psngrDT.length > 0) {
+                            that.enrlmntid = psngrDT[0].enrlmntid;
+                            that.fname = psngrDT[0].fname;
+                            that.mname = psngrDT[0].mname;
+                            that.lname = psngrDT[0].lname;
+                            that.aadharno = psngrDT[0].aadharno;
+                            that.dob = psngrDT[0].dob;
+                            that.birthplace = psngrDT[0].birthplace;
+                            that.formatDateToWord(that.dob);
+                            that.gender = psngrDT[0].gender;
+                            that.status = psngrDT[0].status;
+                            that.statusnm = psngrDT[0].statusnm;
+                            that.leftdate = psngrDT[0].leftdate;
+                            that.leftreason = psngrDT[0].leftreason;
 
-                            that.alert = data.data[0].alert;
-                            that.resiaddr = data.data[0].address;
-                            that.resilet = data.data[0].resilat;
-                            that.resilong = data.data[0].resilon;
+                            that.fthrname = psngrDT[0].fthrname;
+                            that.fthrmobile = psngrDT[0].mobileno1;
+                            that.fthremail = psngrDT[0].email1;
+                            that.mthrname = psngrDT[0].mthrname;
+                            that.mthrmobile = psngrDT[0].mobileno2;
+                            that.mthremail = psngrDT[0].email2;
 
-                            that.fillRoutesDDL();
-                            that.pickrtid = data.data[0].pickrtid;
-                            that.fillPickStopsDDL();
-                            that.pickstpid = data.data[0].pickstpid;
-                            that.droprtid = data.data[0].droprtid;
-                            that.fillDropStopsDDL();
-                            that.dropstpid = data.data[0].dropstpid;
+                            // Contact Information
+        
+                            that.resiaddr = psngrDT[0].address;
+                            that.country = psngrDT[0].country;
+                            that.state = psngrDT[0].state;
+                            that.stname = psngrDT[0].stname;
+                            that.fillCityDropDown();
+                            that.city = psngrDT[0].city;
+                            that.ctname = psngrDT[0].ctname;
+                            that.fillAreaDropDown();
+                            that.area = psngrDT[0].area;
+                            that.arname = psngrDT[0].arname;
+                            that.pincode = psngrDT[0].pincode;
 
-                            that.getPickAddressLatLon();
-                            that.getDropAddressLatLon();
-
-                            that.picklet = data.data[0].picklat;
-                            that.picklong = data.data[0].picklon;
-                            that.droplet = data.data[0].droplat;
-                            that.droplong = data.data[0].droplon;
-                            that.remark1 = data.data[0].remark1;
-                            that.isactive = data.data[0].isactive;
-                            that.mode = data.data[0].mode;
-
-                            that.pickaddr = data.data[0].pickaddr;
-                            that.dropaddr = data.data[0].dropaddr;
-                            that.otherinfo = data.data[0].otherinfo;
-
-                            if (data.data[0].FilePath !== "") {
-                                that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
+                            if (psngrDT[0].FilePath !== "") {
+                                that.uploadPhotoDT.push({ "athurl": psngrDT[0].FilePath });
                                 that.chooseLabel = "Change Photo";
                             }
                             else {
@@ -767,6 +875,39 @@ export class AddPassengerComponent implements OnInit {
                         }
                         else {
                             that.resetPassengerFields();
+                        }
+
+                        if (vehmapDT.length > 0) {
+                            that.svhautoid = vehmapDT[0].svhautoid;
+                            that.alert = vehmapDT[0].alert;
+                            that.resilet = vehmapDT[0].resilat;
+                            that.resilong = vehmapDT[0].resilon;
+
+                            that.fillRoutesDDL();
+                            that.pickrtid = vehmapDT[0].pickrtid;
+                            that.fillPickStopsDDL();
+                            that.pickstpid = vehmapDT[0].pickstpid;
+                            that.droprtid = vehmapDT[0].droprtid;
+                            that.fillDropStopsDDL();
+                            that.dropstpid = vehmapDT[0].dropstpid;
+
+                            that.getPickAddressLatLon();
+                            that.getDropAddressLatLon();
+
+                            that.picklet = vehmapDT[0].picklat;
+                            that.picklong = vehmapDT[0].picklon;
+                            that.droplet = vehmapDT[0].droplat;
+                            that.droplong = vehmapDT[0].droplon;
+                            that.remark1 = vehmapDT[0].remark1;
+                            that.isactive = vehmapDT[0].isactive;
+                            that.mode = vehmapDT[0].mode;
+
+                            that.pickaddr = vehmapDT[0].pickaddr;
+                            that.dropaddr = vehmapDT[0].dropaddr;
+                            that.otherinfo = vehmapDT[0].otherinfo;
+                        }
+                        else {
+                            that.resetVehicleMapFields();
                         }
                     }
                     catch (e) {
@@ -783,8 +924,8 @@ export class AddPassengerComponent implements OnInit {
                 })
             }
             else {
-                this.fillRoutesDDL();
                 that.resetPassengerFields();
+                that.resetVehicleMapFields();
             }
         });
     }

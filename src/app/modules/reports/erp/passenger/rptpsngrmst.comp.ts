@@ -190,7 +190,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
             _flag = "student";
         }
         else {
-            _flag = "profile"
+            _flag = "profile";
         }
 
         var dparams = {
