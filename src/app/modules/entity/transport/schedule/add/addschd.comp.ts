@@ -823,8 +823,6 @@ export class AddScheduleComponent implements OnInit {
 
                 _pickdrop.push({
                     "autoid": that.pickautoid,
-                    "schid": that._enttdetails.enttid,
-                    "schnm": that._enttdetails.enttname,
                     "btchid": that.batchid,
                     "drvid": that.pickdriverid,
                     "vhclid": that.pickvehicleid.split('~')[0],
@@ -833,13 +831,11 @@ export class AddScheduleComponent implements OnInit {
                     "attsid": _pickattsid,
                     "studdt": _pickstudDT,
                     "studsid": _pickstudsid,
-                    "uid": that.loginUser.ucode,
                     "inst": that.instrunction,
                     "frmdt": that.pickfromdate,
                     "todt": that.picktodate,
                     "typ": "p",
                     "psngrtype": that.pickpsngrtype,
-                    "wsautoid": that._enttdetails.wsautoid,
                     "isactive": that.ispickup
                 });
             }
@@ -858,8 +854,6 @@ export class AddScheduleComponent implements OnInit {
 
                 _pickdrop.push({
                     "autoid": that.dropautoid,
-                    "schid": that._enttdetails.enttid,
-                    "schnm": that._enttdetails.enttname,
                     "btchid": that.batchid,
                     "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
                     "vhclid": that.dropvehicleid.split('~')[0],
@@ -868,19 +862,22 @@ export class AddScheduleComponent implements OnInit {
                     "attsid": _dropattsid,
                     "studdt": _dropstudDT,
                     "studsid": _dropstudsid,
-                    "uid": that.loginUser.ucode,
                     "inst": that.instrunction,
                     "frmdt": that.dropfromdate,
                     "todt": that.droptodate,
                     "typ": "d",
                     "psngrtype": that.droppsngrtype,
-                    "wsautoid": that._enttdetails.wsautoid,
                     "isactive": that.isdrop
                 });
             }
 
             savepickdrop = {
-                "pickdropdata": _pickdrop, "isedit": false
+                "pickdropdata": _pickdrop,
+                "enttid": that._enttdetails.enttid,
+                "enttname": that._enttdetails.enttname,
+                "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
+                "isedit": false
             };
 
             that._pickdropservice.savePickDropInfo(savepickdrop).subscribe((data) => {
