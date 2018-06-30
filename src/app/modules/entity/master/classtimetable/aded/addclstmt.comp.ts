@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassTimeTableService } from '@services/erp';
 
 @Component({
-    templateUrl: 'addclstmt.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addclstmt.comp.html'
 })
 
 export class AddClassTimeTableComponent implements OnInit, OnDestroy {
@@ -50,7 +49,7 @@ export class AddClassTimeTableComponent implements OnInit, OnDestroy {
     isEditClassTimeTable: boolean = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _clsrstservice: ClassTimeTableService) {
+        private _loginservice: LoginService, private _clsrstservice: ClassTimeTableService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
