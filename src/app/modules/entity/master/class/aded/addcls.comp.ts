@@ -44,8 +44,8 @@ export class AddClassComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._clsservice.getStandardDetails({
-            "flag": "division",
-            "divno": 0
+            "flag": "division", "divtype": "add", "divno": 0,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             that.divData = data.data;
         }, err => {
@@ -60,8 +60,8 @@ export class AddClassComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._clsservice.getStandardDetails({
-            "flag": "division",
-            "divno": that.divno
+            "flag": "division", "divtype": "add", "divno": that.divno,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             that.divColumn = data.data;
             that.getClassDetails();

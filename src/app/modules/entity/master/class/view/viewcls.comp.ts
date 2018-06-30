@@ -39,8 +39,9 @@ export class ViewClassComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._clsservice.getStandardDetails({
-            "flag": "division",
-            "divno": that.divno
+            "flag": "division", "divtype": "view", "divno": that.divno, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             that.divColumn = data.data;
             that.getClassDetails();

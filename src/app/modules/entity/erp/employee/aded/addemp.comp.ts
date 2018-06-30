@@ -818,7 +818,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
-                "mode": ""
+                "mode": "",
+                "ptype": that.psngrtype == "employee" ? "emp" : "tchr"
             }
 
             that._empservice.saveEmployeeInfo(saveemp).subscribe(data => {
@@ -977,6 +978,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-        
+
     }
 }

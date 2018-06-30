@@ -32,7 +32,6 @@ export class AddEntityComponent implements OnInit {
     schnm: string = "";
     lat: string = "0.00";
     lon: string = "0.00";
-    countsms: number = 0;
     schvehs: number = 0;
     oprvehs: number = 0;
     address: string = "";
@@ -60,9 +59,6 @@ export class AddEntityComponent implements OnInit {
     contactDT: any = [];
     duplicateContact: boolean = true;
 
-    division: string = "";
-    standardDT: any = [];
-    subjectDT: any = [];
     boardDT: any = [];
     weekDT: any = [];
     entttypeDT: any = [];
@@ -168,8 +164,6 @@ export class AddEntityComponent implements OnInit {
 
         that._entityservice.getEntityDetails({ "flag": "ddlfield" }).subscribe(data => {
             try {
-                that.standardDT = data.data.filter(a => a.group === "standard");
-                that.subjectDT = data.data.filter(a => a.group === "subject");
                 that.boardDT = data.data.filter(a => a.group === "board");
             }
             catch (e) {
@@ -458,7 +452,6 @@ export class AddEntityComponent implements OnInit {
         that.entttype = "";
         that.schcd = "";
         that.schnm = "";
-        that.countsms = 0;
         that.schvehs = 0;
         that.oprvehs = 0;
         that.remark1 = "";
@@ -635,14 +628,6 @@ export class AddEntityComponent implements OnInit {
             var wkrights = "";
             var weeklyoff = "";
 
-            var stditem = null;
-            var stdrights = "";
-            var standard = "";
-
-            var subitem = null;
-            var subrights = "";
-            var subject = "";
-
             var boarditem = null;
             var boardrights = "";
             var board = "";
@@ -652,36 +637,6 @@ export class AddEntityComponent implements OnInit {
             });
 
             weeklyoff = "{" + wkrights.slice(0, -1) + "}";
-
-            // Standard
-
-            for (var i = 0; i <= that.standardDT.length - 1; i++) {
-                stditem = null;
-                stditem = that.standardDT[i];
-
-                if (stditem !== null) {
-                    $("#stditem" + stditem.key).find("input[type=checkbox]").each(function () {
-                        stdrights += (this.checked ? $(this).val() + "," : "");
-                    });
-                }
-            }
-
-            standard = "{" + stdrights.slice(0, -1) + "}";
-
-            // Subject
-
-            for (var i = 0; i <= that.subjectDT.length - 1; i++) {
-                subitem = null;
-                subitem = that.subjectDT[i];
-
-                if (subitem !== null) {
-                    $("#subitem" + subitem.key).find("input[type=checkbox]").each(function () {
-                        subrights += (this.checked ? $(this).val() + "," : "");
-                    });
-                }
-            }
-
-            subject = "{" + subrights.slice(0, -1) + "}";
 
             // Board
 
@@ -701,15 +656,6 @@ export class AddEntityComponent implements OnInit {
             if (weeklyoff == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Week Days");
             }
-            else if (that.entttype == "School" && standard == '{}') {
-                that._msg.Show(messageType.error, "Error", "Atleast select 1 Standard");
-            }
-            else if (that.entttype == "School" && that.division == "") {
-                that._msg.Show(messageType.error, "Error", "Enter Division");
-            }
-            else if (that.entttype == "School" && subject == '{}') {
-                that._msg.Show(messageType.error, "Error", "Atleast select 1 Subject");
-            }
             else if (that.entttype == "School" && board == '{}') {
                 that._msg.Show(messageType.error, "Error", "Atleast select 1 Board");
             }
@@ -723,7 +669,6 @@ export class AddEntityComponent implements OnInit {
                     "schnm": that.schnm,
                     "schlogo": that.uploadLogoDT.length == 0 ? "" : that.uploadLogoDT[0].athurl,
                     "schgeoloc": (that.lat == "" ? "0.00" : that.lat) + "," + (that.lon == "" ? "0.00" : that.lon),
-                    "countsms": that.countsms.toString() == "" ? 0 : that.countsms,
                     "schvehs": that.schvehs.toString() == "" ? 0 : that.schvehs,
                     "oprvehs": that.oprvehs.toString() == "" ? 0 : that.oprvehs,
                     "address": that.address,
@@ -739,9 +684,6 @@ export class AddEntityComponent implements OnInit {
                     "email2": that.email,
                     "contact": that.contactDT,
                     "weeklyoff": weeklyoff,
-                    "standard": standard,
-                    "division": that.division,
-                    "subject": subject,
                     "board": board,
                     "remark1": that.remark1,
                     "cuid": that.loginUser.ucode,
@@ -819,7 +761,6 @@ export class AddEntityComponent implements OnInit {
 
                             that.lat = data.data[0].lat;
                             that.lon = data.data[0].lon;
-                            that.countsms = data.data[0].countsms;
                             that.schvehs = data.data[0].ownbuses;
                             that.oprvehs = data.data[0].vanoperator;
 
@@ -845,8 +786,6 @@ export class AddEntityComponent implements OnInit {
                             }
 
                             if (that.entttype == "School") {
-                                // Board
-
                                 var _boardrights = null;
                                 var _boardids = null;
 
@@ -870,60 +809,6 @@ export class AddEntityComponent implements OnInit {
                                 else {
                                     $(".allboardcheckboxes").find("#board" + _boardids).prop('checked', false);
                                 }
-
-                                // Standard
-
-                                /*var _stdrights = null;
-                                var _stdids = null;
-
-                                _stdrights = null;
-                                _stdrights = data.data[0].standard;
-
-                                if (_stdrights != null) {
-                                    for (var i = 0; i < _stdrights.length; i++) {
-                                        _stdids = null;
-                                        _stdids = _stdrights[i];
-
-                                        if (_stdids != null) {
-                                            $("#std" + _stdids).prop('checked', true);
-                                            $(".allcheckboxes").find("#std" + _stdids).prop('checked', true);
-                                        }
-                                        else {
-                                            $(".allcheckboxes").find("#std" + _stdids).prop('checked', false);
-                                        }
-                                    }
-                                }
-                                else {
-                                    $(".allcheckboxes").find("#std" + _stdids).prop('checked', false);
-                                }
-
-                                that.division = data.data[0].division;
-
-                                // Subject
-
-                                var _subrights = null;
-                                var _subids = null;
-
-                                _subrights = null;
-                                _subrights = data.data[0].subject;
-
-                                if (_subrights != null) {
-                                    for (var i = 0; i < _subrights.length; i++) {
-                                        _subids = null;
-                                        _subids = _subrights[i];
-
-                                        if (_subids != null) {
-                                            $("#sub" + _subids).prop('checked', true);
-                                            $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', true);
-                                        }
-                                        else {
-                                            $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
-                                        }
-                                    }
-                                }
-                                else {
-                                    $(".allsubcheckboxes").find("#sub" + _subids).prop('checked', false);
-                                }*/
                             }
 
                             that.remark1 = data.data[0].remark1;

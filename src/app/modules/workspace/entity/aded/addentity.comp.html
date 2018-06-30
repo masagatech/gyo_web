@@ -9,11 +9,13 @@
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="saveEntityInfo()">
-                    <i class="material-icons">save</i></a>
+                    <i class="material-icons">save</i>
+                </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
+                    <i class="material-icons">arrow_back</i>
+                </a>
             </li>
         </ul>
     </div>
@@ -56,14 +58,6 @@
                 </div>
 
                 <div class="row clearfix">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Send SMS (How Many)</label>
-                                <input type="text" [(ngModel)]="countsms" OnlyNumber="true" class="form-control countsms text-right" maxlength="5" tabindex="4" />
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
@@ -136,9 +130,9 @@
                         auto="true"></p-fileUpload>
 
                     <div *ngIf="uploadLogoDT.length">
-                        <div *ngFor="let file of uploadLogoDT" class="box">
+                        <div *ngFor="let file of uploadLogoDT">
                             <div class="row clearfix">
-                                <div class="col-md-9">
+                                <div class="col-md-3">
                                     <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="60px" />
                                 </div>
                                 <div class="col-md-3">
@@ -321,87 +315,6 @@
                             </ng-template>
                         </p-column>
                     </p-dataTable>
-                </div>
-            </div>
-        </div>
-
-        <div id="diventtfields" class="row clearfix hide">
-            <div class="col-md-5">
-                <div class="border-radius">
-                    <div class="header-title">
-                        <div class="row clearfix">
-                            <div class="col-md-4">
-                                <h4>Standard</h4>
-                            </div>
-                            <div class="col-md-4">
-                                <h6>Division (e.g : A, B, C, D)</h6>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" [(ngModel)]="division" class="form-control division" maxlength="150" tabindex="21" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="body">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
-                                <label for="selectall">Select All</label>
-                            </div>
-                        </div>
-
-                        <div class="allcheckboxes" *ngFor="let row of standardDT | groupBy:'grpname'; let i = index">
-                            <div class="block-header">
-                                <input id="{{row.key.split('~')[0]}}" name="std{{i + 1}}" type="checkbox" value="{{row.key.split('~')[0]}}" (change)="selectAndDeselectGroupWiseCheckboxes(row)" class="filled-in" />
-                                <label for="{{row.key.split('~')[0]}}"><h4 style="margin: 0;">{{row.key.split('~')[1]}}</h4></label>
-                            </div>
-                            <div id="std{{row.key.split('~')[0]}}" style="margin-left: 15px;">
-                                <span *ngFor="let drow of row.value; let i = index" id="stditem{{drow.key}}">
-                                    <input id="std{{drow.key}}" name="std{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
-                                    <label for="std{{drow.key}}">{{drow.val}}</label>
-                                </span>
-
-                                <hr />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="border-radius">
-                    <div class="header-title">
-                        <h4>Subject</h4>
-                    </div>
-                    <div class="body">
-                        <div class="row clearfix">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input id="selectallsub" name="selectallsub" type="checkbox" (change)="selectAndDeselectAllSubCheckboxes()" class="filled-in">
-                                        <label for="selectallsub">Select All</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="allsubcheckboxes" *ngFor="let row of subjectDT | groupBy:'grpname'; let i = index">
-                            <div class="block-header">
-                                <input id="{{row.key}}" name="sub{{i + 1}}" type="checkbox" value="{{row.key}}" (change)="selectAndDeselectGroupWiseSubCheckboxes(row)" class="filled-in" />
-                                <label for="{{row.key}}"><h4 style="margin: 0;">{{row.key}}</h4></label>
-                            </div>
-                            <div id="sub{{row.key}}" style="margin-left: 15px;">
-                                <span *ngFor="let drow of row.value; let i = index" id="subitem{{drow.key}}">
-                                    <input id="sub{{drow.key}}" name="sub{{i + 1}}" type="checkbox" value="{{drow.key}}" class="filled-in" />
-                                    <label for="sub{{drow.key}}">{{drow.val}}</label>
-                                </span>
-
-                                <hr />
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
