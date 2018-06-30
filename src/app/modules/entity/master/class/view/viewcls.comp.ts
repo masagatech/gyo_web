@@ -58,7 +58,7 @@ export class ViewClassComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsservice.getStandardDetails({
-            "flag": "divmap", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "flag": "divmap", "divtype": "view", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {

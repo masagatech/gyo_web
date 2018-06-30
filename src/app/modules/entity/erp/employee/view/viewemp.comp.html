@@ -96,7 +96,7 @@
                     <tbody>
                         <tr *ngFor="let row of employeeDT">
                             <td *ngIf="classid != 0">
-                                <div class="nlJQl p-0" (click)="getClassTeacher(row)">
+                                <div (click)="getClassTeacher(row)">
                                     <div class="D2QfN {{row.selempid == row.empid ? 'bg-green' : ''}}">
                                         <span class="NkcEF"><i class="fa fa-check"></i></span>
                                     </div>
@@ -141,10 +141,17 @@
                                 <p-panel [style]="{'text-align':'center'}">
                                     <p-header>
                                         <div class="row clearfix">
-                                            <div class="col-md-10 col-xs-8">
+                                            <div class="col-md-2 col-xs-3">
+                                                <div (click)="getClassTeacher(drow)" *ngIf="classid != 0">
+                                                    <div class="D2QfN {{drow.selempid == drow.empid ? 'bg-green' : ''}}">
+                                                        <span class="NkcEF"><i class="fa fa-check"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 col-xs-6">
                                                 {{drow.empname}}
                                             </div>
-                                            <div class="col-md-2 col-xs-4">
+                                            <div class="col-md-2 col-xs-3">
                                                 <a role="button" (click)="editEmployeeForm(drow)"><i class="material-icons font-15 col-white">edit</i></a>
                                             </div>
                                         </div>

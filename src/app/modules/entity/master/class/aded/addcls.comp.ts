@@ -14,7 +14,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    divno: number = 5;
+    divno: number = 0;
     divData: any = [];
     divColumn: any = [];
     classDT: any = [];
@@ -27,7 +27,6 @@ export class AddClassComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDivisionNoDropDown();
-        this.getDivisionData();
     }
 
     public ngOnInit() {
@@ -42,12 +41,26 @@ export class AddClassComponent implements OnInit, OnDestroy {
 
     fillDivisionNoDropDown() {
         var that = this;
+        var defdivDT: any = [];
 
         that._clsservice.getStandardDetails({
             "flag": "division", "divtype": "add", "divno": 0,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             that.divData = data.data;
+
+            if (that.divData.length > 0) {
+                defdivDT = that.divData.filter(a => a.isselected == true);
+
+                if (defdivDT.length > 0) {
+                    that.divno = defdivDT[0].id;
+                }
+                else {
+                    that.divno = 5;
+                }
+
+                that.getDivisionData();
+            }
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -78,7 +91,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._clsservice.getStandardDetails({
-            "flag": "divmap", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "flag": "divmap", "divtype": "add", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
