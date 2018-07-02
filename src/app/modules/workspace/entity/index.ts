@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { AddEntityComponent } from './aded/addentity.comp';
 import { ViewEntityComponent } from './view/viewentity.comp';
@@ -37,7 +36,7 @@ export const routes = [
     CheckboxModule, AutoCompleteModule, FileUploadModule, TabViewModule
   ],
 
-  providers: [AuthGuard, EntityService]
+  providers: [AuthGuard, EntityService, CommonService]
 })
 
 export class EntityModule {

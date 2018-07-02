@@ -155,8 +155,8 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         for (var i = 0; i < that.submaptchrDT.length; i++) {
             smtrow = that.submaptchrDT[i];
 
-            if (smtrow.clsid != drow.clsid && smtrow.frmtm == drow.frmtm) {
-                if (smtrow.monsubcode == drow.monsubcode && smtrow.monsubname != "Lunch" && smtrow.ismonsub != null) {
+            if (smtrow.classid != drow.classid && smtrow.frmtm == drow.frmtm && smtrow.totm == drow.totm) {
+                if (smtrow.monsubname != "Lunch") {
                     if (drow.ismonsub) {
                         smtrow.ismonsub = null;
                     }
@@ -165,7 +165,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     }
                 }
 
-                if (smtrow.tuesubcode == drow.tuesubcode && smtrow.tuesubname != "Lunch" && smtrow.istuesub != null) {
+                if (smtrow.tuesubname != "Lunch") {
                     if (drow.istuesub) {
                         smtrow.istuesub = null;
                     }
@@ -174,7 +174,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     }
                 }
 
-                if (smtrow.wedsubcode == drow.wedsubcode && smtrow.wedsubname != "Lunch" && smtrow.iswedsub != null) {
+                if (smtrow.wedsubname != "Lunch") {
                     if (drow.iswedsub) {
                         smtrow.iswedsub = null;
                     }
@@ -183,7 +183,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     }
                 }
 
-                if (smtrow.thusubcode == drow.thusubcode && smtrow.thusubname != "Lunch" && smtrow.isthusub != null) {
+                if (smtrow.thusubname != "Lunch") {
                     if (drow.isthusub) {
                         smtrow.isthusub = null;
                     }
@@ -192,7 +192,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     }
                 }
 
-                if (smtrow.frisubcode == drow.frisubcode && smtrow.frisubname != "Lunch" && smtrow.isfrisub != null) {
+                if (smtrow.frisubname != "Lunch") {
                     if (drow.isfrisub) {
                         smtrow.isfrisub = null;
                     }
@@ -201,7 +201,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     }
                 }
 
-                if (smtrow.satsubcode == drow.satsubcode && smtrow.satsubname != "Lunch" && smtrow.issatsub != null) {
+                if (smtrow.satsubname != "Lunch") {
                     if (drow.issatsub) {
                         smtrow.issatsub = null;
                     }
@@ -210,7 +210,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                     }
                 }
 
-                if (smtrow.sunsubcode == drow.sunsubcode && smtrow.sunsubname != "Lunch" && smtrow.issunsub != null) {
+                if (smtrow.sunsubname != "Lunch") {
                     if (drow.issunsub) {
                         smtrow.issunsub = null;
                     }

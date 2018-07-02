@@ -3,14 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { WorkspaceService } from '@services/master';
-import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
 @Component({
     templateUrl: 'viewws.comp.html',
-    providers: [WorkspaceService, CommonService]
 })
 
 export class ViewWorkspaceComponent implements OnInit {
@@ -19,8 +17,9 @@ export class ViewWorkspaceComponent implements OnInit {
     _wsdetails: any = [];
 
     autoWorkspaceDT: any = [];
+    selectedWorkspace: any = [];
     autowsid: number = 0;
-    autowsname: any = [];
+    autowsname: string = "";
 
     wsautoid: number = 0;
     wscode: string = "";
@@ -40,20 +39,14 @@ export class ViewWorkspaceComponent implements OnInit {
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
-    
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _wsservice: WorkspaceService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
         this.getUploadConfig();
-
-        if (Cookie.get('_autowsnm_') != null) {
-            this.autowsname.value = parseInt(Cookie.get('_autowsid_'));
-            this.autowsname.label = Cookie.get('_autowsnm_');
-        }
-
-        this.getWorkspaceDetails();
+        this.viewWorkspaceDetails();
 
         if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
             this._router.navigate(['/']);
@@ -63,7 +56,7 @@ export class ViewWorkspaceComponent implements OnInit {
     public ngOnInit() {
         this.refreshButtons();
     }
- 
+
     isshWorkspace(viewtype) {
         var that = this;
         commonfun.loader("#divShow");
@@ -108,12 +101,10 @@ export class ViewWorkspaceComponent implements OnInit {
     // Selected Workspace
 
     selectAutoWorkspaceData(event) {
-        this.autowsid = event.value;
-
         Cookie.set("_autowsid_", event.value);
         Cookie.set("_autowsnm_", event.label);
 
-        this.getWorkspaceDetails();
+        this.viewWorkspaceDetails();
     }
 
     getUploadConfig() {
@@ -161,13 +152,32 @@ export class ViewWorkspaceComponent implements OnInit {
         })
     }
 
+    viewWorkspaceDetails() {
+        var that = this;
+
+        if (Cookie.get('_autowsnm_') != null) {
+            that.autowsid = parseInt(Cookie.get("_autowsid_"));
+            that.autowsname = Cookie.get("_autowsnm_");
+    
+            that.selectedWorkspace = {
+                value: that.autowsid,
+                label: that.autowsname
+            }
+        }
+
+        that.getWorkspaceDetails();
+    }
+
     resetWorkspaceDetails() {
-        this.autowsid = 0;
-        this.autowsname = [];
+        var that = this;
+
+        that.selectedWorkspace = [];
+        that.autowsid = 0;
+        that.autowsname = "";
         Cookie.delete("_autowsid_");
         Cookie.delete("_autowsnm_");
 
-        this.getWorkspaceDetails();
+        that.getWorkspaceDetails();
     }
 
     public addWorkspaceForm() {

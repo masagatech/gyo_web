@@ -7,8 +7,7 @@ import { WorkspaceService } from '@services/master';
 declare var adminloader: any;
 
 @Component({
-    templateUrl: 'addws.comp.html',
-    providers: [WorkspaceService, CommonService]
+    templateUrl: 'addws.comp.html'
 })
 
 export class AddWorkspaceComponent implements OnInit {

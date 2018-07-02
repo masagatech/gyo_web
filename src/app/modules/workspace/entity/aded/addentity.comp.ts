@@ -8,8 +8,7 @@ import { GMap } from 'primeng/primeng';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addentity.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addentity.comp.html'
 })
 
 export class AddEntityComponent implements OnInit {

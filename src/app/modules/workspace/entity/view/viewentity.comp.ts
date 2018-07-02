@@ -6,8 +6,7 @@ import { EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewentity.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewentity.comp.html'
 })
 
 export class ViewEntityComponent implements OnInit, OnDestroy {

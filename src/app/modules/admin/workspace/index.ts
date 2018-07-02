@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
+import {  } from '@services';
 
 import { AddWorkspaceComponent } from './aded/addws.comp';
 import { ViewWorkspaceComponent } from './view/viewws.comp';
@@ -35,7 +35,7 @@ export const routes = [
     AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, WorkspaceService]
+  providers: [AuthGuard, WorkspaceService, CommonService]
 })
 
 export class WorkspaceModule {

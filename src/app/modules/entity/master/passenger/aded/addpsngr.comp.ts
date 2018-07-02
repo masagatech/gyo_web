@@ -736,8 +736,8 @@ export class AddPassengerComponent implements OnInit {
 
                 "name": that.mthrname + ";" + that.fthrname,
                 "mobileno1": that.fthrmobile,
-                "mobileno2": that.fthrmobile,
-                "email1": that.mthremail,
+                "mobileno2": that.mthrmobile,
+                "email1": that.fthremail,
                 "email2": that.mthremail,
                 "country": that.country,
                 "state": that.state,
