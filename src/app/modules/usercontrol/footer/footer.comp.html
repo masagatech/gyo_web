@@ -27,7 +27,7 @@
                         <li class="dropdown dropdown-large dropdown-padding">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <select id="enttid" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getEntityDetails()">
+                                    <select id="enttid" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="changeEntityDetails()">
                                         <option *ngFor="let row of entityDT" [value]="row.key">
                                             {{row.val}}
                                         </option>
@@ -38,7 +38,7 @@
                         <li class="dropdown dropdown-large dropdown-padding" *ngIf="_enttdetails.entttype == 'School'">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <select id="ayid" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getEntityDetails()">
+                                    <select id="ayid" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="changeAYDetails()">
                                         <option *ngFor="let row of ayDT" [value]="row.key">
                                             {{row.val}}
                                         </option>

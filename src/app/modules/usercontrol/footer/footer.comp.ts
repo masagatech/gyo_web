@@ -43,7 +43,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
-    this.fillEntityDropDown();
+    this.fillEntityAndAYDropDown();
     this.getHeaderDetails();
   }
 
@@ -64,9 +64,9 @@ export class FooterComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Fill Entity DropDown
+  // Fill Entity And Academic Year DropDown
 
-  fillEntityDropDown() {
+  fillEntityAndAYDropDown() {
     var that = this;
     var defayDT: any = [];
 
@@ -122,8 +122,6 @@ export class FooterComponent implements OnInit, OnDestroy {
     var enttdata = [];
     var enttrow = [];
 
-    Cookie.set("_ayid_", that.ayid.toString());
-
     commonfun.loader();
 
     var params = {
@@ -150,6 +148,15 @@ export class FooterComponent implements OnInit, OnDestroy {
     }, () => {
 
     })
+  }
+
+  changeEntityDetails() {
+    Cookie.delete("_ayid_");
+    this.getEntityDetails();
+  }
+
+  changeAYDetails() {
+    this.getEntityDetails();
   }
 
   public openMainForm(row) {
