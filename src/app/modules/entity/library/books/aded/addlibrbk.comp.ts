@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LibraryService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -8,8 +8,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addlibrbk.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addlibrbk.comp.html'
 })
 
 export class AddLibraryBooksComponent implements OnInit {
@@ -36,7 +35,7 @@ export class AddLibraryBooksComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _librservice: LibraryService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

@@ -1,23 +1,6 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-10">
-                <h4>Dashboard</h4>
-            </div>
-
-            <div class="col-md-2" align="right">
-                <div class="form-group margin-0" *ngIf="_enttdetails.entttype == 'School'">
-                    <div class="form-line">
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control class" tabindex="1" (ngModelChange)="getERPDashboardDetails()">
-                            <option [value]="0">Select Academic year</option>
-                            <option *ngFor="let row of ayDT" [value]="row.id">
-                                {{row.val}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h4>Dashboard</h4>
     </div>
 </div>
 
@@ -62,8 +45,12 @@
                     <h6>Today's Student Attendance</h6>
                 </div>
 
-                <div class="body no-padding">
+                <div class="body no-padding" *ngIf="classStatusChartDT.length">
                     <p-chart type="bar" [data]="classStatusChartDT" height="100px"></p-chart>
+                </div>
+
+                <div class="body no-padding" *ngIf="!classStatusChartDT.length">
+                    <h4>No Data Found....</h4>
                 </div>
             </div>
 
@@ -74,7 +61,7 @@
                             <h6>Exam Status</h6>
                         </div>
 
-                        <div class="col-md-6" align="right">
+                        <div class="col-md-6" align="right" *ngIf="examStatusChartDT.length">
                             <div class="form-group margin-0">
                                 <div class="form-line">
                                     <select id="smstrid" name="smstrname" [(ngModel)]="smstrid" class="form-control smstrname" (ngModelChange)="getERPDashboardData('examstatus')" tabindex="3">
@@ -88,8 +75,12 @@
                     </div>
                 </div>
 
-                <div class="body no-padding">
+                <div class="body no-padding" *ngIf="examStatusChartDT.length">
                     <p-chart type="bar" [data]="examStatusChartDT" height="100px"></p-chart>
+                </div>
+
+                <div class="body no-padding" *ngIf="!examStatusChartDT.length">
+                    <h4>No Data Found....</h4>
                 </div>
             </div>
 
@@ -98,8 +89,12 @@
                     <h6>Fees Structure</h6>
                 </div>
 
-                <div class="body no-padding">
+                <div class="body no-padding" *ngIf="feesstructureDT.length">
                     <p-chart type="bar" [data]="feesstructureDT" height="100px"></p-chart>
+                </div>
+
+                <div class="body no-padding" *ngIf="!feesstructureDT.length">
+                    <h4>No Data Found....</h4>
                 </div>
             </div>
         </div>
@@ -119,7 +114,7 @@
                     </div>
                 </div>
 
-                <div class="body" id="notice_board" *ngIf="noticeboardDT.length">
+                <div class="body no-padding" id="notice_board" *ngIf="noticeboardDT.length">
                     <div *ngFor="let row of noticeboardDT">
                         <div class="media border p-3">
                             <div class="media-body">
@@ -135,8 +130,8 @@
                         <a role="button" class="btn btn-theme btn-xs" [routerLink]="['/erp/school/noticeboard']">View More....</a>
                     </div>
                 </div>
-                <div class="body" *ngIf="!noticeboardDT.length">
-                    No Data Found
+                <div class="body no-padding" *ngIf="!noticeboardDT.length">
+                    <h4>No Data Found....</h4>
                 </div>
             </div>
 
@@ -145,8 +140,12 @@
                     <h6>Today's Teacher Attendance</h6>
                 </div>
 
-                <div class="body no-padding">
+                <div class="body no-padding" *ngIf="tchrattndDT.length">
                     <p-chart type="pie" #piechart [data]="tchrattndDT" height="150px"></p-chart>
+                </div>
+
+                <div class="body no-padding" *ngIf="!tchrattndDT.length">
+                    <h4>No Data Found....</h4>
                 </div>
             </div>
 
@@ -155,8 +154,12 @@
                     <h6>Class Teacher</h6>
                 </div>
 
-                <div class="body no-padding">
+                <div class="body no-padding" *ngIf="classtypeDT.length">
                     <p-chart type="pie" #piechart [data]="classtypeDT"></p-chart>
+                </div>
+
+                <div class="body no-padding" *ngIf="!classtypeDT.length">
+                    <h4>No Data Found....</h4>
                 </div>
             </div>
         </div>

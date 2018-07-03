@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassTimeTableService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'timetable.comp.html',
@@ -51,7 +51,7 @@ export class TimetableComponent implements OnInit {
     }
 
     public ngOnInit() {
-        
+
     }
 
     // Fill Academic Year, Class Drop Down
@@ -59,7 +59,7 @@ export class TimetableComponent implements OnInit {
     fillDropDownList() {
         var that = this;
         var defayDT: any = [];
-        
+
         commonfun.loader();
 
         that.tmtservice.getClassTimeTable({
@@ -70,13 +70,18 @@ export class TimetableComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].id;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 

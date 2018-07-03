@@ -140,9 +140,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Device Type
-                                    <strong>*</strong>
-                                </label>
+                                <label class="control-label">Device Type <strong>*</strong></label>
                                 <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
                                     <option [value]="''">GPS Device Type</option>
                                     <option *ngFor="let row of devtypeDT" [value]="row.key">
@@ -155,9 +153,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">IMEI
-                                    <strong>*</strong>
-                                </label>
+                                <label class="control-label">IMEI <strong>*</strong></label>
                                 <input type="text" [disabled]="!istrackenabled" [(ngModel)]="imei" class="form-control vehno" maxlength="50" tabindex="11" />
                             </div>
                         </div>
@@ -168,9 +164,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">SIM No. (eg. 9009090009)
-                                    <strong>*</strong>
-                                </label>
+                                <label class="control-label">SIM No. (eg. 9009090009) <strong>*</strong></label>
                                 <input type="text" [disabled]="!istrackenabled" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="12" />
                             </div>
                         </div>
@@ -178,9 +172,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Speed Alert(Above km/h)
-                                    <strong>*</strong>
-                                </label>
+                                <label class="control-label">Speed Alert(Above km/h) <strong>*</strong></label>
                                 <input type="text" OnlyNumber="true" [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="11" />
                             </div>
                         </div>

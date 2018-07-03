@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LibraryService } from '@services/master';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewlbrbkissd.comp.html',
-    providers: [CommonService]
 })
 
 export class ViewLibraryBookIssuedComponent implements OnInit {
@@ -20,7 +19,7 @@ export class ViewLibraryBookIssuedComponent implements OnInit {
     bookIssuedDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _librservice: LibraryService) {
+        private _loginservice: LoginService, private _librservice: LibraryService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -47,16 +46,22 @@ export class ViewLibraryBookIssuedComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
-                        that.getLibraryBookIssued();
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
+                
+                that.getLibraryBookIssued();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

@@ -1,14 +1,13 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LocationService } from '@services/master';;
 import { LoginUserModel } from '@models';
 
 declare let google: any;
 
 @Component({
-    templateUrl: 'addloc.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addloc.comp.html'
 })
 
 export class AddLocationComponent implements OnInit, AfterViewInit {
@@ -35,7 +34,7 @@ export class AddLocationComponent implements OnInit, AfterViewInit {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _locservice: LocationService, private cdRef: ChangeDetectorRef, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _locservice: LocationService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this.fillStateDropDown();
         this.fillCityDropDown();

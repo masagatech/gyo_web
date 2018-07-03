@@ -4,7 +4,7 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals, Common } from '@models';
 import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
-import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -151,13 +151,18 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                 that.ayDT = JSON.parse(data._body).data[0];
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 
@@ -196,7 +201,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                     "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
                     "issysadmin": that.loginUser.issysadmin, "format": format
                 }
-    
+
                 commonfun.loader();
 
                 that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
@@ -233,7 +238,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                     "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
                     "issysadmin": that.loginUser.issysadmin, "format": format
                 }
-    
+
                 window.open(Common.getReportUrl("getFeesReports", feesparams));
             }
         }

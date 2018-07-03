@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, CommonService } from '@services';
 
 import { AddAssignmentComponent } from './aded/addassnm.comp';
 import { ViewAssignmentComponent } from './view/viewassnm.comp';
 
 import { AssignmentService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -40,7 +40,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, AssignmentService]
+  providers: [AuthGuard, AssignmentService, CommonService]
 })
 
 export class AssignmentModule {

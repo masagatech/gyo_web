@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -99,6 +100,7 @@ export class AddStudentVehicleComponent implements OnInit {
         this.studid = event.value;
         this.studname = event.label;
 
+        console.log(this.studid);
         this.getStudentDetails();
     }
 
@@ -118,18 +120,22 @@ export class AddStudentVehicleComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 
                 that.alertDT = data.data.filter(a => a.group == "alert");
-
                 that.alert = that.alertDT.filter(a => a.isselected == true)[0].key;
             }
             catch (e) {
@@ -399,9 +405,6 @@ export class AddStudentVehicleComponent implements OnInit {
     resetVehicleFields() {
         var that = this;
 
-        that.studid = 0;
-        that.studname = "";
-
         that.resiaddr = "";
         that.resilet = "0.00";
         that.resilong = "0.00";
@@ -429,7 +432,7 @@ export class AddStudentVehicleComponent implements OnInit {
             $(".ayname").focus();
             return false;
         }
-        if (that.studname == "") {
+        if (that.studid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Student Name");
             $(".studname input").focus();
             return false;

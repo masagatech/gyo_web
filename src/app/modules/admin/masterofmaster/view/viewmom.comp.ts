@@ -5,8 +5,7 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 
 @Component({
-    templateUrl: 'viewMOM.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewMOM.comp.html'
 })
 
 export class ViewMOMComponent implements OnInit, OnDestroy {
@@ -26,7 +25,7 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
     wsautoid: number = 0;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
-        private _commonservice: CommonService, private _msg: MessageService) {
+        private _autoservice: CommonService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
@@ -60,7 +59,7 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
             if (params['grpcd'] !== undefined) {
                 that.grpcd = params['grpcd'];
 
-                that._commonservice.getMOM({ "flag": "group", "grpcd": that.grpcd }).subscribe(data => {
+                that._autoservice.getMOM({ "flag": "group", "grpcd": that.grpcd }).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
                             that.headertitle = data.data[0].grpnm;
@@ -93,7 +92,7 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
     getMOMDetails() {
         var that = this;
 
-        that._commonservice.getMOM({
+        that._autoservice.getMOM({
             "flag": "grid", "group": that.grpcd, "enttid": that.enttid, "wsautoid": that.wsautoid
         }).subscribe(data => {
             try {

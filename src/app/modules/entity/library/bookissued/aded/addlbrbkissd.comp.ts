@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LibraryService } from '@services/master';
-import { retry } from 'rxjs/operator/retry';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -81,13 +81,18 @@ export class AddLibraryBookIssuedComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 

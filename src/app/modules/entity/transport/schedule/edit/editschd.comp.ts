@@ -56,12 +56,12 @@ export class EditScheduleComponent implements OnInit {
     pickautoid: number = 0;
     pickdriverid: number = 0;
     pickvehicleid: string = "";
-    pickpsngrtype: string = "bypsngr";
+    pickpsngrtype: string = "byrt";
 
     dropautoid: number = 0;
     dropdriverid: number = 0;
     dropvehicleid: string = "";
-    droppsngrtype: string = "bypsngr";
+    droppsngrtype: string = "byrt";
 
     instrunction: string = "";
 
@@ -113,7 +113,7 @@ export class EditScheduleComponent implements OnInit {
             if (this.pickautoid == 0) {
                 this.pickdriverid = 0;
                 this.pickvehicleid = "";
-                this.pickpsngrtype = "bypsngr";
+                this.pickpsngrtype = "byrt";
                 this.pickrtid = 0;
                 this.pickPassengerDT = [];
             }
@@ -132,7 +132,7 @@ export class EditScheduleComponent implements OnInit {
             if (this.dropautoid == 0) {
                 this.dropdriverid = 0;
                 this.dropvehicleid = "";
-                this.droppsngrtype = "bypsngr";
+                this.droppsngrtype = "byrt";
                 this.droprtid = 0;
                 this.dropPassengerDT = [];
             }
@@ -649,7 +649,7 @@ export class EditScheduleComponent implements OnInit {
                     else {
                         that.pickdriverid = 0;
                         that.pickvehicleid = "";
-                        that.pickpsngrtype = "bypsngr";
+                        that.pickpsngrtype = "byrt";
                         that.pickrtid = 0;
                         that.pickPassengerDT = [];
                         that.pickAttList = [];
@@ -681,7 +681,7 @@ export class EditScheduleComponent implements OnInit {
                     else {
                         that.dropdriverid = 0;
                         that.dropvehicleid = "";
-                        that.droppsngrtype = "bypsngr";
+                        that.droppsngrtype = "byrt";
                         that.droprtid = 0;
                         that.dropPassengerDT = [];
                         that.dropAttList = [];
@@ -695,7 +695,7 @@ export class EditScheduleComponent implements OnInit {
                     that.pickautoid = 0;
                     that.pickdriverid = 0;
                     that.pickvehicleid = "";
-                    that.pickpsngrtype = "bypsngr";
+                    that.pickpsngrtype = "byrt";
                     that.pickrtid = 0;
                     that.pickPassengerDT = [];
                     that.pickAttList = [];
@@ -704,7 +704,7 @@ export class EditScheduleComponent implements OnInit {
                     that.dropautoid = 0;
                     that.dropdriverid = 0;
                     that.dropvehicleid = "";
-                    that.droppsngrtype = "bypsngr";
+                    that.droppsngrtype = "byrt";
                     that.droprtid = 0;
                     that.dropPassengerDT = [];
                     that.dropAttList = [];
@@ -756,7 +756,7 @@ export class EditScheduleComponent implements OnInit {
                 }
             }
             else if (that.pickPassengerDT.length === 0) {
-                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up Passenger");
+                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up " + that._enttdetails.psngrtype);
                 $(".pickpsngrname input").focus();
                 return false;
             }
@@ -781,7 +781,7 @@ export class EditScheduleComponent implements OnInit {
                 }
             }
             else if (that.dropPassengerDT.length === 0) {
-                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop Passenger");
+                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop " + that._enttdetails.psngrtype);
                 $(".droppsngrname input").focus();
                 return false;
             }

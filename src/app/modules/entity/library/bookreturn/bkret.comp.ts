@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LibraryService } from '@services/master';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { validateConfig } from '@angular/router/src/config';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'bkret.comp.html',
@@ -63,13 +62,18 @@ export class BookReturnComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 
@@ -189,7 +193,7 @@ export class BookReturnComponent implements OnInit {
                     var dataResult = data.data[0].funsave_librarybookreturn;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
-                    
+
                     that._msg.Show(messageType.success, "Success", msg);
                     that.getLibraryBookIssued();
                 }

@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { SubjectMapToTeacherService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { element } from 'protractor';
 
 declare var google: any;
 
@@ -19,6 +18,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
 
     teacherDT: any = [];
     tchrdata: any = [];
+    paramtchrid: number = 0;
     tchrid: number = 0;
     tchrname: string = "";
 
@@ -42,7 +42,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
     }
 
     public ngOnInit() {
-
+        this.editSubjectMapToTeacher();
     }
 
     // Fill Class Drop Down
@@ -62,10 +62,19 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                 defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                 if (defayDT.length > 0) {
-                    that.ayid = defayDT[0].key;
-                }
-                else {
-                    that.ayid = 0;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
+                    }
+                    else {
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
+                    }
                 }
             }
             catch (e) {
@@ -123,6 +132,15 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
+                if (that.paramtchrid !== 0) {
+                    that.tchrname = data.data[0].tchrname;
+
+                    that.tchrdata = {
+                        value: that.tchrid,
+                        label: that.tchrname
+                    }
+                }
+
                 that.submaptchrDT = data.data;
             }
             catch (e) {
@@ -137,6 +155,23 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    editSubjectMapToTeacher() {
+        var that = this;
+
+        that.subscribeParameters = this._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.paramtchrid = params['id'];
+                that.tchrid = that.paramtchrid;
+
+                $(".tchrname input").attr("disabled", "disabled")
+                that.getSubjectMapToTeacher();
+            }
+            else {
+                $(".tchrname input").removeAttr("disabled");
+            }
+        });
     }
 
     // On Change Subject
@@ -267,107 +302,6 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
         }, () => {
             // console.log("Complete");
         });
-    }
-
-
-    // Get Subject Rights
-
-    getSubjectRights() {
-        var that = this;
-        var subitem = null;
-
-        var actrights = "";
-        var subrights = {};
-
-        for (var i = 0; i <= that.subjectDT.length - 1; i++) {
-            subitem = null;
-            subitem = that.subjectDT[i];
-
-            if (subitem !== null) {
-                $("#sub" + subitem.id).find("input[type=checkbox]").each(function () {
-                    actrights += (this.checked ? $(this).val() + "," : "");
-                });
-
-                if (actrights != "") {
-                    subrights = actrights.slice(0, -1);
-                }
-                else {
-                    subrights = null;
-                }
-            }
-        }
-
-        return subrights;
-    }
-
-    private selectAndDeselectAllCheckboxes() {
-        if ($("#selectall").is(':checked')) {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
-        }
-        else {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
-        }
-    }
-
-    private clearcheckboxes() {
-        $(".allcheckboxes input[type=checkbox]").prop('checked', false);
-    }
-
-    // Get Subject Map To Teacher
-
-    editSubjectMapToTeacher() {
-        var that = this;
-        commonfun.loader();
-
-        that._smtservice.getSubjectMapToTeacher({
-            "flag": "edit", "smtid": that.smtid, "tchrid": that.tchrid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
-        }).subscribe(data => {
-            try {
-                if (data.data.length > 0) {
-                    that.smtid = data.data[0].smtid;
-                    that.tchrid = data.data[0].tchrid;
-                    that.tchrname = data.data[0].tchrname;
-                    that.tchrdata.value = that.tchrid;
-                    that.tchrdata.label = that.tchrname;
-
-                    var _subrights = null;
-                    var _subitem = null;
-
-                    _subrights = null;
-                    _subrights = data.data[0].subid;
-
-                    if (_subrights != null) {
-                        for (var i = 0; i < _subrights.length; i++) {
-                            _subitem = null;
-                            _subitem = _subrights[i];
-
-                            if (_subitem != null) {
-                                $("#selectall").prop('checked', true);
-                                $("#sub" + _subitem).find("#" + _subitem).prop('checked', true);
-                            }
-                            else {
-                                $("#selectall").prop('checked', false);
-                            }
-                        }
-                    }
-                    else {
-                        $("#selectall").prop('checked', false);
-                    }
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     // Back For View Data

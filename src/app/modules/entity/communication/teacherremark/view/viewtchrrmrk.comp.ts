@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssignmentService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'viewtchrrmrk.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewtchrrmrk.comp.html'
 })
 
 export class ViewTeacherRemarkComponent implements OnInit {
@@ -17,7 +15,7 @@ export class ViewTeacherRemarkComponent implements OnInit {
     teacherRemarkDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _assnmservice: AssignmentService) {
+        private _loginservice: LoginService, private _assnmservice: AssignmentService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

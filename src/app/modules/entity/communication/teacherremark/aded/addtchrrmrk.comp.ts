@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssignmentService } from '@services/erp';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addtchrrmrk.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addtchrrmrk.comp.html'
 })
 
 export class AddTeacherRemarkComponent implements OnInit {
@@ -26,7 +25,7 @@ export class AddTeacherRemarkComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _assnmservice: AssignmentService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

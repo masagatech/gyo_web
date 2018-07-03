@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { FeesService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewfsstrctr.comp.html'
@@ -63,17 +64,22 @@ export class ViewFeesStructureComponent implements OnInit, OnDestroy {
                 that.ayDT = ddlData.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
-                        that.getFeesStructure();
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].id;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 
+                that.getFeesStructure();
                 that.classDT = ddlData.filter(a => a.group == "class");
             }
             catch (e) {

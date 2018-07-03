@@ -68,19 +68,6 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Academic Year <strong>*</strong></label>
-                                <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1" [disabled]="paramsid !== 0">
-                                    <option [value]="0">Select Academic Year</option>
-                                    <option *ngFor="let row of ayDT" [value]="row.key">	
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <div class="form-line">
                                 <label class="control-label">Admission Date <strong>*</strong></label>
                                 <input type="date" name="admdate" [(ngModel)]="admdate" maxlength="50" class="form-control admdate" tabindex="2" [disabled]="paramsid !== 0" />
                             </div>

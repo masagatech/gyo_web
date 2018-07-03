@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ProspectusService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewprspct.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewprspct.comp.html'
 })
 
 export class ViewProspectusComponent implements OnInit {
@@ -20,7 +19,7 @@ export class ViewProspectusComponent implements OnInit {
     prospectusDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _prspctservice: ProspectusService) {
+        private _loginservice: LoginService, private _prspctservice: ProspectusService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -47,14 +46,19 @@ export class ViewProspectusComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
-                        that.getProspectusDetails();
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                            that.getProspectusDetails();
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
             }

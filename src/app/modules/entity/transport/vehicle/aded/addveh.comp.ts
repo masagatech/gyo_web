@@ -126,62 +126,95 @@ export class AddVehicleComponent implements OnInit {
         this.capacity = 0;
         this.vehcond = "";
         this.vehfclt = "";
-        this.d1str = "";
         this.devtype = "";
-        this.simno = "";
         this.imei = "";
+        this.simno = "";
         this.speedAllow = 0;
-
+        this.d1str = "";
     }
 
     // Save Data
 
-    saveVehicleInfo() {
+    isValidateVehicle() {
         var that = this;
 
         if (that.vehtype == "") {
             that._msg.Show(messageType.error, "Error", "Select Vehicle Type");
             $(".vehtype").focus();
+            return false;
         }
-        else if (that.vehno == "") {
+        if (that.vehno == "") {
             that._msg.Show(messageType.error, "Error", "Enter Vehicle No");
             $(".vehno").focus();
+            return false;
         }
-        else if (that.vehregno == "") {
+        if (that.vehregno == "") {
             that._msg.Show(messageType.error, "Error", "Enter Vehicle Registration No");
             $(".vehregno").focus();
+            return false;
         }
-        else if (that.capacity == 0) {
+        if (that.capacity == 0) {
             that._msg.Show(messageType.error, "Error", "Enter Capacity");
             $(".capacity").focus();
+            return false;
         }
-        else {
+        if (that.istrackenabled) {
+            if (that.devtype == "") {
+                that._msg.Show(messageType.error, "Error", "Enter Device Type");
+                $(".devtype").focus();
+                return false;
+            }
+            if (that.imei == "") {
+                that._msg.Show(messageType.error, "Error", "Enter IMEI");
+                $(".imei").focus();
+                return false;
+            }
+            if (that.simno == "") {
+                that._msg.Show(messageType.error, "Error", "Enter SIM No");
+                $(".simno").focus();
+                return false;
+            }
+            if (that.speedAllow.toString() == "") {
+                that._msg.Show(messageType.error, "Error", "Enter SIM No");
+                $(".simno").focus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    saveVehicleInfo() {
+        var that = this;
+        var isvalid = that.isValidateVehicle();
+
+        if (isvalid) {
             commonfun.loader();
 
-            var savevehicle = {
+            var params = {
                 "autoid": that.vehid,
+                "vehtype": that.vehtype,
                 "vehno": that.vehno,
                 "vehregno": that.vehregno,
-                "vehtype": that.vehtype,
                 "vehmake": that.vehmake,
                 "vehmdl": that.vehmdl,
-                "enttid": that._enttdetails.enttid,
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
-                "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
-                "cuid": that.loginUser.ucode,
-                "wsautoid": that._enttdetails.wsautoid,
-                "isactive": that.isactive,
                 "mode": "",
                 "istrack": that.istrackenabled,
                 "devtype": that.devtype,
-                "simno": that.simno,
                 "imei": that.imei,
-                "allowspd": parseInt("" + that.speedAllow)
+                "simno": that.simno,
+                "allowspd": parseInt("" + that.speedAllow),
+                "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
+                "enttid": that._enttdetails.enttid,
+                "wsautoid": that._enttdetails.wsautoid,
+                "cuid": that.loginUser.ucode,
+                "isactive": that.isactive
             }
 
-            that._vehservice.saveVehicleInfo(savevehicle).subscribe(data => {
+            that._vehservice.saveVehicleInfo(params).subscribe(data => {
                 try {
                     var dataResult = data.data;
                     var msg = dataResult[0].funsave_vehicleinfo.msg;
@@ -200,9 +233,9 @@ export class AddVehicleComponent implements OnInit {
                             // Saving Data To VTS
 
                             that.saveToVTS({
-                                "vhid": savevehicle.imei,
-                                "vhname": savevehicle.vehno,
-                                "alwspeed": savevehicle.allowspd,
+                                "vhid": params.imei,
+                                "vhname": params.vehno,
+                                "alwspeed": params.allowspd,
                                 "Vhd": {
                                     "vehregno": that.vehregno,
                                     "vehtype": that.vehtype,

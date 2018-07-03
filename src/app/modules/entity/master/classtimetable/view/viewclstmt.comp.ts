@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassTimeTableService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewclstmt.comp.html',
@@ -115,15 +116,20 @@ export class ViewClassTimeTableComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.ayDT = data.data.filter(a => a.group == "ay");
-                
-                if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
+                if (that.ayDT.length > 0) {
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].id;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 
@@ -209,7 +215,7 @@ export class ViewClassTimeTableComponent implements OnInit, OnDestroy {
         that._clsrstservice.getClassTimeTable({
             "flag": "reports", "ayid": that.ayid, "classid": that.classid, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
             "ctype": that.loginUser.ctype, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin, "viewby":"portal"
+            "issysadmin": that.loginUser.issysadmin, "viewby": "portal"
         }).subscribe(data => {
             try {
                 that.classTimeTableDT = data.data;

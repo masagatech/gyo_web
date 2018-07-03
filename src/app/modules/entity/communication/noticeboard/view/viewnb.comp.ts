@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { NoticeboardService } from '@services/erp';
 
 @Component({
-    templateUrl: 'viewnb.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewnb.comp.html'
 })
 
 export class ViewNoticeboardComponent implements OnInit {

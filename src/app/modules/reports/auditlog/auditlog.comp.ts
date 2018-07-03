@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { LogReportService } from '@services/reports';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'auditlog.comp.html'
@@ -56,16 +57,22 @@ export class AuditLogComponent implements OnInit, OnDestroy {
                 that.ayDT = ddldata.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
-                        that.getAuditLogReports("html");
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].id;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
+
+                that.getAuditLogReports("html");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

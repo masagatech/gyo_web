@@ -3,7 +3,6 @@ import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCanc
 import { MessageService, messageType, MenuService, LoginService, AuthenticationService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AppState } from '../../../app.service';
-import { EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
@@ -12,7 +11,7 @@ declare var loader: any;
 @Component({
   selector: '<app-head></app-head>',
   templateUrl: 'header.comp.html',
-  providers: [EntityService, MenuService, CommonService]
+  providers: [MenuService, CommonService]
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {

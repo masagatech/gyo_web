@@ -4,6 +4,7 @@ import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { AttendanceService } from '@services/erp';
 import { AttendanceReportsService } from '@services/reports';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'rptmonprsnt.comp.html'
@@ -61,14 +62,19 @@ export class MonthlyPresenceReportsComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
-                        that.fillMonthDropDown();
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].id;
+                            that.fillMonthDropDown();
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 
@@ -123,7 +129,7 @@ export class MonthlyPresenceReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": "monthlypresence", "type":"download", "attndmonth": that.attndmonth, "attndtype": that.attndtype,
+            "flag": "monthlypresence", "type": "download", "attndmonth": that.attndmonth, "attndtype": that.attndtype,
             "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format

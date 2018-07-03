@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { LoginService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 
 @Component({
@@ -12,13 +12,13 @@ export class EntityComponent implements OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    enttname: string = "";
     wsname: string = "";
     wslogo: string = "";
-    enttname: string = "";
 
     global = new Globals();
 
-    constructor(private _router: Router, private _loginservice: LoginService) {
+    constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { QualificationService } from '@services/master';
 
 @Component({
-    templateUrl: 'viewqlf.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewqlf.comp.html'
 })
 
 export class ViewQualificationComponent implements OnInit {
@@ -19,7 +18,7 @@ export class ViewQualificationComponent implements OnInit {
     qualificationDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _qlfservice: QualificationService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _qlfservice: QualificationService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

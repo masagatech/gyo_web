@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LeaveService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -9,8 +9,7 @@ declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'apprlv.comp.html',
-    providers: [CommonService]
+    templateUrl: 'apprlv.comp.html'
 })
 
 export class ApprovalLeaveComponent implements OnInit, OnDestroy {
@@ -38,8 +37,8 @@ export class ApprovalLeaveComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _lvservice: LeaveService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _lvservice: LeaveService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

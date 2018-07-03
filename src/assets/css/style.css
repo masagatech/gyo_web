@@ -2546,7 +2546,7 @@ section.full-content {
 }
 
 section.content {
-    margin: 50px 0 0 250px;
+    margin: 50px 0 40px 250px;
     -moz-transition: 0.5s;
     -o-transition: 0.5s;
     -webkit-transition: 0.5s;
@@ -8964,39 +8964,6 @@ fieldset[disabled] .form-control {
     z-index: 11 !important;
 }
 
-.sidebar .legal {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    border-top: 1px solid #eee;
-    padding: 15px;
-    overflow: hidden;
-}
-
-.sidebar .legal .copyright {
-    font-size: 13px;
-    white-space: nowrap;
-    -ms-text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.sidebar .legal .copyright a {
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.sidebar .legal .version {
-    white-space: nowrap;
-    -ms-text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-top: 5px;
-    font-size: 13px;
-}
-
 .sidebar .user-info {
     padding: 6px 15px 10px 5px;
     white-space: nowrap;
@@ -9257,6 +9224,56 @@ fieldset[disabled] .form-control {
 
 .right-sidebar .nav-tabs li:last-child {
     width: 55%;
+}
+
+
+/* Footer */
+
+.footer {
+    position: fixed;
+    z-index: 999;
+    bottom: 0;
+    width: 100%;
+    background: #ccc;
+    display: inline-block;
+    color: #fff;
+    background-color: #333;
+    border-top: 1px solid #3f3f3f;
+    padding: 2px 0px 2px 0px;
+    background: linear-gradient(#777, #333);
+    height: 35px;
+}
+
+.footer .legal {
+    bottom: 0;
+    width: 100%;
+    padding: 0 5px;
+    overflow: hidden;
+}
+
+.footer .legal .copyright {
+    font-size: 13px;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.footer .legal .copyright a {
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer .legal .version {
+    font-size: 13px;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: 3px;
 }
 
 

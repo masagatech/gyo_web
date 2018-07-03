@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,7 @@ export const routes = [
         MyProfileComponent
     ],
     
-    providers: [AuthGuard, UserService]
+    providers: [AuthGuard, UserService, CommonService]
 })
 
 export class MyProfileModule {

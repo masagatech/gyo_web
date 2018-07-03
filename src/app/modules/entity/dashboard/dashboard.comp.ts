@@ -16,7 +16,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dashboardDT: any = [];
 
-    ayDT: any = [];
     ayid: number = 0;
 
     divisionDT: any = [];
@@ -144,19 +143,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.ayDT = data.data.filter(a => a.group == "ay");
-
-                if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
-                    }
-                    else {
-                        that.ayid = 0;
-                    }
-                }
-
                 that.semesterDT = data.data.filter(a => a.group == "semester");
 
                 if (that.semesterDT.length > 0) {
@@ -327,6 +313,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             };
         }
 
+        if (Cookie.get("_ayid_") != null) {
+            that.ayid = parseInt(Cookie.get("_ayid_"));
+        }
+
         that._dbservice.getERPDashboard({
             "flag": dbtype, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
             "ayid": that.ayid, "smstrid": that.smstrid, "enttid": that._enttdetails.enttid,
@@ -444,10 +434,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     _dbChartDT.datasets[0].label = "Class Fees";
                 }
 
-                setTimeout(() => {
-                    that.piechart.ngOnDestroy();
-                    that.piechart.initChart();
-                }, 200);
+                if (that.classStatusChartDT.length > 0 || that.examStatusChartDT.length > 0 || that.feesstructureDT.length > 0
+                    || that.tchrattndDT.length > 0 || that.classtypeDT.length > 0) {
+                    setTimeout(() => {
+                        that.piechart.ngOnDestroy();
+                        that.piechart.initChart();
+                    }, 200);
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

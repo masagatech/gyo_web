@@ -4,6 +4,7 @@ import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { AttendanceService } from '@services/erp';
 import { AttendanceReportsService } from '@services/reports';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'attendance.comp.html'
@@ -113,16 +114,22 @@ export class AttendanceReportsComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].id;
-                        that.fillMonthDropDown();
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].id;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
+
+                that.fillMonthDropDown();
 
                 that.classDT = data.data.filter(a => a.group == "class");
                 that.genderDT = data.data.filter(a => a.group == "gender");

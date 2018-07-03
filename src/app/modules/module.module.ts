@@ -6,6 +6,8 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { ReloadComponent } from '../modules/usercontrol/reload/reload.comp';
+
 export const routes = [
     {
         path: '',
@@ -29,6 +31,9 @@ export const routes = [
 
                     // Reports
                     { path: 'reports', loadChildren: './reports#ReportsModule' },
+
+                    // Reoload
+                    { path: 'reload', component: ReloadComponent },
                 ]
             }
         ]
@@ -42,7 +47,8 @@ export const routes = [
         CommonModule,
     ],
     declarations: [
-        ModuleComponent
+        ModuleComponent,
+        ReloadComponent
     ],
     providers: [AuthGuard]
 })

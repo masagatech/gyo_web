@@ -1,7 +1,11 @@
 <app-head [wsname]="wsname" [wslogo]="wslogo" [enttname]="enttname" [homeurl]="homeurl"></app-head>
 
+<leftsidebar></leftsidebar>
+
 <section class="full-content maincontent">
     <div class="container-fluid">
         <router-outlet></router-outlet>
     </div>
 </section>
+
+<app-footer [homeurl]="homeurl"></app-footer>

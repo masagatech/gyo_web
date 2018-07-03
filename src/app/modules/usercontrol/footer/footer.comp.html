@@ -1,0 +1,59 @@
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="legal">
+                    <!-- <div class="copyright">
+                        <a href="javascript:void(0);">Goyo Technologies Pvt. Ltd.</a>.
+                    </div> -->
+                    <div class="version">
+                        <b>V</b> 1.0
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a role="button" title="Entity" [routerLink]="homeurl" class="js-search margin-0" data-close="true">
+                                <i class="material-icons">home</i>
+                            </a>
+                        </li>
+                        <li *ngIf="isenttmenu">
+                            <a role="button" title="Dashboard" [routerLink]="['/']" class="js-search margin-0" data-close="true">
+                                <i class="material-icons">dashboard</i>
+                            </a>
+                        </li>
+                        <li class="dropdown dropdown-large dropdown-padding">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <select id="enttid" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getEntityDetails()">
+                                        <option *ngFor="let row of entityDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown dropdown-large dropdown-padding" *ngIf="_enttdetails.entttype == 'School'">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <select id="ayid" [(ngModel)]="ayid" class="form-control ayname" (ngModelChange)="getEntityDetails()">
+                                        <option *ngFor="let row of ayDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="pad-07">
+                            <button type="button" class="btn btn-theme btn-xs" (click)="getEntityDetails()">
+                                <i class="material-icons">arrow_forward</i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -127,6 +127,6 @@ export class ViewSubjectMapToTeacherComponent implements OnInit {
     }
 
     public editSubjectMapToTeacher(row) {
-        this._router.navigate(['/master/subjectmaptoteacher/edit', row.smtid]);
+        this._router.navigate(['/master/subjectmaptoteacher/edit', row.key.split('~')[0]]);
     }
 }

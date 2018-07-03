@@ -107,7 +107,7 @@
                                 <img *ngIf="row.gndrkey == 'F'" alt="{{row.empname}}" src="{{global.uploadurl + row.empphoto}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
                             </td>
                             <td>
-                                {{row.empname}}
+                                {{row.empname}}<br /> {{row.emptypname}}
                             </td>
                             <td>
                                 {{row.doj}}

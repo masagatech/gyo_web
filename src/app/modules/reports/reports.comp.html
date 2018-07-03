@@ -1,4 +1,4 @@
-<app-head [wsname]="wsname" [wslogo]="wslogo" [enttname]="enttname" [homeurl]="'/'"></app-head>
+<app-head [wsname]="wsname" [wslogo]="wslogo" [enttname]="enttname" [homeurl]="'/workspace/entity'"></app-head>
 
 <leftsidebar></leftsidebar>
 
@@ -7,3 +7,5 @@
         <router-outlet></router-outlet>
     </div>
 </section>
+
+<app-footer [homeurl]="'/workspace/entity'"></app-footer>

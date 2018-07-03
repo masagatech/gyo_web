@@ -43,33 +43,68 @@
                     <thead>
                         <tr>
                             <th>
-                                Teacher Name
+                                Class Name
                             </th>
                             <th>
-                                Subject
+                                Monday
                             </th>
                             <th>
+                                Tuesday
+                            </th>
+                            <th>
+                                Wednesday
+                            </th>
+                            <th>
+                                Thursday
+                            </th>
+                            <th>
+                                Friday
+                            </th>
+                            <th>
+                                Saturday
+                            </th>
+                            <th>
+                                Sunday
                             </th>
                         </tr>
                     </thead>
-                    <tbody *ngFor="let row of submaptchrDT | groupBy:'classname'">
+                    <tbody *ngFor="let row of submaptchrDT | groupBy:'tchrhead'">
                         <tr class="tr-table">
-                            <th colspan="3">
-                                {{row.key}}
+                            <th colspan="7">
+                                {{row.key.split('~')[1]}}
+                            </th>
+                            <th class="text-right">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="editSubjectMapToTeacher(row)">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                </div>
                             </th>
                         </tr>
                         <tr *ngFor="let drow of row.value">
                             <td>
-                                {{drow.tchrname}}
+                                {{drow.classname}}
                             </td>
                             <td>
-                                {{drow.subject}}
+                                {{drow.monsubname}}
                             </td>
                             <td>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editSubjectMapToTeacher(drow)">
-                                        <i class="material-icons">edit</i></button>
-                                </div>
+                                {{drow.tuesubname}}
+                            </td>
+                            <td>
+                                {{drow.wedsubname}}
+                            </td>
+                            <td>
+                                {{drow.thusubname}}
+                            </td>
+                            <td>
+                                {{drow.frisubname}}
+                            </td>
+                            <td>
+                                {{drow.satsubname}}
+                            </td>
+                            <td>
+                                {{drow.sunsubname}}
                             </td>
                         </tr>
                     </tbody>

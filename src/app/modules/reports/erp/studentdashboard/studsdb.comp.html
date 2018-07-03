@@ -6,7 +6,7 @@
                     <div class="form-line">
                         <label class="control-label">Student Name <strong>*</strong></label>
                         <p-autoComplete id="studname" name="studname" [(ngModel)]="selectStudent" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
-                        <span class="material-icons inputsearchico pad-20">
+                        <span class="material-icons inputsearchico pad-12">
                             <a role="button" (click)="getClassDetails()" class="btn btn-search">arrow_forward</a>
                         </span>
                     </div>

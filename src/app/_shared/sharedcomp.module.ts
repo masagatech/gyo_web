@@ -6,6 +6,7 @@ import { FilterByPipe } from '../_pipe/filterby.pipe';
 import { CurrencyPipe } from '../_pipe/currency.pipe';
 import { GroupByPipe } from '../_pipe/groupby.pipe';
 import { HeaderComponent } from '../modules/usercontrol/header/header.comp';
+import { FooterComponent } from '../modules/usercontrol/footer/footer.comp';
 import { LeftSideBarComponent } from '../modules/usercontrol/leftsidebar/leftsidebar.comp';
 import { LeftDashboardComponent } from '../modules/usercontrol/leftdashboard/leftdb.comp';
 import { ADHOST, OnlyNumber } from '@directives';
@@ -16,9 +17,9 @@ import { AutoCompleteModule } from 'primeng/primeng';
 
 @NgModule({
     imports: [RouterModule, FormsModule, CommonModule, AutoCompleteModule],
-    declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
+    declarations: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, FooterComponent, LeftSideBarComponent,
         LeftDashboardComponent, ADHOST, OnlyNumber, TimesAgoPipe, format],
-    exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, LeftSideBarComponent,
+    exports: [FilterByPipe, CurrencyPipe, GroupByPipe, HeaderComponent, FooterComponent, LeftSideBarComponent,
         LeftDashboardComponent, ADHOST, OnlyNumber, TimesAgoPipe, format]
 })
 

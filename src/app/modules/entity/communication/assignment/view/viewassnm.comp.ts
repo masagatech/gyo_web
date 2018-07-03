@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssignmentService } from '@services/erp';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewassnm.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewassnm.comp.html'
 })
 
 export class ViewAssignmentComponent implements OnInit {
@@ -18,7 +17,7 @@ export class ViewAssignmentComponent implements OnInit {
     assignmentDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _assmservice: AssignmentService) {
+        private _loginservice: LoginService, private _assmservice: AssignmentService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

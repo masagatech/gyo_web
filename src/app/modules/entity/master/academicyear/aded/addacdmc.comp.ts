@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AcademicYearService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
@@ -191,6 +190,10 @@ export class AddAcademicYearComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/academicyear']);
+        var that = this;
+
+        that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
+            that._router.navigate(['/master/academicyear']);
+        })
     }
 }

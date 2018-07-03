@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ProspectusService } from '@services/erp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addprspctissd.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addprspctissd.comp.html'
 })
 
 export class AddProspectusIssuedComponent implements OnInit {
@@ -45,7 +45,7 @@ export class AddProspectusIssuedComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _prspctservice: ProspectusService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -73,13 +73,18 @@ export class AddProspectusIssuedComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                    if (defayDT.length > 0) {
-                        that.ayid = defayDT[0].key;
+                    if (Cookie.get("_ayid_") != null) {
+                        that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
                     else {
-                        that.ayid = 0;
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = 0;
+                        }
                     }
                 }
 

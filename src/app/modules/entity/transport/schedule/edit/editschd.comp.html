@@ -126,7 +126,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
+                    <div class="form-group hide" *ngIf="pickpsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
                             <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrdata" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
@@ -135,7 +135,7 @@
                         </div>
                     </div>
 
-                    <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
+                    <p-orderList [value]="pickPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" [header]="_enttdetails.psngrtype">
                         <ng-template let-passenger pTemplate="editor">
                             <div class="row">
                                 <div class="col-md-10">
@@ -230,7 +230,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
+                    <div class="form-group hide" *ngIf="droppsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
                             <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrdata" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
@@ -239,7 +239,7 @@
                         </div>
                     </div>
 
-                    <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" header="Passenger">
+                    <p-orderList [value]="dropPassengerDT" [listStyle]="{'height':'250px'}" [responsive]="true" [header]="_enttdetails.psngrtype">
                         <ng-template let-passenger pTemplate="item">
                             <div class="row">
                                 <div class="col-md-10">

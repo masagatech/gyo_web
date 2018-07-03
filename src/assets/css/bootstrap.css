@@ -5399,6 +5399,14 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
     right: 11px;
 }
 
+.navbar-nav>li>.dropdown-bottom-menu {
+    margin: -100px;
+    padding: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    right: 11px;
+}
+
 .navbar-fixed-bottom .navbar-nav>li>.dropdown-menu {
     margin-bottom: 0;
     border-top-left-radius: 4px;
