@@ -9027,7 +9027,7 @@ fieldset[disabled] .form-control {
 .sidebar .menu {
     position: relative;
     overflow-y: auto;
-    height: 90vh;
+    /* height: 90vh; */
 }
 
 .sidebar .menu .list {
@@ -9242,6 +9242,7 @@ fieldset[disabled] .form-control {
     padding: 2px 0px 2px 0px;
     background: linear-gradient(#777, #333);
     height: 35px;
+    display: none;
 }
 
 .footer .legal {
