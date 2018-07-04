@@ -2023,12 +2023,14 @@
     background-color: #607d8b!important;
 }
 
-.theme-teal .btn.btn-theme {
-    padding: 2px 5px 0px 5px !important;
+.theme-teal .btn.btn-theme,
+.theme-teal .btn.btn-danger {
+    /* padding: 2px 5px 0px 5px !important; */
+    padding: 0px 10px 0px 10px!important;
 }
 
 .theme-teal .btn.btn-xs {
-    padding: 0 3px!important;
+    padding: 0 3px;
 }
 
 .theme-teal .btn-search {
@@ -2055,7 +2057,8 @@
     font-size: 13px;
 }
 
-.theme-teal .btn-theme .material-icons {
+.theme-teal .btn-theme .material-icons,
+.theme-teal .btn-danger .material-icons {
     font-size: 16px!important;
 }
 

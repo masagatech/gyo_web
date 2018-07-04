@@ -499,9 +499,8 @@ export class AddStudentVehicleComponent implements OnInit {
         if (isvalid) {
             commonfun.loader();
 
-            var saveStudent = {
+            var params = {
                 "autoid": that.autoid,
-                "ayid": that.ayid,
                 "schoolid": that._enttdetails.enttid,
                 "studsid": that.studid,
                 "alert": that.alert,
@@ -517,12 +516,13 @@ export class AddStudentVehicleComponent implements OnInit {
                 "dropaddr": that.dropaddr,
                 "dropgeoloc": (that.droplet == "" ? "0.00" : that.droplet) + "," + (that.droplong == "" ? "0.00" : that.droplong),
                 "cuid": that.loginUser.ucode,
+                "ayid": that.ayid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
                 "mode": ""
             }
 
-            that._admsnservice.saveStudentVehicleMap(saveStudent).subscribe(data => {
+            that._admsnservice.saveStudentVehicleMap(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_studsvehmap;
                     var msg = dataResult.msg;

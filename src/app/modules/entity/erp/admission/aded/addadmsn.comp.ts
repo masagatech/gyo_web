@@ -135,7 +135,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     fthrid: number = 0;
     fthrloginid: number = 0;
     fthrfmlid: number = 0;
-    fthrcode: string = "";
     fthrname: string = "";
     fthrmobile: string = "";
     fthremail: string = "";
@@ -154,7 +153,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     mthrid: number = 0;
     mthrloginid: number = 0;
     mthrfmlid: number = 0;
-    mthrcode: string = "";
     mthrname: string = "";
     mthrmobile: string = "";
     mthremail: string = "";
@@ -806,7 +804,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         that.fthrloginid = 0;
         that.fthrfmlid = 0;
-        that.fthrcode = "";
         that.fthrname = "";
         that.fthrmobile = "";
         that.fthremail = "";
@@ -823,7 +820,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
         that.mthrloginid = 0;
         that.mthrfmlid = 0;
-        that.mthrcode = "";
         that.mthrname = "";
         that.mthrmobile = "";
         that.mthremail = "";
@@ -859,7 +855,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         if (_fthrfld.length != 0) {
                             that.fthrloginid = _fthrfld[0].loginid;
                             that.fthrfmlid = _fthrfld[0].fmlid;
-                            that.fthrcode = _fthrfld[0].fmlcode;
                             that.fthrname = _fthrfld[0].fullname;
                             that.fthrmobile = _fthrfld[0].mobile;
                             that.fthremail = _fthrfld[0].email;
@@ -881,7 +876,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         if (_mthrfld.length != 0) {
                             that.mthrloginid = _mthrfld[0].loginid;
                             that.mthrfmlid = _mthrfld[0].fmlid;
-                            that.mthrcode = _mthrfld[0].fmlcode;
                             that.mthrname = _mthrfld[0].fullname;
                             that.mthrmobile = _mthrfld[0].mobile;
                             that.mthremail = _mthrfld[0].email;
@@ -999,28 +993,33 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".city").focus();
             return false;
         }
-        if (that.fthrmobile == "" && that.mthrmobile == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Father Mobile No / Mother Mobile No");
+        if (that.fthrmobile == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Mobile No");
             $(".fthrmobile").focus();
             return false;
         }
-        if (that.fthrcode == "" && that.mthrcode == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Father Code / Mother Code");
-            $(".fthrcode").focus();
-            return false;
-        }
-        if (that.fthrcode == that.mthrcode) {
-            that._msg.Show(messageType.error, "Error", "Father Code and Mother Code Not Same");
-            $(".fthrcode").focus();
-            return false;
-        }
-        if (that.fthrname == "" && that.mthrname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Father Name / Mother Name");
+        if (that.fthrname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Father Name");
             $(".fthrname").focus();
             return false;
         }
-        if (that.fthremail == "" && that.mthremail == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Father Email / Mother Email");
+        if (that.fthremail) {
+            that._msg.Show(messageType.error, "Error", "Enter Father Email");
+            $(".fthremail").focus();
+            return false;
+        }
+        if (that.mthrmobile == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mother Mobile No");
+            $(".mthrmobile").focus();
+            return false;
+        }
+        if (that.mthrname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mother Name");
+            $(".mthrname").focus();
+            return false;
+        }
+        if (that.mthremail == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mother Email");
             $(".fthremail").focus();
             return false;
         }
@@ -1095,7 +1094,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
             // Father Details
 
-            { "key": "Father Code", "val": that.fthrcode, "fldname": "fthrcode", "fldtype": "text" },
             { "key": "Father Name", "val": that.fthrname, "fldname": "fthrfullname", "fldtype": "text" },
             { "key": "Father Mobile", "val": that.fthrmobile, "fldname": "fthrmobile", "fldtype": "text" },
             { "key": "Father Email", "val": that.fthremail, "fldname": "fthremail", "fldtype": "text" },
@@ -1108,7 +1106,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
             // Mother Details
 
-            { "key": "Mother Code", "val": that.mthrcode, "fldname": "mthrcode", "fldtype": "text" },
             { "key": "Mother Name", "val": that.mthrname, "fldname": "mthrfullname", "fldtype": "text" },
             { "key": "Mother Mobile", "val": that.mthrmobile, "fldname": "mthrmobile", "fldtype": "text" },
             { "key": "Mother Email", "val": that.mthremail, "fldname": "mthremail", "fldtype": "text" },
@@ -1219,7 +1216,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "fthrloginid": that.fthrloginid,
             "fthrfmlid": that.fthrfmlid,
             "fthrmobile": that.fthrmobile,
-            "fthrcode": that.fthrcode,
+            "fthrcode": that._autoservice.getUniqueKey(),
             "fthrfullname": that.fthrname,
             "fthremail": that.fthremail,
             "fthrschid": that.fthrschid,
@@ -1235,7 +1232,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "mthrloginid": that.mthrloginid,
             "mthrfmlid": that.mthrfmlid,
             "mthrmobile": that.mthrmobile,
-            "mthrcode": that.mthrcode,
+            "mthrcode": that._autoservice.getUniqueKey(),
             "mthrfullname": that.mthrname,
             "mthremail": that.mthremail,
             "mthrschid": that.mthrschid,
@@ -1501,7 +1498,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             that.mthrmobile = "";
         }
 
-        that.fthrcode = "";
         that.fthremail = "";
         that.fthrschid = 0;
         that.fthrothschname = "";
@@ -1510,7 +1506,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.fthrocptn = "";
         that.fthrsalary = "";
 
-        that.mthrcode = "";
         that.mthremail = "";
         that.mthrschid = 0;
         that.mthrothschname = "";
@@ -1692,7 +1687,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     if (_fthrfld.length != 0) {
                         that.fthrloginid = _fthrfld[0].loginid;
                         that.fthrfmlid = _fthrfld[0].fmlid;
-                        that.fthrcode = _fthrfld[0].fmlcode;
                         that.fthrname = _fthrfld[0].fullname;
                         that.fthrmobile = _fthrfld[0].mobile;
                         that.fthremail = _fthrfld[0].email;
@@ -1713,7 +1707,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     if (_mthrfld.length != 0) {
                         that.mthrloginid = _mthrfld[0].loginid;
                         that.mthrfmlid = _mthrfld[0].fmlid;
-                        that.mthrcode = _mthrfld[0].fmlcode;
                         that.mthrname = _mthrfld[0].fullname;
                         that.mthrmobile = _mthrfld[0].mobile;
                         that.mthremail = _mthrfld[0].email;

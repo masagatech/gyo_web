@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { EntityService } from '@services/master';
+import { EntityService, WorkspaceService } from '@services/master';
 import { GMap } from 'primeng/primeng';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -69,8 +70,8 @@ export class AddEntityComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _entityservice: EntityService,
-        private _autoservice: CommonService, private _loginservice: LoginService, private cdRef: ChangeDetectorRef) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cdRef: ChangeDetectorRef,
+        private _entityservice: EntityService, private _wsservice: WorkspaceService, private _autoservice: CommonService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.getLogoUploadConfig();
@@ -94,7 +95,7 @@ export class AddEntityComponent implements OnInit {
         if (this.entttype == "School") {
             $("#diventtfields").prop("class", "row clearfix show");
         }
-        else{
+        else {
             $("#diventtfields").prop("class", "row clearfix hide");
         }
     }
@@ -693,9 +694,9 @@ export class AddEntityComponent implements OnInit {
 
                 that._entityservice.saveEntityInfo(saveentity).subscribe(data => {
                     try {
-                        var dataResult = data.data;
-                        var msg = dataResult[0].funsave_schoolinfo.msg;
-                        var msgid = dataResult[0].funsave_schoolinfo.msgid;
+                        var dataResult = data.data[0].funsave_schoolinfo;
+                        var msg = dataResult.msg;
+                        var msgid = dataResult.msgid;
 
                         if (msgid != "-1") {
                             that._msg.Show(messageType.success, "Success", msg);
@@ -834,9 +835,43 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
+    viewEntityDetails() {
+        var that = this;
+        var myWorkspaceDT = [];
+
+        commonfun.loader();
+
+        that._wsservice.getWorkspaceDetails({
+            "flag": "userwise", "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                Cookie.delete("_schwsdetails_");
+                Cookie.set("_schwsdetails_", JSON.stringify(data.data[0]));
+
+                that._router.navigate(['/workspace/entity']);
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/workspace/entity']);
+        if (this.schid == 0) {
+            this.viewEntityDetails();
+        }
+        else {
+            this._router.navigate(['/workspace/entity']);
+        }
     }
 }

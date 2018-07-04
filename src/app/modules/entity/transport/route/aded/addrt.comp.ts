@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
 import { GMap } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -43,7 +42,7 @@ export class AddRouteComponent implements OnInit {
     radius: any = 1000;
 
     stopsList: any = [];
-    selectedStops: any = [];
+    selectedStops: any;
     isedit: boolean = false;
 
     mode: string = "";
@@ -478,7 +477,7 @@ export class AddRouteComponent implements OnInit {
             //     strokeOpacity: 0
             // });
 
-            //  mrk.setMap(null);
+            // mrk.setMap(null);
             cir.setMap(null);
         }
     }
@@ -487,20 +486,30 @@ export class AddRouteComponent implements OnInit {
 
     editStopsList(row) {
         this.isedit = true;
+
+        if (this.selectedStops !== undefined) {
+            this.selectedStops.isviewmap = false;
+            this.isViewMapShow(this.selectedStops);
+        }
+
         this.selectedStops = row;
+        row.isviewmap = true;
+        this.isViewMapShow(row);
+
         this.stpid = row.stpid;
         this.stpname = row.stpname;
         this.stptype = row.stptype;
         this.address = row.address;
         this.lat = row.lat;
         this.lon = row.lon;
+        this.radius = row.radius;
 
         var latlng = new google.maps.LatLng(this.lat, this.lon);
         let mrk = this.markers[row.rowid];
 
         mrk.setPosition(latlng);
         this.map.setCenter(latlng);
-        this.map.setZoom(16);
+        this.map.setZoom(12);
     }
 
     // Edit Stops
@@ -607,7 +616,9 @@ export class AddRouteComponent implements OnInit {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.getStopsByRoute();
+                            that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
+                                that._router.navigate(['/transport/route/edit', that.rtid]);
+                            })
                         }
                         else {
                             that.backViewData();
@@ -634,7 +645,7 @@ export class AddRouteComponent implements OnInit {
         for (let i = 0; i < this.stopsList.length; i++) {
             var element = this.stopsList[i];
             element.rowid = element.stpid;
-            element.isviewmap = true;
+            element.isviewmap = false;
 
             this.addmarker(element)
         }
@@ -709,6 +720,10 @@ export class AddRouteComponent implements OnInit {
 
         that.markers[stps.rowid] = vhmarker;
         that.circles[stps.rowid] = cityCircle;
+
+        if (that.rtid != 0) {
+            cityCircle.setMap(null);
+        }
     }
 
     private removemarker(rowid) {

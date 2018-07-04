@@ -19,26 +19,26 @@ export class AddVehicleComponent implements OnInit {
     d1strDT: any = [];
 
     vehid: number = 0;
+    vehtype: string = "";
     vehno: string = "";
     vehregno: string = "";
-    vehtype: string = "";
     vehmake: string = "";
     vehmdl: string = "";
     capacity: number = 0;
     vehcond: string = "";
     vehfclt: string = "";
-    d1str: string = "";
 
+    istrackenabled: boolean = false;
     devtype: string = "";
-    simno: string = "";
     imei: string = "";
+    simno: string = "";
+    speedAllow: number = 0;
+    d1str: string = "";
+    vehurl: string = "";
 
     mode: string = "";
     isactive: boolean = true;
-    istrackenabled: boolean = false;
     private subscribeParameters: any;
-
-    speedAllow: number = 0;
 
     constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
         private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
@@ -126,11 +126,13 @@ export class AddVehicleComponent implements OnInit {
         this.capacity = 0;
         this.vehcond = "";
         this.vehfclt = "";
+        this.istrackenabled = false;
         this.devtype = "";
         this.imei = "";
         this.simno = "";
         this.speedAllow = 0;
         this.d1str = "";
+        this.vehurl = "";
     }
 
     // Save Data
@@ -179,6 +181,11 @@ export class AddVehicleComponent implements OnInit {
                 $(".simno").focus();
                 return false;
             }
+            if (that.vehurl = "") {
+                that._msg.Show(messageType.error, "Error", "Enter URL");
+                $(".vehurl").focus();
+                return false;
+            }
         }
 
         return true;
@@ -201,24 +208,27 @@ export class AddVehicleComponent implements OnInit {
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
-                "mode": "",
                 "istrack": that.istrackenabled,
                 "devtype": that.devtype,
                 "imei": that.imei,
                 "simno": that.simno,
                 "allowspd": parseInt("" + that.speedAllow),
+                "url": that.vehurl,
                 "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
+                "mode": "",
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode,
                 "isactive": that.isactive
             }
 
+            console.log(params);
+
             that._vehservice.saveVehicleInfo(params).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    var msg = dataResult[0].funsave_vehicleinfo.msg;
-                    var msgid = dataResult[0].funsave_vehicleinfo.msgid;
+                    var dataResult = data.data[0].funsave_vehicleinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -229,6 +239,7 @@ export class AddVehicleComponent implements OnInit {
                         else {
                             that.backViewData();
                         }
+
                         try {
                             // Saving Data To VTS
 
@@ -236,6 +247,7 @@ export class AddVehicleComponent implements OnInit {
                                 "vhid": params.imei,
                                 "vhname": params.vehno,
                                 "alwspeed": params.allowspd,
+                                "url": params.url,
                                 "Vhd": {
                                     "vehregno": that.vehregno,
                                     "vehtype": that.vehtype,
@@ -249,8 +261,9 @@ export class AddVehicleComponent implements OnInit {
                                     "d1str": that.d1str
                                 }
                             })
-                        } catch (error) {
-
+                        }
+                        catch (e) {
+                            that._msg.Show(messageType.error, "Error", e);
                         }
                     }
                     else {
@@ -272,7 +285,9 @@ export class AddVehicleComponent implements OnInit {
     }
 
     saveToVTS(vhdata) {
-        this._vehservice.saveVehicleInfoToVts(vhdata).subscribe(data => {
+        var that = this;
+
+        that._vehservice.saveVehicleInfoToVts(vhdata).subscribe(data => {
 
         }, err => {
 
@@ -299,22 +314,23 @@ export class AddVehicleComponent implements OnInit {
                         var _vehicledata = data.data;
 
                         that.vehid = _vehicledata[0].autoid;
+                        that.vehtype = _vehicledata[0].vehicletype;
                         that.vehno = _vehicledata[0].vehicleno;
                         that.vehregno = _vehicledata[0].vehregno;
-                        that.vehtype = _vehicledata[0].vehicletype;
                         that.vehmake = _vehicledata[0].vehiclemake;
                         that.vehmdl = _vehicledata[0].vehiclemodel;
                         that.capacity = _vehicledata[0].capacity;
                         that.vehcond = _vehicledata[0].vehiclecondition;
                         that.vehfclt = _vehicledata[0].vehiclefacility;
-                        that.d1str = _vehicledata[0].extra == null ? "" : _vehicledata[0].extra.d1str;
-                        that.isactive = _vehicledata[0].isactive;
-                        that.mode = _vehicledata[0].mode;
                         that.istrackenabled = _vehicledata[0].istrack;
                         that.devtype = _vehicledata[0].devtype;
-                        that.simno = _vehicledata[0].simno;
                         that.imei = _vehicledata[0].imei;
+                        that.simno = _vehicledata[0].simno;
                         that.speedAllow = _vehicledata[0].vhspeed;
+                        that.d1str = _vehicledata[0].d1str;
+                        that.vehurl = _vehicledata[0].url;
+                        that.isactive = _vehicledata[0].isactive;
+                        that.mode = _vehicledata[0].mode;
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);

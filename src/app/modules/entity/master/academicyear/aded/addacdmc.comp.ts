@@ -3,9 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AcademicYearService } from '@services/erp';
-
-declare var $: any;
-declare var commonfun: any;
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'addacdmc.comp.html'
@@ -114,14 +112,27 @@ export class AddAcademicYearComponent implements OnInit {
                     var dataResult = data.data[0].funsave_academicyear;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
+                    var keyid = dataResult.keyid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid == "1") {
+                            if (that.iscurrent) {
+                                Cookie.delete("_ayid_");
+                                Cookie.set("_ayid_", keyid.toString());
+
+                                that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
+                                    that._router.navigate(['/master/academicyear/add']);
+                                })
+                            }
+
                             that.resetAcademicYearFields();
                         }
                         else {
+                            Cookie.delete("_ayid_");
+                            Cookie.set("_ayid_", keyid.toString());
+
                             that.backViewData();
                         }
 

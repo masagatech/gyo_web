@@ -30,10 +30,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle Type
-                                    <strong>*</strong>
-                                </label>
-                                <select id="vehtype" name="vehtype" [(ngModel)]="vehtype" class="form-control vehtype" tabindex="2">
+                                <label class="control-label">Vehicle Type <strong>*</strong></label>
+                                <select id="vehtype" name="vehtype" [(ngModel)]="vehtype" class="form-control vehtype" tabindex="1">
                                     <option [value]="''">Select Vehicle Type</option>
                                     <option *ngFor="let row of vehtypeDT" [value]="row.key">
                                         {{row.val}}
@@ -45,10 +43,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle No
-                                    <strong>*</strong>
-                                </label>
-                                <input type="text" [(ngModel)]="vehno" class="form-control vehno" maxlength="50" tabindex="3" />
+                                <label class="control-label">Vehicle No <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehno" class="form-control vehno" maxlength="50" tabindex="2" />
                             </div>
                         </div>
                     </div>
@@ -58,20 +54,16 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle Registration No
-                                    <strong>*</strong>
-                                </label>
-                                <input type="text" [(ngModel)]="vehregno" class="form-control vehregno" maxlength="50" tabindex="4" />
+                                <label class="control-label">Vehicle Registration No <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehregno" class="form-control vehregno" maxlength="50" tabindex="3" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle Make
-                                    <strong>*</strong>
-                                </label>
-                                <input type="text" [(ngModel)]="vehmake" class="form-control vehmake" maxlength="50" tabindex="5" />
+                                <label class="control-label">Vehicle Make <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehmake" class="form-control vehmake" maxlength="50" tabindex="4" />
                             </div>
                         </div>
                     </div>
@@ -81,10 +73,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle Model
-                                    <strong>*</strong>
-                                </label>
-                                <input type="text" [(ngModel)]="vehmdl" class="form-control vehmdl" maxlength="50" tabindex="6" />
+                                <label class="control-label">Vehicle Model <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehmdl" class="form-control vehmdl" maxlength="50" tabindex="5" />
                             </div>
                         </div>
                     </div>
@@ -92,7 +82,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Capacity</label>
-                                <input type="number" [(ngModel)]="capacity" class="form-control capacity" maxlength="50" tabindex="7" />
+                                <input type="number" [(ngModel)]="capacity" class="form-control capacity" maxlength="50" tabindex="6" />
                             </div>
                         </div>
                     </div>
@@ -103,7 +93,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Vehicle Condition</label>
-                                <input type="text" [(ngModel)]="vehcond" class="form-control" maxlength="50" tabindex="8" />
+                                <input type="text" [(ngModel)]="vehcond" class="form-control" maxlength="50" tabindex="7" />
                             </div>
                         </div>
                     </div>
@@ -111,7 +101,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Vehicle Facility</label>
-                                <input type="text" [(ngModel)]="vehfclt" class="form-control" maxlength="50" tabindex="9" />
+                                <input type="text" [(ngModel)]="vehfclt" class="form-control" maxlength="50" tabindex="8" />
                             </div>
                         </div>
                     </div>
@@ -122,9 +112,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Enable Tracking
-                                    <strong>*</strong>
-                                </label>
+                                <label class="control-label">Enable Tracking <strong>*</strong></label>
                                 <span class="switch">
                                     <label>
                                         <input type="checkbox"  tabindex="-1" [(ngModel)]="istrackenabled" >
@@ -141,7 +129,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Device Type <strong>*</strong></label>
-                                <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
+                                <select id="devtype" [disabled]="!istrackenabled" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="9">
                                     <option [value]="''">GPS Device Type</option>
                                     <option *ngFor="let row of devtypeDT" [value]="row.key">
                                         {{row.val}}
@@ -154,7 +142,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">IMEI <strong>*</strong></label>
-                                <input type="text" [disabled]="!istrackenabled" [(ngModel)]="imei" class="form-control vehno" maxlength="50" tabindex="11" />
+                                <input type="text" [disabled]="!istrackenabled" [(ngModel)]="imei" class="form-control vehno" maxlength="50" tabindex="10" />
                             </div>
                         </div>
                     </div>
@@ -165,7 +153,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">SIM No. (eg. 9009090009) <strong>*</strong></label>
-                                <input type="text" [disabled]="!istrackenabled" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="12" />
+                                <input type="text" [disabled]="!istrackenabled" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="11" />
                             </div>
                         </div>
                     </div>
@@ -173,7 +161,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Speed Alert(Above km/h) <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="11" />
+                                <input type="text" OnlyNumber="true" [disabled]="!istrackenabled" [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="12" />
                             </div>
                         </div>
                     </div>
@@ -184,7 +172,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">D1 Function</label>
-                                <select id="d1str" [disabled]="!istrackenabled" name="d1str" [(ngModel)]="d1str" class="form-control d1str" tabindex="10">
+                                <select id="d1str" [disabled]="!istrackenabled" name="d1str" [(ngModel)]="d1str" class="form-control d1str" tabindex="13">
                                     <option [value]="''">None</option>
                                     <option *ngFor="let row of d1strDT" [value]="row.key">
                                         {{row.val}}
@@ -192,6 +180,13 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">URL <strong>*</strong></label>
+                        <input type="text" [disabled]="!istrackenabled" [(ngModel)]="vehurl" class="form-control vehurl" maxlength="50" tabindex="14" />
                     </div>
                 </div>
             </div>

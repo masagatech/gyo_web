@@ -7,7 +7,7 @@ import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 import { AddEntityComponent } from './aded/addentity.comp';
 import { ViewEntityComponent } from './view/viewentity.comp';
 
-import { EntityService } from '@services/master';
+import { EntityService, WorkspaceService } from '@services/master';
 
 import {
   LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
@@ -36,7 +36,7 @@ export const routes = [
     CheckboxModule, AutoCompleteModule, FileUploadModule, TabViewModule
   ],
 
-  providers: [AuthGuard, EntityService, CommonService]
+  providers: [AuthGuard, EntityService, WorkspaceService, CommonService]
 })
 
 export class EntityModule {

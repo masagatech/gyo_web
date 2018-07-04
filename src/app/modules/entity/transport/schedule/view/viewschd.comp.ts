@@ -14,8 +14,7 @@ export class ViewScheduleComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    passengerDT: any = [];
-    counter: number = 0;
+    scheduleDT: any = [];
 
     pickAttList: any = [];
     dropAttList: any = [];
@@ -24,8 +23,6 @@ export class ViewScheduleComponent implements OnInit {
     dropPassengerDT: any = [];
 
     batchDT: any = [];
-    driverDT: any = [];
-    vehicleDT: any = [];
 
     batchid: number = 0;
     pickautoid: number = 0;
@@ -119,11 +116,11 @@ export class ViewScheduleComponent implements OnInit {
             "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                var d = data.data;
+                that.scheduleDT = data.data;
 
-                if (d.length !== 0) {
-                    pickalldata = d.filter(a => a.typ === "p");
-                    dropalldata = d.filter(a => a.typ === "d");
+                if (that.scheduleDT.length !== 0) {
+                    pickalldata = that.scheduleDT.filter(a => a.typ === "p");
+                    dropalldata = that.scheduleDT.filter(a => a.typ === "d");
 
                     if (pickalldata.length !== 0) {
                         that.pickautoid = pickalldata[0].autoid;

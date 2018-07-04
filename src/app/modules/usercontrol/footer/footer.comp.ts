@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService, AuthenticationService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { AppState } from '../../../app.service';
 import { EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -94,10 +93,8 @@ export class FooterComponent implements OnInit, OnDestroy {
               that.ayid = defayDT[0].key;
             }
             else {
-              that.ayid = 0;
+              that.ayid = that._enttdetails.ayid;
             }
-
-            Cookie.set("_ayid_", that.ayid.toString());
           }
         }
       }
@@ -112,6 +109,17 @@ export class FooterComponent implements OnInit, OnDestroy {
       commonfun.loaderhide();
     }, () => {
 
+    })
+  }
+
+  public openMainForm(row) {
+    var that = this;
+
+    Cookie.delete("_schenttdetails_");
+    Cookie.set("_schenttdetails_", JSON.stringify(row));
+
+    that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
+      that._router.navigate(['/']);
     })
   }
 
@@ -151,19 +159,16 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   changeEntityDetails() {
+    var that = this;
     Cookie.delete("_ayid_");
-    this.getEntityDetails();
+    that.getEntityDetails();
   }
 
   changeAYDetails() {
-    this.getEntityDetails();
-  }
-
-  public openMainForm(row) {
     var that = this;
-    Cookie.delete("_schenttdetails_");
 
-    Cookie.set("_schenttdetails_", JSON.stringify(row));
+    Cookie.delete("_ayid_");
+    Cookie.set("_ayid_", that.ayid.toString());
 
     that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
       that._router.navigate(['/']);
