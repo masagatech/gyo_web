@@ -91,11 +91,12 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].key;
-                            that.getStudentDetails();
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.getStudentDetails();
                     }
                     else {
                         that.ayid = parseInt(Cookie.get('_ayid_'));

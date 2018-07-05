@@ -61,7 +61,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
                 defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
-                if (defayDT.length > 0) {
+                if (that.ayDT.length > 0) {
                     if (Cookie.get("_ayid_") != null) {
                         that.ayid = parseInt(Cookie.get("_ayid_"));
                     }
@@ -72,7 +72,7 @@ export class AddSubjectMapToTeacherComponent implements OnInit {
                             that.ayid = defayDT[0].key;
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
                     }
                 }

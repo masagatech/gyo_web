@@ -69,11 +69,12 @@ export class HolidayComponent implements OnInit, OnDestroy {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].id;
-                            that.getHoliday();
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.getHoliday();
                     }
                 }
             }

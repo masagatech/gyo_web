@@ -54,11 +54,12 @@ export class ViewProspectusComponent implements OnInit {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].key;
-                            that.getProspectusDetails();
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.getProspectusDetails();
                     }
                 }
             }

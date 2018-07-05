@@ -70,7 +70,7 @@ export class CategoryWiseReportsComponent implements OnInit, OnDestroy {
                             that.ayid = defayDT[0].key;
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
                     }
                 }

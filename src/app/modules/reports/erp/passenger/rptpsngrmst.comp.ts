@@ -125,11 +125,12 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].key;
-                            that.getPassengerReports("html");
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.getPassengerReports("html");
                     }
                 }
 

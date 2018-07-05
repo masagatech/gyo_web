@@ -80,11 +80,12 @@ export class PassengerLeftReportsComponent implements OnInit, OnDestroy {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].key;
-                            that.getLeftPassenger("html");
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.getLeftPassenger("html");
                     }
                 }
 

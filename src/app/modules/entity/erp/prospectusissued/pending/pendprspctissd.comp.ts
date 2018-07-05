@@ -59,11 +59,12 @@ export class PendingProspectusIssuedComponent implements OnInit {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].key;
-                            that.getProspectusIssued();
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.getProspectusIssued();
                     }
                 }
             }

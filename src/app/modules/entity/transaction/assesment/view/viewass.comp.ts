@@ -64,7 +64,7 @@ export class ViewAssesmentComponent implements OnInit {
                             that.ayid = defayDT[0].id;
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
                     }
                 }

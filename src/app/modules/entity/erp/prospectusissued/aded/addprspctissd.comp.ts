@@ -83,7 +83,7 @@ export class AddProspectusIssuedComponent implements OnInit {
                             that.ayid = defayDT[0].key;
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
                     }
                 }

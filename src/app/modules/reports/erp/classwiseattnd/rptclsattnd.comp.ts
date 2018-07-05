@@ -70,11 +70,12 @@ export class ClassWiseAttednacneReportsComponent implements OnInit, OnDestroy {
 
                         if (defayDT.length > 0) {
                             that.ayid = defayDT[0].id;
-                            that.fillMonthDropDown();
                         }
                         else {
-                            that.ayid = 0;
+                            that.ayid = that._enttdetails.ayid;
                         }
+                        
+                        that.fillMonthDropDown();
                     }
                 }
 
