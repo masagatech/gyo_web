@@ -181,7 +181,7 @@ export class AddVehicleComponent implements OnInit {
                 $(".simno").focus();
                 return false;
             }
-            if (that.vehurl = "") {
+            if (that.vehurl == "") {
                 that._msg.Show(messageType.error, "Error", "Enter URL");
                 $(".vehurl").focus();
                 return false;
