@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { TagService } from '@services/erp';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addtgm.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addtgm.comp.html'
 })
 
 export class AddTagGroupModuleMapComponent implements OnInit {
@@ -17,14 +16,14 @@ export class AddTagGroupModuleMapComponent implements OnInit {
 
     tgmid: number = 0;
     moduleDT: any = [];
-    mdlcode: string = "";
+    mdlcode: string = "album";
 
     tagGroupDT: any = [];
 
     private subscribeParameters: any;
 
     constructor(private _tagservice: TagService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

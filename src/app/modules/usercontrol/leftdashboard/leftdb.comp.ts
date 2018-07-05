@@ -27,8 +27,8 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
 
     dashboardDT: any = [];
 
-    constructor(private _autoservice: CommonService, private _authservice: AuthenticationService, private _loginservice: LoginService,
-        private _router: Router, private _msg: MessageService) {
+    constructor(private _router: Router, private _msg: MessageService, private _authservice: AuthenticationService,
+        private _loginservice: LoginService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();

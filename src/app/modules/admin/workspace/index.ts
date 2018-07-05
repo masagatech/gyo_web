@@ -15,7 +15,7 @@ import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, Fil
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "ws", "rights": "view", "urlname": "/workspace" } },
+      { path: 'profile', component: ViewWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "ws", "rights": "view", "urlname": "/workspace" } },
       { path: 'add', component: AddWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "ws", "rights": "add", "urlname": "/add" } },
       { path: 'details/:id', component: AddWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "ws", "rights": "edit", "urlname": "/edit" } },
       { path: 'edit/:id', component: AddWorkspaceComponent, canActivate: [AuthGuard], data: { "module": "mst", "submodule": "ws", "rights": "edit", "urlname": "/edit" } }

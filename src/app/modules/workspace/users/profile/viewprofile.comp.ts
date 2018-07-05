@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 
 @Component({
-    templateUrl: 'viewprofile.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewprofile.comp.html'
 })
 
 export class ViewProfileComponent implements OnInit {
@@ -26,7 +23,7 @@ export class ViewProfileComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
+        private _loginservice: LoginService, private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();

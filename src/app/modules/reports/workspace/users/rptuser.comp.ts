@@ -32,7 +32,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
     @ViewChild('users') users: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
+        private _loginservice: LoginService, private _userservice: UserService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

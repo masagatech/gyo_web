@@ -15,8 +15,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dashboardDT: any = [];
 
-    constructor(private _autoservice: CommonService, private _loginservice: LoginService, private _routeParams: ActivatedRoute,
-        private _router: Router, private _msg: MessageService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 

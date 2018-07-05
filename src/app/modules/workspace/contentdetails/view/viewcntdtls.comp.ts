@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ContentService } from '@services/master';
 
 @Component({
-    templateUrl: 'viewcntdtls.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewcntdtls.comp.html'
 })
 
 export class ViewContentDetailsComponent implements OnInit {
@@ -19,7 +18,7 @@ export class ViewContentDetailsComponent implements OnInit {
     contentDetailsDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _cntservice: ContentService) {
+        private _loginservice: LoginService, private _cntservice: ContentService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 

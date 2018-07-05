@@ -25,7 +25,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.getStudentDashboard();
+        this.fillAcademicYearDropDown();
     }
 
     ngOnInit() {
@@ -34,6 +34,54 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+    }
+
+    // Fill Academic Year DropDown
+
+    fillAcademicYearDropDown() {
+        var that = this;
+        var defayDT: any = [];
+
+        commonfun.loader();
+
+        that._admsnservice.getStudentDetails({
+            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.ayDT = data.data.filter(a => a.group == "ay");
+
+                if (that.ayDT.length > 0) {
+                    if (Cookie.get('_ayid_') == null) {
+                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
+
+                        if (defayDT.length > 0) {
+                            that.ayid = defayDT[0].key;
+                        }
+                        else {
+                            that.ayid = that._enttdetails.ayid;
+                        }
+                    }
+                    else {
+                        that.ayid = parseInt(Cookie.get('_ayid_'));
+                    }
+                        
+                    that.getStudentDashboard();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Fill Student Field Wise Data

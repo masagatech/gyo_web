@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { TagService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
-    templateUrl: 'viewtgm.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewtgm.comp.html'
 })
 
 export class ViewTagGroupModuleMapComponent implements OnInit {
@@ -19,8 +17,8 @@ export class ViewTagGroupModuleMapComponent implements OnInit {
     global = new Globals();
     uploadconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _tmservice: TagService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _tmservice: TagService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

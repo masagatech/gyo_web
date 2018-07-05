@@ -21,7 +21,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
     @ViewChild('vehicle') vehicle: ElementRef;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _vehservice: VehicleService) {
+        private _loginservice: LoginService, private _vehservice: VehicleService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

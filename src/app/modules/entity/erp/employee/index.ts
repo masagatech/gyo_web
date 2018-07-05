@@ -16,7 +16,11 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ViewEmployeeComponent, canActivate: [AuthGuard],
+        path: 'dashboard', component: ViewEmployeeComponent, canActivate: [AuthGuard],
+        data: { "module": "erppsngr", "submodule": "psngrdb", "rights": "view", "urlname": "/employee" }
+      },
+      {
+        path: 'profile', component: ViewEmployeeComponent, canActivate: [AuthGuard],
         data: { "module": "erppsngr", "submodule": "psngrprof", "rights": "view", "urlname": "/employee" }
       },
       {

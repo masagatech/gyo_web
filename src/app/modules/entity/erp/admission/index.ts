@@ -11,7 +11,7 @@ import { StudentDashboardComponent } from './dashboard/dashboard.comp';
 import { AdmissionService } from '@services/erp';
 
 import {
-  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
+  DataTableModule, DataGridModule, PanelModule, CheckboxModule,
   AutoCompleteModule, FileUploadModule
 } from 'primeng/primeng';
 
@@ -20,26 +20,23 @@ export const routes = [
     path: '', children: [
       {
         path: 'dashboard', component: StudentDashboardComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "admsn", "rights": "view", "urlname": "dashboard" }
-      },
-      {
-        path: '', redirectTo: 'profile'
+        data: { "module": "erp", "submodule": "psngrdb", "rights": "view", "urlname": "dashboard" }
       },
       {
         path: 'profile', component: ViewAdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "admsn", "rights": "view", "urlname": "student" }
+        data: { "module": "erp", "submodule": "psngrprof", "rights": "view", "urlname": "student" }
       },
       {
         path: 'admission', component: AddAdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "admsn", "rights": "add", "urlname": "admission" }
+        data: { "module": "erp", "submodule": "psngrprof", "rights": "add", "urlname": "admission" }
       },
       {
         path: 'edit/:id', component: AddAdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "album", "rights": "edit", "urlname": "/edit" }
+        data: { "module": "erp", "submodule": "psngrprof", "rights": "edit", "urlname": "/edit" }
       },
       {
         path: 'details/:id', component: AddAdmissionComponent, canActivate: [AuthGuard],
-        data: { "module": "erp", "submodule": "album", "rights": "view", "urlname": "/edit" }
+        data: { "module": "erp", "submodule": "psngrprof", "rights": "view", "urlname": "/edit" }
       }
     ]
   },
