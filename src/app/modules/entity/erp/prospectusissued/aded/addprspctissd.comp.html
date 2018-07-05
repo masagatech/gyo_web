@@ -4,11 +4,11 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectusIssued()">
+                <a role="button" class="btn btn-theme" (click)="saveProspectusIssued()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -137,16 +137,16 @@
                             </td>
                             <td>
                                 <div class="form-group" *ngIf="!iseditformno">
-                                    <button type="button" (click)="addChildData()" class="btn btn-theme btn-xs btn-xs-sm">
+                                    <button type="button" (click)="addChildData()" class="btn btn-theme">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
 
                                 <div class="form-group" *ngIf="iseditformno">
-                                    <button type="button" (click)="updateChildData()" class="btn btn-theme btn-xs btn-xs-sm">
+                                    <button type="button" (click)="updateChildData()" class="btn btn-theme">
                                         <i class="material-icons">done</i>
                                     </button>
-                                    <button type="button" (click)="resetChildData()" class="btn btn-danger btn-xs btn-xs-sm">
+                                    <button type="button" (click)="resetChildData()" class="btn btn-danger">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>
@@ -167,10 +167,10 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" (click)="editChildData(row)" class="btn btn-theme btn-xs btn-xs-sm">
+                                    <button type="button" (click)="editChildData(row)" class="btn btn-theme">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" (click)="deleteChildData(row)" class="btn btn-danger btn-xs btn-xs-sm">
+                                    <button type="button" (click)="deleteChildData(row)" class="btn btn-danger">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>

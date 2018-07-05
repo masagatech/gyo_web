@@ -4,12 +4,12 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesExcemption()">
+                <a role="button" class="btn btn-theme" (click)="saveFeesExcemption()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i>
                 </a>
             </li>
@@ -84,7 +84,7 @@
                         <ul class="list-group">
                             <li class="list-group-item" *ngFor="let row of studentList">
                                 {{row.studname}}
-                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteStudentList(row)">
+                                <button type="button" class="btn btn-danger pull-right" (click)="deleteStudentList(row)">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </li>

@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-md-2 col-xs-3" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addContent()">
+                <button type="button" class="btn btn-theme" (click)="addContent()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -33,7 +33,7 @@
                     <p-column field="ctitle" header="Title" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editContent(row)">
+                            <button type="button" class="btn btn-theme" (click)="editContent(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

@@ -3,11 +3,11 @@
         <h4>Class Fees</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesStructure()">
+                <a role="button" class="btn btn-theme" (click)="saveFeesStructure()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -147,15 +147,15 @@
                             </td>
                             <td>
                                 <div class="form-group" *ngIf="!iseditinstlfees">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addFeesInstallment()">
+                                    <button type="button" class="btn btn-theme" (click)="addFeesInstallment()">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
                                 <div class="form-group" *ngIf="iseditinstlfees">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateFeesInstallment()">
+                                    <button type="button" class="btn btn-theme" (click)="updateFeesInstallment()">
                                         <i class="material-icons">done</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="resetFeesInstallment()">
+                                    <button type="button" class="btn btn-danger" (click)="resetFeesInstallment()">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>
@@ -176,10 +176,10 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editFeesInstallment(row)">
+                                    <button type="button" class="btn btn-theme" (click)="editFeesInstallment(row)">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="deleteFeesInstallment(row)">
+                                    <button type="button" class="btn btn-danger" (click)="deleteFeesInstallment(row)">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>

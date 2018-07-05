@@ -4,13 +4,13 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshHoliday('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshHoliday('grid')">
                     <i class="material-icons">apps</i>
                 </a>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshHoliday('calendar')">
+                <a role="button" title="Calendar View" class="btn btn-theme" (click)="isshHoliday('calendar')">
                     <i class="material-icons">date_range</i>
                 </a>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addHolidayForm()">
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addHolidayForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -30,7 +30,7 @@
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <div class="form-group">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editHolidayGrid(row)">
+                                <button type="button" class="btn btn-theme" (click)="editHolidayGrid(row)">
                                     <i class="material-icons">edit</i></button>
                             </div>
                         </ng-template>

@@ -22,7 +22,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getMenuLog()">
+                    <button type="button" class="btn btn-theme" (click)="getMenuLog()">
                         <i class=" material-icons ">arrow_forward</i>
                     </button>
                 </div>
@@ -71,9 +71,9 @@
                         {{row.logtime}}
                     </td>
                     <td width="100px">
-                        <button type="button" class="btn btn-theme btn-xs" (click)="downloadReports(row, 'xls')">
+                        <button type="button" class="btn btn-theme" (click)="downloadReports(row, 'xls')">
                             <i class="fa fa-file-excel-o"></i></button>
-                        <button type="button" class="btn btn-theme btn-xs" (click)="downloadReports(row, 'pdf')">
+                        <button type="button" class="btn btn-theme" (click)="downloadReports(row, 'pdf')">
                             <i class="fa fa-file-pdf-o"></i></button>
                     </td>
                 </tr>

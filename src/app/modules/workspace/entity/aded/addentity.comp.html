@@ -8,12 +8,12 @@
                 </span>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveEntityInfo()">
+                <a role="button" class="btn btn-theme" (click)="saveEntityInfo()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i>
                 </a>
             </li>
@@ -136,7 +136,7 @@
                                     <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="60px" />
                                 </div>
                                 <div class="col-md-3">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeLogoUpload()">
+                                    <button type="button" class="btn btn-danger" (click)="removeLogoUpload()">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>
@@ -292,7 +292,7 @@
                         </div>
                         <div class="col-md-1 pad-20 text-right">
                             <div class="form-group">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="addCPRow()">
+                                <button type="button" class="btn btn-theme" (click)="addCPRow()">
                                     <i class="material-icons">add</i>
                                 </button>
                             </div>
@@ -311,7 +311,7 @@
                         <p-column header="Email" field="cpemail" [style]="{'width':'200px','text-align':'left'}"></p-column>
                         <p-column [style]="{'width':'50px','text-align':'center'}">
                             <ng-template let-col let-row="rowData" pTemplate="body">
-                                <button class="btn btn-danger btn-xs" (click)="deleteCPRow(row)"><i class="material-icons">delete</i></button>
+                                <button class="btn btn-danger" (click)="deleteCPRow(row)"><i class="material-icons">delete</i></button>
                             </ng-template>
                         </p-column>
                     </p-dataTable>

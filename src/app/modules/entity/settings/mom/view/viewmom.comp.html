@@ -3,7 +3,7 @@
         <h4>Master Of Master : {{headertitle}}</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addMOMForm()">
+                <a role="button" class="btn btn-theme" (click)="addMOMForm()">
                     <i class="material-icons">add</i></a>
             </li>
         </ul>
@@ -15,7 +15,7 @@
             <p-column field="val" header="Value" [style]="{'text-align':'left'}"></p-column>
             <p-column styleClass="col-button" [style]="{'width':'60px','text-align':'left'}">
                 <ng-template let-row="rowData" pTemplate type="body">
-                    <button type="button" (click)="editMOMForm(row)" class="btn btn-theme btn-xs">
+                    <button type="button" (click)="editMOMForm(row)" class="btn btn-theme">
                         <span class="material-icons">edit</span>
                     </button>
                 </ng-template>

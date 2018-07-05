@@ -4,13 +4,13 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="getLeaveDetails()">
+                <a role="button" class="btn btn-theme" (click)="getLeaveDetails()">
                     <i class="material-icons">subdirectory_arrow_right</i>
                 </a>
-                <a role="button" class="btn btn-theme btn-xs" (click)="resetLeaveDetails()">
+                <a role="button" class="btn btn-theme" (click)="resetLeaveDetails()">
                     <i class="material-icons">restore</i>
                 </a>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addLeaveDetails()">
+                <a role="button" class="btn btn-theme" (click)="addLeaveDetails()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -73,7 +73,7 @@
                                 {{row.key.split('~')[1]}} <small *ngIf="psngrtype == 'student'"> - Standard : {{row.key.split('~')[2] + " (" + row.key.split('~')[3] + ")"}}</small>
                             </th>
                             <th width="50px">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="openLeaveApproval(row)" *ngIf="row.key.split('~')[3] != 0">
+                                <button type="button" class="btn btn-theme" (click)="openLeaveApproval(row)" *ngIf="row.key.split('~')[3] != 0">
                                     <i class="material-icons">warning</i>
                                 </button>
                             </th>
@@ -95,7 +95,7 @@
                                 {{eldrow.statusdesc}}
                             </td>
                             <td width="50px">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editLeaveDetails(eldrow)" *ngIf="eldrow.status == 0">
+                                <button type="button" class="btn btn-theme" (click)="editLeaveDetails(eldrow)" *ngIf="eldrow.status == 0">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </td>

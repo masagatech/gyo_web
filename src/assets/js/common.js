@@ -93,8 +93,8 @@ commonfun.navistyle = function() {
 commonfun.chevronstyle = function() {
     $(".fc-toolbar").addClass('form-group');
 
-    $(".fc-prev-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
-    $(".fc-next-button").addClass('btn btn-theme btn-xs').find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
+    $(".fc-prev-button").addClass('btn btn-theme').find('span').removeAttr('class').addClass('material-icons').text("chevron_left");
+    $(".fc-next-button").addClass('btn btn-theme').find('span').removeAttr('class').addClass('material-icons').text("chevron_right");
 }
 
 commonfun.orderstyle = function() {

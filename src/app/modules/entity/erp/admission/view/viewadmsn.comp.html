@@ -4,27 +4,27 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="viewDashboardForm()">
+                <a role="button" class="btn btn-theme" (click)="viewDashboardForm()">
                     <i class="material-icons">dashboard</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshStudent('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshStudent('grid')">
                     <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshStudent('list')">
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshStudent('list')">
                     <i class="material-icons">list</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addAdmissionForm()">
+                <a role="button" class="btn btn-theme" (click)="addAdmissionForm()">
                     <span class="material-icons">add</span> <span class="float-right pad-03">Add New</span>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
+                <a role="button" class="btn btn-theme" (click)="openBulkUploadPopup()">
                     <span class="material-icons">add</span> <span class="float-right pad-03">Bulk Upload</span>
                 </a>
             </li>
@@ -145,7 +145,7 @@
                     <div class="col-md-12" *ngIf="studentDT.length">
                         <p-dataGrid [value]="studentDT" [paginator]="true" [rows]="21">
                             <ng-template let-row pTemplate="item">
-                                <div style="padding: 3px" class="col-md-4 col-xs-6">
+                                <div class="pad-10 col-md-4 col-xs-6">
                                     <p-panel [style]="{'text-align':'center'}">
                                         <p-header>
                                             <div class="row clearfix">
@@ -163,6 +163,7 @@
                                                     <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
                                                     <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
                                                 </a>
+                                                {{row.statusnm}}
                                             </div>
                                             <div class="col-md-9 col-xs-9" align="left">
                                                 <div class="row clearfix">
@@ -216,9 +217,9 @@
                                     <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
                                 </ng-template>
                             </p-column>
-                            <p-column field="grno" header="GR No" [style]="{'width': '100px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="grno" header="GR No" [style]="{'width': '60px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                             <p-column field="rollno" header="Roll No" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
-                            <p-column field="studentname" header="Name" [style]="{'width': '200px', 'text-align': 'left','vertical-align':'top'}"></p-column>
+                            <p-column field="studentname" header="Name" [style]="{'width': '300px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                             <p-column field="classname" header="Standard" [style]="{'width': '80px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                             <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                             <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
@@ -235,7 +236,7 @@
                             <p-column field="mode" header="Status" [style]="{'width':'80px', 'text-align':'left','vertical-align':'top'}"></p-column>
                             <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
                                 <ng-template let-row="rowData" pTemplate type="body">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editAdmissionForm(row)">
+                                    <button type="button" class="btn btn-theme" (click)="editAdmissionForm(row)">
                                         <i class="material-icons">edit</i>
                                     </button>
                                 </ng-template>

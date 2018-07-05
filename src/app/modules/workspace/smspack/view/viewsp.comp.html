@@ -18,7 +18,7 @@
                 <button type="button" class="btn btn-theme btn-sm" (click)="resetSMSPackGrid()">Reset</button>
             </div>
             <div class="col-md-4 col-xs-4 pad-20 text-right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addSMSPack()">
+                <button type="button" class="btn btn-theme" (click)="addSMSPack()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -40,7 +40,7 @@
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <div class="form-group">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editSMSPack(row)">
+                                <button type="button" class="btn btn-theme" (click)="editSMSPack(row)">
                                     <i class="material-icons">edit</i></button>
                             </div>
                         </ng-template>

@@ -805,7 +805,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.fthrloginid = 0;
         that.fthrfmlid = 0;
         that.fthrname = "";
-        that.fthrmobile = "";
         that.fthremail = "";
         that.fthrschid = 0;
         that.fthrenrlmntid = 0;
@@ -821,7 +820,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.mthrloginid = 0;
         that.mthrfmlid = 0;
         that.mthrname = "";
-        that.mthrmobile = "";
         that.mthremail = "";
         that.mthrschid = 0;
         that.mthrenrlmntid = 0;
@@ -1003,7 +1001,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             $(".fthrname").focus();
             return false;
         }
-        if (that.fthremail) {
+        if (that.fthremail == "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Email");
             $(".fthremail").focus();
             return false;
@@ -1701,6 +1699,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.fthrsalary = _fthrfld[0].salary;
                     }
                     else {
+                        that.fthrmobile = "";
                         that.resetFatherFields();
                     }
 
@@ -1721,6 +1720,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                         that.mthrsalary = _mthrfld[0].salary;
                     }
                     else {
+                        that.mthrmobile = "";
                         that.resetMotherFields();
                     }
                 }

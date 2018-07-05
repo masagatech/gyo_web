@@ -8,11 +8,11 @@
                 </span>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveUserInfo()">
+                <a role="button" class="btn btn-theme" (click)="saveUserInfo()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -118,7 +118,7 @@
                         <ul class="list-group">
                             <li class="list-group-item" *ngFor="let row of entityList">
                                 {{row.schnm}}
-                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteEntity(row)"><i class="material-icons">delete</i></button>
+                                <button type="button" class="btn btn-danger pull-right" (click)="deleteEntity(row)"><i class="material-icons">delete</i></button>
                             </li>
                         </ul>
                     </div>
@@ -147,7 +147,7 @@
                                         <img *ngIf="gender == 'F'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="40px">
                                     </div>
                                     <div class="col-md-3">
-                                        <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                        <button type="button" class="btn btn-danger" (click)="removePhotoUpload()">
                                         <i class="material-icons">delete</i>
                                     </button>
                                     </div>

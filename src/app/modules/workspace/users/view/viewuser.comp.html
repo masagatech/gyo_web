@@ -1,19 +1,25 @@
 <div class="card">
     <div class="header">
-        <div class="row clearfix">
-            <div class="col-md-10">
-                <h4>User</h4>
-            </div>
-            <div id="divShow" class="col-md-1 col-xs-1">
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshUser('grid')">
-                    <i class="material-icons">apps</i></button>
-                <button type="button" class="btn btn-theme btn-xs" (click)="isshUser('list')">
-                    <i class="material-icons">list</i></button>
-            </div>
-            <div class="col-md-1" align="right">
-                <a role="button" class="btn btn-theme btn-xs" (click)="addUserForm()"><i class="material-icons">add</i></a>
-            </div>
-        </div>
+        <h4>User</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshUser('grid')">
+                    <i class="material-icons">apps</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshUser('list')">
+                    <i class="material-icons">list</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addUserForm()">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+
         <div class="row clearfix">
             <div class="col-md-4 col-xs-4">
                 <div class="form-group">
@@ -48,7 +54,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20 ">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="resetUserDetails()">
+                    <button type="button" class="btn btn-theme" (click)="resetUserDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
@@ -139,7 +145,7 @@
                     <p-column field="mode" header="Status" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editUserForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editUserForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

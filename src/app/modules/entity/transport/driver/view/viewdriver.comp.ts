@@ -3,12 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { DriverService } from '@services/master';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewdriver.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewdriver.comp.html'
 })
 
 export class ViewDriverComponent implements OnInit {

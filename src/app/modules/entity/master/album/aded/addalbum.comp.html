@@ -8,11 +8,11 @@
                 </span>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveAlbumInfo()">
+                <a role="button" class="btn btn-theme" (click)="saveAlbumInfo()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -64,7 +64,7 @@
                                     <img src="{{uploadcoverconfig.uploadurl + file.coverph}}" onerror="this.src='assets/img/album.gif';" height="40px" />
                                 </div>
                                 <div class="col-md-3" align="right">
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeCoverUpload()">
+                                    <button type="button" class="btn btn-danger" (click)="removeCoverUpload()">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>
@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="col-md-2" align="right">
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                        <button type="button" class="btn btn-danger" (click)="removePhotoUpload()">
                                             <span class="material-icons">delete</span>
                                         </button>
                                     </div>
@@ -145,7 +145,7 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="addVideo()">
+                                    <button type="button" class="btn btn-theme" (click)="addVideo()">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
@@ -157,10 +157,10 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editVideo()">
+                                    <button type="button" class="btn btn-theme" (click)="editVideo()">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="cancelVideo()">
+                                    <button type="button" class="btn btn-danger" (click)="cancelVideo()">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>
@@ -180,7 +180,7 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="addAudio()">
+                                    <button type="button" class="btn btn-theme" (click)="addAudio()">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
@@ -192,10 +192,10 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editAudio()">
+                                    <button type="button" class="btn btn-theme" (click)="editAudio()">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="cancelAudio()">
+                                    <button type="button" class="btn btn-danger" (click)="cancelAudio()">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>

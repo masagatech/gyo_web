@@ -4,12 +4,12 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addPickDropInfo()">
+                <a role="button" class="btn btn-theme" (click)="addPickDropInfo()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="editPickDropInfo()">
+                <a role="button" class="btn btn-theme" (click)="editPickDropInfo()">
                     <i class="material-icons">edit</i>
                 </a>
             </li>
@@ -134,7 +134,7 @@
                             </li>
                             <li class="list-group-item" *ngFor="let row of dropAttList">
                                 {{row.attnm}}
-                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
+                                <button type="button" class="btn btn-danger pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
                             </li>
                         </ul>
                     </div>

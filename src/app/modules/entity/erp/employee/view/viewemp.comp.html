@@ -4,22 +4,22 @@
 
         <ul class="header-dropdown m-r--5">
             <li *ngIf="classid != 0">
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassTeacher()">
+                <a role="button" class="btn btn-theme" (click)="saveClassTeacher()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('list')">
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshEmployee('list')">
                     <i class="material-icons">list</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshEmployee('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshEmployee('grid')">
                     <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addEmployeeForm()">
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addEmployeeForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getEmployeeDetails()">
+                    <button type="button" class="btn btn-theme" (click)="getEmployeeDetails()">
                         <i class="material-icons">arrow_forward</i>
                     </button>
                 </div>
@@ -119,7 +119,7 @@
                                 {{row.email1}}<span *ngIf="row.email2 !== ''">{{", " + row.email2}}</span>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editEmployeeForm(row)">
+                                <button type="button" class="btn btn-theme" (click)="editEmployeeForm(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </td>
@@ -137,7 +137,7 @@
                     </div>
                     <p-dataGrid [value]="row.value">
                         <ng-template let-drow pTemplate="item">
-                            <div style="padding: 3px" class="col-md-4 col-xs-6">
+                            <div class="pad-03 col-md-4 col-xs-6">
                                 <p-panel [style]="{'text-align':'center'}">
                                     <p-header>
                                         <div class="row clearfix">

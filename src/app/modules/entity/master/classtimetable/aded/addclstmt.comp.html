@@ -3,12 +3,12 @@
         <h4>Class Time Table</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveClassTimeTable()">
+                <a role="button" class="btn btn-theme" (click)="saveClassTimeTable()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -177,15 +177,15 @@
                                 </div>
                             </td>
                             <td *ngIf="!isEditClassTimeTable">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="addClassTimeTable()">
+                                <button type="button" class="btn btn-theme" (click)="addClassTimeTable()">
                                     <i class="material-icons">add</i>
                                 </button>
                             </td>
                             <td *ngIf="isEditClassTimeTable">
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="updateClassTimeTable()">
+                                <button type="button" class="btn btn-theme" (click)="updateClassTimeTable()">
                                     <i class="material-icons">done</i>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="cancelClassTimeTable()">
+                                <button type="button" class="btn btn-danger" (click)="cancelClassTimeTable()">
                                     <i class="material-icons">cancel</i>
                                 </button>
                             </td>
@@ -222,7 +222,7 @@
                                 {{row.satsubname}}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="editClassTimeTable(row)">
+                                <button type="button" class="btn btn-theme" (click)="editClassTimeTable(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </td>

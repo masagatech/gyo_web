@@ -37,7 +37,11 @@ export class InventoryComponent implements OnDestroy {
     }
 
     public ngOnInit() {
-
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
     }
 
     getHeaderDetails() {
@@ -63,7 +67,8 @@ export class InventoryComponent implements OnDestroy {
         }
     }
 
-    ngOnDestroy() {
-
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

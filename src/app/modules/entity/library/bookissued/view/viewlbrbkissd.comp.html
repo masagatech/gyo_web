@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-md-2" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addBookIssued()">
+                <button type="button" class="btn btn-theme" (click)="addBookIssued()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -36,7 +36,7 @@
                         <p-column field="countreturn" header="Return Books" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left'}">
                             <ng-template let-row="rowData" pTemplate type="body">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editBookIssued(row)">
+                                <button type="button" class="btn btn-theme" (click)="editBookIssued(row)">
                                     <i class="material-icons">edit</i></button>
                             </ng-template>
                         </p-column>

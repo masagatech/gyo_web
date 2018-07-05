@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-1 col-xs-2 pad-20 ">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
+                    <button type="button" class="btn btn-theme" (click)="resetWorkspaceDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
@@ -46,14 +46,14 @@
                     <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editWorkspaceForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editWorkspaceForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>
                     </p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="openEntityForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="openEntityForm(row)">
                                 <i class="material-icons">arrow_forward</i>
                             </button>
                         </ng-template>

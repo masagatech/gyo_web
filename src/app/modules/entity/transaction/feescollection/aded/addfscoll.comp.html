@@ -4,12 +4,12 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveFeesCollection()">
+                <a role="button" class="btn btn-theme" (click)="saveFeesCollection()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i>
                 </a>
             </li>
@@ -169,15 +169,15 @@
                             </td>
                             <td>
                                 <div class="form-group text-right" *ngIf="isaddfees">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="addFeesCollection()">
+                                    <button type="button" class="btn btn-theme" (click)="addFeesCollection()">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
                                 <div class="form-group text-right" *ngIf="iseditfees">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="updateFeesCollection()">
+                                    <button type="button" class="btn btn-theme" (click)="updateFeesCollection()">
                                         <i class="material-icons">done</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="resetFeesCollection()">
+                                    <button type="button" class="btn btn-danger" (click)="resetFeesCollection()">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>
@@ -198,10 +198,10 @@
                             </td>
                             <td>
                                 <div class="form-group text-right">
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="editFeesCollection(row)">
+                                    <button type="button" class="btn btn-theme" (click)="editFeesCollection(row)">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="deleteFeesCollection(row)">
+                                    <button type="button" class="btn btn-danger" (click)="deleteFeesCollection(row)">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>

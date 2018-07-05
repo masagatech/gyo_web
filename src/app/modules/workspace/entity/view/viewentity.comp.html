@@ -4,17 +4,17 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshEntity('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshEntity('grid')">
                     <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshEntity('list')">
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshEntity('list')">
                     <i class="material-icons">list</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addEntityForm()">
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addEntityForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-2 col-xs-1 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="resetEntityDetails()">
+                    <button type="button" class="btn btn-theme" (click)="resetEntityDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
@@ -67,10 +67,10 @@
                                         <img alt="{{drow.schoolname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" class="img-lg">
                                     </a>
                                     <hr class="hr ui-widget-content">
-                                    <button *ngIf="loginUser.utype != 'emp' && loginUser.utype != 'parent'" type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(drow)">
+                                    <button *ngIf="loginUser.utype != 'emp' && loginUser.utype != 'parent'" type="button" class="btn btn-theme" (click)="editEntityForm(drow)">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="openMainForm(drow)">
+                                    <button type="button" class="btn btn-theme" (click)="openMainForm(drow)">
                                         <i class="material-icons">arrow_forward</i>
                                     </button>
                                     <span *ngIf="loginUser.utype != 'emp' && loginUser.utype != 'parent'">{{drow.mode}}</span>
@@ -104,7 +104,7 @@
                     <p-column field="mode" header="Status" [style]="{'width':'70px', 'text-align':'left', 'vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editEntityForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editEntityForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

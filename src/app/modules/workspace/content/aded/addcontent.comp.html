@@ -3,11 +3,11 @@
         <h4>Add Content</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveContentInfo()">
+                <a role="button" class="btn btn-theme" (click)="saveContentInfo()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -55,7 +55,7 @@
                                 <img src="{{uploadconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
                             </div>
                             <div class="col-md-3">
-                                <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                <button type="button" class="btn btn-danger" (click)="removePhotoUpload()">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </div>

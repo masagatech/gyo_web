@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -8,7 +8,7 @@ import { InventoryService } from '@services/master';
     templateUrl: 'viewsim.comp.html'
 })
 
-export class ViewSimComponent implements OnInit {
+export class ViewSimComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -29,7 +29,7 @@ export class ViewSimComponent implements OnInit {
     }
 
     public ngOnInit() {
-
+        
     }
 
     // Sim Master
@@ -110,5 +110,9 @@ export class ViewSimComponent implements OnInit {
 
     public editSim(row) {
         this._router.navigate(['/inventory/sim/edit', row.simid]);
+    }
+
+    public ngOnDestroy() {
+        
     }
 }

@@ -5,7 +5,7 @@
                 <h4>Library</h4>
             </div>
             <div class="col-md-10 col-xs-8" align="right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addLibrary()">
+                <button type="button" class="btn btn-theme" (click)="addLibrary()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     <p-column field="librheadname" header="Library Head" [style]="{'width':'140px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editLibrary(row)">
+                            <button type="button" class="btn btn-theme" (click)="editLibrary(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

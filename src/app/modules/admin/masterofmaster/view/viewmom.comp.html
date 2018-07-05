@@ -4,7 +4,7 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addMOMForm()">
+                <a role="button" class="btn btn-theme" (click)="addMOMForm()">
                     <i class="material-icons">add</i></a>
             </li>
         </ul>
@@ -34,7 +34,7 @@
                     </td>
                     <td width="50px">
                         <div class="form-group" *ngIf="row.typ != 'global'">
-                            <button type="button" (click)="editMOMForm(row)" class="btn btn-theme btn-xs">
+                            <button type="button" (click)="editMOMForm(row)" class="btn btn-theme">
                                 <span class="material-icons">edit</span>
                             </button>
                         </div>

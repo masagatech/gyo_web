@@ -4,12 +4,12 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveProspectus()">
+                <a role="button" class="btn btn-theme" (click)="saveProspectus()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addProspectus()">
+                <a role="button" class="btn btn-theme" (click)="addProspectus()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -48,7 +48,7 @@
                         </p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left'}">
                             <ng-template let-row="rowData" pTemplate type="body">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editProspectus(row)">
+                                <button type="button" class="btn btn-theme" (click)="editProspectus(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </ng-template>

@@ -3255,10 +3255,7 @@ section.content {
     background-color: #ccc;
     margin-top: -8px;
     border-radius: 0px 0px 5px 5px;
-    padding-top: 0;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 0 5px 5px 5px;
     border: 1px inset #fff;
     z-index: 2;
     border-top: 0px;
@@ -3270,7 +3267,7 @@ section.content {
     background: none!important;
     border: 0!important;
     right: 0!important;
-    top: 10px!important;
+    margin-top: 5px!important;
 }
 
 .card .header .header-dropdown .dropdown-menu li {

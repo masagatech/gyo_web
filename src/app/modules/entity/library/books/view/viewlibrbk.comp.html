@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-md-3 col-xs-2 pad-20 text-right">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addLibrarySubject()">
+                <button type="button" class="btn btn-theme" (click)="addLibrarySubject()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -64,7 +64,7 @@
                     <p-column field="aftrlmtfine" header="After Limit Issued Per Day Fine" [style]="{'width':'150px','text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editLibrarySubject(row)">
+                            <button type="button" class="btn btn-theme" (click)="editLibrarySubject(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

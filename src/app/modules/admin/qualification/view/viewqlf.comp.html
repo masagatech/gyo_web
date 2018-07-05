@@ -4,7 +4,7 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addQualification()">
+                <a role="button" class="btn btn-theme" (click)="addQualification()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -36,7 +36,7 @@
                     <p-column field="qlfdesc" header="Description" [style]="{'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editQualification(row)">
+                            <button type="button" class="btn btn-theme" (click)="editQualification(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

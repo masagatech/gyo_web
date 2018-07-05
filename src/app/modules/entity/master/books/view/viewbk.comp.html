@@ -5,7 +5,7 @@
                 <h4>View Books</h4>
             </div>
             <div class="col-md-9 col-xs-9" style="text-align: right;">
-                <button type="button" class="btn btn-theme btn-xs" (click)="addSubject()">
+                <button type="button" class="btn btn-theme" (click)="addSubject()">
                     <i class="material-icons">add</i></button>
             </div>
         </div>
@@ -21,7 +21,7 @@
                     <p-column field="subname" header="Subject" [style]="{'width':'150px','text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editSubject(row)">
+                            <button type="button" class="btn btn-theme" (click)="editSubject(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

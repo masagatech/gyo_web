@@ -2,24 +2,24 @@
     <div class="header">
         <h4>
             <a role="button" (click)="openForm()">{{headertitle}}</a>
-            <a role="button" class="btn btn-theme btn-xs" (click)="openForm()">
+            <a role="button" class="btn btn-theme" (click)="openForm()">
                 <i class="material-icons">arrow_forward</i>
             </a>
         </h4>
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshWorkspace('grid')">
                     <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshWorkspace('list')">
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshWorkspace('list')">
                     <i class="material-icons">list</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addWorkspaceForm()">
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addWorkspaceForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-1 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="resetWorkspaceDetails()">
+                    <button type="button" class="btn btn-theme" (click)="resetWorkspaceDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
@@ -49,13 +49,15 @@
 
 <div *ngIf="loginUser.issysadmin">
     <div class="row clearfix" *ngIf="isShowGrid">
-        <div *ngFor="let row of workspaceDT" class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div *ngFor="let row of workspaceDT" class="col-md-3 col-xs-6">
             <div class="card" style="height: 200px;">
-                <div class="header">
+                <div class="header header-title">
                     <h2 class="title">
-                        <img class="logo pull-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" class="img-sm" style="margin-right: 7px;">
-                        <a role="button" (click)="openEntityForm(row)">{{row.wsname}}</a>
-                        <small>{{row.wstype}}</small>
+                        <img class="img-sm float-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';">
+                        <span class="float-left m-l-5">
+                            <a role="button" title="{{row.wsname}}" (click)="openEntityForm(row)">{{row.wsshortname}}</a>
+                            <small>{{row.wstype}}</small>
+                        </span>
                     </h2>
                     <ul class="header-dropdown hdr-ddl">
                         <li class="dropdown">
@@ -102,14 +104,14 @@
                         <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
                             <ng-template let-row="rowData" pTemplate type="body">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editWorkspaceForm(row)">
+                                <button type="button" class="btn btn-theme" (click)="editWorkspaceForm(row)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </ng-template>
                         </p-column>
                         <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
                             <ng-template let-row="rowData" pTemplate type="body">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="openEntityForm(row)">
+                                <button type="button" class="btn btn-theme" (click)="openEntityForm(row)">
                                     <i class="material-icons">arrow_forward</i>
                                 </button>
                             </ng-template>

@@ -4,12 +4,12 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="savePickDropInfo()">
+                <a role="button" class="btn btn-theme" (click)="savePickDropInfo()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i>
                 </a>
             </li>
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <div class="col-md-1 pad-20 text-right">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="pickupPassengerByRoute()">
+                            <button type="button" class="btn btn-theme" (click)="pickupPassengerByRoute()">
                                 <span class="material-icons">restore</span>
                             </button>
                         </div>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="ui-helper-clearfix">
-                                        <button type="button" class="btn btn-danger btn-xs" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                        <button type="button" class="btn btn-danger" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                         </div>
                         <div class="col-md-1 pad-20 text-right">
                             <div class="form-group">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="dropPassengerByRoute()">
+                                <button type="button" class="btn btn-theme" (click)="dropPassengerByRoute()">
                                     <span class="material-icons">restore</span>
                                 </button>
                             </div>
@@ -249,7 +249,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="ui-helper-clearfix">
-                                        <button type="button" class="btn btn-danger btn-xs" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                        <button type="button" class="btn btn-danger" (click)="deleteDropPassenger(passenger)"><i class="material-icons">delete</i></button>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +273,7 @@
                         <ul class="list-group">
                             <li class="list-group-item" *ngFor="let row of pickAttList">
                                 {{row.attnm}}
-                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deletePickAtt(row)"><i class="material-icons">delete</i></button>
+                                <button type="button" class="btn btn-danger pull-right" (click)="deletePickAtt(row)"><i class="material-icons">delete</i></button>
                             </li>
                         </ul>
                     </div>
@@ -292,7 +292,7 @@
                         <ul class="list-group">
                             <li class="list-group-item" *ngFor="let row of dropAttList">
                                 {{row.attnm}}
-                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
+                                <button type="button" class="btn btn-danger pull-right" (click)="deleteDropAtt(row)"><i class="material-icons">delete</i></button>
                             </li>
                         </ul>
                     </div>

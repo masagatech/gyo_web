@@ -4,17 +4,17 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshDriver('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshDriver('grid')">
                     <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshDriver('grid')">
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshDriver('list')">
                     <i class="material-icons">list</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addDriverForm()">
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addDriverForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -26,16 +26,42 @@
             <div class="col-md-12" *ngIf="driverDT.length">
                 <p-dataGrid [value]="driverDT">
                     <ng-template let-row pTemplate="item">
-                        <div style="padding:3px" class="ui-g-12 ui-md-3">
-                            <p-panel [header]="row.drivername" [style]="{'text-align':'center'}">
-                                <span class="material-icons reject" *ngIf="!row.isactive">close</span>
-
-                                <img alt="{{row.drivername}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" height="100px">
-
-                                <hr class="ui-widget-content" style="border-top:0">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editDriverForm(row)">
-                                    <i class="material-icons">edit</i>
-                                </button>
+                        <div class="pad-10 col-md-4 col-xs-6">
+                            <p-panel [style]="{'text-align':'center'}">
+                                <p-header>
+                                    <div class="row clearfix">
+                                        <div class="col-md-10 col-xs-8">
+                                            {{row.drivername}}
+                                        </div>
+                                        <div class="col-md-2 col-xs-4">
+                                            <a role="button" (click)="editDriverForm(row)"><i class="material-icons font-15 col-white">edit</i></a>
+                                        </div>
+                                    </div>
+                                </p-header>
+                                <div class="row clearfix">
+                                    <div class="col-md-3 col-xs-3 border">
+                                        <a role="button" (click)="viewStudentDashboard(row)">
+                                            <img alt="{{row.drivername}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
+                                        </a>
+                                        {{row.statusnm}}
+                                    </div>
+                                    <div class="col-md-9 col-xs-9" align="left">
+                                        <div class="row clearfix">
+                                            <div class="col-md-12" *ngIf="row.mobileno1 != ''">
+                                                <span class="material-icons font-15">phone_iphone</span> {{row.mobileno1}}
+                                                <span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.email1 != '' && row.email1 != null">
+                                                <span class="material-icons font-15 float-left">email</span>
+                                                <span class="short-text font-15" title="{{row.email1}}">{{row.email1}}</span>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="row.email2 != '' && row.email2 != null">
+                                                <span class="material-icons font-15 float-left">email</span>
+                                                <span class="short-text font-15" title="{{row.email2}}">{{row.email2}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </p-panel>
                         </div>
                     </ng-template>
@@ -57,7 +83,7 @@
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editDriverForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editDriverForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

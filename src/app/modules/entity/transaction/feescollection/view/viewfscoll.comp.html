@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getFeesCollection()">
+                    <button type="button" class="btn btn-theme" (click)="getFeesCollection()">
                         <i class="material-icons">arrow_forward</i>
                     </button>
                 </div>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-4 pad-20 text-right">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="openBulkUploadPopup()">
+                    <button type="button" class="btn btn-theme" (click)="openBulkUploadPopup()">
                         <i class="material-icons">add</i> <i class="font-no-italic">Bulk Upload</i>
                     </button>
                 </div>
@@ -108,10 +108,12 @@
                             </td>
                             <td align="right">
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-danger btn-xs btn-xs-sm" (click)="addFeesCollection(row)">
-                                        <i class="material-icons">shopping_cart</i></button>
-                                    <button type="button" class="btn btn-theme btn-xs btn-xs-sm" (click)="viewFeesCollection(row)">
-                                        <i class="material-icons">arrow_forward</i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="addFeesCollection(row)">
+                                        <i class="material-icons">shopping_cart</i>
+                                    </button>
+                                    <button type="button" class="btn btn-theme btn-xs" (click)="viewFeesCollection(row)">
+                                        <i class="material-icons">arrow_forward</i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

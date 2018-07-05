@@ -4,11 +4,11 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveStopsInfo()">
+                <a role="button" class="btn btn-theme" (click)="saveStopsInfo()">
                     <i class="material-icons">save</i></a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i></a>
             </li>
         </ul>
@@ -33,10 +33,10 @@
                     </div>
                     <div class="col-md-2" style="padding-top: 20px">
                         <div class="form-group">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid == 0">
+                            <button type="button" class="btn btn-theme" (click)="openRoutesPopup()" *ngIf="rtid == 0">
                                 <span class="material-icons">add</span>
                             </button>
-                            <button type="button" class="btn btn-theme btn-xs" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
+                            <button type="button" class="btn btn-theme" (click)="openRoutesPopup()" *ngIf="rtid !== 0">
                                 <span class="material-icons">edit</span>
                             </button>
                         </div>
@@ -109,17 +109,17 @@
                     <div class="col-md-6">
                         <div *ngIf="!isedit">
                             <div class="form-group" align="right">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="addStopsList()">
+                                <button type="button" class="btn btn-theme" (click)="addStopsList()">
                                     <span class="material-icons">add</span>
                                 </button>
                             </div>
                         </div>
                         <div *ngIf="isedit">
                             <div class="form-group" align="right">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="updateStopsList()"> 
+                                <button type="button" class="btn btn-theme" (click)="updateStopsList()"> 
                                     <span class="material-icons">done</span>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-xs" (click)="resetStopsFields()">
+                                <button type="button" class="btn btn-danger" (click)="resetStopsFields()">
                                     <span class="material-icons">cancel</span>
                                 </button>
                             </div>
@@ -165,14 +165,14 @@
                         </div>
                         <div class="col-md-1" align="right">
                             <div class="ui-helper-clearfix">
-                                <button type="button" class="btn btn-theme btn-xs" (click)="editStopsList(stops)">
+                                <button type="button" class="btn btn-theme" (click)="editStopsList(stops)">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </div>
                         </div>
                         <div class="col-md-1">
                             <div class="ui-helper-clearfix">
-                                <button type="button" class="btn btn-danger btn-xs" (click)="deleteStopsList(stops)">
+                                <button type="button" class="btn btn-danger" (click)="deleteStopsList(stops)">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </div>

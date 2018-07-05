@@ -3,7 +3,7 @@
         <h4>User Vehicle Mapping</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveUserVehicleMap()">
+                <a role="button" class="btn btn-theme" (click)="saveUserVehicleMap()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
@@ -33,7 +33,7 @@
                         <ul class="list-group">
                             <li class="list-group-item" *ngFor="let row of vehicleDT">
                                 {{row.vehname}}
-                                <button type="button" class="btn btn-danger btn-xs pull-right" (click)="deleteVehicle(row)">
+                                <button type="button" class="btn btn-danger pull-right" (click)="deleteVehicle(row)">
                                     <i class="material-icons">delete</i></button>
                             </li>
                         </ul>

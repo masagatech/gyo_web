@@ -4,17 +4,17 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshPassenger('grid')">
+                <a role="button" title="Grid View" class="btn btn-theme" (click)="isshPassenger('grid')">
                     <i class="material-icons">apps</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="isshPassenger('list')">
+                <a role="button" title="List View" class="btn btn-theme" (click)="isshPassenger('list')">
                     <i class="material-icons">list</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addPassengerForm()">
+                <a role="button" title="Add New" class="btn btn-theme" (click)="addPassengerForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -47,7 +47,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme btn-xs" (click)="getPassengerDetails()">
+                    <button type="button" class="btn btn-theme" (click)="getPassengerDetails()">
                         <i class="material-icons">arrow_forward</i>
                     </button>
                 </div>
@@ -64,13 +64,10 @@
                             <p-panel [style]="{'text-align':'center'}">
                                 <p-header>
                                     <div class="row clearfix">
-                                        <div class="col-md-1 col-xs-2">
-                                            <i class="material-icons font-15">{{row.isactive ? 'done' : ''}}</i>
-                                        </div>
                                         <div class="col-md-10 col-xs-8">
                                             {{row.studentname}}
                                         </div>
-                                        <div class="col-md-1 col-xs-2">
+                                        <div class="col-md-2 col-xs-2">
                                             <a role="button" (click)="editPassengerForm(row)"><i class="material-icons font-15 col-white">edit</i></a>
                                         </div>
                                     </div>
@@ -81,6 +78,7 @@
                                             <img *ngIf="row.gndrkey == 'M'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-xs">
                                             <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-xs">
                                         </a>
+                                        {{row.statusnm}}
                                     </div>
                                     <div class="col-md-9" align="left">
                                         <div class="row clearfix">
@@ -117,7 +115,11 @@
                             <img *ngIf="row.gndrkey == 'F'" alt="{{row.psngrname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-female.png';" class="img-sm">
                         </ng-template>
                     </p-column>
-                    <p-column field="studentname" header="passenger Name" [style]="{'text-align': 'left','vertical-align':'top'}"></p-column>
+                    <p-column header="Passenger Name" [style]="{'text-align': 'left','vertical-align':'top'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.studentname}}<br /> {{row.statusnm}}
+                        </ng-template>
+                    </p-column>
                     <p-column field="mothername" header="Mother Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column field="fathername" header="Father Name" [style]="{'width': '150px', 'text-align': 'left','vertical-align':'top'}"></p-column>
                     <p-column header="Mobile" [style]="{'width':'200px','text-align':'left','vertical-align':'top'}">
@@ -133,7 +135,7 @@
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left','vertical-align':'top'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left','vertical-align':'top'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editPassengerForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editPassengerForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

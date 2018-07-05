@@ -4,7 +4,7 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addTagForm()">
+                <a role="button" class="btn btn-theme" (click)="addTagForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -22,7 +22,7 @@
                     <p-column field="remark3" header="Remark 3" [style]="{'width':'240px', 'text-align':'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editTagForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editTagForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

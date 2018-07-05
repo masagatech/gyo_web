@@ -3,12 +3,12 @@
         <h4>Admission</h4>
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="saveAdmissionInfo()">
+                <a role="button" class="btn btn-theme" (click)="saveAdmissionInfo()">
                     <i class="material-icons">save</i>
                 </a>
             </li>
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="backViewData()">
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
                     <i class="material-icons">arrow_back</i>
                 </a>
             </li>
@@ -21,7 +21,7 @@
         <div class="card">
             <div class="header">
                 <div class="row clearfix">
-                    <div class="col-md-9 col-xs-9">
+                    <div class="col-md-6 col-xs-6">
                         <h4>Admission Details</h4>
 
                         <div class="form-group prospectus">
@@ -29,7 +29,7 @@
                             <label for="isprspct">With Prospectus</label>
                         </div>
                     </div>
-                    <div class="col-md-3 col-xs-3 text-center">
+                    <div class="col-md-6 col-xs-6 text-center">
                         <span class="hide" *ngIf="enrlmntid != 0"><b>Enrollment No : </b> {{enrlmntid}}</span>
 
                         <div class="form-group">
@@ -41,7 +41,7 @@
                                             <img *ngIf="gndrkey == 'F'" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="60px" width="60px">
                                         </div>
                                         <div class="col-md-6 text-right">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removePhotoUpload()">
+                                            <button type="button" class="btn btn-danger" (click)="removePhotoUpload()">
                                                 <i class="material-icons">delete</i>
                                             </button>
                                         </div>
@@ -162,9 +162,11 @@
                     </div>
                     <div class="col-md-4 col-xs-9">
                         <div class="form-group">
-                            <label class="control-label">Provisional / Original</label>
-                            <input id="isprvsnl" name="isprvsnl" [(ngModel)]="isprvsnl" type="checkbox" class="filled-in">
-                            <label for="isprvsnl">Is Provisional</label>
+                            <div class="form-line">
+                                <label class="control-label">Provisional / Original</label><br />
+                                <input id="isprvsnl" name="isprvsnl" [(ngModel)]="isprvsnl" type="checkbox" class="filled-in">
+                                <label for="isprvsnl">Is Provisional</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -501,7 +503,7 @@
                                 <div *ngFor="let file of birthcrtfctDT">
                                     <div class="row clearfix">
                                         <div class="col-md-6 col-xs-6">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeDOBUpload()">
+                                            <button type="button" class="btn btn-danger" (click)="removeDOBUpload()">
                                                 <i class="material-icons">delete</i></button>
                                         </div>
                                         <div class="col-md-6 col-xs-6" align="right">
@@ -533,7 +535,7 @@
                                 <div *ngFor="let file of addrproofDT">
                                     <div class="row clearfix">
                                         <div class="col-md-6 col-xs-6">
-                                            <button type="button" class="btn btn-danger btn-xs" (click)="removeAddressUpload()">
+                                            <button type="button" class="btn btn-danger" (click)="removeAddressUpload()">
                                                 <i class="material-icons">delete</i></button>
                                         </div>
                                         <div class="col-md-6 col-xs-6" align="right">
@@ -582,7 +584,7 @@
                                     {{docfilename}}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-theme btn-xs" (click)="addDocumentFile()">
+                                    <button type="button" class="btn btn-theme" (click)="addDocumentFile()">
                                         <span class="material-icons">add</span>
                                     </button>
                                 </td>
@@ -595,7 +597,7 @@
                                     <img src="{{uploaddocconfig.uploadurl + row.docfilename}}" onerror="this.src='assets/img/noimage.gif';" height="60px" width="60px">
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="removeDocumentFile()">
+                                    <button type="button" class="btn btn-danger" (click)="removeDocumentFile()">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </td>
@@ -875,15 +877,15 @@
                             </td>
                             <td>
                                 <div class="form-group" *ngIf="!iseditsibling">
-                                    <button type="button" (click)="addSibling()" class="btn btn-theme btn-xs btn-xs-sm">
+                                    <button type="button" (click)="addSibling()" class="btn btn-theme">
                                         <i class="material-icons">add</i>
                                     </button>
                                 </div>
                                 <div class="form-group" *ngIf="iseditsibling">
-                                    <button type="button" (click)="updateSibling()" class="btn btn-theme btn-xs btn-xs-sm">
+                                    <button type="button" (click)="updateSibling()" class="btn btn-theme">
                                         <i class="material-icons">done</i>
                                     </button>
-                                    <button type="button" (click)="resetSibling()" class="btn btn-danger btn-xs btn-xs-sm">
+                                    <button type="button" (click)="resetSibling()" class="btn btn-danger">
                                         <i class="material-icons">cancel</i>
                                     </button>
                                 </div>
@@ -912,10 +914,10 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <button type="button" (click)="editSibling(row)" class="btn btn-theme btn-xs btn-xs-sm">
+                                    <button type="button" (click)="editSibling(row)" class="btn btn-theme">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" (click)="deleteSibling(row)" class="btn btn-danger btn-xs btn-xs-sm">
+                                    <button type="button" (click)="deleteSibling(row)" class="btn btn-danger">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>

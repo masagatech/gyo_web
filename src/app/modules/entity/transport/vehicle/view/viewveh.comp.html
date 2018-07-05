@@ -4,7 +4,7 @@
 
         <ul class="header-dropdown m-r--5">
             <li>
-                <a role="button" class="btn btn-theme btn-xs" (click)="addVehicleForm()">
+                <a role="button" class="btn btn-theme" (click)="addVehicleForm()">
                     <i class="material-icons">add</i>
                 </a>
             </li>
@@ -23,7 +23,7 @@
                     <p-column field="mode" header="Status" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="editVehicleForm(row)">
+                            <button type="button" class="btn btn-theme" (click)="editVehicleForm(row)">
                                 <i class="material-icons">edit</i>
                             </button>
                         </ng-template>

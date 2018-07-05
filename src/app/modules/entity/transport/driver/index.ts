@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, CommonService } from '@services';
 
 import { AddDriverComponent } from './aded/adddriver.comp';
 import { ViewDriverComponent } from './view/viewdriver.comp';
@@ -32,7 +32,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, DriverService]
+  providers: [AuthGuard, CommonService, DriverService]
 })
 
 export class DriverModule {

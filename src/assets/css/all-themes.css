@@ -2030,7 +2030,7 @@
 }
 
 .theme-teal .btn.btn-xs {
-    padding: 0 3px;
+    padding: 0 3px!important;
 }
 
 .theme-teal .btn-search {
@@ -2067,7 +2067,7 @@
     white-space: nowrap;
     overflow: hidden;
     margin: 3px 0;
-    padding-left: 6px;
+    padding-left: 0;
     font-size: 13px;
     color: #ffffff;
     text-transform: uppercase;

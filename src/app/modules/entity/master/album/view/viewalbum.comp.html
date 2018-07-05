@@ -22,7 +22,7 @@
                     </tr>
                     <tr>
                         <td align="center" rowspan="2">
-                            <button type="button" class="btn btn-theme btn-xs" (click)="addAlbumForm()">
+                            <button type="button" class="btn btn-theme" (click)="addAlbumForm()">
                                 <i class="material-icons">add</i></button>
                         </td>
                         <th>
@@ -102,7 +102,7 @@
                 <p-column field="desc" header="Description" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                 <p-column [style]="{'width': '50px', 'align': 'left'}">
                     <ng-template let-row="rowData" pTemplate type="body">
-                        <button type="button" class="btn btn-theme btn-xs" (click)="editAlbumForm(row)">
+                        <button type="button" class="btn btn-theme" (click)="editAlbumForm(row)">
                             <i class="material-icons">edit</i>
                         </button>
                     </ng-template>
