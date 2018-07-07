@@ -181,9 +181,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">Track Type</label><br />
+                                <span *ngFor="let ttrow of tracktypeDT;" class="{{istrackenabled ? 'hide' : 'show'}}">
+                                    {{ttrow.val}} | 
+                                </span>
+                                <div id="track" class="{{istrackenabled ? 'show' : 'hide'}}">
+                                    <span *ngFor="let ttrow of tracktypeDT; let i = index">
+                                        <input type="checkbox" id="{{ttrow.key}}" value="{{ttrow.key}}" name="ttrow{{i + 1}}" data-menuid="ttrow.key" data-right="item" class="actrights filled-in" />
+                                        <label for="{{ttrow.key}}">{{ttrow.val}}</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group hide">
                     <div class="form-line">
                         <label class="control-label">URL <strong>*</strong></label>
                         <input type="text" [disabled]="!istrackenabled" [(ngModel)]="vehurl" class="form-control vehurl" maxlength="50" tabindex="14" />

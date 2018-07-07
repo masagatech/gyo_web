@@ -36,6 +36,8 @@ export class AddVehicleComponent implements OnInit {
     d1str: string = "";
     vehurl: string = "";
 
+    tracktypeDT: any = [];
+
     mode: string = "";
     isactive: boolean = true;
     private subscribeParameters: any;
@@ -67,6 +69,7 @@ export class AddVehicleComponent implements OnInit {
                 that.vehtypeDT = data.data.filter(a => a.group == "vehicletype");
                 that.devtypeDT = data.data.filter(a => a.group == "devicetype");
                 that.d1strDT = data.data.filter(a => a.group == "d1str");
+                that.tracktypeDT = data.data.filter(a => a.group == "tracktype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -188,7 +191,18 @@ export class AddVehicleComponent implements OnInit {
 
     saveVehicleInfo() {
         var that = this;
+        var trktype = "";
+        var pushcl = [];
+
         var isvalid = that.isValidateVehicle();
+
+        $("#track").find("input[type=checkbox]").each(function () {
+            if (this.checked) {
+                pushcl.push($(this).val())
+            }
+        });
+
+        trktype = JSON.stringify(pushcl).replace("[", "{").replace("]", "}");
 
         if (isvalid) {
             commonfun.loader();
@@ -209,6 +223,7 @@ export class AddVehicleComponent implements OnInit {
                 "simno": that.simno,
                 "allowspd": parseInt("" + that.speedAllow),
                 "url": that.vehurl,
+                "trktype": trktype,
                 "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
                 "mode": "",
                 "enttid": that._enttdetails.enttid,
@@ -216,8 +231,6 @@ export class AddVehicleComponent implements OnInit {
                 "cuid": that.loginUser.ucode,
                 "isactive": that.isactive
             }
-
-            console.log(params);
 
             that._vehservice.saveVehicleInfo(params).subscribe(data => {
                 try {
@@ -242,8 +255,8 @@ export class AddVehicleComponent implements OnInit {
                                 "vhid": params.imei,
                                 "vhname": params.vehno,
                                 "alwspeed": params.allowspd,
-                                "url": params.url,
-                                "Vhd": {
+                                "pushcl": pushcl,
+                                "vhd": {
                                     "vehregno": that.vehregno,
                                     "vehtype": that.vehtype,
                                     "vehmake": that.vehmake,
@@ -323,6 +336,15 @@ export class AddVehicleComponent implements OnInit {
                         that.simno = _vehicledata[0].simno;
                         that.speedAllow = _vehicledata[0].vhspeed;
                         that.d1str = _vehicledata[0].d1str;
+
+                        var trktypedt = data.data[0].trktype;
+
+                        if (trktypedt != null) {
+                            for (var i = 0; i < trktypedt.length; i++) {
+                                $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                            }
+                        }
+
                         that.vehurl = _vehicledata[0].url;
                         that.isactive = _vehicledata[0].isactive;
                         that.mode = _vehicledata[0].mode;

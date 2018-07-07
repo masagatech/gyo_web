@@ -624,7 +624,6 @@ export class AddEntityComponent implements OnInit {
         var isvalid = that.isValidationEntity();
 
         if (isvalid) {
-            var mweek = null;
             var wkrights = "";
             var weeklyoff = "";
 
