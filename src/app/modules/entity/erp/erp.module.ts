@@ -19,6 +19,8 @@ export const routes = [
                     { path: 'prospectus/issued', loadChildren: './prospectusissued#ProspectusIssuedModule' },
 
                     { path: 'erp/student', loadChildren: './admission#AdmissionModule' },
+                    { path: 'erp/student/changestandard', loadChildren: './changestandard#ChangeStandardModule' },
+                    { path: 'erp/student/managerollno', loadChildren: './managerollno#ManageRollnoModule' },
                     
                     { path: 'erp/:psngrtype', loadChildren: './employee#EmployeeModule' },
 
@@ -26,7 +28,6 @@ export const routes = [
                     { path: 'erp/:psngrtype/leave', loadChildren: './leave#LeaveModule' },
                     { path: 'erp/:psngrtype/holiday', loadChildren: './holiday#HolidayModule' },
                     { path: 'erp/:psngrtype/timetable', loadChildren: './timetable#TimetableModule' },
-                    { path: 'erp/:psngrtype/changestandard', loadChildren: './changestandard#ChangeStandardModule' },
                     
                     { path: 'erp/:psngrtype/noticeboard', loadChildren: '../communication/noticeboard#NoticeboardModule' },
                 ]

@@ -6,10 +6,10 @@ import { AdmissionService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'chstd.comp.html'
+    templateUrl: 'mngrlno.comp.html'
 })
 
-export class ChangeStandardComponent implements OnInit {
+export class ManageRollnoComponent implements OnInit {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -17,10 +17,12 @@ export class ChangeStandardComponent implements OnInit {
 
     ayDT: any = [];
     classDT: any = [];
-    classRowDT: any = [];
+    genderDT: any = [];
 
     ayid: number = 0;
     classid: number = 0;
+    gndrtype: string = "";
+    nametype: string = "fname";
 
     constructor(private _router: Router, private _routeParams: ActivatedRoute, private _msg: MessageService,
         private _loginservice: LoginService, private _admsnservice: AdmissionService) {
@@ -28,7 +30,7 @@ export class ChangeStandardComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
-        this.getChangeStandard();
+        this.getManageRollNo();
     }
 
     public ngOnInit() {
@@ -67,7 +69,6 @@ export class ChangeStandardComponent implements OnInit {
                 }
 
                 that.classDT = data.data.filter(a => a.group == "class");
-                that.classRowDT = data.data.filter(a => a.group == "class");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -84,48 +85,9 @@ export class ChangeStandardComponent implements OnInit {
         })
     }
 
-    // Copy Across Class
+    // Valid For Manage Roll No
 
-    copyAcrossClass() {
-        var selectedStudentDT = [];
-
-        selectedStudentDT = this.studentDT.filter(a => a.classid !== 0);
-
-        if (selectedStudentDT[0].classid == 0) {
-            this._msg.Show(messageType.error, "Error", "Select Atleast 1 Class");
-        }
-        else {
-            for (var i = 0; i < this.studentDT.length; i++) {
-                var stdflds = this.studentDT[i];
-                stdflds.classid = selectedStudentDT[0].classid;
-            }
-        }
-    }
-
-    // Save Data
-
-    checkIfRollnoIsUnique() {
-        var that = this;
-
-        for (var i = 0; i < that.studentDT.length; i++) {
-            for (var j = 0; j < that.studentDT.length; j++) {
-                if (i != j) {
-                    var studentid = that.studentDT[i].studentid;
-                    var irollno = that.studentDT[i].rollno;
-                    var jrollno = that.studentDT[j].rollno;
-
-                    if (irollno == jrollno) {
-                        $(".rollno" + studentid).focus();
-                        return true; // means there are duplicate values
-                    }
-                }
-            }
-        }
-
-        return false; // means there are no duplicate values.
-    }
-
-    isValidChangeStandard(_studentdt) {
+    isValidManageRollNo(_studentdt) {
         var that = this;
 
         if (that.ayid == 0) {
@@ -145,32 +107,52 @@ export class ChangeStandardComponent implements OnInit {
             return false;
         }
 
+        for (var i = 0; i < _studentdt.length; i++) {
+            var _istudlist = _studentdt[i];
+
+            for (var j = 0; j < _studentdt.length; j++) {
+                var _jstudlist = _studentdt[j];
+
+                if (i != j) {
+                    var irollno = _studentdt[i].newrollno;
+                    var jrollno = _studentdt[j].newrollno;
+
+                    if (irollno == jrollno) {
+                        that._msg.Show(messageType.error, "Error", _istudlist.studentname + " and " + _jstudlist.studentname + " Roll No is same");
+                        $(".rollno" + _jstudlist.studentid).focus();
+                        return false;
+                    }
+                }
+            }
+        }
+
         return true;
     }
 
-    // Save Change Standard
+    // Save Manage Roll No
 
-    saveChangeStandard() {
+    saveManageRollNo() {
         var that = this;
         var isvalid: boolean = false;
 
         var params = {};
         var _studentdt = [];
 
-        _studentdt = that.studentDT.filter(a => a.classid != that.classid).filter(a => a.classid != "");
+        _studentdt = that.studentDT.filter(a => a.newrollno != "").filter(a => a.newrollno != "0");
 
-        isvalid = that.isValidChangeStandard(_studentdt);
+        isvalid = that.isValidManageRollNo(_studentdt);
 
         if (isvalid) {
             commonfun.loader();
 
             params = {
-                "flag": "change_standard",
+                "flag": "manage_rollno",
                 "ayid": that.ayid,
+                "classid": that.classid,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode,
-                "changestandard": _studentdt
+                "managerollno": _studentdt
             }
 
             that._admsnservice.saveStudentRollover(params).subscribe(data => {
@@ -181,7 +163,7 @@ export class ChangeStandardComponent implements OnInit {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
-                        that.getChangeStandard();
+                        that.getManageRollNo();
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -203,18 +185,18 @@ export class ChangeStandardComponent implements OnInit {
         }
     }
 
-    // Get Change Standard
+    // Get Manage Roll No
 
-    getChangeStandard() {
+    getManageRollNo() {
         var that = this;
         var params = {};
 
         commonfun.loader();
 
         params = {
-            "flag": "getstandard", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "ayid": that.ayid, "classid": that.classid, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "flag": "getrollno", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "gndrtype": that.gndrtype, "nametype": that.nametype, "ayid": that.ayid, "classid": that.classid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 
         that._admsnservice.getStudentDetails(params).subscribe(data => {
