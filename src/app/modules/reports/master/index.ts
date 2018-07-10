@@ -15,7 +15,7 @@ export const routes = [
                 children: [
                     // Passenger
 
-                    { path: 'passenger', loadChildren: '../erp/passenger#PassengerReportsModule' },
+                    { path: 'passenger/profile', loadChildren: '../erp/passenger#PassengerReportsModule' },
                     { path: 'passenger/birthday', loadChildren: '../erp/passengerbirthday#PassengerBirthdayReportsModule' },
                     { path: 'passenger/attendance', loadChildren: '../erp/attendance#AttendanceReportsModule' },
                     { path: 'passenger/leave', loadChildren: '../erp/leave#ERPLeaveReportsModule' },
