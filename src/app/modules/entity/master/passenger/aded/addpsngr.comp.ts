@@ -103,7 +103,6 @@ export class AddPassengerComponent implements OnInit {
         this._enttdetails = Globals.getEntityDetails();
 
         this.getPhotoUploadConfig();
-        this.setFromDateAndToDate();
         this.fillDropDownList();
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -117,7 +116,7 @@ export class AddPassengerComponent implements OnInit {
     }
 
     public ngOnInit() {
-        
+
     }
 
     // Selected Calendar Date
@@ -534,7 +533,7 @@ export class AddPassengerComponent implements OnInit {
         that.fname = "";
         that.mname = "";
         that.lname = "";
-        that.dob = "";
+        that.setFromDateAndToDate();
         that.birthplace = "";
         that.aadharno = "";
         that.gender = "";
@@ -550,6 +549,15 @@ export class AddPassengerComponent implements OnInit {
         that.mthrmobile = "";
         that.remark1 = "";
         that.otherinfo = "";
+
+        that.resiaddr = that._enttdetails.address;
+        that.country = that._enttdetails.country;
+        that.state = that._enttdetails.sid;
+        that.fillCityDropDown();
+        that.city = that._enttdetails.ctid;
+        that.fillAreaDropDown();
+        that.area = that._enttdetails.arid;
+        that.pincode = that._enttdetails.pincode;
 
         that.uploadPhotoDT = [];
         that.chooseLabel = "Upload Photo";
@@ -650,29 +658,19 @@ export class AddPassengerComponent implements OnInit {
             $(".fthrname").focus();
             return false;
         }
-        else if (that.fthremail === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Father Email");
-            $(".fthremail").focus();
-            return false;
-        }
-        else if (that.mthrmobile === "") {
+        else if (that.fthrmobile === "") {
             that._msg.Show(messageType.error, "Error", "Enter Father Mobile");
             $(".fthrmobile").focus();
             return false;
         }
-        else if (that.resiaddr === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Residental Address");
-            $(".resiaddr").focus();
+        else if (that.mthrname === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mother Name");
+            $(".mthrname").focus();
             return false;
         }
-        else if (that.resilet === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Residental Lat");
-            $(".resilet").focus();
-            return false;
-        }
-        else if (that.resilong === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Residental Long");
-            $(".resilong").focus();
+        else if (that.mthrmobile === "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mother Mobile");
+            $(".mthrmobile").focus();
             return false;
         }
         else if (that.pickrtid == 0) {
@@ -851,7 +849,7 @@ export class AddPassengerComponent implements OnInit {
                             that.mthremail = psngrDT[0].email2;
 
                             // Contact Information
-        
+
                             that.resiaddr = psngrDT[0].address;
                             that.country = psngrDT[0].country;
                             that.state = psngrDT[0].state;
@@ -933,6 +931,6 @@ export class AddPassengerComponent implements OnInit {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype]);
+        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + "/profile"]);
     }
 }

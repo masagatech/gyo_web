@@ -2099,6 +2099,8 @@
     background-color: #333;
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)!important;
     color: #fff!important;
+    border-bottom: 2px solid #ff9800;
+    height: calc(100vh - 80px);
 }
 
 .sidebar .user-info {

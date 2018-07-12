@@ -213,7 +213,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.setFromDateAndToDate();
         this.fillDropDownList();
         this.fillStateDropDown();
         this.fillCityDropDown();
@@ -274,19 +273,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.formatDateToWord(this.dob);
     }
 
-    isWithProspectus() {
-        var that = this;
-
-        if (that.isprspct) {
-            $('#prspctid').prop("disabled", false);
-            $('#prspctno').prop("disabled", false);
-        }
-        else {
-            $('#prspctid').prop("disabled", true);
-            $('#prspctno').prop("disabled", true);
-        }
-    }
-
     formatDateToWord(date) {
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -303,6 +289,19 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             var year = this._autoservice.numToWords(_dob.getFullYear());
 
             this.dobword = day + " " + month + " " + year;
+        }
+    }
+
+    isWithProspectus() {
+        var that = this;
+
+        if (that.isprspct) {
+            $('#prspctid').prop("disabled", false);
+            $('#prspctno').prop("disabled", false);
+        }
+        else {
+            $('#prspctid').prop("disabled", true);
+            $('#prspctno').prop("disabled", true);
         }
     }
 
