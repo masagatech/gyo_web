@@ -143,60 +143,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this.getStudentDetails();
     }
 
-    // Bulk Upload
-
-    getUploadConfig() {
-        var that = this;
-
-        that.uploadfileconfig.server = that.global.serviceurl + "bulkUpload";
-        that.uploadfileconfig.serverpath = that.global.serviceurl;
-        that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
-        that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
-
-        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
-            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
-            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
-        }, err => {
-            console.log("Error");
-        }, () => {
-            console.log("Complete");
-        })
-    }
-
-    // File Upload
-
-    onBeforeUpload(event) {
-        event.formData.append("bulktype", "student");
-        event.formData.append("wsautoid", this._enttdetails.wsautoid);
-        event.formData.append("enttid", this._enttdetails.enttid);
-        event.formData.append("ayid", this.ayid);
-        event.formData.append("cuid", this.loginUser.ucode);
-    }
-
-    onFileUpload(event) {
-        var that = this;
-        that.uploadFileDT = [];
-
-        var xlsfile = JSON.parse(event.xhr.response).data.funsave_multistudentinfo;
-
-        if (xlsfile.msgid == 401) {
-            that._msg.Show(messageType.error, "Error", xlsfile.msg);
-        }
-        else if (xlsfile.msgid == 1) {
-            for (var i = 0; i < xlsfile.length; i++) {
-                that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
-            }
-
-            that._msg.Show(messageType.success, "Success", xlsfile.msg);
-
-            that.closeBulkUploadPopup();
-            that.getStudentDetails();
-        }
-        else {
-            that._msg.Show(messageType.warn, "Warning", xlsfile.msg);
-        }
-    }
-
     isshStudent(viewtype) {
         var that = this;
         commonfun.loader("#divShow");
@@ -362,12 +308,68 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this._router.navigate(['/reports/erp/student/dashboard']);
     }
 
+    // Bulk Upload Students
+
     openBulkUploadPopup() {
         $("#bulkUploadModal").modal('show');
     }
 
     closeBulkUploadPopup() {
         $("#bulkUploadModal").modal("hide");
+    }
+
+    // Bulk Upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that.uploadfileconfig.server = that.global.serviceurl + "bulkUpload";
+        that.uploadfileconfig.serverpath = that.global.serviceurl;
+        that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
+        that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
+            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // File Upload
+
+    onBeforeUpload(event) {
+        event.formData.append("bulktype", "student");
+        event.formData.append("ayid", this.ayid);
+        event.formData.append("enttid", this._enttdetails.enttid);
+        event.formData.append("wsautoid", this._enttdetails.wsautoid);
+        event.formData.append("cuid", this.loginUser.ucode);
+    }
+
+    onFileUpload(event) {
+        var that = this;
+        that.uploadFileDT = [];
+
+        var xlsfile = JSON.parse(event.xhr.response).data.funsave_multistudentinfo;
+
+        if (xlsfile.msgid == 401) {
+            that._msg.Show(messageType.error, "Error", xlsfile.msg);
+        }
+        else if (xlsfile.msgid == 1) {
+            for (var i = 0; i < xlsfile.length; i++) {
+                that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            }
+
+            that._msg.Show(messageType.success, "Success", xlsfile.msg);
+
+            that.closeBulkUploadPopup();
+            that.getStudentDetails();
+        }
+        else {
+            that._msg.Show(messageType.warn, "Warning", xlsfile.msg);
+        }
     }
 
     public ngOnDestroy() {

@@ -14,8 +14,13 @@
                 </a>
             </li>
             <li>
-                <a role="button" title="Add New" class="btn btn-theme" (click)="addPassengerForm()">
-                    <i class="material-icons">add</i>
+                <a role="button" class="btn btn-theme" (click)="addPassengerForm()">
+                    <span class="material-icons">add</span> <span class="float-right pad-03">Add New</span>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme" (click)="openBulkUploadPopup()">
+                    <span class="material-icons">add</span> <span class="float-right pad-03">Bulk Upload</span>
                 </a>
             </li>
         </ul>
@@ -37,7 +42,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Status</label>
-                        <select id="status" name="status" [(ngModel)]="status" class="form-control status" tabindex="2" (ngModelChange)="getStudentDetails()">
+                        <select id="status" name="status" [(ngModel)]="status" class="form-control status" tabindex="2" (ngModelChange)="getPassengerDetails()">
                             <option [value]="''">All</option>
                             <option [value]="'current'">Current</option>
                             <option [value]="'past'">Past</option>
@@ -140,6 +145,213 @@
                         </ng-template>
                     </p-column>
                 </p-dataTable>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog full-width" role="document">
+        <div class="modal-lg modal-content">
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-8 col-xs-8">
+                        <h4>Passenger : Bulk Upload</h4>
+                    </div>
+                    <div class="col-md-4 col-xs-4 text-right">
+                        <a role="button" (click)="closeBulkUploadPopup()">
+                            <i class="material-icons">cancel</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" id="user">
+                <div class="form-group">
+                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadfileconfig.server}}" chooseLabel="Excel Upload" (onBeforeUpload)="onBeforeUpload($event)" (onUpload)="onFileUpload($event)" accept="{{uploadfileconfig.acceptedFiles}}" maxFileSize="{{uploadfileconfig.maxFilesize}}"
+                        auto="true"></p-fileUpload>
+
+                    <div *ngIf="uploadFileDT.length">
+                        <div *ngFor="let file of uploadFileDT" class="box">
+                            {{file.athurl}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-header">
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <h4>View : Excel Format</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <a role="button" target="_blank" href="assets\file\tblpassenger.xlsx">
+                            <i class="material-icons">file_download</i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body table-overflow">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                first_name
+                            </th>
+                            <th>
+                                middle_name
+                            </th>
+                            <th>
+                                last_name
+                            </th>
+                            <th>
+                                dob
+                            </th>
+                            <th>
+                                birth_place
+                            </th>
+                            <th>
+                                aadhar_no
+                            </th>
+                            <th>
+                                gender
+                            </th>
+                            <th>
+                                father_name
+                            </th>
+                            <th>
+                                father_mobile
+                            </th>
+                            <th>
+                                father_email
+                            </th>
+                            <th>
+                                mother_name
+                            </th>
+                            <th>
+                                mother_mobile
+                            </th>
+                            <th>
+                                mother_email
+                            </th>
+                            <th>
+                                country
+                            </th>
+                            <th>
+                                state
+                            </th>
+                            <th>
+                                city
+                            </th>
+                            <th>
+                                area
+                            </th>
+                            <th>
+                                pin_code
+                            </th>
+                            <th>
+                                alert
+                            </th>
+                            <th>
+                                resi_address
+                            </th>
+                            <th>
+                                pickup_route
+                            </th>
+                            <th>
+                                pickup_stops
+                            </th>
+                            <th>
+                                drop_route
+                            </th>
+                            <th>
+                                drop_stops
+                            </th>
+                            <th>
+                                other_info
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Nimit
+                            </td>
+                            <td>
+                                Nilesh
+                            </td>
+                            <td>
+                                Shah
+                            </td>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+                                M/F
+                            </th>
+                            <th>
+                                father_name
+                            </th>
+                            <th>
+                                father_mobile
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+                                India
+                            </th>
+                            <th>
+                                Gujarat
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+
+                            </th>
+                            <th>
+                                resi_address
+                            </th>
+                            <th>
+                                Route 1
+                            </th>
+                            <th>
+                                Stops 1
+                            </th>
+                            <th>
+                                Route 1
+                            </th>
+                            <th>
+                                Stops 1
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

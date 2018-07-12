@@ -28,11 +28,17 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
     passengerDT: any = [];
 
+    // Upload File
+
+    uploadFileDT: any = [];
+    uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
+
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.getUploadConfig();
         this.viewPassengerDataRights();
     }
 
@@ -156,6 +162,69 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     public editPassengerForm(row) {
         this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + '/edit', row.enrlmntid]);
     }
+
+    // Bulk Upload Passengers
+
+    openBulkUploadPopup() {
+        $("#bulkUploadModal").modal('show');
+    }
+
+    closeBulkUploadPopup() {
+        $("#bulkUploadModal").modal("hide");
+    }
+    // Bulk Upload
+
+    getUploadConfig() {
+        var that = this;
+
+        that.uploadfileconfig.server = that.global.serviceurl + "bulkUpload";
+        that.uploadfileconfig.serverpath = that.global.serviceurl;
+        that.uploadfileconfig.uploadxlsurl = that.global.uploadurl;
+        that.uploadfileconfig.xlsfilepath = that.global.xlsfilepath;
+
+        that._autoservice.getMOM({ "flag": "filebyid", "id": that.global.xlsid }).subscribe(data => {
+            that.uploadfileconfig.maxFilesize = data.data[0]._filesize;
+            that.uploadfileconfig.acceptedFiles = data.data[0]._filetype;
+        }, err => {
+            console.log("Error");
+        }, () => {
+            console.log("Complete");
+        })
+    }
+
+    // File Upload
+
+    onBeforeUpload(event) {
+        event.formData.append("bulktype", "passenger");
+        event.formData.append("enttid", this._enttdetails.enttid);
+        event.formData.append("wsautoid", this._enttdetails.wsautoid);
+        event.formData.append("cuid", this.loginUser.ucode);
+    }
+
+    onFileUpload(event) {
+        var that = this;
+        that.uploadFileDT = [];
+
+        var xlsfile = JSON.parse(event.xhr.response).data.funsave_multipassengerinfo;
+
+        if (xlsfile.msgid == 401) {
+            that._msg.Show(messageType.error, "Error", xlsfile.msg);
+        }
+        else if (xlsfile.msgid == 1) {
+            for (var i = 0; i < xlsfile.length; i++) {
+                that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
+            }
+
+            that._msg.Show(messageType.success, "Success", xlsfile.msg);
+
+            that.closeBulkUploadPopup();
+            that.getPassengerDetails();
+        }
+        else {
+            that._msg.Show(messageType.warn, "Warning", xlsfile.msg);
+        }
+    }
+
 
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
