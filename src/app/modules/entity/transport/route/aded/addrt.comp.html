@@ -134,52 +134,65 @@
         </div>
 
         <div *ngIf="stopsList.length">
-            <p-orderList [value]="stopsList | filterBy:{'isactive':true}" [styleClass]="'pliststop'" [style]="{'width':'100%'}" [listStyle]="{'height':'auto', 'width':'auto'}" [responsive]="true" header="Stops">
-                <ng-template let-stops pTemplate="editor">
-                    <div class="row clearfix">
-                        <div class="col-md-2">
-                            <div class="ui-helper-clearfix">
-                                <input id="{{stops.rowid}}" name="{{stops.rowid}}" [(ngModel)]="stops.isviewmap" (ngModelChange)="isViewMapShow(stops)" type="checkbox" class="filled-in">
-                                <label for="{{stops.rowid}}">{{stops.stpname}}</label>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="ui-helper-clearfix">
-                                {{stops.stptypenm}}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="ui-helper-clearfix">
-                                {{stops.address}}
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="ui-helper-clearfix">
-                                {{stops.lat + ", " + stops.lon}}
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="ui-helper-clearfix">
-                                {{stops.radius | _currency: {'decimals':2,'currsym':''} }}
-                            </div>
-                        </div>
-                        <div class="col-md-1" align="right">
-                            <div class="ui-helper-clearfix">
-                                <button type="button" class="btn btn-theme" (click)="editStopsList(stops)">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th width="30px">
+                        </th>
+                        <th width="250px">
+                            Stop Name
+                        </th>
+                        <th width="100px">
+                            Stop Type
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th width="200px">
+                            Geo Location
+                        </th>
+                        <th width="100px">
+                            Radius
+                        </th>
+                        <th width="100px">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let stprow of stopsList | filterBy:{'isactive':true}; let i = index;">
+                        <td>
+                            {{i+1}}
+                        </td>
+                        <td>
+                            <input id="{{stprow.rowid}}" name="{{stprow.rowid}}" [(ngModel)]="stprow.isviewmap" (ngModelChange)="isViewMapShow(stprow)" type="checkbox" class="filled-in">
+                            <label for="{{stprow.rowid}}">{{stprow.stpname}}</label>
+                        </td>
+                        <td>
+                            {{stprow.stptypenm}}
+                        </td>
+                        <td>
+                            {{stprow.address}}
+                        </td>
+                        <td>
+                            {{stprow.lat + ", " + stprow.lon}}
+                        </td>
+                        <td>
+                            {{stprow.radius | _currency: {'decimals':2,'currsym':''} }}
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-theme" (click)="editStopsList(stprow)">
                                     <i class="material-icons">edit</i>
                                 </button>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="ui-helper-clearfix">
-                                <button type="button" class="btn btn-danger" (click)="deleteStopsList(stops)">
+
+                                <button type="button" class="btn btn-danger" (click)="deleteStopsList(stprow)">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                </ng-template>
-            </p-orderList>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewrt.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewrt.comp.html'
 })
 
 export class ViewRouteComponent implements OnInit {
@@ -18,7 +17,7 @@ export class ViewRouteComponent implements OnInit {
     stopsDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _rtservice: RouteService) {
+        private _loginservice: LoginService, private _rtservice: RouteService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

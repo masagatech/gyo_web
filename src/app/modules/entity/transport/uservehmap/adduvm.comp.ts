@@ -34,13 +34,10 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 100);
+        
     }
 
     resetUserVehicleMap() {
-        $(".enttname input").focus();
         this.uid = 0;
         this.uname = "";
         this.utype = "";
@@ -172,12 +169,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             }
             else {
                 var saveUR = {
-                    "enttid": that._enttdetails.enttid,
                     "uid": that.uid,
                     "utype": that.utype,
                     "vehid": selectedVehicle,
                     "cuid": that.loginUser.ucode,
-                    "wsid": that._enttdetails.wsautoid
+                    "enttid": that._enttdetails.enttid,
+                    "wsautoid": that._enttdetails.wsautoid
                 }
 
                 that._uvmservice.saveUserVehicleMap(saveUR).subscribe(data => {

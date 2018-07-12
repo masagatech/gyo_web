@@ -13,7 +13,7 @@
 </div>
 
 <div class="row clearfix">
-    <div *ngFor="let row of stopsDT | groupBy:'rtgroup'; let i = index" class="col-md-3 col-xs-6">
+    <div *ngFor="let row of stopsDT | groupBy:'rtgroup'; let i = index;" class="col-md-3 col-xs-6">
         <div class="card">
             <div class="header header-title">
                 <h4>{{row.key.split('~')[1]}}</h4>
@@ -23,7 +23,9 @@
                 </ul>
             </div>
             <div class="body">
-                <p *ngFor="let rtrow of row.value">{{rtrow.stpname}}</p>
+                <p *ngFor="let rtrow of row.value; let i = index;">
+                    <b>{{i+1}}. </b> {{rtrow.stpname}}
+                </p>
             </div>
         </div>
     </div>

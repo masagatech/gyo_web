@@ -3,11 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
 import { PickDropService, EntityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'addschd.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addschd.comp.html'
 })
 
 export class AddScheduleComponent implements OnInit {

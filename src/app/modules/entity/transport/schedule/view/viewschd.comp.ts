@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { Globals, LoginUserModel } from '@models';
 import { PickDropService, EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'viewschd.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewschd.comp.html'
 })
 
 export class ViewScheduleComponent implements OnInit {
@@ -52,7 +51,7 @@ export class ViewScheduleComponent implements OnInit {
     ispickup: boolean = true;
     isdrop: boolean = true;
 
-    constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
+    constructor(private _pickdropservice: PickDropService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();

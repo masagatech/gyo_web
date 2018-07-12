@@ -9,7 +9,7 @@ import { ViewDriverComponent } from './view/viewdriver.comp';
 
 import { DriverService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {

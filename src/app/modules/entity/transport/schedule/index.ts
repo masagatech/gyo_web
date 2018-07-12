@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, CommonService } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -42,7 +42,7 @@ export const routes = [
         EditScheduleComponent
     ],
 
-    providers: [AuthGuard, PickDropService, EntityService]
+    providers: [AuthGuard, CommonService, PickDropService, EntityService]
 })
 
 export class VehicleScheduleModule {

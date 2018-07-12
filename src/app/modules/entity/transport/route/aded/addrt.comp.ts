@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
 import { GMap } from 'primeng/primeng';
@@ -8,8 +8,7 @@ import { GMap } from 'primeng/primeng';
 declare var google: any;
 
 @Component({
-    templateUrl: 'addrt.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addrt.comp.html'
 })
 
 export class AddRouteComponent implements OnInit {
@@ -53,7 +52,7 @@ export class AddRouteComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _rtservice: RouteService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService, private cdRef: ChangeDetectorRef) {
+        private _loginservice: LoginService, private _msg: MessageService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

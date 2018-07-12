@@ -21,6 +21,7 @@ export const routes = [
                     { path: 'route', loadChildren: './route#RouteModule' },
                     { path: 'batch', loadChildren: './batch#BatchModule' },
                     { path: 'student', loadChildren: './student#StudentVehicleModule' },
+                    { path: 'uservehiclemap', loadChildren: './uservehmap#UserVehicleMapModule' },
                 ]
             }
         ]

@@ -28,7 +28,6 @@ export class AddVehicleComponent implements OnInit {
     vehcond: string = "";
     vehfclt: string = "";
 
-    istrackenabled: boolean = false;
     devtype: string = "";
     imei: string = "";
     simno: string = "";
@@ -129,9 +128,7 @@ export class AddVehicleComponent implements OnInit {
         this.capacity = 0;
         this.vehcond = "";
         this.vehfclt = "";
-        this.istrackenabled = false;
         this.devtype = "";
-        this.imei = "";
         this.simno = "";
         this.speedAllow = 0;
         this.d1str = "";
@@ -163,27 +160,26 @@ export class AddVehicleComponent implements OnInit {
             $(".capacity").focus();
             return false;
         }
-        if (that.istrackenabled) {
-            if (that.devtype == "") {
-                that._msg.Show(messageType.error, "Error", "Enter Device Type");
-                $(".devtype").focus();
-                return false;
-            }
-            if (that.imei == "") {
-                that._msg.Show(messageType.error, "Error", "Enter IMEI");
-                $(".imei").focus();
-                return false;
-            }
-            if (that.simno == "") {
-                that._msg.Show(messageType.error, "Error", "Enter SIM No");
-                $(".simno").focus();
-                return false;
-            }
-            if (that.speedAllow.toString() == "") {
-                that._msg.Show(messageType.error, "Error", "Enter SIM No");
-                $(".simno").focus();
-                return false;
-            }
+
+        if (that.devtype == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Device Type");
+            $(".devtype").focus();
+            return false;
+        }
+        if (that.imei == "") {
+            that._msg.Show(messageType.error, "Error", "Enter IMEI");
+            $(".imei").focus();
+            return false;
+        }
+        if (that.simno == "") {
+            that._msg.Show(messageType.error, "Error", "Enter SIM No");
+            $(".simno").focus();
+            return false;
+        }
+        if (that.speedAllow.toString() == "") {
+            that._msg.Show(messageType.error, "Error", "Enter SIM No");
+            $(".simno").focus();
+            return false;
         }
 
         return true;
@@ -217,7 +213,7 @@ export class AddVehicleComponent implements OnInit {
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
-                "istrack": that.istrackenabled,
+                "istrack": true,
                 "devtype": that.devtype,
                 "imei": that.imei,
                 "simno": that.simno,
@@ -253,7 +249,7 @@ export class AddVehicleComponent implements OnInit {
 
                             that.saveToVTS({
                                 "vhid": params.imei,
-                                "vhname": params.vehno,
+                                "vhname": params.vehregno,
                                 "alwspeed": params.allowspd,
                                 "pushcl": pushcl,
                                 "vhd": {
@@ -303,7 +299,7 @@ export class AddVehicleComponent implements OnInit {
         });
     }
 
-    // Get vehicle Data
+    // Get Vehicle Data By ID
 
     getVehicleDetails() {
         var that = this;
@@ -319,35 +315,40 @@ export class AddVehicleComponent implements OnInit {
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        var _vehicledata = data.data;
-
-                        that.vehid = _vehicledata[0].autoid;
-                        that.vehtype = _vehicledata[0].vehicletype;
-                        that.vehno = _vehicledata[0].vehicleno;
-                        that.vehregno = _vehicledata[0].vehregno;
-                        that.vehmake = _vehicledata[0].vehiclemake;
-                        that.vehmdl = _vehicledata[0].vehiclemodel;
-                        that.capacity = _vehicledata[0].capacity;
-                        that.vehcond = _vehicledata[0].vehiclecondition;
-                        that.vehfclt = _vehicledata[0].vehiclefacility;
-                        that.istrackenabled = _vehicledata[0].istrack;
-                        that.devtype = _vehicledata[0].devtype;
-                        that.imei = _vehicledata[0].imei;
-                        that.simno = _vehicledata[0].simno;
-                        that.speedAllow = _vehicledata[0].vhspeed;
-                        that.d1str = _vehicledata[0].d1str;
-
-                        var trktypedt = data.data[0].trktype;
-
-                        if (trktypedt != null) {
-                            for (var i = 0; i < trktypedt.length; i++) {
-                                $("#track").find("#" + trktypedt[i]).prop('checked', true);
-                            }
+                        if (data.data.length == 0) {
+                            that.resetVehicleFields();
+                            that.imei = "";
                         }
+                        else {
+                            var _vehicledata = data.data;
 
-                        that.vehurl = _vehicledata[0].url;
-                        that.isactive = _vehicledata[0].isactive;
-                        that.mode = _vehicledata[0].mode;
+                            that.vehid = _vehicledata[0].autoid;
+                            that.vehtype = _vehicledata[0].vehicletype;
+                            that.vehno = _vehicledata[0].vehicleno;
+                            that.vehregno = _vehicledata[0].vehregno;
+                            that.vehmake = _vehicledata[0].vehiclemake;
+                            that.vehmdl = _vehicledata[0].vehiclemodel;
+                            that.capacity = _vehicledata[0].capacity;
+                            that.vehcond = _vehicledata[0].vehiclecondition;
+                            that.vehfclt = _vehicledata[0].vehiclefacility;
+                            that.devtype = _vehicledata[0].devtype;
+                            that.imei = _vehicledata[0].imei;
+                            that.simno = _vehicledata[0].simno;
+                            that.speedAllow = _vehicledata[0].vhspeed;
+                            that.d1str = _vehicledata[0].d1str;
+
+                            var trktypedt = data.data[0].trktype;
+
+                            if (trktypedt != null) {
+                                for (var i = 0; i < trktypedt.length; i++) {
+                                    $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                                }
+                            }
+
+                            that.vehurl = _vehicledata[0].url;
+                            that.isactive = _vehicledata[0].isactive;
+                            that.mode = _vehicledata[0].mode;
+                        }
                     }
                     catch (e) {
                         that._msg.Show(messageType.error, "Error", e);
@@ -363,10 +364,75 @@ export class AddVehicleComponent implements OnInit {
                 })
             }
             else {
-                that.resetVehicleFields();
+                that.getVehicleByIMEI();
                 commonfun.loaderhide();
             }
         });
+    }
+
+    // Get Vehicle Data By IMEI
+
+    getVehicleByIMEI() {
+        var that = this;
+        commonfun.loader();
+
+        that._vehservice.getVehicleDetails({
+            "flag": "byimei",
+            "imei": that.imei,
+            "enttid": that._enttdetails.enttid
+        }).subscribe(data => {
+            try {
+                if (data.data.length == 0) {
+                    $(".hidewhen input").removeAttr("disabled");
+                    $(".hidewhen select").removeAttr("disabled");
+                    that.resetVehicleFields();
+                }
+                else {
+                    $(".hidewhen input").attr("disabled", "disabled");
+                    $(".hidewhen select").attr("disabled", "disabled");
+
+                    var _vehicledata = data.data;
+
+                    that.vehid = _vehicledata[0].autoid;
+                    that.vehtype = _vehicledata[0].vehicletype;
+                    that.vehno = _vehicledata[0].vehicleno;
+                    that.vehregno = _vehicledata[0].vehregno;
+                    that.vehmake = _vehicledata[0].vehiclemake;
+                    that.vehmdl = _vehicledata[0].vehiclemodel;
+                    that.capacity = _vehicledata[0].capacity;
+                    that.vehcond = _vehicledata[0].vehiclecondition;
+                    that.vehfclt = _vehicledata[0].vehiclefacility;
+                    that.devtype = _vehicledata[0].devtype;
+                    that.imei = _vehicledata[0].imei;
+                    that.simno = _vehicledata[0].simno;
+                    that.speedAllow = _vehicledata[0].vhspeed;
+                    that.d1str = _vehicledata[0].d1str;
+
+                    var trktypedt = data.data[0].trktype;
+
+                    if (trktypedt != null) {
+                        for (var i = 0; i < trktypedt.length; i++) {
+                            $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                        }
+                    }
+
+                    that.vehurl = _vehicledata[0].url;
+                    that.isactive = _vehicledata[0].isactive;
+                    that.mode = _vehicledata[0].mode;
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data

@@ -3,13 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { DriverService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'adddriver.comp.html',
-    providers: [CommonService]
+    templateUrl: 'adddriver.comp.html'
 })
 
 export class AddDriverComponent implements OnInit {

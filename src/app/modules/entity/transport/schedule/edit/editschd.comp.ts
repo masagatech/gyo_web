@@ -6,8 +6,7 @@ import { PickDropService, EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'editschd.comp.html',
-    providers: [CommonService]
+    templateUrl: 'editschd.comp.html'
 })
 
 export class EditScheduleComponent implements OnInit {
