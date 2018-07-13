@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewrt.comp.html'
@@ -25,10 +23,7 @@ export class ViewRouteComponent implements OnInit {
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            commonfun.navistyle();
-            $(".enttname input").focus();
-        }, 100);
+        
     }
 
     getStopsDetails() {
