@@ -237,13 +237,6 @@ export class AddVehicleComponent implements OnInit {
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
 
-                        if (msgid === "1") {
-                            that.resetVehicleFields();
-                        }
-                        else {
-                            that.backViewData();
-                        }
-
                         try {
                             // Saving Data To VTS
 
@@ -268,6 +261,16 @@ export class AddVehicleComponent implements OnInit {
                         }
                         catch (e) {
                             that._msg.Show(messageType.error, "Error", e);
+                        }
+
+                        if (msgid === "1") {
+                            $(".hidewhen input").removeAttr("disabled");
+                            $(".hidewhen select").removeAttr("disabled");
+                            that.resetVehicleFields();
+                            that.imei = "";
+                        }
+                        else {
+                            that.backViewData();
                         }
                     }
                     else {
@@ -393,7 +396,7 @@ export class AddVehicleComponent implements OnInit {
 
                     var _vehicledata = data.data;
 
-                    that.vehid = _vehicledata[0].autoid;
+                    that.vehid = 0;
                     that.vehtype = _vehicledata[0].vehicletype;
                     that.vehno = _vehicledata[0].vehicleno;
                     that.vehregno = _vehicledata[0].vehregno;

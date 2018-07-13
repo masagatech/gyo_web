@@ -89,11 +89,15 @@
                                             <div class="col-md-12" *ngIf="row.dob != ''">
                                                 <span class="material-icons font-15">date_range</span> {{row.dob}}
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.mobileno1 != ''">
-                                                <span class="material-icons font-15">phone_iphone</span> {{row.mobileno1}}
-                                                <span *ngIf="row.mobileno1 != '' && row.mobileno2 !== ''">, </span>{{row.mobileno2}}
+                                            <div class="col-md-12">
+                                                <span class="material-icons font-15">phone_iphone</span>
+                                                <span class="short-text font-15" title="{{row.mobileno1}}">{{row.mobileno1}}</span>
                                             </div>
-                                            <div class="col-md-12" *ngIf="row.email1 != '' && row.email1 != null">
+                                            <div class="col-md-12" *ngIf="row.mobileno2 !== '' && row.mobileno2 != null">
+                                                <span class="material-icons font-15">phone_iphone</span>
+                                                <span class="short-text font-15" title="{{row.mobileno2}}">{{row.mobileno2}}</span>
+                                            </div>
+                                            <div class="col-md-12">
                                                 <span class="material-icons font-15 float-left">email</span>
                                                 <span class="short-text font-15" title="{{row.email1}}">{{row.email1}}</span>
                                             </div>

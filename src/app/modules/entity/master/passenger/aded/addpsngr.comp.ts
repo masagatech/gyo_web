@@ -663,16 +663,6 @@ export class AddPassengerComponent implements OnInit {
             $(".fthrmobile").focus();
             return false;
         }
-        else if (that.mthrname === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Mother Name");
-            $(".mthrname").focus();
-            return false;
-        }
-        else if (that.mthrmobile === "") {
-            that._msg.Show(messageType.error, "Error", "Enter Mother Mobile");
-            $(".mthrmobile").focus();
-            return false;
-        }
         else if (that.pickrtid == 0) {
             if (that.pickaddr === "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up Address");
