@@ -62,7 +62,7 @@ export class AddPassengerComponent implements OnInit {
     ctname: string = "";
     area: number = 0;
     arname: string = "";
-    pincode: number = 0;
+    pincode: string = "";
 
     // Vehicle Mapping
 
@@ -731,7 +731,7 @@ export class AddPassengerComponent implements OnInit {
                 "state": that.state,
                 "city": that.city,
                 "area": that.area,
-                "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
+                "pincode": that.pincode == "" ? 0 : that.pincode,
 
                 // Vehicle Mapping
 

@@ -18,6 +18,8 @@ export class AddMOMComponent implements OnInit, OnDestroy {
     title: any;
     validSuccess: Boolean = true;
 
+    fldgroupDT: any = [];
+
     momid: number = 0;
     groupdt: any = [];
     grpcd: string = "";
@@ -156,6 +158,14 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                             that.mtype = data.data[0].typ;
                             that.isdynmenu = data.data[0].isdynmenu;
                             that.fieldDT = data.data[0].field;
+
+                            var fldgroupDT = that.fieldDT.filter(a => a.fldtype == "checkbox");
+
+                            for (var i = 0; i < fldgroupDT.length; i++) {
+                                var fldrow = fldgroupDT[i];
+                                that.fillDynamicDropDown(fldrow.fldgroup);
+                            }
+
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;
                         }
@@ -185,6 +195,21 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
         that._autoservice.getMOM({ "flag": "group", "grpcd": "" }).subscribe(data => {
             that.groupdt = data.data;
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, 'Error', err);
+            commonfun.loaderhide();
+        }, () => {
+            // console.log("Complete");
+        })
+    }
+
+    fillDynamicDropDown(group) {
+        var that = this;
+        commonfun.loader();
+
+        that._autoservice.getMOM({ "flag": "", "group": group }).subscribe(data => {
+            that.fldgroupDT = data.data;
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, 'Error', err);

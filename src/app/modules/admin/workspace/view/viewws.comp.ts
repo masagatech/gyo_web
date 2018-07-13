@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { WorkspaceService } from '@services/master';
+import { WorkspaceService, EntityService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
@@ -20,6 +20,7 @@ export class ViewWorkspaceComponent implements OnInit {
     selectedWorkspace: any = [];
     autowsid: number = 0;
     autowsname: string = "";
+    autotype: string = "";
 
     wsautoid: number = 0;
     wscode: string = "";
@@ -41,7 +42,7 @@ export class ViewWorkspaceComponent implements OnInit {
     isShowList: boolean = false;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _wsservice: WorkspaceService, private _autoservice: CommonService) {
+        private _wsservice: WorkspaceService, private _entityservice: EntityService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
@@ -54,7 +55,7 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.refreshButtons();
+
     }
 
     isshWorkspace(viewtype) {
@@ -71,14 +72,6 @@ export class ViewWorkspaceComponent implements OnInit {
             that.isShowList = true;
             commonfun.loaderhide("#divShow");
         }
-
-        that.refreshButtons();
-    }
-
-    refreshButtons() {
-        setTimeout(function () {
-            commonfun.navistyle();
-        }, 0);
     }
 
     // Auto Completed Workspace
@@ -88,6 +81,9 @@ export class ViewWorkspaceComponent implements OnInit {
 
         this._autoservice.getAutoData({
             "flag": "workspace",
+            "uid": this.loginUser.uid,
+            "utype": this.loginUser.utype,
+            "issysadmin": false,
             "search": query
         }).subscribe((data) => {
             this.autoWorkspaceDT = data.data;
@@ -101,10 +97,17 @@ export class ViewWorkspaceComponent implements OnInit {
     // Selected Workspace
 
     selectAutoWorkspaceData(event) {
-        Cookie.set("_autowsid_", event.value);
+        Cookie.set("_autowsid_", event.wsautoid);
         Cookie.set("_autowsnm_", event.label);
+        Cookie.set("_autotype_", event.autotype);
 
         this.viewWorkspaceDetails();
+
+        if (this.autotype !== "Workspace") {
+            this.enttid = event.value;
+            this.wsautoid = event.wsautoid;
+            this.getEntityDetails();
+        }
     }
 
     getUploadConfig() {
@@ -158,14 +161,55 @@ export class ViewWorkspaceComponent implements OnInit {
         if (Cookie.get('_autowsnm_') != null) {
             that.autowsid = parseInt(Cookie.get("_autowsid_"));
             that.autowsname = Cookie.get("_autowsnm_");
-    
+            that.autotype = Cookie.get("_autotype_");
+
             that.selectedWorkspace = {
                 value: that.autowsid,
-                label: that.autowsname
+                label: that.autowsname,
+                autotype: that.autotype
             }
         }
 
         that.getWorkspaceDetails();
+    }
+
+    getEntityDetails() {
+        var that = this;
+        var params = {};
+
+        Cookie.set("_entttype_", that.autotype);
+        that.autotype = Cookie.get('_entttype_');
+
+        commonfun.loader();
+
+        params = {
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "entttype": that.autotype, "issysadmin": that.loginUser.issysadmin, "wsautoid": that.wsautoid,
+            "schoolid": that._wsdetails.schoolid, "enttid": that.enttid
+        }
+
+        that._entityservice.getEntityDetails(params).subscribe(data => {
+            try {
+                var row = data.data[0];
+
+                Cookie.delete("_schenttdetails_");
+                Cookie.delete("_ayid_");
+
+                Cookie.set("_schenttdetails_", JSON.stringify(row));
+                that._router.navigate(['/']);
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     resetWorkspaceDetails() {
@@ -174,8 +218,10 @@ export class ViewWorkspaceComponent implements OnInit {
         that.selectedWorkspace = [];
         that.autowsid = 0;
         that.autowsname = "";
+        that.autotype = "";
         Cookie.delete("_autowsid_");
         Cookie.delete("_autowsnm_");
+        Cookie.delete("_autotype_");
 
         that.getWorkspaceDetails();
     }
@@ -188,13 +234,6 @@ export class ViewWorkspaceComponent implements OnInit {
         this._router.navigate(['/admin/workspace/edit', row.wsautoid]);
     }
 
-    public openDashboardForm(row) {
-        Cookie.delete("_schwsdetails_");
-        Cookie.set("_schwsdetails_", JSON.stringify(row));
-
-        this._router.navigate(['/workspace']);
-    }
-
     public openForm() {
         var _wsdetails = {
             "wsautoid": this.wsautoid.toString(),
@@ -202,6 +241,7 @@ export class ViewWorkspaceComponent implements OnInit {
             "wsname": this.wsname,
             "wstype": this.wstype,
             "wslogo": this.wslogo,
+            "enttid": 0,
             "issysadmin": this.issysadmin
         }
 

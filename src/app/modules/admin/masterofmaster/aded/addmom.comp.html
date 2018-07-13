@@ -67,6 +67,14 @@
                         <div *ngIf="row.fldtype == 'textarea'">
                             <textarea name="{{row.fldname}}" [(ngModel)]="row.fldval" rows="6" class="form-control no-resize auto-growth"></textarea>
                         </div>
+                        <div *ngIf="row.fldtype == 'checkbox'">
+                            <div id="track">
+                                <span *ngFor="let grprow of fldgroupDT; let i = index">
+                                    <input type="checkbox" id="{{grprow.key}}" value="{{grprow.key}}" name="grprow{{i + 1}}" data-menuid="grprow.key" data-right="item" class="actrights filled-in" />
+                                    <label for="{{grprow.key}}">{{grprow.val}}</label>
+                                </span>
+                            </div>
+                        </div>
                         <div *ngIf="row.fldtype == 'image'">
                             <strong>Allowed only below 150 KB File</strong> <br />
                             <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadiconconfig.server + '?width=150'}}" chooseLabel="Upload Icon" (onUpload)="onIconUpload($event, row)" accept="{{uploadiconconfig.acceptedFiles}}" maxFileSize="{{uploadiconconfig.maxFilesize}}"

@@ -45,8 +45,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-        var that = this;
-        that.refreshButtons();
+        
     }
 
     // Entity Type DropDown
@@ -94,14 +93,6 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
             that.isShowList = true;
             commonfun.loaderhide("#divShow");
         }
-
-        that.refreshButtons();
-    }
-
-    refreshButtons() {
-        setTimeout(function () {
-            commonfun.navistyle();
-        }, 0);
     }
 
     // Auto Completed Entity
@@ -137,7 +128,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         var that = this;
         var params = {};
 
-        Cookie.set("_entttype_", this.entttype);
+        Cookie.set("_entttype_", that.entttype);
         that.entttype = Cookie.get('_entttype_');
 
         commonfun.loader();

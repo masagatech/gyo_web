@@ -8,9 +8,9 @@ import {  } from '@services';
 import { AddWorkspaceComponent } from './aded/addws.comp';
 import { ViewWorkspaceComponent } from './view/viewws.comp';
 
-import { WorkspaceService } from '@services/master';
+import { WorkspaceService, EntityService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule, CheckboxModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -36,7 +36,7 @@ export const routes = [
     AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, WorkspaceService, CommonService]
+  providers: [AuthGuard, CommonService, WorkspaceService, EntityService]
 })
 
 export class WorkspaceModule {
