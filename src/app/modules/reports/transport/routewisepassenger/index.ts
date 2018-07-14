@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard } from '@services';
 
 import { RouteWisePassengerComponent } from './rtwisepsngr.comp';
 import { ReportsService } from '@services/reports';

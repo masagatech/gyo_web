@@ -4,35 +4,81 @@
             <div class="col-md-9 col-xs-9">
                 <h4>Unschedule {{_enttdetails.psngrtype}}</h4>
             </div>
-            <div class="col-md-3 col-xs-3 pad-20 text-right">
-                <div class="btn-group " role="group ">
-                    <button type="button " class="btn btn-info dropdown-toggle " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">
-                        Export <span class="caret "></span>
-                        <span class="sr-only ">Toggle Dropdown</span>
+            <div class="col-md-3 col-xs-3 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu ">
-                        <li><a role="button " (click)="exportToCSV() "><i class="fa fa-file-excel-o "></i> CSV</a></li>
-                        <li><a role="button " (click)="exportToPDF() "><i class="fa fa-file-pdf-o "></i> PDF</a></li>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <div class="body " *ngIf="!passengerDT.length ">
+    <div class="body" *ngIf="!passengerDT.length">
         No Records Found
     </div>
-    <div class="body no-padding ">
-        <div #unschdpsngr class="row clearfix ">
-            <div class="col-md-12 " *ngIf="passengerDT.length ">
-                <p-dataTable [value]="passengerDT ">
-                    <p-column field="psngrname " header="{{_enttdetails.psngrtype}} Name " [style]="{ 'text-align': 'left'} "></p-column>
-                    <p-column field="standard " header="Standard " [style]="{ 'width': '80px', 'text-align': 'left'} "></p-column>
-                    <p-column field="division " header="Division " [style]="{ 'width': '80px', 'text-align': 'left'} "></p-column>
-                    <p-column field="mothername " header="Mother Name " [style]="{ 'width': '150px', 'text-align': 'left'} "></p-column>
-                    <p-column field="mobileno1 " header="Mobile " [style]="{ 'width': '120px', 'text-align': 'left'} "></p-column>
-                    <p-column field="email1 " header="Email " [style]="{ 'width': '200px', 'text-align': 'left'} "></p-column>
-                </p-dataTable>
-            </div>
-        </div>
+    <div class="body no-padding">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        {{_enttdetails.psngrtype}} Name
+                    </th>
+                    <th>
+                        Class
+                    </th>
+                    <th>
+                        Father Name
+                    </th>
+                    <th>
+                        Father Mobile
+                    </th>
+                    <th>
+                        Father Email
+                    </th>
+                    <th>
+                        Mother Name
+                    </th>
+                    <th>
+                        Mother Mobile
+                    </th>
+                    <th>
+                        Mother Email
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of passengerDT">
+                    <td>
+                        {{row.psngrname}}
+                    </td>
+                    <td>
+                        {{row.classname}}
+                    </td>
+                    <td>
+                        {{row.fathername}}
+                    </td>
+                    <td>
+                        {{row.mobileno1}}
+                    </td>
+                    <td>
+                        {{row.email1}}
+                    </td>
+                    <td>
+                        {{row.mothername}}
+                    </td>
+                    <td>
+                        {{row.mobileno2}}
+                    </td>
+                    <td>
+                        {{row.email2}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
