@@ -6,7 +6,8 @@ import { UserVehicleMapService } from '@services/master';
 
 @Component({
     templateUrl: 'adduvm.comp.html',
-    providers: [CommonService]
+    providers: [CommonService],
+    styleUrls: ['adduvm.comp.css']
 })
 
 export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
@@ -23,7 +24,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     vehid: number = 0;
     vehname: string = "";
     selectedvehicle: any = [];
-
+    private clickedVehicle = {};
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
@@ -34,7 +35,14 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.closeonwindow = false; // do not close right bar on window click
+
+
+        }, 100);
+
     }
 
     resetUserVehicleMap() {
@@ -46,6 +54,10 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehname = "";
         this.selectedvehicle = [];
         this.vehicleDT = [];
+    }
+
+    onVehicleClick(item: any) {
+        this.clickedVehicle = item;
     }
 
     // Auto Completed User
@@ -220,5 +232,9 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.rightSideBar.closeonwindow = true;
+        $.AdminBSB.leftSideBar.Open();
+
     }
 }

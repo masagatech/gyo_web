@@ -1,0 +1,28 @@
+.sortable-list-item {
+  height: 36px !important;
+  padding-top: 10px !important;
+  padding-left: 10px !important;
+  display: block !important;
+  font-size: 15px;
+  /* background-color: #ccc; */
+}
+
+.sortbbtn {
+  margin-right: 9px;
+}
+
+.sortable-container .sortable-list {
+  padding: 5px;
+}
+
+.bordered {
+    border: 1px solid #ccc !important;
+    border-radius: 4px;
+    height: 36px;
+    padding: 4px!important;
+}
+
+.input-group-addon {
+  padding: 6px 12px!important;
+  background-color: #ccc!important;
+}

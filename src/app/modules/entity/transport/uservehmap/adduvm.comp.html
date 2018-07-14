@@ -1,45 +1,139 @@
-<div class="card">
-    <div class="header">
-        <h4>User Vehicle Mapping</h4>
-        <ul class="header-dropdown m-r--5">
-            <li>
-                <a role="button" class="btn btn-theme" (click)="saveUserVehicleMap()">
-                    <i class="material-icons">save</i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">User Name</label>
-                        <p-autoComplete id="uname" name="uname" [(ngModel)]="selecteudUser" [tabindex]="1" (onSelect)="selectUserData($event, 1)" [suggestions]="usersDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
-                        <span class="material-icons inputsearchico pad-20">search</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Vehicle</label>
-                        <p-autoComplete id="vehname" name="vehname" [(ngModel)]="selectedvehicle" [tabindex]="2" (onSelect)="selectVehicleData($event, 1)" [suggestions]="usersDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
-                        <span class="material-icons inputsearchico pad-20">search</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <div *ngIf="vehicleDT.length">
-                        <ul class="list-group">
-                            <li class="list-group-item" *ngFor="let row of vehicleDT">
-                                {{row.vehname}}
-                                <button type="button" class="btn btn-danger pull-right" (click)="deleteVehicle(row)">
-                                    <i class="material-icons">delete</i></button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<div class="card col-md-7">
+  <div class="header">
+    <h4>User Vehicle Mapping</h4>
+    <ul class="header-dropdown m-r--5">
+      <li>
+        <a role="button" class="btn btn-theme" (click)="saveUserVehicleMap()">
+          <i class="material-icons">save</i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="body">
+    <div class="row clearfix">
+      <div class="col-md-8">
+        <div class="form-group">
+          <div class="form-line">
+            <label class="control-label">Select User Name</label>
+            <p-autoComplete id="uname" name="uname" [(ngModel)]="selecteudUser" [tabindex]="1" (onSelect)="selectUserData($event, 1)"
+              [suggestions]="usersDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
+            <span class="material-icons inputsearchico pad-20">search</span>
+          </div>
         </div>
+      </div>
+
+
     </div>
+  </div>
+</div>
+
+<div class="card col-md-7">
+  <div class="body">
+
+
+    <div class="col-md-8">
+      <div class="form-group">
+        <div class="form-line">
+          <label class="control-label">Add Vehicle</label>
+          <p-autoComplete id="vehname" name="vehname" [(ngModel)]="selectedvehicle" [tabindex]="2" (onSelect)="selectVehicleData($event, 1)"
+            [suggestions]="usersDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
+          <span class="material-icons inputsearchico pad-20">search</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-12">
+
+      <ngx-sortable [items]="vehicleDT" [listStyle]="{ width:'auto', height:'300px'}" [name]="'Assigned Vehicles'">
+        <ng-template let-item>
+          <div class="sortable-list-item" (click)="onVehicleClick(item)">
+            <i class="fa fa-bus"></i>
+            <span class="name">{{item.vehname}}</span>
+            <button type="button" class="btn btn-danger pull-right sortbbtn" (click)="deleteVehicle(item)">
+              <i class="material-icons">delete</i>
+            </button>
+          </div>
+        </ng-template>
+      </ngx-sortable>
+    </div>
+
+  </div>
+</div>
+
+<div class="card col-md-4" style="margin-left:10px;">
+  <div class="body">
+    <h4>{{clickedVehicle.vehname}}</h4>
+
+    <div class="list-group">
+      <li class="list-group-item list-group-item-default bg-purple">
+        <h4 class="list-group-item-heading">Remote Control Allow</h4>
+        <span class="pull-right">
+          <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+            class="chk-col-red filled-in" checked="">
+          <label for="md_checkbox_chktitle"></label>
+        </span>
+        <p class="list-group-item-text">By allowing this user can send command to vehicle from app.</p>
+      </li>
+      <li class="list-group-item list-group-item-default bg-black">
+        <h4 class="list-group-item-heading">Remote Control Allow</h4>
+        <p class="list-group-item-text">All Blank = 24hours</p>
+      </li>
+      <li class="list-group-item list-group-item-default bg-white">
+
+        <div class="input-group">
+          <input type="time" [(ngModel)]="clickedVehicle.frmtime1" class="form-control bordered" placeholder="From Time" />
+          <span class="input-group-addon">-</span>
+          <input type="time" class="form-control bordered" placeholder="To Time" />
+          <span class="input-group-addon">
+            <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
+              <i class="fa fa-close"></i>
+            </button>
+          </span>
+        </div>
+        <div class="input-group">
+          <input type="time" class="form-control bordered" placeholder="From Time" />
+          <span class="input-group-addon">-</span>
+          <input type="time" class="form-control bordered" placeholder="To Time" />
+          <span class="input-group-addon">
+            <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
+              <i class="fa fa-close"></i>
+            </button>
+          </span>
+        </div>
+        <div class="input-group">
+          <input type="time" class="form-control bordered" placeholder="From Time" />
+          <span class="input-group-addon">-</span>
+          <input type="time" class="form-control bordered" placeholder="To Time" />
+          <span class="input-group-addon">
+            <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
+              <i class="fa fa-close"></i>
+            </button>
+          </span>
+        </div>
+      </li>
+      <li class="list-group-item list-group-item-default bg-black">
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Mon</label>
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Tue</label>
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Wed</label>
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Thu</label>
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Fri</label>
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Sat</label>
+        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.showinfo" style="border-color: #ffffff!important;"
+          class="chk-col-red filled-in" checked="">
+        <label for="md_checkbox_chktitle">Sun</label>
+      </li>
+    </div>
+  </div>
 </div>

@@ -8,7 +8,7 @@ import { AuthGuard } from '@services';
 import { AddUserVehicleMapComponent } from './adduvm.comp';
 
 import { UserVehicleMapService } from '@services/master';
-
+import { NgxSortableModule } from 'ngx-sortable';
 import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
@@ -29,7 +29,7 @@ export const routes = [
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
-    CheckboxModule, AutoCompleteModule
+    CheckboxModule, AutoCompleteModule, NgxSortableModule
   ],
 
   providers: [AuthGuard, UserVehicleMapService]
