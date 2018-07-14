@@ -7,10 +7,9 @@ import { AuthGuard,SharedComponentModule } from '@services';
 import { AddVehicleComponent } from './aded/addveh.comp';
 import { ViewVehicleComponent } from './view/viewveh.comp';
 
-
 import { VehicleService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {

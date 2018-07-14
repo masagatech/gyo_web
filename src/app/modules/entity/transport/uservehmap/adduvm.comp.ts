@@ -24,7 +24,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     vehid: number = 0;
     vehname: string = "";
     selectedvehicle: any = [];
-    private clickedVehicle = {};
+    private clickedVehicle = { "attr": {} };
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
@@ -57,7 +57,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     }
 
     onVehicleClick(item: any) {
+        if (item.attr == undefined) {
+            item.attr = {};
+        }
+
         this.clickedVehicle = item;
+        console.log(this.clickedVehicle);
     }
 
     // Auto Completed User

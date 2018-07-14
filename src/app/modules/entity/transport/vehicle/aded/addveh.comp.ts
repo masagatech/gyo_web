@@ -20,14 +20,17 @@ export class AddVehicleComponent implements OnInit {
 
     vehid: number = 0;
     vehtype: string = "";
-    vehno: string = "";
+    vehname: string = "";
     vehregno: string = "";
+    vehregnoPattern = "^[A-Z]{2}-[0-9]{2}-[A-Z]{1,2}-[0-9]{1,4}$";
     vehmake: string = "";
-    vehmdl: string = "";
+    vehmodel: string = "";
     capacity: number = 0;
     vehcond: string = "";
     vehfclt: string = "";
 
+    frmdt: any = "";
+    todt: any = "";
     devtype: string = "";
     imei: string = "";
     simno: string = "";
@@ -39,6 +42,7 @@ export class AddVehicleComponent implements OnInit {
 
     mode: string = "";
     isactive: boolean = true;
+    isprivate: boolean = true;
     private subscribeParameters: any;
 
     constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -50,11 +54,30 @@ export class AddVehicleComponent implements OnInit {
     }
 
     public ngOnInit() {
-        setTimeout(function () {
-            $(".enttname input").focus();
-        }, 100);
-
         this.getVehicleDetails();
+    }
+
+    // Set From Date and To Date
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    setFromDateAndToDate() {
+        var date = new Date();
+        var before1month = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+        this.frmdt = this.formatDate(before1month);
+        this.todt = this.formatDate(today);
     }
 
     // Fill Vehicle Type Drop Down
@@ -121,10 +144,9 @@ export class AddVehicleComponent implements OnInit {
     resetVehicleFields() {
         this.vehid = 0;
         this.vehtype = "";
-        this.vehno = "";
-        this.vehregno = "";
+        this.vehname = "";
         this.vehmake = "";
-        this.vehmdl = "";
+        this.vehmodel = "";
         this.capacity = 0;
         this.vehcond = "";
         this.vehfclt = "";
@@ -133,6 +155,8 @@ export class AddVehicleComponent implements OnInit {
         this.speedAllow = 0;
         this.d1str = "";
         this.vehurl = "";
+        this.isprivate = false;
+        this.setFromDateAndToDate();
     }
 
     // Save Data
@@ -145,7 +169,7 @@ export class AddVehicleComponent implements OnInit {
             $(".vehtype").focus();
             return false;
         }
-        if (that.vehno == "") {
+        if (that.vehname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Vehicle No");
             $(".vehno").focus();
             return false;
@@ -206,18 +230,18 @@ export class AddVehicleComponent implements OnInit {
             var params = {
                 "autoid": that.vehid,
                 "vehtype": that.vehtype,
-                "vehno": that.vehno,
+                "vehname": that.vehname,
                 "vehregno": that.vehregno,
                 "vehmake": that.vehmake,
-                "vehmdl": that.vehmdl,
+                "vehmodel": that.vehmodel,
                 "capacity": that.capacity,
                 "vehcond": that.vehcond,
                 "vehfclt": that.vehfclt,
+                "vehspeed": parseInt("" + that.speedAllow),
                 "istrack": true,
                 "devtype": that.devtype,
                 "imei": that.imei,
                 "simno": that.simno,
-                "allowspd": parseInt("" + that.speedAllow),
                 "url": that.vehurl,
                 "trktype": trktype,
                 "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
@@ -225,7 +249,8 @@ export class AddVehicleComponent implements OnInit {
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode,
-                "isactive": that.isactive
+                "isactive": that.isactive,
+                "isprivate": that.isprivate
             }
 
             that._vehservice.saveVehicleInfo(params).subscribe(data => {
@@ -243,13 +268,13 @@ export class AddVehicleComponent implements OnInit {
                             that.saveToVTS({
                                 "vhid": params.imei,
                                 "vhname": params.vehregno,
-                                "alwspeed": params.allowspd,
+                                "alwspeed": params.vehspeed,
                                 "pushcl": pushcl,
                                 "vhd": {
                                     "vehregno": that.vehregno,
                                     "vehtype": that.vehtype,
                                     "vehmake": that.vehmake,
-                                    "vehmdl": that.vehmdl,
+                                    "vehmdl": that.vehmodel,
                                     "simno": that.simno,
                                     "imei": that.imei,
                                     "capacity": that.capacity,
@@ -327,10 +352,10 @@ export class AddVehicleComponent implements OnInit {
 
                             that.vehid = _vehicledata[0].autoid;
                             that.vehtype = _vehicledata[0].vehicletype;
-                            that.vehno = _vehicledata[0].vehicleno;
+                            that.vehname = _vehicledata[0].vehiclename;
                             that.vehregno = _vehicledata[0].vehregno;
                             that.vehmake = _vehicledata[0].vehiclemake;
-                            that.vehmdl = _vehicledata[0].vehiclemodel;
+                            that.vehmodel = _vehicledata[0].vehiclemodel;
                             that.capacity = _vehicledata[0].capacity;
                             that.vehcond = _vehicledata[0].vehiclecondition;
                             that.vehfclt = _vehicledata[0].vehiclefacility;
@@ -349,6 +374,7 @@ export class AddVehicleComponent implements OnInit {
                             }
 
                             that.vehurl = _vehicledata[0].url;
+                            that.isprivate = _vehicledata[0].isprivate;
                             that.isactive = _vehicledata[0].isactive;
                             that.mode = _vehicledata[0].mode;
                         }
@@ -396,12 +422,11 @@ export class AddVehicleComponent implements OnInit {
 
                     var _vehicledata = data.data;
 
-                    that.vehid = 0;
+                    that.vehid = _vehicledata[0].autoid;
                     that.vehtype = _vehicledata[0].vehicletype;
-                    that.vehno = _vehicledata[0].vehicleno;
                     that.vehregno = _vehicledata[0].vehregno;
                     that.vehmake = _vehicledata[0].vehiclemake;
-                    that.vehmdl = _vehicledata[0].vehiclemodel;
+                    that.vehmodel = _vehicledata[0].vehiclemodel;
                     that.capacity = _vehicledata[0].capacity;
                     that.vehcond = _vehicledata[0].vehiclecondition;
                     that.vehfclt = _vehicledata[0].vehiclefacility;

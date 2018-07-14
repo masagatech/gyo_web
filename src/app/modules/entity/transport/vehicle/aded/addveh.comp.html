@@ -26,25 +26,34 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">IMEI <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="imei" class="form-control vehno" maxlength="15" tabindex="1" (blur)="getVehicleDetails()" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Vehicle No <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="vehno" class="form-control vehno" maxlength="20" tabindex="2" />
-                            </div>
-                        </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">IMEI <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="imei" class="form-control vehno" maxlength="15" tabindex="1" (blur)="getVehicleDetails()" />
                     </div>
                 </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">
+                            Vehicle Registration No <span title="MH-04-A-1, MH-04-A-11, MH-04-AA-111, MH-04-A-1111">(MH-04-CH-4343)</span>
+                            <strong>*</strong>
+                        </label>
+
+                        <input type="text" name="vehregno" [(ngModel)]="vehregno" [pattern]="vehregnoPattern" #regno="ngModel" class="form-control vehregno" maxlength="50" tabindex="2" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 pad-20">
+                <div *ngIf="regno.errors?.pattern">
+                    <strong>Not Valid.</strong>
+                </div>
+            </div>
+            <div class="col-md-3 pad-20 text-right">
+                <input id="isprivate" type="checkbox" [(ngModel)]="isprivate" class="actrights filled-in" />
+                <label for="isprivate">Is Private</label>
             </div>
         </div>
 
@@ -67,8 +76,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Vehicle Registration No <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="vehregno" class="form-control vehregno" maxlength="50" tabindex="4" />
+                                <label class="control-label">Title <strong>*</strong></label>
+                                <input type="text" [(ngModel)]="vehname" class="form-control vehname" maxlength="20" tabindex="4" />
                             </div>
                         </div>
                     </div>
@@ -87,7 +96,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Vehicle Model <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="vehmdl" class="form-control vehmdl" maxlength="50" tabindex="6" />
+                                <input type="text" [(ngModel)]="vehmodel" class="form-control vehmodel" maxlength="50" tabindex="6" />
                             </div>
                         </div>
                     </div>
@@ -128,8 +137,27 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
+                                <label class="control-label">From Date</label>
+                                <input type="date" [(ngModel)]="frmdt" class="form-control frmdt" tabindex="10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <label class="control-label">To Date</label>
+                                <input type="date" [(ngModel)]="todt" class="form-control droptodate" tabindex="11">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-line">
                                 <label class="control-label">Device Type <strong>*</strong></label>
-                                <select id="devtype" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="10">
+                                <select id="devtype" name="gpsdevid" [(ngModel)]="devtype" class="form-control devtype" tabindex="12">
                                     <option [value]="''">GPS Device Type</option>
                                     <option *ngFor="let row of devtypeDT" [value]="row.key">
                                         {{row.val}}
@@ -142,7 +170,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">SIM No. (eg. 9009090009) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="11" />
+                                <input type="text" [(ngModel)]="simno" class="form-control vehno" maxlength="15" tabindex="13" />
                             </div>
                         </div>
                     </div>
@@ -153,7 +181,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Speed Alert(Above km/h) <strong>*</strong></label>
-                                <input type="text" OnlyNumber="true" [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="12" />
+                                <input type="text" OnlyNumber="true" [(ngModel)]="speedAllow" class="form-control vehno" maxlength="50" tabindex="14" />
                             </div>
                         </div>
                     </div>
@@ -161,7 +189,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">D1 Function</label>
-                                <select id="d1str" name="d1str" [(ngModel)]="d1str" class="form-control d1str" tabindex="13">
+                                <select id="d1str" name="d1str" [(ngModel)]="d1str" class="form-control d1str" tabindex="15">
                                     <option [value]="''">None</option>
                                     <option *ngFor="let row of d1strDT" [value]="row.key">
                                         {{row.val}}
@@ -172,7 +200,7 @@
                     </div>
                 </div>
 
-                <div class="row clearfix">
+                <div class="row clearfix hide">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
@@ -180,18 +208,18 @@
 
                                 <div id="track">
                                     <span *ngFor="let ttrow of tracktypeDT; let i = index">
-                                        <input type="checkbox" id="{{ttrow.key}}" value="{{ttrow.key}}" name="ttrow{{i + 1}}" data-menuid="ttrow.key" data-right="item" class="actrights filled-in" tabindex="14" />
+                                        <input type="checkbox" id="{{ttrow.key}}" value="{{ttrow.key}}" name="ttrow{{i + 1}}" data-menuid="ttrow.key" data-right="item" class="actrights filled-in" tabindex="16" />
                                         <label for="{{ttrow.key}}">{{ttrow.val}}</label>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 hide">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">URL <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="vehurl" class="form-control vehurl" maxlength="50" tabindex="15" />
+                                <input type="text" [(ngModel)]="vehurl" class="form-control vehurl" maxlength="50" tabindex="17" />
                             </div>
                         </div>
                     </div>

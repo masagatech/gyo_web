@@ -1,18 +1,22 @@
 .sortable-list-item {
-  height: 36px !important;
-  padding-top: 10px !important;
-  padding-left: 10px !important;
-  display: block !important;
-  font-size: 15px;
-  /* background-color: #ccc; */
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+    display: block !important;
+    font-size: 15px;
+    /* background-color: #ccc; */
 }
 
 .sortbbtn {
-  margin-right: 9px;
+    margin-right: 9px;
 }
 
 .sortable-container .sortable-list {
-  padding: 5px;
+    padding: 5px;
+}
+
+.sortable-container .sortable-list .active {
+    background: #000000 !important;
+    color: #ffffff !important;
 }
 
 .bordered {
@@ -23,6 +27,6 @@
 }
 
 .input-group-addon {
-  padding: 6px 12px!important;
-  background-color: #ccc!important;
+    padding: 6px 12px!important;
+    background-color: #ccc!important;
 }
