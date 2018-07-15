@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LeaveService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
 
 @Component({
@@ -221,5 +219,7 @@ export class LeaveReportsComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

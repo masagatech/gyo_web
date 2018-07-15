@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ContentService } from '@services/master';
-
-declare var google: any;
 
 @Component({
     templateUrl: 'addcntdtls.comp.html',
     providers: [CommonService]
 })
 
-export class AddContentDetailsComponent implements OnInit {
+export class AddContentDetailsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -427,5 +425,9 @@ export class AddContentDetailsComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/workspace/contentdetails']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

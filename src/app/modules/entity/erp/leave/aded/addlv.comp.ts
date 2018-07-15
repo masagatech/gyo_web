@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -12,7 +12,7 @@ declare var commonfun: any;
     providers: [CommonService]
 })
 
-export class AddLeaveComponent implements OnInit {
+export class AddLeaveComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -377,5 +377,9 @@ export class AddLeaveComponent implements OnInit {
         else {
             this._router.navigate(['/erp/' + this.psngrtype + '/leave']);
         }
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

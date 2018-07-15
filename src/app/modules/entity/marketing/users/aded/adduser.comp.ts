@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -11,7 +11,7 @@ declare var adminloader: any;
     providers: [CommonService]
 })
 
-export class AddMarketUserComponent implements OnInit {
+export class AddMarketUserComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -323,5 +323,9 @@ export class AddMarketUserComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/marketing/user']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

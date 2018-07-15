@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LibraryService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -11,7 +10,7 @@ declare var google: any;
     templateUrl: 'addlibrbk.comp.html'
 })
 
-export class AddLibraryBooksComponent implements OnInit {
+export class AddLibraryBooksComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -240,5 +239,9 @@ export class AddLibraryBooksComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/librarybooks']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -8,7 +8,7 @@ import { NoticeboardService } from '@services/erp';
     templateUrl: 'viewnb.comp.html'
 })
 
-export class ViewNoticeboardComponent implements OnInit {
+export class ViewNoticeboardComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -109,5 +109,9 @@ export class ViewNoticeboardComponent implements OnInit {
         else {
             this._router.navigate(['/communication/noticeboard/' + this.nbtype + '/edit', row.nbid]);
         }
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

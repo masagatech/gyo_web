@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { RouteService } from '@services/master';
@@ -11,7 +11,7 @@ declare var google: any;
     templateUrl: 'addrt.comp.html'
 })
 
-export class AddRouteComponent implements OnInit {
+export class AddRouteComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -755,5 +755,7 @@ export class AddRouteComponent implements OnInit {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

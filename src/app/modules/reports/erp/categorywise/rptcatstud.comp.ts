@@ -24,8 +24,6 @@ export class CategoryWiseReportsComponent implements OnInit, OnDestroy {
 
     vwtype: string = "catwise_summary";
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _admsnservice: AdmissionService, private _psngrrptservice: PassengerReportsService) {
         this.loginUser = this._loginservice.getUser();

@@ -17,8 +17,6 @@ export class ViewSimComponent implements OnInit, OnDestroy {
     simDT: any = [];
     uploadsimconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-    private subscribeParameters: any;
-
     constructor(private _invservice: InventoryService, private _routeParams: ActivatedRoute, private _router: Router,
         private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();

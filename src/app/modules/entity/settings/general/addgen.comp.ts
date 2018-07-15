@@ -21,8 +21,6 @@ export class AddGeneralComponent implements OnInit, OnDestroy {
     gsetval: string = "";
     gsetdtls: any = [];
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _genservice: GeneralService,
         private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();

@@ -216,5 +216,7 @@ export class PassengerLeftReportsComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

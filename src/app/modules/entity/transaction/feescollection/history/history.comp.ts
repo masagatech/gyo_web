@@ -41,8 +41,6 @@ export class ViewFeesHistoryComponent implements OnInit {
     fltr_recvdate: string = "";
     fltr_rpttype: string = "";
 
-    private subscribeParameters: any;
-
     constructor(private _ntfservice: NotificationService, private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();

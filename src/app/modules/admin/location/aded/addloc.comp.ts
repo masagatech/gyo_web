@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LocationService } from '@services/master';;
@@ -10,7 +10,7 @@ declare let google: any;
     templateUrl: 'addloc.comp.html'
 })
 
-export class AddLocationComponent implements OnInit, AfterViewInit {
+export class AddLocationComponent implements OnInit, OnDestroy, AfterViewInit {
     loginUser: LoginUserModel;
 
     stateDT: any = [];
@@ -480,5 +480,9 @@ export class AddLocationComponent implements OnInit, AfterViewInit {
     public ngAfterViewInit() {
         let that = this;
         commonfun.chatinit();
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

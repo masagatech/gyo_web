@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     providers: [CommonService]
 })
 
-export class TimetableComponent implements OnInit {
+export class TimetableComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -219,5 +219,9 @@ export class TimetableComponent implements OnInit {
                 commonfun.loaderhide();
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

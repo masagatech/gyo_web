@@ -32,8 +32,6 @@ export class AddContentEntityMapComponent implements OnInit {
     selectedContentDetails: any = [];
     isEditContentDetails: boolean = false;
 
-    private subscribeParameters: any;
-
     constructor(private _cntservice: ContentService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();

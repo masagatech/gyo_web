@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { SMSPackService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
@@ -12,7 +11,7 @@ declare var commonfun: any;
     templateUrl: 'addsp.comp.html'
 })
 
-export class AddSMSPackComponent implements OnInit {
+export class AddSMSPackComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -221,5 +220,9 @@ export class AddSMSPackComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/workspace/smspack']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { QualificationService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
@@ -12,7 +11,7 @@ declare var commonfun: any;
     templateUrl: 'addqlf.comp.html'
 })
 
-export class AddQualificationComponent implements OnInit {
+export class AddQualificationComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -186,5 +185,9 @@ export class AddQualificationComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/admin/qualification']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

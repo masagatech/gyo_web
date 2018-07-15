@@ -22,8 +22,6 @@ export class MyProfileComponent implements OnInit {
     usersDT: any = [];
     entityDT: any = [];
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _autoservice: CommonService, private _loginservice: LoginService, private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();

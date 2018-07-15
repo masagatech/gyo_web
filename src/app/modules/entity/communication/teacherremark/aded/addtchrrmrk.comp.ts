@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var google: any;
     templateUrl: 'addtchrrmrk.comp.html'
 })
 
-export class AddTeacherRemarkComponent implements OnInit {
+export class AddTeacherRemarkComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -285,5 +285,9 @@ export class AddTeacherRemarkComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/communication/teacherremark']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

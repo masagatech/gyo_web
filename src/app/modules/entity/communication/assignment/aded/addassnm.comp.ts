@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -11,7 +11,7 @@ declare var google: any;
     providers: [CommonService]
 })
 
-export class AddAssignmentComponent implements OnInit {
+export class AddAssignmentComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -324,5 +324,9 @@ export class AddAssignmentComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/communication/homework']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

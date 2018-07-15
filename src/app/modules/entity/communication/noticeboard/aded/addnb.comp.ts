@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var google: any;
     templateUrl: 'addnb.comp.html'
 })
 
-export class AddNoticeboardComponent implements OnInit {
+export class AddNoticeboardComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -371,5 +371,9 @@ export class AddNoticeboardComponent implements OnInit {
         else {
             this._router.navigate(['/communication/noticeboard/' + this.nbtype]);
         }
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

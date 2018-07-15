@@ -23,13 +23,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     vehicleDT: any = [];
     vehid: number = 0;
     vehname: string = "";
+    vehregno: string = "";
     selectedvehicle: any = [];
     private clickedVehicle = { "attr": {} };
-    private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
-        private _uvmservice: UserVehicleMapService, private _loginservice: LoginService,
-        private _msg: MessageService) {
+        private _uvmservice: UserVehicleMapService, private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
     }
@@ -39,10 +38,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.closeonwindow = false; // do not close right bar on window click
-
-
         }, 100);
-
     }
 
     resetUserVehicleMap() {
@@ -51,7 +47,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.utype = "";
         this.selecteudUser = [];
         this.vehid = 0;
-        this.vehname = "";
+        this.vehregno = "";
         this.selectedvehicle = [];
         this.vehicleDT = [];
     }
@@ -61,6 +57,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             item.attr = {};
         }
 
+        $("#divAdvanceMapping").attr("class", "col-md-4 show");
         this.clickedVehicle = item;
         console.log(this.clickedVehicle);
     }
@@ -129,7 +126,8 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     selectVehicleData(event, arg) {
         this.vehid = event.value;
-        this.vehname = event.label;
+        this.vehname = event.vehname;
+        this.vehregno = event.label;
 
         this.addvehicleDT();
     }
@@ -156,11 +154,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var duplicateVehicle = that.isDuplicateVehicle();
 
         if (!duplicateVehicle) {
-            that.vehicleDT.push({ "vehid": this.vehid, "vehname": this.vehname })
+            that.vehicleDT.push({ "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno })
         }
 
         that.vehid = 0;
         that.vehname = "";
+        that.vehregno = "";
         that.selectedvehicle = [];
 
         $(".vehname input").focus();
@@ -189,6 +188,8 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
                     "uid": that.uid,
                     "utype": that.utype,
                     "vehid": selectedVehicle,
+                    "isadv": false,
+                    "advance": that.clickedVehicle,
                     "cuid": that.loginUser.ucode,
                     "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid

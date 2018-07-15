@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { SubjectService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
@@ -12,12 +11,12 @@ declare var commonfun: any;
     templateUrl: 'addsub.comp.html'
 })
 
-export class AddSubjectComponent implements OnInit {
+export class AddSubjectComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     subtypeDT: any = [];
-    
+
     subid: number = 0;
     subname: string = "";
     subtype: string = "";
@@ -25,11 +24,11 @@ export class AddSubjectComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _subservice: SubjectService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _subservice: SubjectService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
-        
+
         this.fillSubTypeDropDown();
     }
 
@@ -186,5 +185,9 @@ export class AddSubjectComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/subject']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

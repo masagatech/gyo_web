@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">IMEI <strong>*</strong></label>
-                        <input type="text" [(ngModel)]="imei" class="form-control vehno" maxlength="15" tabindex="1" (blur)="getVehicleDetails()" />
+                        <input type="text" [(ngModel)]="imei" class="form-control vehno" maxlength="15" tabindex="1" (blur)="getVehicleByIMEI()" />
                     </div>
                 </div>
             </div>
@@ -42,13 +42,13 @@
                             <strong>*</strong>
                         </label>
 
-                        <input type="text" name="vehregno" [(ngModel)]="vehregno" [pattern]="vehregnoPattern" #regno="ngModel" class="form-control vehregno" maxlength="50" tabindex="2" />
+                        <input type="text" name="vehregno" [(ngModel)]="vehregno" [pattern]="vehregnoPattern" #regno="ngModel" class="form-control vehregno" maxlength="50" tabindex="2" (blur)="getVehicleByIMEI()" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3 pad-20">
-                <div *ngIf="regno.errors?.pattern">
-                    <strong>Not Valid.</strong>
+                <div id="divinvalidvehregno" class="col-red" *ngIf="regno.errors?.pattern">
+                    Not Valid
                 </div>
             </div>
             <div class="col-md-3 pad-20 text-right">
@@ -76,7 +76,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Title <strong>*</strong></label>
+                                <label class="control-label">Vehicle Name <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="vehname" class="form-control vehname" maxlength="20" tabindex="4" />
                             </div>
                         </div>

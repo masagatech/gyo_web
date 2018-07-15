@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var google: any;
     templateUrl: 'addstd.comp.html'
 })
 
-export class AddStandardComponent implements OnInit {
+export class AddStandardComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -265,5 +265,9 @@ export class AddStandardComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/standard']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

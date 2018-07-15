@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -11,7 +11,7 @@ declare var google: any;
     templateUrl: 'addprspctissd.comp.html'
 })
 
-export class AddProspectusIssuedComponent implements OnInit {
+export class AddProspectusIssuedComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -449,5 +449,9 @@ export class AddProspectusIssuedComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/prospectus/issued']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

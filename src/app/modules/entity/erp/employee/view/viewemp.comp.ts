@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -8,7 +8,7 @@ import { ClassService, EmployeeService } from '@services/master';
     templateUrl: 'viewemp.comp.html'
 })
 
-export class ViewEmployeeComponent implements OnInit {
+export class ViewEmployeeComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -220,5 +220,9 @@ export class ViewEmployeeComponent implements OnInit {
 
     public viewEmployeeProfile(row) {
         this._router.navigate(['/erp/' + this.psngrtype + '/profile', row.empid]);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var google: any;
     templateUrl: 'addtgm.comp.html'
 })
 
-export class AddTagGroupModuleMapComponent implements OnInit {
+export class AddTagGroupModuleMapComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -252,5 +252,9 @@ export class AddTagGroupModuleMapComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/taggroupmodulemap']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

@@ -31,8 +31,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     menudetails: any = [];
     selectedMenus: string[] = [];
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
         private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();

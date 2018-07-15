@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
-
-declare var adminloader: any;
 
 @Component({
     templateUrl: 'adduser.comp.html',
     providers: [CommonService]
 })
 
-export class AddUserComponent implements OnInit {
+export class AddUserComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -591,5 +589,9 @@ export class AddUserComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/workspace/user']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

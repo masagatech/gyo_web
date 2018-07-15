@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { VehicleService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'addveh.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addveh.comp.html'
 })
 
-export class AddVehicleComponent implements OnInit {
+export class AddVehicleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -19,6 +17,7 @@ export class AddVehicleComponent implements OnInit {
     d1strDT: any = [];
 
     vehid: number = 0;
+    autoid: number = 0;
     vehtype: string = "";
     vehname: string = "";
     vehregno: string = "";
@@ -43,10 +42,11 @@ export class AddVehicleComponent implements OnInit {
     mode: string = "";
     isactive: boolean = true;
     isprivate: boolean = true;
+
     private subscribeParameters: any;
 
-    constructor(private _vehservice: VehicleService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _vehservice: VehicleService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -113,7 +113,7 @@ export class AddVehicleComponent implements OnInit {
         var that = this;
 
         var act_deactvehicle = {
-            "autoid": that.vehid,
+            "autoid": that.autoid,
             "isactive": that.isactive,
             "mode": that.mode
         }
@@ -143,6 +143,7 @@ export class AddVehicleComponent implements OnInit {
 
     resetVehicleFields() {
         this.vehid = 0;
+        this.autoid = 0;
         this.vehtype = "";
         this.vehname = "";
         this.vehmake = "";
@@ -163,7 +164,25 @@ export class AddVehicleComponent implements OnInit {
 
     isValidateVehicle() {
         var that = this;
+        var _vehregno = $("#divinvalidvehregno").innerHtml;
 
+        console.log(_vehregno);
+
+        if (that.imei == "") {
+            that._msg.Show(messageType.error, "Error", "Enter IMEI");
+            $(".imei").focus();
+            return false;
+        }
+        if (that.vehregno == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Vehicle Registration No");
+            $(".vehregno").focus();
+            return false;
+        }
+        if (_vehregno == "Not Valid") {
+            that._msg.Show(messageType.error, "Error", "Invalid Vehicle Registration No");
+            $(".vehregno").focus();
+            return false;
+        }
         if (that.vehtype == "") {
             that._msg.Show(messageType.error, "Error", "Select Vehicle Type");
             $(".vehtype").focus();
@@ -172,11 +191,6 @@ export class AddVehicleComponent implements OnInit {
         if (that.vehname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Vehicle No");
             $(".vehno").focus();
-            return false;
-        }
-        if (that.vehregno == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Vehicle Registration No");
-            $(".vehregno").focus();
             return false;
         }
         if (that.capacity == 0) {
@@ -188,11 +202,6 @@ export class AddVehicleComponent implements OnInit {
         if (that.devtype == "") {
             that._msg.Show(messageType.error, "Error", "Enter Device Type");
             $(".devtype").focus();
-            return false;
-        }
-        if (that.imei == "") {
-            that._msg.Show(messageType.error, "Error", "Enter IMEI");
-            $(".imei").focus();
             return false;
         }
         if (that.simno == "") {
@@ -228,7 +237,8 @@ export class AddVehicleComponent implements OnInit {
             commonfun.loader();
 
             var params = {
-                "autoid": that.vehid,
+                "vemid": that.vehid,
+                "vehid": that.autoid,
                 "vehtype": that.vehtype,
                 "vehname": that.vehname,
                 "vehregno": that.vehregno,
@@ -350,7 +360,8 @@ export class AddVehicleComponent implements OnInit {
                         else {
                             var _vehicledata = data.data;
 
-                            that.vehid = _vehicledata[0].autoid;
+                            that.vehid = _vehicledata[0].vehid;
+                            that.autoid = _vehicledata[0].autoid;
                             that.vehtype = _vehicledata[0].vehicletype;
                             that.vehname = _vehicledata[0].vehiclename;
                             that.vehregno = _vehicledata[0].vehregno;
@@ -408,6 +419,7 @@ export class AddVehicleComponent implements OnInit {
         that._vehservice.getVehicleDetails({
             "flag": "byimei",
             "imei": that.imei,
+            "vehregno": that.vehregno,
             "enttid": that._enttdetails.enttid
         }).subscribe(data => {
             try {
@@ -422,16 +434,18 @@ export class AddVehicleComponent implements OnInit {
 
                     var _vehicledata = data.data;
 
-                    that.vehid = _vehicledata[0].autoid;
-                    that.vehtype = _vehicledata[0].vehicletype;
+                    that.vehid = _vehicledata[0].vehid;
+                    that.autoid = _vehicledata[0].autoid;
+                    that.imei = _vehicledata[0].imei;
                     that.vehregno = _vehicledata[0].vehregno;
+                    that.vehtype = _vehicledata[0].vehicletype;
+                    that.vehname = _vehicledata[0].vehiclename;
                     that.vehmake = _vehicledata[0].vehiclemake;
                     that.vehmodel = _vehicledata[0].vehiclemodel;
                     that.capacity = _vehicledata[0].capacity;
                     that.vehcond = _vehicledata[0].vehiclecondition;
                     that.vehfclt = _vehicledata[0].vehiclefacility;
                     that.devtype = _vehicledata[0].devtype;
-                    that.imei = _vehicledata[0].imei;
                     that.simno = _vehicledata[0].simno;
                     that.speedAllow = _vehicledata[0].vhspeed;
                     that.d1str = _vehicledata[0].d1str;
@@ -467,5 +481,9 @@ export class AddVehicleComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/transport/vehicle']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -8,7 +8,7 @@ import { InventoryService } from '@services/master';
     templateUrl: 'adddev.comp.html'
 })
 
-export class AddDeviceComponent implements OnInit {
+export class AddDeviceComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -186,5 +186,9 @@ export class AddDeviceComponent implements OnInit {
 
     public backViewData() {
         this._router.navigate(['/inventory/device']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

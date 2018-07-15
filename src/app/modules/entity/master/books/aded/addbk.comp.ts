@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { BookService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addbk.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addbk.comp.html'
 })
 
-export class AddBooksComponent implements OnInit {
+export class AddBooksComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -34,7 +32,7 @@ export class AddBooksComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _bkservice: BookService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -264,5 +262,9 @@ export class AddBooksComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/classbooks']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

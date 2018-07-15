@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var google: any;
     templateUrl: 'adddriver.comp.html'
 })
 
-export class AddDriverComponent implements OnInit {
+export class AddDriverComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -492,5 +492,9 @@ export class AddDriverComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/transport/driver']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

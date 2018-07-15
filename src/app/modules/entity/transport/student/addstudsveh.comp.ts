@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
@@ -11,7 +11,7 @@ declare var google: any;
     templateUrl: 'addstudsveh.comp.html'
 })
 
-export class AddStudentVehicleComponent implements OnInit {
+export class AddStudentVehicleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -60,7 +60,7 @@ export class AddStudentVehicleComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _admsnservice: AdmissionService, private _autoservice: CommonService,
-        private _routeParams: ActivatedRoute, private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
+        private _routeParams: ActivatedRoute, private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -660,5 +660,9 @@ export class AddStudentVehicleComponent implements OnInit {
         }, () => {
 
         })
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

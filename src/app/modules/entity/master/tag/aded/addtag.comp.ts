@@ -1,19 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { TagService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addtag.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addtag.comp.html'
 })
 
-export class AddTagComponent implements OnInit {
+export class AddTagComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -31,8 +29,8 @@ export class AddTagComponent implements OnInit {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _tagservice: TagService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _tagservice: TagService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -198,5 +196,9 @@ export class AddTagComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/tag']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

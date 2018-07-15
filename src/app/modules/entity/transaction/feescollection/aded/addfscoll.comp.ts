@@ -82,8 +82,6 @@ export class AddFeesCollectionComponent implements OnInit {
     oldFeesData: any = [];
     newFeesData: any = [];
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
         private _ntfservice: NotificationService, private _feesservice: FeesService, private _loginservice: LoginService) {
         this.loginUser = this._loginservice.getUser();

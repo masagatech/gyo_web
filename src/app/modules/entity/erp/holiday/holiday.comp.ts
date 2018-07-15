@@ -144,5 +144,7 @@ export class HolidayComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

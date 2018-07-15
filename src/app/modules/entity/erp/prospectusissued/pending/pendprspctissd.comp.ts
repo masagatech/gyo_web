@@ -21,8 +21,6 @@ export class PendingProspectusIssuedComponent implements OnInit {
 
     pendingProspectusIssuedDT: any = [];
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _prspctservice: ProspectusService) {
         this.loginUser = this._loginservice.getUser();

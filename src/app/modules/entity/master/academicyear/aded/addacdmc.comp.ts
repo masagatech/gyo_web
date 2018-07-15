@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -9,7 +9,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     templateUrl: 'addacdmc.comp.html'
 })
 
-export class AddAcademicYearComponent implements OnInit {
+export class AddAcademicYearComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -206,5 +206,9 @@ export class AddAcademicYearComponent implements OnInit {
         that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
             that._router.navigate(['/master/academicyear']);
         })
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

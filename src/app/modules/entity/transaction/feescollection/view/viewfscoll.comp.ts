@@ -39,8 +39,6 @@ export class ViewFeesCollectionComponent implements OnInit {
     uploadFileDT: any = [];
     uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-    private subscribeParameters: any;
-
     constructor(private _feesservice: FeesService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();

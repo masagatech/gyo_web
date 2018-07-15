@@ -23,8 +23,6 @@ export class ViewFeesStructureComponent implements OnInit, OnDestroy {
     ayid: number = 0;
     classid: number = 0;
 
-    private subscribeParameters: any;
-
     constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService,
         private _feesservice: FeesService) {
         this.loginUser = this._loginservice.getUser();

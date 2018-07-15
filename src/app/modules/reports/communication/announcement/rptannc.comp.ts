@@ -18,8 +18,6 @@ export class AnnouncementReportsComponent implements OnInit, OnDestroy {
     groupDT: any = [];
     grpid: number = 0;
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _anncservice: AnnouncementService) {
         this.loginUser = this._loginservice.getUser();

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AnnouncementService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -11,7 +10,7 @@ declare var google: any;
     templateUrl: 'addannc.comp.html'
 })
 
-export class AddAnnouncementComponent implements OnInit {
+export class AddAnnouncementComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -327,5 +326,9 @@ export class AddAnnouncementComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/communication/announcement']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

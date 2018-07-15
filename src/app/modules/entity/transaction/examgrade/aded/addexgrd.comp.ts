@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ExamService } from '@services/erp';
-
-declare var google: any;
 
 @Component({
     templateUrl: 'addexgrd.comp.html'
@@ -420,5 +418,9 @@ export class AddExamGradeComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/transaction/examgrade']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

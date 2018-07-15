@@ -34,8 +34,6 @@ export class AddExamComponent implements OnInit {
     frmtm: any = "";
     totm: any = "";
 
-    private subscribeParameters: any;
-
     constructor(private _examservice: ExamService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();

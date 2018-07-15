@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassTimeTableService } from '@services/erp';
@@ -44,7 +44,7 @@ export class TimetableReportsComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+    constructor(private _routeParams: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
         private tmtservice: ClassTimeTableService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -250,5 +250,7 @@ export class TimetableReportsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

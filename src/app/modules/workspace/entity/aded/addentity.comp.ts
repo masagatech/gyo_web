@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -12,7 +12,7 @@ declare var google: any;
     templateUrl: 'addentity.comp.html'
 })
 
-export class AddEntityComponent implements OnInit {
+export class AddEntityComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -184,18 +184,18 @@ export class AddEntityComponent implements OnInit {
 
     getValidEntity() {
         var that = this;
-        var params = {};
+        var dparams = {};
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] == undefined) {
                 commonfun.loader();
 
-                params = {
+                dparams = {
                     "flag": "validentt", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
                     "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
                 }
 
-                that._entityservice.getEntityDetails(params).subscribe(data => {
+                that._entityservice.getEntityDetails(dparams).subscribe(data => {
                     try {
                         var enttdata = data.data.filter(a => a.entttype === that.entttype);
 
@@ -478,50 +478,6 @@ export class AddEntityComponent implements OnInit {
 
     private clearcheckboxes(): void {
         $("input[type=checkbox]").prop('checked', false);
-    }
-
-    // Setting Standard Checkboxes
-
-    private selectAndDeselectAllCheckboxes() {
-        if ($("#selectall").is(':checked')) {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', true);
-        }
-        else {
-            $(".allcheckboxes input[type=checkbox]").prop('checked', false);
-        }
-    }
-
-    private selectAndDeselectGroupWiseCheckboxes(row) {
-        var key = "std" + row.key.split('~')[0];
-
-        if ($("#" + key).is(':checked')) {
-            $("#" + key + " input[type=checkbox]").prop('checked', true);
-        }
-        else {
-            $("#" + key + " input[type=checkbox]").prop('checked', false);
-        }
-    }
-
-    // Setting Subject Checkboxes
-
-    private selectAndDeselectAllSubCheckboxes() {
-        if ($("#selectallsub").is(':checked')) {
-            $(".allsubcheckboxes input[type=checkbox]").prop('checked', true);
-        }
-        else {
-            $(".allsubcheckboxes input[type=checkbox]").prop('checked', false);
-        }
-    }
-
-    private selectAndDeselectGroupWiseSubCheckboxes(row) {
-        var key = "sub" + row.key;
-
-        if ($("#" + key).is(':checked')) {
-            $("#" + key + " input[type=checkbox]").prop('checked', true);
-        }
-        else {
-            $("#" + key + " input[type=checkbox]").prop('checked', false);
-        }
     }
 
     // Setting Board Checkboxes
@@ -836,8 +792,7 @@ export class AddEntityComponent implements OnInit {
 
     viewEntityDetails() {
         var that = this;
-        var myWorkspaceDT = [];
-
+        
         commonfun.loader();
 
         that._wsservice.getWorkspaceDetails({
@@ -872,5 +827,9 @@ export class AddEntityComponent implements OnInit {
         else {
             this._router.navigate(['/workspace/entity']);
         }
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

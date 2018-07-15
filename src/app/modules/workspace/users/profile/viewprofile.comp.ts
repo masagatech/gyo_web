@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var $: any;
     templateUrl: 'viewprofile.comp.html'
 })
 
-export class ViewProfileComponent implements OnInit {
+export class ViewProfileComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
     _enttdetails: any = [];
@@ -78,5 +78,9 @@ export class ViewProfileComponent implements OnInit {
 
     public editUserForm(row) {
         this._router.navigate(['/workspace/user/edit', row.uid]);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

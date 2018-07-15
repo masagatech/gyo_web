@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ClassService } from '@services/master';
 
@@ -19,10 +19,8 @@ export class AddClassComponent implements OnInit, OnDestroy {
     divColumn: any = [];
     classDT: any = [];
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _loginservice: LoginService,
-        private _msg: MessageService, private _clsservice: ClassService, private _autoservice: CommonService) {
+        private _msg: MessageService, private _clsservice: ClassService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

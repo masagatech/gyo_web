@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -10,7 +10,7 @@ declare var adminloader: any;
     templateUrl: 'addws.comp.html'
 })
 
-export class AddWorkspaceComponent implements OnInit {
+export class AddWorkspaceComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     disablecode: boolean = false;
 
@@ -614,5 +614,9 @@ export class AddWorkspaceComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/admin/workspace']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

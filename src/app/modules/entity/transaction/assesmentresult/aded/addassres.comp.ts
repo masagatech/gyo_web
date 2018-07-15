@@ -49,8 +49,6 @@ export class AddAssesmentResultComponent implements OnInit {
 
     remark: string = "";
 
-    private subscribeParameters: any;
-
     constructor(private _assservice: AssesmentService, private _routeParams: ActivatedRoute, private _router: Router,
         private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();

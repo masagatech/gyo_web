@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ActivityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -12,7 +11,7 @@ declare var google: any;
     providers: [CommonService]
 })
 
-export class AddActivityComponent implements OnInit {
+export class AddActivityComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -280,5 +279,9 @@ export class AddActivityComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/activity']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

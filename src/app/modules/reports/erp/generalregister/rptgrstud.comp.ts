@@ -27,8 +27,6 @@ export class GeneralRegisterReportsComponent implements OnInit, OnDestroy {
     classDT: any = [];
     classid: number = 0;
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _admsnservice: AdmissionService, private _psngrrptservice: PassengerReportsService) {
         this.loginUser = this._loginservice.getUser();

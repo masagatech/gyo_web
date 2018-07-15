@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -8,7 +8,7 @@ import { InventoryService } from '@services/master';
     templateUrl: 'addsim.comp.html'
 })
 
-export class AddSimComponent implements OnInit {
+export class AddSimComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
@@ -154,5 +154,9 @@ export class AddSimComponent implements OnInit {
 
     public backViewData() {
         this._router.navigate(['/inventory/sim']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

@@ -199,7 +199,7 @@ export class AddReceiptBookComponent implements OnInit, OnDestroy {
         this._router.navigate(['/transaction/receiptbook']);
     }
 
-    public ngOnDestroy() {
-        
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

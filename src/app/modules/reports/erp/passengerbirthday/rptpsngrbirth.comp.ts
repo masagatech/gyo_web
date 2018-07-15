@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { AdmissionService } from '@services/erp';
@@ -38,7 +38,7 @@ export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+    constructor(private _routeParams: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
         private _admsnservice: AdmissionService, private _psngrrptservice: PassengerReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -217,5 +217,7 @@ export class PassengerBirthdayReportsComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+        
+        this.subscribeParameters.unsubscribe();
     }
 }

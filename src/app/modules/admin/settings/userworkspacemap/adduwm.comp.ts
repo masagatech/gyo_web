@@ -26,8 +26,6 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
     global = new Globals();
     uploadconfig = { uploadurl: "" };
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
         private _wsservice: WorkspaceService, private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();

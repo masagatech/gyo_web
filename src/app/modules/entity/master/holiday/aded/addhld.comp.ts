@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -12,7 +12,7 @@ declare var commonfun: any;
     templateUrl: 'addhld.comp.html'
 })
 
-export class AddHolidayComponent implements OnInit {
+export class AddHolidayComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -484,5 +484,9 @@ export class AddHolidayComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/holiday']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

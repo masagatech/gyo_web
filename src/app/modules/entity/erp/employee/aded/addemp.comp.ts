@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -977,7 +977,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         this._router.navigate(['/erp/' + this.psngrtype]);
     }
 
-    public ngOnDestroy() {
-
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

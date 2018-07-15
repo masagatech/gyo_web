@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LeaveService } from '@services/erp';
@@ -10,7 +9,7 @@ import { LeaveService } from '@services/erp';
     providers: [CommonService]
 })
 
-export class ViewLeaveComponent implements OnInit {
+export class ViewLeaveComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -181,6 +180,10 @@ export class ViewLeaveComponent implements OnInit {
         else {
             this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval', row.key.split('~')[0]]);
         }
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }
 

@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ChapterService } from '@services/master';
 
 declare var google: any;
 
 @Component({
-    templateUrl: 'addchptr.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addchptr.comp.html'
 })
 
-export class AddChapterComponent implements OnInit {
+export class AddChapterComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -28,7 +27,7 @@ export class AddChapterComponent implements OnInit {
     private subscribeParameters: any;
 
     constructor(private _chptrservice: ChapterService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -220,5 +219,9 @@ export class AddChapterComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/master/chapter']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }

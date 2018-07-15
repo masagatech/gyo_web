@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { LeaveService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
@@ -12,7 +11,7 @@ declare var commonfun: any;
     templateUrl: 'pendlv.comp.html'
 })
 
-export class PendingLeaveComponent implements OnInit {
+export class PendingLeaveComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -90,5 +89,9 @@ export class PendingLeaveComponent implements OnInit {
         else {
             this._router.navigate(['/erp/' + this.psngrtype + '/leave/approval/' + row.psngrid]);
         }
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }
