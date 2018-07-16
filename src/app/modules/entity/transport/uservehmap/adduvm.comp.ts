@@ -52,16 +52,6 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehicleDT = [];
     }
 
-    onVehicleClick(item: any) {
-        if (item.attr == undefined) {
-            item.attr = {};
-        }
-
-        $("#divAdvanceMapping").attr("class", "col-md-4 show");
-        this.clickedVehicle = item;
-        console.log(this.clickedVehicle);
-    }
-
     // Auto Completed User
 
     getUserData(event) {
@@ -129,7 +119,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehname = event.vehname;
         this.vehregno = event.label;
 
-        this.addvehicleDT();
+        this.addVehicleDT();
     }
 
     // Check Duplicate Vehicle
@@ -149,12 +139,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    addvehicleDT() {
+    addVehicleDT() {
         var that = this;
         var duplicateVehicle = that.isDuplicateVehicle();
 
         if (!duplicateVehicle) {
-            that.vehicleDT.push({ "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno })
+            that.vehicleDT.push({ "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno, "attr": {} })
         }
 
         that.vehid = 0;
@@ -167,6 +157,16 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     deleteVehicle(row) {
         this.vehicleDT.splice(this.vehicleDT.indexOf(row), 1);
+    }
+
+    onVehicleClick(item: any) {
+        if (item.attr == undefined) {
+            item.attr = {};
+        }
+
+        $("#divAdvanceMapping").attr("class", "col-md-4 show");
+
+        this.clickedVehicle = item;
     }
 
     saveUserVehicleMap() {
@@ -189,7 +189,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
                     "utype": that.utype,
                     "vehid": selectedVehicle,
                     "isadv": false,
-                    "advance": that.clickedVehicle,
+                    "advance": that.vehicleDT,
                     "cuid": that.loginUser.ucode,
                     "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid
@@ -241,6 +241,5 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         $.AdminBSB.islocked = false;
         $.AdminBSB.rightSideBar.closeonwindow = true;
         $.AdminBSB.leftSideBar.Open();
-
     }
 }
