@@ -23,6 +23,7 @@ export class ViewWorkspaceComponent implements OnInit {
     autotype: string = "";
 
     wsautoid: number = 0;
+    schoolid: string = "";
     wscode: string = "";
     wsname: string = "";
     wstype: string = "";
@@ -106,6 +107,7 @@ export class ViewWorkspaceComponent implements OnInit {
         if (this.autotype !== "Workspace") {
             this.enttid = event.value;
             this.wsautoid = event.wsautoid;
+            this.schoolid = event.schoolid;
             this.getEntityDetails();
         }
     }
@@ -185,7 +187,7 @@ export class ViewWorkspaceComponent implements OnInit {
         params = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "entttype": that.autotype, "issysadmin": that.loginUser.issysadmin, "wsautoid": that.wsautoid,
-            "schoolid": that._wsdetails.schoolid, "enttid": that.enttid
+            "schoolid": that.schoolid, "enttid": that.enttid
         }
 
         that._entityservice.getEntityDetails(params).subscribe(data => {
