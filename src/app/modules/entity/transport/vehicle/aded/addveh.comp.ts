@@ -16,8 +16,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     devtypeDT: any = [];
     d1strDT: any = [];
 
-    vehid: number = 0;
     autoid: number = 0;
+    vehid: number = 0;
     vehtype: string = "";
     vehname: string = "";
     vehregno: string = "";
@@ -142,8 +142,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     // Clear Fields
 
     resetVehicleFields() {
-        this.vehid = 0;
         this.autoid = 0;
+        this.vehid = 0;
         this.vehtype = "";
         this.vehname = "";
         this.vehmake = "";
@@ -237,8 +237,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             commonfun.loader();
 
             var params = {
-                "vemid": that.vehid,
-                "vehid": that.autoid,
+                "vemid": that.autoid,
+                "vehid": that.vehid,
                 "vehtype": that.vehtype,
                 "vehname": that.vehname,
                 "vehregno": that.vehregno,
@@ -360,8 +360,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         else {
                             var _vehicledata = data.data;
 
-                            that.vehid = _vehicledata[0].vehid;
                             that.autoid = _vehicledata[0].autoid;
+                            that.vehid = _vehicledata[0].vehid;
                             that.vehtype = _vehicledata[0].vehicletype;
                             that.vehname = _vehicledata[0].vehiclename;
                             that.vehregno = _vehicledata[0].vehregno;
@@ -404,7 +404,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 })
             }
             else {
-                that.getVehicleByIMEI();
+                that.resetVehicleFields();
                 commonfun.loaderhide();
             }
         });
@@ -414,67 +414,76 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     getVehicleByIMEI() {
         var that = this;
-        commonfun.loader();
 
-        that._vehservice.getVehicleDetails({
-            "flag": "byimei",
-            "imei": that.imei,
-            "vehregno": that.vehregno,
-            "enttid": that._enttdetails.enttid
-        }).subscribe(data => {
-            try {
-                if (data.data.length == 0) {
-                    $(".hidewhen input").removeAttr("disabled");
-                    $(".hidewhen select").removeAttr("disabled");
-                    that.resetVehicleFields();
-                }
-                else {
-                    $(".hidewhen input").attr("disabled", "disabled");
-                    $(".hidewhen select").attr("disabled", "disabled");
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['id'] == undefined) {
+                commonfun.loader();
 
-                    var _vehicledata = data.data;
+                that._vehservice.getVehicleDetails({
+                    "flag": "byimei",
+                    "imei": that.imei,
+                    "vehregno": that.vehregno,
+                    "enttid": that._enttdetails.enttid
+                }).subscribe(data => {
+                    try {
+                        if (data.data.length == 0) {
+                            $(".hidewhen input").removeAttr("disabled");
+                            $(".hidewhen select").removeAttr("disabled");
+                            that.resetVehicleFields();
+                        }
+                        else {
+                            $(".hidewhen input").attr("disabled", "disabled");
+                            $(".hidewhen select").attr("disabled", "disabled");
 
-                    that.vehid = _vehicledata[0].vehid;
-                    that.autoid = _vehicledata[0].autoid;
-                    that.imei = _vehicledata[0].imei;
-                    that.vehregno = _vehicledata[0].vehregno;
-                    that.vehtype = _vehicledata[0].vehicletype;
-                    that.vehname = _vehicledata[0].vehiclename;
-                    that.vehmake = _vehicledata[0].vehiclemake;
-                    that.vehmodel = _vehicledata[0].vehiclemodel;
-                    that.capacity = _vehicledata[0].capacity;
-                    that.vehcond = _vehicledata[0].vehiclecondition;
-                    that.vehfclt = _vehicledata[0].vehiclefacility;
-                    that.devtype = _vehicledata[0].devtype;
-                    that.simno = _vehicledata[0].simno;
-                    that.speedAllow = _vehicledata[0].vhspeed;
-                    that.d1str = _vehicledata[0].d1str;
+                            var _vehicledata = data.data;
 
-                    var trktypedt = data.data[0].trktype;
+                            that.autoid = _vehicledata[0].autoid;
+                            that.vehid = _vehicledata[0].vehid;
+                            that.imei = _vehicledata[0].imei;
 
-                    if (trktypedt != null) {
-                        for (var i = 0; i < trktypedt.length; i++) {
-                            $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                            if (_vehicledata[0].isvehregno) {
+                                that.vehregno = _vehicledata[0].vehregno;
+                            }
+
+                            that.vehtype = _vehicledata[0].vehicletype;
+                            that.vehname = _vehicledata[0].vehiclename;
+                            that.vehmake = _vehicledata[0].vehiclemake;
+                            that.vehmodel = _vehicledata[0].vehiclemodel;
+                            that.capacity = _vehicledata[0].capacity;
+                            that.vehcond = _vehicledata[0].vehiclecondition;
+                            that.vehfclt = _vehicledata[0].vehiclefacility;
+                            that.devtype = _vehicledata[0].devtype;
+                            that.simno = _vehicledata[0].simno;
+                            that.speedAllow = _vehicledata[0].vhspeed;
+                            that.d1str = _vehicledata[0].d1str;
+
+                            var trktypedt = data.data[0].trktype;
+
+                            if (trktypedt != null) {
+                                for (var i = 0; i < trktypedt.length; i++) {
+                                    $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                                }
+                            }
+
+                            that.vehurl = _vehicledata[0].url;
+                            that.isactive = _vehicledata[0].isactive;
+                            that.mode = _vehicledata[0].mode;
                         }
                     }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
 
-                    that.vehurl = _vehicledata[0].url;
-                    that.isactive = _vehicledata[0].isactive;
-                    that.mode = _vehicledata[0].mode;
-                }
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
             }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
+        });
     }
 
     // Back For View Data

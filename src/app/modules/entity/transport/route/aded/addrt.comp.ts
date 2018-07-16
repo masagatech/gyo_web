@@ -369,6 +369,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
     resetAllStopsFields() {
         this.rtid = 0;
         this.rtname = "";
+        this.stptype = "";
 
         this.resetStopsFields();
     }
@@ -376,7 +377,6 @@ export class AddRouteComponent implements OnInit, OnDestroy {
     resetStopsFields() {
         this.stpid = 0;
         this.stpname = "";
-        this.stptype = "";
         this.address = "";
         this.lat = "";
         this.lon = "";
@@ -418,9 +418,6 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         }
         else {
             var duplicateStops = that.isDuplicateStops();
-
-            let index = that.stopsList.findIndex((el) => el.id === 1);
-
             _rowid = that.stopsList.length + 1;
 
             if (!duplicateStops) {
@@ -524,6 +521,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         this.selectedStops.geoloc = this.lat + "," + this.lon;
         this.selectedStops.rtid = this.rtid;
         this.resetStopsFields();
+        this.stptype = "";
         this.selectedStops = [];
     }
 

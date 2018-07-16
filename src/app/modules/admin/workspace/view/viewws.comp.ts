@@ -129,6 +129,11 @@ export class ViewWorkspaceComponent implements OnInit {
                 that.workspaceDT = data.data.filter(a => a.issysadmin === false);
                 myWorkspaceDT = data.data.filter(a => a.issysadmin === true);
 
+                if (that.autotype !== "Workspace") {
+                    Cookie.delete("_schwsdetails_");
+                    Cookie.set("_schwsdetails_", JSON.stringify(data.data[0]));
+                }
+
                 if (myWorkspaceDT.length > 0) {
                     that.wsautoid = myWorkspaceDT[0].wsautoid;
                     that.wscode = myWorkspaceDT[0].wscode;

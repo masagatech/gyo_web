@@ -720,7 +720,7 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
                 "status": that.status,
                 "leftreason": that.status == "left" ? { "leftdate": that.leftdate, "leftreason": that.leftreason } : {},
 
-                "name": that.mthrname + ";" + that.fthrname,
+                "name": that.fthrname + ";" + that.mthrname,
                 "mobileno1": that.fthrmobile,
                 "mobileno2": that.mthrmobile,
                 "email1": that.fthremail,
