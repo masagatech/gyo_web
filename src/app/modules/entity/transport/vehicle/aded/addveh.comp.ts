@@ -446,12 +446,14 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         var _msg = data.data[0].msg;
                         var _vehdata = data.data[0].vehdata;
 
-                        if (_status == false) {
-                            that._msg.Show(messageType.error, "Error", _msg);
+                        if (_vehdata == null || _vehdata == undefined) {
+                            if (_status == false) {
+                                that._msg.Show(messageType.error, "Error", _msg);
+                            }
+
                             $(".hidewhen input").removeAttr("disabled");
                             $(".hidewhen select").removeAttr("disabled");
-                            that.imei = "";
-                            that.vehregno = "";
+
                             that.resetVehicleFields();
                         }
                         else {
