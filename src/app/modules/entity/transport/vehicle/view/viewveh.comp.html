@@ -11,17 +11,22 @@
         </ul>
     </div>
 
-    <div class="body no-padding">
+    <div class="body">
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="vehicleDT">
-                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="vehiclename" header="Vehicle Name" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="vehregno" header="Vehicle Registration No" [style]="{'width':'250px', 'text-align':'left'}"></p-column>
-                    <p-column field="simno" header="Sim No" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="imei" header="IMEI" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="mode" header="Status" [style]="{'width': '100px', 'text-align': 'left'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left'}">
+                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
+                    <p-column field="vehiclename" header="Vehicle Name" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
+                    <p-column field="vehregno" header="Vehicle Registration No" [style]="{'width':'300px', 'text-align':'left'}"></p-column>
+                    <p-column field="simno" header="Sim No" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
+                    <p-column field="imei" header="IMEI" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
+                    <p-column field="mode" header="Status" [style]="{'width': '60px', 'text-align': 'left'}"></p-column>
+                    <p-column header="Is Owner" [style]="{'width': '80px', 'align': 'center'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <span class="material-icons" *ngIf="row.isowner">done</span>
+                        </ng-template>
+                    </p-column>
+                    <p-column [style]="{'width': '60px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme" (click)="editVehicleForm(row)">
                                 <i class="material-icons">edit</i>

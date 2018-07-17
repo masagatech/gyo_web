@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService, AuthenticationService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { AppState } from '../../../app.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;

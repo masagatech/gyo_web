@@ -17,9 +17,7 @@ export class VehicleService {
         return this._dataserver.post("saveVehicleInfo", req)
     }
 
-    
     saveVehicleInfoToVts(req: any) {
         return this._dataserver.otherpost(this.global.trackurl_trk + "tripapi/vehicle", req)
     }
-    
 }

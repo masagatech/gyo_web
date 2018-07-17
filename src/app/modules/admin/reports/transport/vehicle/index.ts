@@ -2,13 +2,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { VehicleReportsComponent } from './rptveh.comp';
 import { VehicleService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -27,10 +26,11 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
+    AutoCompleteModule
   ],
 
-  providers: [AuthGuard, VehicleService]
+  providers: [AuthGuard, VehicleService, CommonService]
 })
 
 export class VehicleReportsModule {

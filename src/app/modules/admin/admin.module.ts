@@ -32,6 +32,9 @@ export const routes = [
 
                     // Setting
                     { path: 'settings', loadChildren: './settings#AdminSettingsModule' },
+                    
+                    // Reports
+                    { path: 'reports', loadChildren: './reports#AdminReportsModule' },
                 ]
             }
         ]

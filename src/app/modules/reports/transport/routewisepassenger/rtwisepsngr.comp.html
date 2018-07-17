@@ -30,8 +30,16 @@
                 <div *ngFor="let drow of row.value">
                     <div class="row clearfix">
                         <div class="col-md-10">
-                            <b>Batch :</b> {{drow.batchname}}
-                            <br /> <b>Timing :</b> {{drow.batchtime}}
+                            <div *ngIf="drow.isschedule">
+                                <b>Batch :</b> {{drow.batchname}}
+                                <br /> <b>Pickup Time :</b> {{drow.picktime}}
+                                <br /> <b>Drop Time :</b> {{drow.droptime}}
+                                <br /> <b>Driver :</b> {{drow.drivername}}
+                                <br /> <b>Vehicle :</b> {{drow.vehregno}}
+                            </div>
+                            <div *ngIf="!drow.isschedule">
+                                Schedule Not Created
+                            </div>
                             <br /> <b>Stops :</b> ({{drow.countstops}})
                             <br /> <b>{{_enttdetails.psngrtype}} :</b> ({{drow.countstuds}})
                         </div>

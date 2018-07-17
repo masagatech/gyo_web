@@ -257,6 +257,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
                 "mode": "",
                 "enttid": that._enttdetails.enttid,
+                "ownenttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
@@ -358,23 +359,23 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             that.imei = "";
                         }
                         else {
-                            var _vehicledata = data.data;
+                            var _vehdata = data.data[0];
 
-                            that.autoid = _vehicledata[0].autoid;
-                            that.vehid = _vehicledata[0].vehid;
-                            that.vehtype = _vehicledata[0].vehicletype;
-                            that.vehname = _vehicledata[0].vehiclename;
-                            that.vehregno = _vehicledata[0].vehregno;
-                            that.vehmake = _vehicledata[0].vehiclemake;
-                            that.vehmodel = _vehicledata[0].vehiclemodel;
-                            that.capacity = _vehicledata[0].capacity;
-                            that.vehcond = _vehicledata[0].vehiclecondition;
-                            that.vehfclt = _vehicledata[0].vehiclefacility;
-                            that.devtype = _vehicledata[0].devtype;
-                            that.imei = _vehicledata[0].imei;
-                            that.simno = _vehicledata[0].simno;
-                            that.speedAllow = _vehicledata[0].vhspeed;
-                            that.d1str = _vehicledata[0].d1str;
+                            that.autoid = _vehdata.autoid;
+                            that.vehid = _vehdata.vehid;
+                            that.vehtype = _vehdata.vehicletype;
+                            that.vehname = _vehdata.vehiclename;
+                            that.vehregno = _vehdata.vehregno;
+                            that.vehmake = _vehdata.vehiclemake;
+                            that.vehmodel = _vehdata.vehiclemodel;
+                            that.capacity = _vehdata.capacity;
+                            that.vehcond = _vehdata.vehiclecondition;
+                            that.vehfclt = _vehdata.vehiclefacility;
+                            that.devtype = _vehdata.devtype;
+                            that.imei = _vehdata.imei;
+                            that.simno = _vehdata.simno;
+                            that.speedAllow = _vehdata.vhspeed;
+                            that.d1str = _vehdata.d1str;
 
                             var trktypedt = data.data[0].trktype;
 
@@ -384,10 +385,25 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                                 }
                             }
 
-                            that.vehurl = _vehicledata[0].url;
-                            that.isprivate = _vehicledata[0].isprivate;
-                            that.isactive = _vehicledata[0].isactive;
-                            that.mode = _vehicledata[0].mode;
+                            that.vehurl = _vehdata.url;
+                            that.isprivate = _vehdata.isprivate;
+                            that.isactive = _vehdata.isactive;
+                            that.mode = _vehdata.mode;
+
+                            if (that._enttdetails.enttid == _vehdata.ownenttid) {
+                                $(".imei").removeAttr("disabled");
+                                $(".vehregno").removeAttr("disabled");
+
+                                $(".hidewhen input").removeAttr("disabled");
+                                $(".hidewhen select").removeAttr("disabled");
+                            }
+                            else {
+                                $(".imei").attr("disabled", "disabled");
+                                $(".vehregno").attr("disabled", "disabled");
+
+                                $(".hidewhen input").attr("disabled", "disabled");
+                                $(".hidewhen select").attr("disabled", "disabled");
+                            }
                         }
                     }
                     catch (e) {
@@ -426,36 +442,37 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                     "enttid": that._enttdetails.enttid
                 }).subscribe(data => {
                     try {
-                        if (data.data.length == 0) {
+                        var _status = data.data[0].status;
+                        var _msg = data.data[0].msg;
+                        var _vehdata = data.data[0].vehdata;
+
+                        if (_status == false) {
+                            that._msg.Show(messageType.error, "Error", _msg);
                             $(".hidewhen input").removeAttr("disabled");
                             $(".hidewhen select").removeAttr("disabled");
+                            that.imei = "";
+                            that.vehregno = "";
                             that.resetVehicleFields();
                         }
                         else {
                             $(".hidewhen input").attr("disabled", "disabled");
                             $(".hidewhen select").attr("disabled", "disabled");
 
-                            var _vehicledata = data.data;
-
-                            that.autoid = _vehicledata[0].autoid;
-                            that.vehid = _vehicledata[0].vehid;
-                            that.imei = _vehicledata[0].imei;
-
-                            if (_vehicledata[0].isvehregno) {
-                                that.vehregno = _vehicledata[0].vehregno;
-                            }
-
-                            that.vehtype = _vehicledata[0].vehicletype;
-                            that.vehname = _vehicledata[0].vehiclename;
-                            that.vehmake = _vehicledata[0].vehiclemake;
-                            that.vehmodel = _vehicledata[0].vehiclemodel;
-                            that.capacity = _vehicledata[0].capacity;
-                            that.vehcond = _vehicledata[0].vehiclecondition;
-                            that.vehfclt = _vehicledata[0].vehiclefacility;
-                            that.devtype = _vehicledata[0].devtype;
-                            that.simno = _vehicledata[0].simno;
-                            that.speedAllow = _vehicledata[0].vhspeed;
-                            that.d1str = _vehicledata[0].d1str;
+                            that.autoid = _vehdata.autoid;
+                            that.vehid = _vehdata.vehid;
+                            that.imei = _vehdata.imei;
+                            that.vehregno = _vehdata.vehregno;
+                            that.vehtype = _vehdata.vehicletype;
+                            that.vehname = _vehdata.vehiclename;
+                            that.vehmake = _vehdata.vehiclemake;
+                            that.vehmodel = _vehdata.vehiclemodel;
+                            that.capacity = _vehdata.capacity;
+                            that.vehcond = _vehdata.vehiclecondition;
+                            that.vehfclt = _vehdata.vehiclefacility;
+                            that.devtype = _vehdata.devtype;
+                            that.simno = _vehdata.simno;
+                            that.speedAllow = _vehdata.vhspeed;
+                            that.d1str = _vehdata.d1str;
 
                             var trktypedt = data.data[0].trktype;
 
@@ -465,9 +482,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                                 }
                             }
 
-                            that.vehurl = _vehicledata[0].url;
-                            that.isactive = _vehicledata[0].isactive;
-                            that.mode = _vehicledata[0].mode;
+                            that.vehurl = _vehdata.url;
+                            that.isactive = _vehdata.isactive;
+                            that.mode = _vehdata.mode;
                         }
                     }
                     catch (e) {
