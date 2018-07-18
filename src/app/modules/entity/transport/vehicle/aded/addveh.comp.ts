@@ -158,6 +158,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         this.vehurl = "";
         this.isprivate = false;
         this.setFromDateAndToDate();
+        
+        $(".hidewhen input").removeAttr("disabled");
+        $(".hidewhen select").removeAttr("disabled");
     }
 
     // Save Data
@@ -300,8 +303,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         }
 
                         if (msgid === "1") {
-                            $(".hidewhen input").removeAttr("disabled");
-                            $(".hidewhen select").removeAttr("disabled");
                             that.resetVehicleFields();
                             that.imei = "";
                         }
@@ -443,50 +444,54 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 }).subscribe(data => {
                     try {
                         var _status = data.data[0].status;
+                        var _isexists = data.data[0].isexists;
                         var _msg = data.data[0].msg;
                         var _vehdata = data.data[0].vehdata;
 
                         if (_vehdata == null || _vehdata == undefined) {
-                            if (_status == false) {
-                                that._msg.Show(messageType.error, "Error", _msg);
-                            }
-
-                            $(".hidewhen input").removeAttr("disabled");
-                            $(".hidewhen select").removeAttr("disabled");
-
                             that.resetVehicleFields();
                         }
                         else {
-                            $(".hidewhen input").attr("disabled", "disabled");
-                            $(".hidewhen select").attr("disabled", "disabled");
+                            if (_status == false) {
+                                that._msg.Show(messageType.error, "Error", _msg);
+                                that.resetVehicleFields();
 
-                            that.autoid = _vehdata.autoid;
-                            that.vehid = _vehdata.vehid;
-                            that.imei = _vehdata.imei;
-                            that.vehregno = _vehdata.vehregno;
-                            that.vehtype = _vehdata.vehicletype;
-                            that.vehname = _vehdata.vehiclename;
-                            that.vehmake = _vehdata.vehiclemake;
-                            that.vehmodel = _vehdata.vehiclemodel;
-                            that.capacity = _vehdata.capacity;
-                            that.vehcond = _vehdata.vehiclecondition;
-                            that.vehfclt = _vehdata.vehiclefacility;
-                            that.devtype = _vehdata.devtype;
-                            that.simno = _vehdata.simno;
-                            that.speedAllow = _vehdata.vhspeed;
-                            that.d1str = _vehdata.d1str;
-
-                            var trktypedt = data.data[0].trktype;
-
-                            if (trktypedt != null) {
-                                for (var i = 0; i < trktypedt.length; i++) {
-                                    $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                                if (_isexists) {
+                                    that.imei = "";
                                 }
                             }
+                            else {
+                                $(".hidewhen input").attr("disabled", "disabled");
+                                $(".hidewhen select").attr("disabled", "disabled");
 
-                            that.vehurl = _vehdata.url;
-                            that.isactive = _vehdata.isactive;
-                            that.mode = _vehdata.mode;
+                                that.autoid = _vehdata.autoid;
+                                that.vehid = _vehdata.vehid;
+                                that.imei = _vehdata.imei;
+                                that.vehregno = _vehdata.vehregno;
+                                that.vehtype = _vehdata.vehicletype;
+                                that.vehname = _vehdata.vehiclename;
+                                that.vehmake = _vehdata.vehiclemake;
+                                that.vehmodel = _vehdata.vehiclemodel;
+                                that.capacity = _vehdata.capacity;
+                                that.vehcond = _vehdata.vehiclecondition;
+                                that.vehfclt = _vehdata.vehiclefacility;
+                                that.devtype = _vehdata.devtype;
+                                that.simno = _vehdata.simno;
+                                that.speedAllow = _vehdata.vhspeed;
+                                that.d1str = _vehdata.d1str;
+
+                                var trktypedt = data.data[0].trktype;
+
+                                if (trktypedt != null) {
+                                    for (var i = 0; i < trktypedt.length; i++) {
+                                        $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                                    }
+                                }
+
+                                that.vehurl = _vehdata.url;
+                                that.isactive = _vehdata.isactive;
+                                that.mode = _vehdata.mode;
+                            }
                         }
                     }
                     catch (e) {

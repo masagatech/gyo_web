@@ -4,8 +4,8 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Vehicle</label>
-                        <input type="text" [(ngModel)]="srcvehname" class="form-control drivercode" maxlength="10" tabindex="1" />
+                        <label class="control-label">Driver</label>
+                        <input type="text" [(ngModel)]="srcdrvname" class="form-control drivercode" maxlength="10" tabindex="1" />
                     </div>
                 </div>
             </div>
@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity</label>
-                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getVehicleDetails()" tabindex="2">
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getDriverDetails()" tabindex="2">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of entityDT" [value]="row.enttid">
                                 {{row.enttname}}
@@ -24,7 +24,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme" (click)="getVehicleDetails()">
+                    <button type="button" class="btn btn-theme" (click)="getDriverDetails()">
                         <span class="material-icons">arrow_forward</span>
                     </button>
                 </div>
@@ -45,59 +45,49 @@
     </div>
 
     <div class="body no-padding">
-        <div #vehicle>
+        <div #driver>
             <table class="table table-bordered table-responsive">
                 <thead>
                     <tr>
                         <th width="50px">Sr.</th>
-                        <th width="150px">Vehicle Name</th>
-                        <th width="250px">Mapped User</th>
-                        <th width="60px">Type</th>
-                        <th width="150px">Registration No</th>
-                        <th width="100px">IMEI</th>
-                        <th width="50px">Capacity</th>
-                        <th width="150px">Make</th>
-                        <th width="150px">Model</th>
-                        <th width="150px">Facility</th>
+                        <th width="150px">Driver Name</th>
+                        <th width="250px">Mapped Vehicles</th>
+                        <th width="100px">Aadhar No</th>
+                        <th width="100px">Mobile</th>
+                        <th width="150px">Email</th>
+                        <th width="250px">Address</th>
                         <th width="50px">Status</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let row of vehicleDT | groupBy: 'enttname'">
+                <tbody *ngFor="let row of driverDT | groupBy: 'enttname'">
                     <tr>
-                        <th colspan="9">
+                        <th colspan="8">
                             {{row.key}}
                         </th>
                     </tr>
-                    <tr *ngFor="let drow of row.value | filterBy: {'vehiclename': srcvehname}; let i = index;">
+                    <tr *ngFor="let drow of row.value | filterBy: {'drivername': srcdrvname}; let i = index;">
                         <td>
                             {{i + 1}}
                         </td>
                         <td>
-                            {{drow.vehiclename}}
+                            {{drow.drivername}}
                         </td>
                         <td>
-                            {{drow.uname}}
+                            {{drow.vehname}}
                         </td>
                         <td>
-                            {{drow.vehicletype}}
+                            {{drow.aadharno}}
                         </td>
                         <td>
-                            {{drow.vehregno}}
+                            {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
                         </td>
                         <td>
-                            {{drow.imei}}
+                            {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
                         </td>
                         <td>
-                            {{drow.capacity}}
-                        </td>
-                        <td>
-                            {{drow.vehiclemake}}
-                        </td>
-                        <td>
-                            {{drow.vehiclemodel}}
-                        </td>
-                        <td>
-                            {{drow.vehiclefacility}}
+                            {{drow.address}}
+                            <br /> {{drow.area}}
+                            <span *ngIf="drow.city !== ''">{{" " + drow.city}}</span><span *ngIf="drow.state !== ''">{{" " + drow.state}}</span><span *ngIf="drow.country !== ''">{{", " + drow.country}}</span>
                         </td>
                         <td>
                             {{drow.mode}}

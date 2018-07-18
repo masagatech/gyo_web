@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, CommonService } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { AddDriverComponent } from './aded/adddriver.comp';
 import { ViewDriverComponent } from './view/viewdriver.comp';
 
 import { DriverService } from '@services/master';
 
-import { DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
+import { DataTableModule, DataGridModule, PanelModule, FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -29,7 +29,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule,
+    DataTableModule, DataGridModule, PanelModule, FileUploadModule
   ],
 
   providers: [AuthGuard, CommonService, DriverService]

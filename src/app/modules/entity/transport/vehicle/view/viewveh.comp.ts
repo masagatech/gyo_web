@@ -13,6 +13,7 @@ export class ViewVehicleComponent implements OnInit {
     _enttdetails: any = [];
 
     vehicleDT: any = [];
+    srcvehname: string = "";
 
     constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService, private _vehservice: VehicleService) {
         this.loginUser = this._loginservice.getUser();

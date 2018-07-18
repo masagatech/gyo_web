@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { DriverReportsComponent } from './rptdriver.comp';
 import { DriverService } from '@services/master';
@@ -30,7 +29,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, DriverService]
+  providers: [AuthGuard, CommonService, DriverService]
 })
 
 export class DriverReportsModule {

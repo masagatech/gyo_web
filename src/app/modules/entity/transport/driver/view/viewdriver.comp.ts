@@ -15,6 +15,7 @@ export class ViewDriverComponent implements OnInit {
     global = new Globals();
 
     driverDT: any = [];
+    srcdrvname: string = "";
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;

@@ -36,6 +36,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     area: number = 0;
     pincode: number = 0;
     remark1: string = "";
+    othenttids: any;
 
     mode: string = "";
     isactive: boolean = true;
@@ -312,6 +313,13 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.uploadDocsDT = [];
         that.choosePhotoLabel = "Upload Photo";
         that.isprivate = false;
+
+        $(".hidewhen input").removeAttr("disabled");
+        $(".hidewhen select").removeAttr("disabled");
+        $(".hidewhen textarea").removeAttr("disabled");
+
+        $("#divPhotoUpload").prop("class", "show");
+        $("#divDocsUpload").prop("class", "show");
     }
 
     // Save Data
@@ -364,6 +372,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 "attachdocs": that.uploadDocsDT,
                 "remark1": that.remark1,
                 "cuid": that.loginUser.ucode,
+                "othenttids": that.othenttids,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
                 "isactive": that.isactive,
@@ -381,12 +390,6 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            $(".hidewhen input").removeAttr("disabled");
-                            $(".hidewhen select").removeAttr("disabled");
-                            $(".hidewhen textarea").removeAttr("disabled");
-                            $("#divPhotoUpload").prop("class", "show");
-                            $("#divDocsUpload").prop("class", "show");
-
                             that.resetDriverFields();
                             that.mobileno1 = "";
                         }
@@ -436,6 +439,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
                         if (_driverdata == null || _driverdata == undefined) {
                             that.resetDriverFields();
+                            that.mobileno1 = "";
                         }
                         else {
                             that.driverid = _driverdata.autoid;
@@ -461,6 +465,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             that.isactive = _driverdata.isactive;
                             that.isprivate = _driverdata.isprivate;
                             that.mode = _driverdata.mode;
+                            that.othenttids = _driverdata.othenttids;
 
                             if (_driverdata.FilePath !== "") {
                                 that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
@@ -511,6 +516,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             }
             else {
                 that.resetDriverFields();
+                that.mobileno1 = "";
                 commonfun.loaderhide();
             }
         });
@@ -532,62 +538,63 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 }).subscribe(data => {
                     try {
                         var _status = data.data[0].status;
+                        var _isexists = data.data[0].isexists;
                         var _msg = data.data[0].msg;
                         var _driverdata = data.data[0]._driverdata;
 
                         if (_driverdata == null || _driverdata == undefined) {
-                            if (_status == false) {
-                                that._msg.Show(messageType.error, "Error", _msg);
-                            }
-
-                            $(".hidewhen input").removeAttr("disabled");
-                            $(".hidewhen select").removeAttr("disabled");
-                            $(".hidewhen textarea").removeAttr("disabled");
-
-                            $("#divPhotoUpload").prop("class", "show");
-                            $("#divDocsUpload").prop("class", "show");
-
                             that.resetDriverFields();
                         }
                         else {
-                            $(".hidewhen input").attr("disabled", "disabled");
-                            $(".hidewhen select").attr("disabled", "disabled");
-                            $(".hidewhen textarea").attr("disabled", "disabled");
+                            if (_status == false) {
+                                that._msg.Show(messageType.error, "Error", _msg);
+                                that.resetDriverFields();
 
-                            $("#divPhotoUpload").prop("class", "hide");
-                            $("#divDocsUpload").prop("class", "hide");
-
-                            that.driverid = _driverdata.autoid;
-                            that.loginid = _driverdata.loginid;
-                            that.drivercode = _driverdata.drivercode;
-                            that.driverpwd = _driverdata.driverpwd;
-                            that.drivername = _driverdata.drivername;
-                            that.aadharno = _driverdata.aadharno;
-                            that.licenseno = _driverdata.licenseno;
-                            that.email1 = _driverdata.email1;
-                            that.email2 = _driverdata.email2;
-                            that.mobileno1 = _driverdata.mobileno1;
-                            that.mobileno2 = _driverdata.mobileno2;
-                            that.address = _driverdata.address;
-                            that.country = _driverdata.country;
-                            that.state = _driverdata.state;
-                            that.fillCityDropDown();
-                            that.city = _driverdata.city;
-                            that.fillAreaDropDown();
-                            that.area = _driverdata.area;
-                            that.pincode = _driverdata.pincode;
-                            that.remark1 = _driverdata.remark1;
-                            that.isactive = _driverdata.isactive;
-                            that.isprivate = _driverdata.isprivate;
-                            that.mode = _driverdata.mode;
-
-                            if (_driverdata.FilePath !== "") {
-                                that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
-                                that.choosePhotoLabel = "Change Photo";
+                                if (_isexists) {
+                                    that.mobileno1 = "";
+                                }
                             }
                             else {
-                                that.uploadPhotoDT = [];
-                                that.choosePhotoLabel = "Upload Photo";
+                                $(".hidewhen input").attr("disabled", "disabled");
+                                $(".hidewhen select").attr("disabled", "disabled");
+                                $(".hidewhen textarea").attr("disabled", "disabled");
+
+                                $("#divPhotoUpload").prop("class", "hide");
+                                $("#divDocsUpload").prop("class", "hide");
+
+                                that.driverid = _driverdata.autoid;
+                                that.loginid = _driverdata.loginid;
+                                that.drivercode = _driverdata.drivercode;
+                                that.driverpwd = _driverdata.driverpwd;
+                                that.drivername = _driverdata.drivername;
+                                that.aadharno = _driverdata.aadharno;
+                                that.licenseno = _driverdata.licenseno;
+                                that.email1 = _driverdata.email1;
+                                that.email2 = _driverdata.email2;
+                                that.mobileno1 = _driverdata.mobileno1;
+                                that.mobileno2 = _driverdata.mobileno2;
+                                that.address = _driverdata.address;
+                                that.country = _driverdata.country;
+                                that.state = _driverdata.state;
+                                that.fillCityDropDown();
+                                that.city = _driverdata.city;
+                                that.fillAreaDropDown();
+                                that.area = _driverdata.area;
+                                that.pincode = _driverdata.pincode;
+                                that.remark1 = _driverdata.remark1;
+                                that.isactive = _driverdata.isactive;
+                                that.isprivate = _driverdata.isprivate;
+                                that.mode = _driverdata.mode;
+                                that.othenttids = _driverdata.othenttids;
+
+                                if (_driverdata.FilePath !== "") {
+                                    that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
+                                    that.choosePhotoLabel = "Change Photo";
+                                }
+                                else {
+                                    that.uploadPhotoDT = [];
+                                    that.choosePhotoLabel = "Upload Photo";
+                                }
                             }
                         }
                     }

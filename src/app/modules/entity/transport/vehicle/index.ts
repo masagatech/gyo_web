@@ -29,8 +29,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule,
-    SharedComponentModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule,
+    DataTableModule, AutoCompleteModule, FileUploadModule
   ],
 
   providers: [AuthGuard, VehicleService]

@@ -1,28 +1,28 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { VehicleService } from '@services/master';
+import { DriverService } from '@services/master';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
 
 @Component({
-    templateUrl: 'rptveh.comp.html'
+    templateUrl: 'rptdriver.comp.html'
 })
 
-export class VehicleReportsComponent implements OnInit, OnDestroy {
+export class DriverReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
     entityDT: any = [];
-    vehicleDT: any = [];
+    driverDT: any = [];
 
     enttid: number = 0;
-    srcvehname: string = "";
+    srcdrvname: string = "";
 
-    @ViewChild('vehicle') vehicle: ElementRef;
+    @ViewChild('driver') driver: ElementRef;
 
-    constructor(private _msg: MessageService, private _loginservice: LoginService, private _vehservice: VehicleService,
-        private _autoservice: CommonService) {
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService,
+        private _driverservice: DriverService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -67,7 +67,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    that.getVehicleDetails();
+                    that.getDriverDetails();
                 }
             }
             catch (e) {
@@ -86,16 +86,16 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
 
     // Get Driver
 
-    getVehicleDetails() {
+    getDriverDetails() {
         var that = this;
         commonfun.loader();
 
-        that._vehservice.getVehicleDetails({
+        that._driverservice.getDriverDetails({
             "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin, "enttid": that.enttid, "wsautoid": 0
         }).subscribe(data => {
             try {
-                that.vehicleDT = data.data;
+                that.driverDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -114,7 +114,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
     // Export
 
     public exportToCSV() {
-        this._autoservice.exportToCSV(this.vehicleDT, "Vehicle Details");
+        this._autoservice.exportToCSV(this.driverDT, "Driver Details");
     }
 
     public exportToPDF() {
@@ -122,8 +122,8 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
         let options = {
             pagesplit: true
         };
-        pdf.addHTML(this.vehicle.nativeElement, 0, 0, options, () => {
-            pdf.save("VehicleReports.pdf");
+        pdf.addHTML(this.driver.nativeElement, 0, 0, options, () => {
+            pdf.save("DriverReports.pdf");
         });
     }
 

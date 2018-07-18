@@ -16,7 +16,6 @@ export const routes = [
                     // Master
                     
                     { path: 'route', loadChildren: './route#RouteReportsModule' },
-                    { path: 'driver', loadChildren: './driver#DriverReportsModule' },
                     { path: 'batch', loadChildren: './batch#BatchReportsModule' },
 
                     // Attendance
