@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ComponentFactoryResolver } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService, SocketService, TrackDashbord } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { SelectItem, GMap } from 'primeng/primeng';
@@ -68,7 +69,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     sidebarTitle = "Title";
     trafficLayer: any = new google.maps.TrafficLayer();
-
+    queryimei: string = '';
     markerOptions = {
         showinfo: false,
         hidelive: false,
@@ -87,7 +88,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private subscribeParameters: any;
 
-    constructor(private _msg: MessageService, private _loginservice: LoginService, private _socketservice: SocketService,
+    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService, private _socketservice: SocketService,
         private _autoservice: CommonService, private _trackDashbord: TrackDashbord, private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -115,7 +116,22 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
 
-        this.fillVehicleDropDown();
+
+        this.subscribeParameters = this._actrouter
+            .queryParams
+            .subscribe(params => {
+                // Defaults to 0 if no query param provided.
+                // this.page = +params['page'] || 0;
+
+                this.enttid = params['enttid'] || this._enttdetails.enttid;
+
+                console.log(this._enttdetails);
+                this.vehid = params['vehid'] || 0;
+
+                this.queryimei = params['imei'] || '';
+
+                this.fillVehicleDropDown();
+            });
     }
 
     public ngAfterViewInit() {
@@ -183,16 +199,16 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     private fillVehicleDropDown() {
         var that = this;
 
-        if (Cookie.get("_vehid_") != null) {
-            that.enttid = parseInt(Cookie.get("_enttid_"));
-            that.enttname = Cookie.get("_enttname_");
-            that.vehid = parseInt(Cookie.get("_vehid_"));
-        }
-        else {
-            that.enttid = that._enttdetails.enttid;
-            that.enttname = that._enttdetails.enttname;
-            that.vehid = 0;
-        }
+        // if (Cookie.get("_vehid_") != null) {
+        //     that.enttid = parseInt(Cookie.get("_enttid_"));
+        //     that.enttname = Cookie.get("_enttname_");
+        //     that.vehid = parseInt(Cookie.get("_vehid_"));
+        // }
+        // else {
+        //     that.enttid = that._enttdetails.enttid;
+        //     that.enttname = that._enttdetails.enttname;
+        //     that.vehid = 0;
+        // }
 
         commonfun.loader();
 
@@ -429,13 +445,18 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     el.acc = d.acc;
                 }
 
-
             } else if (el.ju) {
 
             } else {
                 el.isshow = false;
             }
         }
+        var that = this;
+        setTimeout(() => {
+            if (that.queryimei !== '') {
+                $('#' + that.queryimei).click();
+            }
+        }, 1000);
     }
 
     // Move Marker
@@ -489,6 +510,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 this.removemarker(vh.vhid);
             }
+        }
+
+        if (this.queryimei !== '') {
+            this.clickVehicle(vh);
         }
 
         e.preventDefault();
@@ -747,5 +772,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
         this._socketservice.close();
+
+        this.subscribeParameters.unsubscribe();
     }
 }

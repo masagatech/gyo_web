@@ -97,7 +97,7 @@ span.material-icons.ico-specify {
     height: 15px;
     width: 15px;
     background-size: cover;
-    background-image: url('../../../../assets/img/redflag.png');
+    background-image: url('../../../../../assets/img/redflag.png');
 }
 
 .statusicon {

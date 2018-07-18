@@ -1,20 +1,18 @@
-import { Component, OnInit, Input, OnDestroy, ComponentFactoryResolver, forwardRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { TTMapService } from '@services/master';
 import { MessageService, messageType, TrackDashbord } from '@services';
-import { HOSTComponent } from '@interface';
-import { ADHOST } from '@directives';
-import { PSGComponent } from '../passengers/psg.comp'
 import { Globals } from '@models';
 
 declare var google: any;
 declare var MarkerClusterer: any;
 declare var polyline: any;
+
 @Component({
     templateUrl: './history.comp.html',
     providers: [TrackDashbord],
-    styleUrls: ['./style.css', '../../../../assets/css/b1njTimeline.css']
-
+    styleUrls: ['./style.css', '../../../../../assets/css/b1njTimeline.css']
 })
+
 export class HISTORYComponent implements OnInit, OnDestroy {
     @Input() data: any;
 

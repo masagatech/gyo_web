@@ -82,7 +82,7 @@
                                 <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="info_click(row,$event); false" role="button">INFO</a>
                                 <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="passenger_click(row,$event); false" role="button">STUDENTS</a>
                                 <a href="javascript:void(0);" class="btn bg-info waves-effect" (click)="history_click(row,$event); false" role="button">HISTORY</a>
-                                <a href="javascript:void(0);" class="btn {{row.isfollow ? 'btn-info' : 'bg-info'}} waves-effect" (click)="clickVehicle(row,$event); false" role="button">{{row.isfollow ? 'UNFOLLOW' : 'FOLLOW'}}</a>
+                                <a href="javascript:void(0);" id="{{'flw'+ row.vhid}}" class="btn {{row.isfollow ? 'btn-info' : 'bg-info'}} waves-effect" (click)="clickVehicle(row,$event); false" role="button">{{row.isfollow ? 'UNFOLLOW' : 'FOLLOW'}}</a>
                             </div>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                     <small>{{selectedSVh.vno +' '+ selectedSVh.vrg}}</small>
                 </h2>
 
-                <ul class="header-dropdown m-r--5" style="top: 0px;">
+                <ul class="header-dropdown hdr-ddl">
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">more_vert</i>

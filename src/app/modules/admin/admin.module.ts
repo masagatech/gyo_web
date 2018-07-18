@@ -35,6 +35,9 @@ export const routes = [
                     
                     // Reports
                     { path: 'reports', loadChildren: './reports#AdminReportsModule' },
+                    
+                    // Trip Tracking V1
+                    { path: 'triptrackingv1', loadChildren: './triptrackingv1#TripTrackingV1Module' },
                 ]
             }
         ]
