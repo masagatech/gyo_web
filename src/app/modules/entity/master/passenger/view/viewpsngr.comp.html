@@ -26,11 +26,22 @@
         </ul>
 
         <div class="row clearfix">
-            <div class="col-md-4 col-xs-7">
+            <div class="col-md-2 col-xs-3">
                 <div class="form-group">
                     <div class="form-line">
+                        <label class="control-label">Status</label>
+                        <select id="srctype" name="srctype" [(ngModel)]="srctype" class="form-control srctype" tabindex="1" (ngModelChange)="getPassengerDetails()">
+                            <option [value]="'all'">All</option>
+                            <option [value]="'search'">Search Passenger</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-7">
+                <div class="form-group" *ngIf="srctype == 'search'">
+                    <div class="form-line">
                         <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
-                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectedPassenger" [tabindex]="1" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30"
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectedPassenger" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30"
                             class="form-controlAutoComplete psngrname"></p-autoComplete>
                         <span class="material-icons inputsearchico pad-11">
                             <a role="button" (click)="getPassengerDetails()" class="btn btn-search">search</a>
@@ -42,7 +53,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Status</label>
-                        <select id="status" name="status" [(ngModel)]="status" class="form-control status" tabindex="2" (ngModelChange)="getPassengerDetails()">
+                        <select id="status" name="status" [(ngModel)]="status" class="form-control status" tabindex="3" (ngModelChange)="getPassengerDetails()">
                             <option [value]="''">All</option>
                             <option [value]="'current'">Current</option>
                             <option [value]="'past'">Past</option>

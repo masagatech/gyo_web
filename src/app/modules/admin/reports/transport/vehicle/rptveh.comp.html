@@ -50,10 +50,10 @@
                 <thead>
                     <tr>
                         <th width="50px">Sr.</th>
+                        <th width="150px">Registration No</th>
                         <th width="150px">Vehicle Name</th>
                         <th width="250px">Mapped User</th>
                         <th width="60px">Type</th>
-                        <th width="150px">Registration No</th>
                         <th width="100px">IMEI</th>
                         <th width="50px">Capacity</th>
                         <th width="150px">Make</th>
@@ -73,6 +73,9 @@
                             {{i + 1}}
                         </td>
                         <td>
+                            <a role="button" (click)="openTripTrackDB(drow)">{{drow.vehregno}}</a>
+                        </td>
+                        <td>
                             {{drow.vehiclename}}
                         </td>
                         <td>
@@ -80,9 +83,6 @@
                         </td>
                         <td>
                             {{drow.vehicletype}}
-                        </td>
-                        <td>
-                            {{drow.vehregno}}
                         </td>
                         <td>
                             {{drow.imei}}

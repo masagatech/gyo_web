@@ -305,6 +305,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         if (msgid === "1") {
                             that.resetVehicleFields();
                             that.imei = "";
+                            that.vehregno = "";
                         }
                         else {
                             that.backViewData();
@@ -358,6 +359,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         if (data.data.length == 0) {
                             that.resetVehicleFields();
                             that.imei = "";
+                            that.vehregno = "";
                         }
                         else {
                             var _vehdata = data.data[0];
@@ -458,6 +460,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
                                 if (_isexists) {
                                     that.imei = "";
+                                    that.vehregno = "";
                                 }
                             }
                             else {

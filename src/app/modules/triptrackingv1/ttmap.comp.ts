@@ -1,23 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, AfterViewInit, ComponentFactoryResolver, forwardRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ComponentFactoryResolver } from '@angular/core';
 import { MessageService, messageType, LoginService, CommonService, SocketService, TrackDashbord } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { TTMapService } from '@services/master';
-import { LazyLoadEvent, DataTable } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SelectItem, GMap } from 'primeng/primeng';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
 
-import { PSGComponent } from './passengers/psg.comp'
-import { INFOComponent } from './info/info.comp'
-import { HISTORYComponent } from './history/history.comp'
+import { PSGComponent } from './passengers/psg.comp';
+import { INFOComponent } from './info/info.comp';
+import { HISTORYComponent } from './history/history.comp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
 @Component({
     templateUrl: 'ttmap.comp.html',
-    providers: [CommonService, SocketService, TrackDashbord],
     styleUrls: ['./style.css']
 })
 
@@ -43,6 +39,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     enttid: number = 0;
     enttname: string = "";
 
+    vehid: number = 0;
     vehtypeDT: any = [];
     vehtypeIds: any = [];
     vehtypeid: number = 0;
@@ -88,14 +85,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     olfilter: any = "all";
     _showempty: boolean = false;
 
-    constructor(private _ttmapservice: TTMapService, private _msg: MessageService, private _autoservice: CommonService,
-        private _loginservice: LoginService, private _socketservice: SocketService, private _trackDashbord: TrackDashbord,
-        private componentFactoryResolver: ComponentFactoryResolver) {
+    private subscribeParameters: any;
+
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _socketservice: SocketService,
+        private _autoservice: CommonService, private _trackDashbord: TrackDashbord, private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.enttid = this._enttdetails.enttid;
-        this.enttname = this._enttdetails.enttname;
         this.getMessage();
     }
 
@@ -114,9 +110,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
-            $.AdminBSB.rightSideBar.closeonwindow = false; // do not close right bar on window click
-            
-            $(".enttname input").focus();
+            $.AdminBSB.rightSideBar.closeonwindow = false;
+
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
 
@@ -187,14 +182,27 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private fillVehicleDropDown() {
         var that = this;
+
+        if (Cookie.get("_vehid_") != null) {
+            that.enttid = parseInt(Cookie.get("_enttid_"));
+            that.enttname = Cookie.get("_enttname_");
+            that.vehid = parseInt(Cookie.get("_vehid_"));
+        }
+        else {
+            that.enttid = that._enttdetails.enttid;
+            that.enttname = that._enttdetails.enttname;
+            that.vehid = 0;
+        }
+
         commonfun.loader();
 
-        this.vehtypeDT = [];
-        this.vehtypeIds = [];
+        that.vehtypeDT = [];
+        that.vehtypeIds = [];
 
         that._trackDashbord.gettrackboard({
             "flag": "vehicle_new",
             "enttid": that.enttid,
+            "vehid": that.vehid,
             "uid": that.loginUser.uid,
             "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin,
@@ -202,20 +210,23 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }).subscribe((data) => {
             try {
                 that.vehtypeDT = data.data;
+
                 for (var k = 0; k < that.vehtypeDT.length; k++) {
                     var el = that.vehtypeDT[k];
+
                     el.isfollow = false;
                     el.sel = false;
                     el.rng = 0;
                     el.acc = 0;
-                    el.os = this.olfilter;
+                    el.os = that.olfilter;
+
                     if (el.vhid !== null) {
-                        console.log(el.vhid);
                         that.vehtypeIds.push(el.vhid);
                     }
                 }
-                this.checkOnlineCount();
-                this._counter.all = that.vehtypeDT.length;
+
+                that.checkOnlineCount();
+                that._counter.all = that.vehtypeDT.length;
                 that.getLastUpdateAndSubscribe(null);
                 that.setLiveBeatsOn();
             }
@@ -375,7 +386,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private refreshdata(data) {
         for (let i = 0; i < this.vehtypeDT.length; i++) {
-            debugger;
             let el = this.vehtypeDT[i];
             let d = data.find(f => f.vhid === el.vhid);
 
@@ -393,11 +403,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (isNaN(d.btr)) el.btr = 100;
                 else el.btr = d.btr;
 
-                if (d.loc !== undefined && d.loc !== null){
+                if (d.loc !== undefined && d.loc !== null) {
                     el.loc = d.loc;
                     this.moveMarker([el.loc[1], el.loc[0]], el.vhid, el.bearing);
                 }
-                   
+
                 el.sertm = d.sertm;
                 el.min = this.getTimeDiff(d.sertm);
                 el.isshow = true;
@@ -419,7 +429,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     el.acc = d.acc;
                 }
 
-                
+
             } else if (el.ju) {
 
             } else {
@@ -435,7 +445,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (mrk !== undefined) {
             let bear = 0;
-            
+
             mrk.setPosition(new google.maps.LatLng(loc[0], loc[1]));
 
             if (this.selectedFlwVh.vhid !== undefined && this.selectedFlwVh.vhid == vhid) {
@@ -734,7 +744,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         $.AdminBSB.islocked = false;
         $.AdminBSB.rightSideBar.closeonwindow = true;
         $.AdminBSB.leftSideBar.Open();
-        
+
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
         this._socketservice.close();
     }

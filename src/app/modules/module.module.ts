@@ -31,6 +31,9 @@ export const routes = [
 
                     // Reports
                     { path: 'reports', loadChildren: './reports#ReportsModule' },
+                    
+                    // Trip Tracking V1
+                    { path: 'triptrackingv1', loadChildren: './triptrackingv1#TripTrackingV1Module' },
 
                     // Reoload
                     { path: 'reload', component: ReloadComponent },

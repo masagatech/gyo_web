@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { VehicleService } from '@services/master';
@@ -21,8 +22,8 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
 
     @ViewChild('vehicle') vehicle: ElementRef;
 
-    constructor(private _msg: MessageService, private _loginservice: LoginService, private _vehservice: VehicleService,
-        private _autoservice: CommonService) {
+    constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+        private _vehservice: VehicleService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -109,6 +110,18 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
+    }
+
+    public openTripTrackDB(row) {
+        Cookie.delete("_enttid_");
+        Cookie.delete("_enttname_");
+        Cookie.delete("_vehid_");
+
+        Cookie.set("_enttid_", row.enttid);
+        Cookie.set("_enttname_", row.enttname);
+        Cookie.set("_vehid_", row.vehid);
+
+        this._router.navigate(['/triptrackingv1']);
     }
 
     // Export

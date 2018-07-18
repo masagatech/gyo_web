@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService, SocketService, TrackDashbord } from '@services';
 
 import { TripTrackingComponent } from './ttmap.comp';
 import { TTMapService } from '@services/master';
@@ -14,8 +14,7 @@ import { INFOComponent } from './info/info.comp';
 import { HISTORYComponent } from './history/history.comp';
 
 import {
-  LazyLoadEvent, DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule,
-  CalendarModule, SliderModule
+  DataTableModule, AutoCompleteModule, GMapModule, SelectButtonModule, CalendarModule, SliderModule
 } from 'primeng/primeng';
 
 export const config: SocketIoConfig = {
@@ -49,7 +48,7 @@ export const routes = [
     CalendarModule, SliderModule
   ],
 
-  providers: [AuthGuard, TTMapService]
+  providers: [AuthGuard, TTMapService, CommonService, SocketService, TrackDashbord]
 })
 
 export class TripTrackingV1Module {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
@@ -19,6 +19,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
     isShowGrid: boolean = true;
     isShowList: boolean = false;
+
+    srctype: string = "all";
     status: string = "";
 
     autoPassengerDT: any = [];
@@ -33,8 +35,8 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     uploadFileDT: any = [];
     uploadfileconfig = { server: "", serverpath: "", uploadxlsurl: "", xlsfilepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService, private _admsnservice: AdmissionService) {
+    constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+        private _autoservice: CommonService, private _admsnservice: AdmissionService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -123,7 +125,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        if (that.psngrid == 0) {
+        if (that.srctype == "all") {
             Cookie.set("_psngrid_", "0");
             Cookie.set("_psngrname_", "");
 

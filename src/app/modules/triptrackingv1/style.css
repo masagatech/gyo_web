@@ -1,7 +1,8 @@
 /* all vehicles */
 
 .vehiclewrapper {
-    background-color: rgb(241, 242, 245);;
+    background-color: rgb(241, 242, 245);
+    ;
     /* height: calc(100% - 59px); */
     height: calc(100% - 0px);
     overflow-y: scroll;
@@ -25,43 +26,40 @@ div.vehicle {
     border: 2px solid #636363;
     opacity: 0.8;
 }
-.range{
-    height: 10px;position: absolute;background-color:#1f91f3;z-index: 1;
+
+.range {
+    height: 10px;
+    position: absolute;
+    background-color: #1f91f3;
+    z-index: 1;
     display: block;
 }
 
-.engoff{ 
+.engoff {
     position: absolute;
     z-index: 1;
-    display: block;  
-    height: 10px;  
-    width: 10px;border-radius: 50%;background-image:
-    radial-gradient(
-      circle closest-side,
-      rgb(252, 79, 79),
-      #b10101
-    );        
-}
-.engon{    
-    
-    position: absolute;
-    z-index: 1;
-    display: block;   
-  height: 10px;  width: 10px;border-radius: 50%;
-  background-image:
-  radial-gradient(
-    circle closest-side,
-    rgb(24, 224, 37),
-    #0c6b01
-  );
-  box-shadow: 0 0 0 green;
-  animation: pulse 2s infinite;      
+    display: block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-image: radial-gradient( circle closest-side, rgb(252, 79, 79), #b10101);
 }
 
+.engon {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-image: radial-gradient( circle closest-side, rgb(24, 224, 37), #0c6b01);
+    box-shadow: 0 0 0 green;
+    animation: pulse 2s infinite;
+}
 
 @-webkit-keyframes pulse {
     0% {
-      -webkit-box-shadow: 0 0 0 0 rgba(33, 185, 33, 0.9);
+        -webkit-box-shadow: 0 0 0 0 rgba(33, 185, 33, 0.9);
     }
     70% {
         -webkit-box-shadow: 0 0 0 10px rgba(33, 185, 33, 0);
@@ -69,11 +67,12 @@ div.vehicle {
     100% {
         -webkit-box-shadow: 0 0 0 0 rgba(33, 185, 33, 0);
     }
-  }
-  @keyframes pulse {
+}
+
+@keyframes pulse {
     0% {
-      -moz-box-shadow: 0 0 0 0 rgba(33, 185, 33, 0.9);
-      box-shadow: 0 0 0 0 rgba(33, 185, 33, 0.9);
+        -moz-box-shadow: 0 0 0 0 rgba(33, 185, 33, 0.9);
+        box-shadow: 0 0 0 0 rgba(33, 185, 33, 0.9);
     }
     70% {
         -moz-box-shadow: 0 0 0 10px rgba(33, 185, 33, 0);
@@ -83,7 +82,7 @@ div.vehicle {
         -moz-box-shadow: 0 0 0 0 rgba(33, 185, 33, 0);
         box-shadow: 0 0 0 0 rgba(33, 185, 33, 0);
     }
-  }
+}
 
 .vhwrapper:hover {
     opacity: 1;
@@ -140,7 +139,6 @@ div.vehicle {
     margin-right: 8px;
 }
 
-
 .vhwrapper.ol,
 .subicons.ol {
     border: 2px solid #2b982b;
@@ -163,7 +161,6 @@ div.vehicle {
     opacity: 0.6;
 }
 
-
 .vhwrapper.ou,
 .subicons.ou {
     border: 2px solid #636363;
@@ -175,7 +172,7 @@ div.vehicle {
 }
 
 .imgProf {
-    background-image: url('../../../../assets/img/no.jpg')
+    background-image: url('../../../assets/img/no.jpg')
 }
 
 .tripstatus {

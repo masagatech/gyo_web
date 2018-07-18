@@ -183,7 +183,7 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
                 that.classid = 0;
             }
 
-            that.downloadPassengerReports(format)
+            that.downloadPassengerReports(format);
         });
     }
 

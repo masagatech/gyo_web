@@ -15,6 +15,7 @@ export const routes = [
                 children: [
                     // Transport
 
+                    { path: 'passenger', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'driver', loadChildren: './driver#DriverReportsModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
                 ]

@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix" id="fltrstud">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Passenger</label>
+                        <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectedPassenger" [tabindex]="1" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30"
+                            class="form-controlAutoComplete psngrname"></p-autoComplete>
+                        <span class="material-icons inputabsolutesearchico pad-20">
+                            <a role="button" (click)="getPassengerReports('html')" class="btn btn-search">search</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity</label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getPassengerReports('html')" tabindex="2">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of entityDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme" (click)="searchPassengerReports()">
+                        <span class="material-icons">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getPassengerReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getPassengerReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body padding-0">
+        <div id="divrptpsngr" class="min-body-height"></div>
+    </div>
+</div>

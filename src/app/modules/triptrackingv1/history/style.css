@@ -97,7 +97,7 @@ span.material-icons.ico-specify {
     height: 15px;
     width: 15px;
     background-size: cover;
-    background-image: url('../../../../../assets/img/redflag.png');
+    background-image: url('../../../../assets/img/redflag.png');
 }
 
 .statusicon {
@@ -168,29 +168,26 @@ i.material-icons.status {
     font-weight: bold;
 }
 
+body {}
 
-
-
-body{
-    
-}
-
-.lineHolder{
+.lineHolder {
     display: block;
-    width:260px;
+    width: 260px;
     height: calc(100vh - 278px);
     overflow-y: auto;
-    padding-top : 20px;
+    padding-top: 20px;
     padding-bottom: 20px;
 }
-.lineitem{
+
+.lineitem {
     height: 50px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-direction: normal;
 }
-.lineitem .contLeft{
+
+.lineitem .contLeft {
     width: 96px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -202,7 +199,7 @@ body{
     text-align: right;
 }
 
-.lineitem .liner{
+.lineitem .liner {
     width: 20px;
     min-width: 20px;
     display: -webkit-box;
@@ -221,16 +218,15 @@ body{
     z-index: 1;
 }
 
-.lineitem .liner>.innerLine{
+.lineitem .liner>.innerLine {
     border-right: 3px solid #798e9b;
     height: 100%;
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    
 }
 
-.lineitem .contRight{
+.lineitem .contRight {
     padding-bottom: 22px;
     position: relative;
     padding-left: 16px;
@@ -241,9 +237,9 @@ body{
     -webkit-box-orient: vertical;
     -ms-flex-direction: column;
     flex-direction: column;
-    
 }
-.lineitem .connecter{
+
+.lineitem .connecter {
     width: 9px;
     height: 9px;
     border: 2px solid #798e9b;
@@ -253,40 +249,43 @@ body{
     position: absolute;
     z-index: 1;
 }
-.lineitem:hover{
+
+.lineitem:hover {
     background-color: #eee
 }
 
-.solid .innerLine, .solid .connecter{
+.solid .innerLine,
+.solid .connecter {
     border-color: #1f91f3!important;
     outline-color: #1f91f3!important;
 }
 
-.dashed .innerLine, .dashed .connecter{
+.dashed .innerLine,
+.dashed .connecter {
     border-color: #ff5050!important;
-        outline-color: #ff5050!important;
-    
+    outline-color: #ff5050!important;
 }
-.solid_col{
+
+.solid_col {
     color: #1f91f3!important;
- }
-
- .dashed_col{
-    color: #ff5050!important;
- }
-
-.solid{
-   height: 80px;
 }
 
-.text span{
+.dashed_col {
+    color: #ff5050!important;
+}
+
+.solid {
+    height: 80px;
+}
+
+.text span {
     display: block;
     font-size: 11px;
     margin-bottom: 3px;
     color: #52616a;
 }
 
-.text .head{
+.text .head {
     font-weight: bold;
 }
 
