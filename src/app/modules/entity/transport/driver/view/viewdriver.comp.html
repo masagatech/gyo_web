@@ -40,7 +40,10 @@
                             <p-panel [style]="{'text-align':'center'}">
                                 <p-header>
                                     <div class="row clearfix">
-                                        <div class="col-md-10 col-xs-8">
+                                        <div class="col-md-2 col-xs-2">
+                                            <span class="material-icons" *ngIf="row.isowner">done</span>
+                                        </div>
+                                        <div class="col-md-8 col-xs-6">
                                             {{row.drivername}}
                                         </div>
                                         <div class="col-md-2 col-xs-4">
@@ -91,6 +94,11 @@
                     <p-column field="address" header="Address" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="mobileno1" header="Mobile" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
+                    <p-column header="Is Owner" [style]="{'width': '80px', 'align': 'center'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            <span class="material-icons" *ngIf="row.isowner">done</span>
+                        </ng-template>
+                    </p-column>
                     <p-column [style]="{'width': '50px', 'align': 'left'}">
                         <ng-template let-row="rowData" pTemplate type="body">
                             <button type="button" class="btn btn-theme" (click)="editDriverForm(row)">

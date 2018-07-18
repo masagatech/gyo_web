@@ -52,7 +52,6 @@
                         <th width="50px">Sr.</th>
                         <th width="150px">Driver Name</th>
                         <th width="250px">Mapped Vehicles</th>
-                        <th width="100px">Aadhar No</th>
                         <th width="100px">Mobile</th>
                         <th width="150px">Email</th>
                         <th width="250px">Address</th>
@@ -76,16 +75,13 @@
                             {{drow.vehname}}
                         </td>
                         <td>
-                            {{drow.aadharno}}
-                        </td>
-                        <td>
                             {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
                         </td>
                         <td>
                             {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
                         </td>
                         <td>
-                            {{drow.address}}
+                            <span>{{drow.address}}</span>
                             <br /> {{drow.area}}
                             <span *ngIf="drow.city !== ''">{{" " + drow.city}}</span><span *ngIf="drow.state !== ''">{{" " + drow.state}}</span><span *ngIf="drow.country !== ''">{{", " + drow.country}}</span>
                         </td>

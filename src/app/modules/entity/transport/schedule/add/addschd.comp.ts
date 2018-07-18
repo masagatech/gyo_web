@@ -265,8 +265,7 @@ export class AddScheduleComponent implements OnInit {
         that._pickdropservice.getPickDropDetails({
             "flag": "dropdown",
             "group": "driver",
-            "id": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid
+            "id": that._enttdetails.enttid
         }).subscribe((data) => {
             try {
                 that.driverDT = data.data;
@@ -413,6 +412,7 @@ export class AddScheduleComponent implements OnInit {
             "flag": "dropdown",
             "group": "pickpsngr",
             "id": that.pickrtid,
+            "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
@@ -478,6 +478,7 @@ export class AddScheduleComponent implements OnInit {
             "flag": "dropdown",
             "group": "droppsngr",
             "id": that.droprtid,
+            "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
         }).subscribe((data) => {
             try {

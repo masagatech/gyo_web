@@ -353,6 +353,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 that._vehservice.getVehicleDetails({
                     "flag": "edit",
                     "id": that.vehid,
+                    "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {

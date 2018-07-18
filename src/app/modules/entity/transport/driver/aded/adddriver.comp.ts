@@ -431,7 +431,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 that._driverservice.getDriverDetails({
                     "flag": "edit",
                     "id": that.driverid,
-                    "wsautoid": that._enttdetails.wsautoid
+                    "enttid": that._enttdetails.enttid
                 }).subscribe(data => {
                     try {
                         var _driverdata = data.data[0]._driverdata;
@@ -484,6 +484,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             }
 
                             if (that._enttdetails.enttid == _driverdata.enttid) {
+                                $(".mobileno1").removeAttr("disabled");
                                 $(".hidewhen input").removeAttr("disabled");
                                 $(".hidewhen select").removeAttr("disabled");
                                 $(".hidewhen textarea").removeAttr("disabled");
@@ -492,6 +493,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                                 $("#divDocsUpload").prop("class", "show");
                             }
                             else {
+                                $(".mobileno1").attr("disabled", "disabled");
                                 $(".hidewhen input").attr("disabled", "disabled");
                                 $(".hidewhen select").attr("disabled", "disabled");
                                 $(".hidewhen textarea").attr("disabled", "disabled");
