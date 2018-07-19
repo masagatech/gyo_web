@@ -45,8 +45,8 @@
                         <input type="text" name="vehregno" [(ngModel)]="vehregno" [pattern]="vehregnoPattern" #regno="ngModel" class="form-control vehregno" maxlength="50" tabindex="2" (blur)="getVehicleByIMEI()" />
                     </div>
                 </div>
-                <div id="divinvalidvehregno" class="col-red" *ngIf="regno.errors?.pattern">
-                    Not Valid
+                <div id="invalidvehregno" class="col-red" *ngIf="regno.errors?.pattern">
+                    <span>Not Valid</span>
                 </div>
             </div>
             <div class="col-md-3">

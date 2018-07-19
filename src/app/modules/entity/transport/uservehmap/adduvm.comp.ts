@@ -15,6 +15,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     _enttdetails: any = [];
 
     usersDT: any = [];
+    uvmid: number = 0;
     uid: number = 0;
     uname: any = [];
     utype: string = "";
@@ -25,7 +26,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     vehname: string = "";
     vehregno: string = "";
     selectedvehicle: any = [];
+
     private clickedVehicle = { "attr": {} };
+
+    userVehicleData: any = {};
+    oldUserVehicleData: any = [];
+    newUserVehicleData: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
         private _uvmservice: UserVehicleMapService, private _loginservice: LoginService, private _msg: MessageService) {
@@ -42,6 +48,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     }
 
     resetUserVehicleMap() {
+        this.uvmid = 0;
         this.uid = 0;
         this.uname = "";
         this.utype = "";
@@ -50,6 +57,8 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehregno = "";
         this.selectedvehicle = [];
         this.vehicleDT = [];
+
+        this.clickedVehicle = { "attr": {} };
     }
 
     // Auto Completed User
@@ -164,58 +173,152 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             item.attr = {};
         }
 
-        $("#divAdvanceMapping").attr("class", "col-md-4 show");
-
         this.clickedVehicle = item;
+
+        // var vehrow = null;
+        // var vehdata = this.vehicleDT.filter(a => a.vehid == item.vehid);
+
+        // for (var i = 0; i < vehdata.length; i++) {
+        //     vehrow = vehdata[i];
+        //     vehrow.attr.isrmtctrl = item.attr.isrmtctrl;
+        // }
+
+        // console.log(this.vehicleDT);
     }
 
-    saveUserVehicleMap() {
+    // Get Audit Parameter
+
+    getAuditData(selectedVehicle) {
+        var that = this;
+        var _auditdt = [];
+
+        _auditdt = [
+            { "key": "User ID", "val": that.uid, "fldname": "uid", "fldtype": "text" },
+            { "key": "User Name", "val": that.uname, "fldname": "uid", "fldtype": "text" },
+            { "key": "User Type", "val": that.utype, "fldname": "utype", "fldtype": "text" },
+            { "key": "Vehicle IDs", "val": selectedVehicle, "fldname": "vehid", "fldtype": "text" },
+            { "key": "Advance", "val": that.vehicleDT, "fldname": "advance", "fldtype": "table" },
+        ]
+
+        return _auditdt;
+    }
+
+    // Audit Log
+
+    saveAuditLog(id, name, oldval, newval) {
+        var that = this;
+
+        var _oldvaldt = [];
+        var _newvaldt = [];
+
+        for (var i = 0; i < Object.keys(oldval).length; i++) {
+            _oldvaldt.push(that.oldUserVehicleData.filter(a => a.fldname == Object.keys(oldval)[i]));
+        }
+
+        for (var i = 0; i < Object.keys(newval).length; i++) {
+            _newvaldt.push(that.newUserVehicleData.filter(a => a.fldname == Object.keys(newval)[i]));
+        }
+
+        var dispflds = [{ "key": "User Name", "val": name }];
+
+        var auditparams = {
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "uservehiclemap", "mdlname": "User Vehicle Map",
+            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+        };
+
+        that._autoservice.saveAuditLog(auditparams);
+    }
+
+    // Get Save Parameter
+
+    getUserVehicleParams(selveh) {
+        var that = this;
+
+        var params = {
+            "uid": that.uid,
+            "utype": that.utype,
+            "vehid": selveh,
+            "isadv": false,
+            "advance": that.vehicleDT,
+            "cuid": that.loginUser.ucode,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid
+        }
+
+        return params;
+    }
+
+    // Validation Field
+
+    isValidaUserVehicle(newval, selectedVehicle) {
         var that = this;
 
         if (that.uid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter User");
             $(".uname input").focus();
         }
-        else {
-            var selectedVehicle: string[] = [];
-            selectedVehicle = Object.keys(that.vehicleDT).map(function (k) { return that.vehicleDT[k].vehid });
 
-            if (selectedVehicle.length === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Atleast 1 Vehicle");
-            }
-            else {
-                var saveUR = {
-                    "uid": that.uid,
-                    "utype": that.utype,
-                    "vehid": selectedVehicle,
-                    "isadv": false,
-                    "advance": that.vehicleDT,
-                    "cuid": that.loginUser.ucode,
-                    "enttid": that._enttdetails.enttid,
-                    "wsautoid": that._enttdetails.wsautoid
-                }
+        // if (that.uvmid !== 0) {
+        //     if (JSON.stringify(newval) == "{}") {
+        //         that._msg.Show(messageType.warn, "Warning", "No any Changes");
+        //         return false;
+        //     }
+        // }
 
-                that._uvmservice.saveUserVehicleMap(saveUR).subscribe(data => {
-                    try {
-                        var dataResult = data.data[0].funsave_uservehmap;
+        if (selectedVehicle.length === 0) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Vehicle");
+            return true;
+        }
 
-                        if (dataResult.msgid != "-1") {
-                            that._msg.Show(messageType.success, "Success", dataResult.msg);
+        return true;
+    }
+
+    saveUserVehicleMap() {
+        var that = this;
+        var isvalid: boolean = false;
+
+        var selectedVehicle: string[] = [];
+        selectedVehicle = Object.keys(that.vehicleDT).map(function (k) { return that.vehicleDT[k].vehid });
+
+        var params = that.getUserVehicleParams(selectedVehicle);
+        that.newUserVehicleData = that.getAuditData(selectedVehicle);
+
+        var newval = that._autoservice.getDiff2Arrays(that.userVehicleData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.userVehicleData);
+
+        isvalid = that.isValidaUserVehicle(newval, selectedVehicle);
+
+        if (isvalid) {
+            that._uvmservice.saveUserVehicleMap(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_uservehmap;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var uvmid = dataResult.uvmid;
+
+                    if (msgid != "-1") {
+                        if (msgid == "1") {
+                            that._msg.Show(messageType.success, "Success", msg);
                         }
                         else {
-                            that._msg.Show(messageType.error, "Error", dataResult.msg);
+                            that.saveAuditLog(uvmid, that.uname, oldval, newval);
+                            that._msg.Show(messageType.success, "Success", msg);
                         }
 
                         that.resetUserVehicleMap();
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
                     }
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                }, () => {
-                });
-            }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+            }, () => {
+            });
         }
     }
 
@@ -227,6 +330,13 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.vehicleDT = data.data;
+
+                var selectedVehicle: string[] = [];
+                selectedVehicle = Object.keys(that.vehicleDT).map(function (k) { return that.vehicleDT[k].vehid });
+
+                that.uvmid = data.data.length > 0 ? data.data[0].uvmid : 0;
+                that.userVehicleData = that.getUserVehicleParams(selectedVehicle);
+                that.oldUserVehicleData = that.getAuditData(selectedVehicle);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

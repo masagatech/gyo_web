@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -42,6 +42,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     mode: string = "";
     isactive: boolean = true;
     isprivate: boolean = true;
+
+    @ViewChild('regno') vehicle: ElementRef;
 
     private subscribeParameters: any;
 
@@ -167,7 +169,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     isValidateVehicle() {
         var that = this;
-        var _vehregno = $("#divinvalidvehregno").innerHtml;
+        var _vehregno = $("#invalidvehregno span").html();
 
         console.log(_vehregno);
 
@@ -186,14 +188,14 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             $(".vehregno").focus();
             return false;
         }
+        if (that.vehname == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Vehicle Name");
+            $(".vehname").focus();
+            return false;
+        }
         if (that.vehtype == "") {
             that._msg.Show(messageType.error, "Error", "Select Vehicle Type");
             $(".vehtype").focus();
-            return false;
-        }
-        if (that.vehname == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Vehicle No");
-            $(".vehno").focus();
             return false;
         }
         if (that.capacity == 0) {

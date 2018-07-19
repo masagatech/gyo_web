@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <div id="divAdvanceMapping" class="col-md-4 hide">
+    <div class="col-md-4">
         <div class="card">
             <div class="body">
                 <h4>{{clickedVehicle.vehname}}</h4>
@@ -74,10 +74,9 @@
                     <li class="list-group-item list-group-item-default bg-purple">
                         <h4 class="list-group-item-heading">Remote Control Allow</h4>
 
-                        <span class="pull-right hide">
-                            <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.rmtctrl" 
-                                class="chk-col-red filled-in" checked="">
-                            <label for="md_checkbox_chktitle"></label>
+                        <span class="pull-right">
+                            <input type="checkbox" id="rmtctrl" [(ngModel)]="clickedVehicle.attr.isrmtctrl" class="chk-col-red filled-in">
+                            <label for="rmtctrl"></label>
                         </span>
 
                         <p class="list-group-item-text">By allowing this user can send command to vehicle from app.</p>
@@ -120,26 +119,26 @@
                         </div>
                     </li>
                     <li class="list-group-item list-group-item-default bg-black">
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.mon" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Mon</label>
+                        <input type="checkbox" id="ismon" [(ngModel)]="clickedVehicle.attr.ismon" class="chk-col-red filled-in">
+                        <label for="ismon">Mon</label>
 
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.tue" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Tue</label>
+                        <input type="checkbox" id="istue" [(ngModel)]="clickedVehicle.attr.istue" class="chk-col-red filled-in">
+                        <label for="istue">Tue</label>
 
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.wed" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Wed</label>
+                        <input type="checkbox" id="iswed" [(ngModel)]="clickedVehicle.attr.iswed" class="chk-col-red filled-in">
+                        <label for="iswed">Wed</label>
 
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.thu" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Thu</label>
+                        <input type="checkbox" id="isthu" [(ngModel)]="clickedVehicle.attr.isthu" class="chk-col-red filled-in">
+                        <label for="isthu">Thu</label>
 
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.fri" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Fri</label>
+                        <input type="checkbox" id="isfri" [(ngModel)]="clickedVehicle.attr.isfri" class="chk-col-red filled-in">
+                        <label for="isfri">Fri</label>
 
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.sat" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Sat</label>
+                        <input type="checkbox" id="issat" [(ngModel)]="clickedVehicle.attr.issat" class="chk-col-red filled-in">
+                        <label for="issat">Sat</label>
 
-                        <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="clickedVehicle.attr.sun" class="chk-col-red filled-in" checked="">
-                        <label for="md_checkbox_chktitle">Sun</label>
+                        <input type="checkbox" id="issun" [(ngModel)]="clickedVehicle.attr.issun" class="chk-col-red filled-in">
+                        <label for="issun">Sun</label>
                     </li>
                 </div>
             </div>

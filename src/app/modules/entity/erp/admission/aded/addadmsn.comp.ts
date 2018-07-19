@@ -5,10 +5,6 @@ import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-declare var google: any;
-declare var loader: any;
-declare var adminloader: any;
-
 @Component({
     templateUrl: 'addadmsn.comp.html'
 })
