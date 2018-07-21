@@ -598,12 +598,11 @@ export class AddScheduleComponent implements OnInit {
                         that.pickfromdate = pickdata[0].frmdt;
                         that.picktodate = pickdata[0].todt;
                         that.pickdriverid = pickdata[0].driverid;
-                        that.pickvehicleid = pickdata[0].vehicleno;
+                        that.pickvehicleid = pickdata[0].vehicleid;
                         that.pickpsngrtype = pickdata[0].psngrtype;
                         that.pickrtid = pickdata[0].rtid;
                         that.pickPassengerDT = pickdata[0].studentdata;
                         that.pickAttList = pickdata[0].attendantdata;
-                        console.log(pickdata);
                         that.ispickup = pickdata[0].isactive;
                     }
                     else {
@@ -631,7 +630,7 @@ export class AddScheduleComponent implements OnInit {
                         that.dropfromdate = dropdata[0].frmdt;
                         that.droptodate = dropdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
-                        that.dropvehicleid = dropdata[0].vehicleno;
+                        that.dropvehicleid = dropdata[0].vehicleid;
                         that.droppsngrtype = dropdata[0].psngrtype;
                         that.droprtid = dropdata[0].rtid;
                         that.dropPassengerDT = dropdata[0].studentdata;
@@ -759,8 +758,8 @@ export class AddScheduleComponent implements OnInit {
             "batchid": that.batchid,
             "pdrvid": that.pickdriverid,
             "ddrvid": that.dropdriverid,
-            "pvehid": that.pickvehicleid.split('~')[0],
-            "dvehid": that.dropvehicleid.split('~')[0],
+            "pvehid": that.pickvehicleid,
+            "dvehid": that.dropvehicleid,
             "prtid": that.pickrtid,
             "drtid": that.droprtid,
             "enttid": that._enttdetails.enttid,
@@ -820,8 +819,8 @@ export class AddScheduleComponent implements OnInit {
                     "autoid": that.pickautoid,
                     "btchid": that.batchid,
                     "drvid": that.pickdriverid,
-                    "vhclid": that.pickvehicleid.split('~')[0],
-                    "vhclno": that.pickvehicleid.split('~')[1],
+                    "vhclid": that.pickvehicleid,
+                    "vhclno": $("#pickvehid option:selected").text().trim(),
                     "rtid": that.pickrtid,
                     "attsid": _pickattsid,
                     "studdt": _pickstudDT,
@@ -851,8 +850,8 @@ export class AddScheduleComponent implements OnInit {
                     "autoid": that.dropautoid,
                     "btchid": that.batchid,
                     "drvid": that.dropdriverid == 0 ? that.pickdriverid : that.dropdriverid,
-                    "vhclid": that.dropvehicleid.split('~')[0],
-                    "vhclno": that.dropvehicleid.split('~')[1],
+                    "vhclid": that.dropvehicleid,
+                    "vhclno": $("#pickvehid option:selected").text().trim(),
                     "rtid": that.droprtid,
                     "attsid": _dropattsid,
                     "studdt": _dropstudDT,

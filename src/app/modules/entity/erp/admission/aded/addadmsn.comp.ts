@@ -1248,7 +1248,6 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     saveAdmissionInfo() {
         var that = this;
-        var isvalid: boolean = false;
 
         that.saveBirthCrtfctDT = JSON.stringify(that.birthcrtfctDT);
         that.saveAddrProofDT = JSON.stringify(that.addrproofDT);
@@ -1261,9 +1260,9 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
 
-        isvalid = that.isValidAdmission(newval);
+        var _isvalid = that.isValidAdmission(newval);
 
-        if (isvalid) {
+        if (_isvalid) {
             commonfun.loader();
 
             that._admsnservice.saveAdmissionInfo(params).subscribe(data => {
