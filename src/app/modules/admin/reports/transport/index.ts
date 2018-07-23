@@ -18,6 +18,10 @@ export const routes = [
                     { path: 'passenger', loadChildren: './passenger#PassengerReportsModule' },
                     { path: 'driver', loadChildren: './driver#DriverReportsModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleReportsModule' },
+                    
+                    // Notification
+                    
+                    { path: 'notification', loadChildren: './notification#AdminNotificationReportsModule' },
                 ]
             }
         ]

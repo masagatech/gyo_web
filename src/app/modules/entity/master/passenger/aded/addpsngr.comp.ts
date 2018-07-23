@@ -746,10 +746,10 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
                 "pickgeoloc": (that.picklet == "" ? "0.00" : that.picklet) + "," + (that.picklong == "" ? "0.00" : that.picklong),
                 "dropgeoloc": (that.droplet == "" ? "0.00" : that.droplet) + "," + (that.droplong == "" ? "0.00" : that.droplong),
 
-                "cuid": that.loginUser.ucode,
+                "remark1": that.remark1,
                 "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
-                "remark1": that.remark1,
+                "cuid": that.loginUser.ucode,
                 "isactive": that.isactive,
                 "mode": ""
             }

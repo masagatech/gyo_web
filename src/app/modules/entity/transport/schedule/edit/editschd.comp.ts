@@ -620,152 +620,12 @@ export class EditScheduleComponent implements OnInit {
 
     reverseArr(input) {
         var ret = new Array;
+        
         for (var i = input.length - 1; i >= 0; i--) {
             ret.push(input[i]);
         }
+
         return ret;
-    }
-
-    // Read
-
-    getPickDropInfo(event) {
-        commonfun.loader();
-        var that = this;
-
-        var pickalldata = [];
-        var dropalldata = [];
-        var pickdata = [];
-        var dropdata = [];
-
-        this._pickdropservice.getPickDropDetails({
-            "flag": "view", "mode": "edit", "schoolid": that._enttdetails.enttid, "batchid": that.batchid,
-            "wsautoid": that._enttdetails.wsautoid, "frmdt": event.calEvent.start, "todt": event.calEvent.end
-        }).subscribe(data => {
-            try {
-                that.pddata = data.data;
-
-                if (that.pddata.length !== 0) {
-                    pickalldata = that.pddata.filter(a => a.typ === "p");
-                    dropalldata = that.pddata.filter(a => a.typ === "d");
-
-                    if (pickalldata.length !== 0) {
-                        that.pickautoid = pickalldata[0].autoid;
-                        pickdata = pickalldata.filter(a => a.isactive === true);
-                    }
-                    else {
-                        that.pickautoid = 0;
-                        pickdata = [];
-                    }
-
-                    if (pickdata.length !== 0) {
-                        that.pickfromdate = pickdata[0].frmdt;
-                        that.picktodate = pickdata[0].todt;
-                        that.pickdriverid = pickdata[0].driverid;
-                        that.pickdrivername = pickdata[0].drivername;
-                        that.pickvehicleid = pickdata[0].vehicleid;
-                        that.pickvehiclename = pickdata[0].vehiclename;
-                        that.pickpsngrtype = pickdata[0].psngrtype;
-                        that.pickrtid = pickdata[0].rtid;
-                        that.pickrtname = pickdata[0].rtname;
-                        that.pickPassengerDT = pickdata[0].studentdata;
-                        that.pickAttList = pickdata[0].attendantdata;
-                        that.ispickup = pickdata[0].isactive;
-                    }
-                    else {
-                        that.pickdriverid = 0;
-                        that.pickdrivername = "";
-                        that.pickvehicleid = 0;
-                        that.pickvehiclename = "";
-                        that.pickpsngrtype = "byrt";
-                        that.pickrtid = 0;
-                        that.pickPassengerDT = [];
-                        that.pickAttList = [];
-                        that.ispickup = false;
-
-                        that.getPDDate(event);
-                    }
-
-                    if (dropalldata.length !== 0) {
-                        that.dropautoid = dropalldata[0].autoid;
-                        dropdata = dropalldata.filter(a => a.isactive === true);
-                    }
-                    else {
-                        that.dropautoid = 0;
-                        dropdata = [];
-                    }
-
-                    if (dropdata.length !== 0) {
-                        that.dropfromdate = dropdata[0].frmdt;
-                        that.droptodate = dropdata[0].todt;
-                        that.dropdriverid = dropdata[0].driverid;
-                        that.dropdrivername = dropdata[0].drivername;
-                        that.dropvehicleid = dropdata[0].vehicleid;
-                        that.dropvehiclename = dropdata[0].vehiclename;
-                        that.droppsngrtype = dropdata[0].psngrtype;
-                        that.droprtid = dropdata[0].rtid;
-                        that.droprtname = dropdata[0].rtname;
-                        that.dropPassengerDT = dropdata[0].studentdata;
-                        that.dropAttList = dropdata[0].attendantdata;
-                        that.isdrop = dropdata[0].isactive;
-                    }
-                    else {
-                        that.dropdriverid = 0;
-                        that.dropdrivername = "";
-                        that.dropvehicleid = 0;
-                        that.dropvehiclename = "";
-                        that.droppsngrtype = "byrt";
-                        that.droprtid = 0;
-                        that.droprtname = "";
-                        that.dropPassengerDT = [];
-                        that.dropAttList = [];
-                        that.isdrop = false;
-
-                        that.getPDDate(event);
-                    }
-                }
-                else {
-                    that.ispickup = true;
-                    that.pickautoid = 0;
-                    that.pickdriverid = 0;
-                    that.pickdrivername = "";
-                    that.pickvehicleid = 0;
-                    that.pickvehiclename = "";
-                    that.pickpsngrtype = "byrt";
-                    that.pickrtid = 0;
-                    that.pickrtname = "";
-                    that.pickPassengerDT = [];
-                    that.pickAttList = [];
-
-                    that.isdrop = true;
-                    that.dropautoid = 0;
-                    that.dropdriverid = 0;
-                    that.dropdrivername = "";
-                    that.dropvehicleid = 0;
-                    that.dropvehiclename = "";
-                    that.droppsngrtype = "byrt";
-                    that.droprtid = 0;
-                    that.droprtname = "";
-                    that.dropPassengerDT = [];
-                    that.dropAttList = [];
-
-                    that.getPDDate(event);
-                }
-
-                that.scheduleData = that.getScheduleParams();
-                that.oldScheduleData = that.getAuditData("old");
-
-                commonfun.loaderhide();
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-                commonfun.loaderhide();
-            }
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide();
-        }, () => {
-            // console.log("Complete");
-        });
     }
 
     getScheduleParams() {
@@ -1078,6 +938,148 @@ export class EditScheduleComponent implements OnInit {
                 // console.log("Complete");
             });
         }
+    }
+
+    // Read Schedule
+
+    getPickDropInfo(event) {
+        commonfun.loader();
+        var that = this;
+
+        var pickalldata = [];
+        var dropalldata = [];
+        var pickdata = [];
+        var dropdata = [];
+
+        this._pickdropservice.getPickDropDetails({
+            "flag": "view", "mode": "edit", "schoolid": that._enttdetails.enttid, "batchid": that.batchid,
+            "wsautoid": that._enttdetails.wsautoid, "frmdt": event.calEvent.start, "todt": event.calEvent.end
+        }).subscribe(data => {
+            try {
+                that.pddata = data.data;
+
+                if (that.pddata.length !== 0) {
+                    pickalldata = that.pddata.filter(a => a.typ === "p");
+                    dropalldata = that.pddata.filter(a => a.typ === "d");
+
+                    if (pickalldata.length !== 0) {
+                        that.pickautoid = pickalldata[0].autoid;
+                        pickdata = pickalldata.filter(a => a.isactive === true);
+                    }
+                    else {
+                        that.pickautoid = 0;
+                        pickdata = [];
+                    }
+
+                    if (pickdata.length !== 0) {
+                        that.pickfromdate = pickdata[0].frmdt;
+                        that.picktodate = pickdata[0].todt;
+                        that.pickdriverid = pickdata[0].driverid;
+                        that.pickdrivername = pickdata[0].drivername;
+                        that.pickvehicleid = pickdata[0].vehicleid;
+                        that.pickvehiclename = pickdata[0].vehiclename;
+                        that.pickpsngrtype = pickdata[0].psngrtype;
+                        that.pickrtid = pickdata[0].rtid;
+                        that.pickrtname = pickdata[0].rtname;
+                        that.pickPassengerDT = pickdata[0].studentdata;
+                        that.pickAttList = pickdata[0].attendantdata;
+                        that.ispickup = pickdata[0].isactive;
+                    }
+                    else {
+                        that.pickdriverid = 0;
+                        that.pickdrivername = "";
+                        that.pickvehicleid = 0;
+                        that.pickvehiclename = "";
+                        that.pickpsngrtype = "byrt";
+                        that.pickrtid = 0;
+                        that.pickPassengerDT = [];
+                        that.pickAttList = [];
+                        that.ispickup = false;
+
+                        that.getPDDate(event);
+                    }
+
+                    if (dropalldata.length !== 0) {
+                        that.dropautoid = dropalldata[0].autoid;
+                        dropdata = dropalldata.filter(a => a.isactive === true);
+                    }
+                    else {
+                        that.dropautoid = 0;
+                        dropdata = [];
+                    }
+
+                    if (dropdata.length !== 0) {
+                        that.dropfromdate = dropdata[0].frmdt;
+                        that.droptodate = dropdata[0].todt;
+                        that.dropdriverid = dropdata[0].driverid;
+                        that.dropdrivername = dropdata[0].drivername;
+                        that.dropvehicleid = dropdata[0].vehicleid;
+                        that.dropvehiclename = dropdata[0].vehiclename;
+                        that.droppsngrtype = dropdata[0].psngrtype;
+                        that.droprtid = dropdata[0].rtid;
+                        that.droprtname = dropdata[0].rtname;
+                        that.dropPassengerDT = dropdata[0].studentdata;
+                        that.dropAttList = dropdata[0].attendantdata;
+                        that.isdrop = dropdata[0].isactive;
+                    }
+                    else {
+                        that.dropdriverid = 0;
+                        that.dropdrivername = "";
+                        that.dropvehicleid = 0;
+                        that.dropvehiclename = "";
+                        that.droppsngrtype = "byrt";
+                        that.droprtid = 0;
+                        that.droprtname = "";
+                        that.dropPassengerDT = [];
+                        that.dropAttList = [];
+                        that.isdrop = false;
+
+                        that.getPDDate(event);
+                    }
+                }
+                else {
+                    that.ispickup = true;
+                    that.pickautoid = 0;
+                    that.pickdriverid = 0;
+                    that.pickdrivername = "";
+                    that.pickvehicleid = 0;
+                    that.pickvehiclename = "";
+                    that.pickpsngrtype = "byrt";
+                    that.pickrtid = 0;
+                    that.pickrtname = "";
+                    that.pickPassengerDT = [];
+                    that.pickAttList = [];
+
+                    that.isdrop = true;
+                    that.dropautoid = 0;
+                    that.dropdriverid = 0;
+                    that.dropdrivername = "";
+                    that.dropvehicleid = 0;
+                    that.dropvehiclename = "";
+                    that.droppsngrtype = "byrt";
+                    that.droprtid = 0;
+                    that.droprtname = "";
+                    that.dropPassengerDT = [];
+                    that.dropAttList = [];
+
+                    that.getPDDate(event);
+                }
+
+                that.scheduleData = that.getScheduleParams();
+                that.oldScheduleData = that.getAuditData("old");
+
+                commonfun.loaderhide();
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+                commonfun.loaderhide();
+            }
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     public onUploadError(event) {

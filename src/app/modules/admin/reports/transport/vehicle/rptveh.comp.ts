@@ -113,15 +113,9 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
     }
 
     public openTripTrackDB(row) {
-        // Cookie.delete("_enttid_");
-        // Cookie.delete("_enttname_");
-        // Cookie.delete("_vehid_");
-
-        // Cookie.set("_enttid_", row.enttid);
-        // Cookie.set("_enttname_", row.enttname);
-        // Cookie.set("_vehid_", row.autoid);
-
-        this._router.navigate(['/admin/triptrackingv1'], { queryParams: { "enttid": row.enttid, "vehid": row.autoid, "imei": row.imei } });
+        this._router.navigate(['/admin/triptrackingv1'], {
+            queryParams: { "enttid": row.enttid, "vehid": row.autoid, "imei": row.imei }
+        });
     }
 
     // Export

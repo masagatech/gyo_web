@@ -92,13 +92,13 @@ export class NotificationReportsComponent implements OnInit, OnDestroy {
 
     getNotificationReports(format) {
         var that = this;
-        let params = {};
+        let dparams = {};
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['type'] !== undefined) {
                 that.type = params['type'];
 
-                params = {
+                dparams = {
                     "flag": "reports", "type": that.type, "grpid": that.grpid, "frmdt": that.frmdt, "todt": that.todt, "ntftype": "other",
                     "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
                     "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
@@ -107,7 +107,7 @@ export class NotificationReportsComponent implements OnInit, OnDestroy {
                 if (format == "html") {
                     commonfun.loader();
 
-                    that._ntfservice.getNotification(params).subscribe(data => {
+                    that._ntfservice.getNotification(dparams).subscribe(data => {
                         try {
                             $("#divnotification").html(data._body);
                         }
@@ -125,7 +125,7 @@ export class NotificationReportsComponent implements OnInit, OnDestroy {
                     })
                 }
                 else {
-                    window.open(Common.getReportUrl("getNotification", params));
+                    window.open(Common.getReportUrl("getNotification", dparams));
                 }
             }
         });
