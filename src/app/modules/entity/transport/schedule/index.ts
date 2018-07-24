@@ -11,7 +11,7 @@ import { EditScheduleComponent } from './edit/editschd.comp';
 
 import { PickDropService, EntityService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, OrderListModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
+import { DataTableModule, OrderListModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
 
 export const routes = [
     {

@@ -62,7 +62,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">From Date</label>
-                                    <input type="date" [(ngModel)]="pickfromdate" class="form-control" tabindex="4" (ngModelChange)="dropfromdate=pickfromdate">
+                                    <input type="date" [(ngModel)]="pickfromdate" class="form-control pickfrmdt" tabindex="4" (ngModelChange)="dropfromdate=pickfromdate">
                                 </div>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">To Date</label>
-                                    <input type="date" [(ngModel)]="picktodate" class="form-control" tabindex="5" (ngModelChange)="droptodate=picktodate">
+                                    <input type="date" [(ngModel)]="picktodate" class="form-control picktodt" tabindex="5" (ngModelChange)="droptodate=picktodate">
                                 </div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">Route Name</label>
-                                    <select id="pickrtid" [(ngModel)]="pickrtid" class="form-control pickrtid" tabindex="9" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
+                                    <select id="pickrtid" [(ngModel)]="pickrtid" class="form-control pickrtid" tabindex="9" (ngModelChange)="pickupPassengerByRoute()">
                                         <option [value]="0">Select Route</option>
                                         <option *ngFor="let row of routeDT" [value]="row.key">
                                             {{row.val}}
@@ -164,7 +164,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">From Date</label>
-                                    <input type="date" [(ngModel)]="dropfromdate" class="form-control" tabindex="11">
+                                    <input type="date" [(ngModel)]="dropfromdate" class="form-control dropfrmdt" tabindex="11">
                                 </div>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">To Date</label>
-                                    <input type="date" [(ngModel)]="droptodate" class="form-control" tabindex="12">
+                                    <input type="date" [(ngModel)]="droptodate" class="form-control droptodt" tabindex="12">
                                 </div>
                             </div>
                         </div>

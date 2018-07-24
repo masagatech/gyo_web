@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
-import { PickDropService, EntityService } from '@services/master';
+import { PickDropService } from '@services/master';
 
 @Component({
     templateUrl: 'editschd.comp.html'
@@ -90,8 +90,7 @@ export class EditScheduleComponent implements OnInit {
     newScheduleData: any = [];
 
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
-        private _loginservice: LoginService, private _entityservice: EntityService, private _router: Router,
-        private _msg: MessageService) {
+        private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -141,7 +140,6 @@ export class EditScheduleComponent implements OnInit {
             this.setDropVehicle();
             this.setDropPsngrType();
             this.setDropRoute();
-            this.dropPassengerDT = this.reverseArr(this.pickPassengerDT);
         }
         else {
             if (this.dropautoid == 0) {
@@ -451,9 +449,6 @@ export class EditScheduleComponent implements OnInit {
                 "stdid": that.pickpsngrdata.value,
                 "stdnm": that.pickpsngrdata.label,
             });
-
-            that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
-            that.pickPassengerDT = that.reverseArr(that.dropPassengerDT);
         }
 
         that.pickpsngrid = 0;
@@ -479,7 +474,6 @@ export class EditScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.pickPassengerDT = data.data;
-                that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -521,9 +515,6 @@ export class EditScheduleComponent implements OnInit {
                 "stdid": that.droppsngrdata.value,
                 "stdnm": that.droppsngrdata.label,
             });
-
-            that.dropPassengerDT = that.reverseArr(that.dropPassengerDT);
-            that.dropPassengerDT = that.reverseArr(that.dropPassengerDT);
         }
 
         that.droppsngrid = 0;
@@ -556,8 +547,6 @@ export class EditScheduleComponent implements OnInit {
         }, () => {
 
         })
-
-        that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
     }
 
     // Delete Pick Up Passenger
@@ -620,7 +609,7 @@ export class EditScheduleComponent implements OnInit {
 
     reverseArr(input) {
         var ret = new Array;
-        
+
         for (var i = input.length - 1; i >= 0; i--) {
             ret.push(input[i]);
         }
@@ -792,7 +781,17 @@ export class EditScheduleComponent implements OnInit {
         }
 
         if (that.ispickup) {
-            if (that.pickdriverid === 0) {
+            if (that.pickfromdate === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up From Date");
+                $(".pickfrmdt").focus();
+                return false;
+            }
+            else if (that.picktodate === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up To Date");
+                $(".picktodt").focus();
+                return false;
+            }
+            else if (that.pickdriverid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
                 $(".pdrv").focus();
                 return false;
@@ -817,7 +816,17 @@ export class EditScheduleComponent implements OnInit {
         }
 
         if (that.isdrop) {
-            if (that.dropdriverid === 0) {
+            if (that.dropfromdate === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop From Date");
+                $(".dropfrmdt").focus();
+                return false;
+            }
+            else if (that.droptodate === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop To Date");
+                $(".droptodt").focus();
+                return false;
+            }
+            else if (that.dropdriverid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Drop Driver");
                 $(".ddrv").focus();
                 return false;

@@ -92,7 +92,7 @@
                         <div class="form-group">
                             <div class="form-line">
                                 <label class="control-label">Route Name</label>
-                                <select id="pickrtid" [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="8" (ngModelChange)="setDropRoute();pickupPassengerByRoute()">
+                                <select id="pickrtid" [(ngModel)]="pickrtid" class="form-control pickrtname" tabindex="8" (ngModelChange)="pickupPassengerByRoute()">
                                     <option [value]="0">Select Route</option>
                                     <option *ngFor="let row of routeDT" [value]="row.key">
                                         {{row.val}}

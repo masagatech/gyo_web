@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
-import { PickDropService, EntityService } from '@services/master';
+import { PickDropService } from '@services/master';
 
 @Component({
     templateUrl: 'addschd.comp.html'
@@ -105,7 +105,6 @@ export class AddScheduleComponent implements OnInit {
             this.setDropVehicle();
             this.setDropPsngrType();
             this.setDropRoute();
-            this.dropPassengerDT = this.reverseArr(this.pickPassengerDT);
         }
         else {
             if (this.dropautoid == 0) {
@@ -121,10 +120,10 @@ export class AddScheduleComponent implements OnInit {
     public viewScheduleDataRights() {
         var that = this;
 
-        this.fillBatchDropDown();
-        this.fillDriverDropDown();
-        this.fillVehicleDropDown();
-        this.fillRouteDropDown();
+        that.fillBatchDropDown();
+        that.fillDriverDropDown();
+        that.fillVehicleDropDown();
+        that.fillRouteDropDown();
     }
 
     // Selected Calendar Date
@@ -389,9 +388,6 @@ export class AddScheduleComponent implements OnInit {
                 "stdid": that.pickpsngrdata.value,
                 "stdnm": that.pickpsngrdata.label,
             });
-
-            that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
-            that.pickPassengerDT = that.reverseArr(that.dropPassengerDT);
         }
 
         that.pickpsngrid = 0;
@@ -417,7 +413,6 @@ export class AddScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.pickPassengerDT = data.data;
-                that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -459,9 +454,6 @@ export class AddScheduleComponent implements OnInit {
                 "stdid": that.droppsngrdata.value,
                 "stdnm": that.droppsngrdata.label,
             });
-
-            that.dropPassengerDT = that.reverseArr(that.dropPassengerDT);
-            that.dropPassengerDT = that.reverseArr(that.dropPassengerDT);
         }
 
         that.droppsngrid = 0;
@@ -493,8 +485,6 @@ export class AddScheduleComponent implements OnInit {
         }, () => {
 
         })
-
-        // that.dropPassengerDT = that.reverseArr(that.pickPassengerDT);
     }
 
     // Delete Pick Up Passenger
@@ -557,9 +547,11 @@ export class AddScheduleComponent implements OnInit {
 
     reverseArr(input) {
         var ret = new Array;
+
         for (var i = input.length - 1; i >= 0; i--) {
             ret.push(input[i]);
         }
+
         return ret;
     }
 

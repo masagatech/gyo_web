@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { Globals, LoginUserModel } from '@models';
-import { PickDropService, EntityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { PickDropService } from '@services/master';
 
 @Component({
     templateUrl: 'viewschd.comp.html'
@@ -76,7 +75,6 @@ export class ViewScheduleComponent implements OnInit {
         }).subscribe((data) => {
             try {
                 that.batchDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('batchid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -87,16 +85,6 @@ export class ViewScheduleComponent implements OnInit {
         }, () => {
 
         })
-    }
-
-    // reverse array
-
-    reverseArr(input) {
-        var ret = new Array;
-        for (var i = input.length - 1; i >= 0; i--) {
-            ret.push(input[i]);
-        }
-        return ret;
     }
 
     // Read
