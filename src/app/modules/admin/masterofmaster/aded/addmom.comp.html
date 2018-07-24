@@ -68,7 +68,7 @@
                             <textarea name="{{row.fldname}}" [(ngModel)]="row.fldval" rows="6" class="form-control no-resize auto-growth"></textarea>
                         </div>
                         <div *ngIf="row.fldtype == 'checkbox'">
-                            <div id="track">
+                            <div id="checkbox">
                                 <span *ngFor="let grprow of fldgroupDT; let i = index">
                                     <input type="checkbox" id="{{grprow.key}}" value="{{grprow.key}}" name="grprow{{i + 1}}" data-menuid="grprow.key" data-right="item" class="actrights filled-in" />
                                     <label for="{{grprow.key}}">{{grprow.val}}</label>

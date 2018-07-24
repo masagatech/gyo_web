@@ -280,7 +280,41 @@ export class AddMOMComponent implements OnInit, OnDestroy {
 
     saveMOMInfo() {
         var that = this;
+
         that.validSuccess = that.isValidateFields();
+
+        var flditem = null;
+        var grpitem = null;
+        var grprights = "";
+        var flddata = [];
+
+        for (var i = 0; i <= that.fieldDT.length - 1; i++) {
+            flditem = null;
+            flditem = that.fieldDT[i];
+
+            if (flditem.fldtype == "checkbox") {
+                for (var i = 0; i <= that.fldgroupDT.length - 1; i++) {
+                    grpitem = null;
+                    grpitem = that.fldgroupDT[i];
+
+                    if (grpitem !== null) {
+                        $("#checkbox" + grpitem.key).find("input[type=checkbox]").each(function () {
+                            grprights += (this.checked ? $(this).val() + "," : "");
+                        });
+
+                        if (grprights != "") {
+                            flddata.push({ "fldname": grprights.slice(0, -1), "fldtype": "checkbox", "fldval": "upload_188ccf6c1563e80730e9bb3025229189.jpg" })
+                        }
+                        else {
+                            flddata = [];
+                        }
+                    }
+                }
+            }
+            else {
+                flddata = that.fieldDT.filter(a => a.fldval != undefined).filter(a => a.fldval != "");
+            }
+        }
 
         var saveMOM = {
             "autoid": that.momid,
@@ -289,7 +323,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
             "val": that.val,
             "icon": that.icon,
             "remark": that.remark,
-            "extra": that.fieldDT.filter(a => a.fldval != undefined).filter(a => a.fldval != ""),
+            "extra": flddata,
             "typ": that.mtype,
             "enttid": that.mtype == "enttwise" ? that._enttdetails.enttid : 0,
             "wsautoid": that.mtype == "wswise" ? that._enttdetails.wsautoid : that.mtype == "enttwise" ? that._enttdetails.wsautoid : 0,
