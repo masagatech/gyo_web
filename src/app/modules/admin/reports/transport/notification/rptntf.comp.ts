@@ -19,8 +19,6 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
     frmdt: string = "";
     todt: string = "";
 
-    private subscribeParameters: any;
-
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _ntfservice: NotificationService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
@@ -90,8 +88,6 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
                             that.enttid = that._enttdetails.enttid;
                         }
                     }
-
-                    that.getNotificationReports("html");
                 }
             }
             catch (e) {
@@ -146,7 +142,5 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-
-        this.subscribeParameters.unsubscribe();
     }
 }

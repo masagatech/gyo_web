@@ -119,14 +119,22 @@
                         {{row.catname}}
                     </td>
                     <td align="right">
-                        <a role="button" (click)="openStudentFeesPopup(row, 'paid')">
-                            {{row.paidfees | _currency:loginUser.globsettings[0]}}
-                        </a>
+                        <span *ngIf="row.paidfees == 0">0</span>
+
+                        <span *ngIf="row.paidfees != 0">
+                            <a role="button" (click)="openStudentFeesPopup(row, 'paid')">
+                                {{row.paidfees | _currency:loginUser.globsettings[0]}}
+                            </a>
+                        </span>
                     </td>
                     <td align="right">
-                        <a role="button" (click)="openStudentFeesPopup(row, 'pending')">
-                            {{row.pendfees | _currency:loginUser.globsettings[0]}}
-                        </a>
+                        <span *ngIf="row.pendfees == 0">0</span>
+
+                        <span *ngIf="row.pendfees != 0">
+                            <a role="button" (click)="openStudentFeesPopup(row, 'pending')">
+                                {{row.pendfees | _currency:loginUser.globsettings[0]}}
+                            </a>
+                        </span>
                     </td>
                 </tr>
                 <tr class="tr-table">

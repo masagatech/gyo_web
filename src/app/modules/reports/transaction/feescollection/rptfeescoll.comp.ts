@@ -259,7 +259,12 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
         that._feesservice.getFeesReports(feesparams).subscribe(data => {
             try {
-                that.studentFeesDT = data.data[0];
+                if (feestype == "paid") {
+                    that.studentFeesDT = data.data[0].filter(a => a.paidfees != 0);
+                }
+                else{
+                    that.studentFeesDT = data.data[0].filter(a => a.pendfees != 0);
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
