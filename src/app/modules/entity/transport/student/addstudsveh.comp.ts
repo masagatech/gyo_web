@@ -366,7 +366,7 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
 
     resetDropAddressLatLon() {
         var that = this;
-        
+
         if (that.droprtid == 0) {
             $(".dropaddr").removeAttr("disabled");
             $(".droplet").removeAttr("disabled");
@@ -460,6 +460,14 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
         that.dropaddr = "";
         that.droplet = "0.00";
         that.droplong = "0.00";
+
+        $(".pickaddr").removeAttr("disabled");
+        $(".picklet").removeAttr("disabled");
+        $(".picklong").removeAttr("disabled");
+
+        $(".dropaddr").removeAttr("disabled");
+        $(".droplet").removeAttr("disabled");
+        $(".droplong").removeAttr("disabled");
     }
 
     // Save Data
@@ -541,7 +549,6 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
 
             var params = {
                 "autoid": that.autoid,
-                "schoolid": that._enttdetails.enttid,
                 "studsid": that.studid,
                 "alert": that.alert,
                 "svhautoid": that.svhautoid,
@@ -557,7 +564,9 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
                 "dropgeoloc": (that.droplet == "" ? "0.00" : that.droplet) + "," + (that.droplong == "" ? "0.00" : that.droplong),
                 "cuid": that.loginUser.ucode,
                 "ayid": that.ayid,
+                "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid,
+                "admtype": "passenger",
                 "isactive": that.isactive,
                 "mode": ""
             }
