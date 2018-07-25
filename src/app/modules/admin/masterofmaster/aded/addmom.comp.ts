@@ -287,6 +287,7 @@ export class AddMOMComponent implements OnInit, OnDestroy {
         var grpitem = null;
         var grprights = "";
         var flddata = [];
+        var fldval = "";
 
         for (var i = 0; i <= that.fieldDT.length - 1; i++) {
             flditem = null;
@@ -298,17 +299,19 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                     grpitem = that.fldgroupDT[i];
 
                     if (grpitem !== null) {
-                        $("#checkbox" + grpitem.key).find("input[type=checkbox]").each(function () {
+                        $("#grpitem" + grpitem.key).find("input[type=checkbox]").each(function () {
                             grprights += (this.checked ? $(this).val() + "," : "");
                         });
 
-                        if (grprights != "") {
-                            flddata.push({ "fldname": grprights.slice(0, -1), "fldtype": "checkbox", "fldval": "upload_188ccf6c1563e80730e9bb3025229189.jpg" })
-                        }
-                        else {
-                            flddata = [];
-                        }
+                        fldval = "[" + grprights.slice(0, -1) + "]";
                     }
+                }
+
+                if (grprights != "") {
+                    flddata.push({ "fldname": "Fees Type", "fldtype": "checkbox", "fldval": fldval })
+                }
+                else {
+                    flddata = [];
                 }
             }
             else {
@@ -392,7 +395,25 @@ export class AddMOMComponent implements OnInit, OnDestroy {
                 for (var j = 0; j < extraflddt.length; j++) {
                     var jfldrow = extraflddt[j];
 
-                    ifldrow.fldval = jfldrow.fldval;
+                    if (jfldrow.fldtype == "checkbox") {
+                        var _grprights = null;
+                        var _grpids = null;
+
+                        _grprights = null;
+                        _grprights = jfldrow.fldval;
+
+                        if (_grprights != null) {
+                            for (var i = 0; i < _grprights.length; i++) {
+                                _grpids = null;
+                                _grpids = _grprights[i];
+
+                                $("#grp" + _grpids).prop('checked', true);
+                            }
+                        }
+                    }
+                    else {
+                        ifldrow.fldval = jfldrow.fldval;
+                    }
                 }
             }
 

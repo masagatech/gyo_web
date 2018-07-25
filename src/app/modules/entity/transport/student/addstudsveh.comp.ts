@@ -185,6 +185,8 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader("#pickstpid");
 
+        that.resetPickAddressLatLon();
+
         if (that.droprtid == 0) {
             that.droprtid = that.pickrtid;
             that.fillDropStopsDDL();
@@ -215,10 +217,11 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader("#dropstpid");
 
+        that.resetDropAddressLatLon();
+
         that._admsnservice.getStudentDetails({ "flag": "filterstop", "rtid": that.droprtid }).subscribe(data => {
             try {
                 that.dropstopsDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('dropstpid'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -239,10 +242,6 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
 
     getPickAddressLatLon() {
         var that = this;
-
-        if (that.dropstpid == 0) {
-            that.dropstpid = that.pickstpid;
-        }
 
         if (that.pickrtid == 0) {
             $(".pickaddr").removeAttr("disabled");
@@ -266,6 +265,17 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
                         that.pickaddr = data.data[0].address;
                         that.picklet = data.data[0].lat;
                         that.picklong = data.data[0].long;
+
+                        if (that.dropstpid == 0) {
+                            that.dropstpid = that.pickstpid;
+                            that.dropaddr = data.data[0].address;
+                            that.droplet = data.data[0].lat;
+                            that.droplong = data.data[0].long;
+
+                            $(".dropaddr").attr("disabled", "disabled");
+                            $(".droplet").attr("disabled", "disabled");
+                            $(".droplong").attr("disabled", "disabled");
+                        }
                     }
                     else {
                         that.pickaddr = "";
@@ -336,6 +346,36 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
             }, () => {
 
             })
+        }
+    }
+
+    resetPickAddressLatLon() {
+        var that = this;
+
+        if (that.pickrtid == 0) {
+            $(".pickaddr").removeAttr("disabled");
+            $(".picklet").removeAttr("disabled");
+            $(".picklong").removeAttr("disabled");
+
+            that.pickstpid = 0;
+            that.pickaddr = "";
+            that.picklet = "";
+            that.picklong = "";
+        }
+    }
+
+    resetDropAddressLatLon() {
+        var that = this;
+        
+        if (that.droprtid == 0) {
+            $(".dropaddr").removeAttr("disabled");
+            $(".droplet").removeAttr("disabled");
+            $(".droplong").removeAttr("disabled");
+
+            that.dropstpid = 0;
+            that.dropaddr = "";
+            that.droplet = "";
+            that.droplong = "";
         }
     }
 
@@ -530,7 +570,6 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
-
                         that.getStudentDetails();
                     }
                     else {
@@ -646,7 +685,7 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
-                
+
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

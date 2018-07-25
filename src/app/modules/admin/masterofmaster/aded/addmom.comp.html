@@ -69,9 +69,9 @@
                         </div>
                         <div *ngIf="row.fldtype == 'checkbox'">
                             <div id="checkbox">
-                                <span *ngFor="let grprow of fldgroupDT; let i = index">
-                                    <input type="checkbox" id="{{grprow.key}}" value="{{grprow.key}}" name="grprow{{i + 1}}" data-menuid="grprow.key" data-right="item" class="actrights filled-in" />
-                                    <label for="{{grprow.key}}">{{grprow.val}}</label>
+                                <span *ngFor="let grprow of fldgroupDT; let i = index" id="grpitem{{grprow.key}}">
+                                    <input type="checkbox" id="grp{{grprow.key}}" value="{{grprow.key}}" name="grprow{{i + 1}}" data-menuid="grprow.key" data-right="item" class="actrights filled-in" />
+                                    <label for="grp{{grprow.key}}">{{grprow.val}}</label>
                                 </span>
                             </div>
                         </div>
