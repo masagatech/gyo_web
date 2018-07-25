@@ -102,7 +102,12 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
                             that.enttid = 0;
                         }
                         else {
-                            that.enttid = that._enttdetails.enttid;
+                            if (that._enttdetails.entttype == "School") {
+                                that.enttid = 0;
+                            }
+                            else {
+                                that.enttid = that._enttdetails.enttid;
+                            }
                         }
                     }
 

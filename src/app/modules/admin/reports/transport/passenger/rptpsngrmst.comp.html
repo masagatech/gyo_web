@@ -16,7 +16,7 @@
             <div class="col-md-4 col-xs-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Entity</label>
+                        <label class="control-label">Company</label>
                         <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getPassengerReports('html')" tabindex="2">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of entityDT" [value]="row.enttid">

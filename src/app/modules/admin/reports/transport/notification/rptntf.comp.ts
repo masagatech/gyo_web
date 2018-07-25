@@ -16,8 +16,7 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
     entityDT: any = [];
     enttid: number = 0;
 
-    frmdt: string = "";
-    todt: string = "";
+    fltrdate: string = "";
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _ntfservice: NotificationService, private _autoservice: CommonService) {
@@ -55,8 +54,7 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
         var before1month = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-        this.frmdt = this.formatDate(today);
-        this.todt = this.formatDate(today);
+        this.fltrdate = this.formatDate(today);
     }
 
     // Fill School Drop Down
@@ -109,33 +107,38 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
     getNotificationReports(format) {
         var that = this;
 
-        let params = {
-            "flag": "reports", "type": "vts", "frmdt": that.frmdt, "todt": that.todt, "uid": that.loginUser.uid,
-            "utype": that.loginUser.utype, "enttid": that.enttid, "issysadmin": that.loginUser.issysadmin, "format": format
-        }
-
-        if (format == "html") {
-            commonfun.loader();
-
-            that._ntfservice.getNotification(params).subscribe(data => {
-                try {
-                    $("#divnotification").html(data._body);
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-
-                commonfun.loaderhide();
-            }, err => {
-                that._msg.Show(messageType.error, "Error", err);
-                console.log(err);
-                commonfun.loaderhide();
-            }, () => {
-
-            })
+        if (that.fltrdate == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Date");
         }
         else {
-            window.open(Common.getReportUrl("getNotification", params));
+            let params = {
+                "flag": "reports", "type": "vts", "frmdt": that.fltrdate, "todt": that.fltrdate, "uid": that.loginUser.uid,
+                "utype": that.loginUser.utype, "enttid": that.enttid, "issysadmin": that.loginUser.issysadmin, "format": format
+            }
+
+            if (format == "html") {
+                commonfun.loader();
+
+                that._ntfservice.getNotification(params).subscribe(data => {
+                    try {
+                        $("#divnotification").html(data._body);
+                    }
+                    catch (e) {
+                        that._msg.Show(messageType.error, "Error", e);
+                    }
+
+                    commonfun.loaderhide();
+                }, err => {
+                    that._msg.Show(messageType.error, "Error", err);
+                    console.log(err);
+                    commonfun.loaderhide();
+                }, () => {
+
+                })
+            }
+            else {
+                window.open(Common.getReportUrl("getNotification", params));
+            }
         }
     }
 

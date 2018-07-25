@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
+import {  } from '@services';
 
 import { AddUserVehicleMapComponent } from './adduvm.comp';
 
@@ -32,7 +32,7 @@ export const routes = [
     CheckboxModule, AutoCompleteModule, NgxSortableModule
   ],
 
-  providers: [AuthGuard, UserVehicleMapService]
+  providers: [AuthGuard, CommonService, UserVehicleMapService]
 })
 
 export class UserVehicleMapModule {

@@ -6,7 +6,6 @@ import { UserVehicleMapService } from '@services/master';
 
 @Component({
     templateUrl: 'adduvm.comp.html',
-    providers: [CommonService],
     styleUrls: ['adduvm.comp.css']
 })
 
@@ -19,6 +18,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     uid: number = 0;
     uname: any = [];
     utype: string = "";
+    enttid: number = 0;
     selecteudUser: any = [];
 
     vehicleDT: any = [];
@@ -52,6 +52,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.uid = 0;
         this.uname = "";
         this.utype = "";
+        this.enttid = 0;
         this.selecteudUser = [];
         this.vehid = 0;
         this.vehregno = "";
@@ -90,9 +91,28 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     selectUserData(event, arg) {
         var that = this;
 
-        that.uid = event.uid;
-        that.uname = event.uname;
-        that.utype = event.utype;
+        if (event.utype == "driver") {
+            if (event.enttid == that._enttdetails.enttid) {
+                that.uid = event.uid;
+                that.uname = event.uname;
+                that.utype = event.utype;
+                that.enttid = event.enttid;
+            }
+            else {
+                that._msg.Show(messageType.error, "Error", "Not Allowed. Bcoz, this Driver is in Other School.");
+                that.uid = 0;
+                that.uname = "";
+                that.utype = "";
+                that.enttid = 0;
+                that.selecteudUser = [];
+            }
+        }
+        else {
+            that.uid = event.uid;
+            that.uname = event.uname;
+            that.utype = event.utype;
+            that.enttid = event.enttid;
+        }
 
         that.getUserVehicleMap();
     }
