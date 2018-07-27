@@ -1742,7 +1742,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/student']);
+        this._router.navigate(['/erp/student/profile']);
     }
 
     public ngOnDestroy() {
