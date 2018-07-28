@@ -63,7 +63,7 @@ export class AddFeesStructureComponent implements OnInit, OnDestroy {
                 that.getFeesStructure();
             }
             else {
-                that.resetAllFields();
+                that.resetFeesFields();
                 commonfun.loaderhide();
             }
         });
@@ -71,7 +71,7 @@ export class AddFeesStructureComponent implements OnInit, OnDestroy {
 
     // Reset Fees Details
 
-    resetAllFields() {
+    resetFeesFields() {
         var that = this;
 
         that.cfid = 0;
@@ -343,7 +343,7 @@ export class AddFeesStructureComponent implements OnInit, OnDestroy {
                             that._msg.Show(messageType.success, "Success", msg);
 
                             if (msgid === "1") {
-                                that.resetAllFields();
+                                that.resetFeesFields();
                             }
                             else {
                                 that.backViewData();
@@ -379,42 +379,48 @@ export class AddFeesStructureComponent implements OnInit, OnDestroy {
             try {
                 var viewfees = data.data[0];
 
-                that.cfid = viewfees[0].cfid;
-                that.ayid = viewfees[0].ayid;
-                that.catid = viewfees[0].catid;
-                that.subcatid = viewfees[0].subcatid;
-                that.fees = viewfees[0].fees;
-                that.isonline = viewfees[0].isonline;
-                that.iscompulsory = viewfees[0].iscompulsory;
-                that.remark = viewfees[0].remark;
+                if (viewfees.length > 0) {
+                    that.cfid = viewfees[0].cfid;
+                    that.ayid = viewfees[0].ayid;
+                    that.catid = viewfees[0].catid;
+                    that.subcatid = viewfees[0].subcatid;
+                    that.fees = viewfees[0].fees;
+                    that.isonline = viewfees[0].isonline;
+                    that.iscompulsory = viewfees[0].iscompulsory;
+                    that.remark = viewfees[0].remark;
 
-                var _clsrights = null;
-                var _clsitem = null;
+                    var _clsrights = null;
+                    var _clsitem = null;
 
-                if (viewfees != null) {
-                    _clsrights = null;
-                    _clsrights = viewfees[0].clsid;
+                    if (viewfees != null) {
+                        _clsrights = null;
+                        _clsrights = viewfees[0].clsid;
 
-                    if (_clsrights != null) {
-                        for (var i = 0; i < _clsrights.length; i++) {
-                            _clsitem = null;
-                            _clsitem = _clsrights[i];
+                        if (_clsrights != null) {
+                            for (var i = 0; i < _clsrights.length; i++) {
+                                _clsitem = null;
+                                _clsitem = _clsrights[i];
 
-                            if (_clsitem != null) {
-                                $("#selectall").prop('checked', true);
-                                $("#cls" + _clsitem).find("#" + _clsitem).prop('checked', true);
-                            }
-                            else {
-                                $("#selectall").prop('checked', false);
+                                if (_clsitem != null) {
+                                    $("#selectall").prop('checked', true);
+                                    $("#cls" + _clsitem).find("#" + _clsitem).prop('checked', true);
+                                }
+                                else {
+                                    $("#selectall").prop('checked', false);
+                                }
                             }
                         }
+                        else {
+                            $("#selectall").prop('checked', false);
+                        }
                     }
-                    else {
-                        $("#selectall").prop('checked', false);
-                    }
-                }
 
-                that.installmentDT = data.data[1];
+                    that.installmentDT = data.data[1];
+                }
+                else{
+                    that.resetFeesFields();
+                    that.resetFeesInstallment();
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -439,7 +445,7 @@ export class AddFeesStructureComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-        
+
         this.subscribeParameters.unsubscribe();
     }
 }

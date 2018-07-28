@@ -7,9 +7,10 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">School <strong>*</strong></label>
-                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="fillAYAndClassDropDown();" tabindex="1">
-                            <option *ngFor="let row of schoolDT" [value]="row.enttid">
+                        <label class="control-label">Entity</label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="fillAYAndClassDropDown()" tabindex="1">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of entityDT" [value]="row.enttid">
                                 {{row.enttname}}
                             </option>
                         </select>
@@ -23,9 +24,9 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Academic Year <strong>*</strong></label>
-                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="2">
                             <option [value]="0">Select Academic Year</option>
-                            <option *ngFor="let row of ayDT" [value]="row.key">
+                            <option *ngFor="let row of ayDT" [value]="row.id">
                                 {{row.val}}
                             </option>
                         </select>
@@ -36,14 +37,14 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">View Type <strong>*</strong></label>
-                        <select id="rpttype" name="rpttype" [(ngModel)]="rpttype" class="form-control rpttype" tabindex="2">
+                        <select id="rpttype" name="rpttype" [(ngModel)]="rpttype" class="form-control rpttype" tabindex="3">
                             <option [value]="'summary'">Summary</option>
                             <option [value]="'details'">Details</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-8">
+            <div class="col-md-4 col-xs-8" *ngIf="entttype == 'School'">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
@@ -53,7 +54,7 @@
             </div>
             <div class="col-md-2 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme" (click)="getFeesReports('html')">
+                    <button type="button" class="btn btn-theme" (click)="viewFeesReports('html')">
                         <i class="material-icons">arrow_forward</i>
                     </button>
                 </div>

@@ -35,11 +35,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     castcatid: string = "";
     status: string = "";
 
-    autoStudentDT: any = [];
-    selectStudent: any = {};
-    studid: number = 0;
-    studname: string = "";
-
     studentDT: any = [];
     selectefFilterRow: any = {};
 
@@ -134,12 +129,6 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         this.castcatid = "";
         this.status = "";
 
-        Cookie.delete("_studid_");
-        Cookie.delete("_studname_");
-        this.studid = 0;
-        this.studname = "";
-        this.selectStudent = {};
-
         this.getStudentDetails();
     }
 
@@ -167,52 +156,10 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    // Auto Completed Student
-
-    getStudentData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "student",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "enttid": this._enttdetails.enttid,
-            "wsautoid": this._enttdetails.wsautoid,
-            "issysadmin": this.loginUser.issysadmin,
-            "search": query
-        }).subscribe((data) => {
-            this.autoStudentDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Student
-
-    selectStudentData(event) {
-        this.studid = event.value;
-        this.studname = event.label;
-
-        Cookie.set("_studid_", this.studid.toString());
-        Cookie.set("_studname_", this.studname);
-
-        this.getStudentDetails();
-    }
-
     // View Data Rights
 
     public viewStudentDataRights() {
         var that = this;
-
-        if (Cookie.get('_studname_') != null) {
-            that.studid = parseInt(Cookie.get('_studid_'));
-            that.studname = Cookie.get('_studname_');
-
-            that.selectStudent = { value: that.studid, label: that.studname }
-        }
 
         if (Cookie.get('_ayid_') != null) {
             that.ayid = parseInt(Cookie.get('_ayid_'));
@@ -256,18 +203,10 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
 
         commonfun.loader("#fltrstud");
 
-        if (that.studid == 0) {
-            Cookie.set("_studid_", "0");
-            Cookie.set("_studname_", "");
-
-            that.selectStudent.value = parseInt(Cookie.get('_studid_'));
-            that.selectStudent.label = Cookie.get('_studname_');
-        }
-
         params = {
-            "flag": "all", "admtype": "student", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "ayid": that.ayid, "prspctid": that.prspctid, "boardid": that.boardid, "classid": that.classid,
-            "gender": that.gender, "castcatid": that.castcatid, "status": that.status, "studid": that.studid,
+            "flag": "all", "admtype": "student", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
+            "utype": that.loginUser.utype, "ayid": that.ayid, "prspctid": that.prspctid, "boardid": that.boardid,
+            "classid": that.classid, "gender": that.gender, "castcatid": that.castcatid, "status": that.status, "studid": 0,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 

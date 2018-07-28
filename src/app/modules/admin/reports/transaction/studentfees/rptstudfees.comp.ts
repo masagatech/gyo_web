@@ -4,9 +4,7 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals, Common } from '@models';
 import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
-import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
-
-declare var google: any;
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'rptstudfees.comp.html'
@@ -16,8 +14,11 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    schoolDT: any = [];
+    entityDT: any = [];
     enttid: number = 0;
+    entttype: string = "";
+
+    wsautoid: number = 0;
 
     rpttype: string = "clswise";
 
@@ -66,27 +67,32 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
         var that = this;
         var defschoolDT: any = [];
 
-        that.selectedClass = [];
-
         commonfun.loader();
 
-        that._feesservice.getFeesStructure({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        that._autoservice.getDropDownData({
+            "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.schoolDT = data.data[0];
+                that.entityDT = data.data;
 
-                if (that.schoolDT.length > 0) {
-                    defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);
+                if (that.entityDT.length > 0) {
+                    defschoolDT = that.entityDT.filter(a => a.iscurrent == true);
 
                     if (defschoolDT.length > 0) {
                         that.enttid = defschoolDT[0].enttid;
                     }
                     else {
-                        that.enttid = that._enttdetails.enttid;
+                        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+                            that.enttid = 0;
+                            that.wsautoid = 0;
+                        }
+                        else {
+                            that.enttid = that._enttdetails.enttid;
+                            that.wsautoid = that._enttdetails.wsautoid;
+                        }
                     }
-                    
+
                     that.fillClassDropDown();
                 }
             }
@@ -104,20 +110,63 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Fill Academic Year, Class
+    // Fill Class
 
     fillClassDropDown() {
         var that = this;
-        var defayDT: any = [];
 
         commonfun.loader();
 
         that._feesrptservice.getFeesReports({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = JSON.parse(data._body).data[1];
+                that.getDefaultFiledsByEntity();
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Default Fields By Entity
+
+    getDefaultFiledsByEntity() {
+        var that = this;
+
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({
+            "flag": "byentt", "enttid": that.enttid
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.entttype = data.data[0].entttype;
+
+                    if (that.entttype == "School") {
+                        that.rpttype = "clswise";
+                    }
+                    else {
+                        that.rpttype = "studwise";
+                    }
+
+                    that.selectedClass = data.data[0].filterClass;
+                    that.getFeesReports("html");
+                }
+                else {
+                    that.entttype = "";
+                    that.selectedClass = [];
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -145,7 +194,7 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
             "enttid": that.enttid,
-            "wsautoid": that._enttdetails.wsautoid,
+            "wsautoid": that.wsautoid,
             "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
@@ -192,17 +241,19 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
     isValidReports() {
         var that = this;
 
-        if (that.rpttype == "clswise") {
-            if (that.selectedClass.length == 0) {
-                that._msg.Show(messageType.warn, "Warning", "Select Class");
-                return false;
+        if (that.entttype == "School") {
+            if (that.rpttype == "clswise") {
+                if (that.selectedClass.length == 0) {
+                    that._msg.Show(messageType.warn, "Warning", "Select Class");
+                    return false;
+                }
             }
-        }
 
-        if (that.rpttype == "studwise") {
-            if (that.studid == 0) {
-                that._msg.Show(messageType.warn, "Warning", "Enter Student");
-                return false;
+            if (that.rpttype == "studwise") {
+                if (that.studid == 0) {
+                    that._msg.Show(messageType.warn, "Warning", "Enter Student");
+                    return false;
+                }
             }
         }
 
@@ -223,7 +274,7 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
                 feesparams = {
                     "flag": "studentwise", "type": "download", "rpttype": "view", "ayid": 0, "stdid": 0, "filterClass": that.selectedClass,
                     "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+                    "wsautoid": that.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
                 }
             }
             else {
@@ -232,7 +283,7 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
                 feesparams = {
                     "flag": "studentwise", "type": "download", "rpttype": "view", "ayid": 0, "stdid": 0,
                     "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt, "enttid": that.enttid,
-                    "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+                    "wsautoid": that.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
                 }
             }
 

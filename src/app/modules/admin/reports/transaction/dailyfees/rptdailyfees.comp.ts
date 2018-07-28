@@ -4,8 +4,7 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals, Common } from '@models';
 import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
-
-declare var google: any;
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'rptdailyfees.comp.html'
@@ -15,8 +14,11 @@ export class DailyFeesReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    schoolDT: any = [];
+    entityDT: any = [];
     enttid: number = 0;
+    entttype: string = "";
+    
+    wsautoid: number = 0;
 
     studentDT: any = [];
     selectedStudent = [];
@@ -51,21 +53,28 @@ export class DailyFeesReportsComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that._feesservice.getFeesStructure({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        that._autoservice.getDropDownData({
+            "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.schoolDT = data.data[0];
+                that.entityDT = data.data;
 
-                if (that.schoolDT.length > 0) {
-                    defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);
+                if (that.entityDT.length > 0) {
+                    defschoolDT = that.entityDT.filter(a => a.iscurrent == true);
 
                     if (defschoolDT.length > 0) {
                         that.enttid = defschoolDT[0].enttid;
                     }
                     else {
-                        that.enttid = that._enttdetails.enttid;
+                        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+                            that.enttid = 0;
+                            that.wsautoid = 0;
+                        }
+                        else {
+                            that.enttid = that._enttdetails.enttid;
+                            that.wsautoid = that._enttdetails.wsautoid;
+                        }
                     }
 
                     that.getFeesReports("html");
@@ -97,7 +106,7 @@ export class DailyFeesReportsComponent implements OnInit, OnDestroy {
             "ucode": that.loginUser.ucode,
             "utype": that.loginUser.utype,
             "enttid": that.enttid,
-            "wsautoid": that._enttdetails.wsautoid,
+            "wsautoid": that.wsautoid,
             "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
@@ -143,12 +152,11 @@ export class DailyFeesReportsComponent implements OnInit, OnDestroy {
 
     getFeesReports(format) {
         var that = this;
-        var isvalid: boolean = false;
         var feesparams = {};
 
         feesparams = {
             "flag": "dailywise", "type": "download", "ayid": 0, "stdid": 0, "studid": that.studid, "frmdt": that.frmdt, "todt": that.todt,
-            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
+            "enttid": that.enttid, "wsautoid": that.wsautoid, "isschlogo": format == "pdf" ? true : false, "format": format
         }
 
         if (format == "html") {

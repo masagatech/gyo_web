@@ -18,10 +18,6 @@ export const routes = [
                     
                     { path: 'assesment', loadChildren: './assesment#AssesmentReportsModule' },
                     { path: 'assesmentresult', loadChildren: './assesmentresult#AssesmentResultReportsModule' },
-                    
-                    { path: 'feescollection', loadChildren: './feescollection#FeesCollectionReportsModule' },
-                    { path: 'studentfees', loadChildren: './studentfees#StudentFeesReportsModule' },
-                    { path: 'dailyfees', loadChildren: './dailyfees#DailyFeesReportsModule' },
                 ]
             }
         ]

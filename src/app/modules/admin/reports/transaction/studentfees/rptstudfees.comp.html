@@ -1,0 +1,94 @@
+<div class="card">
+    <div class="header">
+        <h4>Fees Collection</h4>
+
+        <div class="row clearfix">
+            <div class="col-md-4 col-xs-8">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity</label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="fillClassDropDown()" tabindex="1">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of entityDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">From Date</label>
+                        <input type="date" [(ngModel)]="frmdt" tabindex="4" class="form-control frmdt">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">To Date</label>
+                        <input type="date" [(ngModel)]="todt" tabindex="5" class="form-control todt">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme" (click)="getFeesReports('html')">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getFeesReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getFeesReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-4" *ngIf="entttype == 'School'">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Type <strong>*</strong></label>
+                        <select id="ddlrpttype" name="rpttype" [(ngModel)]="rpttype" class="form-control rpttype" tabindex="1">
+                            <option [value]="'clswise'">Class Wise</option>
+                            <option [value]="'studwise'">Student Wise</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-8" *ngIf="entttype == 'School'">
+                <div class="form-group" *ngIf="rpttype == 'clswise'">
+                    <div class="form-line">
+                        <label class="control-label">Class <strong>*</strong></label>
+                        <angular2-multiselect [data]="classDT" [(ngModel)]="selectedClass" [settings]="classSettings" tabindex="2"></angular2-multiselect>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-8">
+                <div class="form-group" *ngIf="rpttype == 'studwise'">
+                    <div class="form-line">
+                        <label class="control-label">Student Name <strong>*</strong></label>
+                        <p-autoComplete id="studid" name="studname" [(ngModel)]="selectedStudent" [tabindex]="3" (onSelect)="selectStudentData($event)" [suggestions]="studentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                        <span class="material-icons inputsearchico pad-20">search</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="body">
+        <div id="divrptstudfees">
+        </div>
+    </div>
+</div>

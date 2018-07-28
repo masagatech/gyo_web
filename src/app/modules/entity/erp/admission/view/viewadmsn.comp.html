@@ -34,18 +34,16 @@
             <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
-                        <p-autoComplete id="studname" name="studname" [(ngModel)]="selectStudent" [tabindex]="3" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
-                        <span class="material-icons inputabsolutesearchico">
-                            <a role="button" (click)="getStudentDetails()" class="btn btn-search">search</a>
-                        </span>
+                        <label class="control-label">{{_enttdetails.psngrtype}} Name <strong>*</strong></label>
+                        <input type="text" name="studname" [(ngModel)]="studname" maxlength="50" class="form-control studname" tabindex="1" />
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-4">
+            <div class="col-md-2 col-xs-4 pad-20">
                 <div class="form-group">
-                    <span class="material-icons inputrelativesearchico">
-                        <a role="button" (click)="resetStudentData()" class="btn btn-search">arrow_forward</a>
-                    </span>
+                    <button type="button" class="btn btn-theme" (click)="resetStudentData()">
+                        <span class="material-icons">restore</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -143,7 +141,7 @@
             <div class="col-md-9">
                 <div class="row clearfix" *ngIf="isShowGrid">
                     <div class="col-md-12" *ngIf="studentDT.length">
-                        <p-dataGrid [value]="studentDT" [paginator]="true" [rows]="21">
+                        <p-dataGrid [value]="studentDT | filterBy: {'studentname' : psngrname}" [paginator]="true" [rows]="21">
                             <ng-template let-row pTemplate="item">
                                 <div class="pad-10 col-md-4 col-xs-6">
                                     <p-panel [style]="{'text-align':'center'}">
@@ -210,7 +208,7 @@
                 </div>
                 <div class="row clearfix" *ngIf="isShowList">
                     <div class="col-md-12">
-                        <p-dataTable [value]="studentDT" [rows]="21" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
+                        <p-dataTable [value]="studentDT | filterBy: {'studentname' : psngrname}" [rows]="21" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,30,40]">
                             <p-column header="" [style]="{'width':'60px','text-align':'center','vertical-align':'top'}">
                                 <ng-template let-row="rowData" pTemplate type="body">
                                     <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" class="img-sm">

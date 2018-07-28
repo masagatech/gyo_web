@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
-import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -12,7 +10,7 @@ declare var $: any;
     templateUrl: 'rptpsngrmst.comp.html'
 })
 
-export class PassengerMasterComponent implements OnInit, OnDestroy {
+export class PassengerReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -28,8 +26,8 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
     psngrid: number = 0;
     psngrname: string = "";
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _autoservice: CommonService, private _admsnservice: AdmissionService, private _psngrrptservice: PassengerReportsService) {
+    constructor(private _msg: MessageService, private _loginservice: LoginService,
+        private _autoservice: CommonService, private _psngrrptservice: PassengerReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -42,38 +40,6 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
-    }
-
-    // Auto Completed Passenger
-
-    getPassengerData(event) {
-        let query = event.query;
-
-        this._autoservice.getERPAutoData({
-            "flag": "passenger",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "enttid": 0,
-            "wsautoid": 0,
-            "issysadmin": this.loginUser.issysadmin,
-            "search": query
-        }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Passenger
-
-    selectPassengerData(event) {
-        this.psngrid = event.value;
-        this.psngrname = event.label;
-
-        this.getPassengerReports("html");
     }
 
     // Fill School Drop Down
@@ -128,6 +94,38 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Auto Completed Passenger
+
+    getPassengerData(event) {
+        let query = event.query;
+
+        this._autoservice.getERPAutoData({
+            "flag": "passenger",
+            "uid": this.loginUser.uid,
+            "ucode": this.loginUser.ucode,
+            "utype": this.loginUser.utype,
+            "enttid": this.enttid,
+            "wsautoid": 0,
+            "issysadmin": this.loginUser.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.autoPassengerDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Passenger
+
+    selectPassengerData(event) {
+        this.psngrid = event.value;
+        this.psngrname = event.label;
+
+        this.getPassengerReports("html");
+    }
+
     // Download Reports In Excel And PDF
 
     public getPassengerReports(format) {
@@ -167,10 +165,15 @@ export class PassengerMasterComponent implements OnInit, OnDestroy {
     searchPassengerReports() {
         var that = this;
 
-        if (that.enttid == 0) {
-            that.psngrid = 0;
-            that.psngrname = "";
-            that.selectedPassenger = {};
+        that.psngrid = 0;
+        that.psngrname = "";
+        that.selectedPassenger = {};
+
+        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+            that.enttid = 0;
+        }
+        else {
+            that.enttid = that._enttdetails.enttid;
         }
 
         that.getPassengerReports("html");

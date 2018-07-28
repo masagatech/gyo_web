@@ -8,7 +8,7 @@ import { LoginUserModel, Globals } from '@models';
     templateUrl: 'reports.comp.html'
 })
 
-export class ReportsComponent implements OnDestroy {
+export class ReportsComponent implements OnDestroy, OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 

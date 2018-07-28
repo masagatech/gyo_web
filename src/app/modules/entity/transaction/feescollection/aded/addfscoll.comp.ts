@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals, Common } from '@models';
-import { NotificationService, FeesService } from '@services/erp';
+import { LoginUserModel, Globals } from '@models';
+import { FeesService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
@@ -82,8 +82,8 @@ export class AddFeesCollectionComponent implements OnInit {
     oldFeesData: any = [];
     newFeesData: any = [];
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
-        private _ntfservice: NotificationService, private _feesservice: FeesService, private _loginservice: LoginService) {
+    constructor(private _router: Router, private _routeParams: ActivatedRoute, private _msg: MessageService,
+        private _loginservice: LoginService, private _feesservice: FeesService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

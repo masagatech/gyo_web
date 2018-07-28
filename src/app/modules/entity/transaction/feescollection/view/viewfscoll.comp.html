@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-4">
+            <div class="col-md-2 col-xs-4" *ngIf="entttype == 'School'">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Class <strong>*</strong></label>
@@ -81,23 +81,23 @@
                 <table class="table table-bordered table-responsive reports">
                     <thead>
                         <tr>
-                            <th width="100px">GR No</th>
-                            <th width="100px">Class Name</th>
-                            <th width="100px">Roll No</th>
+                            <th width="100px" *ngIf="entttype == 'School'">GR No</th>
+                            <th width="100px" *ngIf="entttype == 'School'">Class Name</th>
+                            <th width="100px" *ngIf="entttype == 'School'">Roll No</th>
                             <th>Student Name</th>
-                            <th width="100px">Fees</th>
+                            <th width="100px">Fees Collect</th>
                             <th width="80px"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let row of feesCollDT">
-                            <td align="center">
+                            <td align="center" *ngIf="entttype == 'School'">
                                 {{row.grno}}
                             </td>
-                            <td align="center">
+                            <td align="center" *ngIf="entttype == 'School'">
                                 {{row.classname}}
                             </td>
-                            <td align="center">
+                            <td align="center" *ngIf="entttype == 'School'">
                                 {{row.rollno}}
                             </td>
                             <td>
@@ -120,7 +120,7 @@
                     </tbody>
                     <tfoot>
                         <tr class="tr-table">
-                            <th colspan="3"></th>
+                            <th colspan="3" *ngIf="entttype == 'School'"></th>
                             <th>
                                 <b>Total</b>
                             </th>

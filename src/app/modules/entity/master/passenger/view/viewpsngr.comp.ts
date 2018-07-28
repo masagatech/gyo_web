@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -20,13 +19,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
-    srctype: string = "all";
     status: string = "";
-
-    autoPassengerDT: any = [];
-    selectedPassenger: any = {};
-    psngrid: number = 0;
-    psngrname: any = [];
 
     passengerDT: any = [];
 
@@ -41,12 +34,12 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.getUploadConfig();
-        this.viewPassengerDataRights();
+        this.getPassengerDetails();
     }
 
     public ngOnInit() {
         var that = this;
-        
+
         setTimeout(function () {
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
@@ -70,54 +63,7 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Auto Completed Passenger
-
-    getPassengerData(event) {
-        let query = event.query;
-
-        this._autoservice.getAutoData({
-            "flag": "student",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "enttid": this._enttdetails.enttid,
-            "wsautoid": this._enttdetails.wsautoid,
-            "issysadmin": this.loginUser.issysadmin,
-            "search": query
-        }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
-        }, err => {
-            this._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected Passenger
-
-    selectPassengerData(event) {
-        this.psngrid = event.value;
-        this.psngrname = event.label;
-
-        Cookie.set("_psngrid_", event.value);
-        Cookie.set("_psngrname_", event.label);
-
-        this.getPassengerDetails();
-    }
-
-    // View Data Rights
-
-    public viewPassengerDataRights() {
-        var that = this;
-
-        if (Cookie.get('_psngrname_') != null) {
-            that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrname_');
-        }
-
-        that.getPassengerDetails();
-    }
+    // Get Passenger List
 
     getPassengerDetails() {
         var that = this;
@@ -125,17 +71,9 @@ export class ViewPassengerComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        if (that.srctype == "all") {
-            Cookie.set("_psngrid_", "0");
-            Cookie.set("_psngrname_", "");
-
-            that.psngrname.value = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname.label = Cookie.get('_psngrname_');
-        }
-
         params = {
-            "flag": "all", "admtype": "passenger", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "studid": that.psngrid.toString() == "" ? 0 : that.psngrid, "status": that.status, "enttid": that._enttdetails.enttid,
+            "flag": "all", "admtype": "passenger", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
+            "utype": that.loginUser.utype, "status": that.status, "studid": 0, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         };
 

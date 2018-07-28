@@ -8,8 +8,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 declare var google: any;
 
 @Component({
-    templateUrl: 'viewfscoll.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewfscoll.comp.html'
 })
 
 export class ViewFeesCollectionComponent implements OnInit {
@@ -27,6 +26,7 @@ export class ViewFeesCollectionComponent implements OnInit {
     studid: number = 0;
 
     enttid: number = 0;
+    entttype: string = "";
     ayid: number = 0;
     classid: number = 0;
     classfees: any = "";
@@ -49,7 +49,7 @@ export class ViewFeesCollectionComponent implements OnInit {
     }
 
     public ngOnInit() {
-        
+
     }
 
     // Bulk Upload
@@ -98,7 +98,7 @@ export class ViewFeesCollectionComponent implements OnInit {
             for (var i = 0; i < xlsfile.length; i++) {
                 that.uploadFileDT.push({ "athurl": xlsfile[i].path.replace(that.uploadfileconfig.xlsfilepath, "") });
             }
-            
+
             that._msg.Show(messageType.success, "Success", xlsfile.msg);
 
             that.closeBulkUploadPopup();
@@ -133,7 +133,7 @@ export class ViewFeesCollectionComponent implements OnInit {
                     else {
                         that.enttid = that._enttdetails.enttid;
                     }
-                    
+
                     that.fillDropDownList();
                 }
             }
@@ -155,6 +155,7 @@ export class ViewFeesCollectionComponent implements OnInit {
 
     fillDropDownList() {
         var that = this;
+        var entttypeDT: any = [];
         var defayDT: any = [];
 
         commonfun.loader();
@@ -164,6 +165,15 @@ export class ViewFeesCollectionComponent implements OnInit {
             "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
+                entttypeDT = data.data[1].filter(a => a.group == "entttype");
+
+                if (entttypeDT.length > 0) {
+                    that.entttype = entttypeDT[0].val;
+                }
+                else {
+                    that.entttype = "";
+                }
+
                 that.ayDT = data.data[1].filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {

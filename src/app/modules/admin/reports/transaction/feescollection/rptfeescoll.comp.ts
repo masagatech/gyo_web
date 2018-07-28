@@ -6,8 +6,6 @@ import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-declare var google: any;
-
 @Component({
     templateUrl: 'rptfeescoll.comp.html'
 })
@@ -16,8 +14,10 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
-    schoolDT: any = [];
+    entityDT: any = [];
     enttid: number = 0;
+    wsautoid: number = 0;
+    entttype: string = "";
 
     ayDT: any = [];
     ayid: number = 0;
@@ -97,25 +97,30 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
         var that = this;
         var defschoolDT: any = [];
 
-        that.selectedClass = [];
-
         commonfun.loader();
 
-        that._feesservice.getFeesStructure({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        that._autoservice.getDropDownData({
+            "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.schoolDT = data.data[0];
+                that.entityDT = data.data;
 
-                if (that.schoolDT.length > 0) {
-                    defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);
+                if (that.entityDT.length > 0) {
+                    defschoolDT = that.entityDT.filter(a => a.iscurrent == true);
 
                     if (defschoolDT.length > 0) {
                         that.enttid = defschoolDT[0].enttid;
                     }
                     else {
-                        that.enttid = that._enttdetails.enttid;
+                        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+                            that.enttid = 0;
+                            that.wsautoid = 0;
+                        }
+                        else {
+                            that.enttid = that._enttdetails.enttid;
+                            that.wsautoid = that._enttdetails.wsautoid;
+                        }
                     }
 
                     that.fillAYAndClassDropDown();
@@ -139,34 +144,59 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
     fillAYAndClassDropDown() {
         var that = this;
-        var defayDT: any = [];
 
         commonfun.loader();
 
-        that._feesrptservice.getFeesReports({
+        that._feesservice.getFeesStructure({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.ayDT = JSON.parse(data._body).data[0];
+                that.ayDT = data.data[1].filter(a => a.group == "ay");
 
-                if (that.ayDT.length > 0) {
-                    if (Cookie.get("_ayid_") != null) {
-                        that.ayid = parseInt(Cookie.get("_ayid_"));
-                    }
-                    else {
-                        defayDT = that.ayDT.filter(a => a.iscurrent == true);
-
-                        if (defayDT.length > 0) {
-                            that.ayid = defayDT[0].key;
-                        }
-                        else {
-                            that.ayid = that._enttdetails.ayid;
-                        }
-                    }
+                if (that.enttid != 0) {
+                    that.classDT = data.data[0];
                 }
+                else {
+                    that.classDT = [];
+                }
+                
+                that.getDefaultFiledsByEntity();
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                that.classDT = JSON.parse(data._body).data[1];
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Default Fields By Entity
+
+    getDefaultFiledsByEntity() {
+        var that = this;
+
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({
+            "flag": "byentt", "enttid": that.enttid
+        }).subscribe(data => {
+            try {
+                if (data.data.length > 0) {
+                    that.entttype = data.data[0].entttype;
+                    that.ayid = data.data[0].ayid;
+                    that.getFeesReports("html");
+                }
+                else {
+                    that.entttype = "";
+                    that.ayid = 0;
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -186,6 +216,61 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
     getFeesReports(format) {
         var that = this;
+        var feesparams = {}
+
+        if (format == "html") {
+            feesparams = {
+                "flag": "classwise", "type": "", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
+                "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+                "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that.wsautoid,
+                "issysadmin": that.loginUser.issysadmin, "format": format
+            }
+
+            commonfun.loader();
+
+            that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
+                try {
+                    that.feesCollectionDT = JSON.parse(data._body).data[0];
+                    that.totalFeesDT = JSON.parse(data._body).data[1];
+
+                    if (that.totalFeesDT.length > 0) {
+                        that.totpaidfees = that.totalFeesDT[0].paidfees;
+                        that.totpendfees = that.totalFeesDT[0].pendfees;
+                    }
+                    else {
+                        that.totpaidfees = 0;
+                        that.totpendfees = 0;
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+        else {
+            feesparams = {
+                "flag": "classwise", "type": "download", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
+                "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
+                "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that.wsautoid,
+                "issysadmin": that.loginUser.issysadmin, "format": format
+            }
+
+            window.open(Common.getReportUrl("getFeesReports", feesparams));
+        }
+    }
+
+    // Get Fees Reports
+
+    viewFeesReports(format) {
+        var that = this;
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.warn, "Warning", "Select Academic Year");
@@ -194,53 +279,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.warn, "Warning", "Select Class");
         }
         else {
-            if (format == "html") {
-                var feesparams = {
-                    "flag": "classwise", "type": "", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
-                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
-                    "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
-                    "issysadmin": that.loginUser.issysadmin, "format": format
-                }
-
-                commonfun.loader();
-
-                that._feesrptservice.getFeesReports(feesparams).subscribe(data => {
-                    try {
-                        that.feesCollectionDT = JSON.parse(data._body).data[0];
-                        that.totalFeesDT = JSON.parse(data._body).data[1];
-
-                        if (that.totalFeesDT.length > 0) {
-                            that.totpaidfees = that.totalFeesDT[0].paidfees;
-                            that.totpendfees = that.totalFeesDT[0].pendfees;
-                        }
-                        else {
-                            that.totpaidfees = 0;
-                            that.totpendfees = 0;
-                        }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
-            }
-            else {
-                var feesparams = {
-                    "flag": "classwise", "type": "download", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
-                    "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
-                    "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
-                    "issysadmin": that.loginUser.issysadmin, "format": format
-                }
-
-                window.open(Common.getReportUrl("getFeesReports", feesparams));
-            }
+            that.getFeesReports(format);
         }
     }
 
@@ -251,7 +290,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
         var feesparams = {
             "flag": "classwise", "rpttype": "student", "vwtype": that.rpttype, "ayid": that.ayid, "stdid": "0",
-            "filterClass": row.fltrclass, "studid": 0, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "filterClass": row.fltrclass, "studid": 0, "enttid": that.enttid, "wsautoid": that.wsautoid,
             "catid": row.catid, "scatid": row.scatid, "isschlogo": false
         }
 
@@ -262,7 +301,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                 if (feestype == "paid") {
                     that.studentFeesDT = data.data[0].filter(a => a.paidfees != 0);
                 }
-                else{
+                else {
                     that.studentFeesDT = data.data[0].filter(a => a.pendfees != 0);
                 }
             }
