@@ -667,6 +667,7 @@ export class AddScheduleComponent implements OnInit {
                 }
                 else {
                     that.ispickup = true;
+                    that.pickwkdays = "";
                     that.pickautoid = 0;
                     that.pickdriverid = 0;
                     that.pickvehicleid = 0;
@@ -676,6 +677,7 @@ export class AddScheduleComponent implements OnInit {
                     that.pickAttList = [];
 
                     that.isdrop = true;
+                    that.dropwkdays = "";
                     that.dropautoid = 0;
                     that.dropdriverid = 0;
                     that.dropvehicleid = 0;
