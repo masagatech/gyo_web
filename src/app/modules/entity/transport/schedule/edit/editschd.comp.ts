@@ -71,8 +71,11 @@ export class EditScheduleComponent implements OnInit {
 
     instrunction: string = "";
 
+    pickwkdays: string = "";
     pickfromdate: any = "";
     picktodate: any = "";
+    
+    dropwkdays: string = "";
     dropfromdate: any = "";
     droptodate: any = "";
 
@@ -981,6 +984,7 @@ export class EditScheduleComponent implements OnInit {
                     }
 
                     if (pickdata.length !== 0) {
+                        that.pickwkdays = pickdata[0].wkdays;
                         that.pickfromdate = pickdata[0].frmdt;
                         that.picktodate = pickdata[0].todt;
                         that.pickdriverid = pickdata[0].driverid;
@@ -995,6 +999,7 @@ export class EditScheduleComponent implements OnInit {
                         that.ispickup = pickdata[0].isactive;
                     }
                     else {
+                        that.pickwkdays = "";
                         that.pickdriverid = 0;
                         that.pickdrivername = "";
                         that.pickvehicleid = 0;
@@ -1018,6 +1023,7 @@ export class EditScheduleComponent implements OnInit {
                     }
 
                     if (dropdata.length !== 0) {
+                        that.dropwkdays = dropdata[0].wkdays;
                         that.dropfromdate = dropdata[0].frmdt;
                         that.droptodate = dropdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
@@ -1032,6 +1038,7 @@ export class EditScheduleComponent implements OnInit {
                         that.isdrop = dropdata[0].isactive;
                     }
                     else {
+                        that.dropwkdays = "";
                         that.dropdriverid = 0;
                         that.dropdrivername = "";
                         that.dropvehicleid = 0;

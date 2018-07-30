@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { EntityComponent } from '../entity/entity.comp';
+import { EntityComponent } from './entity.comp';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { FormsModule } from '@angular/forms';

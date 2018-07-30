@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ModuleComponent } from '../modules/module.comp';
+import { ModuleComponent } from './module.comp';
 import { AuthGuard, SharedComponentModule } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { ReloadComponent } from '../modules/usercontrol/reload/reload.comp';
+import { ReloadComponent } from './usercontrol/reload/reload.comp';
 
 export const routes = [
     {

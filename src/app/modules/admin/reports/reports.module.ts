@@ -5,7 +5,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { AdminReportsComponent } from '../reports/reports.comp';
+import { AdminReportsComponent } from './reports.comp';
 
 export const routes = [
     {

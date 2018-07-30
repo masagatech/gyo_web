@@ -160,7 +160,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                 else {
                     that.classDT = [];
                 }
-                
+
                 that.getDefaultFiledsByEntity();
             }
             catch (e) {
@@ -269,16 +269,29 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
     // Get Fees Reports
 
-    viewFeesReports(format) {
+    isValidFees() {
         var that = this;
 
         if (that.ayid == 0) {
             that._msg.Show(messageType.warn, "Warning", "Select Academic Year");
+            return false;
         }
-        else if (that.selectedClass.length == 0) {
-            that._msg.Show(messageType.warn, "Warning", "Select Class");
+
+        if (that.entttype == "School") {
+            if (that.selectedClass.length == 0) {
+                that._msg.Show(messageType.warn, "Warning", "Select Class");
+                return false;
+            }
         }
-        else {
+
+        return true;
+    }
+
+    viewFeesReports(format) {
+        var that = this;
+        var isvalid = that.isValidFees();
+
+        if (isvalid) {
             that.getFeesReports(format);
         }
     }

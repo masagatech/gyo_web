@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommunicationComponent } from '../communication/communication.comp';
+import { CommunicationComponent } from './communication.comp';
 import { AuthGuard } from '@services';
 
 import { FormsModule } from '@angular/forms';

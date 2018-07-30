@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MasterComponent } from '../master/master.comp';
+import { MasterComponent } from './master.comp';
 import { AuthGuard } from '@services';
 
 import { FormsModule } from '@angular/forms';

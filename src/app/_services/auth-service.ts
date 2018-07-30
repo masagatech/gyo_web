@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserReq, LoginUserModel } from '../_model/user_model';
 import { DataService } from './dataconnect';
-import { LoginService } from '../_services/login/login-service';
+import { LoginService } from './login/login-service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var swfobject: any;

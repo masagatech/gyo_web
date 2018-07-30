@@ -5,10 +5,12 @@ import { MessageService, messageType, TrackDashbord } from '@services';
 @Component({
     templateUrl: './info.comp.html'
 })
+
 export class INFOComponent implements OnInit {
     @Input() data: any;
     tripDT: any = [];
     vhinfo: any = {};
+
     constructor(private _msg: MessageService, private _ttmapservice: TTMapService, private _trackDashbord: TrackDashbord) { }
 
     ngOnInit() {
@@ -19,6 +21,7 @@ export class INFOComponent implements OnInit {
 
     private getTripData() {
         var that = this;
+
         this._ttmapservice.getTripData({
             "flag": "vh",
             "vehid": this.data.vhid,
@@ -36,10 +39,12 @@ export class INFOComponent implements OnInit {
         });
     }
 
-    private getVHInfo() {
+    getVHInfo() {
         if (this.vhinfo.vhid !== undefined) { return; }
+        
         var that = this;
         commonfun.loader("#loaderbody");
+        
         this._trackDashbord.gettrackboard({
             "flag": "vehicleid",
             "vehid": this.data.vhid,
@@ -62,5 +67,4 @@ export class INFOComponent implements OnInit {
 
         })
     }
-
 }

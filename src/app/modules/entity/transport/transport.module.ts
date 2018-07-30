@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TransportComponent } from '../transport/transport.comp';
+import { TransportComponent } from './transport.comp';
 import { AuthGuard } from '@services';
 
 import { FormsModule } from '@angular/forms';

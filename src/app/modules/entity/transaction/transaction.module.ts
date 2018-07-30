@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ERPTransactionComponent } from '../transaction/transaction.comp';
+import { ERPTransactionComponent } from './transaction.comp';
 import { AuthGuard } from '@services';
 
 import { FormsModule } from '@angular/forms';

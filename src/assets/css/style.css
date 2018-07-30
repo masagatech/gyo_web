@@ -4972,6 +4972,10 @@ section.content {
     left: 0;
 }
 
+.nav-tabs>li.active {
+    background-color: #ffffff!important;
+}
+
 .nav-tabs>li>a {
     border: none !important;
     color: #999 !important;

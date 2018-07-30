@@ -5,7 +5,7 @@ import { AuthGuard, SharedComponentModule } from '@services';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { ReportsComponent } from '../reports/reports.comp';
+import { ReportsComponent } from './reports.comp';
 
 export const routes = [
     {
@@ -17,6 +17,9 @@ export const routes = [
                 path: '',
                 children: [
                     { path: '', loadChildren: './erp#ERPReportsModule' },
+
+                    // HelpDesk
+                    { path: 'helpdesk', loadChildren: './helpdesk#HelpDeskModule' },
                     
                     { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'master', loadChildren: './master#MasterReportsModule' },

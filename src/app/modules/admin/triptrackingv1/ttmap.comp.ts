@@ -9,7 +9,6 @@ import { HOSTComponent } from '@interface';
 import { PSGComponent } from './passengers/psg.comp';
 import { INFOComponent } from './info/info.comp';
 import { HISTORYComponent } from './history/history.comp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -69,7 +68,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     sidebarTitle = "Title";
     trafficLayer: any = new google.maps.TrafficLayer();
-    queryimei: string = '';
+    queryimei: string = "";
+
     markerOptions = {
         showinfo: false,
         hidelive: false,
@@ -98,8 +98,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private loadComponent(component, data) {
         let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+
         let viewContainerRef = this._Host.viewContainerRef;
         viewContainerRef.clear();
+        
         let componentRef = viewContainerRef.createComponent(componentFactory);
         (<HOSTComponent>componentRef.instance).data = data;
     }
@@ -120,9 +122,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscribeParameters = this._actrouter
             .queryParams
             .subscribe(params => {
-                // Defaults to 0 if no query param provided.
-                // this.page = +params['page'] || 0;
-
                 this.enttid = params['enttid'] || this._enttdetails.enttid;
 
                 console.log(this._enttdetails);
@@ -187,7 +186,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Selected Entity
 
-    private selectEntityData(event) {
+    selectEntityData(event) {
         this.enttid = event.value;
         this.enttname = event.label;
 
@@ -198,17 +197,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private fillVehicleDropDown() {
         var that = this;
-
-        // if (Cookie.get("_vehid_") != null) {
-        //     that.enttid = parseInt(Cookie.get("_enttid_"));
-        //     that.enttname = Cookie.get("_enttname_");
-        //     that.vehid = parseInt(Cookie.get("_vehid_"));
-        // }
-        // else {
-        //     that.enttid = that._enttdetails.enttid;
-        //     that.enttname = that._enttdetails.enttname;
-        //     that.vehid = 0;
-        // }
 
         commonfun.loader();
 
@@ -272,7 +260,9 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     getMessage() {
         var that = this;
         commonfun.loader();
+        
         that.connectmsg = "Registering...";
+
         this._socketservice.getMessage().subscribe(data => {
             var _d = data;
 
@@ -301,7 +291,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                         else el.bearing = geoloc.bearing;
 
                         if (geoloc.actvt === "hrtbt") { el.btr = geoloc.btr };
-
 
                         if (geoloc.loc !== undefined) {
                             el.loc = geoloc.loc;
@@ -344,6 +333,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.dbcaller !== undefined) {
             clearInterval(this.dbcaller);
         }
+
         if (this.vehtypeIds.length > 0) {
             let that = this;
             this.dbcaller = setInterval(
@@ -451,7 +441,9 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 el.isshow = false;
             }
         }
+        
         var that = this;
+
         setTimeout(() => {
             if (that.queryimei !== '') {
                 $('#' + that.queryimei).click();
@@ -638,7 +630,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private info_click(vh, event) {
+    info_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false) {
             this._msg.Show(messageType.warn, "Hey", "No Updates found"); return;
         }
@@ -654,7 +646,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         event.stopPropagation();
     }
 
-    private passenger_click(vh, event) {
+    passenger_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false) {
             this._msg.Show(messageType.warn, "Hey", "No Updates found"); return;
         }
@@ -670,7 +662,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         event.stopPropagation();
     }
 
-    private history_click(vh, event) {
+    history_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false) {
             this._msg.Show(messageType.warn, "Hey", "No Updates found"); return;
         }
@@ -692,7 +684,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         event.stopPropagation();
     }
 
-    private filter(fil) {
+    filter(fil) {
         this.olfilter = fil;
         if (fil === 'all' && this._counter.all === 0) { this._showempty = true }
         else if (fil === 'ol' && this._counter.online === 0) { this._showempty = true }
@@ -714,6 +706,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
             for (var k = 0; k < that.vehtypeDT.length; k++) {
                 var el = that.vehtypeDT[k];
+
                 if (el.min < that.offlinetimeout && el.flag !== "stop") {
                     that._counter.online += 1;
                     el.os = "ol";
@@ -725,11 +718,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     that._counter.offline += 1;
                     el.os = "of";
                 }
-
-
             }
-
-
         }, 5000);
     }
 
@@ -771,8 +760,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         $.AdminBSB.leftSideBar.Open();
 
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
-        this._socketservice.close();
 
+        this._socketservice.close();
         this.subscribeParameters.unsubscribe();
     }
 }

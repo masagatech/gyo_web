@@ -1,0 +1,23 @@
+<div class="card">
+    <ul class="nav nav-tabs">
+        <li routerLinkActive="active">
+            <a role="button" (click)="openStudentDashboard()">Student</a>
+        </li>
+        <li routerLinkActive="active">
+            <a role="button" (click)="openDriverDashboard()">Driver</a>
+        </li>
+        <li routerLinkActive="active">
+            <a role="button" (click)="openVehicleDashboard()">Vehicle</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="loadercontrol">
+        <div class="header">
+            {{hdtitle}}
+        </div>
+
+        <div class="body">
+            <ng-template ADHOST></ng-template>
+        </div>
+    </div>
+</div>
