@@ -117,12 +117,13 @@ export class ViewFeesCollectionComponent implements OnInit {
 
         commonfun.loader();
 
-        that._feesservice.getFeesStructure({
-            "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        that._autoservice.getDropDownData({
+            "flag": "school", "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.schoolDT = data.data[0];
+                that.schoolDT = data.data;
 
                 if (that.schoolDT.length > 0) {
                     defschoolDT = that.schoolDT.filter(a => a.iscurrent == true);

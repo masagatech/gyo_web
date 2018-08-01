@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
 import { PickDropService } from '@services/master';
-import { identifierModuleUrl } from '../../../../../../../node_modules/@angular/compiler';
 
 @Component({
     templateUrl: 'addschd.comp.html'
@@ -97,7 +96,7 @@ export class AddScheduleComponent implements OnInit {
         if (!this.ispickup) {
             if (this.pickautoid == 0) {
                 this.pickdriverid = 0;
-                this.pickvehicleid = "";
+                this.pickvehicleid = 0;
                 this.pickpsngrtype = "byrt";
                 this.pickrtid = 0;
                 this.pickPassengerDT = [];
@@ -115,7 +114,7 @@ export class AddScheduleComponent implements OnInit {
         else {
             if (this.dropautoid == 0) {
                 this.dropdriverid = 0;
-                this.dropvehicleid = "";
+                this.dropvehicleid = 0;
                 this.droppsngrtype = "byrt";
                 this.droprtid = 0;
                 this.dropPassengerDT = [];
