@@ -101,7 +101,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group hide">
+                    <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
                             <select id="pickpsngrtype" [(ngModel)]="pickpsngrtype" class="form-control pickpsngrtype" tabindex="8" (ngModelChange)="setDropPsngrType();">
@@ -110,7 +110,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row clearfix">
+                    <div class="row clearfix" *ngIf="pickpsngrtype == 'byrt'">
                         <div class="col-md-11">
                             <div class="form-group">
                                 <div class="form-line">
@@ -130,7 +130,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group hide" *ngIf="pickpsngrtype == 'bypsngr'">
+                    <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
                             <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrdata" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
@@ -149,7 +149,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="ui-helper-clearfix">
-                                        <button type="button" class="btn btn-danger" (click)="deletePickUpPassenger(passenger)"><i class="material-icons">delete</i></button>
+                                        <button type="button" class="btn btn-danger" (click)="deletePickUpPassenger(passenger)">
+                                            <i class="material-icons">delete</i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -207,16 +209,16 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group hide">
+                    <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Type</label>
-                            <select id="droppsngrtype" [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="15">
+                            <select id="droppsngrtype" [(ngModel)]="droppsngrtype" class="form-control droppsngrtype" tabindex="15" (ngModelChange)="resetDropPsngrType();">
                                 <option [value]="'bypsngr'">By Passenger</option>
                                 <option [value]="'byrt'">By Route</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row clearfix">
+                    <div class="row clearfix" *ngIf="droppsngrtype == 'byrt'">
                         <div class="col-md-11">
                             <div class="form-group">
                                 <div class="form-line">
@@ -238,7 +240,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group hide" *ngIf="droppsngrtype == 'bypsngr'">
+                    <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
                             <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrdata" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"

@@ -91,28 +91,10 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     selectUserData(event, arg) {
         var that = this;
 
-        if (event.utype == "driver") {
-            if (event.enttid == that._enttdetails.enttid) {
-                that.uid = event.uid;
-                that.uname = event.uname;
-                that.utype = event.utype;
-                that.enttid = event.enttid;
-            }
-            else {
-                that._msg.Show(messageType.error, "Error", "Not Allowed. Bcoz, this Driver is in Other School.");
-                that.uid = 0;
-                that.uname = "";
-                that.utype = "";
-                that.enttid = 0;
-                that.selecteudUser = [];
-            }
-        }
-        else {
-            that.uid = event.uid;
-            that.uname = event.uname;
-            that.utype = event.utype;
-            that.enttid = event.enttid;
-        }
+        that.uid = event.uid;
+        that.uname = event.uname;
+        that.utype = event.utype;
+        that.enttid = event.enttid;
 
         that.getUserVehicleMap();
     }
@@ -159,7 +141,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         for (var i = 0; i < that.vehicleDT.length; i++) {
             var field = that.vehicleDT[i];
 
-            if (field.vehid == this.vehid) {
+            if (field.vehregno == this.vehregno) {
                 this._msg.Show(messageType.error, "Error", "Duplicate Vehicle not Allowed");
                 return true;
             }

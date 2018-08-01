@@ -420,7 +420,14 @@ export class EditScheduleComponent implements OnInit {
     // copy pick type in drop type
 
     setDropPsngrType() {
+        this.pickPassengerDT = [];
+        this.dropPassengerDT = [];
+
         this.droppsngrtype = this.pickpsngrtype;
+    }
+
+    resetDropPsngrType() {
+        this.dropPassengerDT = [];
     }
 
     // Check Pickup Duplicate Passenger
