@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, LoginUserModel } from '@models';
@@ -8,7 +8,7 @@ import { PickDropService } from '@services/master';
     templateUrl: 'editschd.comp.html'
 })
 
-export class EditScheduleComponent implements OnInit {
+export class EditScheduleComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -50,6 +50,7 @@ export class EditScheduleComponent implements OnInit {
     vehicleDT: any = [];
     dropVehicleDT: any = [];
 
+    btcidparams: number = 0;
     batchid: number = 0;
     batchname: string = "";
 
@@ -74,7 +75,7 @@ export class EditScheduleComponent implements OnInit {
     pickwkdays: string = "";
     pickfromdate: any = "";
     picktodate: any = "";
-    
+
     dropwkdays: string = "";
     dropfromdate: any = "";
     droptodate: any = "";
@@ -91,6 +92,8 @@ export class EditScheduleComponent implements OnInit {
     scheduleData: any = {};
     oldScheduleData: any = [];
     newScheduleData: any = [];
+
+    private subscribeParameters: any;
 
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
@@ -159,10 +162,23 @@ export class EditScheduleComponent implements OnInit {
     }
 
     public viewScheduleDataRights() {
+        var that = this;
+        commonfun.loader();
+
         this.fillBatchDropDown();
         this.fillDriverDropDown();
         this.fillVehicleDropDown();
         this.fillRouteDropDown();
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.btcidparams = params['id'];
+                that.batchid = params['id'];
+                that.getPDCalendar();
+            }
+
+            commonfun.loaderhide();
+        });
     }
 
     // Format Date
@@ -211,6 +227,12 @@ export class EditScheduleComponent implements OnInit {
         }).subscribe(data => {
             try {
                 that.events = data.data;
+
+                if (that.btcidparams !== 0) {
+                    $(".batchid").prop("disabled", "disabled");
+                    that.getPickDropInfo(data.data);
+                }
+
                 that.refreshButtons();
             }
             catch (e) {
@@ -961,7 +983,7 @@ export class EditScheduleComponent implements OnInit {
 
     // Read Schedule
 
-    getPickDropInfo(event) {
+    getPickDropInfo(data) {
         commonfun.loader();
         var that = this;
 
@@ -970,9 +992,21 @@ export class EditScheduleComponent implements OnInit {
         var pickdata = [];
         var dropdata = [];
 
-        this._pickdropservice.getPickDropDetails({
-            "flag": "view", "mode": "edit", "schoolid": that._enttdetails.enttid, "batchid": that.batchid,
-            "wsautoid": that._enttdetails.wsautoid, "frmdt": event.calEvent.start, "todt": event.calEvent.end
+        var frmdt = null;
+        var todt = null;
+
+        if (that.btcidparams == 0) {
+            frmdt = data.calEvent.start;
+            todt = data.calEvent.end;
+        }
+        else {
+            frmdt = data[0].start;
+            todt = data[0].end;
+        }
+
+        that._pickdropservice.getPickDropDetails({
+            "flag": "view", "mode": "edit", "batchid": that.batchid, "frmdt": frmdt, "todt": todt,
+            "schoolid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {
                 that.pddata = data.data;
@@ -1117,6 +1151,10 @@ export class EditScheduleComponent implements OnInit {
 
     backViewData() {
         this._router.navigate(['/transport/schedule']);
+    }
+
+    ngOnDestroy() {
+        this.subscribeParameters.unsubscribe();
     }
 }
 

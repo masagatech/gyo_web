@@ -36,8 +36,11 @@ export class ViewScheduleComponent implements OnInit {
 
     instrunction: string = "";
 
+    pickwkdays: string = "";
     pickfromdate: any = "";
     picktodate: any = "";
+
+    dropwkdays: string = "";
     dropfromdate: any = "";
     droptodate: any = "";
 
@@ -119,6 +122,7 @@ export class ViewScheduleComponent implements OnInit {
                     }
 
                     if (pickdata.length !== 0) {
+                        that.pickwkdays = pickdata[0].wkdays;
                         that.pickfromdate = pickdata[0].getfrmdt;
                         that.picktodate = pickdata[0].gettodt;
                         that.pickdrvid = pickdata[0].driverid;
@@ -131,6 +135,7 @@ export class ViewScheduleComponent implements OnInit {
                         that.ispickup = pickdata[0].isactive;
                     }
                     else {
+                        that.pickwkdays = "";
                         that.pickfromdate = "";
                         that.picktodate = "";
                         that.pickdrvid = 0;
@@ -153,6 +158,7 @@ export class ViewScheduleComponent implements OnInit {
                     }
 
                     if (dropdata.length !== 0) {
+                        that.dropwkdays = dropdata[0].wkdays;
                         that.dropfromdate = pickdata[0].getfrmdt;
                         that.droptodate = pickdata[0].gettodt;
                         that.dropdrvid = dropdata[0].driverid;
@@ -165,6 +171,7 @@ export class ViewScheduleComponent implements OnInit {
                         that.isdrop = dropdata[0].isactive;
                     }
                     else {
+                        that.dropwkdays = "";
                         that.dropfromdate = "";
                         that.droptodate = "";
                         that.dropdrvid = 0;
@@ -179,6 +186,7 @@ export class ViewScheduleComponent implements OnInit {
                 }
                 else {
                     that.ispickup = true;
+                    that.pickwkdays = "";
                     that.pickautoid = 0;
                     that.pickfromdate = "";
                     that.picktodate = "";
@@ -191,6 +199,7 @@ export class ViewScheduleComponent implements OnInit {
                     that.pickAttList = [];
 
                     that.isdrop = true;
+                    that.dropwkdays = "";
                     that.dropautoid = 0;
                     that.dropfromdate = "";
                     that.droptodate = "";
@@ -221,7 +230,12 @@ export class ViewScheduleComponent implements OnInit {
         this._router.navigate(['/transport/schedule/add']);
     }
 
-    public editPickDropInfo(row) {
-        this._router.navigate(['/transport/schedule/edit']);
+    public editPickDropInfo() {
+        if (this.batchid == 0) {
+            this._router.navigate(['/transport/schedule/edit']);
+        }
+        else {
+            this._router.navigate(['/transport/schedule/edit', this.batchid]);
+        }
     }
 }

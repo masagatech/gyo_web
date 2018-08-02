@@ -16,21 +16,37 @@
         </ul>
     </div>
     <div class="body">
-        <div class="form-group">
-            <div class="form-line">
-                <label class="control-label">Batch Name <strong>*</strong></label>
-                <select id="batchid" [(ngModel)]="batchid" class="form-control batchid" tabindex="2" (ngModelChange)="getPDCalendar()">
-                    <option [value]="0">Select Batch</option>
-                    <option *ngFor="let row of batchDT" [value]="row.key">
-                        {{row.val}}
-                    </option>
-                </select>
-            </div>
-        </div>
-
         <div class="row clearfix">
             <div class="col-md-6">
                 <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Batch Name <strong>*</strong></label>
+                        <select id="batchid" [(ngModel)]="batchid" class="form-control batchid" tabindex="2" (ngModelChange)="getPDCalendar()">
+                            <option [value]="0">Select Batch</option>
+                            <option *ngFor="let row of batchDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="batchid == 0">
+            <strong>Select Batch !!!!</strong>
+        </div>
+
+        <div *ngIf="!batchid == 0">
+            <div *ngIf="!pddata.length">
+                <strong>No Schedule !!!!</strong>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="form-group" *ngIf="batchid !== 0">
                     <div class="form-line">
                         <label class="control-label">Instrunction</label>
                         <textarea [(ngModel)]="instrunction" rows="5" class="form-control no-resize auto-growth" tabindex="3"></textarea>
@@ -45,8 +61,6 @@
                 </div>
             </div>
         </div>
-
-        <hr />
 
         <div *ngIf="pddata.length">
             <div class="row clearfix">

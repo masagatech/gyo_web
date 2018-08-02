@@ -27,6 +27,10 @@ export const routes = [
             {
                 path: 'edit', component: EditScheduleComponent, canActivate: [AuthGuard],
                 data: { "module": "schd", "submodule": "sch", "rights": "edit", "urlname": "/edit" }
+            },
+            {
+                path: 'edit/:id', component: EditScheduleComponent, canActivate: [AuthGuard],
+                data: { "module": "schd", "submodule": "sch", "rights": "edit", "urlname": "/edit" }
             }
         ]
     },

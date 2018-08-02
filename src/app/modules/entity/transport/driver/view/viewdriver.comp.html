@@ -75,6 +75,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row clearfix" *ngIf="!row.isowner">
+                                    <div class="col-md-12">
+                                        <span class="font-bold">Owner : </span> {{row.ownenttname}}
+                                    </div>
+                                </div>
                             </p-panel>
                         </div>
                     </ng-template>
@@ -89,7 +94,12 @@
                             <img alt="{{row.drivername}}" src="{{global.uploadurl + row.FilePath}}" onerror="this.src='assets/img/default-male.png';" height="40px" width="40px">
                         </ng-template>
                     </p-column>
-                    <p-column field="drivername" header="Driver Name" [style]="{'width':'200px','text-align':'left'}"></p-column>
+                    <p-column header="Driver Name" [style]="{'width':'200px','text-align':'left'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.drivername}} <br />
+                            <span *ngIf="!row.isowner"><b>Owner : </b>{{row.ownenttname}}</span>
+                        </ng-template>
+                    </p-column>
                     <p-column field="aadharno" header="Aadhar No" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="address" header="Address" [style]="{'text-align': 'left'}"></p-column>
                     <p-column field="mobileno1" header="Mobile" [style]="{'width':'100px', 'text-align':'left'}"></p-column>

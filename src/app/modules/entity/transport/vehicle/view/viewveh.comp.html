@@ -25,9 +25,14 @@
         <div class="row clearfix">
             <div class="col-md-12">
                 <p-dataTable [value]="vehicleDT | filterBy: {'vehiclename': srcvehname}">
-                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
+                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column field="vehiclename" header="Vehicle Name" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
-                    <p-column field="vehregno" header="Vehicle Registration No" [style]="{'width':'300px', 'text-align':'left'}"></p-column>
+                    <p-column header="Vehicle Registration No" [style]="{'width':'300px','text-align':'left'}">
+                        <ng-template let-row="rowData" pTemplate type="body">
+                            {{row.vehregno}} <br />
+                            <span *ngIf="!row.isowner"><b>Owner : </b>{{row.ownenttname}}</span>
+                        </ng-template>
+                    </p-column>
                     <p-column field="simno" header="Sim No" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
                     <p-column field="imei" header="IMEI" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
                     <p-column field="mode" header="Status" [style]="{'width': '60px', 'text-align': 'left'}"></p-column>
