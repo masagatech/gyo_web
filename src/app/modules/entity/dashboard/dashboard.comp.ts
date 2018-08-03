@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { MessageService, messageType, LoginService, DashboardService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { DashboardService } from '@services';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { UIChart } from 'primeng/primeng';
 
@@ -132,7 +131,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     fillDropDownList() {
         var that = this;
-        var defayDT: any = [];
         var defsmstrDT: any = [];
 
         commonfun.loader();

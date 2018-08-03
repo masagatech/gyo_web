@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, DashboardService } from '@services';
 
 import { DashboardComponent } from './dashboard.comp';
-import { DashboardService } from '@services';
 
-import { DataTableModule, DataGridModule, PanelModule, ChartModule } from 'primeng/primeng';
+import { ChartModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -23,7 +22,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule, ChartModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), ChartModule
   ],
 
   providers: [AuthGuard, DashboardService]

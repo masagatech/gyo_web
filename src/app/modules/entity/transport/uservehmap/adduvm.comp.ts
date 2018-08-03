@@ -325,7 +325,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._uvmservice.getUserVehicleMap({
-            "flag": "mapping", "enttid": that._enttdetails.enttid, "uid": that.uid, "utype": that.utype
+            "flag": "mapping", "uid": that.uid, "utype": that.utype
         }).subscribe(data => {
             try {
                 that.vehicleDT = data.data;

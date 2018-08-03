@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule, CommonService } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService, DashboardService } from '@services';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -38,7 +38,7 @@ export const routes = [
         StudentDashboardComponent
     ],
 
-    providers: [AuthGuard, ERPDashboardService, PassengerReportsService, AssesmentReportService, CommonService]
+    providers: [AuthGuard, ERPDashboardService, PassengerReportsService, AssesmentReportService, CommonService, DashboardService]
 })
 
 export class HelpDeskModule {

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { MessageService, messageType, CommonService } from '@services';
-import { DashboardService } from '@services';
+import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
