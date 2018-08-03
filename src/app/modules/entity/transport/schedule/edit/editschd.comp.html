@@ -56,7 +56,7 @@
             <div class="col-md-6" *ngIf="events.length">
                 <div class="row clearfix">
                     <div class="col-md-12">
-                        <p-schedule [events]="events" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onEventClick)="getPickDropInfo($event);"></p-schedule>
+                        <p-schedule [events]="events" [header]="header" defaultDate="{{defaultDate}}" [eventLimit]="4" [editable]="true" (onEventClick)="getScheduleByCalendar($event);"></p-schedule>
                     </div>
                 </div>
             </div>

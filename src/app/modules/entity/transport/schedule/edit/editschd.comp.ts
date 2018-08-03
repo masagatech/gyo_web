@@ -229,8 +229,11 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
                 that.events = data.data;
 
                 if (that.btcidparams !== 0) {
+                    var frmdt = data.data[0].start;
+                    var todt = data.data[0].end;
+
+                    that.getPickDropInfo(frmdt, todt);
                     $(".batchid").prop("disabled", "disabled");
-                    that.getPickDropInfo(data.data);
                 }
 
                 that.refreshButtons();
@@ -983,8 +986,16 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
     // Read Schedule
 
-    getPickDropInfo(data) {
-        commonfun.loader();
+    getScheduleByCalendar(event) {
+        var that = this;
+
+        var frmdt = event.calEvent.start;;
+        var todt = event.calEvent.end;
+
+        that.getPickDropInfo(frmdt, todt);
+    }
+
+    getPickDropInfo(frmdt, todt) {
         var that = this;
 
         var pickalldata = [];
@@ -992,17 +1003,7 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
         var pickdata = [];
         var dropdata = [];
 
-        var frmdt = null;
-        var todt = null;
-
-        if (that.btcidparams == 0) {
-            frmdt = data.calEvent.start;
-            todt = data.calEvent.end;
-        }
-        else {
-            frmdt = data[0].start;
-            todt = data[0].end;
-        }
+        commonfun.loader();
 
         that._pickdropservice.getPickDropDetails({
             "flag": "view", "mode": "edit", "batchid": that.batchid, "frmdt": frmdt, "todt": todt,
