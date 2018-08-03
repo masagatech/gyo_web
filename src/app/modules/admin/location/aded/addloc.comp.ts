@@ -4,8 +4,6 @@ import { MessageService, messageType, LoginService } from '@services';
 import { LocationService } from '@services/master';;
 import { LoginUserModel } from '@models';
 
-declare let google: any;
-
 @Component({
     templateUrl: 'addloc.comp.html'
 })
@@ -30,8 +28,6 @@ export class AddLocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
     mode: string = "";
     isactive: boolean = true;
-
-    private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _locservice: LocationService, private cdRef: ChangeDetectorRef) {
@@ -275,37 +271,27 @@ export class AddLocationComponent implements OnInit, OnDestroy, AfterViewInit {
         let that = this;
         commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.ctid = params['id'];
+        that._locservice.getLocationDetails({ "flag": "edit", "id": that.ctid }).subscribe(data => {
+            try {
+                let _locdata = data.data[0]._locdata;
+                let _attachdocs = data.data[0]._attachdocs;
 
-                that._locservice.getLocationDetails({ "flag": "edit", "id": that.ctid }).subscribe(data => {
-                    try {
-                        let _locdata = data.data[0]._locdata;
-                        let _attachdocs = data.data[0]._attachdocs;
-
-                        that.ctcd = _locdata[0].loccode;
-                        that.ctnm = _locdata[0].locname;
-                        that.isactive = _locdata[0].isactive;
-                        that.mode = _locdata[0].mode;
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                that.ctcd = _locdata[0].loccode;
+                that.ctnm = _locdata[0].locname;
+                that.isactive = _locdata[0].isactive;
+                that.mode = _locdata[0].mode;
             }
-            else {
-                that.resetLocationFields();
-                commonfun.loaderhide();
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
-        });
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Active / Deactive Data
@@ -483,6 +469,6 @@ export class AddLocationComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy() {
-        this.subscribeParameters.unsubscribe();
+        
     }
 }

@@ -11,6 +11,7 @@ import { ERPDashboardService } from '@services/erp';
 import { PassengerReportsService, AssesmentReportService } from '@services/reports';
 
 import { HelpDeskComponent } from './helpdesk.comp';
+import { StudentDashboardComponent } from './student/studsdb.comp';
 
 import { AutoCompleteModule } from 'primeng/primeng';
 
@@ -29,8 +30,12 @@ export const routes = [
     imports: [RouterModule.forChild(routes),
         CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, NvD3Module
     ],
+
+    entryComponents: [StudentDashboardComponent],
+
     declarations: [
-        HelpDeskComponent
+        HelpDeskComponent,
+        StudentDashboardComponent
     ],
 
     providers: [AuthGuard, ERPDashboardService, PassengerReportsService, AssesmentReportService, CommonService]

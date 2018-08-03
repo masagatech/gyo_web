@@ -293,6 +293,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                     var dataResult = data.data[0].funsave_vehicleinfo;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
+                    var vehid = dataResult.vehid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -301,6 +302,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             // Saving Data To VTS
 
                             that.saveToVTS({
+                                "vtsid": vehid,
                                 "vhid": params.imei,
                                 "vhname": params.vehregno,
                                 "alwspeed": params.vehspeed,

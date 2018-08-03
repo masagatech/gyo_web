@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel } from '@models';
-import { DashboardService } from '@services/master';
+import { DashboardService } from '@services';
 
 import { UIChart } from 'primeng/primeng';
 

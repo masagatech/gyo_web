@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MessageService, messageType, CommonService } from '@services';
-import { ERPDashboardService } from '@services/erp';
+import { DashboardService } from '@services';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
@@ -15,7 +15,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     studid: number = 0;
     studname: string = "";
 
-    constructor(private _msg: MessageService, private _dbservice: ERPDashboardService, private _autoservice: CommonService) {
+    constructor(private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
@@ -80,7 +80,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             "wsautoid": that.data._enttdetails.wsautoid, "issysadmin": that.data.loginUser.issysadmin
         }
 
-        that._dbservice.getStudentDashboard(dbparams).subscribe(data => {
+        that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
                 
             }

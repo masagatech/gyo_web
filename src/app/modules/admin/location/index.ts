@@ -9,7 +9,7 @@ import { ViewLocationComponent } from './view/viewloc.comp';
 
 import { LocationService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule } from 'primeng/primeng';
+import { DataTableModule } from 'primeng/primeng';
 
 export const routes = [
   {

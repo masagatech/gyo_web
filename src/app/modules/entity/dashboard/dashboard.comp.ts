@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { Router } from '@angular/router';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { ERPDashboardService } from '@services/erp';
+import { DashboardService } from '@services';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { UIChart } from 'primeng/primeng';
 
@@ -57,8 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     colors: any = {};
 
-    constructor(private _dbservice: ERPDashboardService, private _autoservice: CommonService, private _loginservice: LoginService,
-        private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
+    constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService, private _dbservice: DashboardService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -88,7 +87,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 
-        that._autoservice.getDashboard(dbparams).subscribe(data => {
+        that._dbservice.getDashboard(dbparams).subscribe(data => {
             try {
                 that.dashboardDT = data.data;
             }

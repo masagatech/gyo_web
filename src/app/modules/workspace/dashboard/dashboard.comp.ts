@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
+import { DashboardService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: 'dashboard.comp.html',
-    providers: [CommonService]
+    templateUrl: 'dashboard.comp.html'
 })
 
 export class DashboardComponent implements OnInit, OnDestroy {
@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashboardDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _dbservice: DashboardService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "dbview": "ws"
         }
 
-        that._autoservice.getDashboard(dbparams).subscribe(data => {
+        that._dbservice.getDashboard(dbparams).subscribe(data => {
             try {
                 that.dashboardDT = data.data;
             }

@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LocationService } from '@services/master';
 import { LoginUserModel } from '@models';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     templateUrl: 'viewloc.comp.html'

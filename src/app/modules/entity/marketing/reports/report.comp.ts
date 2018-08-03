@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel } from '@models';
-import { DashboardService } from '@services/master';
-
-import { UIChart } from 'primeng/primeng';
+import { DashboardService } from '@services';
 
 @Component({
     templateUrl: 'report.comp.html'

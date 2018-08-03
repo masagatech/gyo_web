@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, AuthenticationService, CommonService } from '@services';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { MessageService, messageType, LoginService, AuthenticationService } from '@services';
+import { DashboardService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -8,8 +9,7 @@ declare var $: any;
 
 @Component({
     selector: '<leftdashboard></leftdashboard>',
-    templateUrl: 'leftdb.comp.html',
-    providers: [CommonService]
+    templateUrl: 'leftdb.comp.html'
 })
 
 export class LeftDashboardComponent implements OnInit, OnDestroy {
@@ -28,7 +28,7 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
     dashboardDT: any = [];
 
     constructor(private _router: Router, private _msg: MessageService, private _authservice: AuthenticationService,
-        private _loginservice: LoginService, private _autoservice: CommonService) {
+        private _loginservice: LoginService, private _dbservice: DashboardService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
@@ -57,7 +57,7 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "dbview": "ws"
         }
 
-        that._autoservice.getDashboard(dbparams).subscribe(data => {
+        that._dbservice.getDashboard(dbparams).subscribe(data => {
             try {
                 that.dashboardDT = data.data;
             }

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
-import { ERPDashboardService } from '@services/erp';
+import { DashboardService } from '@services';
 import { PassengerReportsService, AssesmentReportService } from '@services/reports';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -41,7 +41,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     exmseatno: string = "";
 
     constructor(private _router: Router, private _loginservice: LoginService, private _msg: MessageService,
-        private _dbservice: ERPDashboardService, private _psngrrptservice: PassengerReportsService,
+        private _dbservice: DashboardService, private _psngrrptservice: PassengerReportsService,
         private _assrptservice: AssesmentReportService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();

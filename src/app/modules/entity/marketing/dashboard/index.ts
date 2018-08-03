@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@services';
 
 import { MarketingDashboardComponent } from './dashboard.comp';
-import { DashboardService } from '@services/master';
+import { DashboardService } from '@services';
 
 import { LazyLoadEvent, DataTableModule, ChartModule } from 'primeng/primeng';
 

@@ -19,6 +19,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     uname: any = [];
     utype: string = "";
     enttid: number = 0;
+    wsautoid: number = 0;
     selecteudUser: any = [];
 
     vehicleDT: any = [];
@@ -53,6 +54,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.uname = "";
         this.utype = "";
         this.enttid = 0;
+        this.wsautoid = 0;
         this.selecteudUser = [];
         this.vehid = 0;
         this.vehregno = "";
@@ -95,6 +97,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         that.uname = event.uname;
         that.utype = event.utype;
         that.enttid = event.enttid;
+        that.wsautoid = event.wsautoid;
 
         that.getUserVehicleMap();
     }
@@ -126,7 +129,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     // Selected Vehicle
 
     selectVehicleData(event, arg) {
-        this.vehid = event.value;
+        this.vehid = event.vehid;
         this.vehname = event.vehname;
         this.vehregno = event.label;
 
@@ -141,7 +144,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         for (var i = 0; i < that.vehicleDT.length; i++) {
             var field = that.vehicleDT[i];
 
-            if (field.vehregno == this.vehregno) {
+            if (field.vehid == this.vehid) {
                 this._msg.Show(messageType.error, "Error", "Duplicate Vehicle not Allowed");
                 return true;
             }
@@ -155,7 +158,11 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var duplicateVehicle = that.isDuplicateVehicle();
 
         if (!duplicateVehicle) {
-            that.vehicleDT.push({ "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno, "attr": {} })
+            that.vehicleDT.push({
+                "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+                "attr": {}
+            })
         }
 
         that.vehid = 0;
@@ -176,16 +183,6 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         }
 
         this.clickedVehicle = item;
-
-        // var vehrow = null;
-        // var vehdata = this.vehicleDT.filter(a => a.vehid == item.vehid);
-
-        // for (var i = 0; i < vehdata.length; i++) {
-        //     vehrow = vehdata[i];
-        //     vehrow.attr.isrmtctrl = item.attr.isrmtctrl;
-        // }
-
-        // console.log(this.vehicleDT);
     }
 
     // Get Audit Parameter
@@ -226,7 +223,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var auditparams = {
             "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "uservehiclemap", "mdlname": "User Vehicle Map",
             "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            "enttid": that.enttid, "wsautoid": that.wsautoid, "createdby": that.loginUser.ucode
         };
 
         that._autoservice.saveAuditLog(auditparams);
@@ -244,8 +241,8 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "isadv": false,
             "advance": that.vehicleDT,
             "cuid": that.loginUser.ucode,
-            "enttid": that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid
+            "enttid": that.enttid,
+            "wsautoid": that.wsautoid
         }
 
         return params;
@@ -328,7 +325,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._uvmservice.getUserVehicleMap({
-            "flag": "details", "enttid": that._enttdetails.enttid, "uid": that.uid, "utype": that.utype
+            "flag": "mapping", "enttid": that._enttdetails.enttid, "uid": that.uid, "utype": that.utype
         }).subscribe(data => {
             try {
                 that.vehicleDT = data.data;
