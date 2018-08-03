@@ -23,6 +23,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     selecteudUser: any = [];
 
     vehicleDT: any = [];
+    autoid: number = 0;
     vehid: number = 0;
     vehname: string = "";
     vehregno: string = "";
@@ -56,6 +57,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.enttid = 0;
         this.wsautoid = 0;
         this.selecteudUser = [];
+        this.autoid = 0;
         this.vehid = 0;
         this.vehregno = "";
         this.selectedvehicle = [];
@@ -129,6 +131,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     // Selected Vehicle
 
     selectVehicleData(event, arg) {
+        this.autoid = event.value;
         this.vehid = event.vehid;
         this.vehname = event.vehname;
         this.vehregno = event.label;
@@ -159,12 +162,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
         if (!duplicateVehicle) {
             that.vehicleDT.push({
-                "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
-                "attr": {}
+                "autoid": that.autoid, "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "attr": {}
             })
         }
 
+        that.autoid = 0;
         that.vehid = 0;
         that.vehname = "";
         that.vehregno = "";
