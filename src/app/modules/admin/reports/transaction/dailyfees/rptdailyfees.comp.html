@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Entity</label>
-                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="fillAYAndClassDropDown()" tabindex="1">
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" tabindex="1">
                             <option [value]="0">All</option>
                             <option *ngFor="let row of entityDT" [value]="row.enttid">
                                 {{row.enttname}}

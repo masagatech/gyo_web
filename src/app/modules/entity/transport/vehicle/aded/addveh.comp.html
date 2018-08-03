@@ -11,6 +11,11 @@
                 </label>
                 </span>
             </li>
+            <li *ngIf="vehid == 0">
+                <a role="button" class="btn btn-theme" (click)="refreshVehicles()">
+                    <i class="material-icons">refresh</i>
+                </a>
+            </li>
             <li>
                 <a role="button" class="btn btn-theme" (click)="saveVehicleInfo()">
                     <i class="material-icons">save</i>

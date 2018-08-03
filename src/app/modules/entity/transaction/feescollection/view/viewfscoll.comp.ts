@@ -5,8 +5,6 @@ import { LoginUserModel, Globals } from '@models';
 import { FeesService } from '@services/erp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-declare var google: any;
-
 @Component({
     templateUrl: 'viewfscoll.comp.html'
 })

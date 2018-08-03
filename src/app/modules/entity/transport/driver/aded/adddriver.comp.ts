@@ -4,8 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { DriverService } from '@services/master';
 
-declare var google: any;
-
 @Component({
     templateUrl: 'adddriver.comp.html'
 })
@@ -313,13 +311,27 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.uploadDocsDT = [];
         that.choosePhotoLabel = "Upload Photo";
         that.isprivate = false;
+        
+        that.enabledDriverFields();
+    }
 
+    enabledDriverFields() {
+        $(".mobileno1").removeAttr("disabled");
         $(".hidewhen input").removeAttr("disabled");
         $(".hidewhen select").removeAttr("disabled");
         $(".hidewhen textarea").removeAttr("disabled");
+    }
 
-        $("#divPhotoUpload").prop("class", "show");
-        $("#divDocsUpload").prop("class", "show");
+    disabledDriverFields() {
+        $(".mobileno1").attr("disabled", "disabled");
+        $(".hidewhen input").attr("disabled", "disabled");
+        $(".hidewhen select").attr("disabled", "disabled");
+        $(".hidewhen textarea").attr("disabled", "disabled");
+    }
+
+    refreshDrivers() {
+        this.resetDriverFields();
+        this.mobileno1 = "";
     }
 
     // Save Data
@@ -390,8 +402,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that._msg.Show(messageType.success, "Success", msg);
 
                         if (msgid === "1") {
-                            that.resetDriverFields();
-                            that.mobileno1 = "";
+                            that.refreshDrivers();
                         }
                         else {
                             that.backViewData();
@@ -438,8 +449,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         var _attachdocs = data.data[0]._attachdocs;
 
                         if (_driverdata == null || _driverdata == undefined) {
-                            that.resetDriverFields();
-                            that.mobileno1 = "";
+                            that.refreshDrivers();
                         }
                         else {
                             that.driverid = _driverdata.autoid;
@@ -484,20 +494,12 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             }
 
                             if (that._enttdetails.enttid == _driverdata.enttid) {
-                                $(".mobileno1").removeAttr("disabled");
-                                $(".hidewhen input").removeAttr("disabled");
-                                $(".hidewhen select").removeAttr("disabled");
-                                $(".hidewhen textarea").removeAttr("disabled");
-
+                                that.enabledDriverFields();
                                 $("#divPhotoUpload").prop("class", "show");
                                 $("#divDocsUpload").prop("class", "show");
                             }
                             else {
-                                $(".mobileno1").attr("disabled", "disabled");
-                                $(".hidewhen input").attr("disabled", "disabled");
-                                $(".hidewhen select").attr("disabled", "disabled");
-                                $(".hidewhen textarea").attr("disabled", "disabled");
-
+                                that.disabledDriverFields();
                                 $("#divPhotoUpload").prop("class", "hide");
                                 $("#divDocsUpload").prop("class", "hide");
                             }
@@ -517,8 +519,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 })
             }
             else {
-                that.resetDriverFields();
-                that.mobileno1 = "";
+                that.refreshDrivers();
                 commonfun.loaderhide();
             }
         });
@@ -557,9 +558,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                                 }
                             }
                             else {
-                                $(".hidewhen input").attr("disabled", "disabled");
-                                $(".hidewhen select").attr("disabled", "disabled");
-                                $(".hidewhen textarea").attr("disabled", "disabled");
+                                that.disabledDriverFields();
 
                                 $("#divPhotoUpload").prop("class", "hide");
                                 $("#divDocsUpload").prop("class", "hide");

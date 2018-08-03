@@ -159,10 +159,31 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         this.d1str = "";
         this.vehurl = "";
         this.isprivate = false;
+
         this.setFromDateAndToDate();
-        
+        this.enabledVehicleFields();
+    }
+
+    enabledVehicleFields() {
+        $(".imei").removeAttr("disabled");
+        $(".vehregno").removeAttr("disabled");
+
         $(".hidewhen input").removeAttr("disabled");
         $(".hidewhen select").removeAttr("disabled");
+    }
+
+    disabledVehicleFields() {
+        $(".imei").attr("disabled", "disabled");
+        $(".vehregno").attr("disabled", "disabled");
+
+        $(".hidewhen input").attr("disabled", "disabled");
+        $(".hidewhen select").attr("disabled", "disabled");
+    }
+
+    refreshVehicles() {
+        this.resetVehicleFields();
+        this.imei = "";
+        this.vehregno = "";
     }
 
     // Save Data
@@ -170,8 +191,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     isValidateVehicle() {
         var that = this;
         var _vehregno = $("#invalidvehregno span").html();
-
-        console.log(_vehregno);
 
         if (that.imei == "") {
             that._msg.Show(messageType.error, "Error", "Enter IMEI");
@@ -305,9 +324,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         }
 
                         if (msgid === "1") {
-                            that.resetVehicleFields();
-                            that.imei = "";
-                            that.vehregno = "";
+                            that.refreshVehicles();
                         }
                         else {
                             that.backViewData();
@@ -360,9 +377,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 }).subscribe(data => {
                     try {
                         if (data.data.length == 0) {
-                            that.resetVehicleFields();
-                            that.imei = "";
-                            that.vehregno = "";
+                            that.refreshVehicles();
                         }
                         else {
                             var _vehdata = data.data[0];
@@ -397,18 +412,10 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             that.mode = _vehdata.mode;
 
                             if (that._enttdetails.enttid == _vehdata.ownenttid) {
-                                $(".imei").removeAttr("disabled");
-                                $(".vehregno").removeAttr("disabled");
-
-                                $(".hidewhen input").removeAttr("disabled");
-                                $(".hidewhen select").removeAttr("disabled");
+                                that.enabledVehicleFields();
                             }
                             else {
-                                $(".imei").attr("disabled", "disabled");
-                                $(".vehregno").attr("disabled", "disabled");
-
-                                $(".hidewhen input").attr("disabled", "disabled");
-                                $(".hidewhen select").attr("disabled", "disabled");
+                                that.disabledVehicleFields();
                             }
                         }
                     }
@@ -467,9 +474,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                                 }
                             }
                             else {
-                                $(".hidewhen input").attr("disabled", "disabled");
-                                $(".hidewhen select").attr("disabled", "disabled");
-
                                 that.autoid = _vehdata.autoid;
                                 that.vehid = _vehdata.vehid;
                                 that.imei = _vehdata.imei;
@@ -497,6 +501,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                                 that.vehurl = _vehdata.url;
                                 that.isactive = _vehdata.isactive;
                                 that.mode = _vehdata.mode;
+
+                                that.disabledVehicleFields();
                             }
                         }
                     }
