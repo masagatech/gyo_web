@@ -23,6 +23,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     selecteudUser: any = [];
 
     vehicleDT: any = [];
+    vehicleGridDT: any = [];
     autoid: number = 0;
     vehid: number = 0;
     vehname: string = "";
@@ -62,6 +63,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehregno = "";
         this.selectedvehicle = [];
         this.vehicleDT = [];
+        this.vehicleGridDT = [];
 
         this.clickedVehicle = { "attr": {} };
     }
@@ -136,6 +138,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.vehname = event.vehname;
         this.vehregno = event.label;
 
+        $("#divvehattr").attr("class", "hide");
         this.addVehicleDT();
     }
 
@@ -163,7 +166,14 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         if (!duplicateVehicle) {
             that.vehicleDT.push({
                 "autoid": that.autoid, "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "attr": {}
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "attr": {},
+                "isview": true, "isedit": true
+            })
+
+            that.vehicleGridDT.push({
+                "autoid": that.autoid, "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "attr": {},
+                "isview": true, "isedit": true
             })
         }
 
@@ -178,11 +188,23 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     deleteVehicle(row) {
         this.vehicleDT.splice(this.vehicleDT.indexOf(row), 1);
+        this.vehicleGridDT.splice(this.vehicleGridDT.indexOf(row), 1);
     }
 
     onVehicleClick(item: any) {
+        $("#divvehattr").attr("class", "show");
+
         if (item.attr == undefined) {
             item.attr = {};
+        }
+
+        if (item.isedit) {
+            $("#divattr input").removeAttr("disabled");
+            $("#divattr button").removeAttr("disabled");
+        }
+        else {
+            $("#divattr input").attr("disabled", "disabled");
+            $("#divattr button").attr("disabled", "disabled");
         }
 
         this.clickedVehicle = item;
@@ -192,14 +214,24 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     getAuditData(selectedVehicle) {
         var that = this;
+
+        var _advance = [];
         var _auditdt = [];
+
+        for (var i = 0; i < that.vehicleDT.length; i++) {
+            _advance.push({
+                "autoid": that.vehicleDT[i].autoid, "vehid": that.vehicleDT[i].vehid, "vehname": that.vehicleDT[i].vehname,
+                "vehregno": that.vehicleDT[i].vehregno, "enttid": that.vehicleDT[i].enttid, "wsautoid": that.vehicleDT[i].wsautoid,
+                "attr": that.vehicleDT[i].attr
+            })
+        }
 
         _auditdt = [
             { "key": "User ID", "val": that.uid, "fldname": "uid", "fldtype": "text" },
             { "key": "User Name", "val": that.uname, "fldname": "uid", "fldtype": "text" },
             { "key": "User Type", "val": that.utype, "fldname": "utype", "fldtype": "text" },
             { "key": "Vehicle IDs", "val": selectedVehicle, "fldname": "vehid", "fldtype": "text" },
-            { "key": "Advance", "val": that.vehicleDT, "fldname": "advance", "fldtype": "table" },
+            { "key": "Advance", "val": _advance, "fldname": "advance", "fldtype": "table" },
         ]
 
         return _auditdt;
@@ -236,13 +268,22 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     getUserVehicleParams(selveh) {
         var that = this;
+        var _advance = [];
+
+        for (var i = 0; i < that.vehicleDT.length; i++) {
+            _advance.push({
+                "autoid": that.vehicleDT[i].autoid, "vehid": that.vehicleDT[i].vehid, "vehname": that.vehicleDT[i].vehname,
+                "vehregno": that.vehicleDT[i].vehregno, "enttid": that.vehicleDT[i].enttid, "wsautoid": that.vehicleDT[i].wsautoid,
+                "attr": that.vehicleDT[i].attr
+            })
+        }
 
         var params = {
             "uid": that.uid,
             "utype": that.utype,
             "vehid": selveh,
             "isadv": false,
-            "advance": that.vehicleDT,
+            "advance": _advance,
             "cuid": that.loginUser.ucode,
             "enttid": that.enttid,
             "wsautoid": that.wsautoid
@@ -328,10 +369,11 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         var that = this;
 
         that._uvmservice.getUserVehicleMap({
-            "flag": "mapping", "uid": that.uid, "utype": that.utype
+            "flag": "mapping", "uid": that.uid, "utype": that.utype, "enttid": that._enttdetails.enttid
         }).subscribe(data => {
             try {
                 that.vehicleDT = data.data;
+                that.vehicleGridDT = data.data.filter(a => a.isview == true);
 
                 var selectedVehicle: string[] = [];
                 selectedVehicle = Object.keys(that.vehicleDT).map(function (k) { return that.vehicleDT[k].vehid });

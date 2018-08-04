@@ -19,7 +19,10 @@
                             <div class="form-line">
                                 <label class="control-label">Select User Name</label>
                                 <p-autoComplete id="uname" name="uname" [(ngModel)]="selecteudUser" [tabindex]="1" (onSelect)="selectUserData($event, 1)" [suggestions]="usersDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
-                                <span class="material-icons inputsearchico pad-20">search</span>
+
+                                <span class="material-icons inputabsolutesearchico pad-20">
+                                    <a role="button" (click)="getUserVehicleMap()" class="btn btn-search">search</a>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -44,12 +47,12 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <ngx-sortable [items]="vehicleDT" [listStyle]="{ width:'auto', height:'300px'}" [name]="'Assigned Vehicles'">
+                        <ngx-sortable [items]="vehicleGridDT" [listStyle]="{ width:'auto', height:'300px'}" [name]="'Assigned Vehicles'">
                             <ng-template let-item>
                                 <div class="sortable-list-item" (click)="onVehicleClick(item)">
                                     <div class="name col-black">
                                         <i class="fa fa-bus"></i> {{item.vehname}}
-                                        <button type="button" class="btn btn-danger pull-right sortbbtn" (click)="deleteVehicle(item)">
+                                        <button type="button" class="btn btn-danger pull-right sortbbtn" *ngIf="item.isedit" (click)="deleteVehicle(item)">
                                             <i class="material-icons">delete</i>
                                         </button>
                                     </div>
@@ -66,80 +69,82 @@
     </div>
 
     <div class="col-md-4">
-        <div class="card">
-            <div class="body">
-                <h4>{{clickedVehicle.vehname}}</h4>
+        <div id="divvehattr" class="hide">
+            <div id="divattr" class="card">
+                <div class="body">
+                    <h4>{{clickedVehicle.vehname}}</h4>
 
-                <div class="list-group">
-                    <li class="list-group-item list-group-item-default bg-purple">
-                        <h4 class="list-group-item-heading">Remote Control Allow</h4>
+                    <div class="list-group">
+                        <li class="list-group-item list-group-item-default bg-purple">
+                            <h4 class="list-group-item-heading">Remote Control Allow</h4>
 
-                        <span class="pull-right">
-                            <input type="checkbox" id="rmtctrl" [(ngModel)]="clickedVehicle.attr.isrmtctrl" class="chk-col-red filled-in">
-                            <label for="rmtctrl"></label>
-                        </span>
-
-                        <p class="list-group-item-text">By allowing this user can send command to vehicle from app.</p>
-                    </li>
-                    <li class="list-group-item list-group-item-default bg-black">
-                        <h4 class="list-group-item-heading">Remote Control Allow</h4>
-                        <p class="list-group-item-text">All Blank = 24hours</p>
-                    </li>
-
-                    <li class="list-group-item list-group-item-default bg-white">
-                        <div class="input-group">
-                            <input type="time" [(ngModel)]="clickedVehicle.attr.frmtime1" class="form-control bordered" placeholder="From Time" />
-                            <span class="input-group-addon">-</span>
-                            <input type="time" [(ngModel)]="clickedVehicle.attr.totime1" class="form-control bordered" placeholder="To Time" />
-                            <span class="input-group-addon">
-                                <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
-                                    <i class="fa fa-close"></i>
-                                </button>
+                            <span class="pull-right">
+                                <input type="checkbox" id="rmtctrl" [(ngModel)]="clickedVehicle.attr.isrmtctrl" class="chk-col-red filled-in">
+                                <label for="rmtctrl"></label>
                             </span>
-                        </div>
-                        <div class="input-group">
-                            <input type="time" [(ngModel)]="clickedVehicle.attr.frmtime2" class="form-control bordered" placeholder="From Time" />
-                            <span class="input-group-addon">-</span>
-                            <input type="time" [(ngModel)]="clickedVehicle.attr.totime2" class="form-control bordered" placeholder="To Time" />
-                            <span class="input-group-addon">
-                                <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
-                                    <i class="fa fa-close"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input type="time" [(ngModel)]="clickedVehicle.attr.frmtime3" class="form-control bordered" placeholder="From Time" />
-                            <span class="input-group-addon">-</span>
-                            <input type="time" [(ngModel)]="clickedVehicle.attr.totime3" class="form-control bordered" placeholder="To Time" />
-                            <span class="input-group-addon">
-                                <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
-                                    <i class="fa fa-close"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </li>
-                    <li class="list-group-item list-group-item-default bg-black">
-                        <input type="checkbox" id="ismon" [(ngModel)]="clickedVehicle.attr.ismon" class="chk-col-red filled-in">
-                        <label for="ismon">Mon</label>
 
-                        <input type="checkbox" id="istue" [(ngModel)]="clickedVehicle.attr.istue" class="chk-col-red filled-in">
-                        <label for="istue">Tue</label>
+                            <p class="list-group-item-text">By allowing this user can send command to vehicle from app.</p>
+                        </li>
+                        <li class="list-group-item list-group-item-default bg-black">
+                            <h4 class="list-group-item-heading">Remote Control Allow</h4>
+                            <p class="list-group-item-text">All Blank = 24hours</p>
+                        </li>
 
-                        <input type="checkbox" id="iswed" [(ngModel)]="clickedVehicle.attr.iswed" class="chk-col-red filled-in">
-                        <label for="iswed">Wed</label>
+                        <li class="list-group-item list-group-item-default bg-white">
+                            <div class="input-group">
+                                <input type="time" [(ngModel)]="clickedVehicle.attr.frmtime1" class="form-control bordered" placeholder="From Time" />
+                                <span class="input-group-addon">-</span>
+                                <input type="time" [(ngModel)]="clickedVehicle.attr.totime1" class="form-control bordered" placeholder="To Time" />
+                                <span class="input-group-addon">
+                                    <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <input type="time" [(ngModel)]="clickedVehicle.attr.frmtime2" class="form-control bordered" placeholder="From Time" />
+                                <span class="input-group-addon">-</span>
+                                <input type="time" [(ngModel)]="clickedVehicle.attr.totime2" class="form-control bordered" placeholder="To Time" />
+                                <span class="input-group-addon">
+                                    <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                <input type="time" [(ngModel)]="clickedVehicle.attr.frmtime3" class="form-control bordered" placeholder="From Time" />
+                                <span class="input-group-addon">-</span>
+                                <input type="time" [(ngModel)]="clickedVehicle.attr.totime3" class="form-control bordered" placeholder="To Time" />
+                                <span class="input-group-addon">
+                                    <button class="btn btn-xs btn-default bg-transparent" style="box-shadow: none;">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="list-group-item list-group-item-default bg-black">
+                            <input type="checkbox" id="ismon" [(ngModel)]="clickedVehicle.attr.ismon" class="chk-col-red filled-in">
+                            <label for="ismon">Mon</label>
 
-                        <input type="checkbox" id="isthu" [(ngModel)]="clickedVehicle.attr.isthu" class="chk-col-red filled-in">
-                        <label for="isthu">Thu</label>
+                            <input type="checkbox" id="istue" [(ngModel)]="clickedVehicle.attr.istue" class="chk-col-red filled-in">
+                            <label for="istue">Tue</label>
 
-                        <input type="checkbox" id="isfri" [(ngModel)]="clickedVehicle.attr.isfri" class="chk-col-red filled-in">
-                        <label for="isfri">Fri</label>
+                            <input type="checkbox" id="iswed" [(ngModel)]="clickedVehicle.attr.iswed" class="chk-col-red filled-in">
+                            <label for="iswed">Wed</label>
 
-                        <input type="checkbox" id="issat" [(ngModel)]="clickedVehicle.attr.issat" class="chk-col-red filled-in">
-                        <label for="issat">Sat</label>
+                            <input type="checkbox" id="isthu" [(ngModel)]="clickedVehicle.attr.isthu" class="chk-col-red filled-in">
+                            <label for="isthu">Thu</label>
 
-                        <input type="checkbox" id="issun" [(ngModel)]="clickedVehicle.attr.issun" class="chk-col-red filled-in">
-                        <label for="issun">Sun</label>
-                    </li>
+                            <input type="checkbox" id="isfri" [(ngModel)]="clickedVehicle.attr.isfri" class="chk-col-red filled-in">
+                            <label for="isfri">Fri</label>
+
+                            <input type="checkbox" id="issat" [(ngModel)]="clickedVehicle.attr.issat" class="chk-col-red filled-in">
+                            <label for="issat">Sat</label>
+
+                            <input type="checkbox" id="issun" [(ngModel)]="clickedVehicle.attr.issun" class="chk-col-red filled-in">
+                            <label for="issun">Sun</label>
+                        </li>
+                    </div>
                 </div>
             </div>
         </div>
