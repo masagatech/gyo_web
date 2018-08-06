@@ -3,7 +3,8 @@ import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
-import { StudentDashboardComponent } from './student/studsdb.comp';
+import { PassengerDashboardComponent } from './passenger/psngrdb.comp';
+import { DriverDashboardComponent } from './driver/drvdb.comp';
 
 @Component({
     templateUrl: './helpdesk.comp.html'
@@ -42,14 +43,28 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
         (<HOSTComponent>componentRef.instance).data = data;
     }
 
-    openStudentDashboard() {
-        this.hdtitle = "Student Dashboard";
-        this.loadComponent(StudentDashboardComponent, { loginUser: this.loginUser, _enttdetails: this._enttdetails });
-        commonfun.loader("#loadercontrol", "pulse", "Loading Student Dashboard...");
+    openHelpDeskDashboard(flag) {
+        var params = { loginUser: this.loginUser, _enttdetails: this._enttdetails };
 
-        event.stopPropagation();
+        if (flag == "passenger") {
+            this.hdtitle = this._enttdetails.psngrtype + " Dashboard";
+            this.loadComponent(PassengerDashboardComponent, params);
 
-        commonfun.loaderhide("#loadercontrol", "pulse", "Loading Student Dashboard...");
+            commonfun.loader("#loadercontrol", "pulse", "Loading " + this._enttdetails.psngrtype + " Dashboard...");
+            event.stopPropagation();
+            commonfun.loaderhide("#loadercontrol", "pulse", "Loading " + this._enttdetails.psngrtype + " Dashboard...");
+        }
+        else if (flag == "driver") {
+            this.hdtitle = "Driver Dashboard";
+            this.loadComponent(DriverDashboardComponent, params);
+            
+            commonfun.loader("#loadercontrol", "pulse", "Loading Driver Dashboard...");
+            event.stopPropagation();
+            commonfun.loaderhide("#loadercontrol", "pulse", "Loading Driver Dashboard...");
+        }
+        else if (flag == "vehicle") {
+            this._msg.Show(messageType.info, "Info", "Pending");
+        }
     }
 
     ngOnDestroy() {

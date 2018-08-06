@@ -1,0 +1,117 @@
+<div class="header">
+    <div class="row clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="form-line">
+                    <label class="control-label">{{data._enttdetails.psngrtype}} Name <strong>*</strong></label>
+                    <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectPassenger" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-12">
+                        <a role="button" (click)="viewPassengerDashboard()" class="btn btn-search">arrow_forward</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 text-right pad-20">
+            <div class="form-group">
+                <button type="button" class="btn btn-theme btn-sm" (click)="viewProfile()">View Profile</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Personal Details
+                </div>
+                <div class="body" *ngFor="let row of infoDT">
+                    <p><b>{{data._enttdetails.entttype}} : </b>{{row.schoolname}}</p>
+                    <p><b>{{data._enttdetails.psngrtype}} : </b>{{row.studentname}}</p>
+
+                    <div class="row clearfix" title="{{row.pregdate}}">
+                        <div class="col-md-10">
+                            <b>Father : </b> {{row.fathername}} ({{row.mobileno1}})
+                        </div>
+                        <div class="col-md-2">
+                            <span class="material-icons" *ngIf="row.isprntmob1 == 'Y'">done</span>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" title="{{row.mregdate}}">
+                        <div class="col-md-10">
+                            <b>Mother : </b> {{row.mothername}} ({{row.mobileno2}})
+                        </div>
+                        <div class="col-md-2">
+                            <span class="material-icons" *ngIf="row.isprntmob2 == 'Y'">done</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header-title">
+                    Fees
+                </div>
+                <div class="body">
+                    <div *ngFor="let row of feesDT">
+                        <p><b>Paid Fees : </b>{{row.paidfees}}</p>
+                        <p><b>Pending Fees : </b>{{row.pendfees}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="header-title">
+                    Schedule
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-md-6" *ngFor="let row of scheduleDT">
+                            <p><b>Schedule : </b>{{row.schdlname}}</p>
+                            <p><b>Batch : </b>{{row.batchname}}</p>
+                            <p><b>Day : </b>{{row.day}}</p>
+                            <p><b>Time : </b>{{row.schdltime}}</p>
+                            <p><b>Driver : </b>{{row.drivername}}</p>
+                            <p><b>Vehicle : </b>{{row.vehiclename}}</p>
+                            <p><b>Route : </b>{{row.rtname}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header-title">
+                    Notification
+                </div>
+                <div class="body">
+                    <div *ngFor="let row of notificationDT | groupBy: 'typname'">
+                        <h4>{{row.key}}</h4>
+
+                        <div *ngFor="let drow of row.value">
+                            <div class="row clearfix">
+                                <div class="col-md-8">
+                                    <p>{{drow.msg1}}</p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <p>{{drow.crdate1}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-md-8">
+                                    <p>{{drow.msg2}}</p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <p>{{drow.crdate2}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

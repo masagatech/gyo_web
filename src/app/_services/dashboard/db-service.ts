@@ -19,6 +19,10 @@ export class DashboardService {
         return this._dataserver.post("getHelpDesk", req)
     }
 
+    getScheduleReports(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getScheduleReports", req)
+    }
+
     getERPDashboard(req: any) {
         return this._dataserver.post(Globals.erproute + "getERPDashboard", req)
     }

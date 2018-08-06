@@ -1,0 +1,154 @@
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { MessageService, messageType, CommonService, DashboardService } from '@services';
+import { Common } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+
+@Component({
+    templateUrl: './drvdb.comp.html'
+})
+
+export class DriverDashboardComponent implements OnInit, OnDestroy {
+    @Input() data: any;
+
+    autoDriverDT: any = [];
+    selectDriver: any = {};
+    drvid: number = 0;
+    drvname: string = "";
+
+    infoDT: any = [];
+    vehicleDT: any = [];
+
+    constructor(private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
+    }
+
+    ngOnInit() {
+        this.viewDriverDashboard();
+    }
+
+    // Auto Completed Driver
+
+    getDriverData(event) {
+        let query = event.query;
+
+        this._autoservice.getAutoData({
+            "flag": "driver",
+            "uid": this.data.loginUser.uid,
+            "ucode": this.data.loginUser.ucode,
+            "utype": this.data.loginUser.utype,
+            "enttid": this.data._enttdetails.enttid,
+            "wsautoid": this.data._enttdetails.wsautoid,
+            "issysadmin": this.data._enttdetails.issysadmin,
+            "search": query
+        }).subscribe((data) => {
+            this.autoDriverDT = data.data;
+        }, err => {
+            this._msg.Show(messageType.error, "Error", err);
+        }, () => {
+
+        });
+    }
+
+    // Selected Driver
+
+    selectDriverData(event) {
+        this.drvid = event.value;
+        this.drvname = event.label;
+
+        Cookie.set("_drvid_", this.drvid.toString());
+        Cookie.set("_drvname_", this.drvname);
+
+        this.viewDriverDashboard();
+    }
+
+    public viewDriverDashboard() {
+        var that = this;
+
+        if (Cookie.get('_drvname_') != null) {
+            that.drvid = parseInt(Cookie.get('_drvid_'));
+            that.drvname = Cookie.get('_drvname_');
+
+            that.selectDriver = { value: that.drvid, label: that.drvname }
+        }
+
+        that.getDashboard("info");
+        that.getDashboard("vehicle");
+        that.getDriverTrips("html");
+    }
+
+    getDashboard(type) {
+        var that = this;
+        commonfun.loader();
+
+        var dbparams = {
+            "flag": "driver", "type": type, "drvid": that.drvid, "ayid": that.data._enttdetails.ayid,
+            "enttid": that.data._enttdetails.enttid, "wsautoid": that.data._enttdetails.wsautoid,
+            "uid": that.data.loginUser.uid, "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
+        }
+
+        that._dbservice.getHelpDesk(dbparams).subscribe(data => {
+            try {
+                if (type == "info") {
+                    that.infoDT = data.data;
+                }
+                else if (type == "vehicle") {
+                    that.vehicleDT = data.data;
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Get Driver Trips
+
+    getDriverTrips(format) {
+        var that = this;
+
+        commonfun.loader();
+
+        var params = {
+            "flag": "feessummary", "type": "download", "uid": that.drvid, "utype": "driver", "format": format
+        }
+
+        if (format == "html") {
+            commonfun.loader();
+
+            // that._dbservice.getScheduleReports(params).subscribe(data => {
+            //     try {
+            //         $("#divtrip").html(data._body);
+            //     }
+            //     catch (e) {
+            //         that._msg.Show(messageType.error, "Error", e);
+            //     }
+
+            //     commonfun.loaderhide();
+            // }, err => {
+            //     that._msg.Show(messageType.error, "Error", err);
+            //     console.log(err);
+            //     commonfun.loaderhide();
+            // }, () => {
+
+            // })
+
+            $("#divtrip")[0].src = Common.getReportUrl("getScheduleReports", params);
+        }
+        else {
+            window.open(Common.getReportUrl("getScheduleReports", params));
+            commonfun.loaderhide();
+        }
+    }
+
+    ngOnDestroy() {
+
+    }
+}

@@ -58,12 +58,12 @@ export class AddScheduleComponent implements OnInit {
     instrunction: string = "";
 
     pickwkdays: string = "";
-    pickfromdate: any = "";
-    picktodate: any = "";
+    pickfrmdt: any = "";
+    picktodt: any = "";
     
     dropwkdays: string = "";
-    dropfromdate: any = "";
-    droptodate: any = "";
+    dropfrmdt: any = "";
+    droptodt: any = "";
 
     routeDT: any = [];
     pickrtid: number = 0;
@@ -151,11 +151,11 @@ export class AddScheduleComponent implements OnInit {
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-        this.pickfromdate = this.formatDate(today);
-        this.dropfromdate = this.formatDate(today);
+        this.pickfrmdt = this.formatDate(today);
+        this.dropfrmdt = this.formatDate(today);
 
-        this.picktodate = this.formatDate(today.setFullYear(2018));
-        this.droptodate = this.formatDate(today.setFullYear(2018));
+        this.picktodt = this.formatDate(today.setFullYear(2018));
+        this.droptodt = this.formatDate(today.setFullYear(2018));
     }
 
     // Auto Completed Attendent
@@ -607,8 +607,8 @@ export class AddScheduleComponent implements OnInit {
 
                     if (pickdata.length !== 0) {
                         that.pickwkdays = pickdata[0].wkdays;
-                        that.pickfromdate = pickdata[0].frmdt;
-                        that.picktodate = pickdata[0].todt;
+                        that.pickfrmdt = pickdata[0].frmdt;
+                        that.picktodt = pickdata[0].todt;
                         that.pickdriverid = pickdata[0].driverid;
                         that.pickvehicleid = pickdata[0].vehicleid;
                         that.pickpsngrtype = pickdata[0].psngrtype;
@@ -619,8 +619,8 @@ export class AddScheduleComponent implements OnInit {
                     }
                     else {
                         that.pickwkdays = "";
-                        that.pickfromdate = "";
-                        that.picktodate = "";
+                        that.pickfrmdt = "";
+                        that.picktodt = "";
                         that.pickdriverid = 0;
                         that.pickvehicleid = 0;
                         that.pickpsngrtype = "byrt";
@@ -641,8 +641,8 @@ export class AddScheduleComponent implements OnInit {
 
                     if (dropdata.length !== 0) {
                         that.dropwkdays = dropdata[0].wkdays;
-                        that.dropfromdate = dropdata[0].frmdt;
-                        that.droptodate = dropdata[0].todt;
+                        that.dropfrmdt = dropdata[0].frmdt;
+                        that.droptodt = dropdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropvehicleid = dropdata[0].vehicleid;
                         that.droppsngrtype = dropdata[0].psngrtype;
@@ -653,8 +653,8 @@ export class AddScheduleComponent implements OnInit {
                     }
                     else {
                         that.dropwkdays = "";
-                        that.dropfromdate = "";
-                        that.droptodate = "";
+                        that.dropfrmdt = "";
+                        that.droptodt = "";
                         that.dropdriverid = 0;
                         that.dropvehicleid = 0;
                         that.droppsngrtype = "byrt";
@@ -712,13 +712,28 @@ export class AddScheduleComponent implements OnInit {
         }
 
         if (that.ispickup) {
+            if (that.pickfrmdt === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up From Date");
+                $(".pickfrmdt").focus();
+                return false;
+            }
+            if (that.picktodt === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Pick Up To Date");
+                $(".picktodt").focus();
+                return false;
+            }
+            if (that.pickfrmdt > that.picktodt) {
+                that._msg.Show(messageType.error, "Error", "Sholuld Be Pick Up To Date Greater Than Pick Up From Date");
+                $(".picktodt").focus();
+                return false;
+            }
             if (that.pickdriverid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
                 $(".pdrv").focus();
                 return false;
             }
             if (that.pickvehicleid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle No");
+                that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle");
                 $(".pveh").focus();
                 return false;
             }
@@ -737,13 +752,28 @@ export class AddScheduleComponent implements OnInit {
         }
 
         if (that.isdrop) {
+            if (that.dropfrmdt === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop From Date");
+                $(".dropfrmdt").focus();
+                return false;
+            }
+            if (that.droptodt === "") {
+                that._msg.Show(messageType.error, "Error", "Enter Drop To Date");
+                $(".droptodt").focus();
+                return false;
+            }
+            if (that.dropfrmdt > that.droptodt) {
+                that._msg.Show(messageType.error, "Error", "Sholuld Be Drop To Date Greater Than Drop From Date");
+                $(".droptodt").focus();
+                return false;
+            }
             if (that.dropdriverid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Drop Driver");
                 $(".ddrv").focus();
                 return false;
             }
             if (that.dropvehicleid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Drop Vehicle No");
+                that._msg.Show(messageType.error, "Error", "Select Drop Vehicle");
                 $(".dveh").focus();
                 return false;
             }
@@ -847,8 +877,8 @@ export class AddScheduleComponent implements OnInit {
                     "studdt": _pickstudDT,
                     "studsid": _pickstudsid,
                     "inst": that.instrunction,
-                    "frmdt": that.pickfromdate,
-                    "todt": that.picktodate,
+                    "frmdt": that.pickfrmdt,
+                    "todt": that.picktodt,
                     "typ": "p",
                     "psngrtype": that.pickpsngrtype,
                     "isactive": that.ispickup
@@ -878,8 +908,8 @@ export class AddScheduleComponent implements OnInit {
                     "studdt": _dropstudDT,
                     "studsid": _dropstudsid,
                     "inst": that.instrunction,
-                    "frmdt": that.dropfromdate,
-                    "todt": that.droptodate,
+                    "frmdt": that.dropfrmdt,
+                    "todt": that.droptodt,
                     "typ": "d",
                     "psngrtype": that.droppsngrtype,
                     "isactive": that.isdrop

@@ -73,12 +73,12 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
     instrunction: string = "";
 
     pickwkdays: string = "";
-    pickfromdate: any = "";
-    picktodate: any = "";
+    pickfrmdt: any = "";
+    picktodt: any = "";
 
     dropwkdays: string = "";
-    dropfromdate: any = "";
-    droptodate: any = "";
+    dropfrmdt: any = "";
+    droptodt: any = "";
 
     routeDT: any = [];
     pickrtid: number = 0;
@@ -210,10 +210,10 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
     // Selected Calendar Date
 
     getPDDate(event) {
-        this.pickfromdate = this.formatDate(event.date);
-        this.picktodate = this.formatDate(event.date);
-        this.dropfromdate = this.formatDate(event.date);
-        this.droptodate = this.formatDate(event.date);
+        this.pickfrmdt = this.formatDate(event.date);
+        this.picktodt = this.formatDate(event.date);
+        this.dropfrmdt = this.formatDate(event.date);
+        this.droptodt = this.formatDate(event.date);
     }
 
     getPDCalendar() {
@@ -688,8 +688,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
                 "studdt": _pickstudDT,
                 "studsid": _pickstudsid,
                 "inst": that.instrunction,
-                "frmdt": that.pickfromdate,
-                "todt": that.picktodate,
+                "frmdt": that.pickfrmdt,
+                "todt": that.picktodt,
                 "typ": "p",
                 "psngrtype": that.pickpsngrtype,
                 "isactive": that.ispickup
@@ -719,8 +719,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
                 "studdt": _dropstudDT,
                 "studsid": _dropstudsid,
                 "inst": that.instrunction,
-                "frmdt": that.dropfromdate,
-                "todt": that.droptodate,
+                "frmdt": that.dropfrmdt,
+                "todt": that.droptodt,
                 "typ": "d",
                 "psngrtype": that.droppsngrtype,
                 "isactive": that.isdrop
@@ -754,8 +754,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
             { "key": "Instrunction", "val": that.instrunction, "fldname": "instrunction", "fldtype": "text" },
 
             { "key": "Type", "val": "Pickup", "fldname": "typ", "fldtype": "text" },
-            { "key": "Pick From Date", "val": that.pickfromdate, "fldname": "pickfromdate", "fldtype": "date" },
-            { "key": "Pick To Date", "val": that.picktodate, "fldname": "picktodate", "fldtype": "date" },
+            { "key": "Pick From Date", "val": that.pickfrmdt, "fldname": "pickfrmdt", "fldtype": "date" },
+            { "key": "Pick To Date", "val": that.picktodt, "fldname": "picktodt", "fldtype": "date" },
             { "key": "Pick Driver Name", "val": ddltype == "old" ? that.pickdrivername : $("#pickdrvid option:selected").text().trim(), "fldname": "pickdriverid", "fldtype": "ddl" },
             { "key": "Pick Vehicle Name", "val": ddltype == "old" ? that.pickvehiclename : $("#pickvehid option:selected").text().trim(), "fldname": "pickvehicleid", "fldtype": "ddl" },
             { "key": "Pick Route Name", "val": ddltype == "old" ? that.pickrtname : $("#pickrtid option:selected").text().trim(), "fldname": "pickrtid", "fldtype": "text" },
@@ -764,8 +764,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
             { "key": "Is Active Pickup", "val": that.ispickup ? "Yes" : "No", "fldname": "isactive", "fldtype": "text" },
 
             { "key": "Type", "val": "Drop", "fldname": "typ", "fldtype": "text" },
-            { "key": "Drop From Date", "val": that.dropfromdate, "fldname": "dropfromdate", "fldtype": "date" },
-            { "key": "Drop To Date", "val": that.droptodate, "fldname": "droptodate", "fldtype": "date" },
+            { "key": "Drop From Date", "val": that.dropfrmdt, "fldname": "dropfrmdt", "fldtype": "date" },
+            { "key": "Drop To Date", "val": that.droptodt, "fldname": "droptodt", "fldtype": "date" },
             { "key": "Drop Driver Name", "val": ddltype == "old" ? that.dropdrivername : $("#dropdrvid option:selected").text().trim(), "fldname": "dropdriverid", "fldtype": "ddl" },
             { "key": "Drop Vehicle Name", "val": ddltype == "old" ? that.dropvehiclename : $("#dropvehid option:selected").text().trim(), "fldname": "dropvehicleid", "fldtype": "ddl" },
             { "key": "Drop Route Name", "val": ddltype == "old" ? that.droprtname : $("#droprtid option:selected").text().trim(), "fldname": "droprtid", "fldtype": "ddl" },
@@ -816,34 +816,39 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
         }
 
         if (that.ispickup) {
-            if (that.pickfromdate === "") {
+            if (that.pickfrmdt === "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up From Date");
                 $(".pickfrmdt").focus();
                 return false;
             }
-            else if (that.picktodate === "") {
+            if (that.picktodt === "") {
                 that._msg.Show(messageType.error, "Error", "Enter Pick Up To Date");
                 $(".picktodt").focus();
                 return false;
             }
-            else if (that.pickdriverid === 0) {
+            if (that.pickfrmdt > that.picktodt) {
+                that._msg.Show(messageType.error, "Error", "Sholuld Be To Date Greater Than From Date");
+                $(".picktodt").focus();
+                return false;
+            }
+            if (that.pickdriverid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
                 $(".pdrv").focus();
                 return false;
             }
-            else if (that.pickvehicleid === 0) {
+            if (that.pickvehicleid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle");
                 $(".pveh").focus();
                 return false;
             }
-            else if (that.pickpsngrtype == "byrt") {
+            if (that.pickpsngrtype == "byrt") {
                 if (that.pickrtid === 0) {
                     that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
                     $(".proute").focus();
                     return false;
                 }
             }
-            else if (that.pickPassengerDT.length === 0) {
+            if (that.pickPassengerDT.length === 0) {
                 that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up " + that._enttdetails.psngrtype);
                 $(".pickpsngrname input").focus();
                 return false;
@@ -851,27 +856,32 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
         }
 
         if (that.isdrop) {
-            if (that.dropfromdate === "") {
+            if (that.dropfrmdt === "") {
                 that._msg.Show(messageType.error, "Error", "Enter Drop From Date");
                 $(".dropfrmdt").focus();
                 return false;
             }
-            else if (that.droptodate === "") {
+            if (that.droptodt === "") {
                 that._msg.Show(messageType.error, "Error", "Enter Drop To Date");
                 $(".droptodt").focus();
                 return false;
             }
-            else if (that.dropdriverid === 0) {
+            if (that.dropfrmdt > that.droptodt) {
+                that._msg.Show(messageType.error, "Error", "Sholuld Be Drop To Date Greater Than Drop From Date");
+                $(".droptodt").focus();
+                return false;
+            }
+            if (that.dropdriverid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Drop Driver");
                 $(".ddrv").focus();
                 return false;
             }
-            else if (that.dropvehicleid === 0) {
+            if (that.dropvehicleid === 0) {
                 that._msg.Show(messageType.error, "Error", "Select Drop Vehicle");
                 $(".dveh").focus();
                 return false;
             }
-            else if (that.droppsngrtype == "byrt") {
+            if (that.droppsngrtype == "byrt") {
                 if (that.droprtid === 0) {
                     that._msg.Show(messageType.error, "Error", "Select Drop Route");
                     $(".droute").focus();
@@ -1027,8 +1037,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
                     if (pickdata.length !== 0) {
                         that.pickwkdays = pickdata[0].wkdays;
-                        that.pickfromdate = pickdata[0].frmdt;
-                        that.picktodate = pickdata[0].todt;
+                        that.pickfrmdt = pickdata[0].frmdt;
+                        that.picktodt = pickdata[0].todt;
                         that.pickdriverid = pickdata[0].driverid;
                         that.pickdrivername = pickdata[0].drivername;
                         that.pickvehicleid = pickdata[0].vehicleid;
@@ -1066,8 +1076,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
                     if (dropdata.length !== 0) {
                         that.dropwkdays = dropdata[0].wkdays;
-                        that.dropfromdate = dropdata[0].frmdt;
-                        that.droptodate = dropdata[0].todt;
+                        that.dropfrmdt = dropdata[0].frmdt;
+                        that.droptodt = dropdata[0].todt;
                         that.dropdriverid = dropdata[0].driverid;
                         that.dropdrivername = dropdata[0].drivername;
                         that.dropvehicleid = dropdata[0].vehicleid;

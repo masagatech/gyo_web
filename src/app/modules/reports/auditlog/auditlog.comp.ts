@@ -115,7 +115,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
 
     getAuditLogReports(format) {
         var that = this;
-        var params = {};
+        var dparams = {};
 
         commonfun.loader();
 
@@ -124,7 +124,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
                 that.module = params['module'];
             }
 
-            params = {
+            dparams = {
                 "flag": "reports", "module": that.module, "id": "0", "ayid": that.ayid, "frmdt": that.frmdt, "todt": that.todt,
                 "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
                 "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin, "format": format
@@ -133,7 +133,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
             if (format == "html") {
                 commonfun.loader();
 
-                that._logrptservice.getAuditLogReports(params).subscribe(data => {
+                that._logrptservice.getAuditLogReports(dparams).subscribe(data => {
                     try {
                         $("#divauditlog").html(data._body);
                     }

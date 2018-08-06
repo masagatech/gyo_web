@@ -1,0 +1,63 @@
+<div class="header">
+    <div class="row clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="form-line">
+                    <label class="control-label">Driver Name <strong>*</strong></label>
+                    <p-autoComplete id="drvid" name="drvname" [(ngModel)]="selectDriver" [tabindex]="2" (onSelect)="selectDriverData($event)" [suggestions]="autoDriverDT" (completeMethod)="getDriverData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete drvname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-12">
+                        <a role="button" (click)="viewDriverDashboard()" class="btn btn-search">arrow_forward</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 text-right pad-20">
+            <div class="form-group">
+                <button type="button" class="btn btn-theme btn-sm" (click)="viewProfile()">View Profile</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Personal Details
+                </div>
+                <div class="body" *ngFor="let row of infoDT">
+                    <p><b>Driver : </b>{{row.drivername}}</p>
+                    <p><b>Mobile : </b>{{row.mobileno1}}</p>
+                    <p><b>Alternate Mobile : </b>{{row.mobileno2}}</p>
+
+                    <p *ngFor="let erow of row.enttdata; let i = index;">
+                        {{i + 1}}. {{erow.enttname}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Vehicle Details
+                </div>
+                <div class="body" *ngFor="let row of vehicleDT; let i = index;">
+                    <h5>{{i + 1}}. {{row.vehname}}</h5>
+                    <p>{{row.vehregno}}</p>
+                    <p>{{row.attr}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Trip Details
+                </div>
+                <div class="body">
+                    <iframe id="divtrip" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

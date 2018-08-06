@@ -45,7 +45,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-        
+
     }
 
     // Entity Type DropDown
@@ -174,14 +174,19 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     public openMainForm(row) {
-        Cookie.delete("_schenttdetails_");
-        Cookie.delete("_ayid_");
+        if (row.isactive) {
+            Cookie.delete("_schenttdetails_");
+            Cookie.delete("_ayid_");
 
-        Cookie.set("_schenttdetails_", JSON.stringify(row));
-        this._router.navigate(['/']);
+            Cookie.set("_schenttdetails_", JSON.stringify(row));
+            this._router.navigate(['/']);
+        }
+        else {
+            this._msg.Show(messageType.error, "Error", "This " + row.entttype + " is Deactive");
+        }
     }
 
     public ngOnDestroy() {
-        
+
     }
 }

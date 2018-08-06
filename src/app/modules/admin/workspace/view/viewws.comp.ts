@@ -199,11 +199,16 @@ export class ViewWorkspaceComponent implements OnInit {
             try {
                 var row = data.data[0];
 
-                Cookie.delete("_schenttdetails_");
-                Cookie.delete("_ayid_");
+                if (row.isactive) {
+                    Cookie.delete("_schenttdetails_");
+                    Cookie.delete("_ayid_");
 
-                Cookie.set("_schenttdetails_", JSON.stringify(row));
-                that._router.navigate(['/']);
+                    Cookie.set("_schenttdetails_", JSON.stringify(row));
+                    that._router.navigate(['/']);
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", "This " + row.entttype + " is Deactive");
+                }
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -257,14 +262,19 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public openEntityForm(row) {
-        Cookie.delete("_schwsdetails_");
-        Cookie.set("_schwsdetails_", JSON.stringify(row));
+        if (row.isactive) {
+            Cookie.delete("_schwsdetails_");
+            Cookie.set("_schwsdetails_", JSON.stringify(row));
 
-        if (row.countentity !== "0") {
-            this._router.navigate(['/workspace/entity']);
+            if (row.countentity !== "0") {
+                this._router.navigate(['/workspace/entity']);
+            }
+            else {
+                this._router.navigate(['/workspace/entity/add']);
+            }
         }
         else {
-            this._router.navigate(['/workspace/entity/add']);
+            this._msg.Show(messageType.error, "Error", "This Workspace is Deactive");
         }
     }
 }

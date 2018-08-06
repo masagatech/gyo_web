@@ -37,12 +37,12 @@ export class ViewScheduleComponent implements OnInit {
     instrunction: string = "";
 
     pickwkdays: string = "";
-    pickfromdate: any = "";
-    picktodate: any = "";
+    pickfrmdt: any = "";
+    picktodt: any = "";
 
     dropwkdays: string = "";
-    dropfromdate: any = "";
-    droptodate: any = "";
+    dropfrmdt: any = "";
+    droptodt: any = "";
 
     routeDT: any = [];
     pickrtid: number = 0;
@@ -123,8 +123,8 @@ export class ViewScheduleComponent implements OnInit {
 
                     if (pickdata.length !== 0) {
                         that.pickwkdays = pickdata[0].wkdays;
-                        that.pickfromdate = pickdata[0].getfrmdt;
-                        that.picktodate = pickdata[0].gettodt;
+                        that.pickfrmdt = pickdata[0].getfrmdt;
+                        that.picktodt = pickdata[0].gettodt;
                         that.pickdrvid = pickdata[0].driverid;
                         that.pickdrvname = pickdata[0].drivername;
                         that.pickvehname = pickdata[0].vehicleno;
@@ -136,8 +136,8 @@ export class ViewScheduleComponent implements OnInit {
                     }
                     else {
                         that.pickwkdays = "";
-                        that.pickfromdate = "";
-                        that.picktodate = "";
+                        that.pickfrmdt = "";
+                        that.picktodt = "";
                         that.pickdrvid = 0;
                         that.pickdrvname = "";
                         that.pickvehname = "";
@@ -159,8 +159,8 @@ export class ViewScheduleComponent implements OnInit {
 
                     if (dropdata.length !== 0) {
                         that.dropwkdays = dropdata[0].wkdays;
-                        that.dropfromdate = pickdata[0].getfrmdt;
-                        that.droptodate = pickdata[0].gettodt;
+                        that.dropfrmdt = pickdata[0].getfrmdt;
+                        that.droptodt = pickdata[0].gettodt;
                         that.dropdrvid = dropdata[0].driverid;
                         that.dropdrvname = dropdata[0].drivername;
                         that.dropvehname = dropdata[0].vehicleno;
@@ -172,8 +172,8 @@ export class ViewScheduleComponent implements OnInit {
                     }
                     else {
                         that.dropwkdays = "";
-                        that.dropfromdate = "";
-                        that.droptodate = "";
+                        that.dropfrmdt = "";
+                        that.droptodt = "";
                         that.dropdrvid = 0;
                         that.dropdrvname = "";
                         that.dropvehname = "";
@@ -188,8 +188,8 @@ export class ViewScheduleComponent implements OnInit {
                     that.ispickup = true;
                     that.pickwkdays = "";
                     that.pickautoid = 0;
-                    that.pickfromdate = "";
-                    that.picktodate = "";
+                    that.pickfrmdt = "";
+                    that.picktodt = "";
                     that.pickdrvid = 0;
                     that.pickdrvname = "";
                     that.pickvehname = "";
@@ -201,8 +201,8 @@ export class ViewScheduleComponent implements OnInit {
                     that.isdrop = true;
                     that.dropwkdays = "";
                     that.dropautoid = 0;
-                    that.dropfromdate = "";
-                    that.droptodate = "";
+                    that.dropfrmdt = "";
+                    that.droptodt = "";
                     that.dropdrvid = 0;
                     that.dropdrvname = "";
                     that.dropvehname = "";

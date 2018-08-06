@@ -1,13 +1,13 @@
 <div class="card">
     <ul class="nav nav-tabs">
         <li routerLinkActive="active">
-            <a role="button" (click)="openStudentDashboard()">Student</a>
+            <a role="button" (click)="openHelpDeskDashboard('passenger')">{{_enttdetails.psngrtype}}</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" (click)="openDriverDashboard()">Driver</a>
+            <a role="button" (click)="openHelpDeskDashboard('driver')">Driver</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" (click)="openVehicleDashboard()">Vehicle</a>
+            <a role="button" (click)="openHelpDeskDashboard('vehicle')">Vehicle</a>
         </li>
     </ul>
 
