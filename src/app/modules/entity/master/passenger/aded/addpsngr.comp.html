@@ -16,7 +16,7 @@
         </ul>
     </div>
 
-    <div class="body">
+    <div class="body hidewhen">
         <div class="row clearfix">
             <div class="col-md-6 border">
                 <div class="row clearfix">
@@ -99,9 +99,11 @@
                 </div>
 
                 <div class="form-group">
-                    <strong>Allowed only below 150 KB File</strong> <br />
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
-                        auto="true"></p-fileUpload>
+                    <div class="profile-photo">
+                        <strong>Allowed only below 150 KB File</strong> <br />
+                        <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                            auto="true"></p-fileUpload>
+                    </div>
 
                     <div *ngIf="uploadPhotoDT.length">
                         <div *ngFor="let file of uploadPhotoDT">

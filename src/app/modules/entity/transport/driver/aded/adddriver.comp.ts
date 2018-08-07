@@ -47,6 +47,10 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     uploaddocsconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     choosePhotoLabel: string = "";
 
+    isadd: boolean = false;
+    isedit: boolean = false;
+    isdetails: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _driverservice: DriverService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -60,6 +64,10 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
+
+        this.isadd = _router.url.indexOf("/add") > -1;
+        this.isedit = _router.url.indexOf("/edit") > -1;
+        this.isdetails = _router.url.indexOf("/details") > -1;
     }
 
     public ngOnInit() {
@@ -311,7 +319,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.uploadDocsDT = [];
         that.choosePhotoLabel = "Upload Photo";
         that.isprivate = false;
-        
+
         that.enabledDriverFields();
     }
 
@@ -493,15 +501,22 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                                 that.uploadDocsDT = [];
                             }
 
-                            if (that._enttdetails.enttid == _driverdata.enttid) {
-                                that.enabledDriverFields();
-                                $("#divPhotoUpload").prop("class", "show");
-                                $("#divDocsUpload").prop("class", "show");
-                            }
-                            else {
+                            if (that.isdetails) {
                                 that.disabledDriverFields();
                                 $("#divPhotoUpload").prop("class", "hide");
                                 $("#divDocsUpload").prop("class", "hide");
+                            }
+                            else {
+                                if (that._enttdetails.enttid == _driverdata.enttid) {
+                                    that.enabledDriverFields();
+                                    $("#divPhotoUpload").prop("class", "show");
+                                    $("#divDocsUpload").prop("class", "show");
+                                }
+                                else {
+                                    that.disabledDriverFields();
+                                    $("#divPhotoUpload").prop("class", "hide");
+                                    $("#divDocsUpload").prop("class", "hide");
+                                }
                             }
                         }
                     }
@@ -618,7 +633,12 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/transport/driver']);
+        if (this.isdetails) {
+            this._router.navigate(['/reports/helpdesk']);
+        }
+        else {
+            this._router.navigate(['/transport/driver']);
+        }
     }
 
     ngOnDestroy() {

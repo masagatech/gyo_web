@@ -5,38 +5,37 @@ import { Globals, Common } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: './psngrdb.comp.html'
+    templateUrl: './vehdb.comp.html'
 })
 
-export class PassengerDashboardComponent implements OnInit, OnDestroy {
+export class VehicleDashboardComponent implements OnInit, OnDestroy {
     @Input() data: any;
 
     global = new Globals();
 
-    autoPassengerDT: any = [];
-    selectPassenger: any = {};
-    psngrid: number = 0;
-    psngrname: string = "";
+    autoVehicleDT: any = [];
+    selectVehicle: any = {};
+    autoid: number = 0;
+    vehid: number = 0;
+    vehname: string = "";
 
     infoDT: any = [];
-    feesDT: any = [];
-    scheduleDT: any = [];
-    notificationDT: any = [];
+    userDT: any = [];
 
     constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
-        this.viewPassengerDashboard();
+        this.viewVehicleDashboard();
     }
 
-    // Auto Completed Passenger
+    // Auto Completed Vehicle
 
-    getPassengerData(event) {
+    getVehicleData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "student",
+            "flag": "vehicle",
             "uid": this.data.loginUser.uid,
             "ucode": this.data.loginUser.ucode,
             "utype": this.data.loginUser.utype,
@@ -45,7 +44,7 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
             "issysadmin": this.data._enttdetails.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
+            this.autoVehicleDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -53,34 +52,34 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Passenger
+    // Selected Vehicle
 
-    selectPassengerData(event) {
-        this.psngrid = event.value;
-        this.psngrname = event.label;
+    selectVehicleData(event) {
+        this.autoid = event.value;
+        this.vehid = event.vehid;
+        this.vehname = event.label;
 
-        Cookie.set("_psngrid_", this.psngrid.toString());
-        Cookie.set("_psngrname_", this.psngrname);
+        Cookie.set("_autoid_", this.autoid.toString());
+        Cookie.set("_vehid_", this.vehid.toString());
+        Cookie.set("_vehname_", this.vehname);
 
-        this.viewPassengerDashboard();
+        this.viewVehicleDashboard();
     }
 
-    public viewPassengerDashboard() {
+    public viewVehicleDashboard() {
         var that = this;
 
-        if (Cookie.get('_psngrname_') != null) {
-            that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname = Cookie.get('_psngrname_');
+        if (Cookie.get('_vehname_') != null) {
+            that.autoid = parseInt(Cookie.get('_autoid_'));
+            that.vehid = parseInt(Cookie.get('_vehid_'));
+            that.vehname = Cookie.get('_vehname_');
 
-            that.selectPassenger = { value: that.psngrid, label: that.psngrname }
+            that.selectVehicle = { value: that.vehid, label: that.vehname }
         }
 
         that.getDashboard("info");
-        that.getDashboard("fees");
-        that.getDashboard("schedule");
-        that.getDashboard("notification");
-        
-        that.getStudentTrips("html");
+        that.getDashboard("driver");
+        that.getVehicleTrips("html");
     }
 
     getDashboard(type) {
@@ -88,7 +87,7 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         var dbparams = {
-            "flag": "passenger", "type": type, "psngrid": that.psngrid, "ayid": that.data._enttdetails.ayid,
+            "flag": "vehicle", "type": type, "vehid": that.vehid, "ayid": that.data._enttdetails.ayid,
             "enttid": that.data._enttdetails.enttid, "wsautoid": that.data._enttdetails.wsautoid,
             "uid": that.data.loginUser.uid, "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
@@ -98,14 +97,8 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
                 if (type == "info") {
                     that.infoDT = data.data;
                 }
-                else if (type == "fees") {
-                    that.feesDT = data.data;
-                }
-                else if (type == "schedule") {
-                    that.scheduleDT = data.data;
-                }
-                else if (type == "notification") {
-                    that.notificationDT = data.data;
+                else if (type == "driver") {
+                    that.userDT = data.data;
                 }
             }
             catch (e) {
@@ -123,15 +116,15 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Student Trips
+    // Get Vehicle Trips
 
-    getStudentTrips(format) {
+    getVehicleTrips(format) {
         var that = this;
 
         commonfun.loader();
 
         var params = {
-            "flag": "feessummary", "type": "download", "psngrid": that.psngrid, "utype": "driver", "format": format
+            "flag": "feessummary", "type": "download", "vehid": that.vehid, "format": format
         }
 
         if (format == "html") {
@@ -144,15 +137,10 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         commonfun.loaderhide();
     }
 
-    // View Passenger Profile Link
+    // View Vehicle Profile Link
 
-    viewPassengerProfile() {
-        if (this.data._enttdetails.psngrtype == "Passenger") {
-            this._router.navigate(['/master/passenger/details', this.psngrid]);
-        }
-        else {
-            this._router.navigate(['/erp/student/details', this.psngrid]);
-        }
+    viewVehicleProfile() {
+        this._router.navigate(['/transport/vehicle/details', this.autoid]);
     }
 
     ngOnDestroy() {

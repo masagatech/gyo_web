@@ -13,7 +13,9 @@
         </div>
         <div class="col-md-6 text-right pad-20">
             <div class="form-group">
-                <button type="button" class="btn btn-theme btn-sm" (click)="viewProfile()">View Profile</button>
+                <a role="button" class="btn btn-theme" (click)="viewDriverProfile()">
+                    <span class="float-left pad-03">View Profile</span> <span class="material-icons">arrow_forward</span>
+                </a>
             </div>
         </div>
     </div>
@@ -27,12 +29,23 @@
                     Personal Details
                 </div>
                 <div class="body" *ngFor="let row of infoDT">
-                    <p><b>Driver : </b>{{row.drivername}}</p>
-                    <p><b>Mobile : </b>{{row.mobileno1}}</p>
-                    <p><b>Alternate Mobile : </b>{{row.mobileno2}}</p>
+                    <div class="row clearfix">
+                        <div class="col-md-3">
+                            <img alt="{{row.drivername}}" src="{{global.uploadurl + row.driverphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
+                        </div>
+                        <div class="col-md-9">
+                            <p><b>Driver : </b>{{row.drivername}}</p>
+                            <p><b>Mobile : </b>{{row.mobileno1}}</p>
+                            <p *ngIf="row.mobileno2 != ''"><b>Alternate Mobile : </b>{{row.mobileno2}}</p>
+                            <p *ngIf="row.email1 != ''"><b>Email : </b>{{row.email1}}</p>
+                            <p *ngIf="row.email2 != ''"><b>Alternate Email : </b>{{row.email2}}</p>
+                            <p *ngIf="row.licenseno != ''"><b>License No : </b>{{row.licenseno}}</p>
+                            <p *ngIf="row.aadharno != ''"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                        </div>
+                    </div>
 
                     <p *ngFor="let erow of row.enttdata; let i = index;">
-                        {{i + 1}}. {{erow.enttname}}
+                        <span class="p-5 {{erow.bgcolor}}"><b>{{i + 1}}.</b> {{erow.enttname}}</span>
                     </p>
                 </div>
             </div>
@@ -42,10 +55,12 @@
                 <div class="header-title">
                     Vehicle Details
                 </div>
-                <div class="body" *ngFor="let row of vehicleDT; let i = index;">
-                    <h5>{{i + 1}}. {{row.vehname}}</h5>
-                    <p>{{row.vehregno}}</p>
-                    <p>{{row.attr}}</p>
+                <div class="body overflow-panel">
+                    <div *ngFor="let row of vehicleDT; let i = index;" class="p-b-5">
+                        <h5>{{i + 1}}. {{row.vehname}}</h5>
+                        <p>{{row.vehregno}}</p>
+                        <p>{{row.attr}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,8 +69,8 @@
                 <div class="header-title">
                     Trip Details
                 </div>
-                <div class="body">
-                    <iframe id="divtrip" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
+                <div class="body padding-0">
+                    <iframe id="divtrip" width="100%" height="520" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>

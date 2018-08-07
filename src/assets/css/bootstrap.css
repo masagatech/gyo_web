@@ -4852,7 +4852,6 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
 .nav>li>a:hover,
 .nav>li>a:focus {
     text-decoration: none;
-    background-color: #eee;
 }
 
 .nav>li.disabled>a {
@@ -4904,7 +4903,10 @@ select[multiple].input-group-sm>.input-group-btn>.btn {
     border-radius: 4px 4px 0 0;
 }
 
-.nav-tabs>li>a:hover {
+.nav-tabs>li>a:hover,
+.nav-tabs>li>a:focus {
+    text-decoration: none;
+    background-color: #eee;
     border-color: #eee #eee #ddd;
 }
 

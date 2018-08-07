@@ -7,12 +7,10 @@ import { CommonModule } from '@angular/common';
 
 import { NvD3Module } from 'ng2-nvd3';
 
-import { ERPDashboardService } from '@services/erp';
-import { PassengerReportsService, AssesmentReportService } from '@services/reports';
-
 import { HelpDeskComponent } from './helpdesk.comp';
 import { PassengerDashboardComponent } from './passenger/psngrdb.comp';
 import { DriverDashboardComponent } from './driver/drvdb.comp';
+import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 
 import { AutoCompleteModule } from 'primeng/primeng';
 
@@ -32,15 +30,16 @@ export const routes = [
         CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, NvD3Module
     ],
 
-    entryComponents: [PassengerDashboardComponent, DriverDashboardComponent],
+    entryComponents: [PassengerDashboardComponent, DriverDashboardComponent, VehicleDashboardComponent],
 
     declarations: [
         HelpDeskComponent,
         PassengerDashboardComponent,
-        DriverDashboardComponent
+        DriverDashboardComponent,
+        VehicleDashboardComponent
     ],
 
-    providers: [AuthGuard, ERPDashboardService, PassengerReportsService, AssesmentReportService, CommonService, DashboardService]
+    providers: [AuthGuard, CommonService, DashboardService]
 })
 
 export class HelpDeskModule {

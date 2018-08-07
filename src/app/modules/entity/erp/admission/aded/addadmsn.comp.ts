@@ -222,14 +222,14 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         if (this.isdetails) {
-            $('.form-control').prop("disabled", true);
+            $('.form-control').attr("disabled", "disabled");
             $('.prospectus').addClass("hide");
             $('.profile-photo').prop("class", "hide");
             $('.profile-dob').prop("class", "hide");
             $('.profile-addr').prop("class", "hide");
         }
         else {
-            $('.form-control').prop("disabled", false);
+            $('.form-control').removeAttr("disabled");
             $('.prospectus').addClass("show");
             $('.profile-photo').prop("class", "show");
             $('.profile-dob').prop("class", "show");

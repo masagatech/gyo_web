@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
-import { Common } from '@models';
+import { Globals, Common } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
@@ -10,6 +11,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class DriverDashboardComponent implements OnInit, OnDestroy {
     @Input() data: any;
 
+    global = new Globals();
+
     autoDriverDT: any = [];
     selectDriver: any = {};
     drvid: number = 0;
@@ -18,7 +21,7 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     infoDT: any = [];
     vehicleDT: any = [];
 
-    constructor(private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
+    constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
@@ -121,31 +124,19 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         }
 
         if (format == "html") {
-            commonfun.loader();
-
-            // that._dbservice.getScheduleReports(params).subscribe(data => {
-            //     try {
-            //         $("#divtrip").html(data._body);
-            //     }
-            //     catch (e) {
-            //         that._msg.Show(messageType.error, "Error", e);
-            //     }
-
-            //     commonfun.loaderhide();
-            // }, err => {
-            //     that._msg.Show(messageType.error, "Error", err);
-            //     console.log(err);
-            //     commonfun.loaderhide();
-            // }, () => {
-
-            // })
-
             $("#divtrip")[0].src = Common.getReportUrl("getScheduleReports", params);
         }
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
-            commonfun.loaderhide();
         }
+
+        commonfun.loaderhide();
+    }
+
+    // View Driver Profile Link
+
+    viewDriverProfile() {
+        this._router.navigate(['/transport/driver/details', this.drvid]);
     }
 
     ngOnDestroy() {

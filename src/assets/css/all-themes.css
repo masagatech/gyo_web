@@ -836,14 +836,6 @@
     color: #fff;
 }
 
-.theme-teal .nav>li>a:hover {
-    background: transparent;
-}
-
-.theme-teal .nav>li>a:focus {
-    background: transparent;
-}
-
 .theme-teal .nav .open>a {
     background: transparent;
 }

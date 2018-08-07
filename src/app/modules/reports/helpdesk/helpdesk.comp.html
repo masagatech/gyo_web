@@ -1,13 +1,13 @@
 <div class="card">
     <ul class="nav nav-tabs">
         <li routerLinkActive="active">
-            <a role="button" (click)="openHelpDeskDashboard('passenger')">{{_enttdetails.psngrtype}}</a>
+            <a role="button" (click)="openHelpDeskDashboard('passenger')" class="{{hdpsngr}}">{{_enttdetails.psngrtype}}</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" (click)="openHelpDeskDashboard('driver')">Driver</a>
+            <a role="button" (click)="openHelpDeskDashboard('driver')" class="{{hddrv}}">Driver</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" (click)="openHelpDeskDashboard('vehicle')">Vehicle</a>
+            <a role="button" (click)="openHelpDeskDashboard('vehicle')" class="{{hdveh}}">Vehicle</a>
         </li>
     </ul>
 

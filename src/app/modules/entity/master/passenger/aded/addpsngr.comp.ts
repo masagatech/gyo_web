@@ -93,6 +93,10 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
     mode: string = "";
     isactive: boolean = true;
 
+    isadd: boolean = false;
+    isedit: boolean = false;
+    isdetails: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -110,11 +114,24 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
         this.fillPickStopsDDL();
         this.fillDropStopsDDL();
 
-        this.getPassengerDetails();
+        this.isadd = _router.url.indexOf("/add") > -1;
+        this.isedit = _router.url.indexOf("/edit") > -1;
+        this.isdetails = _router.url.indexOf("/details") > -1;
     }
 
     public ngOnInit() {
+        if (this.isdetails) {
+            $('.hidewhen input').attr("disabled", "disabled");
+            $('.hidewhen select').attr("disabled", "disabled");
+            $('.profile-photo').prop("class", "hide");
+        }
+        else {
+            $('.hidewhen input').removeAttr("disabled");
+            $('.hidewhen select').addClass("show");
+            $('.profile-photo').prop("class", "show");
+        }
 
+        this.getPassengerDetails();
     }
 
     // Selected Calendar Date
@@ -919,7 +936,12 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + "/profile"]);
+        if (this.isdetails) {
+            this._router.navigate(['/reports/helpdesk']);
+        }
+        else {
+            this._router.navigate(['/master/' + this._enttdetails.smpsngrtype + "/profile"]);
+        }
     }
 
     ngOnDestroy() {

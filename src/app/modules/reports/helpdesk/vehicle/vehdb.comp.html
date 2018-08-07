@@ -1,0 +1,73 @@
+<div class="header">
+    <div class="row clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="form-line">
+                    <label class="control-label">Vehicle Name <strong>*</strong></label>
+                    <p-autoComplete id="vehid" name="vehname" [(ngModel)]="selectVehicle" [tabindex]="2" (onSelect)="selectVehicleData($event)" [suggestions]="autoVehicleDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete drvname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-12">
+                        <a role="button" (click)="viewVehicleDashboard()" class="btn btn-search">arrow_forward</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 text-right pad-20">
+            <div class="form-group">
+                <a role="button" class="btn btn-theme" (click)="viewVehicleProfile()">
+                    <span class="float-left pad-03">View Profile</span> <span class="material-icons">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Personal Details
+                </div>
+                <div class="body" *ngFor="let row of infoDT">
+                    <p><b>Registration No : </b>{{row.vehregno}}</p>
+                    <p><b>IMEI : </b>{{row.imei}}</p>
+                    <p><b>SIM No : </b>{{row.simno}}</p>
+                    <p *ngIf="row.vehicletype != ''"><b>Vehicle Type : </b>{{row.vehicletype}}</p>
+                    <p *ngIf="row.vehiclemake != ''"><b>Vehicle Make : </b>{{row.vehiclemake}}</p>
+                    <p *ngIf="row.vehiclecondition != ''"><b>Vehicle Condition : </b>{{row.vehiclecondition}}</p>
+                    <p *ngIf="row.devtype != ''"><b>Device Type : </b>{{row.devtype}}</p>
+
+                    <p *ngFor="let erow of row.enttdata; let i = index;">
+                        <b>{{i + 1}}.</b> {{erow.enttname}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Mapped User
+                </div>
+                <div class="body overflow-panel">
+                    <div *ngFor="let row of userDT; let i = index;" class="p-b-5">
+                        <h5>{{row.fullname}} ({{row.utypename}})</h5>
+
+                        <p *ngFor="let erow of row.enttdata; let i = index;">
+                            {{i + 1}}. {{erow.enttname}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Trip Details
+                </div>
+                <div class="body padding-0">
+                    <iframe id="divtrip" width="100%" height="520" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

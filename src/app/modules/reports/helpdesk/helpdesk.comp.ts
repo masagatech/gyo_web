@@ -5,6 +5,7 @@ import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
 import { PassengerDashboardComponent } from './passenger/psngrdb.comp';
 import { DriverDashboardComponent } from './driver/drvdb.comp';
+import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 
 @Component({
     templateUrl: './helpdesk.comp.html'
@@ -17,8 +18,9 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
     @ViewChild(ADHOST)
     private _Host: ADHOST;
 
-    hdtypeDT: any = [];
-    hdtype: string = "";
+    hdpsngr: string = "";
+    hddrv: string = "";
+    hdveh: string = "";
 
     hdtitle: string = "";
 
@@ -33,6 +35,8 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
+        
+        this.openHelpDeskDashboard("passenger");
     }
 
     loadComponent(component, data) {
@@ -47,6 +51,10 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
         var params = { loginUser: this.loginUser, _enttdetails: this._enttdetails };
 
         if (flag == "passenger") {
+            this.hdpsngr = "bg-green";
+            this.hddrv = "";
+            this.hdveh = "";
+
             this.hdtitle = this._enttdetails.psngrtype + " Dashboard";
             this.loadComponent(PassengerDashboardComponent, params);
 
@@ -55,6 +63,10 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             commonfun.loaderhide("#loadercontrol", "pulse", "Loading " + this._enttdetails.psngrtype + " Dashboard...");
         }
         else if (flag == "driver") {
+            this.hdpsngr = "";
+            this.hddrv = "bg-green";
+            this.hdveh = "";
+
             this.hdtitle = "Driver Dashboard";
             this.loadComponent(DriverDashboardComponent, params);
             
@@ -63,7 +75,16 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             commonfun.loaderhide("#loadercontrol", "pulse", "Loading Driver Dashboard...");
         }
         else if (flag == "vehicle") {
-            this._msg.Show(messageType.info, "Info", "Pending");
+            this.hdpsngr = "";
+            this.hddrv = "";
+            this.hdveh = "bg-green";
+
+            this.hdtitle = "Vehicle Dashboard";
+            this.loadComponent(VehicleDashboardComponent, params);
+            
+            commonfun.loader("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
+            event.stopPropagation();
+            commonfun.loaderhide("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
         }
     }
 

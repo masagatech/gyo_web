@@ -45,6 +45,10 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     @ViewChild('regno') vehicle: ElementRef;
 
+    isadd: boolean = false;
+    isedit: boolean = false;
+    isdetails: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -53,6 +57,10 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
+
+        this.isadd = _router.url.indexOf("/add") > -1;
+        this.isedit = _router.url.indexOf("/edit") > -1;
+        this.isdetails = _router.url.indexOf("/details") > -1;
     }
 
     public ngOnInit() {
@@ -413,11 +421,19 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             that.isactive = _vehdata.isactive;
                             that.mode = _vehdata.mode;
 
-                            if (that._enttdetails.enttid == _vehdata.ownenttid) {
-                                that.enabledVehicleFields();
+                            if (that.isdetails) {
+                                that.disabledVehicleFields();
+                                $('.vehname').prop("disabled", "disabled");
                             }
                             else {
-                                that.disabledVehicleFields();
+                                if (that._enttdetails.enttid == _vehdata.ownenttid) {
+                                    that.enabledVehicleFields();
+                                }
+                                else {
+                                    that.disabledVehicleFields();
+                                }
+
+                                $(".vehname").removeAttr("disabled");
                             }
                         }
                     }
@@ -527,7 +543,12 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/transport/vehicle']);
+        if (this.isdetails) {
+            this._router.navigate(['/reports/helpdesk']);
+        }
+        else {
+            this._router.navigate(['/transport/vehicle']);
+        }
     }
 
     ngOnDestroy() {
