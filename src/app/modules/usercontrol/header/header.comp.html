@@ -43,6 +43,11 @@
                         <i class="material-icons">gps_fixed</i>
                     </a>
                 </li>
+                <li *ngIf="isenttmenu">
+                    <a role="button" title="Help Desk" [routerLink]="['/reports/helpdesk']" class="js-search" data-close="true">
+                        <i class="material-icons">help</i>
+                    </a>
+                </li>
                 <li class="dropdown dropdown-large" *ngIf="isenttmenu == true">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" *ngIf="enttMenuDT.length"><i class="material-icons">add</i></a>
 

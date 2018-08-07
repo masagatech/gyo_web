@@ -17,9 +17,6 @@ export const routes = [
                 path: '',
                 children: [
                     { path: '', loadChildren: './erp#ERPReportsModule' },
-
-                    // HelpDesk
-                    { path: 'helpdesk', loadChildren: './helpdesk#HelpDeskModule' },
                     
                     { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'master', loadChildren: './master#MasterReportsModule' },
