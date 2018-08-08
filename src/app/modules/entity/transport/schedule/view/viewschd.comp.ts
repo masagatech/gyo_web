@@ -53,6 +53,11 @@ export class ViewScheduleComponent implements OnInit {
     ispickup: boolean = true;
     isdrop: boolean = true;
 
+    isavlpickup: boolean = true;
+    isavldrop: boolean = true;
+
+    iseditschdl: boolean = false;
+
     constructor(private _pickdropservice: PickDropService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
@@ -101,7 +106,7 @@ export class ViewScheduleComponent implements OnInit {
         var pickdata = [];
         var dropdata = [];
 
-        this._pickdropservice.getPickDropDetails({
+        that._pickdropservice.getPickDropDetails({
             "flag": "view", "mode": "add", "batchid": that.batchid, "schoolid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
@@ -133,6 +138,7 @@ export class ViewScheduleComponent implements OnInit {
                         that.pickPassengerDT = pickdata[0].studentdata;
                         that.pickAttList = pickdata[0].attendantdata;
                         that.ispickup = pickdata[0].isactive;
+                        that.isavlpickup = pickdata[0].isavlpd;
                     }
                     else {
                         that.pickwkdays = "";
@@ -146,6 +152,7 @@ export class ViewScheduleComponent implements OnInit {
                         that.pickPassengerDT = [];
                         that.pickAttList = [];
                         that.ispickup = false;
+                        that.isavlpickup = false;
                     }
 
                     if (dropalldata.length !== 0) {
@@ -159,8 +166,8 @@ export class ViewScheduleComponent implements OnInit {
 
                     if (dropdata.length !== 0) {
                         that.dropwkdays = dropdata[0].wkdays;
-                        that.dropfrmdt = pickdata[0].getfrmdt;
-                        that.droptodt = pickdata[0].gettodt;
+                        that.dropfrmdt = dropdata[0].getfrmdt;
+                        that.droptodt = dropdata[0].gettodt;
                         that.dropdrvid = dropdata[0].driverid;
                         that.dropdrvname = dropdata[0].drivername;
                         that.dropvehname = dropdata[0].vehicleno;
@@ -169,6 +176,7 @@ export class ViewScheduleComponent implements OnInit {
                         that.dropPassengerDT = dropdata[0].studentdata;
                         that.dropAttList = dropdata[0].attendantdata;
                         that.isdrop = dropdata[0].isactive;
+                        that.isavldrop = dropdata[0].isavlpd;
                     }
                     else {
                         that.dropwkdays = "";
@@ -182,10 +190,17 @@ export class ViewScheduleComponent implements OnInit {
                         that.dropPassengerDT = [];
                         that.dropAttList = [];
                         that.isdrop = false;
+                        that.isavldrop = false;
+                    }
+
+                    if ((that.pickautoid == 0) && (that.dropautoid == 0)) {
+                        that.iseditschdl = false;
+                    }
+                    else{
+                        that.iseditschdl = true;
                     }
                 }
                 else {
-                    that.ispickup = true;
                     that.pickwkdays = "";
                     that.pickautoid = 0;
                     that.pickfrmdt = "";
@@ -197,8 +212,9 @@ export class ViewScheduleComponent implements OnInit {
                     that.pickrtname = "";
                     that.pickPassengerDT = [];
                     that.pickAttList = [];
+                    that.ispickup = true;
+                    that.isavlpickup = true;
 
-                    that.isdrop = true;
                     that.dropwkdays = "";
                     that.dropautoid = 0;
                     that.dropfrmdt = "";
@@ -210,6 +226,10 @@ export class ViewScheduleComponent implements OnInit {
                     that.droprtname = "";
                     that.dropPassengerDT = [];
                     that.dropAttList = [];
+                    
+                    that.isdrop = true;
+                    that.isavldrop = true;
+                    that.iseditschdl = false;
                 }
 
                 commonfun.loaderhide();

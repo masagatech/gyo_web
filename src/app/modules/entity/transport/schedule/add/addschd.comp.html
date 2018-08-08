@@ -32,10 +32,10 @@
             </div>
         </div>
 
-        <hr />
+        <hr /> {{isavlpickup}} {{isavldrop}}
 
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-6 border" *ngIf="isavlpickup">
                 <div class="header content-header">
                     <span>
                         <input id="chkpickup" name="chkpickup" [(ngModel)]="ispickup" type="checkbox" checked class="filled-in" (ngModelChange)="hideWhenPickData()">
@@ -145,8 +145,7 @@
                     </ng-template>
                 </p-orderList>
             </div>
-
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="isavldrop">
                 <div class="header content-header">
                     <span>
                         <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" checked class="filled-in" (ngModelChange)="copyPickInfoInDrop()">
@@ -258,7 +257,7 @@
         </div>
 
         <div class="row clearfix">
-            <div class="col-md-6 border">
+            <div class="col-md-6 border" *ngIf="isavlpickup">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Pickup Attendent Name</label>
@@ -277,7 +276,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="isavldrop">
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Drop Attendent Name</label>

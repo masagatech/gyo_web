@@ -60,7 +60,7 @@ export class AddScheduleComponent implements OnInit {
     pickwkdays: string = "";
     pickfrmdt: any = "";
     picktodt: any = "";
-    
+
     dropwkdays: string = "";
     dropfrmdt: any = "";
     droptodt: any = "";
@@ -71,6 +71,9 @@ export class AddScheduleComponent implements OnInit {
 
     ispickup: boolean = true;
     isdrop: boolean = true;
+
+    isavlpickup: boolean = true;
+    isavldrop: boolean = true;
 
     constructor(private _pickdropservice: PickDropService, private _autoservice: CommonService, private _routeParams: ActivatedRoute,
         private _loginservice: LoginService, private _router: Router, private _msg: MessageService) {
@@ -594,7 +597,6 @@ export class AddScheduleComponent implements OnInit {
 
                 if (d.length !== 0) {
                     pickalldata = d.filter(a => a.typ === "p");
-                    dropalldata = d.filter(a => a.typ === "d");
 
                     if (pickalldata.length !== 0) {
                         that.pickautoid = pickalldata[0].autoid;
@@ -616,8 +618,11 @@ export class AddScheduleComponent implements OnInit {
                         that.pickPassengerDT = pickdata[0].studentdata;
                         that.pickAttList = pickdata[0].attendantdata;
                         that.ispickup = pickdata[0].isactive;
+                        that.isavlpickup = pickdata[0].isavlpd;
                     }
                     else {
+                        that.ispickup = false;
+                        that.isavlpickup = false;
                         that.pickwkdays = "";
                         that.pickfrmdt = "";
                         that.picktodt = "";
@@ -627,8 +632,9 @@ export class AddScheduleComponent implements OnInit {
                         that.pickrtid = 0;
                         that.pickPassengerDT = [];
                         that.pickAttList = [];
-                        that.ispickup = false;
                     }
+
+                    dropalldata = d.filter(a => a.typ === "d");
 
                     if (dropalldata.length !== 0) {
                         that.dropautoid = dropalldata[0].autoid;
@@ -640,6 +646,8 @@ export class AddScheduleComponent implements OnInit {
                     }
 
                     if (dropdata.length !== 0) {
+                        that.isdrop = dropdata[0].isactive;
+                        that.isavldrop = dropdata[0].isavlpd;
                         that.dropwkdays = dropdata[0].wkdays;
                         that.dropfrmdt = dropdata[0].frmdt;
                         that.droptodt = dropdata[0].todt;
@@ -649,9 +657,10 @@ export class AddScheduleComponent implements OnInit {
                         that.droprtid = dropdata[0].rtid;
                         that.dropPassengerDT = dropdata[0].studentdata;
                         that.dropAttList = dropdata[0].attendantdata;
-                        that.isdrop = dropdata[0].isactive;
                     }
                     else {
+                        that.isdrop = false;
+                        that.isavldrop = false;
                         that.dropwkdays = "";
                         that.dropfrmdt = "";
                         that.droptodt = "";
@@ -661,13 +670,15 @@ export class AddScheduleComponent implements OnInit {
                         that.droprtid = 0;
                         that.dropPassengerDT = [];
                         that.dropAttList = [];
-                        that.isdrop = false;
                     }
                 }
                 else {
-                    that.ispickup = true;
+                    that.ispickup = false;
+                    that.isavlpickup = true;
                     that.pickwkdays = "";
                     that.pickautoid = 0;
+                    that.pickfrmdt = "";
+                    that.picktodt = "";
                     that.pickdriverid = 0;
                     that.pickvehicleid = 0;
                     that.pickpsngrtype = "byrt";
@@ -675,9 +686,12 @@ export class AddScheduleComponent implements OnInit {
                     that.pickPassengerDT = [];
                     that.pickAttList = [];
 
-                    that.isdrop = true;
+                    that.isdrop = false;
+                    that.isavldrop = true;
                     that.dropwkdays = "";
                     that.dropautoid = 0;
+                    that.dropfrmdt = "";
+                    that.droptodt = "";
                     that.dropdriverid = 0;
                     that.dropvehicleid = 0;
                     that.droppsngrtype = "byrt";
@@ -711,83 +725,87 @@ export class AddScheduleComponent implements OnInit {
             return false;
         }
 
-        if (that.ispickup) {
-            if (that.pickfrmdt === "") {
-                that._msg.Show(messageType.error, "Error", "Enter Pick Up From Date");
-                $(".pickfrmdt").focus();
-                return false;
-            }
-            if (that.picktodt === "") {
-                that._msg.Show(messageType.error, "Error", "Enter Pick Up To Date");
-                $(".picktodt").focus();
-                return false;
-            }
-            if (that.pickfrmdt > that.picktodt) {
-                that._msg.Show(messageType.error, "Error", "Sholuld Be Pick Up To Date Greater Than Pick Up From Date");
-                $(".picktodt").focus();
-                return false;
-            }
-            if (that.pickdriverid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
-                $(".pdrv").focus();
-                return false;
-            }
-            if (that.pickvehicleid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle");
-                $(".pveh").focus();
-                return false;
-            }
-            if (that.pickpsngrtype == "byrt") {
-                if (that.pickrtid === 0) {
-                    that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
-                    $(".proute").focus();
+        if (that.isavlpickup) {
+            if (that.ispickup) {
+                if (that.pickfrmdt === "") {
+                    that._msg.Show(messageType.error, "Error", "Enter Pick Up From Date");
+                    $(".pickfrmdt").focus();
                     return false;
                 }
-            }
-            if (that.pickPassengerDT.length === 0) {
-                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up " + that._enttdetails.psngrtype);
-                $(".pickpsngrname input").focus();
-                return false;
+                if (that.picktodt === "") {
+                    that._msg.Show(messageType.error, "Error", "Enter Pick Up To Date");
+                    $(".picktodt").focus();
+                    return false;
+                }
+                if (that.pickfrmdt > that.picktodt) {
+                    that._msg.Show(messageType.error, "Error", "Sholuld Be Pick Up To Date Greater Than Pick Up From Date");
+                    $(".picktodt").focus();
+                    return false;
+                }
+                if (that.pickdriverid === 0) {
+                    that._msg.Show(messageType.error, "Error", "Select Pick Up Driver");
+                    $(".pdrv").focus();
+                    return false;
+                }
+                if (that.pickvehicleid === 0) {
+                    that._msg.Show(messageType.error, "Error", "Select Pick Up Vehicle");
+                    $(".pveh").focus();
+                    return false;
+                }
+                if (that.pickpsngrtype == "byrt") {
+                    if (that.pickrtid === 0) {
+                        that._msg.Show(messageType.error, "Error", "Select Pick Up Route");
+                        $(".proute").focus();
+                        return false;
+                    }
+                }
+                if (that.pickPassengerDT.length === 0) {
+                    that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Pick Up " + that._enttdetails.psngrtype);
+                    $(".pickpsngrname input").focus();
+                    return false;
+                }
             }
         }
 
-        if (that.isdrop) {
-            if (that.dropfrmdt === "") {
-                that._msg.Show(messageType.error, "Error", "Enter Drop From Date");
-                $(".dropfrmdt").focus();
-                return false;
-            }
-            if (that.droptodt === "") {
-                that._msg.Show(messageType.error, "Error", "Enter Drop To Date");
-                $(".droptodt").focus();
-                return false;
-            }
-            if (that.dropfrmdt > that.droptodt) {
-                that._msg.Show(messageType.error, "Error", "Sholuld Be Drop To Date Greater Than Drop From Date");
-                $(".droptodt").focus();
-                return false;
-            }
-            if (that.dropdriverid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Drop Driver");
-                $(".ddrv").focus();
-                return false;
-            }
-            if (that.dropvehicleid === 0) {
-                that._msg.Show(messageType.error, "Error", "Select Drop Vehicle");
-                $(".dveh").focus();
-                return false;
-            }
-            if (that.droppsngrtype == "byrt") {
-                if (that.droprtid === 0) {
-                    that._msg.Show(messageType.error, "Error", "Select Drop Route");
-                    $(".droute").focus();
+        if (that.isavldrop) {
+            if (that.isdrop) {
+                if (that.dropfrmdt === "") {
+                    that._msg.Show(messageType.error, "Error", "Enter Drop From Date");
+                    $(".dropfrmdt").focus();
                     return false;
                 }
-            }
-            if (that.dropPassengerDT.length === 0) {
-                that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop " + that._enttdetails.psngrtype);
-                $(".droppsngrname").focus();
-                return false;
+                if (that.droptodt === "") {
+                    that._msg.Show(messageType.error, "Error", "Enter Drop To Date");
+                    $(".droptodt").focus();
+                    return false;
+                }
+                if (that.dropfrmdt > that.droptodt) {
+                    that._msg.Show(messageType.error, "Error", "Sholuld Be Drop To Date Greater Than Drop From Date");
+                    $(".droptodt").focus();
+                    return false;
+                }
+                if (that.dropdriverid === 0) {
+                    that._msg.Show(messageType.error, "Error", "Select Drop Driver");
+                    $(".ddrv").focus();
+                    return false;
+                }
+                if (that.dropvehicleid === 0) {
+                    that._msg.Show(messageType.error, "Error", "Select Drop Vehicle");
+                    $(".dveh").focus();
+                    return false;
+                }
+                if (that.droppsngrtype == "byrt") {
+                    if (that.droprtid === 0) {
+                        that._msg.Show(messageType.error, "Error", "Select Drop Route");
+                        $(".droute").focus();
+                        return false;
+                    }
+                }
+                if (that.dropPassengerDT.length === 0) {
+                    that._msg.Show(messageType.error, "Error", "Please Fill atleast 1 Drop " + that._enttdetails.psngrtype);
+                    $(".droppsngrname").focus();
+                    return false;
+                }
             }
         }
 

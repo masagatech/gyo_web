@@ -1,16 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService, CommonService } from '@services';
+import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { BatchService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addbatch.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addbatch.comp.html'
 })
 
 export class AddBatchComponent implements OnInit, OnDestroy {
@@ -30,7 +28,7 @@ export class AddBatchComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _autoservice: CommonService,
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _batchservice: BatchService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -86,7 +84,7 @@ export class AddBatchComponent implements OnInit, OnDestroy {
             this._msg.Show(messageType.error, "Error", "Select Atleast 1 Row");
         }
         else {
-            if (selectedWeekDT[0].pickfrmtm == "" || selectedWeekDT[0].picktotm == "") {
+            if ((selectedWeekDT[0].pickfrmtm == "" || selectedWeekDT[0].picktotm == "") && (selectedWeekDT[0].dropfrmtm == "" || selectedWeekDT[0].droptotm == "")) {
                 this._msg.Show(messageType.error, "Error", "Fill Atleast 1 Row");
             }
             else {
@@ -173,36 +171,24 @@ export class AddBatchComponent implements OnInit, OnDestroy {
             }
             else {
                 if (_weeklist.isopen) {
-                    if (_weeklist.pickfrmtm == null || _weeklist.pickfrmtm == "") {
-                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Pickup From Time");
+                    if ((_weeklist.pickfrmtm == null || _weeklist.pickfrmtm == "") && (_weeklist.dropfrmtm == null || _weeklist.dropfrmtm == "")) {
+                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Pickup / Drop From Time");
                         $(".pft" + _weeklist.name).focus();
                         return false;
                     }
-                    
-                    if (_weeklist.picktotm == null || _weeklist.picktotm == "") {
-                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Pickup To Time");
+
+                    if ((_weeklist.picktotm == null || _weeklist.picktotm == "") && (_weeklist.droptotm == null || _weeklist.droptotm == "")) {
+                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Pickup / Drop To Time");
                         $(".ptt" + _weeklist.name).focus();
                         return false;
                     }
-                    
-                    if (_weeklist.dropfrmtm == null || _weeklist.dropfrmtm == "") {
-                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Drop From Time");
-                        $(".dft" + _weeklist.name).focus();
-                        return false;
-                    }
-                    
-                    if (_weeklist.droptotm == null || _weeklist.droptotm == "") {
-                        that._msg.Show(messageType.error, "Error", "Enter " + _weeklist.name + " Drop To Time");
-                        $(".dtt" + _weeklist.name).focus();
-                        return false;
-                    }
-                    
+
                     if (_weeklist.pickfrmtm > _weeklist.picktotm) {
                         that._msg.Show(messageType.error, "Error", "Sholuld Be " + _weeklist.name + " Pickup To Time Greater Than Pickup From Time");
                         $(".picktotm" + _weeklist.name).focus();
                         return false;
                     }
-                    
+
                     if (_weeklist.dropfrmtm > _weeklist.droptotm) {
                         that._msg.Show(messageType.error, "Error", "Sholuld Be " + _weeklist.name + " Drop To Time Greater Than Drop From Time");
                         $(".droptotm" + _weeklist.name).focus();
@@ -280,7 +266,7 @@ export class AddBatchComponent implements OnInit, OnDestroy {
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 commonfun.loader();
-        
+
                 that.batchid = params['id'];
                 that.getWorkingDay();
 

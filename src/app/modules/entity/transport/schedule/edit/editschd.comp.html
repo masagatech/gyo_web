@@ -64,10 +64,10 @@
 
         <div *ngIf="pddata.length">
             <div class="row clearfix">
-                <div class="col-md-6 border">
+                <div class="col-md-6 border" *ngIf="isavlpickup">
                     <div class="header content-header">
                         <span>
-                            <input id="chkpickup" name="chkpickup" [(ngModel)]="ispickup" type="checkbox" checked class="filled-in" (ngModelChange)="hideWhenPickData()">
+                            <input id="chkpickup" name="chkpickup" [(ngModel)]="ispickup" type="checkbox" class="filled-in" (ngModelChange)="hideWhenPickData()">
                             <label for="chkpickup">Pick-Up</label>
                         </span>
                     </div>
@@ -79,7 +79,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label class="control-label">From Date</label>
+                                    <label class="control-label">From Date</label> {{pickfrmdt}}
                                     <input type="date" [(ngModel)]="pickfrmdt" class="form-control pickfrmdt" tabindex="4" (ngModelChange)="dropfrmdt=pickfrmdt">
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label class="control-label">To Date</label>
+                                    <label class="control-label">To Date</label> {{picktodt}}
                                     <input type="date" [(ngModel)]="picktodt" class="form-control picktodt" tabindex="5" (ngModelChange)="droptodt=picktodt">
                                 </div>
                             </div>
@@ -172,10 +172,10 @@
                         </ng-template>
                     </p-orderList>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" *ngIf="isavldrop">
                     <div class="header content-header">
                         <span>
-                            <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" checked class="filled-in" (ngModelChange)="copyPickInfoInDrop()">
+                            <input id="chkdrop" name="chkdrop" [(ngModel)]="isdrop" type="checkbox" class="filled-in" (ngModelChange)="copyPickInfoInDrop()">
                             <label for="chkdrop">Drop</label>
                         </span>
                     </div>
@@ -283,7 +283,7 @@
             </div>
 
             <div class="row clearfix">
-                <div class="col-md-6 border">
+                <div class="col-md-6 border" *ngIf="isavlpickup">
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Pickup Attendent Name</label>
@@ -302,7 +302,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" *ngIf="isavldrop">
                     <div class="form-group">
                         <div class="form-line">
                             <label class="control-label">Drop Attendent Name</label>
