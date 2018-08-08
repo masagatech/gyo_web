@@ -5,46 +5,43 @@ import { Globals, Common } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: './vehdb.comp.html'
+    templateUrl: './drvdb.comp.html'
 })
 
-export class VehicleDashboardComponent implements OnInit, OnDestroy {
+export class DriverDashboardComponent implements OnInit, OnDestroy {
     @Input() data: any;
 
     global = new Globals();
 
-    autoVehicleDT: any = [];
-    selectVehicle: any = {};
-    autoid: number = 0;
-    vehid: number = 0;
-    vehname: string = "";
+    autoDriverDT: any = [];
+    selectDriver: any = {};
+    drvid: number = 0;
+    drvname: string = "";
 
     infoDT: any = [];
-    userDT: any = [];
+    vehicleDT: any = [];
 
     constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
-        this.viewVehicleDashboard();
+        this.viewDriverDashboard();
     }
 
-    // Auto Completed Vehicle
+    // Auto Completed Driver
 
-    getVehicleData(event) {
+    getDriverData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "vehicle",
+            "flag": "alldriver",
             "uid": this.data.loginUser.uid,
             "ucode": this.data.loginUser.ucode,
             "utype": this.data.loginUser.utype,
-            "enttid": this.data._enttdetails.enttid,
-            "wsautoid": this.data._enttdetails.wsautoid,
             "issysadmin": this.data._enttdetails.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoVehicleDT = data.data;
+            this.autoDriverDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -52,34 +49,31 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Vehicle
+    // Selected Driver
 
-    selectVehicleData(event) {
-        this.autoid = event.value;
-        this.vehid = event.vehid;
-        this.vehname = event.label;
+    selectDriverData(event) {
+        this.drvid = event.value;
+        this.drvname = event.label;
 
-        Cookie.set("_autoid_", this.autoid.toString());
-        Cookie.set("_vehid_", this.vehid.toString());
-        Cookie.set("_vehname_", this.vehname);
+        Cookie.set("_drvid_", this.drvid.toString());
+        Cookie.set("_drvname_", this.drvname);
 
-        this.viewVehicleDashboard();
+        this.viewDriverDashboard();
     }
 
-    public viewVehicleDashboard() {
+    public viewDriverDashboard() {
         var that = this;
 
-        if (Cookie.get('_vehname_') != null) {
-            that.autoid = parseInt(Cookie.get('_autoid_'));
-            that.vehid = parseInt(Cookie.get('_vehid_'));
-            that.vehname = Cookie.get('_vehname_');
+        if (Cookie.get('_drvname_') != null) {
+            that.drvid = parseInt(Cookie.get('_drvid_'));
+            that.drvname = Cookie.get('_drvname_');
 
-            that.selectVehicle = { value: that.vehid, label: that.vehname }
+            that.selectDriver = { value: that.drvid, label: that.drvname }
         }
 
         that.getDashboard("info");
-        that.getDashboard("driver");
-        that.getVehicleTrips("html");
+        that.getDashboard("vehicle");
+        that.getDriverTrips("html");
     }
 
     getDashboard(type) {
@@ -87,9 +81,8 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         var dbparams = {
-            "flag": "vehicle", "type": type, "vehid": that.vehid, "ayid": that.data._enttdetails.ayid,
-            "enttid": that.data._enttdetails.enttid, "wsautoid": that.data._enttdetails.wsautoid,
-            "uid": that.data.loginUser.uid, "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
+            "flag": "driver", "type": type, "drvid": that.drvid, "uid": that.data.loginUser.uid,
+            "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
@@ -97,8 +90,8 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
                 if (type == "info") {
                     that.infoDT = data.data;
                 }
-                else if (type == "driver") {
-                    that.userDT = data.data;
+                else if (type == "vehicle") {
+                    that.vehicleDT = data.data;
                 }
             }
             catch (e) {
@@ -116,15 +109,15 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Vehicle Trips
+    // Get Driver Trips
 
-    getVehicleTrips(format) {
+    getDriverTrips(format) {
         var that = this;
 
         commonfun.loader();
 
         var params = {
-            "flag": "feessummary", "type": "download", "vehid": that.vehid, "format": format
+            "flag": "feessummary", "type": "download", "uid": that.drvid, "utype": "driver", "format": format
         }
 
         if (format == "html") {
@@ -137,10 +130,10 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         commonfun.loaderhide();
     }
 
-    // View Vehicle Profile Link
+    // View Driver Profile Link
 
-    viewVehicleProfile() {
-        this._router.navigate(['/transport/vehicle/details', this.autoid]);
+    viewDriverProfile() {
+        this._router.navigate(['/transport/driver/details', this.drvid]);
     }
 
     ngOnDestroy() {

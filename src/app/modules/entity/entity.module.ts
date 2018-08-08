@@ -41,9 +41,6 @@ export const routes = [
                     
                     // Trip Tracking
                     { path: 'triptracking', loadChildren: './triptracking#TripTrackingModule' },
-
-                    // HelpDesk
-                    { path: 'helpdesk', loadChildren: './helpdesk#HelpDeskModule' },
                     
                     // Setting
                     { path: 'settings', loadChildren: './settings#SettingsModule' },

@@ -38,6 +38,9 @@ export const routes = [
                     
                     // Trip Tracking V1
                     { path: 'triptrackingv1', loadChildren: './triptrackingv1#TripTrackingV1Module' },
+
+                    // HelpDesk
+                    { path: 'helpdesk', loadChildren: './helpdesk#HelpDeskModule' },
                 ]
             }
         ]

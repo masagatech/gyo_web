@@ -55,12 +55,12 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             this.hddrv = "";
             this.hdveh = "";
 
-            this.hdtitle = this._enttdetails.psngrtype + " Dashboard";
+            this.hdtitle = "Student Dashboard";
             this.loadComponent(PassengerDashboardComponent, params);
 
-            commonfun.loader("#loadercontrol", "pulse", "Loading " + this._enttdetails.psngrtype + " Dashboard...");
+            commonfun.loader("#loadercontrol", "pulse", "Loading Student Dashboard...");
             event.stopPropagation();
-            commonfun.loaderhide("#loadercontrol", "pulse", "Loading " + this._enttdetails.psngrtype + " Dashboard...");
+            commonfun.loaderhide("#loadercontrol", "pulse", "Loading Student Dashboard...");
         }
         else if (flag == "driver") {
             this.hdpsngr = "";

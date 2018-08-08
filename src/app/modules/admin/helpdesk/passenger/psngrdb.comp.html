@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <div class="form-line">
-                    <label class="control-label">{{data._enttdetails.psngrtype}} Name <strong>*</strong></label>
+                    <label class="control-label">Student Name <strong>*</strong></label>
                     <p-autoComplete id="psngrid" name="psngrname" [(ngModel)]="selectPassenger" [tabindex]="2" (onSelect)="selectPassengerData($event)" [suggestions]="autoPassengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete psngrname"></p-autoComplete>
                     <span class="material-icons inputsearchico pad-12">
                         <a role="button" (click)="viewPassengerDashboard()" class="btn btn-search">arrow_forward</a>
@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <p>{{row.schoolname}}</p>
-                                    <p><b>{{data._enttdetails.psngrtype}} : </b>{{row.studentname}}</p>
+                                    <p><b>Student : </b>{{row.studentname}}</p>
                                     <p><b>Father : </b> {{row.fathername}} <span class="p-5 {{row.mob1bgcolor}}">{{row.mobileno1}}</span></p>
                                     <p><b>Mother : </b> {{row.mothername}} <span class="p-5 {{row.mob2bgcolor}}">{{row.mobileno2}}</span></p>
                                 </div>

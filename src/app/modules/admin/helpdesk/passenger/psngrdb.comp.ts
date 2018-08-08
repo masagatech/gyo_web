@@ -40,8 +40,8 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
             "uid": this.data.loginUser.uid,
             "ucode": this.data.loginUser.ucode,
             "utype": this.data.loginUser.utype,
-            "enttid": this.data._enttdetails.enttid,
-            "wsautoid": this.data._enttdetails.wsautoid,
+            "enttid": 0,
+            "wsautoid": 0,
             "issysadmin": this.data._enttdetails.issysadmin,
             "search": query
         }).subscribe((data) => {
@@ -88,9 +88,8 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         var dbparams = {
-            "flag": "passenger", "type": type, "psngrid": that.psngrid, "ayid": that.data._enttdetails.ayid,
-            "enttid": that.data._enttdetails.enttid, "wsautoid": that.data._enttdetails.wsautoid,
-            "uid": that.data.loginUser.uid, "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
+            "flag": "passenger", "type": type, "psngrid": that.psngrid, "uid": that.data.loginUser.uid,
+            "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
