@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ComponentFactoryResolver } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { Router, ActivatedRoute } from '@angular/router';
+import { LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
@@ -29,7 +29,7 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _actrouter: ActivatedRoute, private _loginservice: LoginService, private _msg: MessageService,
+    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _loginservice: LoginService,
         private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -51,6 +51,24 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
         viewContainerRef.clear();
         let componentRef = viewContainerRef.createComponent(componentFactory);
         (<HOSTComponent>componentRef.instance).data = data;
+    }
+
+    openDashboard(type) {
+        if (type == "passenger") {
+            this._router.navigate(['/admin/helpdesk'], {
+                queryParams: { "flag": "passenger" }
+            });
+        }
+        else if (type == "driver") {
+            this._router.navigate(['/admin/helpdesk'], {
+                queryParams: { "flag": "driver" }
+            });
+        }
+        else if (type == "vehicle") {
+            this._router.navigate(['/admin/helpdesk'], {
+                queryParams: { "flag": "vehicle" }
+            });
+        }
     }
 
     openHelpDeskDashboard() {

@@ -1,25 +1,13 @@
 <div class="card">
-    <!-- <ul class="nav nav-tabs">
-        <li routerLinkActive="active">
-            <a role="button" (click)="openHelpDeskDashboard('passenger')" class="{{hdpsngr}}">Student</a>
-        </li>
-        <li routerLinkActive="active">
-            <a role="button" (click)="openHelpDeskDashboard('driver')" class="{{hddrv}}">Driver</a>
-        </li>
-        <li routerLinkActive="active">
-            <a role="button" (click)="openHelpDeskDashboard('vehicle')" class="{{hdveh}}">Vehicle</a>
-        </li>
-    </ul> -->
-
     <ul class="nav nav-tabs">
         <li routerLinkActive="active">
-            <a role="button" class="{{hdpsngr}}">Student</a>
+            <a role="button" (click)="openDashboard('passenger')" class="{{hdpsngr}}">Student</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" class="{{hddrv}}">Driver</a>
+            <a role="button" (click)="openDashboard('driver')" class="{{hddrv}}">Driver</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" class="{{hdveh}}">Vehicle</a>
+            <a role="button" (click)="openDashboard('vehicle')" class="{{hdveh}}">Vehicle</a>
         </li>
     </ul>
 
