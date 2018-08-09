@@ -41,15 +41,21 @@ export class AdminComponent implements OnInit, OnDestroy {
       $.AdminBSB.islocked = true;
       $.AdminBSB.leftSideBar.Close();
       $.AdminBSB.rightSideBar.activate();
-  }, 0);
+    }, 0);
   }
 
   getHeaderDetails() {
     if (Cookie.get('_schsession_') != null) {
       this.wsname = this.loginUser.wsname;
       this.wslogo = this.global.uploadurl + this.loginUser.wslogo;
-      this.enttname = Cookie.get('_schwsdetails_') != null ? this._wsdetails.wsname : "";
-      
+
+      if (Cookie.get('_schwsdetails_') == null) {
+        this.enttname = "";
+      }
+      else {
+        this.enttname = this._wsdetails.wsname;
+      }
+
       if (Cookie.get('_schenttdetails_') != null) {
         this.isleftmenu = true;
       }

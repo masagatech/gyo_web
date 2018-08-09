@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './psngrdb.comp.html'
@@ -13,17 +12,21 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
 
     global = new Globals();
 
+    flag: string = "";
+
     autoPassengerDT: any = [];
     selectPassenger: any = {};
     psngrid: number = 0;
     psngrname: string = "";
 
     infoDT: any = [];
-    feesDT: any = [];
     scheduleDT: any = [];
     notificationDT: any = [];
 
-    constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
+    private subscribeParameters: any;
+
+    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService,
+        private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
@@ -59,66 +62,58 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         this.psngrid = event.value;
         this.psngrname = event.label;
 
-        Cookie.set("_psngrid_", this.psngrid.toString());
-        Cookie.set("_psngrname_", this.psngrname);
-
-        this.viewPassengerDashboard();
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "passenger", "psngrid": this.psngrid, "psngrname": this.psngrname }
+        });
     }
 
-    public viewPassengerDashboard() {
+    viewPassengerDashboard() {
         var that = this;
 
-        if (Cookie.get('_psngrname_') != null) {
-            that.psngrid = parseInt(Cookie.get('_psngrid_'));
-            that.psngrname = Cookie.get('_psngrname_');
+        that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
+            that.flag = params['flag'] || "";
+            that.psngrid = params['psngrid'] || 0;
+            that.psngrname = params['psngrname'] || "";
 
             that.selectPassenger = { value: that.psngrid, label: that.psngrname }
-        }
 
-        that.getDashboard("passenger", "info");
-        that.getDashboard("passenger", "fees");
-        that.getDashboard("passenger", "notification");
-        that.getDashboard("schedule", "passenger");
-
-        that.getStudentTrips("html");
+            that.getDashboard();
+            that.getStudentTrips("html");
+        });
     }
 
-    getDashboard(flag, type) {
+    viewDriverDashboard(row) {
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "driver", "drvid": row.driverid, "drvname": row.drivername }
+        });
+    }
+
+    viewVehicleDashboard(row) {
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "vehicle", "autoid": row.vehautoid, "vehid": row.vehicleid, "vehname": row.vehregno + " - " + row.imei }
+        });
+    }
+
+    getDashboard() {
         var that = this;
-        commonfun.loader();
 
         var dbparams = {
-            "flag": flag, "type": type, "psngrid": that.psngrid, "uid": that.data.loginUser.uid,
+            "flag": that.flag == "" ? "passenger" : that.flag, "psngrid": that.psngrid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
-                if (flag == "passenger") {
-                    if (type == "info") {
-                        that.infoDT = data.data;
-                    }
-                    else if (type == "fees") {
-                        that.feesDT = data.data;
-                    }
-                    else if (type == "notification") {
-                        that.notificationDT = data.data;
-                    }
-                }
-                else if (flag == "schedule") {
-                    that.scheduleDT = data.data;
-                }
+                that.infoDT = data.data[0];
+                that.scheduleDT = data.data[1];
+                that.notificationDT = data.data[2];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
-
-            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-
-            commonfun.loaderhide();
         }, () => {
 
         })
@@ -129,10 +124,8 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
     getStudentTrips(format) {
         var that = this;
 
-        commonfun.loader();
-
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.psngrid, "utype": "passenger", "format": format
+            "flag": "feessummary", "type": "download", "uid": that.psngrid, "utype": that.flag == "" ? "passenger" : that.flag, "format": format
         }
 
         if (format == "html") {
@@ -141,8 +134,6 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
         }
-
-        commonfun.loaderhide();
     }
 
     // View Passenger Profile Link
@@ -157,6 +148,6 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        this.subscribeParameters.unsubscribe();
     }
 }

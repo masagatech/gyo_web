@@ -52,7 +52,11 @@
                         </div>
                         <div class="body overflow-panel">
                             <div *ngFor="let row of userDT; let i = index;" class="p-b-5">
-                                <h5>{{row.fullname}} ({{row.utypename}})</h5>
+                                <h5>
+                                    <a role="button" (click)="viewUserDashboard(row)">
+                                        {{row.fullname}} ({{row.utypename}})
+                                    </a>
+                                </h5>
 
                                 <p *ngFor="let erow of row.enttdata; let i = index;">
                                     {{i + 1}}. {{erow.enttname}}
@@ -68,20 +72,30 @@
                     Schedule
                 </div>
                 <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-md-6" *ngFor="let row of scheduleDT">
-                            <p><b>Schedule : </b>{{row.schdlname}}</p>
-                            <p><b>Batch : </b>{{row.batchname}}</p>
-                            <p><b>Day : </b>{{row.day}}</p>
-                            <p><b>Date : </b>{{row.schdldate}}</p>
-                            <p><b>Time : </b>{{row.schdltime}}</p>
-                            <p><b>Driver : </b>{{row.drivername}}</p>
-                            <p><b>Vehicle : </b>{{row.vehiclename}}</p>
-                            <p><b>Route : </b>{{row.rtname}}</p>
+                    <div *ngFor="let row of scheduleDT | groupBy:'schoolname'">
+                        <h4>{{row.key}}</h4>
 
-                            <p class="font-12" *ngFor="let srow of row.studdata; let i = index;">
-                                <b>{{i + 1}}.)</b> {{srow.studname}}
-                            </p>
+                        <div class="row clearfix">
+                            <div class="col-md-6" *ngFor="let drow of row.value">
+                                <p><b>Schedule : </b>{{drow.schdlname}}</p>
+                                <p><b>Batch : </b>{{drow.batchname}}</p>
+                                <p><span innerHtml="{{row.wkdays}}"></span></p>
+                                <p><b>Date : </b>{{drow.schdldate}}</p>
+                                <p>
+                                    <b>Driver : </b>
+                                    <a role="button" (click)="viewDriverDashboard(drow)">{{drow.drivername}}</a>
+                                </p>
+                                <p><b>Vehicle : </b>{{drow.vehiclename}}</p>
+                                <p><b>Route : </b>{{drow.rtname}}</p>
+                                <p><b>Student : </b>{{drow.countstuds}}</p>
+
+                                <p class="font-12" *ngFor="let srow of drow.studdata; let i = index;">
+                                    <b>{{i + 1}}.)</b>
+                                    <a role="button" (click)="viewPassengerDashboard(srow)">{{srow.stdnm}}</a>
+                                </p>
+
+                                <hr />
+                            </div>
                         </div>
                     </div>
                 </div>

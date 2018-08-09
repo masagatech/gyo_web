@@ -47,17 +47,6 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card">
-                        <div class="header-title">
-                            Fees
-                        </div>
-                        <div class="body">
-                            <div *ngFor="let row of feesDT">
-                                <p><b>Paid Fees : </b>{{row.paidfees}}</p>
-                                <p><b>Pending Fees : </b>{{row.pendfees}}</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -70,11 +59,16 @@
                         <div class="col-md-6" *ngFor="let row of scheduleDT">
                             <p><b>Schedule : </b>{{row.schdlname}}</p>
                             <p><b>Batch : </b>{{row.batchname}}</p>
-                            <p><b>Day : </b>{{row.day}}</p>
+                            <p><span innerHtml="{{row.wkdays}}"></span></p>
                             <p><b>Date : </b>{{row.schdldate}}</p>
-                            <p><b>Time : </b>{{row.schdltime}}</p>
-                            <p><b>Driver : </b>{{row.drivername}}</p>
-                            <p><b>Vehicle : </b>{{row.vehiclename}}</p>
+                            <p>
+                                <b>Driver : </b>
+                                <a role="button" (click)="viewDriverDashboard(row)">{{row.drivername}}</a>
+                            </p>
+                            <p>
+                                <b>Vehicle : </b>
+                                <a role="button" (click)="viewVehicleDashboard(row)">{{row.vehiclename}}</a>
+                            </p>
                             <p><b>Route : </b>{{row.rtname}}</p>
                             <p><b>Stop : </b>{{row.stpname}}</p>
                         </div>

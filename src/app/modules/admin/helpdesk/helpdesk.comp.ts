@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ADHOST } from '@directives';
@@ -18,13 +19,18 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
     @ViewChild(ADHOST)
     private _Host: ADHOST;
 
+    flag: string = "";
+
     hdpsngr: string = "";
     hddrv: string = "";
     hdveh: string = "";
 
     hdtitle: string = "";
 
-    constructor(private _loginservice: LoginService, private _msg: MessageService, private componentFactoryResolver: ComponentFactoryResolver) {
+    private subscribeParameters: any;
+
+    constructor(private _actrouter: ActivatedRoute, private _loginservice: LoginService, private _msg: MessageService,
+        private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
     }
@@ -35,8 +41,8 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
-        
-        this.openHelpDeskDashboard("passenger");
+
+        this.openHelpDeskDashboard();
     }
 
     loadComponent(component, data) {
@@ -47,49 +53,57 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
         (<HOSTComponent>componentRef.instance).data = data;
     }
 
-    openHelpDeskDashboard(flag) {
-        var params = { loginUser: this.loginUser, _enttdetails: this._enttdetails };
+    openHelpDeskDashboard() {
+        var dparams = { loginUser: this.loginUser, _enttdetails: this._enttdetails };
 
-        if (flag == "passenger") {
-            this.hdpsngr = "bg-green";
-            this.hddrv = "";
-            this.hdveh = "";
+        var that = this;
 
-            this.hdtitle = "Student Dashboard";
-            this.loadComponent(PassengerDashboardComponent, params);
+        that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
+            that.flag = params['flag'] || "";
 
-            commonfun.loader("#loadercontrol", "pulse", "Loading Student Dashboard...");
-            event.stopPropagation();
-            commonfun.loaderhide("#loadercontrol", "pulse", "Loading Student Dashboard...");
-        }
-        else if (flag == "driver") {
-            this.hdpsngr = "";
-            this.hddrv = "bg-green";
-            this.hdveh = "";
+            if (that.flag == "driver") {
+                commonfun.loader("#loadercontrol", "pulse", "Loading Driver Dashboard...");
 
-            this.hdtitle = "Driver Dashboard";
-            this.loadComponent(DriverDashboardComponent, params);
-            
-            commonfun.loader("#loadercontrol", "pulse", "Loading Driver Dashboard...");
-            event.stopPropagation();
-            commonfun.loaderhide("#loadercontrol", "pulse", "Loading Driver Dashboard...");
-        }
-        else if (flag == "vehicle") {
-            this.hdpsngr = "";
-            this.hddrv = "";
-            this.hdveh = "bg-green";
+                that.hdpsngr = "";
+                that.hddrv = "bg-green";
+                that.hdveh = "";
 
-            this.hdtitle = "Vehicle Dashboard";
-            this.loadComponent(VehicleDashboardComponent, params);
-            
-            commonfun.loader("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
-            event.stopPropagation();
-            commonfun.loaderhide("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
-        }
+                that.hdtitle = "Driver Dashboard";
+                that.loadComponent(DriverDashboardComponent, dparams);
+
+                commonfun.loaderhide("#loadercontrol", "pulse", "Loading Driver Dashboard...");
+            }
+            else if (that.flag == "vehicle") {
+                commonfun.loader("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
+
+                that.hdpsngr = "";
+                that.hddrv = "";
+                that.hdveh = "bg-green";
+
+                that.hdtitle = "Vehicle Dashboard";
+                that.loadComponent(VehicleDashboardComponent, dparams);
+
+                commonfun.loaderhide("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
+            }
+            else {
+                commonfun.loader("#loadercontrol", "pulse", "Loading Student Dashboard...");
+
+                that.hdpsngr = "bg-green";
+                that.hddrv = "";
+                that.hdveh = "";
+
+                that.hdtitle = "Student Dashboard";
+                that.loadComponent(PassengerDashboardComponent, dparams);
+
+                commonfun.loaderhide("#loadercontrol", "pulse", "Loading Student Dashboard...");
+            }
+        });
     }
 
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
+
+        this.subscribeParameters.unsubscribe();
     }
 }

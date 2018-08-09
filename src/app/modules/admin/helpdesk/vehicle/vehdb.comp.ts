@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './vehdb.comp.html'
@@ -12,6 +11,8 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     @Input() data: any;
 
     global = new Globals();
+
+    flag: string = "";
 
     autoVehicleDT: any = [];
     selectVehicle: any = {};
@@ -23,7 +24,10 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     userDT: any = [];
     scheduleDT: any = [];
 
-    constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
+    private subscribeParameters: any;
+
+    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService,
+        private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
@@ -58,63 +62,77 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         this.vehid = event.vehid;
         this.vehname = event.label;
 
-        Cookie.set("_autoid_", this.autoid.toString());
-        Cookie.set("_vehid_", this.vehid.toString());
-        Cookie.set("_vehname_", this.vehname);
-
-        this.viewVehicleDashboard();
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "vehicle", "autoid": this.autoid, "vehid": this.vehid, "vehname": this.vehname }
+        });
     }
 
-    public viewVehicleDashboard() {
+    viewVehicleDashboard() {
         var that = this;
 
-        if (Cookie.get('_vehname_') != null) {
-            that.autoid = parseInt(Cookie.get('_autoid_'));
-            that.vehid = parseInt(Cookie.get('_vehid_'));
-            that.vehname = Cookie.get('_vehname_');
+        that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
+            that.flag = params['flag'] || "";
+            that.autoid = params['autoid'] || 0;
+            that.vehid = params['vehid'] || 0;
+            that.vehname = params['vehname'] || "";
 
             that.selectVehicle = { value: that.vehid, label: that.vehname }
-        }
 
-        that.getDashboard("vehicle", "info");
-        that.getDashboard("vehicle", "driver");
-        that.getDashboard("schedule", "vehicle");
-        that.getVehicleTrips("html");
+            that.getDashboard();
+            that.getVehicleTrips("html");
+        });
     }
 
-    getDashboard(flag, type) {
+    viewPassengerDashboard(row) {
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "passenger", "psngrid": row.stdid, "psngrname": row.stdnm }
+        });
+    }
+
+    viewUserDashboard(row) {
+        if (row.utype == "driver") {
+            this._router.navigate(['/admin/helpdesk'], {
+                queryParams: { "flag": "driver", "drvid": row.uid, "drvname": row.fullname }
+            });
+        }
+        else if (row.utype == "emp") {
+            this._router.navigate(['/admin/helpdesk'], {
+                queryParams: { "flag": "employee", "empid": row.uid, "drvname": row.fullname }
+            });
+        }
+        else {
+            this._router.navigate(['/admin/helpdesk'], {
+                queryParams: { "flag": "user", "empid": row.uid, "drvname": row.fullname }
+            });
+        }
+    }
+
+    viewDriverDashboard(row, type) {
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "driver", "drvid": row.driverid, "drvname": row.drivername }
+        });
+    }
+
+    getDashboard() {
         var that = this;
-        commonfun.loader();
 
         var dbparams = {
-            "flag": flag, "type": type, "vehid": that.vehid, "uid": that.data.loginUser.uid,
+            "flag": that.flag, "vehid": that.vehid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
-                if (flag == "vehicle") {
-                    if (type == "info") {
-                        that.infoDT = data.data;
-                    }
-                    else if (type == "driver") {
-                        that.userDT = data.data;
-                    }
-                }
-                else if (flag == "schedule") {
-                    that.scheduleDT = data.data;
-                }
+                that.infoDT = data.data[0];
+                that.userDT = data.data[1];
+                that.scheduleDT = data.data[2];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
-
-            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-
-            commonfun.loaderhide();
         }, () => {
 
         })
@@ -125,10 +143,8 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     getVehicleTrips(format) {
         var that = this;
 
-        commonfun.loader();
-
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.vehid, "utype": "vehicle", "format": format
+            "flag": "feessummary", "type": "download", "uid": that.vehid, "utype": that.flag, "format": format
         }
 
         if (format == "html") {
@@ -137,8 +153,6 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
         }
-
-        commonfun.loaderhide();
     }
 
     // View Vehicle Profile Link
@@ -148,6 +162,6 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        this.subscribeParameters.unsubscribe();
     }
 }

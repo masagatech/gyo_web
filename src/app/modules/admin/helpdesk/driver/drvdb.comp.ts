@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './drvdb.comp.html'
@@ -13,6 +12,8 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
 
     global = new Globals();
 
+    flag: string = "";
+
     autoDriverDT: any = [];
     selectDriver: any = {};
     drvid: number = 0;
@@ -22,7 +23,10 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     vehicleDT: any = [];
     scheduleDT: any = [];
 
-    constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
+    private subscribeParameters: any;
+
+    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService,
+        private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
 
     ngOnInit() {
@@ -56,61 +60,58 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         this.drvid = event.value;
         this.drvname = event.label;
 
-        Cookie.set("_drvid_", this.drvid.toString());
-        Cookie.set("_drvname_", this.drvname);
-
-        this.viewDriverDashboard();
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "driver", "drvid": this.drvid, "drvname": this.drvname }
+        });
     }
 
-    public viewDriverDashboard() {
+    viewDriverDashboard() {
         var that = this;
 
-        if (Cookie.get('_drvname_') != null) {
-            that.drvid = parseInt(Cookie.get('_drvid_'));
-            that.drvname = Cookie.get('_drvname_');
+        that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
+            that.flag = params['flag'] || "";
+            that.drvid = params['drvid'] || 0;
+            that.drvname = params['drvname'] || "";
 
             that.selectDriver = { value: that.drvid, label: that.drvname }
-        }
 
-        that.getDashboard("driver", "info");
-        that.getDashboard("driver", "vehicle");
-        that.getDashboard("schedule", "driver");
-        that.getDriverTrips("html");
+            that.getDashboard();
+            that.getDriverTrips("html");
+        });
     }
 
-    getDashboard(flag, type) {
+    viewPassengerDashboard(row) {
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "passenger", "psngrid": row.stdid, "psngrname": row.stdnm }
+        });
+    }
+
+    viewVehicleDashboard(row) {
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: { "flag": "vehicle", "autoid": row.vehautoid, "vehid": row.vehicleid, "vehname": row.vehregno + " - " + row.imei }
+        });
+    }
+
+    getDashboard() {
         var that = this;
-        commonfun.loader();
 
         var dbparams = {
-            "flag": flag, "type": type, "drvid": that.drvid, "uid": that.data.loginUser.uid,
+            "flag": "driver", "drvid": that.drvid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
-                if (flag == "driver") {
-                    if (type == "info") {
-                        that.infoDT = data.data;
-                    }
-                    else if (type == "vehicle") {
-                        that.vehicleDT = data.data;
-                    }
-                }
-                else if (flag == "schedule") {
-                    that.scheduleDT = data.data;
-                }
+                that.infoDT = data.data[0];
+                that.vehicleDT = data.data[1];
+                that.scheduleDT = data.data[2];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
-
-            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-
-            commonfun.loaderhide();
         }, () => {
 
         })
@@ -121,10 +122,8 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     getDriverTrips(format) {
         var that = this;
 
-        commonfun.loader();
-
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.drvid, "utype": "driver", "format": format
+            "flag": "feessummary", "type": "download", "uid": that.drvid, "utype": that.flag, "format": format
         }
 
         if (format == "html") {
@@ -133,8 +132,6 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
         }
-
-        commonfun.loaderhide();
     }
 
     // View Driver Profile Link
@@ -144,6 +141,6 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        this.subscribeParameters.unsubscribe();
     }
 }
