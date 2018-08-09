@@ -20,6 +20,7 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
 
     infoDT: any = [];
     vehicleDT: any = [];
+    scheduleDT: any = [];
 
     constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
@@ -71,27 +72,33 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
             that.selectDriver = { value: that.drvid, label: that.drvname }
         }
 
-        that.getDashboard("info");
-        that.getDashboard("vehicle");
+        that.getDashboard("driver", "info");
+        that.getDashboard("driver", "vehicle");
+        that.getDashboard("schedule", "driver");
         that.getDriverTrips("html");
     }
 
-    getDashboard(type) {
+    getDashboard(flag, type) {
         var that = this;
         commonfun.loader();
 
         var dbparams = {
-            "flag": "driver", "type": type, "drvid": that.drvid, "uid": that.data.loginUser.uid,
+            "flag": flag, "type": type, "drvid": that.drvid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
-                if (type == "info") {
-                    that.infoDT = data.data;
+                if (flag == "driver") {
+                    if (type == "info") {
+                        that.infoDT = data.data;
+                    }
+                    else if (type == "vehicle") {
+                        that.vehicleDT = data.data;
+                    }
                 }
-                else if (type == "vehicle") {
-                    that.vehicleDT = data.data;
+                else if (flag == "schedule") {
+                    that.scheduleDT = data.data;
                 }
             }
             catch (e) {

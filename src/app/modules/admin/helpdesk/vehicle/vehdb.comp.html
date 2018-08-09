@@ -23,38 +23,66 @@
 
 <div class="body">
     <div class="row clearfix">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header-title">
-                    Personal Details
-                </div>
-                <div class="body" *ngFor="let row of infoDT">
-                    <p><b>Registration No : </b>{{row.vehregno}}</p>
-                    <p><b>IMEI : </b>{{row.imei}}</p>
-                    <p><b>SIM No : </b>{{row.simno}}</p>
-                    <p *ngIf="row.vehicletype != ''"><b>Vehicle Type : </b>{{row.vehicletype}}</p>
-                    <p *ngIf="row.vehiclemake != ''"><b>Vehicle Make : </b>{{row.vehiclemake}}</p>
-                    <p *ngIf="row.vehiclecondition != ''"><b>Vehicle Condition : </b>{{row.vehiclecondition}}</p>
-                    <p *ngIf="row.devtype != ''"><b>Device Type : </b>{{row.devtype}}</p>
+        <div class="col-md-8">
+            <div class="row clearfix">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header-title">
+                            Personal Details
+                        </div>
+                        <div class="body" *ngFor="let row of infoDT">
+                            <p><b>Registration No : </b>{{row.vehregno}}</p>
+                            <p><b>IMEI : </b>{{row.imei}}</p>
+                            <p><b>SIM No : </b>{{row.simno}}</p>
+                            <p *ngIf="row.vehicletype != ''"><b>Vehicle Type : </b>{{row.vehicletype}}</p>
+                            <p *ngIf="row.vehiclemake != ''"><b>Vehicle Make : </b>{{row.vehiclemake}}</p>
+                            <p *ngIf="row.vehiclecondition != ''"><b>Vehicle Condition : </b>{{row.vehiclecondition}}</p>
+                            <p *ngIf="row.devtype != ''"><b>Device Type : </b>{{row.devtype}}</p>
 
-                    <p *ngFor="let erow of row.enttdata; let i = index;">
-                        <b>{{i + 1}}.</b> {{erow.enttname}}
-                    </p>
+                            <p *ngFor="let erow of row.enttdata; let i = index;">
+                                <b>{{i + 1}}.</b> {{erow.enttname}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header-title">
+                            Mapped User
+                        </div>
+                        <div class="body overflow-panel">
+                            <div *ngFor="let row of userDT; let i = index;" class="p-b-5">
+                                <h5>{{row.fullname}} ({{row.utypename}})</h5>
+
+                                <p *ngFor="let erow of row.enttdata; let i = index;">
+                                    {{i + 1}}. {{erow.enttname}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
+
             <div class="card">
                 <div class="header-title">
-                    Mapped User
+                    Schedule
                 </div>
-                <div class="body overflow-panel">
-                    <div *ngFor="let row of userDT; let i = index;" class="p-b-5">
-                        <h5>{{row.fullname}} ({{row.utypename}})</h5>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-md-6" *ngFor="let row of scheduleDT">
+                            <p><b>Schedule : </b>{{row.schdlname}}</p>
+                            <p><b>Batch : </b>{{row.batchname}}</p>
+                            <p><b>Day : </b>{{row.day}}</p>
+                            <p><b>Date : </b>{{row.schdldate}}</p>
+                            <p><b>Time : </b>{{row.schdltime}}</p>
+                            <p><b>Driver : </b>{{row.drivername}}</p>
+                            <p><b>Vehicle : </b>{{row.vehiclename}}</p>
+                            <p><b>Route : </b>{{row.rtname}}</p>
 
-                        <p *ngFor="let erow of row.enttdata; let i = index;">
-                            {{i + 1}}. {{erow.enttname}}
-                        </p>
+                            <p class="font-12" *ngFor="let srow of row.studdata; let i = index;">
+                                <b>{{i + 1}}.)</b> {{srow.studname}}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

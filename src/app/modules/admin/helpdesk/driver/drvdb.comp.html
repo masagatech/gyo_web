@@ -23,43 +23,72 @@
 
 <div class="body">
     <div class="row clearfix">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="header-title">
-                    Personal Details
-                </div>
-                <div class="body" *ngFor="let row of infoDT">
-                    <div class="row clearfix">
-                        <div class="col-md-3">
-                            <img alt="{{row.drivername}}" src="{{global.uploadurl + row.driverphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
+        <div class="col-md-8">
+            <div class="row clearfix">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header-title">
+                            Personal Details
                         </div>
-                        <div class="col-md-9">
-                            <p><b>Driver : </b>{{row.drivername}}</p>
-                            <p><b>Mobile : </b>{{row.mobileno1}}</p>
-                            <p *ngIf="row.mobileno2 != ''"><b>Alternate Mobile : </b>{{row.mobileno2}}</p>
-                            <p *ngIf="row.email1 != ''"><b>Email : </b>{{row.email1}}</p>
-                            <p *ngIf="row.email2 != ''"><b>Alternate Email : </b>{{row.email2}}</p>
-                            <p *ngIf="row.licenseno != ''"><b>License No : </b>{{row.licenseno}}</p>
-                            <p *ngIf="row.aadharno != ''"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                        <div class="body" *ngFor="let row of infoDT">
+                            <div class="row clearfix">
+                                <div class="col-md-3">
+                                    <img alt="{{row.drivername}}" src="{{global.uploadurl + row.driverphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
+                                </div>
+                                <div class="col-md-9">
+                                    <p><b>Driver : </b>{{row.drivername}}</p>
+                                    <p><b>Mobile : </b>{{row.mobileno1}}</p>
+                                    <p *ngIf="row.mobileno2 != ''"><b>Alternate Mobile : </b>{{row.mobileno2}}</p>
+                                    <p *ngIf="row.email1 != ''"><b>Email : </b>{{row.email1}}</p>
+                                    <p *ngIf="row.email2 != ''"><b>Alternate Email : </b>{{row.email2}}</p>
+                                    <p *ngIf="row.licenseno != ''"><b>License No : </b>{{row.licenseno}}</p>
+                                    <p *ngIf="row.aadharno != ''"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                                </div>
+                            </div>
+
+                            <p *ngFor="let erow of row.enttdata; let i = index;">
+                                <span class="p-5 {{erow.bgcolor}}"><b>{{i + 1}}.</b> {{erow.enttname}}</span>
+                            </p>
                         </div>
                     </div>
-
-                    <p *ngFor="let erow of row.enttdata; let i = index;">
-                        <span class="p-5 {{erow.bgcolor}}"><b>{{i + 1}}.</b> {{erow.enttname}}</span>
-                    </p>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header-title">
+                            Vehicle Details
+                        </div>
+                        <div class="body overflow-panel">
+                            <div *ngFor="let row of vehicleDT; let i = index;" class="p-b-5">
+                                <h5>{{i + 1}}. {{row.vehname}}</h5>
+                                <p>{{row.vehregno}}</p>
+                                <p>{{row.attr}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
+
             <div class="card">
                 <div class="header-title">
-                    Vehicle Details
+                    Schedule
                 </div>
-                <div class="body overflow-panel">
-                    <div *ngFor="let row of vehicleDT; let i = index;" class="p-b-5">
-                        <h5>{{i + 1}}. {{row.vehname}}</h5>
-                        <p>{{row.vehregno}}</p>
-                        <p>{{row.attr}}</p>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-md-6" *ngFor="let row of scheduleDT">
+                            <p><b>Schedule : </b>{{row.schdlname}}</p>
+                            <p><b>Batch : </b>{{row.batchname}}</p>
+                            <p><b>Day : </b>{{row.day}}</p>
+                            <p><b>Date : </b>{{row.schdldate}}</p>
+                            <p><b>Time : </b>{{row.schdltime}}</p>
+                            <p><b>Driver : </b>{{row.drivername}}</p>
+                            <p><b>Vehicle : </b>{{row.vehiclename}}</p>
+                            <p><b>Route : </b>{{row.rtname}}</p>
+                            <p><b>Student : </b>{{row.countstuds}}</p>
+
+                            <p class="font-12" *ngFor="let srow of row.studdata; let i = index;">
+                                <b>{{i + 1}}.)</b> {{srow.studname}}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

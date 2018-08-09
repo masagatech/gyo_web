@@ -75,36 +75,38 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
             that.selectPassenger = { value: that.psngrid, label: that.psngrname }
         }
 
-        that.getDashboard("info");
-        that.getDashboard("fees");
-        that.getDashboard("schedule");
-        that.getDashboard("notification");
-        
+        that.getDashboard("passenger", "info");
+        that.getDashboard("passenger", "fees");
+        that.getDashboard("passenger", "notification");
+        that.getDashboard("schedule", "passenger");
+
         that.getStudentTrips("html");
     }
 
-    getDashboard(type) {
+    getDashboard(flag, type) {
         var that = this;
         commonfun.loader();
 
         var dbparams = {
-            "flag": "passenger", "type": type, "psngrid": that.psngrid, "uid": that.data.loginUser.uid,
+            "flag": flag, "type": type, "psngrid": that.psngrid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
-                if (type == "info") {
-                    that.infoDT = data.data;
+                if (flag == "passenger") {
+                    if (type == "info") {
+                        that.infoDT = data.data;
+                    }
+                    else if (type == "fees") {
+                        that.feesDT = data.data;
+                    }
+                    else if (type == "notification") {
+                        that.notificationDT = data.data;
+                    }
                 }
-                else if (type == "fees") {
-                    that.feesDT = data.data;
-                }
-                else if (type == "schedule") {
+                else if (flag == "schedule") {
                     that.scheduleDT = data.data;
-                }
-                else if (type == "notification") {
-                    that.notificationDT = data.data;
                 }
             }
             catch (e) {
@@ -130,7 +132,7 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         var params = {
-            "flag": "feessummary", "type": "download", "psngrid": that.psngrid, "utype": "driver", "format": format
+            "flag": "feessummary", "type": "download", "uid": that.psngrid, "utype": "passenger", "format": format
         }
 
         if (format == "html") {

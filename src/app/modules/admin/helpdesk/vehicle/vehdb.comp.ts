@@ -21,6 +21,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
     infoDT: any = [];
     userDT: any = [];
+    scheduleDT: any = [];
 
     constructor(private _router: Router, private _msg: MessageService, private _dbservice: DashboardService, private _autoservice: CommonService) {
     }
@@ -75,27 +76,33 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
             that.selectVehicle = { value: that.vehid, label: that.vehname }
         }
 
-        that.getDashboard("info");
-        that.getDashboard("driver");
+        that.getDashboard("vehicle", "info");
+        that.getDashboard("vehicle", "driver");
+        that.getDashboard("schedule", "vehicle");
         that.getVehicleTrips("html");
     }
 
-    getDashboard(type) {
+    getDashboard(flag, type) {
         var that = this;
         commonfun.loader();
 
         var dbparams = {
-            "flag": "vehicle", "type": type, "vehid": that.vehid, "uid": that.data.loginUser.uid,
+            "flag": flag, "type": type, "vehid": that.vehid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
-                if (type == "info") {
-                    that.infoDT = data.data;
+                if (flag == "vehicle") {
+                    if (type == "info") {
+                        that.infoDT = data.data;
+                    }
+                    else if (type == "driver") {
+                        that.userDT = data.data;
+                    }
                 }
-                else if (type == "driver") {
-                    that.userDT = data.data;
+                else if (flag == "schedule") {
+                    that.scheduleDT = data.data;
                 }
             }
             catch (e) {
@@ -121,7 +128,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         var params = {
-            "flag": "feessummary", "type": "download", "vehid": that.vehid, "format": format
+            "flag": "feessummary", "type": "download", "uid": that.vehid, "utype": "vehicle", "format": format
         }
 
         if (format == "html") {
