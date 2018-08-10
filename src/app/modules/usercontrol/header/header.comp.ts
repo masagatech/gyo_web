@@ -106,6 +106,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
+  openHelpDeskDashboard() {
+    if (Cookie.get("_studdata_") == null) {
+      this._router.navigate(['/admin/helpdesk'], {
+        queryParams: { "flag": "student" }
+      });
+    }
+    else {
+      var studdata = JSON.parse(Cookie.get("_studdata_"));
+
+      this._router.navigate(['/admin/helpdesk'], {
+        queryParams: studdata
+      });
+    }
+  }
+
   public ngAfterViewInit() {
     loader.loadall();
   }

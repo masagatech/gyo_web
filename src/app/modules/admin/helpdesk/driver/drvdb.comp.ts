@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './drvdb.comp.html'
@@ -13,6 +14,7 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     global = new Globals();
 
     flag: string = "";
+    qsid: number = 0;
 
     autoDriverDT: any = [];
     selectDriver: any = {};
@@ -57,11 +59,11 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     // Selected Driver
 
     selectDriverData(event) {
-        this.drvid = event.value;
-        this.drvname = event.label;
+        var drvdata = { "flag": "driver", "id": event.value };
+        Cookie.set("_drvdata_", JSON.stringify(drvdata));
 
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "driver", "drvid": this.drvid, "drvname": this.drvname }
+            queryParams: drvdata
         });
     }
 
@@ -70,25 +72,28 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
             that.flag = params['flag'] || "";
-            that.drvid = params['drvid'] || 0;
-            that.drvname = params['drvname'] || "";
-
-            that.selectDriver = { value: that.drvid, label: that.drvname }
+            that.qsid = params['id'] || 0;
 
             that.getDashboard();
             that.getDriverTrips("html");
         });
     }
 
-    viewPassengerDashboard(row) {
+    viewStudentDashboard(row) {
+        var studdata = { "flag": "student", "id": row.stdid };
+        Cookie.set("_studdata_", JSON.stringify(studdata));
+
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "passenger", "psngrid": row.stdid, "psngrname": row.stdnm }
+            queryParams: studdata
         });
     }
 
     viewVehicleDashboard(row) {
+        var vehdata = { "flag": "vehicle", "id": row.vehicleid };
+        Cookie.set("_vehdata_", JSON.stringify(vehdata));
+
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "vehicle", "autoid": row.vehautoid, "vehid": row.vehicleid, "vehname": row.vehregno + " - " + row.imei }
+            queryParams: vehdata
         });
     }
 
@@ -96,13 +101,25 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dbparams = {
-            "flag": "driver", "drvid": that.drvid, "uid": that.data.loginUser.uid,
+            "flag": that.flag, "drvid": that.qsid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
                 that.infoDT = data.data[0];
+
+                if (that.infoDT.length > 0) {
+                    that.drvid = that.infoDT[0].driverid;
+                    that.drvname = that.infoDT[0].drivername + " : " + that.infoDT[0].mobileno1 + " : " + that.infoDT[0].mobileno2 + " (" + that.infoDT[0].ownenttname + ")";
+                    that.selectDriver = { value: that.drvid, label: that.drvname }
+                }
+                else {
+                    that.drvid = 0;
+                    that.drvname = "";
+                    that.selectDriver = {}
+                }
+
                 that.vehicleDT = data.data[1];
                 that.scheduleDT = data.data[2];
             }
@@ -137,7 +154,7 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     // View Driver Profile Link
 
     viewDriverProfile() {
-        this._router.navigate(['/transport/driver/details', this.drvid]);
+        this._router.navigate(['/transport/driver/details', this.qsid]);
     }
 
     ngOnDestroy() {

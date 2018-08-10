@@ -7,19 +7,12 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf';
 
 @Component({
-    templateUrl: 'rptentity.comp.html',
-    providers: [CommonService]
+    templateUrl: 'rptentity.comp.html'
 })
 
 export class EntityReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _wsdetails: any = [];
-
     global = new Globals();
-
-    autoEntityDT: any = [];
-    enttid: number = 0;
-    enttname: any = [];
 
     entttypeDT: any = [];
     entttype: string = "";
@@ -31,7 +24,6 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
         private _loginservice: LoginService, private _entityservice: EntityService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
-        this._wsdetails = Globals.getWSDetails();
 
         this.fillDropDownList();
 
@@ -61,16 +53,9 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
+        that._entityservice.getEntityDetails({ "flag": "dropdown" }).subscribe(data => {
             try {
-                that.entttypeDT = data.data.filter(a => a.group === "workspace");
-
-                if (that.entttypeDT.length == 1) {
-                    that.entttype = that.entttypeDT[0].key;
-                }
-                else {
-                    that.entttypeDT.splice(0, 0, { "key": "", "val": "All" });
-                }
+                that.entttypeDT = data.data.filter(a => a.group === "wstype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -111,9 +96,8 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._entityservice.getEntityDetails({
-            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "entttype": that.entttype, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid,
-            "schoolid": that._wsdetails.schoolid, "enttid": that.enttid
+            "flag": "all", "type":"all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "entttype": that.entttype, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -135,8 +119,6 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     resetEntityDetails() {
         Cookie.delete('_entttype_');
         this.entttype = "";
-        this.enttid = 0;
-        this.enttname = [];
         this.getEntityDetails();
     }
 

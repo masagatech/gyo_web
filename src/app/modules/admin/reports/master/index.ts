@@ -13,10 +13,10 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: '', loadChildren: './workspace#WorkspaceReportsModule' },
+                    { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'entity', loadChildren: './entity#EntityReportsModule' },
                     { path: 'users', loadChildren: './users#UserReportsModule' },
-                    { path: 'holiday', loadChildren: './holiday#HolidayReportsModule' },
+                    { path: 'parents', loadChildren: './parents#ParentsReportsModule' }
                 ]
             }
         ]
@@ -31,6 +31,6 @@ export const routes = [
     providers: [AuthGuard]
 })
 
-export class WorkspaceReportsModule {
+export class AdminMasterReportsModule {
 
 }

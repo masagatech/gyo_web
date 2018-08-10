@@ -5,17 +5,17 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule } from '@services';
 import { AuthGuard } from '@services';
 
-import { EntityReportsComponent } from './rptentity.comp';
-import { EntityService } from '@services/master';
+import { WorkspaceReportsComponent } from './rptws.comp';
+import { UserService, WorkspaceService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: EntityReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptentt", "rights": "view", "urlname": "/entity" }
+        path: '', component: WorkspaceReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpt", "submodule": "rptws", "rights": "view", "urlname": "/workspace" }
       }
     ]
   },
@@ -23,16 +23,16 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    EntityReportsComponent
+    WorkspaceReportsComponent
   ],
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, EntityService]
+  providers: [AuthGuard, UserService, WorkspaceService]
 })
 
-export class EntityReportsModule {
+export class WorkspaceReportsModule {
   public static routes = routes;
 }

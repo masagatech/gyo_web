@@ -2,22 +2,25 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: './psngrdb.comp.html'
+    templateUrl: './studsdb.comp.html'
 })
 
-export class PassengerDashboardComponent implements OnInit, OnDestroy {
+export class StudentDashboardComponent implements OnInit, OnDestroy {
     @Input() data: any;
 
     global = new Globals();
 
     flag: string = "";
+    qsid: number = 0;
 
-    autoPassengerDT: any = [];
-    selectPassenger: any = {};
-    psngrid: number = 0;
-    psngrname: string = "";
+    autoStudentDT: any = [];
+    selectStudent: any = {};
+    studid: number = 0;
+    studname: string = "";
+    admtype: string = "";
 
     infoDT: any = [];
     scheduleDT: any = [];
@@ -30,25 +33,23 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.viewPassengerDashboard();
+        this.viewStudentDashboard();
     }
 
-    // Auto Completed Passenger
+    // Auto Completed Student
 
-    getPassengerData(event) {
+    getStudentData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "student",
+            "flag": "allstudent",
             "uid": this.data.loginUser.uid,
             "ucode": this.data.loginUser.ucode,
             "utype": this.data.loginUser.utype,
-            "enttid": 0,
-            "wsautoid": 0,
             "issysadmin": this.data._enttdetails.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoPassengerDT = data.data;
+            this.autoStudentDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -56,26 +57,23 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Passenger
+    // Selected Student
 
-    selectPassengerData(event) {
-        this.psngrid = event.value;
-        this.psngrname = event.label;
+    selectStudentData(event) {
+        var studdata = { "flag": "student", "id": event.value };
+        Cookie.set("_studdata_", JSON.stringify(studdata));
 
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "passenger", "psngrid": this.psngrid, "psngrname": this.psngrname }
+            queryParams: studdata
         });
     }
 
-    viewPassengerDashboard() {
+    viewStudentDashboard() {
         var that = this;
 
         that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
             that.flag = params['flag'] || "";
-            that.psngrid = params['psngrid'] || 0;
-            that.psngrname = params['psngrname'] || "";
-
-            that.selectPassenger = { value: that.psngrid, label: that.psngrname }
+            that.qsid = params['id'] || 0;
 
             that.getDashboard();
             that.getStudentTrips("html");
@@ -83,14 +81,20 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
     }
 
     viewDriverDashboard(row) {
+        var drvdata = { "flag": "driver", "id": row.driverid };
+        Cookie.set("_drvdata_", JSON.stringify(drvdata));
+
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "driver", "drvid": row.driverid, "drvname": row.drivername }
+            queryParams: drvdata
         });
     }
 
     viewVehicleDashboard(row) {
+        var vehdata = { "flag": "vehicle", "id": row.vehicleid };
+        Cookie.set("_vehdata_", JSON.stringify(vehdata));
+
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "vehicle", "autoid": row.vehautoid, "vehid": row.vehicleid, "vehname": row.vehregno + " - " + row.imei }
+            queryParams: vehdata
         });
     }
 
@@ -98,15 +102,27 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dbparams = {
-            "flag": that.flag == "" ? "passenger" : that.flag, "psngrid": that.psngrid, "uid": that.data.loginUser.uid,
+            "flag": that.flag == "" ? "student" : that.flag, "studid": that.qsid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
                 that.infoDT = data.data[0];
-                that.scheduleDT = data.data[1];
-                that.notificationDT = data.data[2];
+
+                if (that.infoDT.length > 0) {
+                    that.studid = that.infoDT[0].enrlmntid;
+                    that.studname = that.infoDT[0].studentname + " : " + that.infoDT[0].mobileno1 + " : " + that.infoDT[0].mobileno2 + " (" + that.infoDT[0].schoolname + ")";
+                    that.selectStudent = { value: that.studid, label: that.studname }
+                }
+                else {
+                    that.studid = 0;
+                    that.studname = "";
+                    that.selectStudent = {}
+                }
+
+                that.notificationDT = data.data[1];
+                that.scheduleDT = data.data[2];
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -125,7 +141,7 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.psngrid, "utype": that.flag == "" ? "passenger" : that.flag, "format": format
+            "flag": "feessummary", "type": "download", "uid": that.studid, "utype": that.flag == "" ? "student" : that.flag, "format": format
         }
 
         if (format == "html") {
@@ -136,14 +152,14 @@ export class PassengerDashboardComponent implements OnInit, OnDestroy {
         }
     }
 
-    // View Passenger Profile Link
+    // View Student Profile Link
 
-    viewPassengerProfile() {
-        if (this.data._enttdetails.psngrtype == "Passenger") {
-            this._router.navigate(['/master/passenger/details', this.psngrid]);
+    viewStudentProfile() {
+        if (this.admtype == "passenger") {
+            this._router.navigate(['/master/passenger/details', this.qsid]);
         }
         else {
-            this._router.navigate(['/erp/student/details', this.psngrid]);
+            this._router.navigate(['/erp/student/details', this.qsid]);
         }
     }
 

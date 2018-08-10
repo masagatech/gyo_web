@@ -18,7 +18,6 @@ export const routes = [
                 children: [
                     { path: '', loadChildren: './erp#ERPReportsModule' },
                     
-                    { path: 'workspace', loadChildren: './workspace#WorkspaceReportsModule' },
                     { path: 'master', loadChildren: './master#MasterReportsModule' },
                     { path: 'transaction', loadChildren: './transaction#TransactionReportsModule' },
                     { path: 'communication', loadChildren: './communication#CommunicationReportsModule' },

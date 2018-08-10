@@ -1,0 +1,207 @@
+<div class="header">
+    <div class="row clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="form-line">
+                    <label class="control-label">Student Name
+                        <strong>*</strong>
+                    </label>
+                    <p-autoComplete id="studid" name="studname" [(ngModel)]="selectStudent" [tabindex]="2" (onSelect)="selectStudentData($event)"
+                        [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1"
+                        [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-12">
+                        <a role="button" (click)="viewStudentDashboard()" class="btn btn-search">arrow_forward</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 text-right pad-20">
+            <div class="form-group">
+                <a role="button" class="btn btn-theme" (click)="viewStudentProfile()">
+                    <span class="float-left pad-03">View Profile</span>
+                    <span class="material-icons">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="body">
+    <div class="row clearfix">
+        <div class="col-md-8">
+            <div class="row clearfix">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header-title">
+                            Personal Details
+                        </div>
+                        <div class="body" *ngFor="let row of infoDT">
+                            <div class="row clearfix">
+                                <div class="col-md-3">
+                                    <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.studentphoto}}" onerror="this.src='assets/img/default-male.png';"
+                                        height="100px" width="100px">
+                                    <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.studentphoto}}" onerror="this.src='assets/img/default-female.png';"
+                                        height="100px" width="100px">
+                                </div>
+                                <div class="col-md-9">
+                                    <p>{{row.schoolname}}</p>
+                                    <p>
+                                        <b>Student : </b>{{row.studentname}}
+                                    </p>
+
+                                    <p *ngIf="row.dob != ''">
+                                        <b>Birth Date : </b> {{row.dob}}
+                                    </p>
+        
+                                    <p *ngIf="row.birthplace != ''">
+                                        <b>Birth Place : </b> {{row.birthplace}}
+                                    </p>
+
+                                    <p>
+                                        <b>Father : </b> {{row.fathername}}
+                                        <span title="{{row.pregdate}}" class="p-5 {{row.mob1bgcolor}}">{{row.mobileno1}}</span>
+                                    </p>
+                                    <p *ngIf="row.mothername != ''">
+                                        <b>Mother : </b> {{row.mothername}}
+                                        <span title="{{row.mregdate}}" class="p-5 {{row.mob2bgcolor}}">{{row.mobileno2}}</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p *ngIf="row.admdate != ''">
+                                <b>Admission Date : </b> {{row.admdate}}
+                            </p>
+
+                            <p *ngIf="row.admcatname != ''">
+                                <b>Admission Category : </b> {{row.admcatname}}
+                            </p>
+
+                            <p *ngIf="row.boardname != ''">
+                                <b>Board : </b> {{row.boardname}}
+                            </p>
+
+                            <p *ngIf="row.cuid != '0'">
+                                <b>Child User ID : </b> {{row.cuid}}
+                            </p>
+
+                            <p *ngIf="row.grno != '0'">
+                                <b>GR No  : </b> {{row.grno}}
+                            </p>
+
+                            <p *ngIf="row.classname != ''">
+                                <b>Class Name : </b> {{row.classname}}
+                            </p>
+
+                            <p *ngIf="row.rollno != ''">
+                                <b>Roll No : </b> {{row.rollno}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header-title">
+                            Route Details
+                        </div>
+                        <div class="body" *ngFor="let row of infoDT">
+                            <p *ngIf="row.pickrtname != ''">
+                                <b>Pickup Route : </b> {{row.pickrtname}}
+                            </p>
+                            <p *ngIf="row.pickstpname != ''">
+                                <b>Pickup Stops : </b> {{row.pickstpname}}
+                            </p>
+                            <p *ngIf="row.pickaddr != ''">
+                                <b>Pickup Address : </b> {{row.pickaddr}}
+                            </p>
+
+                            <p *ngIf="row.droprtname != ''">
+                                <b>Drop Route : </b> {{row.droprtname}}
+                            </p>
+                            <p *ngIf="row.dropstpname != ''">
+                                <b>Pickup Stops : </b> {{row.dropstpname}}
+                            </p>
+                            <p *ngIf="row.dropaddr != ''">
+                                <b>Drop Address : </b> {{row.dropaddr}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header-title">
+                    Schedule
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-md-6" *ngFor="let row of scheduleDT">
+                            <p>
+                                <b>Schedule : </b>{{row.schdlname}}</p>
+                            <p>
+                                <b>Batch : </b>{{row.batchname}}</p>
+                            <p>
+                                <span innerHtml="{{row.wkdays}}"></span>
+                            </p>
+                            <p>
+                                <b>Date : </b>{{row.schdldate}}</p>
+                            <p>
+                                <b>Driver : </b>
+                                <a role="button" (click)="viewDriverDashboard(row)">{{row.drivername}}</a>
+                            </p>
+                            <p>
+                                <b>Vehicle : </b>
+                                <a role="button" (click)="viewVehicleDashboard(row)">{{row.vehiclename}}</a>
+                            </p>
+                            <p>
+                                <b>Route : </b>{{row.rtname}}</p>
+                            <p>
+                                <b>Stop : </b>{{row.stpname}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header-title">
+                    Notification
+                </div>
+                <div class="body">
+                    <div *ngFor="let row of notificationDT | groupBy: 'typname'">
+                        <h4>{{row.key}}</h4>
+
+                        <div *ngFor="let drow of row.value">
+                            <div class="row clearfix">
+                                <div class="col-md-8">
+                                    <p>{{drow.msg1}}</p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <p>{{drow.crdate1}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-md-8">
+                                    <p>{{drow.msg2}}</p>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <p>{{drow.crdate2}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="header-title">
+                    Trip Details
+                </div>
+                <div class="body padding-0">
+                    <iframe id="divtrip" width="100%" height="520" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

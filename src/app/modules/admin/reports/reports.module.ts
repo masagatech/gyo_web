@@ -18,6 +18,7 @@ export const routes = [
                 children: [
                     { path: 'transport', loadChildren: './transport#AdminTransportReportsModule' },
                     { path: 'transaction', loadChildren: './transaction#AdminTransactionReportsModule' },
+                    { path: 'master', loadChildren: './master#AdminMasterReportsModule' },
                 ]
             }
         ]

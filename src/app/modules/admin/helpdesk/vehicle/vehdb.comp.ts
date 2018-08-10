@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './vehdb.comp.html'
@@ -13,6 +14,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     global = new Globals();
 
     flag: string = "";
+    qsid: number = 0;
 
     autoVehicleDT: any = [];
     selectVehicle: any = {};
@@ -58,12 +60,11 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     // Selected Vehicle
 
     selectVehicleData(event) {
-        this.autoid = event.value;
-        this.vehid = event.vehid;
-        this.vehname = event.label;
+        var vehdata = { "flag": "vehicle", "id": event.value };
+        Cookie.set("_vehdata_", JSON.stringify(vehdata));
 
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "vehicle", "autoid": this.autoid, "vehid": this.vehid, "vehname": this.vehname }
+            queryParams: { "flag": "vehicle", "id": event.vehid }
         });
     }
 
@@ -72,44 +73,55 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
             that.flag = params['flag'] || "";
-            that.autoid = params['autoid'] || 0;
-            that.vehid = params['vehid'] || 0;
-            that.vehname = params['vehname'] || "";
-
-            that.selectVehicle = { value: that.vehid, label: that.vehname }
+            that.qsid = params['id'] || 0;
 
             that.getDashboard();
             that.getVehicleTrips("html");
         });
     }
 
-    viewPassengerDashboard(row) {
+    viewStudentDashboard(row) {
+        var studdata = { "flag": "student", "id": row.stdid };
+        Cookie.set("_studdata_", JSON.stringify(studdata));
+
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "passenger", "psngrid": row.stdid, "psngrname": row.stdnm }
+            queryParams: studdata
         });
     }
 
     viewUserDashboard(row) {
         if (row.utype == "driver") {
+            var drvdata = { "flag": "driver", "id": row.uid }
+            Cookie.set("_drvdata_", JSON.stringify(drvdata));
+    
             this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "driver", "drvid": row.uid, "drvname": row.fullname }
+                queryParams: drvdata
             });
         }
         else if (row.utype == "emp") {
+            var empdata = { "flag": "employee", "id": row.uid }
+            Cookie.set("_empdata_", JSON.stringify(empdata));
+    
             this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "employee", "empid": row.uid, "drvname": row.fullname }
+                queryParams: empdata
             });
         }
         else {
+            var userdata = { "flag": "user", "id": row.uid }
+            Cookie.set("_userdata_", JSON.stringify(userdata));
+    
             this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "user", "empid": row.uid, "drvname": row.fullname }
+                queryParams: { "flag": "user", "id": row.uid }
             });
         }
     }
 
-    viewDriverDashboard(row, type) {
+    viewDriverDashboard(row) {
+        var drvdata = { "flag": "driver", "id": row.driverid };
+        Cookie.set("_drvdata_", JSON.stringify(drvdata));
+
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "driver", "drvid": row.driverid, "drvname": row.drivername }
+            queryParams: drvdata
         });
     }
 
@@ -117,13 +129,27 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dbparams = {
-            "flag": that.flag, "vehid": that.vehid, "uid": that.data.loginUser.uid,
+            "flag": that.flag, "vehid": that.qsid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
                 that.infoDT = data.data[0];
+
+                if (that.infoDT.length > 0) {
+                    that.autoid = that.infoDT[0].autoid;
+                    that.vehid = that.infoDT[0].vehid;
+                    that.vehname = that.infoDT[0].vehicleno + " : " + that.infoDT[0].imei + " (" + that.infoDT[0].ownenttname + ")";
+                    that.selectVehicle = { value: that.vehid, label: that.vehname }
+                }
+                else {
+                    that.autoid = 0;
+                    that.vehid = 0;
+                    that.vehname = "";
+                    that.selectVehicle = {}
+                }
+
                 that.userDT = data.data[1];
                 that.scheduleDT = data.data[2];
             }

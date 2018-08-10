@@ -4,9 +4,10 @@ import { LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
-import { PassengerDashboardComponent } from './passenger/psngrdb.comp';
+import { StudentDashboardComponent } from './student/studsdb.comp';
 import { DriverDashboardComponent } from './driver/drvdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './helpdesk.comp.html'
@@ -21,7 +22,7 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
 
     flag: string = "";
 
-    hdpsngr: string = "";
+    hdstud: string = "";
     hddrv: string = "";
     hdveh: string = "";
 
@@ -54,20 +55,47 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
     }
 
     openDashboard(type) {
-        if (type == "passenger") {
-            this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "passenger" }
-            });
+        if (type == "student") {
+            if (Cookie.get("_studdata_") == null) {
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: { "flag": "student" }
+                });
+            }
+            else {
+                var studdata = JSON.parse(Cookie.get("_studdata_"));
+
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: studdata
+                });
+            }
         }
         else if (type == "driver") {
-            this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "driver" }
-            });
+            if (Cookie.get("_drvdata_") == null) {
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: { "flag": "driver" }
+                });
+            }
+            else {
+                var drvdata = JSON.parse(Cookie.get("_drvdata_"));
+
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: drvdata
+                });
+            }
         }
         else if (type == "vehicle") {
-            this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "vehicle" }
-            });
+            if (Cookie.get("_vehdata_") == null) {
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: { "flag": "vehicle" }
+                });
+            }
+            else {
+                var vehdata = JSON.parse(Cookie.get("_vehdata_"));
+
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: vehdata
+                });
+            }
         }
     }
 
@@ -82,7 +110,7 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             if (that.flag == "driver") {
                 commonfun.loader("#loadercontrol", "pulse", "Loading Driver Dashboard...");
 
-                that.hdpsngr = "";
+                that.hdstud = "";
                 that.hddrv = "bg-green";
                 that.hdveh = "";
 
@@ -94,7 +122,7 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             else if (that.flag == "vehicle") {
                 commonfun.loader("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
 
-                that.hdpsngr = "";
+                that.hdstud = "";
                 that.hddrv = "";
                 that.hdveh = "bg-green";
 
@@ -106,12 +134,12 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             else {
                 commonfun.loader("#loadercontrol", "pulse", "Loading Student Dashboard...");
 
-                that.hdpsngr = "bg-green";
+                that.hdstud = "bg-green";
                 that.hddrv = "";
                 that.hdveh = "";
 
                 that.hdtitle = "Student Dashboard";
-                that.loadComponent(PassengerDashboardComponent, dparams);
+                that.loadComponent(StudentDashboardComponent, dparams);
 
                 commonfun.loaderhide("#loadercontrol", "pulse", "Loading Student Dashboard...");
             }

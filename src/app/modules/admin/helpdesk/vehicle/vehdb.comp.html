@@ -31,7 +31,7 @@
                             Personal Details
                         </div>
                         <div class="body" *ngFor="let row of infoDT">
-                            <p><b>Registration No : </b>{{row.vehregno}}</p>
+                            <p><b>Registration No : </b>{{row.vehicleno}}</p>
                             <p><b>IMEI : </b>{{row.imei}}</p>
                             <p><b>SIM No : </b>{{row.simno}}</p>
                             <p *ngIf="row.vehicletype != ''"><b>Vehicle Type : </b>{{row.vehicletype}}</p>
@@ -91,7 +91,7 @@
 
                                 <p class="font-12" *ngFor="let srow of drow.studdata; let i = index;">
                                     <b>{{i + 1}}.)</b>
-                                    <a role="button" (click)="viewPassengerDashboard(srow)">{{srow.stdnm}}</a>
+                                    <a role="button" (click)="viewStudentDashboard(srow)">{{srow.stdnm}}</a>
                                 </p>
 
                                 <hr />

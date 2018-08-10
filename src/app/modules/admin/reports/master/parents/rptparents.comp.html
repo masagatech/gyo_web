@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix" id="fltrstud">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">School</label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" tabindex="1">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of entityDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-6 pad-20">
+                <div class="form-group">
+                    <div class="form-line">
+                        <select id="prnttype" name="prnttype" [(ngModel)]="prnttype" class="form-control prnttype" tabindex="2">
+                            <option [value]="'reg'">Registered</option>
+                            <option [value]="'noreg'">Not Registered</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme" (click)="searchParentReports('html')">
+                        <span class="material-icons">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-3 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a role="button" (click)="getParentReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a>
+                        </li>
+                        <li>
+                            <a role="button" (click)="getParentReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body padding-0">
+        <div id="divrptpsngr" class="min-body-height"></div>
+    </div>
+</div>

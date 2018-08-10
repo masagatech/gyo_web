@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { NvD3Module } from 'ng2-nvd3';
 
 import { HelpDeskComponent } from './helpdesk.comp';
-import { PassengerDashboardComponent } from './passenger/psngrdb.comp';
+import { StudentDashboardComponent } from './student/studsdb.comp';
 import { DriverDashboardComponent } from './driver/drvdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 
@@ -30,11 +30,11 @@ export const routes = [
         CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, NvD3Module
     ],
 
-    entryComponents: [PassengerDashboardComponent, DriverDashboardComponent, VehicleDashboardComponent],
+    entryComponents: [StudentDashboardComponent, DriverDashboardComponent, VehicleDashboardComponent],
 
     declarations: [
         HelpDeskComponent,
-        PassengerDashboardComponent,
+        StudentDashboardComponent,
         DriverDashboardComponent,
         VehicleDashboardComponent
     ],
