@@ -140,7 +140,7 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.drvid, "utype": that.flag, "format": format
+            "flag": "feessummary", "type": "download", "uid": that.qsid, "utype": that.flag, "format": format
         }
 
         if (format == "html") {
@@ -149,12 +149,6 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
         }
-    }
-
-    // View Driver Profile Link
-
-    viewDriverProfile() {
-        this._router.navigate(['/transport/driver/details', this.qsid]);
     }
 
     ngOnDestroy() {

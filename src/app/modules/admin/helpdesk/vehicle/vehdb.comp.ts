@@ -18,7 +18,6 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
     autoVehicleDT: any = [];
     selectVehicle: any = {};
-    autoid: number = 0;
     vehid: number = 0;
     vehname: string = "";
 
@@ -138,13 +137,11 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
                 that.infoDT = data.data[0];
 
                 if (that.infoDT.length > 0) {
-                    that.autoid = that.infoDT[0].autoid;
                     that.vehid = that.infoDT[0].vehid;
                     that.vehname = that.infoDT[0].vehicleno + " : " + that.infoDT[0].imei + " (" + that.infoDT[0].ownenttname + ")";
                     that.selectVehicle = { value: that.vehid, label: that.vehname }
                 }
                 else {
-                    that.autoid = 0;
                     that.vehid = 0;
                     that.vehname = "";
                     that.selectVehicle = {}
@@ -170,7 +167,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.vehid, "utype": that.flag, "format": format
+            "flag": "feessummary", "type": "download", "uid": that.qsid, "utype": that.flag, "format": format
         }
 
         if (format == "html") {
@@ -179,12 +176,6 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
         }
-    }
-
-    // View Vehicle Profile Link
-
-    viewVehicleProfile() {
-        this._router.navigate(['/transport/vehicle/details', this.autoid]);
     }
 
     ngOnDestroy() {

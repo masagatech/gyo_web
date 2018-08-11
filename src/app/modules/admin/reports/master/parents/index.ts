@@ -13,7 +13,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ParentsReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rptpsngr", "submodule": "rptparents", "rights": "view", "urlname": "/parents" }
+        data: { "module": "rptpsngr", "submodule": "rptprnts", "rights": "view", "urlname": "/parents" }
       }
     ]
   },

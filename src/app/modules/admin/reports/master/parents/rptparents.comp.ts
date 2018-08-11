@@ -126,19 +126,6 @@ export class ParentsReportsComponent implements OnInit, OnDestroy {
         }
     }
 
-    searchParentReports() {
-        var that = this;
-
-        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
-            that.enttid = 0;
-        }
-        else {
-            that.enttid = that._enttdetails.enttid;
-        }
-
-        that.getParentReports("html");
-    }
-
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

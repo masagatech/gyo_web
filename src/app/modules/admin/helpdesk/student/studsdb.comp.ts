@@ -141,7 +141,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
-            "flag": "feessummary", "type": "download", "uid": that.studid, "utype": that.flag == "" ? "student" : that.flag, "format": format
+            "flag": "feessummary", "type": "download", "uid": that.qsid, "utype": that.flag == "" ? "student" : that.flag, "format": format
         }
 
         if (format == "html") {
@@ -149,17 +149,6 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         }
         else {
             window.open(Common.getReportUrl("getScheduleReports", params));
-        }
-    }
-
-    // View Student Profile Link
-
-    viewStudentProfile() {
-        if (this.admtype == "passenger") {
-            this._router.navigate(['/master/passenger/details', this.qsid]);
-        }
-        else {
-            this._router.navigate(['/erp/student/details', this.qsid]);
         }
     }
 
