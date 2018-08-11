@@ -23,10 +23,9 @@ export class Globals {
     // filepath: string = "www/uploads/";
     // xlsfilepath: string = "www/uploads/bulkupload/";
 
-    // static trkserv: string = "35.154.114.229";
-    static trkserv: string = "13.232.102.60";
-    static socketurl_trk: string = "http://" + Globals.trkserv + ":6980/";
-    trackurl_trk: string = "http://" + Globals.trkserv + ":6980/goyoapi/";
+    static trkserv: string = "35.154.114.229";
+    static socketurl_trk: string = "http://" + Globals.trkserv + ":6979/";
+    trackurl_trk: string = "http://" + Globals.trkserv + ":6979/goyoapi/";
 
     otherurl: string = "http://35.154.27.42:8081/goyoapi/";
 
