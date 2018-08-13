@@ -3,10 +3,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <div class="form-line">
-                    <label class="control-label">Driver Name <strong>*</strong></label>
-                    <p-autoComplete id="drvid" name="drvname" [(ngModel)]="selectDriver" [tabindex]="2" (onSelect)="selectDriverData($event)" [suggestions]="autoDriverDT" (completeMethod)="getDriverData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete drvname"></p-autoComplete>
+                    <label class="control-label">User / Driver / Employee Name <strong>*</strong></label>
+                    <p-autoComplete id="uid" name="uname" [(ngModel)]="selectUser" [tabindex]="2" (onSelect)="selectUserData($event)" [suggestions]="autoUserDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
                     <span class="material-icons inputsearchico pad-12">
-                        <a role="button" (click)="viewDriverDashboard()" class="btn btn-search">arrow_forward</a>
+                        <a role="button" (click)="viewUserDashboard()" class="btn btn-search">arrow_forward</a>
                     </span>
                 </div>
             </div>
@@ -26,16 +26,17 @@
                         <div class="body" *ngFor="let row of infoDT">
                             <div class="row clearfix">
                                 <div class="col-md-3">
-                                    <img alt="{{row.drivername}}" src="{{global.uploadurl + row.driverphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
+                                    <img alt="{{row.uname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
                                 </div>
                                 <div class="col-md-9">
-                                    <p><b>Driver : </b>{{row.drivername}}</p>
-                                    <p><b>Mobile : </b>{{row.mobileno1}}</p>
-                                    <p *ngIf="row.mobileno2 != ''"><b>Alternate Mobile : </b>{{row.mobileno2}}</p>
-                                    <p *ngIf="row.email1 != ''"><b>Email : </b>{{row.email1}}</p>
-                                    <p *ngIf="row.email2 != ''"><b>Alternate Email : </b>{{row.email2}}</p>
-                                    <p *ngIf="row.licenseno != ''"><b>License No : </b>{{row.licenseno}}</p>
-                                    <p *ngIf="row.aadharno != ''"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                                    <p><b>Name : </b>{{row.uname}} ({{row.pwd}})</p>
+                                    <p><b>Designation : </b>{{row.designame}}</p>
+                                    <p><b>Mobile : </b>{{row.mobile}}</p>
+                                    <p *ngIf="row.altmobile != ''"><b>Alternate Mobile : </b>{{row.altmobile}}</p>
+                                    <p *ngIf="row.email != ''"><b>Email : </b>{{row.email}}</p>
+                                    <p *ngIf="row.altemail != ''"><b>Alternate Email : </b>{{row.altemail}}</p>
+                                    <p *ngIf="row.licenseno != '0'"><b>License No : </b>{{row.licenseno}}</p>
+                                    <p *ngIf="row.aadharno != '0'"><b>Aadhar No : </b>{{row.aadharno}}</p>
                                 </div>
                             </div>
 

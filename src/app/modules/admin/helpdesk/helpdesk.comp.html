@@ -4,15 +4,15 @@
             <a role="button" (click)="openDashboard('student')" class="{{hdstud}}">Student</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" (click)="openDashboard('driver')" class="{{hddrv}}">Driver</a>
+            <a role="button" (click)="openDashboard('vehicle')" class="{{hdveh}}">Vehicle</a>
         </li>
         <li routerLinkActive="active">
-            <a role="button" (click)="openDashboard('vehicle')" class="{{hdveh}}">Vehicle</a>
+            <a role="button" (click)="openDashboard('')" class="{{hdusr}}">Driver / User / Employee</a>
         </li>
     </ul>
 
     <div class="tab-content" id="loadercontrol">
-        <div class="header">
+        <div class="header upper">
             {{hdtitle}}
         </div>
 

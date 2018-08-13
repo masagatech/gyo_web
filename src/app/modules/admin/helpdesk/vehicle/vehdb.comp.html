@@ -4,7 +4,7 @@
             <div class="form-group">
                 <div class="form-line">
                     <label class="control-label">Vehicle Name <strong>*</strong></label>
-                    <p-autoComplete id="vehid" name="vehname" [(ngModel)]="selectVehicle" [tabindex]="2" (onSelect)="selectVehicleData($event)" [suggestions]="autoVehicleDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete drvname"></p-autoComplete>
+                    <p-autoComplete id="vehid" name="vehname" [(ngModel)]="selectVehicle" [tabindex]="2" (onSelect)="selectVehicleData($event)" [suggestions]="autoVehicleDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
                     <span class="material-icons inputsearchico pad-12">
                         <a role="button" (click)="viewVehicleDashboard()" class="btn btn-search">arrow_forward</a>
                     </span>

@@ -108,7 +108,7 @@
                         <div class="form-line">
                             <label class="control-label">Vehicle Name</label>
                             <select id="pickvehicleid" [(ngModel)]="pickvehicleid" class="form-control pickvehid" tabindex="7" (ngModelChange)="setDropVehicle()">
-                                <option [value]="''">Select Vehicle</option>
+                                <option [value]="0">Select Vehicle</option>
                                 <option *ngFor="let row of vehicleDT" [value]="row.key">
                                     {{row.val}}
                                 </option>
@@ -216,7 +216,7 @@
                         <div class="form-line">
                             <label class="control-label">Vehicle Name</label>
                             <select id="dropvehicleid" [(ngModel)]="dropvehicleid" class="form-control dropvehid" tabindex="14">
-                                <option [value]="''">Select Vehicle</option>
+                                <option [value]="0">Select Vehicle</option>
                                 <option *ngFor="let row of vehicleDT" [value]="row.key">
                                     {{row.val}}
                                 </option>

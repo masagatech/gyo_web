@@ -9,7 +9,7 @@ import { NvD3Module } from 'ng2-nvd3';
 
 import { HelpDeskComponent } from './helpdesk.comp';
 import { StudentDashboardComponent } from './student/studsdb.comp';
-import { DriverDashboardComponent } from './driver/drvdb.comp';
+import { UserDashboardComponent } from './users/userdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 
 import { AutoCompleteModule } from 'primeng/primeng';
@@ -30,12 +30,12 @@ export const routes = [
         CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, NvD3Module
     ],
 
-    entryComponents: [StudentDashboardComponent, DriverDashboardComponent, VehicleDashboardComponent],
+    entryComponents: [StudentDashboardComponent, UserDashboardComponent, VehicleDashboardComponent],
 
     declarations: [
         HelpDeskComponent,
         StudentDashboardComponent,
-        DriverDashboardComponent,
+        UserDashboardComponent,
         VehicleDashboardComponent
     ],
 

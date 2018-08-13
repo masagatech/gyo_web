@@ -18,7 +18,7 @@ import {
 } from 'primeng/primeng';
 
 export const config: SocketIoConfig = {
-  url: Globals.socketurl_trk, options: {}
+  url: Globals.socketurl_trk, options: { transports: ['websocket', 'polling', 'flashsocket'] }
 };
 
 export const routes = [

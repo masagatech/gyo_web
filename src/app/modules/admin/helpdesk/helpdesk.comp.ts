@@ -5,7 +5,7 @@ import { LoginUserModel, Globals } from '@models';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
 import { StudentDashboardComponent } from './student/studsdb.comp';
-import { DriverDashboardComponent } from './driver/drvdb.comp';
+import { UserDashboardComponent } from './users/userdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -23,7 +23,7 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
     flag: string = "";
 
     hdstud: string = "";
-    hddrv: string = "";
+    hdusr: string = "";
     hdveh: string = "";
 
     hdtitle: string = "";
@@ -69,20 +69,6 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
                 });
             }
         }
-        else if (type == "driver") {
-            if (Cookie.get("_drvdata_") == null) {
-                this._router.navigate(['/admin/helpdesk'], {
-                    queryParams: { "flag": "driver" }
-                });
-            }
-            else {
-                var drvdata = JSON.parse(Cookie.get("_drvdata_"));
-
-                this._router.navigate(['/admin/helpdesk'], {
-                    queryParams: drvdata
-                });
-            }
-        }
         else if (type == "vehicle") {
             if (Cookie.get("_vehdata_") == null) {
                 this._router.navigate(['/admin/helpdesk'], {
@@ -97,6 +83,20 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
                 });
             }
         }
+        else {
+            if (Cookie.get("_userdata_") == null) {
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: { "flag": "" }
+                });
+            }
+            else {
+                var userdata = JSON.parse(Cookie.get("_userdata_"));
+
+                this._router.navigate(['/admin/helpdesk'], {
+                    queryParams: userdata
+                });
+            }
+        }
     }
 
     openHelpDeskDashboard() {
@@ -107,42 +107,33 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
         that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
             that.flag = params['flag'] || "";
 
-            if (that.flag == "driver") {
-                commonfun.loader("#loadercontrol", "pulse", "Loading Driver Dashboard...");
+            commonfun.loader("#loadercontrol", "pulse", "loading " + that.flag + "...");
 
-                that.hdstud = "";
-                that.hddrv = "bg-green";
+            that.hdtitle = that.flag;
+
+            if (that.flag == "student") {
+                that.hdstud = "bg-green";
                 that.hdveh = "";
+                that.hdusr = "";
 
-                that.hdtitle = "Driver Dashboard";
-                that.loadComponent(DriverDashboardComponent, dparams);
-
-                commonfun.loaderhide("#loadercontrol", "pulse", "Loading Driver Dashboard...");
+                that.loadComponent(StudentDashboardComponent, dparams);
             }
             else if (that.flag == "vehicle") {
-                commonfun.loader("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
-
                 that.hdstud = "";
-                that.hddrv = "";
                 that.hdveh = "bg-green";
+                that.hdusr = "";
 
-                that.hdtitle = "Vehicle Dashboard";
                 that.loadComponent(VehicleDashboardComponent, dparams);
-
-                commonfun.loaderhide("#loadercontrol", "pulse", "Loading Vehicle Dashboard...");
             }
             else {
-                commonfun.loader("#loadercontrol", "pulse", "Loading Student Dashboard...");
-
-                that.hdstud = "bg-green";
-                that.hddrv = "";
+                that.hdstud = "";
                 that.hdveh = "";
+                that.hdusr = "bg-green";
 
-                that.hdtitle = "Student Dashboard";
-                that.loadComponent(StudentDashboardComponent, dparams);
-
-                commonfun.loaderhide("#loadercontrol", "pulse", "Loading Student Dashboard...");
+                that.loadComponent(UserDashboardComponent, dparams);
             }
+
+            commonfun.loaderhide("#loadercontrol", "pulse", "loading " + that.flag + "...");
         });
     }
 

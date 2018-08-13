@@ -82,7 +82,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
 
     viewDriverDashboard(row) {
         var drvdata = { "flag": "driver", "id": row.driverid };
-        Cookie.set("_drvdata_", JSON.stringify(drvdata));
+        Cookie.set("_userdata_", JSON.stringify(drvdata));
 
         this._router.navigate(['/admin/helpdesk'], {
             queryParams: drvdata
@@ -102,7 +102,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dbparams = {
-            "flag": that.flag == "" ? "student" : that.flag, "studid": that.qsid, "uid": that.data.loginUser.uid,
+            "flag": that.flag, "studid": that.qsid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 

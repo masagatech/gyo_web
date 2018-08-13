@@ -5,10 +5,10 @@ import { Globals, Common } from '@models';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
-    templateUrl: './drvdb.comp.html'
+    templateUrl: './userdb.comp.html'
 })
 
-export class DriverDashboardComponent implements OnInit, OnDestroy {
+export class UserDashboardComponent implements OnInit, OnDestroy {
     @Input() data: any;
 
     global = new Globals();
@@ -16,10 +16,10 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     flag: string = "";
     qsid: number = 0;
 
-    autoDriverDT: any = [];
-    selectDriver: any = {};
-    drvid: number = 0;
-    drvname: string = "";
+    autoUserDT: any = [];
+    selectUser: any = {};
+    uid: number = 0;
+    uname: string = "";
 
     infoDT: any = [];
     vehicleDT: any = [];
@@ -32,23 +32,22 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.viewDriverDashboard();
+        this.viewUserDashboard();
     }
 
-    // Auto Completed Driver
+    // Auto Completed User
 
-    getDriverData(event) {
+    getUserData(event) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "alldriver",
+            "flag": "allusers",
             "uid": this.data.loginUser.uid,
-            "ucode": this.data.loginUser.ucode,
             "utype": this.data.loginUser.utype,
-            "issysadmin": this.data._enttdetails.issysadmin,
+            "issysadmin": this.data.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
-            this.autoDriverDT = data.data;
+            this.autoUserDT = data.data;
         }, err => {
             this._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -56,18 +55,18 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Selected Driver
+    // Selected User
 
-    selectDriverData(event) {
-        var drvdata = { "flag": "driver", "id": event.value };
-        Cookie.set("_drvdata_", JSON.stringify(drvdata));
+    selectUserData(event) {
+        var userdata = { "flag": event.ptype, "id": event.uid };
+        Cookie.set("_userdata_", JSON.stringify(userdata));
 
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: drvdata
+            queryParams: userdata
         });
     }
 
-    viewDriverDashboard() {
+    viewUserDashboard() {
         var that = this;
 
         that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
@@ -101,7 +100,7 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dbparams = {
-            "flag": that.flag, "drvid": that.qsid, "uid": that.data.loginUser.uid,
+            "flag": that.flag, "id": that.qsid, "uid": that.data.loginUser.uid,
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
@@ -110,14 +109,14 @@ export class DriverDashboardComponent implements OnInit, OnDestroy {
                 that.infoDT = data.data[0];
 
                 if (that.infoDT.length > 0) {
-                    that.drvid = that.infoDT[0].driverid;
-                    that.drvname = that.infoDT[0].drivername + " : " + that.infoDT[0].mobileno1 + " : " + that.infoDT[0].mobileno2 + " (" + that.infoDT[0].ownenttname + ")";
-                    that.selectDriver = { value: that.drvid, label: that.drvname }
+                    that.uid = that.infoDT[0].uid;
+                    that.uname = that.infoDT[0].uname + " : " + that.infoDT[0].mobile + " : " + that.infoDT[0].altmobile + " (" + that.infoDT[0].enttname + ")";
+                    that.selectUser = { uid: that.uid, uname: that.uname }
                 }
                 else {
-                    that.drvid = 0;
-                    that.drvname = "";
-                    that.selectDriver = {}
+                    that.uid = 0;
+                    that.uname = "";
+                    that.selectUser = {}
                 }
 
                 that.vehicleDT = data.data[1];

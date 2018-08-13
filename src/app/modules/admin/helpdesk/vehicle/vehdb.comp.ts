@@ -63,7 +63,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
         Cookie.set("_vehdata_", JSON.stringify(vehdata));
 
         this._router.navigate(['/admin/helpdesk'], {
-            queryParams: { "flag": "vehicle", "id": event.vehid }
+            queryParams: vehdata
         });
     }
 
@@ -89,35 +89,17 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
     }
 
     viewUserDashboard(row) {
-        if (row.utype == "driver") {
-            var drvdata = { "flag": "driver", "id": row.uid }
-            Cookie.set("_drvdata_", JSON.stringify(drvdata));
+        var userdata = { "flag": row.ptype, "id": row.uid }
+        Cookie.set("_userdata_", JSON.stringify(userdata));
     
-            this._router.navigate(['/admin/helpdesk'], {
-                queryParams: drvdata
-            });
-        }
-        else if (row.utype == "emp") {
-            var empdata = { "flag": "employee", "id": row.uid }
-            Cookie.set("_empdata_", JSON.stringify(empdata));
-    
-            this._router.navigate(['/admin/helpdesk'], {
-                queryParams: empdata
-            });
-        }
-        else {
-            var userdata = { "flag": "user", "id": row.uid }
-            Cookie.set("_userdata_", JSON.stringify(userdata));
-    
-            this._router.navigate(['/admin/helpdesk'], {
-                queryParams: { "flag": "user", "id": row.uid }
-            });
-        }
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: userdata
+        });
     }
 
     viewDriverDashboard(row) {
         var drvdata = { "flag": "driver", "id": row.driverid };
-        Cookie.set("_drvdata_", JSON.stringify(drvdata));
+        Cookie.set("_userdata_", JSON.stringify(drvdata));
 
         this._router.navigate(['/admin/helpdesk'], {
             queryParams: drvdata
