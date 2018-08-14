@@ -104,6 +104,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
+        commonfun.loader("#loadercontrol", "pulse", "loading " + that.flag + "...");
+
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
                 that.infoDT = data.data[0];
@@ -125,6 +127,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
+
+            commonfun.loaderhide("#loadercontrol", "pulse", "loading " + that.flag + "...");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);

@@ -107,18 +107,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openHelpDeskDashboard() {
-    if (Cookie.get("_studdata_") == null) {
-      this._router.navigate(['/admin/helpdesk'], {
-        queryParams: { "flag": "student" }
-      });
-    }
-    else {
-      var studdata = JSON.parse(Cookie.get("_studdata_"));
+    Cookie.delete("_studdata_");
+    Cookie.delete("_vehdata_");
+    Cookie.delete("_userdata_");
 
-      this._router.navigate(['/admin/helpdesk'], {
-        queryParams: studdata
-      });
-    }
+    this._router.navigate(['/admin/helpdesk'], {
+      queryParams: { "flag": "student" }
+    });
   }
 
   public ngAfterViewInit() {

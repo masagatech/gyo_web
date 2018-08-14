@@ -85,9 +85,7 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
         }
         else {
             if (Cookie.get("_userdata_") == null) {
-                this._router.navigate(['/admin/helpdesk'], {
-                    queryParams: { "flag": "" }
-                });
+                this._router.navigate(['/admin/helpdesk']);
             }
             else {
                 var userdata = JSON.parse(Cookie.get("_userdata_"));
@@ -106,9 +104,6 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._actrouter.queryParams.subscribe(params => {
             that.flag = params['flag'] || "";
-
-            commonfun.loader("#loadercontrol", "pulse", "loading " + that.flag + "...");
-
             that.hdtitle = that.flag;
 
             if (that.flag == "student") {
@@ -132,8 +127,6 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
 
                 that.loadComponent(UserDashboardComponent, dparams);
             }
-
-            commonfun.loaderhide("#loadercontrol", "pulse", "loading " + that.flag + "...");
         });
     }
 

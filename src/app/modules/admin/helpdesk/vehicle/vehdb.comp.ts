@@ -45,7 +45,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
             "uid": this.data.loginUser.uid,
             "ucode": this.data.loginUser.ucode,
             "utype": this.data.loginUser.utype,
-            "issysadmin": this.data._enttdetails.issysadmin,
+            "issysadmin": this.data.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
             this.autoVehicleDT = data.data;
@@ -114,6 +114,8 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
             "utype": that.data.loginUser.utype, "issysadmin": that.data.loginUser.issysadmin
         }
 
+        commonfun.loader("#loadercontrol", "pulse", "loading " + that.flag + "...");
+
         that._dbservice.getHelpDesk(dbparams).subscribe(data => {
             try {
                 that.infoDT = data.data[0];
@@ -135,6 +137,8 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
+
+            commonfun.loaderhide("#loadercontrol", "pulse", "loading " + that.flag + "...");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);

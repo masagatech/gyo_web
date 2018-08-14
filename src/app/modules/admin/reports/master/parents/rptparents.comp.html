@@ -18,6 +18,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <select id="prnttype" name="prnttype" [(ngModel)]="prnttype" class="form-control prnttype" tabindex="2">
+                            <option [value]="''">All</option>
                             <option [value]="'reg'">Registered</option>
                             <option [value]="'noreg'">Not Registered</option>
                         </select>

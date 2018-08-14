@@ -19,7 +19,7 @@ export class ParentsReportsComponent implements OnInit, OnDestroy {
     entityDT: any = [];
     enttid: number = 0;
 
-    prnttype: string = "reg";
+    prnttype: string = "";
 
     constructor(private _msg: MessageService, private _loginservice: LoginService,
         private _autoservice: CommonService, private _psngrrptservice: PassengerReportsService) {

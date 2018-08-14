@@ -166,14 +166,12 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         if (!duplicateVehicle) {
             that.vehicleDT.push({
                 "autoid": that.autoid, "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "attr": {},
-                "isview": true, "isedit": true
+                "attr": {}, "isview": true, "isedit": true
             })
 
             that.vehicleGridDT.push({
                 "autoid": that.autoid, "vehid": that.vehid, "vehname": that.vehname, "vehregno": that.vehregno,
-                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "attr": {},
-                "isview": true, "isedit": true
+                "attr": {}, "isview": true, "isedit": true
             })
         }
 
@@ -221,7 +219,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         for (var i = 0; i < that.vehicleDT.length; i++) {
             _advance.push({
                 "autoid": that.vehicleDT[i].autoid, "vehid": that.vehicleDT[i].vehid, "vehname": that.vehicleDT[i].vehname,
-                "vehregno": that.vehicleDT[i].vehregno, "enttid": that.vehicleDT[i].enttid, "wsautoid": that.vehicleDT[i].wsautoid,
+                "vehregno": that.vehicleDT[i].vehregno, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                 "attr": that.vehicleDT[i].attr
             })
         }
@@ -273,7 +271,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         for (var i = 0; i < that.vehicleDT.length; i++) {
             _advance.push({
                 "autoid": that.vehicleDT[i].autoid, "vehid": that.vehicleDT[i].vehid, "vehname": that.vehicleDT[i].vehname,
-                "vehregno": that.vehicleDT[i].vehregno, "enttid": that.vehicleDT[i].enttid, "wsautoid": that.vehicleDT[i].wsautoid,
+                "vehregno": that.vehicleDT[i].vehregno, "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
                 "attr": that.vehicleDT[i].attr
             })
         }
