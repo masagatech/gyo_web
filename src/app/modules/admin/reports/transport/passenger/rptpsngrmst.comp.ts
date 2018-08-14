@@ -52,8 +52,9 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that.loginUser.issysadmin ? 0 : that.loginUser.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data.filter(a => a.entttype == "Company");
@@ -106,8 +107,8 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
             "enttid": this.enttid,
-            "wsautoid": 0,
-            "issysadmin": this.loginUser.issysadmin,
+            "wsautoid": this._enttdetails.wsautoid == null ? 0 : this._enttdetails.wsautoid,
+            "issysadmin": this._enttdetails.issysadmin == null ? false : this._enttdetails.issysadmin,
             "search": query
         }).subscribe((data) => {
             this.autoPassengerDT = data.data;
@@ -134,7 +135,8 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
 
         var dparams = {
             "flag": "profile", "psngrtype": "passenger", "psngrid": that.psngrid, "uid": that.loginUser.uid, "ucode": that.loginUser.ucode,
-            "utype": that.loginUser.utype, "enttid": that.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin, "format": format
+            "utype": that.loginUser.utype, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin, "format": format
         }
 
         commonfun.loader();

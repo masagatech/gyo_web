@@ -97,7 +97,7 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
 
         that._entityservice.getEntityDetails({
             "flag": "all", "type":"all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "entttype": that.entttype, "issysadmin": that.loginUser.issysadmin
+            "entttype": that.entttype, "issysadmin": false
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;

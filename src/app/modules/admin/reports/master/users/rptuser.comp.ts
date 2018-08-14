@@ -57,7 +57,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
     public exportToPDF() {
         let pdf = new jsPDF('l', 'pt', 'a4');
-        
+
         let options = {
             pagesplit: true
         };
@@ -95,8 +95,9 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that.loginUser.issysadmin ? 0 : that.loginUser.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -141,7 +142,8 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
         uparams = {
             "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "enttid": that.enttid, "wsautoid": 0, "srcutype": that.srcutype
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin, "srcutype": that.srcutype
         };
 
         that._userservice.getUserDetails(uparams).subscribe(data => {

@@ -47,8 +47,9 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that.loginUser.issysadmin ? 0 : that.loginUser.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -93,7 +94,8 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
 
         that._driverservice.getDriverDetails({
             "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "enttid": that.enttid, "wsautoid": 0
+            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin,
         }).subscribe(data => {
             try {
                 that.driverDT = data.data;

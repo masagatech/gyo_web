@@ -123,7 +123,8 @@ export class ViewWorkspaceComponent implements OnInit {
         commonfun.loader();
 
         that._wsservice.getWorkspaceDetails({
-            "flag": "userwise", "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin, "wsautoid": that.autowsid
+            "flag": "userwise", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": that.autowsid
         }).subscribe(data => {
             try {
                 that.workspaceDT = data.data.filter(a => a.issysadmin === false);
@@ -140,6 +141,7 @@ export class ViewWorkspaceComponent implements OnInit {
                     that.wsname = myWorkspaceDT[0].wsname;
                     that.wstype = myWorkspaceDT[0].wstype;
                     that.wslogo = myWorkspaceDT[0].wslogo;
+                    that.schoolid = myWorkspaceDT[0].schoolid;
                     that.lgcode = myWorkspaceDT[0].lgcode;
                     that.issysadmin = myWorkspaceDT[0].issysadmin;
 
@@ -253,6 +255,7 @@ export class ViewWorkspaceComponent implements OnInit {
             "wsname": this.wsname,
             "wstype": this.wstype,
             "wslogo": this.wslogo,
+            "schoolid": this.schoolid,
             "enttid": 0,
             "issysadmin": this.issysadmin
         }

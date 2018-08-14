@@ -47,8 +47,9 @@ export class ParentsReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that.loginUser.issysadmin ? 0 : that.loginUser.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -96,8 +97,9 @@ export class ParentsReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": "parents", "type": that.prnttype, "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid,
-            "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
+            "flag": "parents", "type": that.prnttype, "enttid": that.enttid, "wsautoid": 0,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin, "format": format
         }
 
         commonfun.loader();

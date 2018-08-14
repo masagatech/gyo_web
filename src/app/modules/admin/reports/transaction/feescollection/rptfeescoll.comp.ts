@@ -101,8 +101,9 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that.loginUser.issysadmin ? 0 : that.loginUser.wsautoid,
-            "issysadmin": that.loginUser.issysadmin
+            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -150,7 +151,8 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
 
         that._feesservice.getFeesStructure({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
+            "enttid": that.enttid, "wsautoid": that.wsautoid,
+            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin,
         }).subscribe(data => {
             try {
                 that.ayDT = data.data[1].filter(a => a.group == "ay");
@@ -224,7 +226,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                 "flag": "classwise", "type": "", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
                 "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
                 "ayid": that.ayid, "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that.wsautoid,
-                "issysadmin": that.loginUser.issysadmin, "format": format
+                "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin, "format": format
             }
 
             commonfun.loader();
@@ -261,7 +263,7 @@ export class FeesCollectionReportsComponent implements OnInit, OnDestroy {
                 "flag": "classwise", "type": "download", "frmdt": that.frmdt, "todt": that.todt, "rpttype": that.rpttype,
                 "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype, "ayid": that.ayid,
                 "filterClass": that.selectedClass, "enttid": that.enttid, "wsautoid": that.wsautoid,
-                "issysadmin": that.loginUser.issysadmin, "format": format
+                "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin, "format": format
             }
 
             window.open(Common.getReportUrl("getFeesReports", feesparams));
