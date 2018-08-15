@@ -49,10 +49,6 @@ export class ViewWorkspaceComponent implements OnInit {
 
         this.getUploadConfig();
         this.viewWorkspaceDetails();
-
-        if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
-            this._router.navigate(['/']);
-        }
     }
 
     public ngOnInit() {

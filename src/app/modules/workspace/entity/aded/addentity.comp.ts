@@ -796,7 +796,8 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._wsservice.getWorkspaceDetails({
-            "flag": "userwise", "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
+            "flag": "userwise", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "wsautoid": that._wsdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 Cookie.delete("_schwsdetails_");

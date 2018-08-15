@@ -71,9 +71,7 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -121,8 +119,7 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
 
         that._feesrptservice.getFeesReports({
             "flag": "dropdown", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that.enttid, "wsautoid": that.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin,
+            "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.classDT = JSON.parse(data._body).data[1];
@@ -198,7 +195,7 @@ export class StudentFeesReportsComponent implements OnInit, OnDestroy {
             "utype": that.loginUser.utype,
             "enttid": that.enttid,
             "wsautoid": that.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin,
+            "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
             that.studentDT = data.data;

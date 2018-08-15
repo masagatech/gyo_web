@@ -48,9 +48,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -95,8 +93,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
 
         that._vehservice.getVehicleDetails({
             "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
+            "enttid": that.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.vehicleDT = data.data;

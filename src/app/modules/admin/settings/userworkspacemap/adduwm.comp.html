@@ -1,6 +1,7 @@
 <div class="card">
     <div class="header">
         <h4>User Workspace Mapping</h4>
+
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme" (click)="saveUserWorkspaceMapping()">
@@ -28,26 +29,31 @@
                 </div>
             </div>
         </div>
-        <div class="row clearfix" *ngIf="workspaceDT.length">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
-                    <label for="selectall">Select All</label>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="allcheckboxes">
-                    <div class="row clearfix">
-                        <div class="col-md-4" *ngFor="let row of workspaceDT; let i = index">
+    </div>
+</div>
+
+<div *ngIf="workspaceDT.length">
+    <div class="card">
+        <div class="form-group">
+            <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+            <label for="selectall">Select All</label>
+        </div>
+    </div>
+
+    <div class="allcheckboxes">
+        <div class="row clearfix">
+            <div class="col-md-4" *ngFor="let row of workspaceDT">
+                <div class="card">
+                    <div class="header header-title">
+                        {{row.wsname}}
+                    </div>
+                    <div class="body">
+                        <div *ngFor="let schrow of row.schooldt; let i = index">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <span id="ws{{row.wsautoid}}">
-                                        <input id="{{row.wsautoid}}" name="ws{{i + 1}}" type="checkbox" value="{{row.wsautoid}}" class="filled-in" />
-                                        <label for="{{row.wsautoid}}">{{row.wsname}}</label>
-                                        <br />
-                                        <small>{{row.ucode}}</small>
-                                    </span>
-                                </div>
+                                <span id="entt{{schrow.schid}}">
+                                    <input id="{{schrow.schid}}" name="entt{{i + 1}}" type="checkbox" value="{{schrow.schid}}" class="filled-in" />
+                                    <label for="{{schrow.schid}}">{{schrow.schname}}</label>
+                                </span>
                             </div>
                         </div>
                     </div>

@@ -67,9 +67,7 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
 
         that._autoservice.getDropDownData({
             "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid == null ? 0 : that._enttdetails.enttid,
-            "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
-            "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin
+            "enttid": that._enttdetails.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.entityDT = data.data;
@@ -115,8 +113,7 @@ export class AdminNotificationReportsComponent implements OnInit, OnDestroy {
         else {
             let params = {
                 "flag": "reports", "type": "vts", "frmdt": that.fltrdate, "todt": that.fltrdate, "uid": that.loginUser.uid,
-                "utype": that.loginUser.utype, "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid == null ? 0 : that._enttdetails.wsautoid,
-                "issysadmin": that._enttdetails.issysadmin == null ? false : that._enttdetails.issysadmin, "format": format
+                "utype": that.loginUser.utype, "enttid": that.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin, "format": format
             }
 
             if (format == "html") {

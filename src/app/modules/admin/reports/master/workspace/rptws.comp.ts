@@ -24,10 +24,6 @@ export class WorkspaceReportsComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
-            this._router.navigate(['/']);
-        }
-
         this.getWorkspaceDetails();
     }
 

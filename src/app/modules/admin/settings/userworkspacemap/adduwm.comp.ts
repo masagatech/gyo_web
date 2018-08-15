@@ -1,13 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { WorkspaceService } from '@services/master';
 import { UserService } from '@services/master';
 
 @Component({
-    templateUrl: 'adduwm.comp.html',
-    providers: [MenuService, CommonService]
+    templateUrl: 'adduwm.comp.html'
 })
 
 export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
@@ -26,8 +23,8 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
     global = new Globals();
     uploadconfig = { uploadurl: "" };
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
-        private _wsservice: WorkspaceService, private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService,
+        private _userservice: UserService) {
         this.loginUser = this._loginservice.getUser();
 
         this.getUploadConfig();
@@ -60,7 +57,6 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
         that._autoservice.getAutoData({
             "flag": "formapwsuser",
-            "wsautoid": that.loginUser.wsautoid,
             "search": query
         }).subscribe(data => {
             that.usersDT = data.data;
@@ -87,16 +83,14 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
     getWorkspaceDetails() {
         var that = this;
-        var myWorkspaceDT = [];
 
         commonfun.loader();
 
-        that._wsservice.getWorkspaceDetails({
-            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "wsautoid": that.loginUser.wsautoid
+        that._userservice.getUserRights({
+            "flag": "wsrights", "uid": that.loginUser.uid, "utype": that.loginUser.utype
         }).subscribe(data => {
             try {
-                that.workspaceDT = data.data.filter(a => !a.issysadmin);
+                that.workspaceDT = data.data;
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -112,38 +106,46 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Workspace Rights
-
-    getUserRights() {
-        var that = this;
-        var wsitem = null;
-
-        var _wsrights = {};
-        var actrights = "";
-
-        for (var i = 0; i <= that.workspaceDT.length - 1; i++) {
-            wsitem = null;
-            wsitem = that.workspaceDT[i];
-
-            if (wsitem !== null) {
-                $("#ws" + wsitem.wsautoid).find("input[type=checkbox]").each(function () {
-                    actrights += (this.checked ? $(this).val() + "," : "");
-                });
-
-                if (actrights != "") {
-                    _wsrights = actrights.slice(0, -1);
-                }
-            }
-        }
-
-        return _wsrights;
-    }
+    // Save Workspace Rights
 
     saveUserWorkspaceMapping() {
         var that = this;
-        var _wsrights = null;
 
-        _wsrights = that.getUserRights();
+        var wsdata = null;
+        var enttdata = null;
+
+        var actwsrights = "";
+        var actenttrights = "";
+
+        var wsrights = null;
+        var enttrights = null;
+
+        for (var i = 0; i < that.workspaceDT.length; i++) {
+            wsdata = null;
+            wsdata = that.workspaceDT[i];
+
+            if (wsdata !== null) {
+                for (var j = 0; j < wsdata.schooldt.length; j++) {
+                    enttdata = null;
+                    enttdata = wsdata.schooldt[j];
+        
+                    if (enttdata !== null) {
+                        $("#entt" + enttdata.schid).find("input[type=checkbox]").each(function () {
+                            actwsrights += (this.checked ? wsdata.wsautoid + "," : "");
+                            actenttrights += (this.checked ? $(this).val() + "," : "");
+                        });
+
+                        if (actwsrights != "") {
+                            wsrights = actwsrights.slice(0, -1);
+                        }
+
+                        if (actenttrights != "") {
+                            enttrights = actenttrights.slice(0, -1);
+                        }
+                    }
+                }
+            }
+        }
 
         if (that.uid == 0) {
             that._msg.Show(messageType.error, "Error", "Enter User");
@@ -152,16 +154,16 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         else if (that.workspaceDT.length == 0) {
             that._msg.Show(messageType.error, "Error", "No any Workspace");
         }
-        else if (_wsrights == null) {
-            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Rights");
+        else if (enttrights == null) {
+            that._msg.Show(messageType.error, "Error", "Select Atleast 1 Workspace");
         }
         else {
             var saveUR = {
                 "uid": that.uid,
                 "utype": that.utype,
-                "wsrights": "{" + _wsrights + "}",
+                "wsrights": "{" + wsrights + "}",
+                "enttrights": "{" + enttrights + "}",
                 "forrights": "wsmap",
-                "wsautoid": that.loginUser.wsautoid,
                 "cuid": that.loginUser.login
             }
 
@@ -189,7 +191,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         }
     }
 
-    private selectAndDeselectAllCheckboxes() {
+    selectAndDeselectAllCheckboxes() {
         if ($("#selectall").is(':checked')) {
             $(".allcheckboxes input[type=checkbox]").prop('checked', true);
         }
@@ -207,26 +209,26 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         this.clearcheckboxes();
 
         that._userservice.getUserRights({
-            "flag": "wsmap", "uid": that.uid, "utype": that.utype, "wsautoid": that.loginUser.wsautoid
+            "flag": "wsmap", "uid": that.uid, "utype": that.utype
         }).subscribe(data => {
             try {
                 var viewUR = data.data;
 
-                var _wsrights = null;
-                var _wsitem = null;
+                var _enttrights = null;
+                var _enttitem = null;
 
                 if (viewUR[0] != null) {
-                    _wsrights = null;
-                    _wsrights = viewUR[0].wsrights;
+                    _enttrights = null;
+                    _enttrights = viewUR[0].enttrights;
 
-                    if (_wsrights != null) {
-                        for (var i = 0; i < _wsrights.length; i++) {
-                            _wsitem = null;
-                            _wsitem = _wsrights[i];
+                    if (_enttrights != null) {
+                        for (var i = 0; i < _enttrights.length; i++) {
+                            _enttitem = null;
+                            _enttitem = _enttrights[i];
 
-                            if (_wsitem != null) {
+                            if (_enttitem != null) {
                                 $("#selectall").prop('checked', true);
-                                $("#ws" + _wsitem).find("#" + _wsitem).prop('checked', true);
+                                $("#entt" + _enttitem).find("#" + _enttitem).prop('checked', true);
                             }
                             else {
                                 $("#selectall").prop('checked', false);
