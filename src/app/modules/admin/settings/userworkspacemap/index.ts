@@ -2,14 +2,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { AddUserWorkspaceMapComponent } from './adduwm.comp';
 
-import { WorkspaceService, UserService } from '@services/master';
+import { UserService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -28,11 +27,10 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
-    CheckboxModule, AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule
   ],
 
-  providers: [AuthGuard, WorkspaceService, UserService]
+  providers: [AuthGuard, , CommonService, UserService]
 })
 
 export class UserWorkspaceMapModule {
