@@ -47,17 +47,17 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <ngx-sortable [items]="vehicleGridDT" [listStyle]="{ width:'auto', height:'300px'}" [name]="'Assigned Vehicles'">
-                            <ng-template let-item>
+                        <ngx-sortable [items]="vehicleDT" [listStyle]="{ width:'auto', height:'300px'}" [name]="'Assigned Vehicles (' + vehicleDT.length +')'">
+                            <ng-template let-item let-i="index">
                                 <div class="sortable-list-item" (click)="onVehicleClick(item)">
                                     <div class="name col-black">
-                                        <i class="fa fa-bus"></i> {{item.vehname}}
+                                        <i class="fa fa-bus"></i> <span [ngClass]="{'blured':!item.isview}">{{item.vehname}}</span> <span *ngIf="!item.isview">{{item.regend}}</span>
                                         <button type="button" class="btn btn-danger pull-right sortbbtn" *ngIf="item.isedit" (click)="deleteVehicle(item)">
                                             <i class="material-icons">delete</i>
                                         </button>
                                     </div>
                                     <div class="p-l-15 font-14">
-                                        <small>{{item.vehregno}}</small>
+                                        <small [ngClass]="{'blured':!item.isview}">{{item.vehregno}}</small>
                                     </div>
                                 </div>
                             </ng-template>
