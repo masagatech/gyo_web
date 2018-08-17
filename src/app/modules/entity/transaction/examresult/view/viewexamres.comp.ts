@@ -100,7 +100,7 @@ export class ViewExamResultComponent implements OnInit {
             }
 
             that._msg.Show(messageType.success, "Success", xlsfile.msg);
-            
+
             that.closeBulkUploadPopup();
             that.getExamResult();
         }
@@ -132,8 +132,8 @@ export class ViewExamResultComponent implements OnInit {
         params = {
             "flag": "download", "ayid": that.ayid, "smstrid": that.smstrid, "classid": that.clsid,
             "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "issysadmin": false,
-            "format": format, "type": type
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid,
+            "issysadmin": this.loginUser.issysadmin, "format": format, "type": type
         }
 
         if (format == "html") {

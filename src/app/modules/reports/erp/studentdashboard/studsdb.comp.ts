@@ -297,7 +297,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
 
         let params = {
             "flag": "certificate", "type": "", "ayid": that.selayid, "classid": that.selclassid, "studid": that.studid,
-            "crtfcttype": type, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
+            "crtfcttype": type, "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
@@ -341,7 +341,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
 
         let params = {
             "flag": type, "type": "download", "ayid": that.selayid, "classid": that.selclassid, "studid": that.studid,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that._enttdetails.issysadmin,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "format": "html"
         }
 

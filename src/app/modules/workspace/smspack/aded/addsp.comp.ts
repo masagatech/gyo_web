@@ -50,7 +50,7 @@ export class AddSMSPackComponent implements OnInit, OnDestroy {
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
             "wsautoid": this._wsdetails.wsautoid,
-            "issysadmin": this._wsdetails.issysadmin,
+            "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
             this.entityDT = data.data;

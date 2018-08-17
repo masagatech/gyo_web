@@ -42,7 +42,7 @@ export class WorkspaceReportsComponent implements OnInit, OnDestroy {
         commonfun.loader();
 
         that._wsservice.getWorkspaceDetails({
-            "flag": "userwise", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": false
+            "flag": "userwise", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": this.loginUser.issysadmin
         }).subscribe(data => {
             try {
                 that.workspaceDT = data.data;

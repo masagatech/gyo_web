@@ -84,7 +84,7 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
             "flag": "workspace",
             "uid": this.loginUser.uid,
             "utype": this.loginUser.utype,
-            "issysadmin": false,
+            "issysadmin": this.loginUser.issysadmin,
             "search": query
         }).subscribe((data) => {
             this.autoWorkspaceDT = data.data;
