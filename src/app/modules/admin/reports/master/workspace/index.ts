@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: WorkspaceReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptws", "rights": "view", "urlname": "/workspace" }
+        data: { "module": "rptmst", "submodule": "rptws", "rights": "view", "urlname": "/workspace" }
       }
     ]
   },

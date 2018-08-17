@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: AddUserWorkspaceMapComponent, canActivate: [AuthGuard],
-        data: { "module": "set", "submodule": "uwm", "rights": "view", "urlname": "/userworkspacemap" }
+        data: { "module": "admset", "submodule": "uwm", "rights": "view", "urlname": "/userworkspacemap" }
       },
     ]
   },

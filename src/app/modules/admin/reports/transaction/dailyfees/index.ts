@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: DailyFeesReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptstudfees", "rights": "view", "urlname": "/feescollection" }
+        data: { "module": "rptfees", "submodule": "rptdailyfees", "rights": "view", "urlname": "/feescollection" }
       }
     ]
   },

@@ -8,14 +8,14 @@ import {  } from '@services';
 import { EntityReportsComponent } from './rptentity.comp';
 import { EntityService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: EntityReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptentt", "rights": "view", "urlname": "/entity" }
+        data: { "module": "rptmst", "submodule": "rptentt", "rights": "view", "urlname": "/entity" }
       }
     ]
   },

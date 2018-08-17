@@ -7,14 +7,14 @@ import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 import { DriverReportsComponent } from './rptdriver.comp';
 import { DriverService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
       {
         path: '', component: DriverReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptdrv", "rights": "view", "urlname": "/driver" }
+        data: { "module": "rpttrnsp", "submodule": "rptdrv", "rights": "view", "urlname": "/driver" }
       }
     ]
   },

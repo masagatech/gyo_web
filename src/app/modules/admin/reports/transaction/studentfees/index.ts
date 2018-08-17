@@ -16,7 +16,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: StudentFeesReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpt", "submodule": "rptstudfees", "rights": "view", "urlname": "/feescollection" }
+        data: { "module": "rptfees", "submodule": "rptstudfees", "rights": "view", "urlname": "/feescollection" }
       }
     ]
   },
