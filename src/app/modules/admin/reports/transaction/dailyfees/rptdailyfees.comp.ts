@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
-import { FeesService } from '@services/erp';
 import { FeesReportsService } from '@services/reports';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
@@ -28,8 +26,7 @@ export class DailyFeesReportsComponent implements OnInit, OnDestroy {
     frmdt: string = "";
     todt: string = "";
 
-    constructor(private _router: Router, private _routeParams: ActivatedRoute, private _msg: MessageService,
-        private _loginservice: LoginService, private _feesservice: FeesService, private _feesrptservice: FeesReportsService,
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _feesrptservice: FeesReportsService,
         private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();

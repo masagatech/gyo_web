@@ -15,7 +15,6 @@ export const routes = [
             {
                 path: '',
                 children: [
-                    { path: 'masterofmaster', loadChildren: './mom#MOMModule' },
                     { path: 'usermenumap', loadChildren: './usermenumap#UserMenuMapModule' },
                     { path: 'breakdown', loadChildren: './breakdown#BreakDownModule' },
                     { path: 'general', loadChildren: './general#GeneralModule' },

@@ -24,7 +24,7 @@
     <div class="body">
         <div class="row clearfix">
             <div class="col-md-12">
-                <p-dataTable [value]="vehicleDT | filterBy: {'vehiclename': srcvehname}">
+                <p-dataTable [value]="vehicleDT | filterBy: {'vehiclename': srcvehname, 'imei': srcvehname}">
                     <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
                     <p-column field="vehiclename" header="Vehicle Name" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
                     <p-column header="Vehicle Registration No" [style]="{'width':'300px','text-align':'left'}">

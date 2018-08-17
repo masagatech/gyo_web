@@ -118,7 +118,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
 
-
         this.subscribeParameters = this._actrouter
             .queryParams
             .subscribe(params => {

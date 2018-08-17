@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
@@ -21,8 +20,8 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
 
     @ViewChild('entity') entity: ElementRef;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _entityservice: EntityService, private _autoservice: CommonService) {
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _entityservice: EntityService,
+        private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
 
         this.fillDropDownList();
@@ -79,9 +78,11 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
 
     public exportToPDF() {
         let pdf = new jsPDF('l', 'pt', 'a4');
+
         let options = {
             pagesplit: true
         };
+
         pdf.addHTML(this.entity.nativeElement, 0, 0, options, () => {
             pdf.save("EntityDetials.pdf");
         });

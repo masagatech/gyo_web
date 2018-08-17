@@ -33,6 +33,10 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+            
             $(".uname input").focus();
         }, 100);
     }
@@ -250,6 +254,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }

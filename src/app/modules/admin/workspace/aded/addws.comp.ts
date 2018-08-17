@@ -73,6 +73,12 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
+
         this.getWorkspaceDetails();
     }
 
@@ -617,6 +623,9 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
+        
         this.subscribeParameters.unsubscribe();
     }
 }

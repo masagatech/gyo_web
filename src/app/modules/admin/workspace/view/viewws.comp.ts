@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
@@ -11,7 +11,7 @@ declare var $: any;
     templateUrl: 'viewws.comp.html',
 })
 
-export class ViewWorkspaceComponent implements OnInit {
+export class ViewWorkspaceComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     workspaceDT: any = [];
     _wsdetails: any = [];
@@ -52,7 +52,11 @@ export class ViewWorkspaceComponent implements OnInit {
     }
 
     public ngOnInit() {
-
+        setTimeout(function () {
+            $.AdminBSB.islocked = true;
+            $.AdminBSB.leftSideBar.Close();
+            $.AdminBSB.rightSideBar.activate();
+        }, 100);
     }
 
     isshWorkspace(viewtype) {
@@ -275,5 +279,10 @@ export class ViewWorkspaceComponent implements OnInit {
         else {
             this._msg.Show(messageType.error, "Error", "This Workspace is Deactive");
         }
+    }
+
+    public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.leftSideBar.Open();
     }
 }
