@@ -99,8 +99,7 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
     selectStudentData(event) {
         this.studid = event.value;
         this.studname = event.label;
-
-        console.log(this.studid);
+        
         this.getStudentDetails();
     }
 
@@ -445,6 +444,8 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
     resetVehicleFields() {
         var that = this;
 
+        that.autoid = 0;
+
         that.resiaddr = "";
         that.resilet = "0.00";
         that.resilong = "0.00";
@@ -579,7 +580,11 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
-                        that.getStudentDetails();
+
+                        that.studid = 0;
+                        that.studname = "";
+                        that.selectedStudent = {};
+                        that.resetVehicleFields();
                     }
                     else {
                         that._msg.Show(messageType.error, "Error", msg);
@@ -630,7 +635,7 @@ export class AddStudentVehicleComponent implements OnInit, OnDestroy {
                 var _vhcldata = data.data[1];
 
                 if (_studsdata.length > 0) {
-                    that.autoid = _studsdata[0].autoid;
+                    that.autoid = _studsdata[0].enrlmntid;
                     that.resiaddr = _studsdata[0].address;
 
                     that.isactive = _studsdata[0].isactive;

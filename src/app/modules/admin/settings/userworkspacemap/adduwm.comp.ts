@@ -81,6 +81,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         that.utype = event.utype;
 
         that.getUserRightsById();
+        that.getWorkspaceDetails();
     }
 
     // Get Workspace Details

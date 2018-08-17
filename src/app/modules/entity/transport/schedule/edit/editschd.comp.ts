@@ -29,14 +29,15 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
     dropattdata: any = [];
 
     passengerDT: any = [];
-    counter: number = 0;
 
     pickpsngrid: number = 0;
     pickpsngrname: string = "";
+    pickstpid: number = 0;
     pickpsngrdata: any = [];
 
     droppsngrid: number = 0;
     droppsngrname: string = "";
+    dropstpid: number = 0;
     droppsngrdata: any = [];
 
     pickAttList: any = [];
@@ -281,14 +282,15 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
     // Auto Completed Passenger
 
-    getPassengerData(event) {
+    getPassengerData(event, pdtype) {
         let query = event.query;
 
         this._autoservice.getAutoData({
-            "flag": "studspsngr",
+            "flag": pdtype,
             "uid": this.loginUser.uid,
             "ucode": this.loginUser.ucode,
             "utype": this.loginUser.utype,
+            "ayid": this._enttdetails.ayid,
             "enttid": this._enttdetails.enttid,
             "wsautoid": this._enttdetails.wsautoid,
             "issysadmin": this.loginUser.issysadmin,
@@ -304,21 +306,27 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
     // Get Selected Auto Completed Data
 
-    selectAutoData(event, type) {
-        if (type === "pickatt") {
+    selectAutoData(event, pdtype) {
+        if (pdtype === "pickatt") {
             this.pickattid = event.uid;
+            this.pickattname = event.uname;
             this.addPickAttData();
         }
-        else if (type === "dropatt") {
+        else if (pdtype === "dropatt") {
             this.dropattid = event.uid;
+            this.dropattname = event.uname;
             this.addDropAttData();
         }
-        else if (type === "pickstuds") {
-            this.pickpsngrid = event.value;
+        else if (pdtype === "pickstuds") {
+            this.pickpsngrid = event.studid;
+            this.pickpsngrname = event.studname;
+            this.pickstpid = event.stpid;
             this.pickupPassenger();
         }
-        else if (type === "dropstuds") {
-            this.droppsngrid = event.value;
+        else if (pdtype === "dropstuds") {
+            this.droppsngrid = event.studid;
+            this.droppsngrname = event.studname;
+            this.dropstpid = event.stpid;
             this.dropPassenger();
         }
         else {
@@ -326,7 +334,7 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
             this.fillDriverDropDown();
             this.fillVehicleDropDown();
             this.fillRouteDropDown();
-            this.getPassengerData(event);
+            this.getPassengerData(event, pdtype);
         }
     }
 
@@ -485,18 +493,26 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
         if (!duplicatepassenger) {
             that.pickPassengerDT.push({
-                "counter": that.counter++,
-                "stdid": that.pickpsngrdata.value,
-                "stdnm": that.pickpsngrdata.label,
+                "stdid": that.pickpsngrdata.studid,
+                "stdnm": that.pickpsngrdata.studname,
+                "stpid": that.pickpsngrdata.stpid
+            });
+
+            that.dropPassengerDT.push({
+                "stdid": that.pickpsngrdata.studid,
+                "stdnm": that.pickpsngrdata.studname,
+                "stpid": that.pickpsngrdata.stpid
             });
         }
 
         that.pickpsngrid = 0;
         that.pickpsngrname = "";
+        that.pickstpid = 0;
         that.pickpsngrdata = [];
 
         that.droppsngrid = 0;
         that.droppsngrname = "";
+        that.dropstpid = 0;
         that.droppsngrdata = [];
     }
 
@@ -551,9 +567,9 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
 
         if (!duplicatepassenger) {
             that.dropPassengerDT.push({
-                "counter": that.counter++,
-                "stdid": that.droppsngrdata.value,
-                "stdnm": that.droppsngrdata.label,
+                "stdid": that.droppsngrdata.studid,
+                "stdnm": that.droppsngrdata.studname,
+                "stpid": that.droppsngrdata.stpid
             });
         }
 
@@ -607,9 +623,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.pickAttList.push({
-            "counter": that.counter++,
             "attid": that.pickattdata.uid,
-            "attnm": that.pickattdata.uname,
+            "attnm": that.pickattdata.uname
         });
 
         that.pickattid = 0;
@@ -623,9 +638,8 @@ export class EditScheduleComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.dropAttList.push({
-            "counter": that.counter++,
-            "attid": that.dropattdata.value,
-            "attnm": that.dropattdata.label,
+            "attid": that.dropattdata.uid,
+            "attnm": that.dropattdata.uname
         });
 
         that.dropattid = 0;

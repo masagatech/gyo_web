@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: AddStudentVehicleComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "psngr", "rights": "add", "urlname": "/add" }
+        data: { "module": "pentt", "submodule": "svh", "rights": "add", "urlname": "/add" }
       }
     ]
   },

@@ -79,7 +79,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label class="control-label">From Date</label> {{pickfrmdt}}
+                                    <label class="control-label">From Date</label>
                                     <input type="date" [(ngModel)]="pickfrmdt" class="form-control pickfrmdt" tabindex="4" (ngModelChange)="dropfrmdt=pickfrmdt">
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label class="control-label">To Date</label> {{picktodt}}
+                                    <label class="control-label">To Date</label>
                                     <input type="date" [(ngModel)]="picktodt" class="form-control picktodt" tabindex="5" (ngModelChange)="droptodt=picktodt">
                                 </div>
                             </div>
@@ -147,8 +147,8 @@
                     <div class="form-group" *ngIf="pickpsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
-                            <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrdata" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
-                                [size]="30" class="form-controlAutoComplete pickpsngrname"></p-autoComplete>
+                            <p-autoComplete id="pickpsngrname" name="pickpsngrname" [(ngModel)]="pickpsngrdata" [tabindex]="10" (onSelect)="selectAutoData($event, 'pickstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event, 'pickstuds')" field="studname"
+                                [minLength]="1" [size]="30" class="form-controlAutoComplete pickpsngrname"></p-autoComplete>
                             <span class="material-icons inputsearchico pad-20">search</span>
                         </div>
                     </div>
@@ -257,8 +257,8 @@
                     <div class="form-group" *ngIf="droppsngrtype == 'bypsngr'">
                         <div class="form-line">
                             <label class="control-label">{{_enttdetails.psngrtype}} Name</label>
-                            <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrdata" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event)" field="label" [minLength]="1"
-                                [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
+                            <p-autoComplete id="droppsngrname" name="droppsngrname" [(ngModel)]="droppsngrdata" [tabindex]="17" (onSelect)="selectAutoData($event, 'dropstuds')" [suggestions]="passengerDT" (completeMethod)="getPassengerData($event, 'dropstuds')" field="studname"
+                                [minLength]="1" [size]="30" class="form-controlAutoComplete passengername"></p-autoComplete>
                             <span class="material-icons inputsearchico pad-20">search</span>
                         </div>
                     </div>

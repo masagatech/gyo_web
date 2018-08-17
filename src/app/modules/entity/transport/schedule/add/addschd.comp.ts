@@ -22,7 +22,6 @@ export class AddScheduleComponent implements OnInit {
     dropattdata: any = [];
 
     passengerDT: any = [];
-    counter: number = 0;
 
     pickpsngrid: number = 0;
     pickpsngrname: string = "";
@@ -470,7 +469,6 @@ export class AddScheduleComponent implements OnInit {
 
         if (!duplicatepassenger) {
             that.dropPassengerDT.push({
-                "counter": that.counter++,
                 "stdid": that.droppsngrdata.studid,
                 "stdnm": that.droppsngrdata.studname,
                 "stpid": that.droppsngrdata.stpid
@@ -527,9 +525,8 @@ export class AddScheduleComponent implements OnInit {
         var that = this;
 
         that.pickAttList.push({
-            "counter": that.counter++,
             "attid": that.pickattdata.uid,
-            "attnm": that.pickattdata.uname,
+            "attnm": that.pickattdata.uname
         });
 
         that.pickattid = 0;
@@ -543,9 +540,8 @@ export class AddScheduleComponent implements OnInit {
         var that = this;
 
         that.dropAttList.push({
-            "counter": that.counter++,
             "attid": that.dropattdata.uid,
-            "attnm": that.dropattdata.uname,
+            "attnm": that.dropattdata.uname
         });
 
         that.dropattid = 0;

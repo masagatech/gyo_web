@@ -19,7 +19,7 @@ export const routes = [
         path: '', children: [
             {
                 path: '', component: HelpDeskComponent, canActivate: [AuthGuard],
-                data: { "module": "", "submodule": "hd", "rights": "view", "urlname": "/helpdesk" }
+                data: { "module": "", "submodule": "hd", "rights": "allowed", "urlname": "/helpdesk" }
             }
         ]
     },
