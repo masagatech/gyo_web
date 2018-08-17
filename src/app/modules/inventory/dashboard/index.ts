@@ -9,7 +9,7 @@ import { InventoryService } from '@services/master';
 import { DashboardComponent } from './dashboard.comp';
 import { ERPDashboardService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, ChartModule } from 'primeng/primeng';
+import { DataTableModule, DataGridModule, PanelModule, ChartModule } from 'primeng/primeng';
 
 export const routes = [
   {

@@ -16,11 +16,11 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewDeviceComponent, canActivate: [AuthGuard],
-        data: { "module": "inv", "submodule": "device", "rights": "allowed", "urlname": "/device" }
-      },{
+        data: { "module": "inv", "submodule": "device", "rights": "view", "urlname": "/device" }
+      }, {
         path: 'add', component: AddDeviceComponent, canActivate: [AuthGuard],
         data: { "module": "inv", "submodule": "device", "rights": "add", "urlname": "/add" }
-      },{
+      }, {
         path: 'edit/:id', component: AddDeviceComponent, canActivate: [AuthGuard],
         data: { "module": "inv", "submodule": "device", "rights": "edit", "urlname": "/edit" }
       },
