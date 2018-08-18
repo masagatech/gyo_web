@@ -63,27 +63,23 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (userDetails.status) {
                             that._loginservice.setUsers(userDetails);
 
-                            if (userDetails.issysadmin) {
-                                if (userDetails.utype == "admin") {
-                                    that._router.navigate(['/admin/workspace']);
-                                }
-                                else {
-                                    Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
-                                    that._router.navigate(['/workspace/entity']);
-                                }
+                            if (userDetails.utype == "admin") {
+                                that._router.navigate(['/admin/workspace']);
                             }
                             else {
-                                Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
-                                that._router.navigate(['/workspace/entity']);
-                                
-                                // if (userDetails.isemp) {
-                                //     Cookie.set("_schenttdetails_", JSON.stringify(userDetails));
-                                //     that._router.navigate(['/']);
-                                // }
-                                // else {
-                                //     Cookie.set("_schwsdetails_", JSON.stringify(userDetails));
-                                //     that._router.navigate(['/workspace/entity']);
-                                // }
+                                if (userDetails.countws == 1) {
+                                    if (userDetails.countentt == 1) {
+                                        sessionStorage.setItem("_schenttdetails_", JSON.stringify(userDetails));
+                                        that._router.navigate(['/']);
+                                    }
+                                    else {
+                                        sessionStorage.setItem("_schwsdetails_", JSON.stringify(userDetails));
+                                        that._router.navigate(['/workspace/entity']);
+                                    }
+                                }
+                                else {
+                                    that._router.navigate(['/admin/workspace']);
+                                }
                             }
                         } else {
                             that._msg.Show(messageType.error, "Error", userDetails.errmsg);

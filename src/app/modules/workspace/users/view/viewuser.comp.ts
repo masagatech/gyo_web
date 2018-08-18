@@ -3,13 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-
-declare var $: any;
 
 @Component({
-    templateUrl: 'viewuser.comp.html',
-    providers: [CommonService]
+    templateUrl: 'viewuser.comp.html'
 })
 
 export class ViewUserComponent implements OnInit {
@@ -103,8 +99,8 @@ export class ViewUserComponent implements OnInit {
     selectEntityData(event) {
         this.enttid = event.value;
 
-        Cookie.set("_enttid_", event.value);
-        Cookie.set("_enttnm_", event.label);
+        sessionStorage.setItem("_enttid_", event.value);
+        sessionStorage.setItem("_enttnm_", event.label);
 
         this.getUserDetails();
     }
@@ -114,7 +110,7 @@ export class ViewUserComponent implements OnInit {
         commonfun.loader();
 
         that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
-            that.utypeDT = data.data;
+            that.utypeDT = data.data.filter(a => a.group == "usertype");
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -159,16 +155,16 @@ export class ViewUserComponent implements OnInit {
     public viewUserDataRights() {
         var that = this;
 
-        if (Cookie.get('_srcutype_') != null) {
-            that.srcutype = Cookie.get('_srcutype_');
+        if (sessionStorage.getItem('_srcutype_') != null) {
+            that.srcutype = sessionStorage.getItem('_srcutype_');
         }
         else {
             that.srcutype = "all";
         }
 
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
+        if (sessionStorage.getItem('_enttnm_') != null) {
+            that.enttid = parseInt(sessionStorage.getItem('_enttid_'));
+            that.enttname = sessionStorage.getItem('_enttnm_');
         }
         else {
             that.enttid = that._enttdetails.enttid;
@@ -185,8 +181,8 @@ export class ViewUserComponent implements OnInit {
         var that = this;
         var uparams = {};
 
-        Cookie.set("_srcutype_", that.srcutype);
-        that.srcutype = Cookie.get('_srcutype_');
+        sessionStorage.setItem("_srcutype_", that.srcutype);
+        that.srcutype = sessionStorage.getItem('_srcutype_');
 
         commonfun.loader("#users");
 
@@ -215,16 +211,16 @@ export class ViewUserComponent implements OnInit {
     }
 
     resetUserDetails() {
-        Cookie.delete('_enttid_');
-        Cookie.delete('_enttnm_');
-        Cookie.delete('_srcutype_');
+        sessionStorage.removeItem('_enttid_');
+        sessionStorage.removeItem('_enttnm_');
+        sessionStorage.removeItem('_srcutype_');
 
         this.enttid = 0;
         this.enttname = "";
         this.enttdata = [];
         this.srcutype = "all";
-        Cookie.set("_srcutype_", this.srcutype);
-        this.srcutype = Cookie.get('_srcutype_');
+        sessionStorage.setItem("_srcutype_", this.srcutype);
+        this.srcutype = sessionStorage.getItem('_srcutype_');
 
         this.autouid = 0;
         this.autouname = [];

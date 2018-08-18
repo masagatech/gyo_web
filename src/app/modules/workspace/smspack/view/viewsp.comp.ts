@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { SMSPackService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewsp.comp.html'
@@ -62,8 +61,8 @@ export class ViewSMSPackComponent implements OnInit {
         this.enttid = event.value;
         this.enttname = event.label;
 
-        Cookie.set("_enttid_", event.value);
-        Cookie.set("_enttnm_", event.label);
+        sessionStorage.setItem("_enttid_", event.value);
+        sessionStorage.setItem("_enttnm_", event.label);
 
         this.getSMSPackGrid();
     }
@@ -71,9 +70,9 @@ export class ViewSMSPackComponent implements OnInit {
     public viewSMSPackDataRights() {
         var that = this;
 
-        if (Cookie.get('_enttnm_') != null) {
-            that.enttid = parseInt(Cookie.get('_enttid_'));
-            that.enttname = Cookie.get('_enttnm_');
+        if (sessionStorage.getItem('_enttnm_') != null) {
+            that.enttid = parseInt(sessionStorage.getItem('_enttid_'));
+            that.enttname = sessionStorage.getItem('_enttnm_');
         }
         else {
             that.enttid = that._enttdetails.enttid;
@@ -89,9 +88,9 @@ export class ViewSMSPackComponent implements OnInit {
     }
 
     resetSMSPackGrid() {
-        Cookie.delete('_enttid_');
-        Cookie.delete('_enttnm_');
-        Cookie.delete('_srcutype_');
+        sessionStorage.removeItem('_enttid_');
+        sessionStorage.removeItem('_enttnm_');
+        sessionStorage.removeItem('_srcutype_');
 
         this.enttid = 0;
         this.enttname = "";

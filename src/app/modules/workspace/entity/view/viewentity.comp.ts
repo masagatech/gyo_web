@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewentity.comp.html'
@@ -34,8 +33,8 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
         this.fillDropDownList();
 
-        if (Cookie.get('_entttype_') != null) {
-            this.entttype = Cookie.get('_entttype_');
+        if (sessionStorage.getItem("_entttype_") != null) {
+            this.entttype = sessionStorage.getItem("_entttype_");
         }
         else {
             this.entttype = "";
@@ -128,8 +127,8 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
         var that = this;
         var params = {};
 
-        Cookie.set("_entttype_", that.entttype);
-        that.entttype = Cookie.get('_entttype_');
+        sessionStorage.setItem("_entttype_", that.entttype);
+        that.entttype = sessionStorage.getItem("_entttype_");
 
         commonfun.loader();
 
@@ -158,7 +157,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
     }
 
     resetEntityDetails() {
-        Cookie.delete('_entttype_');
+        sessionStorage.removeItem('_entttype_');
         this.entttype = "";
         this.enttid = 0;
         this.enttname = [];
@@ -175,10 +174,10 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     public openMainForm(row) {
         if (row.isactive) {
-            Cookie.delete("_schenttdetails_");
-            Cookie.delete("_ayid_");
+            sessionStorage.removeItem("_schenttdetails_");
+            sessionStorage.removeItem("_ayid_");
 
-            Cookie.set("_schenttdetails_", JSON.stringify(row));
+            sessionStorage.setItem("_schenttdetails_", JSON.stringify(row));
             this._router.navigate(['/']);
         }
         else {

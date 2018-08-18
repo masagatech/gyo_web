@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/primeng';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { Globals, Common, LoginUserModel } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ReportsService } from '@services/reports';
 
 @Component({

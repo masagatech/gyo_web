@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, Event as NavigationEvent } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService, AuthenticationService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 declare var loader: any;
@@ -107,9 +106,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openHelpDeskDashboard() {
-    Cookie.delete("_studdata_");
-    Cookie.delete("_vehdata_");
-    Cookie.delete("_userdata_");
+    sessionStorage.removeItem("_studdata_");
+    sessionStorage.removeItem("_vehdata_");
+    sessionStorage.removeItem("_userdata_");
 
     this._router.navigate(['/admin/helpdesk'], {
       queryParams: { "flag": "student" }
@@ -159,12 +158,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.gender = this.loginUser.gndrkey;
     this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
 
-    if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+    if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
       this.wsautoid = this.loginUser.wsautoid;
       this.enttid = this.loginUser.enttid;
       this.entttype = this.loginUser.entttype;
 
-      if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
+      if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
         this.ismstmenu = false;
         this.isenttmenu = false;
         this.isrptmenu = false;

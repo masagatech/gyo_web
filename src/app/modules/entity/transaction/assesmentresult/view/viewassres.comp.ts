@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssesmentService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewassres.comp.html',
@@ -56,8 +55,8 @@ export class ViewAssesmentResultComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get("_ayid_") != null) {
-                        that.ayid = parseInt(Cookie.get("_ayid_"));
+                    if (sessionStorage.getItem("_ayid_") != null) {
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                     else {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);
@@ -146,13 +145,13 @@ export class ViewAssesmentResultComponent implements OnInit {
     }
 
     public addAssesmentResult() {
-        Cookie.delete("_editassres_");
+        sessionStorage.removeItem("_editassres_");
         this._router.navigate(['/transaction/assesmentresult/add']);
     }
 
     public editAssesmentResult(row) {
         var that = this;
-        Cookie.delete("_editassres_");
+        sessionStorage.removeItem("_editassres_");
 
         var params = {
             "flag": "aded", "mode": "edit", "assid": 0, "ayid": row.ayid, "ayname": row.ayname, "classid": row.classid, "classname": row.classname,
@@ -161,7 +160,7 @@ export class ViewAssesmentResultComponent implements OnInit {
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }
 
-        Cookie.set("_editassres_", JSON.stringify(params));
+        sessionStorage.setItem("_editassres_", JSON.stringify(params));
         this._router.navigate(['/transaction/assesmentresult/edit']);
     }
 }

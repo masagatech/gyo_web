@@ -72,7 +72,9 @@
                             {{drow.drivername}}
                         </td>
                         <td>
-                            {{drow.vehname}}
+                            <div *ngFor="let vehrow of drow.vehicledt; let i = index;">
+                                <b *ngIf="drow.vehicledt.length > 1">{{i + 1}}.</b> {{vehrow.vehname}}
+                            </div>
                         </td>
                         <td>
                             {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>

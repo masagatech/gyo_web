@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
   templateUrl: 'admin.comp.html'
@@ -27,7 +27,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
-    if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {
+    if (Cookie.get("_schsession_") == null && Cookie.get("_schsession_") == undefined) {
       this._router.navigate(['/login']);
     }
 
@@ -45,18 +45,18 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   getHeaderDetails() {
-    if (Cookie.get('_schsession_') != null) {
+    if (Cookie.get("_schsession_") != null) {
       this.wsname = this.loginUser.wsname;
       this.wslogo = this.global.uploadurl + this.loginUser.wslogo;
 
-      if (Cookie.get('_schwsdetails_') == null) {
+      if (sessionStorage.getItem("_schwsdetails_") == null) {
         this.enttname = "";
       }
       else {
         this.enttname = this._wsdetails.wsname;
       }
 
-      if (Cookie.get('_schenttdetails_') != null) {
+      if (sessionStorage.getItem("_schenttdetails_") != null) {
         this.isleftmenu = true;
       }
       else {
@@ -64,7 +64,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       }
 
       if (this.loginUser.issysadmin) {
-        if (Cookie.get('_schenttdetails_') != null) {
+        if (sessionStorage.getItem("_schenttdetails_") != null) {
           this.homeurl = "/";
         }
         else {
@@ -72,7 +72,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         }
       }
       else {
-        if (Cookie.get('_schenttdetails_') != null) {
+        if (sessionStorage.getItem("_schenttdetails_") != null) {
           this.homeurl = "/";
         }
         else {

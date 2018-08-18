@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { AdmissionService } from '@services/erp';
 import { PassengerReportsService } from '@services/reports';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'rptagestud.comp.html'
@@ -58,8 +57,8 @@ export class AgeWiseReportsComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get("_ayid_") != null) {
-                        that.ayid = parseInt(Cookie.get("_ayid_"));
+                    if (sessionStorage.getItem("_ayid_") != null) {
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                     else {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);

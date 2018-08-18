@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MessageService, messageType, MenuService, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
   selector: '<app-footer></app-footer>',
@@ -48,7 +47,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   getHeaderDetails() {
-    if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+    if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
       this.wsautoid = this.loginUser.wsautoid;
       this.enttid = this.loginUser.enttid;
       this.isenttmenu = false;
@@ -80,8 +79,8 @@ export class FooterComponent implements OnInit, OnDestroy {
         that.ayDT = data.data.filter(a => a.group == "ay");
 
         if (that.ayDT.length > 0) {
-          if (Cookie.get("_ayid_") != null) {
-            that.ayid = parseInt(Cookie.get("_ayid_"));
+          if (sessionStorage.getItem("_ayid_") != null) {
+            that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
           }
           else {
             defayDT = that.ayDT.filter(a => a.iscurrent == true);
@@ -112,8 +111,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   public openMainForm(row) {
     var that = this;
 
-    Cookie.delete("_schenttdetails_");
-    Cookie.set("_schenttdetails_", JSON.stringify(row));
+    sessionStorage.removeItem("_schenttdetails_");
+    sessionStorage.setItem("_schenttdetails_", JSON.stringify(row));
 
     that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
       that._router.navigate(['/']);
@@ -157,15 +156,15 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   changeEntityDetails() {
     var that = this;
-    Cookie.delete("_ayid_");
+    sessionStorage.removeItem("_ayid_");
     that.getEntityDetails();
   }
 
   changeAYDetails() {
     var that = this;
 
-    Cookie.delete("_ayid_");
-    Cookie.set("_ayid_", that.ayid.toString());
+    sessionStorage.removeItem("_ayid_");
+    sessionStorage.setItem("_ayid_", that.ayid.toString());
 
     that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
       that._router.navigate(['/']);

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'inventory.comp.html'
@@ -25,11 +25,11 @@ export class InventoryComponent implements OnDestroy {
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
-        if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {
+        if (Cookie.get("_schsession_") == null && Cookie.get("_schsession_") == undefined) {
             this._router.navigate(['/login']);
         }
 
-        if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
+        if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
             this._router.navigate(['/admin/workspace']);
         }
 
@@ -45,8 +45,8 @@ export class InventoryComponent implements OnDestroy {
     }
 
     getHeaderDetails() {
-        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
-            if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
+        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
+            if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
                 this.wsname = this.loginUser.wsname;
                 this.enttname = "";
                 this.wslogo = this.global.uploadurl + this.loginUser.wslogo;

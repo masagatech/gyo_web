@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { ReportsService } from '@services/reports';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf'
 
 declare var $: any;

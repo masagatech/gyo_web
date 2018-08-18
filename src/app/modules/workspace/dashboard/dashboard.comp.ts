@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { DashboardService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'dashboard.comp.html'
@@ -20,7 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 
-        let _schwsdetails = Cookie.get("_schwsdetails_");
+        let _schwsdetails = sessionStorage.getItem("_schwsdetails_");
 
         if (_schwsdetails == null && _schwsdetails == undefined) {
             this._router.navigate(['/admin/workspace']);
@@ -65,12 +64,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (row.dbtype == "user") {
-            Cookie.delete('_srcutype_');
-            Cookie.set("_srcutype_", row.dbcode);
+            sessionStorage.removeItem('_srcutype_');
+            sessionStorage.setItem("_srcutype_", row.dbcode);
         }
         else if (row.dbtype == "entity") {
-            Cookie.delete('_entttype_');
-            Cookie.set("_entttype_", row.dbcode);
+            sessionStorage.removeItem('_entttype_');
+            sessionStorage.setItem("_entttype_", row.dbcode);
         }
 
         that._router.navigate([row.dblink]);

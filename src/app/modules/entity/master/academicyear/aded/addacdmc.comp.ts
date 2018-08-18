@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AcademicYearService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'addacdmc.comp.html'
@@ -119,8 +118,8 @@ export class AddAcademicYearComponent implements OnInit, OnDestroy {
 
                         if (msgid == "1") {
                             if (that.iscurrent) {
-                                Cookie.delete("_ayid_");
-                                Cookie.set("_ayid_", keyid.toString());
+                                sessionStorage.removeItem("_ayid_");
+                                sessionStorage.setItem("_ayid_", keyid.toString());
 
                                 that._router.navigateByUrl("/reload", { skipLocationChange: true }).then(() => {
                                     that._router.navigate(['/master/academicyear/add']);
@@ -130,8 +129,8 @@ export class AddAcademicYearComponent implements OnInit, OnDestroy {
                             that.resetAcademicYearFields();
                         }
                         else {
-                            Cookie.delete("_ayid_");
-                            Cookie.set("_ayid_", keyid.toString());
+                            sessionStorage.removeItem("_ayid_");
+                            sessionStorage.setItem("_ayid_", keyid.toString());
 
                             that.backViewData();
                         }

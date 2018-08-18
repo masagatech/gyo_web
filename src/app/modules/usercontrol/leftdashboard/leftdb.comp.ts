@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, AuthenticationService } from '@services';
 import { DashboardService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -82,8 +81,8 @@ export class LeftDashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (row.dbtype == "user") {
-            Cookie.delete('_srcutype_');
-            Cookie.set("_srcutype_", row.dbcode);
+            sessionStorage.removeItem('_srcutype_');
+            sessionStorage.setItem("_srcutype_", row.dbcode);
         }
 
         that._router.navigate([row.dblink]);

@@ -1,5 +1,3 @@
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-
 export class Globals {
     static erproute: string = "erp/";
     photoid: number = 29;
@@ -32,7 +30,7 @@ export class Globals {
     // Functions
 
     public static getWSDetails() {
-        let _wsdetails = Cookie.get("_schwsdetails_");
+        let _wsdetails = sessionStorage.getItem("_schwsdetails_");
 
         if (_wsdetails !== null) {
             return JSON.parse(_wsdetails);
@@ -43,7 +41,7 @@ export class Globals {
     }
 
     public static getEntityDetails() {
-        let _enttdetails = Cookie.get("_schenttdetails_");
+        let _enttdetails = sessionStorage.getItem("_schenttdetails_");
 
         if (_enttdetails !== null) {
             return JSON.parse(_enttdetails);

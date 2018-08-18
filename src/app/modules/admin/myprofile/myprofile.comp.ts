@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -103,9 +102,9 @@ export class MyProfileComponent implements OnInit {
     }
 
     public openMainForm(row) {
-        Cookie.delete("_schenttdetails_");
+        sessionStorage.removeItem("_schenttdetails_");
 
-        Cookie.set("_schenttdetails_", JSON.stringify(row));
+        sessionStorage.setItem("_schenttdetails_", JSON.stringify(row));
         this._router.navigate(['/']);
     }
 }

@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { EntityService, WorkspaceService } from '@services/master';
 import { GMap } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -800,8 +799,8 @@ export class AddEntityComponent implements OnInit, OnDestroy {
             "wsautoid": that._wsdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                Cookie.delete("_schwsdetails_");
-                Cookie.set("_schwsdetails_", JSON.stringify(data.data[0]));
+                sessionStorage.removeItem("_schwsdetails_");
+                sessionStorage.setItem("_schwsdetails_", JSON.stringify(data.data[0]));
 
                 that._router.navigate(['/workspace/entity']);
             }

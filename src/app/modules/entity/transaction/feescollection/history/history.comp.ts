@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { NotificationService, FeesService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -54,7 +53,7 @@ export class ViewFeesHistoryComponent implements OnInit {
     }
 
     getStudentFeesHistory() {
-        let studsFilterDT = JSON.parse(Cookie.get("filterStudent"));
+        let studsFilterDT = JSON.parse(sessionStorage.getItem("filterStudent"));
 
         if (studsFilterDT !== null) {
             this.getStudentDetails(studsFilterDT);
@@ -66,14 +65,14 @@ export class ViewFeesHistoryComponent implements OnInit {
     }
 
     editFeesCollection(row) {
-        Cookie.delete("addeditfees");
+        sessionStorage.removeItem("addeditfees");
 
         var studrow = {
             "ayid": row.ayid, "classid": row.clsid, "studid": row.studid, "paymentmode": row.paymodecode,
             "receiptno": row.receiptno, "receivedate": row.receivedate
         }
 
-        Cookie.set("addeditfees", JSON.stringify(studrow));
+        sessionStorage.setItem("addeditfees", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/edit']);
     }
 

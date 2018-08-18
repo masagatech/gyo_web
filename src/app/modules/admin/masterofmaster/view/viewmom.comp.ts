@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 
@@ -30,8 +29,8 @@ export class ViewMOMComponent implements OnInit, OnDestroy {
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
-        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
-            if (Cookie.get("_schwsdetails_") == null && Cookie.get("_schwsdetails_") == undefined) {
+        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
+            if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
                 this.enttid = 0;
                 this.wsautoid = 0;
             }

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -81,7 +80,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get('_ayid_') == null) {
+                    if (sessionStorage.getItem("_ayid_") == null) {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                         if (defayDT.length > 0) {
@@ -94,7 +93,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
                         that.getStudentDetails();
                     }
                     else {
-                        that.ayid = parseInt(Cookie.get('_ayid_'));
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                 }
 
@@ -161,27 +160,27 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     public viewStudentDataRights() {
         var that = this;
 
-        if (Cookie.get('_ayid_') != null) {
-            that.ayid = parseInt(Cookie.get('_ayid_'));
+        if (sessionStorage.getItem("_ayid_") != null) {
+            that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
 
-            if (Cookie.get('_fltrid_') != null) {
-                if (Cookie.get('_fltrtype_') == "prospectus") {
-                    that.prspctid = parseInt(Cookie.get('_fltrid_'));
+            if (sessionStorage.getItem('_fltrid_') != null) {
+                if (sessionStorage.getItem('_fltrtype_') == "prospectus") {
+                    that.prspctid = parseInt(sessionStorage.getItemt('_fltrid_'));
                 }
-                else if (Cookie.get('_fltrtype_') == "board") {
-                    that.boardid = parseInt(Cookie.get('_fltrid_'));
+                else if (sessionStorage.getItem('_fltrtype_') == "board") {
+                    that.boardid = parseInt(sessionStorage.getItem('_fltrid_'));
                 }
-                else if (Cookie.get('_fltrtype_') == "class") {
-                    that.classid = parseInt(Cookie.get('_fltrid_'));
+                else if (sessionStorage.getItem('_fltrtype_') == "class") {
+                    that.classid = parseInt(sessionStorage.getItem('_fltrid_'));
                 }
-                else if (Cookie.get('_fltrtype_') == "gender") {
-                    that.gender = Cookie.get('_fltrid_');
+                else if (sessionStorage.getItem('_fltrtype_') == "gender") {
+                    that.gender = sessionStorage.getItem('_fltrid_');
                 }
-                else if (Cookie.get('_fltrtype_') == "castcategory") {
-                    that.castcatid = Cookie.get('_fltrid_');
+                else if (sessionStorage.getItem('_fltrtype_') == "castcategory") {
+                    that.castcatid = sessionStorage.getItem('_fltrid_');
                 }
-                else if (Cookie.get('_fltrtype_') == "status") {
-                    that.status = Cookie.get('_fltrid_');
+                else if (sessionStorage.getItem('_fltrtype_') == "status") {
+                    that.status = sessionStorage.getItem('_fltrid_');
                 }
             }
             else {
@@ -241,8 +240,8 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     }
 
     viewStudentDashboard(row) {
-        Cookie.set("_studid_", row.enrlmntid);
-        Cookie.set("_studname_", row.studentname);
+        sessionStorage.setItem("_studid_", row.enrlmntid);
+        sessionStorage.setItem("_studname_", row.studentname);
 
         this._router.navigate(['/reports/erp/student/dashboard']);
     }

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'entity.comp.html'
@@ -22,11 +22,11 @@ export class EntityComponent implements OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        if (Cookie.get('_schsession_') == null && Cookie.get('_schsession_') == undefined) {
+        if (Cookie.get("_schsession_") == null && Cookie.get("_schsession_") == undefined) {
             this._router.navigate(['/login']);
         }
 
-        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
             this._router.navigate(['/workspace/entity']);
         }
         
@@ -38,7 +38,7 @@ export class EntityComponent implements OnDestroy {
     }
 
     getHeaderDetails() {
-        if (Cookie.get('_schenttdetails_') != null) {
+        if (sessionStorage.getItem("_schenttdetails_") != null) {
             this.wsname = this._enttdetails.enttname;
             this.wslogo = this.global.uploadurl + this._enttdetails.schlogo;
             this.enttname = this._enttdetails.wsname;

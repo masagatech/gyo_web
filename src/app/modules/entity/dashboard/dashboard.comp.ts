@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, DashboardService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { UIChart } from 'primeng/primeng';
 
 @Component({
@@ -111,17 +110,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
         var that = this;
 
         if (row.dbtype == "user") {
-            Cookie.delete('_srcutype_');
-            Cookie.delete('_enttid_');
-            Cookie.delete('_enttnm_');
+            sessionStorage.removeItem('_srcutype_');
+            sessionStorage.removeItem('_enttid_');
+            sessionStorage.removeItem('_enttnm_');
 
-            Cookie.set("_srcutype_", row.dbcode);
-            Cookie.set("_enttid_", that._enttdetails.enttid);
-            Cookie.set("_enttnm_", that._enttdetails.enttname);
+            sessionStorage.setItem("_srcutype_", row.dbcode);
+            sessionStorage.setItem("_enttid_", that._enttdetails.enttid);
+            sessionStorage.setItem("_enttnm_", that._enttdetails.enttname);
         }
         else if (row.dbtype == "entity") {
-            Cookie.delete('_entttype_');
-            Cookie.set("_entttype_", row.dbcode);
+            sessionStorage.removeItem('_entttype_');
+            sessionStorage.setItem("_entttype_", row.dbcode);
         }
 
         that._router.navigate([row.dblink]);
@@ -310,8 +309,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             };
         }
 
-        if (Cookie.get("_ayid_") != null) {
-            that.ayid = parseInt(Cookie.get("_ayid_"));
+        if (sessionStorage.getItem("_ayid_") != null) {
+            that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
         }
 
         that._dbservice.getERPDashboard({

@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import jsPDF from 'jspdf';
 
 @Component({
@@ -26,8 +25,8 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
 
         this.fillDropDownList();
 
-        if (Cookie.get('_entttype_') != null) {
-            this.entttype = Cookie.get('_entttype_');
+        if (sessionStorage.getItem("_entttype_") != null) {
+            this.entttype = sessionStorage.getItem("_entttype_");
         }
         else {
             this.entttype = "";
@@ -91,8 +90,8 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     getEntityDetails() {
         var that = this;
 
-        Cookie.set("_entttype_", this.entttype);
-        that.entttype = Cookie.get('_entttype_');
+        sessionStorage.setItem("_entttype_", this.entttype);
+        that.entttype = sessionStorage.getItem("_entttype_");
 
         commonfun.loader();
 
@@ -118,7 +117,7 @@ export class EntityReportsComponent implements OnInit, OnDestroy {
     }
 
     resetEntityDetails() {
-        Cookie.delete('_entttype_');
+        sessionStorage.removeItem('_entttype_');
         this.entttype = "";
         this.getEntityDetails();
     }

@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, AfterViewInit, ComponentFactoryResolver, forwardRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService, SocketService, TrackDashbord } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { TTMapService } from '@services/master';
-import { LazyLoadEvent, DataTable } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SelectItem, GMap } from 'primeng/primeng';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';

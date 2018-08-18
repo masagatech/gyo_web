@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssesmentService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var google: any;
 
@@ -69,7 +68,7 @@ export class AddAssesmentResultComponent implements OnInit {
     }
 
     add_edit_AssesmentResult() {
-        var editassres = Cookie.get("_editassres_");
+        var editassres = sessionStorage.getItem("_editassres_");
 
         if (editassres == null) {
             this._router.navigate(['/transaction/assesmentresult/add']);
@@ -77,7 +76,7 @@ export class AddAssesmentResultComponent implements OnInit {
     }
 
     getAssesmentResultForEdit() {
-        let editassres = Cookie.get("_editassres_");
+        let editassres = sessionStorage.getItem("_editassres_");
 
         if (editassres !== null) {
             return JSON.parse(editassres);
@@ -103,8 +102,8 @@ export class AddAssesmentResultComponent implements OnInit {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get("_ayid_") != null) {
-                        that.ayid = parseInt(Cookie.get("_ayid_"));
+                    if (sessionStorage.getItem("_ayid_") != null) {
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                     else {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);
@@ -343,7 +342,7 @@ export class AddAssesmentResultComponent implements OnInit {
         var that = this;
         var params = {};
 
-        var editassres = Cookie.get("_editassres_");
+        var editassres = sessionStorage.getItem("_editassres_");
 
         if (editassres == null) {
             that.mode = "add";

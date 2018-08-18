@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { WorkspaceService, EntityService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -98,9 +97,9 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
     // Selected Workspace
 
     selectAutoWorkspaceData(event) {
-        Cookie.set("_autowsid_", event.wsautoid);
-        Cookie.set("_autowsnm_", event.label);
-        Cookie.set("_autotype_", event.autotype);
+        sessionStorage.setItem("_autowsid_", event.wsautoid);
+        sessionStorage.setItem("_autowsnm_", event.label);
+        sessionStorage.setItem("_autotype_", event.autotype);
 
         this.viewWorkspaceDetails();
 
@@ -131,8 +130,8 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
                 myWorkspaceDT = data.data.filter(a => a.issysadmin === true);
 
                 if (that.autotype !== "Workspace") {
-                    Cookie.delete("_schwsdetails_");
-                    Cookie.set("_schwsdetails_", JSON.stringify(data.data[0]));
+                    sessionStorage.removeItem("_schwsdetails_");
+                    sessionStorage.setItem("_schwsdetails_", JSON.stringify(data.data[0]));
                 }
 
                 if (myWorkspaceDT.length > 0) {
@@ -167,10 +166,10 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
     viewWorkspaceDetails() {
         var that = this;
 
-        if (Cookie.get('_autowsnm_') != null) {
-            that.autowsid = parseInt(Cookie.get("_autowsid_"));
-            that.autowsname = Cookie.get("_autowsnm_");
-            that.autotype = Cookie.get("_autotype_");
+        if (sessionStorage.getItem('_autowsnm_') != null) {
+            that.autowsid = parseInt(sessionStorage.getItem("_autowsid_"));
+            that.autowsname = sessionStorage.getItem("_autowsnm_");
+            that.autotype = sessionStorage.getItem("_autotype_");
 
             that.selectedWorkspace = {
                 value: that.autowsid,
@@ -186,8 +185,8 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
         var that = this;
         var params = {};
 
-        Cookie.set("_entttype_", that.autotype);
-        that.autotype = Cookie.get('_entttype_');
+        sessionStorage.setItem("_entttype_", that.autotype);
+        that.autotype = sessionStorage.getItem("_entttype_");
 
         commonfun.loader();
 
@@ -202,10 +201,10 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
                 var row = data.data[0];
 
                 if (row.isactive) {
-                    Cookie.delete("_schenttdetails_");
-                    Cookie.delete("_ayid_");
+                    sessionStorage.removeItem("_schenttdetails_");
+                    sessionStorage.removeItem("_ayid_");
 
-                    Cookie.set("_schenttdetails_", JSON.stringify(row));
+                    sessionStorage.setItem("_schenttdetails_", JSON.stringify(row));
                     that._router.navigate(['/']);
                 }
                 else {
@@ -233,9 +232,9 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
         that.autowsid = 0;
         that.autowsname = "";
         that.autotype = "";
-        Cookie.delete("_autowsid_");
-        Cookie.delete("_autowsnm_");
-        Cookie.delete("_autotype_");
+        sessionStorage.removeItem("_autowsid_");
+        sessionStorage.removeItem("_autowsnm_");
+        sessionStorage.removeItem("_autotype_");
 
         that.getWorkspaceDetails();
     }
@@ -260,14 +259,14 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
             "issysadmin": this.issysadmin
         }
 
-        Cookie.set("_schwsdetails_", JSON.stringify(_wsdetails));
+        sessionStorage.setItem("_schwsdetails_", JSON.stringify(_wsdetails));
         this._router.navigate(['/workspace/entity']);
     }
 
     public openEntityForm(row) {
         if (row.isactive) {
-            Cookie.delete("_schwsdetails_");
-            Cookie.set("_schwsdetails_", JSON.stringify(row));
+            sessionStorage.removeItem("_schwsdetails_");
+            sessionStorage.setItem("_schwsdetails_", JSON.stringify(row));
 
             if (row.countentity !== "0") {
                 this._router.navigate(['/workspace/entity']);

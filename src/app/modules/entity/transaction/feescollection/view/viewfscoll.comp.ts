@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { FeesService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewfscoll.comp.html'
@@ -175,8 +174,8 @@ export class ViewFeesCollectionComponent implements OnInit {
                 that.ayDT = data.data[1].filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get("_ayid_") != null) {
-                        that.ayid = parseInt(Cookie.get("_ayid_"));
+                    if (sessionStorage.getItem("_ayid_") != null) {
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                     else {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);
@@ -241,24 +240,24 @@ export class ViewFeesCollectionComponent implements OnInit {
     // Add Fees Collection
 
     addFeesCollection(row) {
-        Cookie.delete("addeditfees");
+        sessionStorage.removeItem("addeditfees");
 
         var studrow = {
             "enttid": row.enttid, "ayid": row.ayid, "classid": row.classid, "studid": row.studid
         }
 
-        Cookie.set("addeditfees", JSON.stringify(studrow));
+        sessionStorage.setItem("addeditfees", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/add']);
     }
 
     viewFeesCollection(row) {
-        Cookie.delete("filterStudent");
+        sessionStorage.removeItem("filterStudent");
 
         var studrow = {
             "enttid": row.enttid, "ayid": row.ayid, "classid": row.classid, "studid": row.studid
         }
 
-        Cookie.set("filterStudent", JSON.stringify(studrow));
+        sessionStorage.setItem("filterStudent", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/history']);
     }
 

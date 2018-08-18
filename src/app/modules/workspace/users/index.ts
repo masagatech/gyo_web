@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedComponentModule } from '@services';
-import { AuthGuard } from '@services';
+import { SharedComponentModule, AuthGuard, CommonService } from '@services';
+import {  } from '@services';
 
 import { AddUserComponent } from './aded/adduser.comp';
 import { ViewUserComponent } from './view/viewuser.comp';
@@ -41,7 +41,7 @@ export const routes = [
     CheckboxModule, AutoCompleteModule, FileUploadModule
   ],
 
-  providers: [AuthGuard, UserService]
+  providers: [AuthGuard, UserService, CommonService]
 })
 
 export class UserModule {

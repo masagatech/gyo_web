@@ -40,6 +40,8 @@ export interface LoginUserModel {
   cmpenttmaxno: number;
   psngrtype: string;
   smpsngrtype: string;
+  countentt: number;
+  countws: number;
   wslogo: string;
   lgcode: string;
   login: string,

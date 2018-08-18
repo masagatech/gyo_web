@@ -12,7 +12,7 @@ export class LoginService {
 
     getUser() {
         if (this.loginUser === undefined) {
-            let usr = Cookie.get('_schsession_');
+            let usr = Cookie.get("_schsession_");
 
             if (usr) {
                 //this._router.navigate(['login']);

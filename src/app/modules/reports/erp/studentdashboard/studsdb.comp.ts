@@ -4,7 +4,6 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals, Common } from '@models';
 import { DashboardService } from '@services';
 import { PassengerReportsService, AssesmentReportService } from '@services/reports';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './studsdb.comp.html'
@@ -88,8 +87,8 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         this.studid = event.value;
         this.studname = event.label;
 
-        Cookie.set("_studid_", this.studid.toString());
-        Cookie.set("_studname_", this.studname);
+        sessionStorage.setItem("_studid_", this.studid.toString());
+        sessionStorage.setItem("_studname_", this.studname);
 
         this.viewStudentDashboard();
     }
@@ -97,9 +96,9 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     public viewStudentDashboard() {
         var that = this;
 
-        if (Cookie.get('_studname_') != null) {
-            that.studid = parseInt(Cookie.get('_studid_'));
-            that.studname = Cookie.get('_studname_');
+        if (sessionStorage.getItem('_studname_') != null) {
+            that.studid = parseInt(sessionStorage.getItem('_studid_'));
+            that.studname = sessionStorage.getItem('_studname_');
 
             that.selectStudent = { value: that.studid, label: that.studname }
         }
@@ -445,7 +444,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     // View Student Exam Result Link
 
     viewExamResult(row) {
-        Cookie.delete("filterExam");
+        sessionStorage.removeItem("filterExam");
 
         var _ayid = this.selayid;
         var _classid = this.selclassid;
@@ -456,14 +455,14 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             "ayid": _ayid, "classid": _classid, "smstrid": _smstrid, "studid": this.studid, "studname": this.studname
         }
 
-        Cookie.set("filterExam", JSON.stringify(studrow));
+        sessionStorage.setItem("filterExam", JSON.stringify(studrow));
         this._router.navigate(['/reports/transaction/examresult']);
     }
 
     // View Student Fees Collection Link
 
     viewFeesCollection(row) {
-        Cookie.delete("filterStudent");
+        sessionStorage.removeItem("filterStudent");
 
         var _enttid = this._enttdetails.enttid;
         var _ayid = row.key.split('~')[0];
@@ -475,7 +474,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             "enttid": _enttid, "ayid": _ayid, "classid": _classid, "studid": this.studid, "receiptno": _receiptno, "receivedate": _receivedate
         }
 
-        Cookie.set("filterStudent", JSON.stringify(studrow));
+        sessionStorage.setItem("filterStudent", JSON.stringify(studrow));
         this._router.navigate(['/transaction/feescollection/student/history']);
     }
 

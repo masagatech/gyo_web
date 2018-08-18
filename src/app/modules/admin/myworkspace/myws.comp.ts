@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { WorkspaceService } from '@services/master';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { LazyLoadEvent } from 'primeng/primeng';
 
 declare var $: any;
 
@@ -97,8 +95,8 @@ export class MyWorkspaceComponent implements OnInit {
     }
 
     public openEntityForm(row) {
-        Cookie.delete("_schwsdetails_");
-        Cookie.set("_schwsdetails_", JSON.stringify(row));
+        sessionStorage.removeItem("_schwsdetails_");
+        sessionStorage.setItem("_schwsdetails_", JSON.stringify(row));
 
         if (row.countentity !== "0") {
             this._router.navigate(['/workspace/entity']);
@@ -109,9 +107,9 @@ export class MyWorkspaceComponent implements OnInit {
     }
 
     public openMainForm(row) {
-        Cookie.delete("_schenttdetails_");
+        sessionStorage.removeItem("_schenttdetails_");
 
-        Cookie.set("_schenttdetails_", JSON.stringify(row));
+        sessionStorage.setItem("_schenttdetails_", JSON.stringify(row));
         this._router.navigate(['/']);
     }
 

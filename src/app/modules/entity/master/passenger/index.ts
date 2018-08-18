@@ -16,10 +16,22 @@ import {
 export const routes = [
   {
     path: '', children: [
-      { path: 'profile', component: ViewPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "view", "urlname": "passenger" } },
-      { path: 'add', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddPassengerComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "psngr", "rights": "edit", "urlname": "/edit" } }
+      {
+        path: 'profile', component: ViewPassengerComponent, canActivate: [AuthGuard],
+        data: { "module": "pentt", "submodule": "psngrprof", "rights": "view", "urlname": "passenger" }
+      },
+      {
+        path: 'add', component: AddPassengerComponent, canActivate: [AuthGuard],
+        data: { "module": "pentt", "submodule": "psngrprof", "rights": "add", "urlname": "/add" }
+      },
+      {
+        path: 'details/:id', component: AddPassengerComponent, canActivate: [AuthGuard],
+        data: { "module": "pentt", "submodule": "psngrprof", "rights": "edit", "urlname": "/edit" }
+      },
+      {
+        path: 'edit/:id', component: AddPassengerComponent, canActivate: [AuthGuard],
+        data: { "module": "pentt", "submodule": "psngrprof", "rights": "edit", "urlname": "/edit" }
+      }
     ]
   },
 ];

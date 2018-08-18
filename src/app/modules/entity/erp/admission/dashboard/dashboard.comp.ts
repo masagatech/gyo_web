@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AdmissionService } from '@services/erp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './dashboard.comp.html'
@@ -52,7 +51,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
                 that.ayDT = data.data.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get('_ayid_') == null) {
+                    if (sessionStorage.getItem("_ayid_") == null) {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);
 
                         if (defayDT.length > 0) {
@@ -63,7 +62,7 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
                         }
                     }
                     else {
-                        that.ayid = parseInt(Cookie.get('_ayid_'));
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                         
                     that.getStudentDashboard();
@@ -90,8 +89,8 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        if (Cookie.get("_ayid_") != null) {
-            that.ayid = parseInt(Cookie.get("_ayid_"));
+        if (sessionStorage.getItem("_ayid_") != null) {
+            that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
         }
 
         var dbparams = {
@@ -121,29 +120,29 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     viewStudentProfile(row) {
-        Cookie.set("_ayid_", this.ayid.toString());
+        sessionStorage.setItem("_ayid_", this.ayid.toString());
 
-        Cookie.delete("_fltrid_");
-        Cookie.delete("_fltrtype_");
+        sessionStorage.removeItem("_fltrid_");
+        sessionStorage.removeItem("_fltrtype_");
 
         if (row != null) {
             if (row.grpcode == "prospectus") {
-                Cookie.set("_fltrid_", row.key);
+                sessionStorage.setItem("_fltrid_", row.key);
             }
             else if (row.grpcode == "board") {
-                Cookie.set("_fltrid_", row.key);
+                sessionStorage.setItem("_fltrid_", row.key);
             }
             else if (row.grpcode == "class") {
-                Cookie.set("_fltrid_", row.key);
+                sessionStorage.setItem("_fltrid_", row.key);
             }
             else if (row.grpcode == "gender") {
-                Cookie.set("_fltrid_", row.key);
+                sessionStorage.setItem("_fltrid_", row.key);
             }
             else if (row.grpcode == "castcategory") {
-                Cookie.set("_fltrid_", row.key);
+                sessionStorage.setItem("_fltrid_", row.key);
             }
 
-            Cookie.set("_fltrtype_", row.grpcode);
+            sessionStorage.setItem("_fltrtype_", row.grpcode);
         }
 
         this._router.navigate(['/erp/student']);

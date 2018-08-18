@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { LogReportService } from '@services/reports';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'auditlog.comp.html'
@@ -57,8 +56,8 @@ export class AuditLogComponent implements OnInit, OnDestroy {
                 that.ayDT = ddldata.filter(a => a.group == "ay");
 
                 if (that.ayDT.length > 0) {
-                    if (Cookie.get("_ayid_") != null) {
-                        that.ayid = parseInt(Cookie.get("_ayid_"));
+                    if (sessionStorage.getItem("_ayid_") != null) {
+                        that.ayid = parseInt(sessionStorage.getItem("_ayid_"));
                     }
                     else {
                         defayDT = that.ayDT.filter(a => a.iscurrent == true);

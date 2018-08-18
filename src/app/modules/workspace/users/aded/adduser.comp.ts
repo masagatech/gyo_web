@@ -5,8 +5,7 @@ import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
 
 @Component({
-    templateUrl: 'adduser.comp.html',
-    providers: [CommonService]
+    templateUrl: 'adduser.comp.html'
 })
 
 export class AddUserComponent implements OnInit, OnDestroy {
@@ -260,7 +259,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         if (!duplicateEntity) {
             that.entityList.push({
-                "schid": that.enttname.value, "schnm": that.enttname.label
+                "schid": that.enttname.value, "schname": that.enttname.label
             });
         }
 

@@ -7,7 +7,6 @@ import { HOSTComponent } from '@interface';
 import { StudentDashboardComponent } from './student/studsdb.comp';
 import { UserDashboardComponent } from './users/userdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './helpdesk.comp.html'
@@ -56,13 +55,13 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
 
     openDashboard(type) {
         if (type == "student") {
-            if (Cookie.get("_studdata_") == null) {
+            if (sessionStorage.getItem("_studdata_") == null) {
                 this._router.navigate(['/admin/helpdesk'], {
                     queryParams: { "flag": "student" }
                 });
             }
             else {
-                var studdata = JSON.parse(Cookie.get("_studdata_"));
+                var studdata = JSON.parse(sessionStorage.getItem("_studdata_"));
 
                 this._router.navigate(['/admin/helpdesk'], {
                     queryParams: studdata
@@ -70,13 +69,13 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             }
         }
         else if (type == "vehicle") {
-            if (Cookie.get("_vehdata_") == null) {
+            if (sessionStorage.getItem("_vehdata_") == null) {
                 this._router.navigate(['/admin/helpdesk'], {
                     queryParams: { "flag": "vehicle" }
                 });
             }
             else {
-                var vehdata = JSON.parse(Cookie.get("_vehdata_"));
+                var vehdata = JSON.parse(sessionStorage.getItem("_vehdata_"));
 
                 this._router.navigate(['/admin/helpdesk'], {
                     queryParams: vehdata
@@ -84,11 +83,11 @@ export class HelpDeskComponent implements OnInit, OnDestroy {
             }
         }
         else {
-            if (Cookie.get("_userdata_") == null) {
+            if (sessionStorage.getItem("_userdata_") == null) {
                 this._router.navigate(['/admin/helpdesk']);
             }
             else {
-                var userdata = JSON.parse(Cookie.get("_userdata_"));
+                var userdata = JSON.parse(sessionStorage.getItem("_userdata_"));
 
                 this._router.navigate(['/admin/helpdesk'], {
                     queryParams: userdata

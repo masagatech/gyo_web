@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { AssignmentService } from '@services/erp';
-import { LazyLoadEvent } from 'primeng/primeng';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'viewassnm.comp.html'

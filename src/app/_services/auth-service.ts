@@ -281,7 +281,7 @@ export class AuthenticationService {
   }
 
   public checkCredentials(): any {
-    var sessionid = Cookie.get('_schsession_');
+    var sessionid = Cookie.get("_schsession_");
     var usr: LoginUserModel = this._loginservice.getUser();
 
     if (usr !== null) { //check user is locally present in memory

@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
 import { PassengerReportsService } from '@services/reports';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 declare var $: any;
 
@@ -64,7 +63,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
                         that.enttid = defschoolDT[0].enttid;
                     }
                     else {
-                        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+                        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
                             that.enttid = 0;
                         }
                         else {
@@ -169,7 +168,7 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
         that.psngrname = "";
         that.selectedPassenger = {};
 
-        if (Cookie.get("_schenttdetails_") == null && Cookie.get("_schenttdetails_") == undefined) {
+        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
             that.enttid = 0;
         }
         else {

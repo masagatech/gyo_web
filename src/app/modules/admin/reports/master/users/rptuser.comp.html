@@ -75,31 +75,39 @@
                     <tr>
                         <th width="50px"></th>
                         <th width="200px">User Name</th>
-                        <th width="250px">Mapped Vehicles</th>
-                        <th width="100px">Mobile</th>
+                        <th width="150px">Mapped Vehicles</th>
+                        <th width="300px">Mapped Entity</th>
+                        <th width="80px">Mobile</th>
                         <th width="150px">Email</th>
-                        <th width="250px">Address</th>
+                        <th width="200px">Address</th>
                         <th width="50px">Status</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let row of usersDT | groupBy: 'enttname'">
+                <tbody *ngFor="let row of usersDT | groupBy: 'wsname'">
                     <tr>
-                        <th colspan="7">
-                            {{row.key}}
+                        <th colspan="8">
+                            <b>Workspace : </b> {{row.key}}
                         </th>
                     </tr>
                     <tr *ngFor="let drow of row.value | filterBy: {'fullname': uname};">
                         <td>
-                            <img *ngIf="drow.gndrkey=='M'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-male.png' ;"
-                                class="img-sm">
-                            <img *ngIf="drow.gndrkey=='F'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-female.png' ;"
-                                class="img-sm">
+                            <img *ngIf="drow.gndrkey=='M'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-male.png' ;" class="img-sm">
+                            <img *ngIf="drow.gndrkey=='F'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-female.png' ;" class="img-sm">
                         </td>
                         <td>
-                            {{drow.fullname}} <br /> {{drow.utypename}}
+                            {{drow.ucode}} : {{drow.fullname}} <br /> {{drow.utypename}}
                         </td>
                         <td>
-                            {{drow.vehname}}
+                            <div *ngFor="let vehrow of drow.vehicledt; let i = index;">
+                                <b *ngIf="drow.vehicledt.length > 1">{{i + 1}}.</b>
+                                <span>{{vehrow.vehname}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngFor="let schrow of drow.schooldt; let i = index;">
+                                <b *ngIf="drow.schooldt.length > 1">{{i + 1}}.</b>
+                                <span [ngClass]="{'bg-green':enttid == schrow.schid}">{{schrow.schname}}</span>
+                            </div>
                         </td>
                         <td>
                             {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>

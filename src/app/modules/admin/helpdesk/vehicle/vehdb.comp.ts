@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, CommonService, DashboardService } from '@services';
 import { Globals, Common } from '@models';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: './vehdb.comp.html'
@@ -60,7 +59,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
     selectVehicleData(event) {
         var vehdata = { "flag": "vehicle", "id": event.value };
-        Cookie.set("_vehdata_", JSON.stringify(vehdata));
+        sessionStorage.setItem("_vehdata_", JSON.stringify(vehdata));
 
         this._router.navigate(['/admin/helpdesk'], {
             queryParams: vehdata
@@ -81,7 +80,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
     viewStudentDashboard(row) {
         var studdata = { "flag": "student", "id": row.stdid };
-        Cookie.set("_studdata_", JSON.stringify(studdata));
+        sessionStorage.setItem("_studdata_", JSON.stringify(studdata));
 
         this._router.navigate(['/admin/helpdesk'], {
             queryParams: studdata
@@ -90,7 +89,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
     viewUserDashboard(row) {
         var userdata = { "flag": row.ptype, "id": row.uid }
-        Cookie.set("_userdata_", JSON.stringify(userdata));
+        sessionStorage.setItem("_userdata_", JSON.stringify(userdata));
     
         this._router.navigate(['/admin/helpdesk'], {
             queryParams: userdata
@@ -99,7 +98,7 @@ export class VehicleDashboardComponent implements OnInit, OnDestroy {
 
     viewDriverDashboard(row) {
         var drvdata = { "flag": "driver", "id": row.driverid };
-        Cookie.set("_userdata_", JSON.stringify(drvdata));
+        sessionStorage.setItem("_userdata_", JSON.stringify(drvdata));
 
         this._router.navigate(['/admin/helpdesk'], {
             queryParams: drvdata
