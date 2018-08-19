@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy, } from '@angular/core';
 import { MessageService, messageType, LoginService, MenuService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { UserService } from '@services/master';
 
 @Component({
-    templateUrl: 'addumm.comp.html',
-    providers: [MenuService, CommonService]
+    templateUrl: 'addumm.comp.html'
 })
 
 export class AddUserMenuMapComponent implements OnInit, OnDestroy {
@@ -31,8 +29,8 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     menudetails: any = [];
     selectedMenus: string[] = [];
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService, private _userservice: UserService,
-        private _loginservice: LoginService, public _menuservice: MenuService, private _msg: MessageService) {
+    constructor(private _autoservice: CommonService, private _userservice: UserService, private _loginservice: LoginService,
+        public _menuservice: MenuService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
     }

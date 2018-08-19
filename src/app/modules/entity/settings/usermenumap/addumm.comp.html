@@ -1,6 +1,7 @@
 <div class="card">
     <div class="header">
         <h4>User Rights</h4>
+
         <ul class="header-dropdown m-r--5">
             <li>
                 <a role="button" class="btn btn-theme" (click)="saveUserRights()">
@@ -29,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2" style="padding-top: 20px">
+            <div class="col-md-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme" (click)="getUserRightsById(refuid, refutype)">
                         <span class="material-icons">restore</span>
@@ -47,11 +48,11 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let mrow of menudetails | groupBy:'pname'; let i = index">
+        <div *ngFor="let mrow of menudetails | groupBy:'pname'; let i = index;">
             <div class="block-header">
                 <h4>{{mrow.key}}</h4>
             </div>
-            <div class="allcheckboxes" *ngFor="let drow of mrow.value | groupBy:'mpname';" style="padding-left:20px;">
+            <div class="allcheckboxes p-l-20" *ngFor="let drow of mrow.value | groupBy:'mpname';">
                 <div class="block-header">
                     <h5>{{drow.key}}</h5>
                 </div>

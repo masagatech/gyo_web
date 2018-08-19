@@ -77,6 +77,15 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
+    viewDriverDashboard(row) {
+        var drvdata = { "flag": "driver", "id": row.driverid };
+        sessionStorage.setItem("_userdata_", JSON.stringify(drvdata));
+
+        this._router.navigate(['/admin/helpdesk'], {
+            queryParams: drvdata
+        });
+    }
+
     viewStudentDashboard(row) {
         var studdata = { "flag": "student", "id": row.stdid };
         sessionStorage.setItem("_studdata_", JSON.stringify(studdata));
@@ -97,6 +106,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
     getDashboard() {
         var that = this;
+        var headname = "";
 
         var dbparams = {
             "flag": that.flag, "id": that.qsid, "uid": that.data.loginUser.uid,
@@ -109,9 +119,16 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             try {
                 that.infoDT = data.data[0];
 
+                if (that.flag == "user") {
+                    headname = that.infoDT[0].wsname;
+                }
+                else {
+                    headname = that.infoDT[0].enttname;
+                }
+
                 if (that.infoDT.length > 0) {
                     that.uid = that.infoDT[0].uid;
-                    that.uname = that.infoDT[0].uname + " : " + that.infoDT[0].mobile + " : " + that.infoDT[0].altmobile + " (" + that.infoDT[0].enttname + ")";
+                    that.uname = that.infoDT[0].uname + " : " + that.infoDT[0].mobile + " : " + that.infoDT[0].altmobile + " (" + headname + ")";
                     that.selectUser = { uid: that.uid, uname: that.uname }
                 }
                 else {

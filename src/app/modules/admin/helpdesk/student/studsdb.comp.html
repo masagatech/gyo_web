@@ -127,15 +127,10 @@
                 <div class="body">
                     <div class="row clearfix">
                         <div class="col-md-6" *ngFor="let row of scheduleDT">
-                            <p>
-                                <b>Schedule : </b>{{row.schdlname}}</p>
-                            <p>
-                                <b>Batch : </b>{{row.batchname}}</p>
-                            <p>
-                                <span innerHtml="{{row.wkdays}}"></span>
-                            </p>
-                            <p>
-                                <b>Date : </b>{{row.schdldate}}</p>
+                            <p><b>Schedule : </b>{{row.schdlname}}</p>
+                            <p><b>Batch : </b>{{row.batchname}}</p>
+                            <p><span innerHtml="{{row.wkdays}}"></span></p>
+                            <p><b>Date : </b>{{row.schdldate}}</p>
                             <p>
                                 <b>Driver : </b>
                                 <a role="button" (click)="viewDriverDashboard(row)">{{row.drivername}}</a>
@@ -144,10 +139,8 @@
                                 <b>Vehicle : </b>
                                 <a role="button" (click)="viewVehicleDashboard(row)">{{row.vehiclename}}</a>
                             </p>
-                            <p>
-                                <b>Route : </b>{{row.rtname}}</p>
-                            <p>
-                                <b>Stop : </b>{{row.stpname}}</p>
+                            <p><b>Route : </b>{{row.rtname}}</p>
+                            <p><b>Stop : </b>{{row.stpname}}</p>
                         </div>
                     </div>
                 </div>

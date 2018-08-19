@@ -74,9 +74,12 @@
                             <div class="col-md-6" *ngFor="let drow of row.value">
                                 <p><b>Schedule : </b>{{drow.schdlname}}</p>
                                 <p><b>Batch : </b>{{drow.batchname}}</p>
-                                <p><span innerHtml="{{row.wkdays}}"></span></p>
+                                <p><span innerHtml="{{drow.wkdays}}"></span></p>
                                 <p><b>Date : </b>{{drow.schdldate}}</p>
-                                <p><b>Driver : </b>{{drow.drivername}}</p>
+                                <p>
+                                    <b>Driver : </b>
+                                    <a role="button" (click)="viewDriverDashboard(drow)">{{drow.drivername}}</a>
+                                </p>
                                 <p>
                                     <b>Vehicle : </b>
                                     <a role="button" (click)="viewVehicleDashboard(drow)">{{drow.vehiclename}}</a>
