@@ -3,11 +3,9 @@
         <div class="col-md-6">
             <div class="form-group">
                 <div class="form-line">
-                    <label class="control-label">Student Name
-                        <strong>*</strong>
-                    </label>
-                    <p-autoComplete id="studid" name="studname" [(ngModel)]="selectStudent" [tabindex]="2" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
-                    <span class="material-icons inputsearchico pad-12">
+                    <label class="control-label">Student Name <strong>*</strong></label>
+                    <p-autoComplete id="studid" name="studname" [(ngModel)]="selectStudent" [tabindex]="1" (onSelect)="selectStudentData($event)" [suggestions]="autoStudentDT" (completeMethod)="getStudentData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete studname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-11">
                         <a role="button" (click)="viewStudentDashboard()" class="btn btn-search">arrow_forward</a>
                     </span>
                 </div>
@@ -32,10 +30,8 @@
                                     <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.studentphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px" width="100px">
                                 </div>
                                 <div class="col-md-9">
-                                    <p>{{row.schoolname}}</p>
-                                    <p>
-                                        <b>Student : </b>{{row.studentname}}
-                                    </p>
+                                    <p><b>Name : </b>{{row.studentname}}</p>
+                                    <p><b>School : </b>{{row.schoolname}}</p>
 
                                     <p *ngIf="row.dob != ''">
                                         <b>Birth Date : </b> {{row.dob}}
@@ -124,25 +120,37 @@
                 <div class="header-title">
                     Schedule
                 </div>
-                <div class="body">
-                    <div class="row clearfix">
-                        <div class="col-md-6" *ngFor="let row of scheduleDT">
-                            <p><b>Schedule : </b>{{row.schdlname}}</p>
-                            <p><b>Batch : </b>{{row.batchname}}</p>
-                            <p><span innerHtml="{{row.wkdays}}"></span></p>
-                            <p><b>Date : </b>{{row.schdldate}}</p>
-                            <p>
-                                <b>Driver : </b>
-                                <a role="button" (click)="viewDriverDashboard(row)">{{row.drivername}}</a>
-                            </p>
-                            <p>
-                                <b>Vehicle : </b>
-                                <a role="button" (click)="viewVehicleDashboard(row)">{{row.vehiclename}}</a>
-                            </p>
-                            <p><b>Route : </b>{{row.rtname}}</p>
-                            <p><b>Stop : </b>{{row.stpname}}</p>
-                        </div>
-                    </div>
+                <div class="body padding-0">
+                    <p-dataGrid [value]="scheduleDT">
+                        <ng-template let-row pTemplate="item">
+                            <div class="col-md-6 p-t-5">
+                                <p-panel [header]="row.schdlname">
+                                    <p>
+                                        <b>Batch : </b>
+                                        <span class="title" title="{{row.batchname}}">{{row.batchname}}</span>
+                                    </p>
+                                    <p><span innerHtml="{{row.wkdays}}"></span></p>
+                                    <p><b>Date : </b>{{row.schdldate}}</p>
+                                    <p>
+                                        <b>Driver : </b>
+                                        <a role="button" (click)="viewDriverDashboard(row)" class="title" title="{{row.drivername}}">{{row.drivername}}</a>
+                                    </p>
+                                    <p>
+                                        <b>Vehicle : </b>
+                                        <a role="button" (click)="viewVehicleDashboard(row)" class="title" title="{{row.vehiclename}}">{{row.vehiclename}}</a>
+                                    </p>
+                                    <p>
+                                        <b>Route : </b>
+                                        <span class="title" title="{{row.rtname}}">{{row.rtname}}</span>
+                                    </p>
+                                    <p>
+                                        <b>Stop : </b>
+                                        <span class="title" title="{{row.stpname}}">{{row.stpname}}</span>
+                                    </p>
+                                </p-panel>
+                            </div>
+                        </ng-template>
+                    </p-dataGrid>
                 </div>
             </div>
 

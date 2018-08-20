@@ -57,7 +57,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <label class="control-label">Password <strong>*</strong></label>
+                                    <label class="control-label float-left">Password <strong>*</strong></label>
+                                    <label id="lblshowpwd" class="control-label float-right">
+                                        <span class="material-icons font-18 m-t--10" (click)="showPassword('password')">vpn_key</span>
+                                    </label>
+                                    <label id="lblhidepwd" class="control-label float-right">
+                                        <span class="material-icons font-18 m-t--10" (click)="showPassword('text')">remove_red_eye</span>
+                                    </label>
+
                                     <input type="password" [(ngModel)]="driverpwd" class="form-control driverpwd" maxlength="20" tabindex="3" />
                                 </div>
                             </div>

@@ -75,6 +75,26 @@ export class AddUserComponent implements OnInit, OnDestroy {
         }, 100);
 
         this.getUserDetails();
+        this.showPassword("password");
+    }
+
+    showPassword(type) {
+        if (type == "text") {
+            $("#lblshowpwd").removeClass("hide");
+            $("#lblshowpwd").addClass("show");
+            
+            $("#lblhidepwd").removeClass("show");
+            $("#lblhidepwd").addClass("hide");
+        }
+        else {
+            $("#lblshowpwd").removeClass("show");
+            $("#lblshowpwd").addClass("hide");
+            
+            $("#lblhidepwd").removeClass("hide");
+            $("#lblhidepwd").addClass("show");
+        }
+
+        $(".upwd").attr("type", type);
     }
 
     public ngAfterViewInit() {

@@ -4,8 +4,8 @@
             <div class="form-group">
                 <div class="form-line">
                     <label class="control-label">Vehicle Name <strong>*</strong></label>
-                    <p-autoComplete id="vehid" name="vehname" [(ngModel)]="selectVehicle" [tabindex]="2" (onSelect)="selectVehicleData($event)" [suggestions]="autoVehicleDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
-                    <span class="material-icons inputsearchico pad-12">
+                    <p-autoComplete id="vehid" name="vehname" [(ngModel)]="selectVehicle" [tabindex]="1" (onSelect)="selectVehicleData($event)" [suggestions]="autoVehicleDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-11">
                         <a role="button" (click)="viewVehicleDashboard()" class="btn btn-search">arrow_forward</a>
                     </span>
                 </div>
@@ -20,21 +20,34 @@
             <div class="row clearfix">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header-title">
-                            Personal Details
-                        </div>
-                        <div class="body" *ngFor="let row of infoDT">
-                            <p><b>Registration No : </b>{{row.vehicleno}}</p>
-                            <p><b>IMEI : </b>{{row.imei}}</p>
-                            <p><b>SIM No : </b>{{row.simno}}</p>
-                            <p *ngIf="row.vehicletype != ''"><b>Vehicle Type : </b>{{row.vehicletype}}</p>
-                            <p *ngIf="row.vehiclemake != ''"><b>Vehicle Make : </b>{{row.vehiclemake}}</p>
-                            <p *ngIf="row.vehiclecondition != ''"><b>Vehicle Condition : </b>{{row.vehiclecondition}}</p>
-                            <p *ngIf="row.devtype != ''"><b>Device Type : </b>{{row.devtype}}</p>
+                        <div *ngFor="let row of infoDT">
+                            <div class="header-title">
+                                Personal Details
+                            </div>
+                            <div class="body">
+                                <p><b>Registration No : </b>{{row.vehicleno}}</p>
+                                <p><b>IMEI : </b>{{row.imei}}</p>
+                                <p><b>SIM No : </b>{{row.simno}}</p>
+                                <p *ngIf="row.vehicletype != ''"><b>Vehicle Type : </b>{{row.vehicletype}}</p>
+                                <p *ngIf="row.vehiclemake != ''"><b>Vehicle Make : </b>{{row.vehiclemake}}</p>
+                                <p *ngIf="row.vehiclecondition != ''"><b>Vehicle Condition : </b>{{row.vehiclecondition}}</p>
+                                <p *ngIf="row.devtype != ''"><b>Device Type : </b>{{row.devtype}}</p>
+                            </div>
 
-                            <p *ngFor="let erow of row.enttdata; let i = index;">
-                                <b>{{i + 1}}.</b> {{erow.enttname}}
-                            </p>
+                            <div class="header-title">
+                                Mapped School
+                            </div>
+                            <div class="body">
+                                <div *ngFor="let wsrow of row.schooldt | groupBy: 'wsname'">
+                                    <h5>{{wsrow.key}}</h5>
+
+                                    <div *ngFor="let schrow of wsrow.value; let i = index;">
+                                        <b *ngIf="wsrow.value.length > 1">{{i + 1}}.</b> {{schrow.schname}}
+                                    </div>
+
+                                    <hr class="hr" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,8 +64,8 @@
                                     </a>
                                 </h5>
 
-                                <p *ngFor="let erow of row.enttdata; let i = index;">
-                                    {{i + 1}}. {{erow.enttname}}
+                                <p *ngFor="let schrow of row.schooldt; let i = index;">
+                                    <b>{{i + 1}}.</b> {{schrow.schname}}
                                 </p>
                             </div>
                         </div>
@@ -64,32 +77,43 @@
                 <div class="header-title">
                     Schedule
                 </div>
-                <div class="body">
-                    <div *ngFor="let row of scheduleDT | groupBy:'schoolname'">
-                        <h4>{{row.key}}</h4>
-
-                        <div class="row clearfix">
-                            <div class="col-md-6" *ngFor="let drow of row.value">
-                                <p><b>Schedule : </b>{{drow.schdlname}}</p>
-                                <p><b>Batch : </b>{{drow.batchname}}</p>
-                                <p><span innerHtml="{{row.wkdays}}"></span></p>
-                                <p><b>Date : </b>{{drow.schdldate}}</p>
-                                <p>
-                                    <b>Driver : </b>
-                                    <a role="button" (click)="viewDriverDashboard(drow)">{{drow.drivername}}</a>
-                                </p>
-                                <p><b>Vehicle : </b>{{drow.vehiclename}}</p>
-                                <p><b>Route : </b>{{drow.rtname}}</p>
-                                <p><b>Student : </b>{{drow.countstuds}}</p>
-
-                                <p class="font-12" *ngFor="let srow of drow.studdata; let i = index;">
-                                    <b>{{i + 1}}.)</b>
-                                    <a role="button" (click)="viewStudentDashboard(srow)">{{srow.stdnm}}</a>
-                                </p>
-
-                                <hr />
-                            </div>
+                <div class="body padding-0">
+                    <div *ngFor="let row of scheduleDT | groupBy: 'schoolname'">
+                        <div class="header">
+                            <b class="font-18">{{row.key}}</b>
                         </div>
+                        <p-dataGrid [value]="row.value">
+                            <ng-template let-drow pTemplate="item">
+                                <div class="col-md-6 p-t-5">
+                                    <p-panel [header]="drow.schdlname">
+                                        <p>
+                                            <b>Batch : </b>
+                                            <span class="title" title="{{drow.batchname}}">{{drow.batchname}}</span>
+                                        </p>
+                                        <p><span innerHtml="{{row.wkdays}}"></span></p>
+                                        <p><b>Date : </b>{{drow.schdldate}}</p>
+                                        <p>
+                                            <b>Driver : </b>
+                                            <a role="button" (click)="viewDriverDashboard(drow)" class="title" title="{{drow.drivername}}">{{drow.drivername}}</a>
+                                        </p>
+                                        <p>
+                                            <b>Vehicle : </b>
+                                            <span class="title" title="{{drow.vehiclename}}">{{drow.vehiclename}}</span>
+                                        </p>
+                                        <p>
+                                            <b>Route : </b>
+                                            <span class="title" title="{{drow.rtname}}">{{drow.rtname}}</span>
+                                        </p>
+                                        <p><b>Total Student : </b>{{drow.countstuds}}</p>
+
+                                        <p class="font-12" *ngFor="let srow of drow.studdata; let i = index;">
+                                            <b>{{i + 1}}.)</b>
+                                            <a role="button" (click)="viewStudentDashboard(srow)">{{srow.stdnm}}</a>
+                                        </p>
+                                    </p-panel>
+                                </div>
+                            </ng-template>
+                        </p-dataGrid>
                     </div>
                 </div>
             </div>

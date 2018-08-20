@@ -72,6 +72,26 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.getDriverDetails();
+        this.showPassword("password");
+    }
+
+    showPassword(type) {
+        if (type == "text") {
+            $("#lblshowpwd").removeClass("hide");
+            $("#lblshowpwd").addClass("show");
+            
+            $("#lblhidepwd").removeClass("show");
+            $("#lblhidepwd").addClass("hide");
+        }
+        else {
+            $("#lblshowpwd").removeClass("show");
+            $("#lblshowpwd").addClass("hide");
+            
+            $("#lblhidepwd").removeClass("hide");
+            $("#lblhidepwd").addClass("show");
+        }
+
+        $(".driverpwd").attr("type", type);
     }
 
     // Get State DropDown
@@ -83,7 +103,6 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that._autoservice.getDropDownData({ "flag": "state" }).subscribe(data => {
             try {
                 that.stateDT = data.data;
-                // setTimeout(function () { $.AdminBSB.select.refresh('state'); }, 100);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

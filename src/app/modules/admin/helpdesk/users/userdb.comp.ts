@@ -119,14 +119,14 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             try {
                 that.infoDT = data.data[0];
 
-                if (that.flag == "user") {
-                    headname = that.infoDT[0].wsname;
-                }
-                else {
-                    headname = that.infoDT[0].enttname;
-                }
-
                 if (that.infoDT.length > 0) {
+                    if (that.flag == "user") {
+                        headname = that.infoDT[0].wsname;
+                    }
+                    else {
+                        headname = that.infoDT[0].enttname;
+                    }
+    
                     that.uid = that.infoDT[0].uid;
                     that.uname = that.infoDT[0].uname + " : " + that.infoDT[0].mobile + " : " + that.infoDT[0].altmobile + " (" + headname + ")";
                     that.selectUser = { uid: that.uid, uname: that.uname }

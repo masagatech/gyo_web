@@ -80,6 +80,26 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
         }, 100);
 
         this.getWorkspaceDetails();
+        this.showPassword("password");
+    }
+
+    showPassword(type) {
+        if (type == "text") {
+            $("#lblshowpwd").removeClass("hide");
+            $("#lblshowpwd").addClass("show");
+            
+            $("#lblhidepwd").removeClass("show");
+            $("#lblhidepwd").addClass("hide");
+        }
+        else {
+            $("#lblshowpwd").removeClass("show");
+            $("#lblshowpwd").addClass("hide");
+            
+            $("#lblhidepwd").removeClass("hide");
+            $("#lblhidepwd").addClass("show");
+        }
+
+        $(".lgpwd").attr("type", type);
     }
 
     public ngAfterViewInit() {

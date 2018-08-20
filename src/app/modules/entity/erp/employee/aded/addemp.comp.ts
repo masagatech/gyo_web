@@ -145,6 +145,27 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                 that.getEmployeeDetails();
             }
         });
+
+        that.showPassword("password");
+    }
+
+    showPassword(type) {
+        if (type == "text") {
+            $("#lblshowpwd").removeClass("hide");
+            $("#lblshowpwd").addClass("show");
+            
+            $("#lblhidepwd").removeClass("show");
+            $("#lblhidepwd").addClass("hide");
+        }
+        else {
+            $("#lblshowpwd").removeClass("show");
+            $("#lblshowpwd").addClass("hide");
+            
+            $("#lblhidepwd").removeClass("hide");
+            $("#lblhidepwd").addClass("show");
+        }
+
+        $(".emppwd").attr("type", type);
     }
 
     // Format Date Time

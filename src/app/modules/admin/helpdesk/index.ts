@@ -5,14 +5,12 @@ import { AuthGuard, SharedComponentModule, CommonService, DashboardService } fro
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { NvD3Module } from 'ng2-nvd3';
-
 import { HelpDeskComponent } from './helpdesk.comp';
 import { StudentDashboardComponent } from './student/studsdb.comp';
 import { UserDashboardComponent } from './users/userdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 
-import { AutoCompleteModule } from 'primeng/primeng';
+import { AutoCompleteModule, DataGridModule, PanelModule } from 'primeng/primeng';
 
 export const routes = [
     {
@@ -27,7 +25,8 @@ export const routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(routes),
-        CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), AutoCompleteModule, NvD3Module
+        CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
+        AutoCompleteModule, DataGridModule, PanelModule
     ],
 
     entryComponents: [StudentDashboardComponent, UserDashboardComponent, VehicleDashboardComponent],

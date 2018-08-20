@@ -4,8 +4,8 @@
             <div class="form-group">
                 <div class="form-line">
                     <label class="control-label">User / Driver / Employee Name <strong>*</strong></label>
-                    <p-autoComplete id="uid" name="uname" [(ngModel)]="selectUser" [tabindex]="2" (onSelect)="selectUserData($event)" [suggestions]="autoUserDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
-                    <span class="material-icons inputsearchico pad-12">
+                    <p-autoComplete id="uid" name="uname" [(ngModel)]="selectUser" [tabindex]="1" (onSelect)="selectUserData($event)" [suggestions]="autoUserDT" (completeMethod)="getUserData($event)" field="uname" [minLength]="1" [size]="30" class="form-controlAutoComplete uname"></p-autoComplete>
+                    <span class="material-icons inputsearchico pad-11">
                         <a role="button" (click)="viewUserDashboard()" class="btn btn-search">arrow_forward</a>
                     </span>
                 </div>
@@ -20,36 +20,49 @@
             <div class="row clearfix">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="header-title">
-                            Personal Details
-                        </div>
-                        <div class="body" *ngFor="let row of infoDT">
-                            <div class="row clearfix">
-                                <div class="col-md-3">
-                                    <img alt="{{row.uname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
-                                </div>
-                                <div class="col-md-9">
-                                    <p><b>Name : </b>{{row.uname}} ({{row.pwd}})</p>
-                                    <p><b>Designation : </b>{{row.designame}}</p>
-                                    <p><b>Mobile : </b>{{row.mobile}}</p>
-                                    <p *ngIf="row.altmobile != ''"><b>Alternate Mobile : </b>{{row.altmobile}}</p>
-                                    <p *ngIf="row.email != ''"><b>Email : </b>{{row.email}}</p>
-                                    <p *ngIf="row.altemail != ''"><b>Alternate Email : </b>{{row.altemail}}</p>
-                                    <p *ngIf="row.licenseno != '0'"><b>License No : </b>{{row.licenseno}}</p>
-                                    <p *ngIf="row.aadharno != '0'"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                        <div *ngFor="let row of infoDT">
+                            <div class="header-title">
+                                Personal Details
+                            </div>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-md-3">
+                                        <img alt="{{row.uname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <p><b>Name : </b>{{row.uname}} ({{row.pwd}})</p>
+                                        <p><b>Designation : </b>{{row.designame}}</p>
+                                        <p><b>Mobile : </b>{{row.mobile}}</p>
+                                        <p *ngIf="row.altmobile != ''"><b>Alternate Mobile : </b>{{row.altmobile}}</p>
+                                        <p *ngIf="row.email != ''"><b>Email : </b>{{row.email}}</p>
+                                        <p *ngIf="row.altemail != ''"><b>Alternate Email : </b>{{row.altemail}}</p>
+                                        <p *ngIf="row.licenseno != '0'"><b>License No : </b>{{row.licenseno}}</p>
+                                        <p *ngIf="row.aadharno != '0'"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <p *ngFor="let erow of row.enttdata; let i = index;">
-                                <span class="p-5 {{erow.bgcolor}}"><b>{{i + 1}}.</b> {{erow.enttname}}</span>
-                            </p>
+                            <div class="header-title">
+                                Mapped School
+                            </div>
+                            <div class="body">
+                                <div *ngFor="let wsrow of row.schooldt | groupBy: 'wsname'">
+                                    <h5>{{wsrow.key}}</h5>
+
+                                    <div *ngFor="let schrow of wsrow.value; let i = index;">
+                                        <b *ngIf="wsrow.value.length > 1">{{i + 1}}.</b> {{schrow.schname}}
+                                    </div>
+
+                                    <hr class="hr" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card">
                         <div class="header-title">
-                            Vehicle Details
+                            Mapped Vehicle
                         </div>
                         <div class="body overflow-panel">
                             <div *ngFor="let row of vehicleDT; let i = index;" class="p-b-5">
@@ -66,35 +79,43 @@
                 <div class="header-title">
                     Schedule
                 </div>
-                <div class="body">
-                    <div *ngFor="let row of scheduleDT | groupBy:'schoolname'">
-                        <h4>{{row.schoolname}}</h4>
-
-                        <div class="row clearfix">
-                            <div class="col-md-6" *ngFor="let drow of row.value">
-                                <p><b>Schedule : </b>{{drow.schdlname}}</p>
-                                <p><b>Batch : </b>{{drow.batchname}}</p>
-                                <p><span innerHtml="{{drow.wkdays}}"></span></p>
-                                <p><b>Date : </b>{{drow.schdldate}}</p>
-                                <p>
-                                    <b>Driver : </b>
-                                    <a role="button" (click)="viewDriverDashboard(drow)">{{drow.drivername}}</a>
-                                </p>
-                                <p>
-                                    <b>Vehicle : </b>
-                                    <a role="button" (click)="viewVehicleDashboard(drow)">{{drow.vehiclename}}</a>
-                                </p>
-                                <p><b>Route : </b>{{drow.rtname}}</p>
-                                <p><b>Student : </b>{{drow.countstuds}}</p>
-
-                                <p class="font-12" *ngFor="let srow of drow.studdata; let i = index;">
-                                    <b>{{i + 1}}.)</b>
-                                    <a role="button" (click)="viewStudentDashboard(srow)">{{srow.stdnm}}</a>
-                                </p>
-
-                                <hr />
-                            </div>
+                <div class="body padding-0">
+                    <div *ngFor="let row of scheduleDT | groupBy: 'schoolname'">
+                        <div class="header">
+                            <b class="font-18">{{row.key}}</b>
                         </div>
+                        <p-dataGrid [value]="row.value">
+                            <ng-template let-drow pTemplate="item">
+                                <div class="col-md-6 p-t-5">
+                                    <p-panel [header]="drow.schdlname">
+                                        <p>
+                                            <b>Batch : </b>
+                                            <span class="title" title="{{drow.batchname}}">{{drow.batchname}}</span>
+                                        </p>
+                                        <p><span innerHtml="{{drow.wkdays}}"></span></p>
+                                        <p><b>Date : </b>{{drow.schdldate}}</p>
+                                        <p>
+                                            <b>Driver : </b>
+                                            <a role="button" (click)="viewDriverDashboard(drow)" class="title" title="{{drow.drivername}}">{{drow.drivername}}</a>
+                                        </p>
+                                        <p>
+                                            <b>Vehicle : </b>
+                                            <a role="button" (click)="viewVehicleDashboard(drow)" class="title" title="{{drow.vehiclename}}">{{drow.vehiclename}}</a>
+                                        </p>
+                                        <p>
+                                            <b>Route : </b>
+                                            <span class="title" title="{{drow.rtname}}">{{drow.rtname}}</span>
+                                        </p>
+                                        <p><b>Total Student : </b>{{drow.countstuds}}</p>
+
+                                        <p class="font-12" *ngFor="let srow of drow.studdata; let i = index;">
+                                            <b>{{i + 1}}.)</b>
+                                            <a role="button" (click)="viewStudentDashboard(srow)">{{srow.stdnm}}</a>
+                                        </p>
+                                    </p-panel>
+                                </div>
+                            </ng-template>
+                        </p-dataGrid>
                     </div>
                 </div>
             </div>

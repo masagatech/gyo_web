@@ -101,7 +101,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         let viewContainerRef = this._Host.viewContainerRef;
         viewContainerRef.clear();
-        
+
         let componentRef = viewContainerRef.createComponent(componentFactory);
         (<HOSTComponent>componentRef.instance).data = data;
     }
@@ -118,18 +118,16 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
 
-        this.subscribeParameters = this._actrouter
-            .queryParams
-            .subscribe(params => {
-                this.enttid = params['enttid'] || this._enttdetails.enttid;
+        this.subscribeParameters = this._actrouter.queryParams.subscribe(params => {
+            this.enttid = params['enttid'] || this._enttdetails.enttid;
 
-                console.log(this._enttdetails);
-                this.vehid = params['vehid'] || 0;
+            console.log(this._enttdetails);
+            this.vehid = params['vehid'] || 0;
 
-                this.queryimei = params['imei'] || '';
+            this.queryimei = params['imei'] || '';
 
-                this.fillVehicleDropDown();
-            });
+            this.fillVehicleDropDown();
+        });
     }
 
     public ngAfterViewInit() {
@@ -204,12 +202,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         that._trackDashbord.gettrackboard({
             "flag": "vehicle_new",
-            "enttid": that.enttid,
             "vehid": that.vehid,
+            "enttid": that.enttid,
             "uid": that.loginUser.uid,
             "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin,
-            "wsautoid": that._enttdetails.wsautoid
+            "issysadmin": that.loginUser.issysadmin
         }).subscribe((data) => {
             try {
                 that.vehtypeDT = data.data;
@@ -259,7 +256,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     getMessage() {
         var that = this;
         commonfun.loader();
-        
+
         that.connectmsg = "Registering...";
 
         this._socketservice.getMessage().subscribe(data => {
@@ -440,7 +437,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 el.isshow = false;
             }
         }
-        
+
         var that = this;
 
         setTimeout(() => {

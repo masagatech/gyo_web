@@ -7,7 +7,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 @Injectable()
 export class LoginService {
     private loginUser: LoginUserModel;
-    
+
     constructor(private _dataserver: DataService, private _router: Router) { }
 
     getUser() {
@@ -32,11 +32,17 @@ export class LoginService {
 
     setUsers(userDetails): LoginUserModel {
         this.loginUser = userDetails;
-        if (userDetails != null) {
+
+        if (userDetails == null) {
+            Cookie.delete('_schsession_');
+            sessionStorage.clear();
+        }
+        else {
             this.loginUser.login = this.loginUser.uid.toString() + ":" + this.loginUser.ucode;
             Cookie.delete('_schsession_');
             Cookie.set("_schsession_", this.loginUser.sessiondetails.sessionid.toString());
         }
+
         return this.loginUser;
     }
 
