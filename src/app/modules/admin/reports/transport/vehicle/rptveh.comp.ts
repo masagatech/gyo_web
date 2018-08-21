@@ -113,7 +113,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
 
     public openTripTrackDB(row) {
         this._router.navigate(['/admin/triptrackingv1'], {
-            queryParams: { "enttid": row.enttid, "vehid": row.autoid, "imei": row.imei }
+            queryParams: { "enttid": row.enttid, "vehid": row.autoid, "vehname": row.vehiclename, "imei": row.imei }
         });
     }
 

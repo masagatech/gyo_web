@@ -52,7 +52,7 @@
                         <th width="50px">Sr.</th>
                         <th width="150px">Registration No</th>
                         <th width="150px">Vehicle Name</th>
-                        <th width="250px">Mapped User</th>
+                        <th width="300px">Mapped User</th>
                         <th width="60px">Type</th>
                         <th width="100px">IMEI</th>
                         <th width="100px">Sim No</th>
@@ -80,7 +80,7 @@
                             {{drow.vehiclename}}
                         </td>
                         <td>
-                            {{drow.uname}}
+                            <span innerHtml="{{drow.uname}}"></span>
                         </td>
                         <td>
                             {{drow.vehicletype}}

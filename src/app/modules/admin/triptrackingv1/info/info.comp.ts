@@ -22,13 +22,13 @@ export class INFOComponent implements OnInit {
     private getTripData() {
         var that = this;
 
-        this._ttmapservice.getTripData({
+        that._ttmapservice.getTripData({
             "flag": "vh",
-            "vehid": this.data.vhid,
-            "uid": this.data.loginUser.uid,
-            "utype": this.data.loginUser.utype,
-            "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._enttdetails.wsautoid
+            "vehid": that.data.vhid,
+            "uid": that.data.loginUser.uid,
+            "utype": that.data.loginUser.utype,
+            "issysadmin": that.data.loginUser.issysadmin,
+            "wsautoid": that.data._enttdetails.wsautoid
         }).subscribe(data => {
             that.tripDT = data.data;
             commonfun.loaderhide("#loaderbody");
@@ -40,18 +40,19 @@ export class INFOComponent implements OnInit {
     }
 
     getVHInfo() {
-        if (this.vhinfo.vhid !== undefined) { return; }
-        
         var that = this;
+
+        if (that.vhinfo.vhid !== undefined) { return; }
+        
         commonfun.loader("#loaderbody");
         
-        this._trackDashbord.gettrackboard({
+        that._trackDashbord.gettrackboard({
             "flag": "vehicleid",
-            "vehid": this.data.vhid,
-            "uid": this.data.loginUser.uid,
-            "utype": this.data.loginUser.utype,
-            "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._enttdetails.wsautoid
+            "vehid": that.data.vhid,
+            "uid": that.data.loginUser.uid,
+            "utype": that.data.loginUser.utype,
+            "issysadmin": that.data.loginUser.issysadmin,
+            "wsautoid": that.data._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.vhinfo = data.data[0];
@@ -59,6 +60,7 @@ export class INFOComponent implements OnInit {
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
+
             commonfun.loaderhide("#loaderbody");
         }, err => {
             that._msg.Show(messageType.error, "Error", err);

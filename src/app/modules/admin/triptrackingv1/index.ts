@@ -2,14 +2,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
 import { AuthGuard, SharedComponentModule, CommonService, SocketService, TrackDashbord } from '@services';
-
-import { TripTrackingComponent } from './ttmap.comp';
-import { TTMapService } from '@services/master';
 import { Globals } from '@models';
 
-import { PSGComponent } from './passengers/psg.comp';
+import { TTMapService } from '@services/master';
+
+import { TripTrackingComponent } from './ttmap.comp';
+
+import { VehicleScheduleComponent } from './schedule/vehschdl.comp';
 import { INFOComponent } from './info/info.comp';
 import { HISTORYComponent } from './history/history.comp';
 
@@ -35,12 +37,12 @@ export const routes = [
 @NgModule({
   declarations: [
     TripTrackingComponent,
-    PSGComponent,
+    VehicleScheduleComponent,
     INFOComponent,
     HISTORYComponent
   ],
 
-  entryComponents: [PSGComponent, INFOComponent, HISTORYComponent],
+  entryComponents: [VehicleScheduleComponent, INFOComponent, HISTORYComponent],
 
   imports: [
     CommonModule, FormsModule, SharedComponentModule, SocketIoModule.forRoot(config),

@@ -8,20 +8,22 @@ import { Globals } from '@models';
     templateUrl: './psg.comp.html',
     styleUrls: ['./style.css']
 })
+
 export class PSGComponent implements OnInit {
     @Input() data: any;
     @Input() isload: any;
 
     psngrDT: any = [];
     global = new Globals();
+
     constructor(private _msg: MessageService, private _ttmapservice: TTMapService) {
 
     }
+
     ngOnInit() {
-        if (!this.isload)
+        if (!this.isload) {
             this.showPassengerList(this.data.tripid);
-
-
+        }
     }
 
     public showPassengerList(tripid: any) {

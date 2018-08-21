@@ -44,14 +44,6 @@
     color: #000;
 }
 
-
-/* .player .speedtrack {
-    margin-top: 20px;
-    position: absolute;
-    width: 61px;
-    right: 40px;
-} */
-
 .player .speedtext {
     position: absolute;
     right: 6px;
@@ -167,8 +159,6 @@ i.material-icons.status {
     right: 2px;
     font-weight: bold;
 }
-
-body {}
 
 .lineHolder {
     display: block;

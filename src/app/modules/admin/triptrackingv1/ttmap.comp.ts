@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ComponentFactoryResolver } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService, SocketService, TrackDashbord } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { SelectItem, GMap } from 'primeng/primeng';
 import { ADHOST } from '@directives';
 import { HOSTComponent } from '@interface';
 
-import { PSGComponent } from './passengers/psg.comp';
+import { VehicleScheduleComponent } from './schedule/vehschdl.comp';
 import { INFOComponent } from './info/info.comp';
 import { HISTORYComponent } from './history/history.comp';
 
@@ -35,11 +35,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     overlays: any = [];
 
     entityDT: any = [];
-    enttdata: any = [];
     enttid: number = 0;
-    enttname: string = "";
+    
+    qsenttid: number = 0;
+    qsimei: string = "";
+    qsvehid: number = 0;
 
-    vehid: number = 0;
+    srcvehname: string = "";
+
     vehtypeDT: any = [];
     vehtypeIds: any = [];
     vehtypeid: number = 0;
@@ -68,7 +71,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     sidebarTitle = "Title";
     trafficLayer: any = new google.maps.TrafficLayer();
-    queryimei: string = "";
 
     markerOptions = {
         showinfo: false,
@@ -88,8 +90,9 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private subscribeParameters: any;
 
-    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService, private _socketservice: SocketService,
-        private _autoservice: CommonService, private _trackDashbord: TrackDashbord, private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor( private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
+        private _socketservice: SocketService, private _autoservice: CommonService, private _trackDashbord: TrackDashbord,
+        private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -119,14 +122,13 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }, 100);
 
         this.subscribeParameters = this._actrouter.queryParams.subscribe(params => {
-            this.enttid = params['enttid'] || this._enttdetails.enttid;
+            this.qsenttid = params['enttid'] || this._enttdetails.enttid;
 
-            console.log(this._enttdetails);
-            this.vehid = params['vehid'] || 0;
+            this.qsvehid = params['vehid'] || 0;
+            this.srcvehname = params['vehname'] || '';
+            this.qsimei = params['imei'] || '';
 
-            this.queryimei = params['imei'] || '';
-
-            this.fillVehicleDropDown();
+            this.fillSchoolDropDown();
         });
     }
 
@@ -159,35 +161,51 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.triptype.push({ "label": "Completed", "value": "2" });
     }
 
-    // Auto Completed Entity
+    // Fill School Drop Down
 
-    getEntityData(event) {
-        let query = event.query;
+    fillSchoolDropDown() {
+        var that = this;
+        var defschoolDT: any = [];
 
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._enttdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({
+            "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.entityDT = data.data;
+
+                if (that.entityDT.length > 0) {
+                    defschoolDT = that.entityDT.filter(a => a.iscurrent == true);
+
+                    if (defschoolDT.length > 0) {
+                        that.enttid = defschoolDT[0].enttid;
+                    }
+                    else {
+                        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
+                            that.enttid = that.qsenttid || 0;
+                        }
+                        else {
+                            that.enttid = that.qsenttid || that._enttdetails.enttid;
+                        }
+                    }
+
+                    that.fillVehicleDropDown();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
         }, err => {
-            this._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
         }, () => {
 
-        });
-    }
-
-    // Selected Entity
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-        this.enttname = event.label;
-
-        this.fillVehicleDropDown();
+        })
     }
 
     // Vehicle DropDown
@@ -201,8 +219,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         that.vehtypeIds = [];
 
         that._trackDashbord.gettrackboard({
-            "flag": "vehicle_new",
-            "vehid": that.vehid,
+            "flag": "vehicle",
+            "vehid": that.qsvehid,
             "enttid": that.enttid,
             "uid": that.loginUser.uid,
             "utype": that.loginUser.utype,
@@ -269,6 +287,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             else if (_d["evt"] == "registered") {
                 that.connectmsg = "Registered...";
+
                 setTimeout(function () {
                     that.connectmsg = "Waiting for data..";
                 }, 1000);
@@ -299,6 +318,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                         el.ju = true;
 
                         // Battery Status
+
                         el.btrst = geoloc.btrst
 
                         // GSM Signal
@@ -315,6 +335,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     console.log(error)
                 }
             }
+
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
@@ -441,8 +462,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         var that = this;
 
         setTimeout(() => {
-            if (that.queryimei !== '') {
-                $('#' + that.queryimei).click();
+            if (that.qsimei !== '') {
+                $('#' + that.qsimei).click();
             }
         }, 1000);
     }
@@ -477,6 +498,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                     this._msg.Show(messageType.warn, "Hey", "Location not received yet"); e.target.checked = false;
                     return;
                 }
+
                 this.selectedVeh.push(vh.vhid);
                 this.addmarker(vh);
                 this.boundtomap()
@@ -500,7 +522,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         }
 
-        if (this.queryimei !== '') {
+        if (this.qsimei !== '') {
             this.clickVehicle(vh);
         }
 
@@ -650,7 +672,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.sidebarTitle !== "Passengers" || this.selectedSVh.vhid !== vh.vhid) {
             this.sidebarTitle = "Passengers";
             this.selectedSVh = vh;
-            this.loadComponent(PSGComponent, { "tripid": vh.tripid, loginUser: this.loginUser, _enttdetails: this._enttdetails });
+            this.loadComponent(VehicleScheduleComponent, { "vehid": vh.vehid, loginUser: this.loginUser, _enttdetails: this._enttdetails });
             commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...');
         }
 
