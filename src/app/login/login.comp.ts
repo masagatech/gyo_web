@@ -63,6 +63,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                         if (userDetails.status) {
                             that._loginservice.setUsers(userDetails);
 
+                            debugger;
+
                             if (userDetails.utype == "admin") {
                                 that._router.navigate(['/admin/workspace']);
                             }

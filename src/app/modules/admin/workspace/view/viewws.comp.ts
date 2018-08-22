@@ -41,7 +41,7 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
     isShowGrid: boolean = true;
     isShowList: boolean = false;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
+    constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _wsservice: WorkspaceService, private _entityservice: EntityService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();

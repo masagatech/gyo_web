@@ -14,6 +14,7 @@ declare var loader: any;
 
 export class HeaderComponent implements OnInit, OnDestroy {
   loginUser: LoginUserModel;
+  _wsdetails: any = [];
   _enttdetails: any = [];
 
   autoMenuDT: any = [];
@@ -47,7 +48,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mastersMenuDT: any = [];
   adminMenuDT: any = [];
 
-  wsautoid: number = 0;
   enttid: number = 0;
   entttype: string = "";
   psngrtype: string = "";
@@ -78,6 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private _router: Router, private _authservice: AuthenticationService, public _menuservice: MenuService, private _autoservice: CommonService,
     private _loginservice: LoginService, private _msg: MessageService) {
     this.loginUser = this._loginservice.getUser();
+    this._wsdetails = Globals.getWSDetails();
     this._enttdetails = Globals.getEntityDetails();
 
     this.getHeaderDetails();
@@ -133,7 +134,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       "psngrtype": that._enttdetails.psngrtype,
       "entttype": that.entttype,
       "enttid": that.enttid,
-      "wsautoid": that.wsautoid,
+      "wsautoid": that._wsdetails.wsautoid,
       "issysadmin": that.loginUser.issysadmin,
       "search": query
     }).subscribe((data) => {
@@ -159,17 +160,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.uphoto = this.global.uploadurl + this.loginUser.uphoto;
 
     if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
-      this.wsautoid = this.loginUser.wsautoid;
-      this.enttid = this.loginUser.enttid;
-      this.entttype = this.loginUser.entttype;
-
       if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
+        this.enttid = 0;
+        this.entttype = "";
+
         this.ismstmenu = false;
         this.isenttmenu = false;
         this.isrptmenu = false;
         this.isalmenu = false;
       }
       else {
+        this.enttid = 0;
+        this.entttype = "";
+
         this.ismstmenu = true;
         this.isenttmenu = false;
         this.isrptmenu = false;
@@ -177,7 +180,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     }
     else {
-      this.wsautoid = this._enttdetails.wsautoid;
       this.enttid = this._enttdetails.enttid;
       this.entttype = this._enttdetails.entttype;
 
@@ -188,12 +190,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getTopMenuList() {
+  getTopMenuList() {
     var that = this;
 
     that._menuservice.getMenuDetails({
-      "flag": "topmenu", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "psngrtype": that._enttdetails.psngrtype,
-      "entttype": that.entttype, "enttid": that.enttid, "wsautoid": that.wsautoid, "issysadmin": that.loginUser.issysadmin
+      "flag": "topmenu",
+      "uid": that.loginUser.uid,
+      "utype": that.loginUser.utype,
+      "psngrtype": that._enttdetails.psngrtype,
+      "entttype": that.entttype,
+      "enttid": that.enttid,
+      "wsautoid": that._wsdetails.wsautoid,
+      "issysadmin": that.loginUser.issysadmin
     }).subscribe(data => {
       that.enttMenuDT = data.data.filter(a => a.mptype === "erp");
       that.reportsMenuDT = data.data.filter(a => a.mptype === "reports");
@@ -205,7 +213,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     })
   }
 
-  private changeSkin(theme: any) {
+  changeSkin(theme: any) {
     loader.skinChanger(theme);
   }
 
