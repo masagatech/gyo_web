@@ -129,9 +129,11 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
                 that.workspaceDT = data.data.filter(a => a.issysadmin === false);
                 myWorkspaceDT = data.data.filter(a => a.issysadmin === true);
 
-                if (that.autotype !== "Workspace") {
-                    sessionStorage.removeItem("_schwsdetails_");
-                    sessionStorage.setItem("_schwsdetails_", JSON.stringify(data.data[0]));
+                if (that.autotype !== "") {
+                    if (that.autotype !== "Workspace") {
+                        sessionStorage.removeItem("_schwsdetails_");
+                        sessionStorage.setItem("_schwsdetails_", JSON.stringify(data.data[0]));
+                    }
                 }
 
                 if (myWorkspaceDT.length > 0) {
