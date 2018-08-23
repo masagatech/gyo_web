@@ -8,8 +8,7 @@ declare var $: any;
 declare var commonfun: any;
 
 @Component({
-    templateUrl: 'addlv.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addlv.comp.html'
 })
 
 export class AddLeaveComponent implements OnInit, OnDestroy {
@@ -47,8 +46,8 @@ export class AddLeaveComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _lvservice: LeaveService, private _autoservice: CommonService) {
+    constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
+        private _loginservice: LoginService, private _lvservice: LeaveService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 

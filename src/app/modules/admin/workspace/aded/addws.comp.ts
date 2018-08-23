@@ -48,6 +48,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     schpsngrrate: any = "0";
     schenttmaxno: number = 0;
 
+    issysadmin: boolean = false;
     mode: string = "";
 
     uploadLogoDT: any = [];
@@ -66,10 +67,6 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
-
-        if (!this.loginUser.issysadmin && this.loginUser.utype !== "admin") {
-            this._router.navigate(['/workspace/entity']);
-        }
     }
 
     public ngOnInit() {
@@ -87,14 +84,14 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
         if (type == "text") {
             $("#lblshowpwd").removeClass("hide");
             $("#lblshowpwd").addClass("show");
-            
+
             $("#lblhidepwd").removeClass("show");
             $("#lblhidepwd").addClass("hide");
         }
         else {
             $("#lblshowpwd").removeClass("show");
             $("#lblshowpwd").addClass("hide");
-            
+
             $("#lblhidepwd").removeClass("hide");
             $("#lblhidepwd").addClass("show");
         }
@@ -554,13 +551,13 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        this.subscribeParameters = this._routeParams.params.subscribe(params => {
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
                 that.wsautoid = params['id'];
                 that.disablecode = true;
 
                 that._wsservice.getWorkspaceDetails({
-                    "flag": "edit", "id": this.wsautoid, "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin
+                    "flag": "edit", "id": that.wsautoid, "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin
                 }).subscribe(data => {
                     try {
                         if (data.data.length > 0) {
@@ -606,6 +603,19 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                             that.schenttmaxno = data.data[0].schenttmaxno;
 
                             that.mode = data.data[0].mode;
+                            that.issysadmin = data.data[0].issysadmin;
+
+                            if (that.issysadmin) {
+                                that.enabledWorkspaceFields();
+                            }
+                            else {
+                                if (that.loginUser.utype == "admin" && that.loginUser.wsautoid == that.wsautoid) {
+                                    that.enabledWorkspaceFields();
+                                }
+                                else {
+                                    that.disabledWorkspaceFields();
+                                }
+                            }
                         }
                         else {
                             if (that.loginUser.issysadmin) {
@@ -636,6 +646,26 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Show / Hide Controls
+
+    enabledWorkspaceFields() {
+        $(".hidewhen input").removeAttr("disabled");
+        $(".hidewhen select").removeAttr("disabled");
+        $(".hidewhen textarea").removeAttr("disabled");
+
+        $("#divUploadLogo").prop("class", "show");
+        $("#divViewLogo").prop("class", "hide");
+    }
+
+    disabledWorkspaceFields() {
+        $(".hidewhen input").attr("disabled", "disabled");
+        $(".hidewhen select").attr("disabled", "disabled");
+        $(".hidewhen textarea").attr("disabled", "disabled");
+
+        $("#divUploadLogo").prop("class", "hide");
+        $("#divViewLogo").prop("class", "show");
+    }
+
     // Back For View Data
 
     backViewData() {
@@ -645,7 +675,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-        
+
         this.subscribeParameters.unsubscribe();
     }
 }

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AddLeaveComponent } from './aded/addlv.comp';
 import { ViewLeaveComponent } from './view/viewlv.comp';
@@ -11,7 +11,7 @@ import { ApprovalLeaveComponent } from './approval/apprlv.comp';
 
 import { LeaveService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
+import { DataTableModule, CheckboxModule, AutoCompleteModule, ScheduleModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -53,7 +53,7 @@ export const routes = [
     AutoCompleteModule, ScheduleModule
   ],
 
-  providers: [AuthGuard, LeaveService]
+  providers: [AuthGuard, CommonService, LeaveService]
 })
 
 export class LeaveModule {

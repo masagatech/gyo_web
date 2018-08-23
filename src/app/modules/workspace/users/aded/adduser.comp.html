@@ -18,261 +18,267 @@
         </ul>
     </div>
     <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-6 border">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">User Code <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="ucode" class="form-control ucode" maxlength="10" tabindex="1" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label float-left">Password <strong>*</strong></label>
-                                <label id="lblshowpwd" class="control-label float-right">
-                                    <span class="material-icons font-18 m-t--10" (click)="showPassword('password')">vpn_key</span>
-                                </label>
-                                <label id="lblhidepwd" class="control-label float-right">
-                                    <span class="material-icons font-18 m-t--10" (click)="showPassword('text')">remove_red_eye</span>
-                                </label>
-
-                                <input type="password" [(ngModel)]="upwd" class="form-control upwd" maxlength="15" tabindex="2" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">First Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="fname" class="form-control fname" maxlength="50" tabindex="3" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Last Name <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="lname" class="form-control lname" maxlength="50" tabindex="4" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Gender <strong>*</strong></label>
-                                <select id="gender" [(ngModel)]="gender" class="form-control gender" tabindex="6">
-                                    <option [value]="''">Select Gender</option>
-                                    <option *ngFor="let row of genderDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Birth Date <strong>*</strong></label>
-                                <input type="date" [(ngModel)]="dob" class="form-control" max="{{currdate}}" maxlength="15" tabindex="7" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">User Type <strong>*</strong></label>
-                                <select id="utype" [(ngModel)]="utype" class="form-control utype" tabindex="8">
-                                    <option [value]="''">Select Type</option>
-                                    <option *ngFor="let row of utypeDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div *ngIf="utype !== 'admin' && utype !== 'user'">
+        <div class="hidewhen">
+            <div class="row clearfix">
+                <div class="col-md-6 border">
                     <div class="row clearfix">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input id="allenttrights" name="allenttrights" type="checkbox" [(ngModel)]="isAllEnttRights" (change)="isAllEntityRights()" class="filled-in">
-                                    <label for="allenttrights" class="control-label">All Entity Rights</label>
-                                    <div *ngIf="!isAllEnttRights">
-                                        <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="6" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
-                                        <span class="material-icons inputsearchico pad-20">search</span>
-                                    </div>
+                                    <label class="control-label">User Code <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="ucode" class="form-control ucode" maxlength="10" tabindex="1" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label float-left">Password <strong>*</strong></label>
+                                    <label id="lblshowpwd" class="control-label float-right">
+                                        <span class="material-icons font-18 m-t--10" (click)="showPassword('password')">vpn_key</span>
+                                    </label>
+                                    <label id="lblhidepwd" class="control-label float-right">
+                                        <span class="material-icons font-18 m-t--10" (click)="showPassword('text')">remove_red_eye</span>
+                                    </label>
+
+                                    <input type="password" [(ngModel)]="upwd" class="form-control upwd" maxlength="15" tabindex="2" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div *ngIf="entityList.length">
-                        <ul class="list-group">
-                            <li class="list-group-item" *ngFor="let row of entityList">
-                                {{row.schname}}
-                                <button type="button" class="btn btn-danger pull-right" (click)="deleteEntity(row)"><i class="material-icons">delete</i></button>
-                            </li>
-                        </ul>
-                    </div>
-
                     <div class="row clearfix">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <label class="control-label">Remark</label>
-                                    <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="9"></textarea>
+                                    <label class="control-label">First Name <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="fname" class="form-control fname" maxlength="50" tabindex="3" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Last Name <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="lname" class="form-control lname" maxlength="50" tabindex="4" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <strong>Allowed only below 150 KB File</strong> <br />
-                        <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
-                            auto="true" tabindex="10"></p-fileUpload>
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Gender <strong>*</strong></label>
+                                    <select id="gender" [(ngModel)]="gender" class="form-control gender" tabindex="6">
+                                        <option [value]="''">Select Gender</option>
+                                        <option *ngFor="let row of genderDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Birth Date <strong>*</strong></label>
+                                    <input type="date" [(ngModel)]="dob" class="form-control" max="{{currdate}}" maxlength="15" tabindex="7" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                        <div *ngIf="uploadPhotoDT.length">
-                            <div *ngFor="let file of uploadPhotoDT">
-                                <div class="row clearfix">
-                                    <div class="col-md-9">
-                                        <img *ngIf="gender == 'M'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="40px">
-                                        <img *ngIf="gender == 'F'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="40px">
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">User Type <strong>*</strong></label>
+                                    <select id="utype" [(ngModel)]="utype" class="form-control utype" tabindex="8">
+                                        <option [value]="''">Select Type</option>
+                                        <option *ngFor="let row of utypeDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="utype !== 'admin' && utype !== 'user'">
+                        <div class="row clearfix">
+                            <div class="col-md-12">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input id="allenttrights" name="allenttrights" type="checkbox" [(ngModel)]="isAllEnttRights" (change)="isAllEntityRights()" class="filled-in">
+                                        <label for="allenttrights" class="control-label">All Entity Rights</label>
+                                        <div *ngIf="!isAllEnttRights">
+                                            <p-autoComplete id="enttname" name="enttname" [(ngModel)]="enttname" [tabindex]="6" (onSelect)="selectEntityData($event)" [suggestions]="entityDT" (completeMethod)="getEntityData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete enttname"></p-autoComplete>
+                                            <span class="material-icons inputsearchico pad-20">search</span>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-danger" (click)="removePhotoUpload()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="entityList.length">
+                            <ul class="list-group">
+                                <li class="list-group-item" *ngFor="let row of entityList | filterBy: {'wsid': _wsdetails.wsautoid}">
+                                    {{row.schname}}
+                                    <button type="button" class="btn btn-danger pull-right" (click)="deleteEntity(row)">
                                         <i class="material-icons">delete</i>
                                     </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-md-12">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <label class="control-label">Remark</label>
+                                        <textarea [(ngModel)]="remark1" rows="5" class="form-control no-resize auto-growth" maxlength="500" tabindex="9"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divPhotoUpload">
+                            <div class="form-group">
+                                <strong>Allowed only below 150 KB File</strong> <br />
+                                <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadphotoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onPhotoUpload($event)" accept="{{uploadphotoconfig.acceptedFiles}}" maxFileSize="{{uploadphotoconfig.maxFilesize}}"
+                                    auto="true" tabindex="10"></p-fileUpload>
+
+                                <div *ngIf="uploadPhotoDT.length">
+                                    <div *ngFor="let file of uploadPhotoDT">
+                                        <div class="row clearfix">
+                                            <div class="col-md-9">
+                                                <img *ngIf="gender == 'M'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-male.png';" height="40px">
+                                                <img *ngIf="gender == 'F'" alt="{{ufullname}}" src="{{uploadphotoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/default-female.png';" height="40px">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-danger" (click)="removePhotoUpload()">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Mobile (Login No) <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="11" />
+                <div class="col-md-6">
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Mobile (Login No) <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="11" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Alternate Mobile</label>
+                                    <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="12" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Alternate Mobile</label>
-                                <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="12" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Email <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="13" />
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Email <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="email1" class="form-control email1" tabindex="13" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Alternate Email</label>
+                                    <input type="text" [(ngModel)]="email2" class="form-control" tabindex="14" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Alternate Email</label>
-                                <input type="text" [(ngModel)]="email2" class="form-control" tabindex="14" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-12">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Address</label>
-                                <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="15"></textarea>
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Address</label>
+                                    <textarea [(ngModel)]="address" rows="5" class="form-control no-resize auto-growth address" maxlength="500" tabindex="15"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Country <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="16" disabled />
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Country <strong>*</strong></label>
+                                    <input type="text" [(ngModel)]="country" class="form-control country" maxlength="20" tabindex="16" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">State <strong>*</strong></label>
+                                    <select id="state" [(ngModel)]="state" class="form-control state" tabindex="17" (ngModelChange)="fillCityDropDown()">
+                                        <option [value]="0">Select State</option>
+                                        <option *ngFor="let row of stateDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">State <strong>*</strong></label>
-                                <select id="state" [(ngModel)]="state" class="form-control state" tabindex="17" (ngModelChange)="fillCityDropDown()">
-                                    <option [value]="0">Select State</option>
-                                    <option *ngFor="let row of stateDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">City <strong>*</strong></label>
-                                <select id="city" [(ngModel)]="city" class="form-control city" tabindex="18" (ngModelChange)="fillAreaDropDown()">
-                                    <option [value]="0">Select City</option>
-                                    <option *ngFor="let row of cityDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">City <strong>*</strong></label>
+                                    <select id="city" [(ngModel)]="city" class="form-control city" tabindex="18" (ngModelChange)="fillAreaDropDown()">
+                                        <option [value]="0">Select City</option>
+                                        <option *ngFor="let row of cityDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label class="control-label">Area <strong>*</strong></label>
+                                    <select id="area" [(ngModel)]="area" class="form-control area" tabindex="19">
+                                        <option [value]="0">Select Area</option>
+                                        <option *ngFor="let row of areaDT" [value]="row.key">
+                                            {{row.val}}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Area <strong>*</strong></label>
-                                <select id="area" [(ngModel)]="area" class="form-control area" tabindex="19">
-                                    <option [value]="0">Select Area</option>
-                                    <option *ngFor="let row of areaDT" [value]="row.key">
-                                        {{row.val}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row clearfix" style="display: none;">
-                    <div class="col-md-6">
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <label class="control-label">Pin Code</label>
-                                <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="20" />
+                    <div class="row clearfix" style="display: none;">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <label class="control-label">Pin Code</label>
+                                    <input type="text" [(ngModel)]="pincode" class="form-control" maxlength="20" tabindex="20" />
+                                </div>
                             </div>
                         </div>
                     </div>

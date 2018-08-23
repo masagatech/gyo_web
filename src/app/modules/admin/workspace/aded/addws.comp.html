@@ -1,9 +1,10 @@
 <div class="col-md-1">
 </div>
 <div class="col-md-10">
-    <div class="card">
+    <div class="card hidewhen">
         <div class="header">
             <h4>Workspace</h4>
+
             <ul class="header-dropdown m-r--5">
                 <li *ngIf="wsautoid !== 0">
                     <span class="switch">
@@ -12,11 +13,13 @@
                 </li>
                 <li>
                     <a role="button" class="btn btn-theme" (click)="saveWorkspaceInfo()">
-                        <i class="material-icons">save</i></a>
+                        <i class="material-icons">save</i>
+                    </a>
                 </li>
                 <li>
                     <a role="button" class="btn btn-theme" (click)="backViewData()">
-                        <i class="material-icons">arrow_back</i></a>
+                        <i class="material-icons">arrow_back</i>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -217,22 +220,30 @@
 
             <div class="row clearfix">
                 <div class="col-md-6">
-                    <strong>Allowed only below 150 KB File</strong> <br />
-                    <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}"
-                        auto="true"></p-fileUpload>
+                    <div id="divUploadLogo">
+                        <strong>Allowed only below 150 KB File</strong> <br />
+                        <p-fileUpload mode="basic" name="fileUploaded" url="{{uploadlogoconfig.server + '?width=150'}}" chooseLabel="{{chooseLabel}}" (onUpload)="onLogoUpload($event)" accept="{{uploadlogoconfig.acceptedFiles}}" maxFileSize="{{uploadlogoconfig.maxFilesize}}"
+                            auto="true"></p-fileUpload>
 
-                    <div *ngIf="uploadLogoDT.length">
-                        <div *ngFor="let file of uploadLogoDT" class="box">
-                            <div class="row clearfix">
-                                <div class="col-md-9">
-                                    <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/noimage.gif';" height="40px" />
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="button" class="btn btn-danger" (click)="removeLogoUpload()">
-                                        <i class="material-icons">delete</i>
-                                    </button>
+                        <div *ngIf="uploadLogoDT.length">
+                            <div *ngFor="let file of uploadLogoDT" class="box">
+                                <div class="row clearfix">
+                                    <div class="col-md-9">
+                                        <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="40px" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-danger" (click)="removeLogoUpload()">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div id="divViewLogo" class="hide">
+                        <div *ngFor="let file of uploadLogoDT">
+                            <img src="{{uploadlogoconfig.uploadurl + file.athurl}}" onerror="this.src='assets/img/nologo.gif';" height="100px" />
                         </div>
                     </div>
                 </div>

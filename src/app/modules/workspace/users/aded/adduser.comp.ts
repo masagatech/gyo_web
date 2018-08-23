@@ -43,6 +43,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     isactive: boolean = false;
     mode: string = "";
     remark1: string = "";
+    ownwsid: number = 0;
 
     isAllEnttRights: boolean = true;
     entityDT: any = [];
@@ -50,12 +51,16 @@ export class AddUserComponent implements OnInit, OnDestroy {
     enttid: number = 0;
     enttname: any = [];
 
-    private subscribeParameters: any;
-
     uploadPhotoDT: any = [];
     global = new Globals();
     uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseLabel: string = "";
+
+    isadd: boolean = false;
+    isedit: boolean = false;
+    isdetails: boolean = false;
+
+    private subscribeParameters: any;
 
     constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService,
         private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService) {
@@ -67,6 +72,10 @@ export class AddUserComponent implements OnInit, OnDestroy {
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
+
+        this.isadd = _router.url.indexOf("/add") > -1;
+        this.isedit = _router.url.indexOf("/edit") > -1;
+        this.isdetails = _router.url.indexOf("/details") > -1;
     }
 
     public ngOnInit() {
@@ -82,14 +91,14 @@ export class AddUserComponent implements OnInit, OnDestroy {
         if (type == "text") {
             $("#lblshowpwd").removeClass("hide");
             $("#lblshowpwd").addClass("show");
-            
+
             $("#lblhidepwd").removeClass("show");
             $("#lblhidepwd").addClass("hide");
         }
         else {
             $("#lblshowpwd").removeClass("show");
             $("#lblshowpwd").addClass("hide");
-            
+
             $("#lblhidepwd").removeClass("hide");
             $("#lblhidepwd").addClass("show");
         }
@@ -279,7 +288,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         if (!duplicateEntity) {
             that.entityList.push({
-                "schid": that.enttname.value, "schname": that.enttname.label
+                "schid": that.enttname.value, "schname": that.enttname.label, "wsid": that._wsdetails.wsautoid, "wsname": that._wsdetails.wsname
             });
         }
 
@@ -370,6 +379,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
         var that = this;
 
         that.uid = 0
+        that.loginid = 0;
         that.ucode = "";
         that.upwd = "";
         that.fname = "";
@@ -393,11 +403,26 @@ export class AddUserComponent implements OnInit, OnDestroy {
         that.pincode = that._wsdetails.pincode;
         that.isactive = true;
         that.mode = "";
+        that.ownwsid = 0;
 
         that.entityList = [];
 
         that.uploadPhotoDT = [];
         that.chooseLabel = "Upload Photo";
+    }
+
+    enabledUserFields() {
+        $(".hidewhen input").removeAttr("disabled");
+        $(".hidewhen select").removeAttr("disabled");
+        $(".hidewhen textarea").removeAttr("disabled");
+        $("#divPhotoUpload").prop("class", "show");
+    }
+
+    disabledUserFields() {
+        $(".hidewhen input").attr("disabled", "disabled");
+        $(".hidewhen select").attr("disabled", "disabled");
+        $(".hidewhen textarea").attr("disabled", "disabled");
+        $("#divPhotoUpload").prop("class", "hide");
     }
 
     // Save Data
@@ -448,21 +473,39 @@ export class AddUserComponent implements OnInit, OnDestroy {
         else {
             commonfun.loader();
 
-            var _wslist: string[] = [];
-            var _enttlist: string[] = [];
+            var _ownenttdt: any = [];
+            var _othenttdt: any = [];
 
-            if (that.utype == "admin" || that.utype == "user") {
-                _wslist = ["0"];
-                _enttlist = ["0"];
+            var _ownenttlist: string[] = [];
+            var _othwslist: string[] = [];
+            var _othenttlist: string[] = [];
+
+            if (that.uid == 0) {
+                _ownenttlist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
             }
             else {
-                if (that.isAllEnttRights) {
-                    _enttlist = ["0"];
+                _ownenttdt = that.entityList.filter(a => a.wsid == that.ownwsid);
+                _othenttdt = that.entityList.filter(a => a.wsid != that.ownwsid);
+
+                if (that.utype == "admin" || that.utype == "user") {
+                    _ownenttlist = ["0"];
                 }
                 else {
-                    _enttlist = Object.keys(that.entityList).map(function (k) { return that.entityList[k].schid });
+                    if (that.isAllEnttRights) {
+                        _ownenttlist = ["0"];
+                    }
+                    else {
+                        _ownenttlist = Object.keys(_ownenttdt).map(function (k) { return _ownenttdt[k].schid });
+                    }
                 }
+
+                _othwslist = Object.keys(_othenttdt).map(function (k) { return _othenttdt[k].wsid });
+                _othenttlist = Object.keys(_othenttdt).map(function (k) { return _othenttdt[k].schid });
             }
+
+            console.log("{" + _ownenttlist.toString().replace("[", "").replace("]", "") + "}");
+            console.log("{" + _othwslist.toString().replace("[", "").replace("]", "") + "}");
+            console.log("{" + _othenttlist.toString().replace("[", "").replace("]", "") + "}");
 
             var saveuser = {
                 "uid": that.uid,
@@ -472,8 +515,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
                 "fname": that.fname,
                 "lname": that.lname,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
-                "wsrights": _wslist,
-                "school": _enttlist,
+                "school": "{" + _ownenttlist.toString().replace("[", "").replace("]", "") + "}",
+                "wsrights": "{" + _othwslist.toString().replace("[", "").replace("]", "") + "}",
+                "enttrights": "{" + _othenttlist.toString().replace("[", "").replace("]", "") + "}",
                 "gender": that.gender,
                 "dob": that.dob,
                 "mobileno1": that.mobileno1,
@@ -538,7 +582,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         var date = new Date();
         var _currdate = new Date(date.getFullYear() - 18, date.getMonth(), date.getDate());
-        this.currdate = this.formatDate(_currdate);
+        that.currdate = that.formatDate(_currdate);
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
@@ -546,40 +590,56 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
                 that._userservice.getUserDetails({ "flag": "edit", "id": that.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
                     try {
-                        that.uid = data.data[0].uid;
-                        that.loginid = data.data[0].loginid;
-                        that.ucode = data.data[0].ucode;
-                        that.upwd = data.data[0].upwd;
-                        that.fname = data.data[0].fname;
-                        that.lname = data.data[0].lname;
-                        that.gender = data.data[0].gndrkey;
-                        that.dob = data.data[0].dob;
-                        that.utype = data.data[0].utype;
-                        that.isAllEnttRights = data.data[0].isallenttrights;
-                        that.entityList = data.data[0].schooldt !== null ? data.data[0].schooldt : [];
-                        that.email1 = data.data[0].email1;
-                        that.email2 = data.data[0].email2;
-                        that.mobileno1 = data.data[0].mobileno1;
-                        that.mobileno2 = data.data[0].mobileno2;
-                        that.address = data.data[0].address;
-                        that.country = data.data[0].country;
-                        that.state = data.data[0].state;
-                        that.fillCityDropDown();
-                        that.city = data.data[0].city;
-                        that.fillAreaDropDown();
-                        that.area = data.data[0].area;
-                        that.pincode = data.data[0].pincode;
-                        that.remark1 = data.data[0].remark1;
-                        that.isactive = data.data[0].isactive;
-                        that.mode = data.data[0].mode;
+                        var _userdata = data.data[0];
 
-                        if (data.data[0].FilePath !== "") {
-                            that.uploadPhotoDT.push({ "athurl": data.data[0].FilePath });
+                        that.uid = _userdata.uid;
+                        that.loginid = _userdata.loginid;
+                        that.ucode = _userdata.ucode;
+                        that.upwd = _userdata.upwd;
+                        that.fname = _userdata.fname;
+                        that.lname = _userdata.lname;
+                        that.gender = _userdata.gndrkey;
+                        that.dob = _userdata.dob;
+                        that.utype = _userdata.utype;
+                        that.isAllEnttRights = _userdata.isallenttrights;
+                        that.entityList = _userdata.schooldt !== null ? _userdata.schooldt : [];
+
+                        that.email1 = _userdata.email1;
+                        that.email2 = _userdata.email2;
+                        that.mobileno1 = _userdata.mobileno1;
+                        that.mobileno2 = _userdata.mobileno2;
+                        that.address = _userdata.address;
+                        that.country = _userdata.country;
+                        that.state = _userdata.state;
+                        that.fillCityDropDown();
+                        that.city = _userdata.city;
+                        that.fillAreaDropDown();
+                        that.area = _userdata.area;
+                        that.pincode = _userdata.pincode;
+                        that.remark1 = _userdata.remark1;
+                        that.ownwsid = _userdata.ownwsid;
+                        that.isactive = _userdata.isactive;
+                        that.mode = _userdata.mode;
+
+                        if (_userdata.FilePath !== "") {
+                            that.uploadPhotoDT.push({ "athurl": _userdata.FilePath });
                             that.chooseLabel = "Change Photo";
                         }
                         else {
                             that.uploadPhotoDT = [];
                             that.chooseLabel = "Upload Photo";
+                        }
+
+                        if (that.isdetails) {
+                            that.disabledUserFields();
+                        }
+                        else {
+                            if (_userdata.isedit) {
+                                that.enabledUserFields();
+                            }
+                            else {
+                                that.disabledUserFields();
+                            }
                         }
                     }
                     catch (e) {
@@ -596,7 +656,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
                 })
             }
             else {
-                this.dob = this.formatDate(_currdate);
+                that.dob = that.formatDate(_currdate);
 
                 that.resetUserFields();
                 commonfun.loaderhide();
