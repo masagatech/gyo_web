@@ -344,6 +344,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         var act_deactuser = {
             "uid": that.uid,
+            "utype": that.utype,
             "isactive": that.isactive,
             "mode": that.mode
         }
@@ -514,6 +515,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
                 "upwd": that.upwd,
                 "fname": that.fname,
                 "lname": that.lname,
+                "utype": that.utype,
                 "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
                 "school": "{" + _ownenttlist.toString().replace("[", "").replace("]", "") + "}",
                 "wsrights": "{" + _othwslist.toString().replace("[", "").replace("]", "") + "}",
@@ -534,7 +536,6 @@ export class AddUserComponent implements OnInit, OnDestroy {
                 "cuid": that.loginUser.ucode,
                 "wsautoid": that._wsdetails.wsautoid,
                 "isactive": that.isactive,
-                "utype": that.utype,
                 "mode": ""
             }
 

@@ -15,6 +15,8 @@ export const routes = [
             {
                 path: '',
                 children: [
+                    { path: 'nopage', loadChildren: './nopage#NoPageModule' },
+                    
                     { path: 'location', loadChildren: './location#LocationModule' },
 
                     { path: 'qualification', loadChildren: './qualification#QualificationModule' },

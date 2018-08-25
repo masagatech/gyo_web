@@ -140,6 +140,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (that.map !== undefined) {
             setTimeout(function () {
+                $('.maincontent').css('margin-top','45px');
                 google.maps.event.trigger(that.map, 'resize');
             }, 1000)
         }
@@ -776,6 +777,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         $.AdminBSB.islocked = false;
         $.AdminBSB.rightSideBar.closeonwindow = true;
         $.AdminBSB.leftSideBar.Open();
+
+        $('.maincontent').css('margin-top','50px');
 
         $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
 

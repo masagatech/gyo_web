@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
             observer.next(true);
           } else {
             that._msg.Show(messageType.error, "Error", "No Access !!!!");
-            that._router.navigate(['/']);
+            that._router.navigate(['/admin/nopage']);
             observer.next(true);
           }
         })
@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
                 observer.next(true);
               } else {
                 that._msg.Show(messageType.error, "Error", "No Access !!!!");
-                that._router.navigate(['/']);
+                that._router.navigate(['/admin/nopage']);
                 observer.next(true);
               }
             });

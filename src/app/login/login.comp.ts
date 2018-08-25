@@ -30,8 +30,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             }, checks);
         }
 
-        Cookie.deleteAll();
-
         that.getHeaderTitle();
     }
 
@@ -67,18 +65,23 @@ export class LoginComponent implements OnInit, OnDestroy {
                                 that._router.navigate(['/admin/workspace']);
                             }
                             else {
-                                if (userDetails.countws == 1) {
-                                    if (userDetails.countentt == 1) {
-                                        sessionStorage.setItem("_schenttdetails_", JSON.stringify(userDetails));
-                                        that._router.navigate(['/']);
+                                if (userDetails.ismenurights) {
+                                    if (userDetails.countws == 1) {
+                                        if (userDetails.countentt == 1) {
+                                            sessionStorage.setItem("_schenttdetails_", JSON.stringify(userDetails));
+                                            that._router.navigate(['/']);
+                                        }
+                                        else {
+                                            sessionStorage.setItem("_schwsdetails_", JSON.stringify(userDetails));
+                                            that._router.navigate(['/workspace/entity']);
+                                        }
                                     }
                                     else {
-                                        sessionStorage.setItem("_schwsdetails_", JSON.stringify(userDetails));
-                                        that._router.navigate(['/workspace/entity']);
+                                        that._router.navigate(['/admin/workspace']);
                                     }
                                 }
                                 else {
-                                    that._router.navigate(['/admin/workspace']);
+                                    that._router.navigate(['/admin/nopage']);
                                 }
                             }
                         } else {

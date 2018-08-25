@@ -32,7 +32,7 @@ export class MyProfileComponent implements OnInit {
     }
 
     public ngOnInit() {
-        var that = this;
+        
     }
 
     getUserDetails() {
@@ -42,7 +42,7 @@ export class MyProfileComponent implements OnInit {
         commonfun.loader();
 
         uparams = {
-            "flag": "allprofile", "id": that.loginUser.loginid
+            "flag": "myprofile", "id": that.loginUser.loginid
         };
 
         that._userservice.getUserDetails(uparams).subscribe(data => {

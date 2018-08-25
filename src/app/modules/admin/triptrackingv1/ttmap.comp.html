@@ -1,17 +1,7 @@
-<div class="card">
-    <div class="header">
+<div class="card" class="margin-0 padding-0">
+    <div class="header hide">
         <div class="row clearfix">
             <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <select id="enntid" name="enttname" [(ngModel)]="enttid" [disabled]="qsimei !== ''" class="form-control enttname" (ngModelChange)="fillVehicleDropDown()" tabindex="1">
-                            <option [value]="0">-- Select Entity --</option>
-                            <option *ngFor="let row of entityDT" [value]="row.enttid">
-                                {{row.enttname}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
@@ -25,8 +15,19 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-3" id="sidepanel" style="height: calc(100vh - 50px);overflow: auto;padding: 0px!important;margin-bottom:0px;border-right: 1px solid #ddd;background-color: rgb(241, 242, 245);">
-                <div style="height: 30px; border-bottom: 1px solid #ddd; background-color: #fcfcfc; box-shadow: none;">
+            <div class="col-md-3" id="sidepanel" style="height: calc(100vh - 57px);overflow: auto;padding: 0px!important;margin-bottom:0px;border-right: 1px solid #ddd;background-color: rgb(241, 242, 245);">
+                <div class="form-group m-b-0">
+                    <div class="form-line">
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" [disabled]="qsimei !== ''" class="form-control enttname" (ngModelChange)="fillVehicleDropDown()" tabindex="1">
+                            <option [value]="0">-- Select Entity --</option>
+                            <option *ngFor="let row of entityDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="height: 29px; border-bottom: 1px solid #ddd; background-color: #fcfcfc; box-shadow: none;">
                     <div class="btn-group btn-group-sm btn-group-justified" role="group" style="box-shadow:none" aria-label="Justified button group">
                         <a href="javascript:void(0);" class="btn bg-info waves-effect {{olfilter==='all' ? 'active': ''}}" (click)="filter( 'all'); false" role="button">ALL ({{_counter.all}})</a>
                         <a href="javascript:void(0);" class="btn bg-success waves-effect {{olfilter==='ol' ? 'active': ''}}" (click)="filter( 'ol'); false" role="button">ONL ({{_counter.online}})</a>
@@ -35,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 vehiclewrapper" style="height: calc(100% - 30px);" id="style-15">
+                <div class="col-md-12 vehiclewrapper" style="height: calc(100% - 57px);" id="style-15">
                     <ul class="vehicles">
                         <li *ngFor="let vehrow of vehtypeDT | groupBy: 'enttname'">
                             <div class="header-title">
@@ -110,7 +111,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-9" id="map" style="margin-bottom:0px;padding:0px!important">
+            <div class="col-md-9 m-b-0 padding-0" id="map">
                 <div class="col-md-12" style="height: 30px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;">
                     <div class="pull-left" style="width: 100px;">
                         <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="markerOptions.showinfo" (ngModelChange)="showinfowindow()" class="chk-col-blue-grey" checked="">
@@ -133,7 +134,7 @@
                         <i class="material-icons" id="closeicon">keyboard_arrow_left</i>
                     </a>
                 </div>
-                <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 80px)', 'position': 'relative', 'overflow': 'hidden'}" [options]="options" [overlays]="overlays"></p-gmap>
+                <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 87px)', 'position': 'relative', 'overflow': 'hidden'}" [options]="options" [overlays]="overlays"></p-gmap>
             </div>
         </div>
 

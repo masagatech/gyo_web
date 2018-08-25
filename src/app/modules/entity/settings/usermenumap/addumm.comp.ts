@@ -95,7 +95,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         that.refuserdata = that.userdata;
 
         that.getMenuDetails();
-        that.getUserRightsById(that.refuid, that.refutype);
     }
 
     // Selected Reference User
@@ -109,17 +108,18 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         that.isemprefuser = event.isemp;
 
         that.getMenuDetails();
-        that.getUserRightsById(that.refuid, that.refutype);
+        // that.getUserRightsById(that.refuid, that.refutype);
     }
 
     getMenuDetails() {
         var that = this;
+        $("#menus").prop('checked', false);
 
         that._menuservice.getMenuDetails({
             "flag": "all", "entttype": that._enttdetails.entttype, "psngrtype": that._enttdetails.psngrtype, "isemp": that.isemprefuser
         }).subscribe(data => {
             that.menudetails = data.data;
-            $("#menus").prop('checked', false);
+            that.getUserRightsById();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -227,12 +227,12 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
     }
 
-    getUserRightsById(_uid, _utype) {
+    getUserRightsById() {
         var that = this;
         this.clearcheckboxes();
 
         that._userservice.getUserRights({
-            "flag": "menumap", "uid": _uid, "utype": _utype,
+            "flag": "menumap", "uid": that.uid, "utype": that.utype,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
             try {

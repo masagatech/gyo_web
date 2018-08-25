@@ -80,7 +80,6 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         that.uname = event.uname;
         that.utype = event.utype;
 
-        that.getUserRightsById();
         that.getWorkspaceDetails();
     }
 
@@ -96,6 +95,7 @@ export class AddUserWorkspaceMapComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             try {
                 that.workspaceDT = data.data;
+                that.getUserRightsById();
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

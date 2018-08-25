@@ -10,17 +10,28 @@ import { ViewEntityComponent } from './view/viewentity.comp';
 import { EntityService, WorkspaceService } from '@services/master';
 
 import {
-  LazyLoadEvent, DataTableModule, DataGridModule, PanelModule, CheckboxModule,
-  AutoCompleteModule, FileUploadModule, TabViewModule
+  DataTableModule, DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule, TabViewModule
 } from 'primeng/primeng';
 
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "view", "urlname": "/entity" } },
-      { path: 'add', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddEntityComponent, canActivate: [AuthGuard], data: { "module": "pws", "submodule": "entt", "rights": "edit", "urlname": "/edit" } }
+      {
+        path: '', component: ViewEntityComponent, canActivate: [AuthGuard],
+        data: { "module": "pws", "submodule": "entt", "rights": "view", "urlname": "/entity" }
+      },
+      {
+        path: 'add', component: AddEntityComponent, canActivate: [AuthGuard],
+        data: { "module": "pws", "submodule": "entt", "rights": "add", "urlname": "/add" }
+      },
+      {
+        path: 'details/:id', component: AddEntityComponent, canActivate: [AuthGuard],
+        data: { "module": "pws", "submodule": "entt", "rights": "edit", "urlname": "/edit" }
+      },
+      {
+        path: 'edit/:id', component: AddEntityComponent, canActivate: [AuthGuard],
+        data: { "module": "pws", "submodule": "entt", "rights": "edit", "urlname": "/edit" }
+      }
     ]
   },
 ];
@@ -32,8 +43,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, DataGridModule, PanelModule,
-    CheckboxModule, AutoCompleteModule, FileUploadModule, TabViewModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
+    DataGridModule, PanelModule, AutoCompleteModule, FileUploadModule, TabViewModule
   ],
 
   providers: [AuthGuard, EntityService, WorkspaceService, CommonService]

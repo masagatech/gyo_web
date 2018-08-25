@@ -29,11 +29,16 @@ export class WorkspaceComponent implements OnDestroy {
             this._router.navigate(['/login']);
         }
 
-        if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
-            this._router.navigate(['/admin/workspace']);
-        }
+        if (this.loginUser.ismenurights) {
+            if (sessionStorage.getItem("_schwsdetails_") == null && sessionStorage.getItem("_schwsdetails_") == undefined) {
+                this._router.navigate(['/admin/workspace']);
+            }
 
-        this.getHeaderDetails();
+            this.getHeaderDetails();
+        }
+        else {
+            this._router.navigate(['/admin/nopage']);
+        }
     }
 
     public ngOnInit() {

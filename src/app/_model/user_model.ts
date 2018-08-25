@@ -47,6 +47,7 @@ export interface LoginUserModel {
   login: string,
   status: boolean,
   issysadmin: boolean,
+  ismenurights: boolean,
   isemp: boolean,
   errcode: string,
   errmsg: string,

@@ -26,11 +26,16 @@ export class EntityComponent implements OnDestroy {
             this._router.navigate(['/login']);
         }
 
-        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
-            this._router.navigate(['/workspace/entity']);
+        if (this.loginUser.ismenurights) {
+            if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
+                this._router.navigate(['/workspace/entity']);
+            }
+
+            this.getHeaderDetails();
         }
-        
-        this.getHeaderDetails();
+        else {
+            this._router.navigate(['/admin/nopage']);
+        }
     }
 
     public ngOnInit() {
