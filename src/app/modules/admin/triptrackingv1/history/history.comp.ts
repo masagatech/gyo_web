@@ -102,16 +102,16 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     // Get Today's Trip
 
     travel_polyoption = {
-        strokeColor: "#1f91f3",
-        strokeOpacity: 0.3,
+        strokeColor: "#841ff3",
+        strokeOpacity: 0.2,
         strokeWeight: 2,
         icons: []
     }
 
     nontravel_polyoption = {
         strokeColor: "#ff5050",
-        strokeOpacity: 0.3,
-        strokeWeight: 2,
+        strokeOpacity: 0.2,
+        strokeWeight: 1,
 
         icons: [{
             icon: {
@@ -139,6 +139,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     }
 
     timelineTrack: any = []
+    accTrack: any = [];
+    accMarkers: any = [];
     polylines: any = [];
 
     summary = {
@@ -162,6 +164,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             totalDrive: '...',
             maxspeed: 0
         }
+        this.clearAcc();
     }
 
     private getTripDelta(tripid) {
@@ -175,7 +178,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             var _maindata = _data.data;
 
             this.timelineTrack = _maindata.segment;
-
+            this.accTrack = _maindata.acc_segment;
+            this.bindAccSegment();
             if (this.timelineTrack === null || this.timelineTrack.length === 0) {
                 that._msg.Show(messageType.info, "No data", "Sorry, We unable to find data for this trip.");
                 commonfun.loaderhide("#loaderbody");
@@ -224,8 +228,36 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         });
     }
 
+
+    bindAccSegment() {
+        this.clearAcc();
+        for (let index = 0; index < this.accTrack.length; index++) {
+            const element = this.accTrack[index];
+            if (element.segtyp === 'stop') {
+
+                let latlon = new google.maps.LatLng(element.loc[1], element.loc[0]);
+
+                let marker = new google.maps.Marker({
+                    position: latlon,
+                    icon: 'http://maps.google.com/mapfiles/kml/pal2/icon13.png'
+                });
+
+                // marker.info = new google.maps.InfoWindow({
+                //     content: el.stnm
+                // });
+
+               // marker.info.open(this.map, marker)
+                this.accMarkers.push(marker);
+               
+            }
+        }
+        this.markerCluster.addMarkers(this.accMarkers);
+
+    }
+
+
     selpol = null;
-    
+
     history_click(i, row) {
         if (this.selpol !== null) {
             this.selpol.setOptions({
@@ -234,7 +266,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 icons: []
             });
         }
-        
+
         this.selpol = this.polylines[i];
 
         this.selpol.setOptions({
@@ -388,6 +420,11 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         })
     }
 
+    private clearAcc() {
+        this.markerCluster.clearMarkers();
+        this.accMarkers = [];
+    }
+
     private clearPassengers() {
         this.markerCluster.clearMarkers();
         this.PassengersMarker = [];
@@ -395,7 +432,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     private drawPassengers() {
         this.clearPassengers();
-        
+
         for (var index = 0; index < this.psngrDT.length; index++) {
             var el = this.psngrDT[index];
 
@@ -487,7 +524,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         stop.setMap(this.map);
         start.setAnimation(google.maps.Animation.DROP);
         stop.setAnimation(google.maps.Animation.DROP);
-        
+
         setTimeout(function () {
             stop.setAnimation(google.maps.Animation.BOUNCE)
         }, 1000);
@@ -681,7 +718,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     private clearAll() {
         this.resetHistory()
     }
-    
+
     ngOnDestroy() {
         this.clearAll();
     }

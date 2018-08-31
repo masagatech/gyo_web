@@ -11,7 +11,7 @@ import { UserVehicleMapService } from '@services/master';
 
 export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
-    _enttdetails: any = [];
+    _enttdetails: any = 0;
 
     usersDT: any = [];
     uvmid: number = 0;
@@ -38,7 +38,10 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _autoservice: CommonService,
         private _uvmservice: UserVehicleMapService, private _loginservice: LoginService, private _msg: MessageService) {
         this.loginUser = this._loginservice.getUser();
+        debugger
         this._enttdetails = Globals.getEntityDetails();
+
+        console.log(this._enttdetails);
     }
 
     ngOnInit() {
@@ -94,7 +97,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     selectUserData(event, arg) {
         var that = this;
-
+        debugger
         that.uid = event.uid;
         that.uname = event.uname;
         that.utype = event.utype;

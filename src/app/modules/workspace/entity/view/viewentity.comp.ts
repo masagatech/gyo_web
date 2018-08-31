@@ -174,6 +174,7 @@ export class ViewEntityComponent implements OnInit, OnDestroy {
 
     public openMainForm(row) {
         if (row.isactive) {
+            debugger
             sessionStorage.removeItem("_schenttdetails_");
             sessionStorage.removeItem("_ayid_");
 

@@ -605,7 +605,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                             that.mode = data.data[0].mode;
                             that.issysadmin = data.data[0].issysadmin;
 
-                            if (that.issysadmin) {
+                            if (that.loginUser.issysadmin) {
                                 that.enabledWorkspaceFields();
                             }
                             else {

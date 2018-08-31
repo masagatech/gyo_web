@@ -1,5 +1,5 @@
 <div class="card" class="margin-0 padding-0">
-    <div class="header hide">
+    <!-- <div class="header hide">
         <div class="row clearfix">
             <div class="col-md-4">
             </div>
@@ -11,11 +11,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-md-3" id="sidepanel" style="height: calc(100vh - 57px);overflow: auto;padding: 0px!important;margin-bottom:0px;border-right: 1px solid #ddd;background-color: rgb(241, 242, 245);">
+            <div class="col-md-3" id="sidepanel" style="height: calc(100vh - 45px);overflow: auto;padding: 0px!important;margin-bottom:0px;border-right: 1px solid #ddd;background-color: rgb(241, 242, 245);">
                 <div class="form-group m-b-0">
                     <div class="form-line">
                         <select id="enntid" name="enttname" [(ngModel)]="enttid" [disabled]="qsimei !== ''" class="form-control enttname" (ngModelChange)="fillVehicleDropDown()" tabindex="1">
@@ -44,7 +44,7 @@
                             </div>
                             <div *ngFor="let row of vehrow.value | filterBy:{ 'vno': srcvehname}">
                                 <div class="vehicle" *ngIf="olfilter==='all' || olfilter===row.os || (olfilter==='ol' && row.os==='ig' )">
-                                    <div class="vhwrapper {{row.isshow ? (row.min> offlinetimeout ? (row.min > 8 ? 'di': 'of') : 'ol') : 'ou'}}">
+                                    <div class="vhwrapper {{row.isshow ? (row.min> offlinetimeout ? (row.min > offlinetimeout_reach ? 'di': 'of') : 'ol') : 'ou'}}">
                                         <div class="vhbody">
                                             <div class="titlewrap">
                                                 <div class="vhchkbx">
@@ -111,8 +111,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-9 m-b-0 padding-0" id="map">
-                <div class="col-md-12" style="height: 30px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;">
+            <div class="col-md-9 m-b-0 margin-0 padding-0" style="padding:0px!important" id="map">
+                <div class="col-md-12" style="height: 28px;border-bottom: 1px solid #ddd;background-color: #fcfcfc;">
                     <div class="pull-left" style="width: 100px;">
                         <input type="checkbox" id="md_checkbox_chktitle" [(ngModel)]="markerOptions.showinfo" (ngModelChange)="showinfowindow()" class="chk-col-blue-grey" checked="">
                         <label for="md_checkbox_chktitle">{{markerOptions.showinfo === true ? 'Hide Titles' : 'Show Titles' }}</label>
@@ -134,7 +134,7 @@
                         <i class="material-icons" id="closeicon">keyboard_arrow_left</i>
                     </a>
                 </div>
-                <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 87px)', 'position': 'relative', 'overflow': 'hidden'}" [options]="options" [overlays]="overlays"></p-gmap>
+                <p-gmap #gmap [style]="{'width':'100%','height':'500px', 'height': 'calc(100vh - 75px)', 'position': 'relative', 'overflow': 'hidden'}" [options]="options" [overlays]="overlays"></p-gmap>
             </div>
         </div>
 

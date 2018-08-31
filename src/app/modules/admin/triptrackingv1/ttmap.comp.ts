@@ -36,7 +36,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     entityDT: any = [];
     enttid: number = 0;
-    
+
     qsenttid: number = 0;
     qsimei: string = "";
     qsvehid: number = 0;
@@ -67,7 +67,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     vhmarkers: any = [];
     dbcaller: any = [];
-    offlinetimeout = 5;
+    offlinetimeout = 8;
+    offlinetimeout_reach = this.offlinetimeout + 2;
 
     sidebarTitle = "Title";
     trafficLayer: any = new google.maps.TrafficLayer();
@@ -89,8 +90,9 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     _showempty: boolean = false;
 
     private subscribeParameters: any;
+    private socketsubscribe: any;
 
-    constructor( private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
+    constructor(private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
         private _socketservice: SocketService, private _autoservice: CommonService, private _trackDashbord: TrackDashbord,
         private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
@@ -118,7 +120,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.closeonwindow = false;
 
-            $('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
+            //$('.container-fluid').css('padding-left', '0px').css('padding-right', '0px');
         }, 100);
 
         this.subscribeParameters = this._actrouter.queryParams.subscribe(params => {
@@ -140,7 +142,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (that.map !== undefined) {
             setTimeout(function () {
-                $('.maincontent').css('margin-top','45px');
+                $('.maincontent').css('margin-top', '45px');
                 google.maps.event.trigger(that.map, 'resize');
             }, 1000)
         }
@@ -151,7 +153,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             center: { lat: 22.861639, lng: 78.257621 },
             zoom: 5,
             styles: [{ "stylers": [{ "saturation": -100 }] }],
-            maxZoom: 16
+            maxZoom: 17
         };
     }
 
@@ -212,10 +214,8 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     // Vehicle DropDown
 
     private fillVehicleDropDown() {
-        var that = this;
-
         commonfun.loader();
-
+        var that = this;
         that.vehtypeDT = [];
         that.vehtypeIds = [];
 
@@ -278,7 +278,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         that.connectmsg = "Registering...";
 
-        this._socketservice.getMessage().subscribe(data => {
+        this.socketsubscribe = this._socketservice.getMessage().subscribe(data => {
             var _d = data;
 
             if (_d["evt"] == "regreq") {
@@ -328,6 +328,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                             el.rng = geoloc.gsmsig
                             el.acc = geoloc.acc
                         }
+
                     }
                     if (geoloc.loc !== undefined)
                         this.moveMarker([geoloc.loc[1], geoloc.loc[0]], geoloc.vhid, geoloc.bearing);
@@ -766,6 +767,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.rightSideBar.closeonwindow = true;
+        $.AdminBSB.leftSideBar.Open();
+        $('.maincontent').css('margin-top', '50px');
         if (this.dbcaller !== undefined) {
             clearInterval(this.dbcaller);
         }
@@ -773,16 +778,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.onlineCheckr !== undefined) {
             clearInterval(this.onlineCheckr);
         }
-
-        $.AdminBSB.islocked = false;
-        $.AdminBSB.rightSideBar.closeonwindow = true;
-        $.AdminBSB.leftSideBar.Open();
-
-        $('.maincontent').css('margin-top','50px');
-
-        $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
-
         this._socketservice.close();
+
+        // $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
         this.subscribeParameters.unsubscribe();
+        this.socketsubscribe.unsubscribe();
+
     }
+
 }
