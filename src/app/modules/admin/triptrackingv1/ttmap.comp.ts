@@ -702,6 +702,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
         $.AdminBSB.rightSideBar.Open();
         event.stopPropagation();
+        this.closesidepanel();
     }
 
     filter(fil) {

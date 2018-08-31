@@ -1,322 +1,381 @@
 .player {
-    margin-top: 2px;
-    border: 1px solid #d6a963;
-    background-color: #000;
-    position: relative;
-    background: rgba(243, 226, 199, 1);
-    background: -moz-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(243, 226, 199, 1)), color-stop(50%, rgba(193, 158, 103, 1)), color-stop(51%, rgba(182, 141, 76, 1)), color-stop(100%, rgba(233, 212, 179, 1)));
-    background: -webkit-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: -o-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    background: linear-gradient(to bottom, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f3e2c7', endColorstr='#e9d4b3', GradientType=0);
+  margin-top: 2px;
+  border: 1px solid #d6a963;
+  background-color: #000;
+  position: relative;
+  background: rgba(243, 226, 199, 1);
+  background: -moz-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(243, 226, 199, 1)), color-stop(50%, rgba(193, 158, 103, 1)), color-stop(51%, rgba(182, 141, 76, 1)), color-stop(100%, rgba(233, 212, 179, 1)));
+  background: -webkit-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
+  background: -o-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
+  background: -ms-linear-gradient(top, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
+  background: linear-gradient(to bottom, rgba(243, 226, 199, 1) 0%, rgba(193, 158, 103, 1) 50%, rgba(182, 141, 76, 1) 51%, rgba(233, 212, 179, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f3e2c7', endColorstr='#e9d4b3', GradientType=0);
 }
 
 .player .material-icons {
-    color: #000;
+  color: #000;
 }
 
 .player .timer {
-    color: black;
-    font-size: 11px;
-    margin-top: 16px;
-    position: absolute;
-    font-weight: bold;
+  color: black;
+  font-size: 11px;
+  margin-top: 16px;
+  position: absolute;
+  font-weight: bold;
 }
 
 .player .playholder {
-    width: 57px;
-    float: left;
-    height: 47px;
-    position: relative;
+  width: 57px;
+  float: left;
+  height: 47px;
+  position: relative;
 }
 
 .player .play {
-    margin-top: -5px;
-    position: absolute;
-    left: 13px;
+  margin-top: -5px;
+  position: absolute;
+  left: 13px;
 }
 
 .player .vhbatr {
-    position: absolute;
-    right: 10px;
-    top: 29px;
-    color: #000;
+  position: absolute;
+  right: 10px;
+  top: 29px;
+  color: #000;
 }
 
 .player .speedtext {
-    position: absolute;
-    right: 6px;
-    top: 28px;
-    color: #000;
+  position: absolute;
+  right: 6px;
+  top: 28px;
+  color: #000;
 }
 
 .trptype span {
-    color: #fff;
-    font-size: 19px;
-    position: relative;
-    font-weight: bold;
-    top: 2px;
-    text-transform: capitalize;
+  color: #fff;
+  font-size: 19px;
+  position: relative;
+  font-weight: bold;
+  top: 2px;
+  text-transform: capitalize;
 }
 
 .trptype {
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    background-color: #ff9900;
-    float: left;
-    margin-left: -5px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 50%;
-    border-radius: 50%;
-    overflow: hidden;
-    text-align: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: #ff9900;
+  float: left;
+  margin-left: -5px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+  border-radius: 50%;
+  overflow: hidden;
+  text-align: center;
 }
 
 .detailBlock {
-    margin-left: 35px;
+  margin-left: 35px;
 }
 
 span.material-icons.ico-specify {
-    font-size: 14px;
-    color: #329e05;
-    margin-top: 1px;
-    position: absolute;
-    left: -9px;
-    top: -3px;
-    height: 15px;
-    width: 15px;
-    background-size: cover;
-    background-image: url('../../../../../assets/img/redflag.png');
+  font-size: 14px;
+  color: #329e05;
+  margin-top: 1px;
+  position: absolute;
+  left: -9px;
+  top: -3px;
+  height: 15px;
+  width: 15px;
+  background-size: cover;
+  background-image: url('../../../../../assets/img/redflag.png');
 }
 
 .statusicon {
-    position: absolute;
-    left: -2px;
-    top: 5px;
+  position: absolute;
+  left: -2px;
+  top: 5px;
 }
 
 .statusicon .material-icons {
-    font-size: 15px;
-    font-weight: bold;
-    color: teal;
+  font-size: 15px;
+  font-weight: bold;
+  color: teal;
 }
 
 .leftmar {
-    margin-left: 3px;
+  margin-left: 3px;
 }
 
 .slideright {
-    position: absolute;
-    right: 0px;
-    z-index: 111;
+  position: absolute;
+  right: 0px;
+  z-index: 111;
 }
 
 .backholder {
-    background-color: #fff;
-    margin-top: -4px;
+  background-color: #fff;
+  margin-top: -4px;
 }
 
 .backarrow {
-    position: relative;
-    display: block;
-    background-color: #607d8b;
-    color: #fff;
+  position: relative;
+  display: block;
+  background-color: #607d8b;
+  color: #fff;
 }
 
 .backarrow span {
-    font-size: 14px;
-    top: 8px;
-    position: absolute;
+  font-size: 14px;
+  top: 8px;
+  position: absolute;
 }
 
 i.material-icons.status {
-    font-size: 14px;
-    position: absolute;
-    top: -5px;
-    left: 2px;
+  font-size: 14px;
+  position: absolute;
+  top: -5px;
+  left: 2px;
 }
 
 .stat0 {
-    color: orange;
+  color: orange;
 }
 
 .stat1 {
-    color: green;
+  color: green;
 }
 
 .stat2 {
-    color: red;
+  color: red;
 }
 
 .textstatus {
-    position: absolute;
-    bottom: -1px;
-    text-transform: uppercase;
-    font-size: 10px;
-    right: 2px;
-    font-weight: bold;
+  position: absolute;
+  bottom: -1px;
+  text-transform: uppercase;
+  font-size: 10px;
+  right: 2px;
+  font-weight: bold;
 }
 
 .lineHolder {
-    display: block;
-    width: 260px;
-    height: calc(100vh - 330px);
-    overflow-y: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  display: inline-block;
+  width: 203px;
+  height: calc(100vh - 307px);
+  overflow-y: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #333;
+  color: #fff !important;
+}
+
+.accoption {
+  float: right;
+  /* height: 100px; */
+  width: 114px;
+  height: calc(100vh - 323px);
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.innerdiv {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+  background-color: #636363;
+  border: 1px solid #a0a0a0;
+  padding-left: 1px;
+  padding-right: 1px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.innerdiv:hover {
+  background-color: #7e7e7e;
+}
+
+.innerdiv img {
+  height: 16px !important;
+  width: 16px !important;
+}
+
+.innerdiv span {
+  color: #fff;
+}
+
+.innerdiv span.durvalue {
+  color: #91fff5;
+  float: right;
+  margin-right: 15px;
+}
+
+.linktogoogle {
+  color: #ffc107;
+  float: right;
+  margin-right: 4px;
+}
+
+.start {
+  color: #beff00!important;
+  font-size: 11px;
+}
+
+.stop {
+  color: #ff5050!important;
+  font-size: 11px;
 }
 
 .lineitem {
-    height: 50px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-direction: normal;
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
 }
 
 .lineitem .contLeft {
-    width: 96px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    text-align: right;
+  width: 69px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: right;
 }
 
 .lineitem .liner {
-    width: 20px;
-    min-width: 20px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    z-index: 1;
+  width: 20px;
+  min-width: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 1;
 }
 
 .lineitem .liner>.innerLine {
-    border-right: 3px solid #798e9b;
-    height: 100%;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
+  border-right: 3px solid #798e9b;
+  height: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .lineitem .contRight {
-    padding-bottom: 22px;
-    position: relative;
-    padding-left: 16px;
-    min-height: 66px;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-    -webkit-box-orient: vertical;
-    -ms-flex-direction: column;
-    flex-direction: column;
+  padding-bottom: 22px;
+  position: relative;
+  padding-left: 16px;
+  min-height: 66px;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-orient: vertical;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 .lineitem .connecter {
-    width: 9px;
-    height: 9px;
-    border: 2px solid #798e9b;
-    top: -5px;
-    left: -14px;
-    background-color: #fff;
-    position: absolute;
-    z-index: 1;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #798e9b;
+  top: -5px;
+  left: -14px;
+  background-color: #fff;
+  position: absolute;
+  z-index: 1;
 }
 
 .lineitem:hover {
-    background-color: #eee
+  background-color: #6b6a6a;
 }
 
 .solid .innerLine,
 .solid .connecter {
-    border-color: #841ff3!important;
-    outline-color: #841ff3!important;
+  border-color: #beff00 !important;
+  outline-color: #beff00 !important;
 }
 
 .dashed .innerLine,
 .dashed .connecter {
-    border-color: #ff5050!important;
-    outline-color: #ff5050!important;
+  border-color: #ff5050 !important;
+  outline-color: #ff5050 !important;
 }
 
 .solid_col {
-    color: #841ff3!important;
+  color: #beff00 !important;
 }
 
 .dashed_col {
-    color: #ff5050!important;
+  color: #ff5050 !important;
 }
 
 .solid {
-    height: 80px;
+  height: 80px;
 }
 
 .text span {
-    display: block;
-    font-size: 11px;
-    margin-bottom: 3px;
-    color: #52616a;
+  display: block;
+  font-size: 11px;
+  margin-bottom: 3px;
+  color: #ffffff;
 }
 
 .text .head {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .summary {
-    height: 52px;
-    background-color: #efefef;
-    border-radius: 28px;
-    border: 1px solid #d2d2d2;
-    padding: 0px;
+  height: 52px;
+  background-color: #252525;
+  border-radius: 28px;
+  border: 1px solid #333333;
+  padding: 0px;
 }
 
 .tot_distance {
-    border: 1px solid #555;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    color: #1f91f3;
-    text-align: -webkit-center;
-    padding-top: 10px;
-    font-weight: bold;
-    font-size: 15px;
-    display: inline-block;
+  border: 1px solid #555;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  color: #1f91f3;
+  text-align: -webkit-center;
+  padding-top: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  display: inline-block;
 }
 
 .tot_distance span {
-    display: block;
-    font-size: 10px;
+  display: block;
+  font-size: 10px;
 }
 
 .tot_text {
-    display: inline-block;
-    height: 50px;
-    vertical-align: bottom;
-    padding-left: 15px;
+  display: inline-block;
+  height: 50px;
+  vertical-align: bottom;
+  padding-left: 15px;
 }
 
 .tot_text span {
-    display: block;
-    color: #ff5050;
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 17px;
+  display: block;
+  color: #9fff00;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 17px;
+  float: left;
 }

@@ -140,7 +140,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     timelineTrack: any = []
     accTrack: any = [];
-    accMarkers: any = [];
+    accStopTrack: any = [];
+    accMarkers: any = {};
     polylines: any = [];
 
     summary = {
@@ -231,10 +232,12 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     bindAccSegment() {
         this.clearAcc();
+        let newindex = 0;
+        let MarkersArr = []
         for (let index = 0; index < this.accTrack.length; index++) {
             const element = this.accTrack[index];
             if (element.segtyp === 'stop') {
-
+                newindex += 1;
                 let latlon = new google.maps.LatLng(element.loc[1], element.loc[0]);
 
                 let marker = new google.maps.Marker({
@@ -242,18 +245,30 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                     icon: 'http://maps.google.com/mapfiles/kml/pal2/icon13.png'
                 });
 
-                // marker.info = new google.maps.InfoWindow({
-                //     content: el.stnm
-                // });
+                marker.info = new google.maps.InfoWindow({
+                    content: newindex + ""
+                });
+              
+                marker.info.open(this.map, marker)
+                this.accMarkers[newindex + ""] = marker;
+                MarkersArr.push(marker);
 
-               // marker.info.open(this.map, marker)
-                this.accMarkers.push(marker);
-               
             }
+            element.mrkid = newindex + "";
+            this.accStopTrack.push(element);
         }
-        this.markerCluster.addMarkers(this.accMarkers);
+        this.markerCluster.addMarkers(MarkersArr);
 
     }
+
+    onStopClick(row, index) {
+
+        let marker = this.accMarkers[row.mrkid];
+        this.map.setZoom(17);
+        this.map.panTo(marker.position);
+
+    }
+
 
 
     selpol = null;
@@ -422,7 +437,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     private clearAcc() {
         this.markerCluster.clearMarkers();
-        this.accMarkers = [];
+        this.accMarkers = {};
+        this.accStopTrack = [];
     }
 
     private clearPassengers() {

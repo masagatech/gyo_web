@@ -9287,10 +9287,10 @@ fieldset[disabled] .form-control {
 }
 
 .right-sidebar {
-    width: 280px;
+    width: 345px;
     height: calc(100vh - 48px);
     position: fixed;
-    right: -300px;
+    right: -345px;
     /* width: 400px;
     height: calc(100vh - 48px);
     position: fixed;
