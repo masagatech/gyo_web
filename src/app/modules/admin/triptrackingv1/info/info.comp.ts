@@ -11,15 +11,17 @@ export class INFOComponent implements OnInit {
     tripDT: any = [];
     vhinfo: any = {};
 
-    constructor(private _msg: MessageService, private _ttmapservice: TTMapService, private _trackDashbord: TrackDashbord) { }
+    constructor(private _msg: MessageService, private _ttmapservice: TTMapService, private _trackDashbord: TrackDashbord) {
+
+    }
 
     ngOnInit() {
-        this.getTripData();
+        this.getVHInfo();
     }
 
     // Get Today's Trip
 
-    private getTripData() {
+    getTripData() {
         var that = this;
 
         that._ttmapservice.getTripData({
@@ -43,9 +45,9 @@ export class INFOComponent implements OnInit {
         var that = this;
 
         if (that.vhinfo.vhid !== undefined) { return; }
-        
+
         commonfun.loader("#loaderbody");
-        
+
         that._trackDashbord.gettrackboard({
             "flag": "vehicleid",
             "vehid": that.data.vhid,

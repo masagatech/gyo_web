@@ -1,12 +1,14 @@
 <ul class="nav nav-tabs tab-nav-right" role="tablist">
-    <li role="presentation"><a href="#vhinfo" data-toggle="tab" (click)="getVHInfo()">Vehicle Info</a></li>
-    <li role="presentation" class="active"><a href="#todaytrp" data-toggle="tab">Today's Trips</a></li>
+    <li role="presentation" class="active">
+        <a href="#vhinfo" data-toggle="tab" (click)="getVHInfo()">Vehicle Info</a>
+    </li>
+    <!-- <li role="presentation"><a href="#todaytrp" data-toggle="tab">Today's Trips</a></li> -->
 </ul>
 
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" id="vhinfo">
+    <div role="tabpanel" class="tab-pane fade in active" id="vhinfo">
         <div class="font-bold m-b--35">
-            <img src="assets/img/map/{{vhinfo.ico}}_0.png" height="48px" />
+            <img src="assets/img/map/_0.png" height="48px" />
         </div>
 
         <ul class="dashboard-stat-list">
@@ -27,6 +29,10 @@
                 <span class="pull-right">{{vhinfo.imei}}</span>
             </li>
             <li>
+                <b>SIM No.</b>
+                <span class="pull-right">{{vhinfo.simno}}</span>
+            </li>
+            <li>
                 <b>Model</b>
                 <span class="pull-right">{{vhinfo.vmodl}}</span>
             </li>
@@ -44,7 +50,7 @@
             </li>
         </ul>
     </div>
-    <div role="tabpanel" class="tab-pane fade in active" id="todaytrp">
+    <!-- <div role="tabpanel" class="tab-pane" id="todaytrp">
         <div *ngFor="let row of tripDT" class="def-box">
             <div class="row clearfix">
                 <div class="col-md-11">
@@ -69,5 +75,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

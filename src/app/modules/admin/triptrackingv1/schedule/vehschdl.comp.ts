@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Globals, Common } from '@models';
 
 @Component({
@@ -6,7 +6,7 @@ import { Globals, Common } from '@models';
     templateUrl: './vehschdl.comp.html'
 })
 
-export class VehicleScheduleComponent implements OnInit {
+export class VehicleScheduleComponent implements OnInit, AfterViewInit {
     @Input() data: any;
     @Input() isload: any;
 
@@ -22,6 +22,15 @@ export class VehicleScheduleComponent implements OnInit {
             this.getVehicleTrips(this.data.vehid);
         }
     }
+    
+    ngAfterViewInit() {
+        // $('#divtrip').on('', function () {
+        //     commonfun.loaderhide("#loaderbody");
+        // });
+        document.getElementById('divtrip').onload = function () {
+            commonfun.loaderhide("#loaderbody");
+        };
+    }
 
     // Get Vehicle Trips
 
@@ -31,6 +40,5 @@ export class VehicleScheduleComponent implements OnInit {
         }
 
         $("#divtrip")[0].src = Common.getReportUrl("getScheduleReports", params);
-        commonfun.loaderhide("#loaderbody");
     }
 }

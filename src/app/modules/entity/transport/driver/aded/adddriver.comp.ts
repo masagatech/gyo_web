@@ -458,7 +458,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         var dispflds = [{ "key": "User Name", "val": name }];
 
         var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "vehicle", "mdlname": "Vehicle",
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "driver", "mdlname": "Driver",
             "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
             "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
         };
