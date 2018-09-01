@@ -74,6 +74,7 @@
                 <thead>
                     <tr>
                         <th width="50px"></th>
+                        <th width="50px"></th>
                         <th width="200px">User Name</th>
                         <th width="150px">Mapped Vehicles</th>
                         <th width="300px">Mapped Entity</th>
@@ -83,13 +84,16 @@
                         <th width="50px">Status</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let row of usersDT | groupBy: 'wsname'">
+                <tbody *ngFor="let row of usersDT | groupBy: 'wsname';">
                     <tr>
-                        <th colspan="8">
+                        <th colspan="9">
                             <b>Workspace : </b> {{row.key}}
                         </th>
                     </tr>
                     <tr *ngFor="let drow of row.value | filterBy: {'fullname': uname};">
+                        <td>
+                            {{drow.rowid}}
+                        </td>
                         <td>
                             <img *ngIf="drow.gndrkey=='M'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-male.png' ;" class="img-sm">
                             <img *ngIf="drow.gndrkey=='F'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-female.png' ;" class="img-sm">
@@ -98,15 +102,29 @@
                             {{drow.ucode}} : {{drow.fullname}} <br /> {{drow.utypename}}
                         </td>
                         <td>
-                            <div *ngFor="let vehrow of drow.vehicledt; let i = index;">
-                                <b *ngIf="drow.vehicledt.length > 1">{{i + 1}}.</b>
-                                <span>{{vehrow.vehname}}</span>
+                            <div *ngIf="drow.vehicledt.length">
+                                <div id="veh{{drow.rowid}}" class="overflow-135">
+                                    <div *ngFor="let vehrow of drow.vehicledt; let i = index;">
+                                        <b *ngIf="drow.vehicledt.length > 1">{{i + 1}}.</b>
+                                        <span>{{vehrow.vehname}}</span>
+                                    </div>
+                                </div>
+
+                                <a id="moreveh{{drow.rowid}}" role="button" (click)="viewMoreVehicle(drow)">View More....</a>
+                                <a id="hideveh{{drow.rowid}}" role="button" (click)="hideMoreVehicle(drow)" class="hide">Hide</a>
                             </div>
                         </td>
                         <td>
-                            <div *ngFor="let schrow of drow.schooldt; let i = index;">
-                                <b *ngIf="drow.schooldt.length > 1">{{i + 1}}.</b>
-                                <span [ngClass]="{'bg-green':enttid == schrow.schid}">{{schrow.schname}}</span>
+                            <div *ngIf="drow.schooldt.length">
+                                <div id="sch{{drow.rowid}}" class="overflow-135">
+                                    <div *ngFor="let schrow of drow.schooldt; let i = index;">
+                                        <b *ngIf="drow.schooldt.length > 1">{{i + 1}}.</b>
+                                        <span [ngClass]="{'bg-green':enttid == schrow.schid}">{{schrow.schname}}</span>
+                                    </div>
+                                </div>
+
+                                <a id="moresch{{drow.rowid}}" role="button" (click)="viewMoreSchool(drow)">View More....</a>
+                                <a id="hidesch{{drow.rowid}}" role="button" (click)="hideMoreSchool(drow)" class="hide">Hide</a>
                             </div>
                         </td>
                         <td>

@@ -1,6 +1,7 @@
 <div class="card">
     <div class="header">
         <h4>User</h4>
+
         <ul class="header-dropdown m-r--5">
             <li *ngIf="uid !== 0">
                 <span class="switch">
@@ -9,11 +10,13 @@
             </li>
             <li>
                 <a role="button" class="btn btn-theme" (click)="saveUserInfo()">
-                    <i class="material-icons">save</i></a>
+                    <i class="material-icons">save</i>
+                </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
+                    <i class="material-icons">arrow_back</i>
+                </a>
             </li>
         </ul>
     </div>

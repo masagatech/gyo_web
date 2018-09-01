@@ -160,6 +160,38 @@ export class UserReportsComponent implements OnInit, OnDestroy {
         })
     }
 
+    // More Vehicle
+
+    viewMoreVehicle(drow) {
+        $("#veh" + drow.rowid).attr("class", "overflow-135 overflow-auto");
+        $("#moreveh" + drow.rowid).attr("class", "hide");
+        $("#hideveh" + drow.rowid).attr("class", "show");
+        $("#veh" + drow.rowid).focus();
+    }
+
+    hideMoreVehicle(drow) {
+        $("#veh" + drow.rowid).attr("class", "overflow-135");
+        $("#moreveh" + drow.rowid).attr("class", "show");
+        $("#hideveh" + drow.rowid).attr("class", "hide");
+        $("#veh" + drow.rowid).focus();
+    }
+
+    // More School
+
+    viewMoreSchool(drow) {
+        $("#sch" + drow.rowid).attr("class", "overflow-135 overflow-auto");
+        $("#moresch" + drow.rowid).attr("class", "hide");
+        $("#hidesch" + drow.rowid).attr("class", "show");
+        $("#sch" + drow.rowid).focus();
+    }
+
+    hideMoreSchool(drow) {
+        $("#sch" + drow.rowid).attr("class", "overflow-135");
+        $("#moresch" + drow.rowid).attr("class", "show");
+        $("#hidesch" + drow.rowid).attr("class", "hide");
+        $("#sch" + drow.rowid).focus();
+    }
+
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();

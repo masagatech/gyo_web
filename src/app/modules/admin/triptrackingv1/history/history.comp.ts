@@ -236,15 +236,19 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         }, () => {
         });
     }
+
     selectedPoly = 0;
+
     selectedSegmentData = {
         time: '',
         kilmeter: 0,
     };
+
     private setPlayerData(index: any, row: any) {
         if (this.isplay) {
             this.playPause();
         }
+
         this.marker.setMap(null);
         this.val = 0;
         this.slideValCt = 0;
@@ -252,6 +256,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         this.selectedSegmentData.kilmeter = 0;
         this.maxrange = 0;
         this.tripDT = [];
+        
         if (index === -1) {
         } else if (this.polylines.length > 0) {
             debugger
@@ -260,7 +265,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             this.selectedSegmentData.time = row.sttm;
             this.selectedSegmentData.kilmeter = row.dist;
         }
-        this.ref.detectChanges()
+        // this.ref.detectChanges()
     }
 
     bindAccSegment() {

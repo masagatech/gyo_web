@@ -11270,3 +11270,12 @@ td {
     max-height: 525px;
     overflow: auto;
 }
+
+.overflow-135 {
+    max-height: 135px;
+    overflow: hidden;
+}
+
+.overflow-auto {
+    overflow: auto!important;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { VehicleService } from '@services/master';
 
@@ -16,9 +16,11 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     devtypeDT: any = [];
     d1strDT: any = [];
 
+    ownenttid: number = 0;
     autoid: number = 0;
     vehid: number = 0;
     vehtype: string = "";
+    vehtypename: string = "";
     vehname: string = "";
     vehregno: string = "";
     vehregnoPattern = "^[A-Z]{2}-[0-9]{2}-[A-Z]{1,2}-[0-9]{1,4}$";
@@ -31,10 +33,12 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     frmdt: any = "";
     todt: any = "";
     devtype: string = "";
+    devtypename: string = "";
     imei: string = "";
     simno: string = "";
     speedAllow: number = 0;
     d1str: string = "";
+    d1strname: string = "";
     vehurl: string = "";
 
     tracktypeDT: any = [];
@@ -42,6 +46,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     mode: string = "";
     isactive: boolean = true;
     isprivate: boolean = true;
+    dtlsmode: string = "";
 
     @ViewChild('regno') vehicle: ElementRef;
 
@@ -49,10 +54,14 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     isedit: boolean = false;
     isdetails: boolean = false;
 
+    vehicleData: any = [];
+    oldVehicleData: any = [];
+    newVehicleData: any = [];
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _vehservice: VehicleService) {
+        private _loginservice: LoginService, private _vehservice: VehicleService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -121,23 +130,33 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     active_deactiveVehicleInfo() {
         var that = this;
+        var params = {};
 
-        var act_deactvehicle = {
-            "autoid": that.autoid,
-            "isactive": that.isactive,
-            "mode": that.mode
+        if (that.ownenttid == that._enttdetails.enttid) {
+            params = {
+                "vehid": that.vehid,
+                "mode": that.mode
+            }
+        }
+        else {
+            params = {
+                "vemid": that.autoid,
+                "dtlsmode": that.dtlsmode
+            }
         }
 
-        this._vehservice.saveVehicleInfo(act_deactvehicle).subscribe(data => {
+        that._vehservice.saveVehicleInfo(params).subscribe(data => {
             try {
-                var dataResult = data.data;
+                var dataResult = data.data[0].funsave_vehicleinfo;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
 
-                if (dataResult[0].funsave_vehicleinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_vehicleinfo.msg);
+                if (msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", msg);
                     that.getVehicleDetails();
                 }
                 else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_vehicleinfo.msg);
+                    that._msg.Show(messageType.error, "Error", msg);
                 }
             }
             catch (e) {
@@ -194,9 +213,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         this.vehregno = "";
     }
 
-    // Save Data
+    // Validation Fields
 
-    isValidateVehicle() {
+    isValidateVehicle(newval) {
         var that = this;
         var _vehregno = $("#invalidvehregno span").html();
 
@@ -246,16 +265,115 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             $(".simno").focus();
             return false;
         }
+        if (that.autoid !== 0) {
+            if (JSON.stringify(newval) == "{}") {
+                that._msg.Show(messageType.warn, "Warning", "No any Changes");
+                return false;
+            }
+        }
 
         return true;
     }
+
+    // Get Audit Parameter
+
+    getAuditData(ddltype, trktype) {
+        var that = this;
+        var _auditdt = [];
+
+        _auditdt = [
+            { "key": "Vehicle Name", "val": that.vehname, "fldname": "vehname", "fldtype": "text" },
+            { "key": "Registartion No", "val": that.vehregno, "fldname": "vehregno", "fldtype": "text" },
+            { "key": "IMEI No", "val": that.imei, "fldname": "imei", "fldtype": "text" },
+            { "key": "SIM No", "val": that.simno, "fldname": "simno", "fldtype": "text" },
+            { "key": "Device Type", "val": ddltype == "old" ? that.devtypename : $("#devtype option:selected").text().trim(), "fldname": "devtype", "fldtype": "ddl" },
+            { "key": "Vehicle Type", "val": ddltype == "old" ? that.vehtypename : $("#vehtype option:selected").text().trim(), "fldname": "vehtype", "fldtype": "ddl" },
+            { "key": "Vehicle Make", "val": that.vehmake, "fldname": "vehmake", "fldtype": "text" },
+            { "key": "Vehicle Model", "val": that.vehmodel, "fldname": "vehmodel", "fldtype": "text" },
+            { "key": "Capacity", "val": that.capacity, "fldname": "capacity", "fldtype": "text" },
+            { "key": "Vehicle Condition", "val": that.vehcond, "fldname": "vehcond", "fldtype": "text" },
+            { "key": "Vehicle Facility", "val": that.vehfclt, "fldname": "vehfclt", "fldtype": "text" },
+            { "key": "Vehicle Speed", "val": that.speedAllow, "fldname": "vehspeed", "fldtype": "text" },
+            { "key": "From Date", "val": that.frmdt, "fldname": "frmdt", "fldtype": "date" },
+            { "key": "To Date", "val": that.todt, "fldname": "todt", "fldtype": "date" },
+            { "key": "D1 Function", "val": that.d1str == "" ? {} : { "d1str": that.d1str }, "fldname": "extra", "fldtype": "table" },
+            { "key": "Track Type", "val": trktype, "fldname": "trktype", "fldtype": "chk" }
+        ]
+
+        return _auditdt;
+    }
+
+    // Audit Log
+
+    saveAuditLog(id, name, oldval, newval) {
+        var that = this;
+
+        var _oldvaldt = [];
+        var _newvaldt = [];
+
+        for (var i = 0; i < Object.keys(oldval).length; i++) {
+            _oldvaldt.push(that.oldVehicleData.filter(a => a.fldname == Object.keys(oldval)[i]));
+        }
+
+        for (var i = 0; i < Object.keys(newval).length; i++) {
+            _newvaldt.push(that.newVehicleData.filter(a => a.fldname == Object.keys(newval)[i]));
+        }
+
+        var dispflds = [{ "key": "User Name", "val": name }];
+
+        var auditparams = {
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "vehicle", "mdlname": "Vehicle",
+            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+        };
+
+        that._autoservice.saveAuditLog(auditparams);
+    }
+
+    // Get Save Parameter
+
+    getVehicleParams(trktype) {
+        var that = this;
+
+        var params = {
+            "vemid": that.autoid,
+            "vehid": that.vehid,
+            "vehtype": that.vehtype,
+            "vehname": that.vehname,
+            "vehregno": that.vehregno,
+            "imei": that.imei,
+            "simno": that.simno,
+            "vehmake": that.vehmake,
+            "vehmodel": that.vehmodel,
+            "capacity": that.capacity,
+            "vehcond": that.vehcond,
+            "vehfclt": that.vehfclt,
+            "vehspeed": parseInt("" + that.speedAllow),
+            "istrack": true,
+            "devtype": that.devtype,
+            "frmdt": that.frmdt,
+            "todt": that.todt,
+            "url": that.vehurl,
+            "trktype": trktype,
+            "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
+            "mode": "",
+            "enttid": that._enttdetails.enttid,
+            "ownenttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "cuid": that.loginUser.ucode,
+            "isactive": that.isactive,
+            "isprivate": that.isprivate
+        }
+
+        return params;
+    }
+
+    // Save Vehicle
 
     saveVehicleInfo() {
         var that = this;
         var trktype = "";
         var pushcl = [];
-
-        var isvalid = that.isValidateVehicle();
 
         $("#track").find("input[type=checkbox]").each(function () {
             if (this.checked) {
@@ -265,42 +383,23 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
         trktype = JSON.stringify(pushcl).replace("[", "{").replace("]", "}");
 
+        var params = that.getVehicleParams(trktype);
+        that.newVehicleData = that.getAuditData("new", trktype);
+
+        var newval = that._autoservice.getDiff2Arrays(that.vehicleData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.vehicleData);
+
+        var isvalid = that.isValidateVehicle(newval);
+
         if (isvalid) {
             commonfun.loader();
-
-            var params = {
-                "vemid": that.autoid,
-                "vehid": that.vehid,
-                "vehtype": that.vehtype,
-                "vehname": that.vehname,
-                "vehregno": that.vehregno,
-                "vehmake": that.vehmake,
-                "vehmodel": that.vehmodel,
-                "capacity": that.capacity,
-                "vehcond": that.vehcond,
-                "vehfclt": that.vehfclt,
-                "vehspeed": parseInt("" + that.speedAllow),
-                "istrack": true,
-                "devtype": that.devtype,
-                "imei": that.imei,
-                "simno": that.simno,
-                "url": that.vehurl,
-                "trktype": trktype,
-                "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
-                "mode": "",
-                "enttid": that._enttdetails.enttid,
-                "ownenttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid,
-                "cuid": that.loginUser.ucode,
-                "isactive": that.isactive,
-                "isprivate": that.isprivate
-            }
 
             that._vehservice.saveVehicleInfo(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_vehicleinfo;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
+                    var autoid = dataResult.autoid;
                     var vehid = dataResult.vehid;
 
                     if (msgid != "-1") {
@@ -337,6 +436,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             that.refreshVehicles();
                         }
                         else {
+                            that.saveAuditLog(autoid, that.vehname, oldval, newval);
                             that.backViewData();
                         }
                     }
@@ -392,19 +492,23 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         else {
                             var _vehdata = data.data[0];
 
+                            that.ownenttid = _vehdata.ownenttid;
                             that.autoid = _vehdata.autoid;
                             that.vehid = _vehdata.vehid;
                             that.vehtype = _vehdata.vehicletype;
                             that.vehname = _vehdata.vehiclename;
                             that.vehregno = _vehdata.vehregno;
+                            that.imei = _vehdata.imei;
+                            that.simno = _vehdata.simno;
                             that.vehmake = _vehdata.vehiclemake;
                             that.vehmodel = _vehdata.vehiclemodel;
                             that.capacity = _vehdata.capacity;
                             that.vehcond = _vehdata.vehiclecondition;
                             that.vehfclt = _vehdata.vehiclefacility;
+                            that.frmdt = _vehdata.frmdt;
+                            that.todt = _vehdata.todt;
                             that.devtype = _vehdata.devtype;
-                            that.imei = _vehdata.imei;
-                            that.simno = _vehdata.simno;
+                            that.devtypename = _vehdata.devtypename;
                             that.speedAllow = _vehdata.vhspeed;
                             that.d1str = _vehdata.d1str;
 
@@ -420,6 +524,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             that.isprivate = _vehdata.isprivate;
                             that.isactive = _vehdata.isactive;
                             that.mode = _vehdata.mode;
+                            that.dtlsmode = _vehdata.dtlsmode;
 
                             if (that.isdetails) {
                                 that.disabledVehicleFields();
@@ -432,6 +537,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                                 else {
                                     that.disabledVehicleFields();
                                 }
+
+                                that.vehicleData = that.getVehicleParams(trktypedt);
+                                that.oldVehicleData = that.getAuditData("old", trktypedt);
 
                                 $(".vehname").removeAttr("disabled");
                             }
@@ -461,83 +569,82 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     getVehicleByIMEI() {
         var that = this;
+        commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] == undefined) {
-                commonfun.loader();
+        that._vehservice.getVehicleDetails({
+            "flag": "byimei",
+            "imei": that.imei,
+            "vehregno": that.vehregno,
+            "enttid": that._enttdetails.enttid
+        }).subscribe(data => {
+            try {
+                var _status = data.data[0].status;
+                var _isexists = data.data[0].isexists;
+                var _msg = data.data[0].msg;
+                var _vehdata = data.data[0].vehdata;
 
-                that._vehservice.getVehicleDetails({
-                    "flag": "byimei",
-                    "imei": that.imei,
-                    "vehregno": that.vehregno,
-                    "enttid": that._enttdetails.enttid
-                }).subscribe(data => {
-                    try {
-                        var _status = data.data[0].status;
-                        var _isexists = data.data[0].isexists;
-                        var _msg = data.data[0].msg;
-                        var _vehdata = data.data[0].vehdata;
+                if (_vehdata == null || _vehdata == undefined) {
+                    that.resetVehicleFields();
+                }
+                else {
+                    if (_status == false) {
+                        that._msg.Show(messageType.error, "Error", _msg);
+                        that.resetVehicleFields();
 
-                        if (_vehdata == null || _vehdata == undefined) {
-                            that.resetVehicleFields();
-                        }
-                        else {
-                            if (_status == false) {
-                                that._msg.Show(messageType.error, "Error", _msg);
-                                that.resetVehicleFields();
-
-                                if (_isexists) {
-                                    that.imei = "";
-                                    that.vehregno = "";
-                                }
-                            }
-                            else {
-                                that.autoid = _vehdata.autoid;
-                                that.vehid = _vehdata.vehid;
-                                that.imei = _vehdata.imei;
-                                that.vehregno = _vehdata.vehregno;
-                                that.vehtype = _vehdata.vehicletype;
-                                that.vehname = _vehdata.vehiclename;
-                                that.vehmake = _vehdata.vehiclemake;
-                                that.vehmodel = _vehdata.vehiclemodel;
-                                that.capacity = _vehdata.capacity;
-                                that.vehcond = _vehdata.vehiclecondition;
-                                that.vehfclt = _vehdata.vehiclefacility;
-                                that.devtype = _vehdata.devtype;
-                                that.simno = _vehdata.simno;
-                                that.speedAllow = _vehdata.vhspeed;
-                                that.d1str = _vehdata.d1str;
-
-                                var trktypedt = data.data[0].trktype;
-
-                                if (trktypedt != null) {
-                                    for (var i = 0; i < trktypedt.length; i++) {
-                                        $("#track").find("#" + trktypedt[i]).prop('checked', true);
-                                    }
-                                }
-
-                                that.vehurl = _vehdata.url;
-                                that.isactive = _vehdata.isactive;
-                                that.mode = _vehdata.mode;
-
-                                that.disabledVehicleFields();
-                            }
+                        if (_isexists) {
+                            that.imei = "";
+                            that.vehregno = "";
                         }
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that.autoid = _vehdata.autoid;
+                        that.vehid = _vehdata.vehid;
+                        that.vehregno = _vehdata.vehregno;
+                        that.imei = _vehdata.imei;
+                        that.simno = _vehdata.simno;
+                        that.vehtype = _vehdata.vehicletype;
+                        that.vehname = _vehdata.vehiclename;
+                        that.vehmake = _vehdata.vehiclemake;
+                        that.vehmodel = _vehdata.vehiclemodel;
+                        that.capacity = _vehdata.capacity;
+                        that.vehcond = _vehdata.vehiclecondition;
+                        that.vehfclt = _vehdata.vehiclefacility;
+                        that.devtype = _vehdata.devtype;
+                        that.speedAllow = _vehdata.vhspeed;
+                        that.d1str = _vehdata.d1str;
+
+                        var trktypedt = data.data[0].trktype;
+
+                        if (trktypedt != null) {
+                            for (var i = 0; i < trktypedt.length; i++) {
+                                $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                            }
+                        }
+
+                        that.vehurl = _vehdata.url;
+                        that.isactive = _vehdata.isactive;
+                        that.mode = _vehdata.mode;
+                        that.dtlsmode = _vehdata.dtlsmode;
+
+                        that.vehicleData = that.getVehicleParams(trktypedt);
+                        that.oldVehicleData = that.getAuditData("old", trktypedt);
+
+                        that.disabledVehicleFields();
                     }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                }
             }
-        });
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data

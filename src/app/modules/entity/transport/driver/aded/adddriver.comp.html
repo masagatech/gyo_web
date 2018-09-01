@@ -5,7 +5,10 @@
         <ul class="header-dropdown m-r--5">
             <li *ngIf="driverid !== 0">
                 <span class="switch">
-                    <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()"><span class="lever"></span></label>
+                    <label class="control-label">
+                        <input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()">
+                        <span class="lever"></span>
+                </label>
                 </span>
             </li>
             <li *ngIf="driverid == 0">

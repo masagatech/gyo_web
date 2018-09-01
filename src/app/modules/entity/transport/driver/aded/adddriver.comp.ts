@@ -30,8 +30,11 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     address: string = "";
     country: string = "India";
     state: number = 0;
+    statename: string = "";
     city: number = 0;
+    cityname: string = "";
     area: number = 0;
+    areaname: number = 0;
     pincode: number = 0;
     remark1: string = "";
     othenttids: any;
@@ -50,6 +53,10 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     isadd: boolean = false;
     isedit: boolean = false;
     isdetails: boolean = false;
+
+    driverData: any = [];
+    oldDriverData: any = [];
+    newDriverData: any = [];
 
     private subscribeParameters: any;
 
@@ -79,14 +86,14 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         if (type == "text") {
             $("#lblshowpwd").removeClass("hide");
             $("#lblshowpwd").addClass("show");
-            
+
             $("#lblhidepwd").removeClass("show");
             $("#lblhidepwd").addClass("hide");
         }
         else {
             $("#lblshowpwd").removeClass("show");
             $("#lblshowpwd").addClass("hide");
-            
+
             $("#lblhidepwd").removeClass("hide");
             $("#lblhidepwd").addClass("show");
         }
@@ -287,7 +294,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             "mode": that.mode
         }
 
-        this._driverservice.saveDriverInfo(act_deactDriver).subscribe(data => {
+        that._driverservice.saveDriverInfo(act_deactDriver).subscribe(data => {
             try {
                 var dataResult = data.data;
 
@@ -345,7 +352,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         $(".hidewhen input").removeAttr("disabled");
         $(".hidewhen select").removeAttr("disabled");
         $(".hidewhen textarea").removeAttr("disabled");
-        
+
         $("#divPhotoUpload").prop("class", "show");
         $("#divDocsUpload").prop("class", "show");
     }
@@ -365,69 +372,160 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         this.mobileno1 = "";
     }
 
-    // Save Data
+    // Validation Fields
 
-    saveDriverInfo() {
+    isValidateDriver(newval) {
         var that = this;
 
         if (that.drivercode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Driver Code");
             $(".drivercode").focus();
+            return false;
         }
-        else if (that.driverpwd == "") {
+        if (that.driverpwd == "") {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".driverpwd").focus();
+            return false;
         }
-        else if (that.drivername == "") {
+        if (that.drivername == "") {
             that._msg.Show(messageType.error, "Error", "Enter Driver Name");
             $(".drivername").focus();
+            return false;
         }
-        else if (that.mobileno1 == "") {
+        if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
+            return false;
         }
-        else if (that.address == "") {
+        if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
+            return false;
         }
-        else {
+        if (that.driverid !== 0) {
+            if (JSON.stringify(newval) == "{}") {
+                that._msg.Show(messageType.warn, "Warning", "No any Changes");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Get Audit Parameter
+
+    getAuditData(ddltype) {
+        var that = this;
+        var _auditdt = [];
+
+        _auditdt = [
+            { "key": "Driver Code", "val": that.drivercode, "fldname": "drivercode", "fldtype": "text" },
+            { "key": "Password", "val": that.driverpwd, "fldname": "driverpwd", "fldtype": "text" },
+            { "key": "Driver Name", "val": that.drivername, "fldname": "drivername", "fldtype": "text" },
+            { "key": "Aadhar No", "val": that.aadharno, "fldname": "aadharno", "fldtype": "text" },
+            { "key": "License No", "val": that.licenseno, "fldname": "licenseno", "fldtype": "text" },
+            { "key": "Mobile No", "val": that.mobileno1, "fldname": "mobileno1", "fldtype": "text" },
+            { "key": "Alternate Mobile No", "val": that.mobileno2, "fldname": "mobileno2", "fldtype": "text" },
+            { "key": "Email", "val": that.email1, "fldname": "email1", "fldtype": "text" },
+            { "key": "Alternate Email", "val": that.email1, "fldname": "email1", "fldtype": "text" },
+            { "key": "Address", "val": that.address, "fldname": "address", "fldtype": "text" },
+            { "key": "Country", "val": that.country, "fldname": "country", "fldtype": "text" },
+            { "key": "State", "val": ddltype == "old" ? that.statename : $("#state option:selected").text().trim(), "fldname": "state", "fldtype": "ddl" },
+            { "key": "City", "val": ddltype == "old" ? that.cityname : $("#city option:selected").text().trim(), "fldname": "city", "fldtype": "ddl" },
+            { "key": "Area", "val": ddltype == "old" ? that.areaname : $("#area option:selected").text().trim(), "fldname": "area", "fldtype": "ddl" },
+            { "key": "Pin Code", "val": that.pincode.toString() == "" ? 0 : that.pincode, "fldname": "pincode", "fldtype": "text" }
+        ]
+
+        return _auditdt;
+    }
+
+    // Audit Log
+
+    saveAuditLog(id, name, oldval, newval) {
+        var that = this;
+
+        var _oldvaldt = [];
+        var _newvaldt = [];
+
+        for (var i = 0; i < Object.keys(oldval).length; i++) {
+            _oldvaldt.push(that.oldDriverData.filter(a => a.fldname == Object.keys(oldval)[i]));
+        }
+
+        for (var i = 0; i < Object.keys(newval).length; i++) {
+            _newvaldt.push(that.newDriverData.filter(a => a.fldname == Object.keys(newval)[i]));
+        }
+
+        var dispflds = [{ "key": "User Name", "val": name }];
+
+        var auditparams = {
+            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "vehicle", "mdlname": "Vehicle",
+            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+        };
+
+        that._autoservice.saveAuditLog(auditparams);
+    }
+
+    // Get Save Parameter
+
+    getDriverParams() {
+        var that = this;
+
+        var params = {
+            "autoid": that.driverid,
+            "loginid": that.loginid,
+            "drivercode": that.drivercode,
+            "driverpwd": that.driverpwd,
+            "drivername": that.drivername,
+            "aadharno": that.aadharno,
+            "licenseno": that.licenseno,
+            "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
+            "mobileno1": that.mobileno1,
+            "mobileno2": that.mobileno2,
+            "email1": that.email1,
+            "email2": that.email2,
+            "address": that.address,
+            "country": that.country,
+            "state": that.state,
+            "city": that.city,
+            "area": that.area,
+            "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
+            "attachdocs": that.uploadDocsDT,
+            "remark1": that.remark1,
+            "cuid": that.loginUser.ucode,
+            "othenttids": that.othenttids,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid,
+            "isactive": that.isactive,
+            "isprivate": that.isprivate,
+            "mode": ""
+        }
+
+        return params;
+    }
+
+    // Save Driver
+
+    saveDriverInfo() {
+        var that = this;
+
+        var params = that.getDriverParams();
+        that.newDriverData = that.getAuditData("new");
+
+        var newval = that._autoservice.getDiff2Arrays(that.driverData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.driverData);
+
+        var isvalid = that.isValidateDriver(newval);
+
+        if (isvalid) {
             commonfun.loader();
 
-            var saveDriver = {
-                "autoid": that.driverid,
-                "loginid": that.loginid,
-                "drivercode": that.drivercode,
-                "driverpwd": that.driverpwd,
-                "drivername": that.drivername,
-                "aadharno": that.aadharno,
-                "licenseno": that.licenseno,
-                "filepath": that.uploadPhotoDT.length > 0 ? that.uploadPhotoDT[0].athurl : "",
-                "mobileno1": that.mobileno1,
-                "mobileno2": that.mobileno2,
-                "email1": that.email1,
-                "email2": that.email2,
-                "address": that.address,
-                "country": that.country,
-                "state": that.state,
-                "city": that.city,
-                "area": that.area,
-                "pincode": that.pincode.toString() == "" ? 0 : that.pincode,
-                "attachdocs": that.uploadDocsDT,
-                "remark1": that.remark1,
-                "cuid": that.loginUser.ucode,
-                "othenttids": that.othenttids,
-                "enttid": that._enttdetails.enttid,
-                "wsautoid": that._enttdetails.wsautoid,
-                "isactive": that.isactive,
-                "isprivate": that.isprivate,
-                "mode": ""
-            }
-
-            that._driverservice.saveDriverInfo(saveDriver).subscribe(data => {
+            that._driverservice.saveDriverInfo(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_driverinfo;
                     var msg = dataResult.msg;
                     var msgid = dataResult.msgid;
+                    var drvid = dataResult.drvid;
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
@@ -436,6 +534,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             that.refreshDrivers();
                         }
                         else {
+                            that.saveAuditLog(drvid, that.drivername, oldval, newval);
                             that.backViewData();
                         }
                     }
@@ -534,6 +633,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                                 else {
                                     that.disabledDriverFields();
                                 }
+
+                                that.driverData = that.getDriverParams();
+                                that.oldDriverData = that.getAuditData("old");
                             }
                         }
                     }
@@ -561,87 +663,90 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     getDriverByMobile() {
         var that = this;
+        that.uploadPhotoDT = [];
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] == undefined) {
-                commonfun.loader();
+        commonfun.loader();
 
-                that._driverservice.getDriverDetails({
-                    "flag": "bymobile",
-                    "mobileno1": that.mobileno1,
-                    "enttid": that._enttdetails.enttid
-                }).subscribe(data => {
-                    try {
-                        var _status = data.data[0].status;
-                        var _isexists = data.data[0].isexists;
-                        var _msg = data.data[0].msg;
-                        var _driverdata = data.data[0]._driverdata;
+        that._driverservice.getDriverDetails({
+            "flag": "bymobile",
+            "mobileno1": that.mobileno1,
+            "loginid": that.loginid,
+            "enttid": that._enttdetails.enttid
+        }).subscribe(data => {
+            try {
+                var _status = data.data[0].status;
+                var _isexists = data.data[0].isexists;
+                var _isowner = data.data[0].isowner;
+                var _msg = data.data[0].msg;
+                var _driverdata = data.data[0]._driverdata;
 
-                        if (_driverdata == null || _driverdata == undefined) {
-                            that.resetDriverFields();
+                if (_driverdata == null || _driverdata == undefined) {
+                    that.resetDriverFields();
+                }
+                else {
+                    if (_status == false) {
+                        that._msg.Show(messageType.error, "Error", _msg);
+                        that.resetDriverFields();
+
+                        if (_isexists) {
+                            that.mobileno1 = "";
+                        }
+                    }
+                    else {
+                        if (_isowner) {
+                            that.enabledDriverFields();
                         }
                         else {
-                            if (_status == false) {
-                                that._msg.Show(messageType.error, "Error", _msg);
-                                that.resetDriverFields();
+                            that.disabledDriverFields();
+                        }
 
-                                if (_isexists) {
-                                    that.mobileno1 = "";
-                                }
-                            }
-                            else {
-                                that.disabledDriverFields();
+                        that.driverid = _driverdata.autoid;
+                        that.loginid = _driverdata.loginid;
+                        that.drivercode = _driverdata.drivercode;
+                        that.driverpwd = _driverdata.driverpwd;
+                        that.drivername = _driverdata.drivername;
+                        that.aadharno = _driverdata.aadharno;
+                        that.licenseno = _driverdata.licenseno;
+                        that.email1 = _driverdata.email1;
+                        that.email2 = _driverdata.email2;
+                        that.mobileno2 = _driverdata.mobileno2;
+                        that.address = _driverdata.address;
+                        that.country = _driverdata.country;
+                        that.state = _driverdata.state;
+                        that.fillCityDropDown();
+                        that.city = _driverdata.city;
+                        that.fillAreaDropDown();
+                        that.area = _driverdata.area;
+                        that.pincode = _driverdata.pincode;
+                        that.remark1 = _driverdata.remark1;
+                        that.isactive = _driverdata.isactive;
+                        that.isprivate = _driverdata.isprivate;
+                        that.mode = _driverdata.mode;
+                        that.othenttids = _driverdata.othenttids;
 
-                                that.driverid = _driverdata.autoid;
-                                that.loginid = _driverdata.loginid;
-                                that.drivercode = _driverdata.drivercode;
-                                that.driverpwd = _driverdata.driverpwd;
-                                that.drivername = _driverdata.drivername;
-                                that.aadharno = _driverdata.aadharno;
-                                that.licenseno = _driverdata.licenseno;
-                                that.email1 = _driverdata.email1;
-                                that.email2 = _driverdata.email2;
-                                that.mobileno1 = _driverdata.mobileno1;
-                                that.mobileno2 = _driverdata.mobileno2;
-                                that.address = _driverdata.address;
-                                that.country = _driverdata.country;
-                                that.state = _driverdata.state;
-                                that.fillCityDropDown();
-                                that.city = _driverdata.city;
-                                that.fillAreaDropDown();
-                                that.area = _driverdata.area;
-                                that.pincode = _driverdata.pincode;
-                                that.remark1 = _driverdata.remark1;
-                                that.isactive = _driverdata.isactive;
-                                that.isprivate = _driverdata.isprivate;
-                                that.mode = _driverdata.mode;
-                                that.othenttids = _driverdata.othenttids;
-
-                                if (_driverdata.FilePath !== "") {
-                                    that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
-                                    that.choosePhotoLabel = "Change Photo";
-                                }
-                                else {
-                                    that.uploadPhotoDT = [];
-                                    that.choosePhotoLabel = "Upload Photo";
-                                }
-                            }
+                        if (_driverdata.FilePath !== "") {
+                            that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
+                            that.choosePhotoLabel = "Change Photo";
+                        }
+                        else {
+                            that.uploadPhotoDT = [];
+                            that.choosePhotoLabel = "Upload Photo";
                         }
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                }
             }
-        });
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data
