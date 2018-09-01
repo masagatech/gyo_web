@@ -57,7 +57,8 @@
           <button (click)="resetHistory()" class="btn btn-primary btn-sm">RESET</button>
         </div>
       </div>
-      <div class="row player hide">
+      <div class="row player" *ngIf="timelineTrack.length > 0 ">
+          <div class="disableoverlay" *ngIf="maxrange === 0"><span class="innerText">Please Select Driving Segment</span></div>
         <div class="playholder">
           <a (click)="playPause()" class="play" role="button">
             <i class="material-icons">{{ isplay == true ? 'pause_circle_outline' : 'play_circle_outline'}}</i>
@@ -72,7 +73,9 @@
         <div style=" margin-left: 56px; margin-right: 12px;">
           <p-slider [(ngModel)]="val" [animate]="true" [max]="maxrange" (mousedown)="mousedown()" [style]="{'margin-top': '6px'}"
             (onChange)="onSliderChnage($event)"></p-slider>
-          <span class="timer hide">{{servertimer}}</span>
+          <span class="timer">{{selectedSegmentData.time | format :{'format':'hh:mm A'} }} |
+            {{selectedSegmentData.kilmeter | _currency:{'decimals':2,
+            'currsym': '' } }} km</span>
           <p-slider [(ngModel)]="speedval" [animate]="true" [min]="1" [max]="10" [step]="1" [style]="{  'margin-top': '20px', 'position': 'absolute','width': '61px','right': '40px'}"
             (onChange)="onSpeedSliderChnage($event)"></p-slider>
           <span class="speedtext">{{speedval + "x"}}</span>
@@ -83,7 +86,7 @@
     <div class="col-md-12 text-center">
       <br />
     </div>
-    <div class="col-md-12" style="background-color: #333;border-radius: 35px 35px 14px 14px;">
+    <div class="col-md-12" *ngIf="timelineTrack.length > 0" style="background-color: #333;border-radius: 35px 35px 14px 14px;">
       <div class="summary">
         <div class="tot_distance">{{summary.totaldistance | _currency:{'decimals':0, 'currsym': '' } }}
           <span>KM</span>
@@ -99,17 +102,23 @@
       <div class="accoption">
 
         <div class="innerdiv" (click)="onStopClick(row, i)" *ngFor="let row of accStopTrack; let i = index">
-          <img src="http://maps.google.com/mapfiles/kml/pal2/icon13.png"> <span>{{row.mrkid + '.'}} </span><span class="durvalue">{{row.dur}}</span>
-          <span class="{{row.segtyp}}">{{row.segtyp == 'start' ? 'ON' : 'OFF'}} </span><span> {{row.entm | format
-            :{'format':'hh:mm A'} }}</span>
-          <a href="http://maps.google.com/?q={{row.loc[1]}},{{row.loc[0]}}" target="_blank" class="linktogoogle"><i
+
+          <img src="http://maps.google.com/mapfiles/kml/pal2/icon13.png"> <span>{{row.mrkid + '.'}} </span>
+          <span class="float-right time"> {{row.sttm | format :{'format':'hh:mm:ss A'} }}</span>
+          <div class="clearfix"></div>
+          <span class="durvalue {{row.segtyp}}">{{row.dur}}</span>
+          <span class="{{row.segtyp}}">{{row.segtyp === 'start' ? 'ON' : 'OFF'}} </span>
+          <div class="clearfix"></div>
+          <a href="http://maps.google.com/maps?q={{row.loc[1]}},{{row.loc[0]}}" target="_blank" class="linktogoogle"><i
               class="fa fa-external-link"></i></a>
+          <span class="float-right time">{{row.entm | format:{'format':'hh:mm:ss A'} }}</span>
         </div>
       </div>
       <div class="lineHolder">
         <!-- (mouseover)="onsegover(i, row)" (mouseout)="onsegleave(i, row)" (click)="onsegclick(i, row)" -->
 
-        <div class="lineitem {{row.trktyp}}" *ngFor="let row of timelineTrack; let i = index" (click)="history_click(i, row)">
+        <div class="lineitem {{row.trktyp}}" [ngClass]="{'active': row.active}" *ngFor="let row of timelineTrack; let i = index"
+          (click)="history_click(i, row)">
           <div class="contLeft">
             <div class="text">
               <span> {{row.sttm | format :{'format':'DD MMM'} }}</span>

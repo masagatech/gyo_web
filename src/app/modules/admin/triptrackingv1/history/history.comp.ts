@@ -1,4 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+
+// tslint:disable:member-ordering
+// tslint:disable:member-access
+// tslint:disable:max-line-length
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MessageService, messageType, TrackDashbord } from '@services';
 import { Globals } from '@models';
 
@@ -21,7 +25,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     dateFromValue: any;
     dateToValue: any = new Date();
     val: any = 0;
-    maxrange: number = 100;
+    maxrange: number = 0;
     marker: any;
     index = 0;
     poly: any;
@@ -31,25 +35,25 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     slideValCt = 0;
     tripLength = 0;
     isplay = false;
-    servertimer: any = "---No Data---";
+    servertimer: any = '---No Data---';
     btr: any = 0;
     timer: any;
 
     speedD: any = {
-        "1": 500,
-        "2": 450,
-        "3": 400,
-        "4": 350,
-        "5": 300,
-        "6": 250,
-        "7": 200,
-        "8": 160,
-        "9": 140,
-        "10": 100
+        '1': 500,
+        '2': 450,
+        '3': 400,
+        '4': 350,
+        '5': 300,
+        '6': 250,
+        '7': 200,
+        '8': 160,
+        '9': 140,
+        '10': 100
 
     };
     speedval = 1;
-    speed: any = this.speedD["1"];
+    speed: any = this.speedD['1'];
 
     hasTripData: any = false;
     historyDt: any = [];
@@ -66,12 +70,12 @@ export class HISTORYComponent implements OnInit, OnDestroy {
 
     timeline: any = [];
 
-    constructor(private _msg: MessageService, private _trackboard: TrackDashbord) {
+    constructor(private _msg: MessageService, private _trackboard: TrackDashbord, private ref: ChangeDetectorRef) {
 
     }
 
     ngOnInit() {
-        commonfun.loaderhide("#loaderbody");
+        commonfun.loaderhide('#loaderbody');
 
         this.dateFromValue = new Date(moment().subtract(2, 'days').toString());
         this.map = this.data.map;
@@ -88,28 +92,27 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 anchor: new google.maps.Point(0, 3),
                 strokeWeight: 0,
                 scale: 5,
-                rotation: 0
+                rotation: 0,
+                zIndex: 99999999999999
             },
-
-            title: "I'm sliding marker",
             duration: this.speed
         });
 
-        this.initPoly();
-        this.addStartStop();
+        // this.initPoly();
+        //this.addStartStop();
     }
 
     // Get Today's Trip
 
     travel_polyoption = {
-        strokeColor: "#841ff3",
+        strokeColor: '#beff00',
         strokeOpacity: 0.2,
         strokeWeight: 2,
         icons: []
     }
 
     nontravel_polyoption = {
-        strokeColor: "#ff5050",
+        strokeColor: '#ff5050',
         strokeOpacity: 0.2,
         strokeWeight: 1,
 
@@ -125,7 +128,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             },
 
             offset: '100%',
-            repeat: "200px"
+            repeat: '200px'
         }, {
             icon: {
                 path: 'M 0,-1 0,1',
@@ -137,6 +140,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             repeat: '20px'
         }]
     }
+
 
     timelineTrack: any = []
     accTrack: any = [];
@@ -151,6 +155,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     }
 
     resetHistory() {
+
         for (var i = 0; i < this.polylines.length; i++) {
             var xpoly = this.polylines[i];
             let path = xpoly.getPath();
@@ -165,6 +170,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             totalDrive: '...',
             maxspeed: 0
         }
+
+        this.setPlayerData(-1, null);
         this.clearAcc();
     }
 
@@ -172,18 +179,18 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         this.resetHistory();
         var that = this;
         this.slideValCt = 0;
+        this.selectedPoly = 0;
+        commonfun.loader('#loaderbody', 'timer', 'Loading History...');
 
-        commonfun.loader("#loaderbody", "timer", 'Loading History...');
-
-        this._trackboard.gettrackboardHistoryPost_trk({ "vhid": this.data.imei, "frmdt": moment(this.dateToValue).format('YYYY-MM-DDT00:00:00+05:30'), "format": "tap" }).subscribe(_data => {
+        this._trackboard.gettrackboardHistoryPost_trk({ 'vhid': this.data.imei, 'frmdt': moment(this.dateToValue).format('YYYY-MM-DDT00:00:00+05:30'), 'format': 'tap' }).subscribe(_data => {
             var _maindata = _data.data;
 
             this.timelineTrack = _maindata.segment;
             this.accTrack = _maindata.acc_segment;
             this.bindAccSegment();
             if (this.timelineTrack === null || this.timelineTrack.length === 0) {
-                that._msg.Show(messageType.info, "No data", "Sorry, We unable to find data for this trip.");
-                commonfun.loaderhide("#loaderbody");
+                that._msg.Show(messageType.info, 'No data', 'Sorry, We unable to find data for this trip.');
+                commonfun.loaderhide('#loaderbody');
                 return;
             }
 
@@ -194,7 +201,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 var el = this.timelineTrack[k];
                 var poly;
 
-                if (el.trktyp === "solid") {
+                if (el.trktyp === 'solid') {
                     poly = new google.maps.Polyline(this.travel_polyoption);
                     times.push(el.dur);
                 }
@@ -216,19 +223,45 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 this.summary.totalDrive = this.totalTimeString(times);
                 this.polylines.push(poly);
             }
+            // this.setPlayerData(this.selectedPoly);
 
             this.summary.totaldistance = _maindata.total_distance;
             this.summary.maxspeed = _maindata.mx_spd;
 
             this.map.fitBounds(bounds);
-            commonfun.loaderhide("#loaderbody");
+            commonfun.loaderhide('#loaderbody');
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide("#loaderbody");
+            that._msg.Show(messageType.error, 'Error', err);
+            commonfun.loaderhide('#loaderbody');
         }, () => {
         });
     }
-
+    selectedPoly = 0;
+    selectedSegmentData = {
+        time: '',
+        kilmeter: 0,
+    };
+    private setPlayerData(index: any, row: any) {
+        if (this.isplay) {
+            this.playPause();
+        }
+        this.marker.setMap(null);
+        this.val = 0;
+        this.slideValCt = 0;
+        this.selectedSegmentData.time = '';
+        this.selectedSegmentData.kilmeter = 0;
+        this.maxrange = 0;
+        this.tripDT = [];
+        if (index === -1) {
+        } else if (this.polylines.length > 0) {
+            debugger
+            this.tripDT = this.polylines[index].getPath().getArray();
+            this.maxrange = this.tripDT.length;
+            this.selectedSegmentData.time = row.sttm;
+            this.selectedSegmentData.kilmeter = row.dist;
+        }
+        this.ref.detectChanges()
+    }
 
     bindAccSegment() {
         this.clearAcc();
@@ -246,32 +279,38 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 });
 
                 marker.info = new google.maps.InfoWindow({
-                    content: newindex + ""
+                    content: newindex + ''
                 });
-              
-                marker.info.open(this.map, marker)
-                this.accMarkers[newindex + ""] = marker;
+
+                //marker.info.open(this.map, marker)
+                this.accMarkers[newindex + ''] = marker;
                 MarkersArr.push(marker);
 
             }
-            element.mrkid = newindex + "";
+            element.mrkid = newindex + '';
             this.accStopTrack.push(element);
         }
         this.markerCluster.addMarkers(MarkersArr);
 
     }
+    selectedStopMarker = null
 
     onStopClick(row, index) {
-
-        let marker = this.accMarkers[row.mrkid];
+        if (this.selectedStopMarker) {
+            this.selectedStopMarker.setAnimation(null);
+            this.selectedStopMarker.info.close()
+        }
+        this.selectedStopMarker = this.accMarkers[row.mrkid];
+        this.selectedStopMarker.setAnimation(google.maps.Animation.BOUNCE);
         this.map.setZoom(17);
-        this.map.panTo(marker.position);
+        this.map.panTo(this.selectedStopMarker.position);
+        this.selectedStopMarker.info.open(this.map, this.selectedStopMarker)
 
     }
 
 
 
-    selpol = null;
+
 
     history_click(i, row) {
         if (this.selpol !== null) {
@@ -281,8 +320,26 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                 icons: []
             });
         }
+        if (this.lastSelectedSegment) {
+            this.lastSelectedSegment.active = false;
+        }
+
+        this.lastSelectedSegment = this.timelineTrack[i]
+        this.lastSelectedSegment.active = true;
 
         this.selpol = this.polylines[i];
+
+        if (row.trktyp === 'solid') {
+
+            // setting history
+            this.setPlayerData(i, row);
+
+        } else {
+            this.setPlayerData(-1, null);
+        }
+
+
+
 
         this.selpol.setOptions({
             strokeOpacity: 1,
@@ -298,7 +355,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                     scale: 3
                 },
                 offset: '100%',
-                repeat: "100px"
+                repeat: '100px'
             }]
         });
 
@@ -322,7 +379,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
                     scale: 3
                 },
                 offset: '100%',
-                repeat: "100px"
+                repeat: '100px'
             }]
         });
     }
@@ -336,9 +393,14 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             icons: []
         });
     }
+    selpol = null;
+    lastSelectedSegment = null;
 
     private onsegclick(i, row) {
         var pol = this.polylines[i]
+
+
+
         this.zoomToObject(pol)
     }
 
@@ -409,27 +471,27 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     private getPassengers(tripid) {
         var that = this;
 
-        commonfun.loader("#loaderbody", "timer", 'Passengers...');
+        commonfun.loader('#loaderbody', 'timer', 'Passengers...');
 
         this._trackboard.gettrackboard({
-            "flag": "tripdetails",
-            "tripid": tripid,
-            "uid": this.data.loginUser.uid,
-            "utype": this.data.loginUser.utype,
-            "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._enttdetails.wsautoid
+            'flag': 'tripdetails',
+            'tripid': tripid,
+            'uid': this.data.loginUser.uid,
+            'utype': this.data.loginUser.utype,
+            'issysadmin': this.data.loginUser.issysadmin,
+            'wsautoid': this.data._enttdetails.wsautoid
         }).subscribe((data) => {
             try {
                 that.psngrDT = data.data;
                 that.drawPassengers();
             }
             catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
+                that._msg.Show(messageType.error, 'Error', e);
             }
-            commonfun.loaderhide("#loaderbody");
+            commonfun.loaderhide('#loaderbody');
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide("#loaderbody");
+            that._msg.Show(messageType.error, 'Error', err);
+            commonfun.loaderhide('#loaderbody');
         }, () => {
 
         })
@@ -480,8 +542,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         if (this.timer) clearTimeout(this.timer);
         this.marker.setMap(null);
 
-        if (this.HistoryMarker["start"]) this.HistoryMarker["start"].setMap(null);
-        if (this.HistoryMarker["stop"]) this.HistoryMarker["stop"].setMap(null);
+        if (this.HistoryMarker['start']) this.HistoryMarker['start'].setMap(null);
+        if (this.HistoryMarker['stop']) this.HistoryMarker['stop'].setMap(null);
 
         this.clearPassengers();
     }
@@ -498,13 +560,18 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         }, this.speed);
     }
 
+    lastlat = 0.0
+    lastlon = 0.0
     private movemarker(i, forwardrev, anim) {
-        let _d = this.tripDT[this.maxrange - i];
-        let latlon = new google.maps.LatLng(_d.loc[1], _d.loc[0]);
+        let _d = this.tripDT[i];
+        let latlon = new google.maps.LatLng(_d.lat(), _d.lng());
 
         this.map.panTo(latlon);
         let ico = this.marker.getIcon();
-        ico.rotation = this.bearing360(_d.bearing);
+        // ico.rotation = this.bearing360(_d.bearing);
+        ico.rotation = this.bearing(this.lastlat, this.lastlon, _d.lat(), _d.lng());
+        this.lastlat = _d.lat()
+        this.lastlon = _d.lng();
         this.marker.setIcon(ico);
 
         if (anim === 'animate')
@@ -512,8 +579,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
         else
             this.marker.setPositionNotAnimated(latlon);
 
-        this.servertimer = moment(_d.sertm).format('DD-MM-YYYY hh:mm:ss');
-        this.btr = _d.btr;
+        // this.servertimer = moment(_d.sertm).format('DD-MM-YYYY hh:mm:ss');
+        // this.btr = _d.btr;
 
         if (this.maxrange - i === 0) { this.isplay = false; return; }
 
@@ -521,8 +588,8 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     }
 
     private setStartEnd() {
-        let start = this.HistoryMarker["start"];
-        let stop = this.HistoryMarker["stop"];
+        let start = this.HistoryMarker['start'];
+        let stop = this.HistoryMarker['stop'];
         let startpos = 0;
         let stoptpos = 0;
 
@@ -568,7 +635,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             anchor: new google.maps.Point(0, 25)
         };
 
-        that.HistoryMarker["start"] = new SlidingMarker({
+        that.HistoryMarker['start'] = new SlidingMarker({
             position: {
                 lat: 0.0
                 , lng: 0.0
@@ -577,7 +644,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             animation: google.maps.Animation.DROP
         });
 
-        that.HistoryMarker["stop"] = new SlidingMarker({
+        that.HistoryMarker['stop'] = new SlidingMarker({
             position: {
                 lat: 0.0
                 , lng: 0.0
@@ -625,7 +692,7 @@ export class HISTORYComponent implements OnInit, OnDestroy {
             icons: [{
                 icon: icon,
                 offset: '100%',
-                repeat: "200px"
+                repeat: '200px'
             }, {
                 icon: lineSymbol,
                 offset: '0',
@@ -674,7 +741,9 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     }
 
     private playPause() {
+        this.marker.setMap(this.map);
         this.isplay = !this.isplay;
+
 
         if (this.maxrange === this.val) {
             this.val = 0;
@@ -694,28 +763,28 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     private searchData() {
         var that = this;
 
-        commonfun.loader("#loaderbody");
+        commonfun.loader('#loaderbody');
 
         this._trackboard.gettrackboard({
-            "flag": "triphistory",
-            "vehid": this.data.vhid,
-            "uid": this.data.loginUser.uid,
-            "utype": this.data.loginUser.utype,
-            "issysadmin": this.data.loginUser.issysadmin,
-            "wsautoid": this.data._enttdetails.wsautoid,
-            "frmdt": this.dateFromValue,
-            "todt": this.dateToValue
+            'flag': 'triphistory',
+            'vehid': this.data.vhid,
+            'uid': this.data.loginUser.uid,
+            'utype': this.data.loginUser.utype,
+            'issysadmin': this.data.loginUser.issysadmin,
+            'wsautoid': this.data._enttdetails.wsautoid,
+            'frmdt': this.dateFromValue,
+            'todt': this.dateToValue
         }).subscribe((data) => {
             try {
                 that.historyDt = data.data;
             }
             catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
+                that._msg.Show(messageType.error, 'Error', e);
             }
-            commonfun.loaderhide("#loaderbody");
+            commonfun.loaderhide('#loaderbody');
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            commonfun.loaderhide("#loaderbody");
+            that._msg.Show(messageType.error, 'Error', err);
+            commonfun.loaderhide('#loaderbody');
         }, () => {
 
         })
@@ -738,4 +807,96 @@ export class HISTORYComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.clearAll();
     }
+
+
+    /**
+        * Calculate the bearing between two positions as a value from 0-360
+        *
+        * @param lat1 - The latitude of the first position
+        * @param lng1 - The longitude of the first position
+        * @param lat2 - The latitude of the second position
+        * @param lng2 - The longitude of the second position
+        *
+        * @return int - The bearing between 0 and 360
+        */
+    bearing(lat1, lng1, lat2, lng2) {
+        var dLon = (lng2 - lng1);
+        var y = Math.sin(dLon) * Math.cos(lat2);
+        var x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+        var brng = this._toDeg(Math.atan2(y, x));
+        return 360 - ((brng + 360) % 360);
+    }
+
+    /**
+      * Since not all browsers implement this we have our own utility that will
+      * convert from degrees into radians
+      *
+      * @param deg - The degrees to be converted into radians
+      * @return radians
+      */
+    _toRad(deg) {
+        return deg * Math.PI / 180;
+    }
+
+    /**
+     * Since not all browsers implement this we have our own utility that will
+     * convert from radians into degrees
+     *
+     * @param rad - The radians to be converted into degrees
+     * @return degrees
+     */
+    _toDeg(rad) {
+        return rad * 180 / Math.PI;
+    }
+
+    // speed = 50; // km/h
+
+    delay = 100;
+    animateMarker(marker, coords, km_h) {
+        var target = 0;
+        var km_h = km_h || 50;
+        // coords.push([startPos[0], startPos[1]]);
+
+        function goToPoint() {
+            var lat = marker.position.lat();
+            var lng = marker.position.lng();
+            var step = (km_h * 1000 * this.delay) / 3600000; // in meters
+
+            var dest = new google.maps.LatLng(
+                coords[target][0], coords[target][1]);
+
+            var distance =
+                google.maps.geometry.spherical.computeDistanceBetween(
+                    dest, marker.position); // in meters
+
+            var numStep = distance / step;
+            var i = 0;
+            var deltaLat = (coords[target][0] - lat) / numStep;
+            var deltaLng = (coords[target][1] - lng) / numStep;
+
+            function moveMarker() {
+                lat += deltaLat;
+                lng += deltaLng;
+                i += step;
+
+                if (i < distance) {
+                    marker.setPosition(new google.maps.LatLng(lat, lng));
+                    setTimeout(moveMarker, this.delay);
+                }
+                else {
+                    marker.setPosition(dest);
+                    target++;
+                    if (target == coords.length) { target = 0; }
+
+                    setTimeout(goToPoint, this.delay);
+                }
+            }
+            moveMarker();
+        }
+        goToPoint();
+    }
+
+
 }
+
+

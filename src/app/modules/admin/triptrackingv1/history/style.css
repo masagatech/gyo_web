@@ -188,7 +188,7 @@ i.material-icons.status {
   background-color: #636363;
   border: 1px solid #a0a0a0;
   padding-left: 1px;
-  padding-right: 1px;
+  padding-right: 4px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -206,25 +206,48 @@ i.material-icons.status {
   color: #fff;
 }
 
+span.innerText {
+  color: #f00;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 41px;
+}
+
+.disableoverlay {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #000000a1;
+  z-index: 999;
+  border: 1px solid #ffffff;
+  text-align: center;
+}
+
+.innerdiv .time {
+  font-size: 10px
+}
+
 .innerdiv span.durvalue {
   color: #91fff5;
   float: right;
-  margin-right: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 5px;
 }
 
 .linktogoogle {
   color: #ffc107;
-  float: right;
-  margin-right: 4px;
+  margin-left: 4px;
 }
 
 .start {
-  color: #beff00!important;
+  color: #beff00 !important;
   font-size: 11px;
 }
 
 .stop {
-  color: #ff5050!important;
+  color: #ff5050 !important;
   font-size: 11px;
 }
 
@@ -300,6 +323,10 @@ i.material-icons.status {
 }
 
 .lineitem:hover {
+  background-color: #6b6a6a;
+}
+
+.lineitem.active {
   background-color: #6b6a6a;
 }
 

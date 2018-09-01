@@ -18,82 +18,87 @@ declare var google: any;
 })
 
 export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
-    loginUser: LoginUserModel;
-    _enttdetails: any = [];
+    private loginUser: LoginUserModel;
+    private _enttdetails: any = [];
 
     @ViewChild(ADHOST)
     private _Host: ADHOST;
 
-    selectedTripType: number = 0;
-    triptype: SelectItem[];
+    private selectedTripType: number = 0;
+    private triptype: SelectItem[];
 
-    @ViewChild("gmap")
-    _gmap: GMap;
+    @ViewChild('gmap')
+    private _gmap: GMap;
 
-    map: any;
-    marker: any;
-    overlays: any = [];
+    private map: any;
+    private marker: any;
+    private overlays: any = [];
 
-    entityDT: any = [];
-    enttid: number = 0;
+    private entityDT: any = [];
+    private enttid: number = 0;
 
-    qsenttid: number = 0;
-    qsimei: string = "";
-    qsvehid: number = 0;
+    private qsenttid: number = 0;
+    private qsimei: string = '';
+    private qsvehid: number = 0;
 
-    srcvehname: string = "";
+    private srcvehname: string = '';
 
-    vehtypeDT: any = [];
-    vehtypeIds: any = [];
-    vehtypeid: number = 0;
-    selectedVeh: any = [];
-    selectedSVh: any = {};
-    selectedFlwVh: any = {};
+    private vehtypeDT: any = [];
+    private vehtypeIds: any = [];
+    private vehtypeid: number = 0;
+    private selectedVeh: any = [];
+    private selectedSVh: any = {};
+    private selectedFlwVh: any = {};
 
-    tripDT: any = [];
-    messageDT: any = [];
-    psngrDT: any = [];
+    private tripDT: any = [];
+    private messageDT: any = [];
+    private psngrDT: any = [];
 
-    isPlay: boolean = true;
+    private isPlay: boolean = true;
 
-    options: any = [];
+    private options: any = [];
 
-    sel_tripid: number = 0;
-    sel_msttripid: number = 0;
+    private sel_tripid: number = 0;
+    private sel_msttripid: number = 0;
 
-    connectmsg: string = "";
-    lastlat: string = "";
-    lastlon: string = "";
+    private connectmsg: string = '';
+    private lastlat: string = '';
+    private lastlon: string = '';
 
-    vhmarkers: any = [];
-    dbcaller: any = [];
-    offlinetimeout = 8;
-    offlinetimeout_reach = this.offlinetimeout + 2;
+    private vhmarkers: any = [];
+    private dbcaller: any = [];
+    private offlinetimeout = 8;
+    private offlinetimeout_reach = this.offlinetimeout + 2;
 
-    sidebarTitle = "Title";
-    trafficLayer: any = new google.maps.TrafficLayer();
+    private sidebarTitle = 'Title';
+    private trafficLayer: any = new google.maps.TrafficLayer();
 
-    markerOptions = {
+    private markerOptions = {
         showinfo: false,
         hidelive: false,
         showtrafic: false
     }
 
-    _counter: any = {
+    private _counter: any = {
         all: 0,
         online: 0,
         offline: 0,
         ign: 0
     }
 
-    olfilter: any = "all";
-    _showempty: boolean = false;
+    private olfilter: any = 'all';
+    private _showempty: boolean = false;
 
     private subscribeParameters: any;
     private socketsubscribe: any;
 
-    constructor(private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
-        private _socketservice: SocketService, private _autoservice: CommonService, private _trackDashbord: TrackDashbord,
+    constructor(
+        private _actrouter: ActivatedRoute,
+        private _msg: MessageService,
+        private _loginservice: LoginService,
+        private _socketservice: SocketService,
+        private _autoservice: CommonService,
+        private _trackDashbord: TrackDashbord,
         private componentFactoryResolver: ComponentFactoryResolver) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
@@ -101,16 +106,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getMessage();
     }
 
-    private loadComponent(component, data) {
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-
-        let viewContainerRef = this._Host.viewContainerRef;
-        viewContainerRef.clear();
-
-        let componentRef = viewContainerRef.createComponent(componentFactory);
-        (<HOSTComponent>componentRef.instance).data = data;
-    }
-
+    // tslint:disable-next-line:member-access
     ngOnInit() {
         this._socketservice.close();
         this.getDefaultMap();
@@ -134,7 +130,10 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-    public ngAfterViewInit() {
+
+
+    // tslint:disable-next-line:member-access
+    ngAfterViewInit() {
         let that = this;
 
         that.map = that._gmap.getMap();
@@ -144,38 +143,158 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             setTimeout(function () {
                 $('.maincontent').css('margin-top', '45px');
                 google.maps.event.trigger(that.map, 'resize');
-            }, 1000)
+            }, 1000);
         }
     }
 
-    getDefaultMap() {
+    // tslint:disable-next-line:member-access
+    ngOnDestroy() {
+        $.AdminBSB.islocked = false;
+        $.AdminBSB.rightSideBar.closeonwindow = true;
+        $.AdminBSB.leftSideBar.Open();
+        $('.maincontent').css('margin-top', '50px');
+        if (this.dbcaller !== undefined) {
+            clearInterval(this.dbcaller);
+        }
+
+        if (this.onlineCheckr !== undefined) {
+            clearInterval(this.onlineCheckr);
+        }
+        this._socketservice.close();
+
+        // $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
+        this.subscribeParameters.unsubscribe();
+        this.socketsubscribe.unsubscribe();
+
+    }
+
+
+    private loadComponent(component, data) {
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+
+        let viewContainerRef = this._Host.viewContainerRef;
+        viewContainerRef.clear();
+
+        let componentRef = viewContainerRef.createComponent(componentFactory);
+        (<HOSTComponent>componentRef.instance).data = data;
+    }
+
+
+
+
+    private getDefaultMap() {
         this.options = {
             center: { lat: 22.861639, lng: 78.257621 },
             zoom: 5,
-            styles: [{ "stylers": [{ "saturation": -100 }] }],
+            styles: [{ 'stylers': [{ 'saturation': -100 }] }],
+            // styles: [
+            //     { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+            //     { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+            //     { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+            //     {
+            //         featureType: 'administrative.locality',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#d59563' }]
+            //     },
+            //     {
+            //         featureType: 'poi',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#d59563' }]
+            //     },
+            //     {
+            //         featureType: 'poi.park',
+            //         elementType: 'geometry',
+            //         stylers: [{ color: '#263c3f' }]
+            //     },
+            //     {
+            //         featureType: 'poi.park',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#6b9a76' }]
+            //     },
+            //     {
+            //         featureType: 'road',
+            //         elementType: 'geometry',
+            //         stylers: [{ color: '#38414e' }]
+            //     },
+            //     {
+            //         featureType: 'road',
+            //         elementType: 'geometry.stroke',
+            //         stylers: [{ color: '#212a37' }]
+            //     },
+            //     {
+            //         featureType: 'road',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#9ca5b3' }]
+            //     },
+            //     {
+            //         featureType: 'road.highway',
+            //         elementType: 'geometry',
+            //         stylers: [{ color: '#746855' }]
+            //     },
+            //     {
+            //         featureType: 'road.highway',
+            //         elementType: 'geometry.stroke',
+            //         stylers: [{ color: '#1f2835' }]
+            //     },
+            //     {
+            //         featureType: 'road.highway',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#f3d19c' }]
+            //     },
+            //     {
+            //         featureType: 'transit',
+            //         elementType: 'geometry',
+            //         stylers: [{ color: '#2f3948' }]
+            //     },
+            //     {
+            //         featureType: 'transit.station',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#d59563' }]
+            //     },
+            //     {
+            //         featureType: 'water',
+            //         elementType: 'geometry',
+            //         stylers: [{ color: '#17263c' }]
+            //     },
+            //     {
+            //         featureType: 'water',
+            //         elementType: 'labels.text.fill',
+            //         stylers: [{ color: '#515c6d' }]
+            //     },
+            //     {
+            //         featureType: 'water',
+            //         elementType: 'labels.text.stroke',
+            //         stylers: [{ color: '#17263c' }]
+            //     }
+            // ],
             maxZoom: 17
         };
     }
 
-    getTripType() {
+    private getTripType() {
         this.triptype = [];
-        this.triptype.push({ "label": "Pending", "value": "0" });
-        this.triptype.push({ "label": "Started", "value": "1" });
-        this.triptype.push({ "label": "Completed", "value": "2" });
+        this.triptype.push({ 'label': 'Pending', 'value': '0' });
+        this.triptype.push({ 'label': 'Started', 'value': '1' });
+        this.triptype.push({ 'label': 'Completed', 'value': '2' });
     }
 
     // Fill School Drop Down
 
-    fillSchoolDropDown() {
-        var that = this;
-        var defschoolDT: any = [];
+    private fillSchoolDropDown() {
+        const that = this;
+        let defschoolDT: any = [];
 
         commonfun.loader();
 
         that._autoservice.getDropDownData({
-            "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
-            "enttid": that._enttdetails.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
+            flag: 'school',
+            uid: that.loginUser.uid,
+            utype: that.loginUser.utype,
+            ctype: that.loginUser.ctype,
+            enttid: that._enttdetails.enttid,
+            wsautoid: 0,
+            issysadmin: that.loginUser.issysadmin
+        }).subscribe((data) => {
             try {
                 that.entityDT = data.data;
 
@@ -184,31 +303,30 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     if (defschoolDT.length > 0) {
                         that.enttid = defschoolDT[0].enttid;
-                    }
-                    else {
-                        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
+                    } else {
+                        if (sessionStorage.getItem('_schenttdetails_') === null
+                            &&
+                            sessionStorage.getItem('_schenttdetails_') === undefined) {
                             that.enttid = that.qsenttid || 0;
-                        }
-                        else {
+                        } else {
                             that.enttid = that.qsenttid || that._enttdetails.enttid;
                         }
                     }
 
                     that.fillVehicleDropDown();
                 }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
+            } catch (e) {
+                that._msg.Show(messageType.error, 'Error', e);
             }
 
             commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
+        }, (err) => {
+            that._msg.Show(messageType.error, 'Error', err);
             console.log(err);
             commonfun.loaderhide();
         }, () => {
-
-        })
+            console.log('done');
+        });
     }
 
     // Vehicle DropDown
@@ -220,12 +338,12 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         that.vehtypeIds = [];
 
         that._trackDashbord.gettrackboard({
-            "flag": "vehicle",
-            "vehid": that.qsvehid,
-            "enttid": that.enttid,
-            "uid": that.loginUser.uid,
-            "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin
+            'flag': 'vehicle',
+            'vehid': that.qsvehid,
+            'enttid': that.enttid,
+            'uid': that.loginUser.uid,
+            'utype': that.loginUser.utype,
+            'issysadmin': that.loginUser.issysadmin
         }).subscribe((data) => {
             try {
                 that.vehtypeDT = data.data;
@@ -250,11 +368,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                 that.setLiveBeatsOn();
             }
             catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
+                that._msg.Show(messageType.error, 'Error', e);
             }
             commonfun.loaderhide();
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, 'Error', err);
             commonfun.loaderhide();
         }, () => {
 
@@ -263,7 +381,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Get Selected Trip ID for get Map Data
 
-    getTTMap(row) {
+    private getTTMap(row) {
         var that = this;
 
         that.sel_tripid = row.trpid;
@@ -272,30 +390,30 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Get Tracking Map Data
 
-    getMessage() {
+    private getMessage() {
         var that = this;
         commonfun.loader();
 
-        that.connectmsg = "Registering...";
+        that.connectmsg = 'Registering...';
 
         this.socketsubscribe = this._socketservice.getMessage().subscribe(data => {
             var _d = data;
 
-            if (_d["evt"] == "regreq") {
+            if (_d['evt'] == 'regreq') {
                 if (that.vehtypeIds.length > 0) {
-                    that._socketservice.sendMessage("reg_v", that.vehtypeIds.join(','));
+                    that._socketservice.sendMessage('reg_v', that.vehtypeIds.join(','));
                 }
             }
-            else if (_d["evt"] == "registered") {
-                that.connectmsg = "Registered...";
+            else if (_d['evt'] == 'registered') {
+                that.connectmsg = 'Registered...';
 
                 setTimeout(function () {
-                    that.connectmsg = "Waiting for data..";
+                    that.connectmsg = 'Waiting for data..';
                 }, 1000);
             }
-            else if (_d["evt"] == "data") {
+            else if (_d['evt'] == 'data') {
                 try {
-                    var geoloc = _d["data"];
+                    var geoloc = _d['data'];
                     let el = that.vehtypeDT.find(a => a.vhid === geoloc.vhid);
 
                     if (el !== undefined) {
@@ -306,7 +424,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (isNaN(geoloc.bearing)) el.bearing = el.bearing;
                         else el.bearing = geoloc.bearing;
 
-                        if (geoloc.actvt === "hrtbt") { el.btr = geoloc.btr };
+                        if (geoloc.actvt === 'hrtbt') { el.btr = geoloc.btr };
 
                         if (geoloc.loc !== undefined) {
                             el.loc = geoloc.loc;
@@ -324,7 +442,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
                         // GSM Signal
 
-                        if (geoloc.actvt === "hrtbt") {
+                        if (geoloc.actvt === 'hrtbt') {
                             el.rng = geoloc.gsmsig
                             el.acc = geoloc.acc
                         }
@@ -340,7 +458,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
             commonfun.loaderhide();
         }, err => {
-            that._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, 'Error', err);
             commonfun.loaderhide();
         }, () => {
         });
@@ -399,11 +517,11 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         if (data !== null && data.length === 0) return;
 
         this._trackDashbord.getvahicleupdates_trk({
-            "vhids": data == null ? this.vehtypeIds : data
+            'vhids': data == null ? this.vehtypeIds : data
         }).subscribe(_d => {
             this.refreshdata(_d.data);
         }, err => {
-            this._msg.Show(messageType.error, "Error", err);
+            this._msg.Show(messageType.error, 'Error', err);
             commonfun.loaderhide();
         }, () => {
         })
@@ -490,14 +608,14 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private onchange(e, vh) {
         if (vh.isshow === undefined || vh.isshow === false) {
-            this._msg.Show(messageType.warn, "Hey", "No Updates found"); e.target.checked = false; return
+            this._msg.Show(messageType.warn, 'Hey', 'No Updates found'); e.target.checked = false; return
         }
         else {
             if (e.target.checked) {
                 if (vh.loc === undefined) {
                     e.target.checked = false;
                     e.preventDefault();
-                    this._msg.Show(messageType.warn, "Hey", "Location not received yet"); e.target.checked = false;
+                    this._msg.Show(messageType.warn, 'Hey', 'Location not received yet'); e.target.checked = false;
                     return;
                 }
 
@@ -650,54 +768,54 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    info_click(vh, event) {
+    private info_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false) {
-            this._msg.Show(messageType.warn, "Hey", "No Updates found"); return;
+            this._msg.Show(messageType.warn, 'Hey', 'No Updates found'); return;
         }
 
-        if (this.sidebarTitle !== "Info" || this.selectedSVh.id !== vh.id) {
-            this.sidebarTitle = "Info";
+        if (this.sidebarTitle !== 'Info' || this.selectedSVh.id !== vh.id) {
+            this.sidebarTitle = 'Info';
             this.selectedSVh = vh;
-            this.loadComponent(INFOComponent, { "vhid": vh.id, loginUser: this.loginUser, _enttdetails: this._enttdetails });
-            commonfun.loader("#loaderbody", "pulse", 'Loading Vehicle Info...')
+            this.loadComponent(INFOComponent, { 'vhid': vh.id, loginUser: this.loginUser, _enttdetails: this._enttdetails });
+            commonfun.loader('#loaderbody', 'pulse', 'Loading Vehicle Info...')
         }
 
         $.AdminBSB.rightSideBar.Open();
         event.stopPropagation();
     }
 
-    passenger_click(vh, event) {
+    private passenger_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false) {
-            this._msg.Show(messageType.warn, "Hey", "No Updates found"); return;
+            this._msg.Show(messageType.warn, 'Hey', 'No Updates found'); return;
         }
 
-        if (this.sidebarTitle !== "Passengers" || this.selectedSVh.vhid !== vh.vhid) {
-            this.sidebarTitle = "Passengers";
+        if (this.sidebarTitle !== 'Passengers' || this.selectedSVh.vhid !== vh.vhid) {
+            this.sidebarTitle = 'Passengers';
             this.selectedSVh = vh;
-            this.loadComponent(VehicleScheduleComponent, { "vehid": vh.vehid, loginUser: this.loginUser, _enttdetails: this._enttdetails });
-            commonfun.loader("#loaderbody", "pulse", 'Loading Passengers...');
+            this.loadComponent(VehicleScheduleComponent, { 'vehid': vh.vehid, loginUser: this.loginUser, _enttdetails: this._enttdetails });
+            commonfun.loader('#loaderbody', 'pulse', 'Loading Passengers...');
         }
 
         $.AdminBSB.rightSideBar.Open();
         event.stopPropagation();
     }
 
-    history_click(vh, event) {
+    private history_click(vh, event) {
         if (vh.isshow === undefined || vh.isshow === false) {
-            this._msg.Show(messageType.warn, "Hey", "No Updates found"); return;
+            this._msg.Show(messageType.warn, 'Hey', 'No Updates found'); return;
         }
 
-        if (this.sidebarTitle !== "History" || this.selectedSVh.id !== vh.id) {
+        if (this.sidebarTitle !== 'History' || this.selectedSVh.id !== vh.id) {
             this.loadComponent(HISTORYComponent, {
-                "vhid": vh.id,
-                "imei": vh.vhid,
+                'vhid': vh.id,
+                'imei': vh.vhid,
                 loginUser: this.loginUser, _enttdetails: this._enttdetails, map: this.map
             });
 
-            this.sidebarTitle = "History";
+            this.sidebarTitle = 'History';
             this.selectedSVh = vh;
 
-            commonfun.loader("#loaderbody", "timer", 'Loading History...');
+            commonfun.loader('#loaderbody', 'timer', 'Loading History...');
         }
 
         $.AdminBSB.rightSideBar.Open();
@@ -705,7 +823,7 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.closesidepanel();
     }
 
-    filter(fil) {
+    private filter(fil) {
         this.olfilter = fil;
         if (fil === 'all' && this._counter.all === 0) { this._showempty = true }
         else if (fil === 'ol' && this._counter.online === 0) { this._showempty = true }
@@ -728,38 +846,38 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
             for (var k = 0; k < that.vehtypeDT.length; k++) {
                 var el = that.vehtypeDT[k];
 
-                if (el.min < that.offlinetimeout && el.flag !== "stop") {
+                if (el.min < that.offlinetimeout && el.flag !== 'stop') {
                     that._counter.online += 1;
-                    el.os = "ol";
+                    el.os = 'ol';
                     if (el.acc == 1) {
                         that._counter.ign += 1;
-                        el.os = "ig";
+                        el.os = 'ig';
                     }
                 } else {
                     that._counter.offline += 1;
-                    el.os = "of";
+                    el.os = 'of';
                 }
             }
         }, 5000);
     }
 
     private close_sidebar() {
-        commonfun.loaderhide("#loaderbody")
+        commonfun.loaderhide('#loaderbody')
         $.AdminBSB.rightSideBar.Close();
     }
 
     // UI Changer
 
     private closesidepanel() {
-        if ($("#sidepanel").hasClass('col-md-3')) {
-            $("#sidepanel").removeClass('col-md-3').addClass('hide');
-            $("#map").removeClass('col-md-9').addClass('col-md-12');
-            $("#closeicon").text('keyboard_arrow_right');
+        if ($('#sidepanel').hasClass('col-md-3')) {
+            $('#sidepanel').removeClass('col-md-3').addClass('hide');
+            $('#map').removeClass('col-md-9').addClass('col-md-12');
+            $('#closeicon').text('keyboard_arrow_right');
         }
         else {
-            $("#sidepanel").addClass('col-md-3').removeClass('hide');
-            $("#map").removeClass('col-md-12').addClass('col-md-9');
-            $("#closeicon").text('keyboard_arrow_left');
+            $('#sidepanel').addClass('col-md-3').removeClass('hide');
+            $('#map').removeClass('col-md-12').addClass('col-md-9');
+            $('#closeicon').text('keyboard_arrow_left');
         }
 
         if (this.map !== undefined) {
@@ -767,24 +885,6 @@ export class TripTrackingComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    public ngOnDestroy() {
-        $.AdminBSB.islocked = false;
-        $.AdminBSB.rightSideBar.closeonwindow = true;
-        $.AdminBSB.leftSideBar.Open();
-        $('.maincontent').css('margin-top', '50px');
-        if (this.dbcaller !== undefined) {
-            clearInterval(this.dbcaller);
-        }
 
-        if (this.onlineCheckr !== undefined) {
-            clearInterval(this.onlineCheckr);
-        }
-        this._socketservice.close();
-
-        // $('.container-fluid').css('padding-left', '5px').css('padding-right', '5px');
-        this.subscribeParameters.unsubscribe();
-        this.socketsubscribe.unsubscribe();
-
-    }
 
 }
