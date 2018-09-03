@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">IMEI <strong>*</strong></label>
-                        <input type="text" [(ngModel)]="imei" class="form-control imei" maxlength="15" tabindex="1" (blur)="getVehicleByIMEI()" />
+                        <input type="text" [(ngModel)]="getimei" class="form-control getimei" maxlength="15" tabindex="1" (blur)="getVehicleDetails()" />
                     </div>
                 </div>
             </div>
@@ -47,7 +47,33 @@
                             <strong>*</strong>
                         </label>
 
-                        <input type="text" name="vehregno" [(ngModel)]="vehregno" [pattern]="vehregnoPattern" #regno="ngModel" class="form-control vehregno" maxlength="50" tabindex="2" (blur)="getVehicleByIMEI()" />
+                        <input type="text" name="getvehregno" [(ngModel)]="getvehregno" [pattern]="getvehregnoPattern" #getregno="ngModel" class="form-control getvehregno" maxlength="50" tabindex="2" (blur)="getVehicleDetails()" />
+                    </div>
+                </div>
+                <div id="invalidvehregno" class="col-red" *ngIf="getregno.errors?.pattern">
+                    <span>Not Valid</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">IMEI <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="imei" class="form-control imei" maxlength="15" tabindex="1" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">
+                            Vehicle Registration No <span title="MH-04-A-1, MH-04-A-11, MH-04-AA-111, MH-04-A-1111">(MH-04-CH-4343)</span>
+                            <strong>*</strong>
+                        </label>
+
+                        <input type="text" name="vehregno" [(ngModel)]="vehregno" [pattern]="vehregnoPattern" #regno="ngModel" class="form-control vehregno" maxlength="50" tabindex="2" />
                     </div>
                 </div>
                 <div id="invalidvehregno" class="col-red" *ngIf="regno.errors?.pattern">

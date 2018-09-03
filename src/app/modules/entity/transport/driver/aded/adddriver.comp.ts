@@ -16,6 +16,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     cityDT: any = [];
     areaDT: any = [];
 
+    paramsid: number = 0;
     driverid: number = 0;
     loginid: number = 0;
     drivercode: string = "";
@@ -23,6 +24,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     drivername: string = "";
     aadharno: string = "";
     licenseno: string = "";
+
+    getmobno: string = "";
     mobileno1: string = "";
     mobileno2: string = "";
     email1: string = "";
@@ -326,6 +329,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.driverpwd = "";
         that.drivername = "";
         that.aadharno = "";
+        that.mobileno1 = "";
         that.mobileno2 = "";
         that.email1 = "";
         that.email2 = "";
@@ -369,7 +373,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     refreshDrivers() {
         this.resetDriverFields();
-        this.mobileno1 = "";
+        this.getmobno = "";
     }
 
     // Validation Fields
@@ -377,6 +381,11 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     isValidateDriver(newval) {
         var that = this;
 
+        if (that.mobileno1 == "") {
+            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
+            $(".mobileno1").focus();
+            return false;
+        }
         if (that.drivercode == "") {
             that._msg.Show(messageType.error, "Error", "Enter Driver Code");
             $(".drivercode").focus();
@@ -390,11 +399,6 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         if (that.drivername == "") {
             that._msg.Show(messageType.error, "Error", "Enter Driver Name");
             $(".drivername").focus();
-            return false;
-        }
-        if (that.mobileno1 == "") {
-            that._msg.Show(messageType.error, "Error", "Enter Mobile No");
-            $(".mobileno1").focus();
             return false;
         }
         if (that.address == "") {
@@ -557,111 +561,119 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         }
     }
 
-    // Get Driver Data
+    // On Mobile Change
 
     getDriverDetails() {
+        var that = this;
+
+        that.subscribeParameters = that._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.paramsid = params['id'];
+                that.getDriverByID(that.paramsid);
+                $(".getmobno").attr("disabled", "disabled");
+            }
+            else {
+                that.getDriverByMobile(that.getmobno);
+            }
+        });
+    }
+
+    // Get Driver Data
+
+    getDriverByID(drvid) {
         var that = this;
         that.uploadPhotoDT = [];
 
         commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.driverid = params['id'];
+        that._driverservice.getDriverDetails({
+            "flag": "edit",
+            "id": drvid,
+            "enttid": that._enttdetails.enttid
+        }).subscribe(data => {
+            try {
+                var _driverdata = data.data[0]._driverdata;
+                var _attachdocs = data.data[0]._attachdocs;
 
-                that._driverservice.getDriverDetails({
-                    "flag": "edit",
-                    "id": that.driverid,
-                    "enttid": that._enttdetails.enttid
-                }).subscribe(data => {
-                    try {
-                        var _driverdata = data.data[0]._driverdata;
-                        var _attachdocs = data.data[0]._attachdocs;
+                if (_driverdata == null || _driverdata == undefined) {
+                    that.refreshDrivers();
+                }
+                else {
+                    that.driverid = _driverdata.autoid;
+                    that.loginid = _driverdata.loginid;
+                    that.drivercode = _driverdata.drivercode;
+                    that.driverpwd = _driverdata.driverpwd;
+                    that.drivername = _driverdata.drivername;
+                    that.aadharno = _driverdata.aadharno;
+                    that.licenseno = _driverdata.licenseno;
+                    that.email1 = _driverdata.email1;
+                    that.email2 = _driverdata.email2;
+                    that.getmobno = _driverdata.mobileno1;
+                    that.mobileno1 = _driverdata.mobileno1;
+                    that.mobileno2 = _driverdata.mobileno2;
+                    that.address = _driverdata.address;
+                    that.country = _driverdata.country;
+                    that.state = _driverdata.state;
+                    that.fillCityDropDown();
+                    that.city = _driverdata.city;
+                    that.fillAreaDropDown();
+                    that.area = _driverdata.area;
+                    that.pincode = _driverdata.pincode;
+                    that.remark1 = _driverdata.remark1;
+                    that.isactive = _driverdata.isactive;
+                    that.isprivate = _driverdata.isprivate;
+                    that.mode = _driverdata.mode;
+                    that.othenttids = _driverdata.othenttids;
 
-                        if (_driverdata == null || _driverdata == undefined) {
-                            that.refreshDrivers();
+                    if (_driverdata.FilePath !== "") {
+                        that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
+                        that.choosePhotoLabel = "Change Photo";
+                    }
+                    else {
+                        that.uploadPhotoDT = [];
+                        that.choosePhotoLabel = "Upload Photo";
+                    }
+
+                    if (_attachdocs !== null) {
+                        that.uploadDocsDT = _attachdocs;
+                    }
+                    else {
+                        that.uploadDocsDT = [];
+                    }
+
+                    if (that.isdetails) {
+                        that.disabledDriverFields();
+                    }
+                    else {
+                        if (that._enttdetails.enttid == _driverdata.enttid) {
+                            that.enabledDriverFields();
                         }
                         else {
-                            that.driverid = _driverdata.autoid;
-                            that.loginid = _driverdata.loginid;
-                            that.drivercode = _driverdata.drivercode;
-                            that.driverpwd = _driverdata.driverpwd;
-                            that.drivername = _driverdata.drivername;
-                            that.aadharno = _driverdata.aadharno;
-                            that.licenseno = _driverdata.licenseno;
-                            that.email1 = _driverdata.email1;
-                            that.email2 = _driverdata.email2;
-                            that.mobileno1 = _driverdata.mobileno1;
-                            that.mobileno2 = _driverdata.mobileno2;
-                            that.address = _driverdata.address;
-                            that.country = _driverdata.country;
-                            that.state = _driverdata.state;
-                            that.fillCityDropDown();
-                            that.city = _driverdata.city;
-                            that.fillAreaDropDown();
-                            that.area = _driverdata.area;
-                            that.pincode = _driverdata.pincode;
-                            that.remark1 = _driverdata.remark1;
-                            that.isactive = _driverdata.isactive;
-                            that.isprivate = _driverdata.isprivate;
-                            that.mode = _driverdata.mode;
-                            that.othenttids = _driverdata.othenttids;
-
-                            if (_driverdata.FilePath !== "") {
-                                that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });
-                                that.choosePhotoLabel = "Change Photo";
-                            }
-                            else {
-                                that.uploadPhotoDT = [];
-                                that.choosePhotoLabel = "Upload Photo";
-                            }
-
-                            if (_attachdocs !== null) {
-                                that.uploadDocsDT = _attachdocs;
-                            }
-                            else {
-                                that.uploadDocsDT = [];
-                            }
-
-                            if (that.isdetails) {
-                                that.disabledDriverFields();
-                            }
-                            else {
-                                if (that._enttdetails.enttid == _driverdata.enttid) {
-                                    that.enabledDriverFields();
-                                }
-                                else {
-                                    that.disabledDriverFields();
-                                }
-
-                                that.driverData = that.getDriverParams();
-                                that.oldDriverData = that.getAuditData("old");
-                            }
+                            that.disabledDriverFields();
                         }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
 
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
+                        that.driverData = that.getDriverParams();
+                        that.oldDriverData = that.getAuditData("old");
+                    }
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                })
-            }
-            else {
-                that.refreshDrivers();
-                commonfun.loaderhide();
-            }
-        });
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Get Driver Data By Mobile
 
-    getDriverByMobile() {
+    getDriverByMobile(mobno) {
         var that = this;
         that.uploadPhotoDT = [];
 
@@ -669,14 +681,12 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
         that._driverservice.getDriverDetails({
             "flag": "bymobile",
-            "mobileno1": that.mobileno1,
-            "loginid": that.loginid,
+            "mobileno1": mobno,
             "enttid": that._enttdetails.enttid
         }).subscribe(data => {
             try {
                 var _status = data.data[0].status;
                 var _isexists = data.data[0].isexists;
-                var _isowner = data.data[0].isowner;
                 var _msg = data.data[0].msg;
                 var _driverdata = data.data[0]._driverdata;
 
@@ -689,16 +699,11 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that.resetDriverFields();
 
                         if (_isexists) {
-                            that.mobileno1 = "";
+                            that.getmobno = "";
                         }
                     }
                     else {
-                        if (_isowner) {
-                            that.enabledDriverFields();
-                        }
-                        else {
-                            that.disabledDriverFields();
-                        }
+                        that.disabledDriverFields();
 
                         that.driverid = _driverdata.autoid;
                         that.loginid = _driverdata.loginid;
@@ -709,6 +714,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that.licenseno = _driverdata.licenseno;
                         that.email1 = _driverdata.email1;
                         that.email2 = _driverdata.email2;
+                        that.mobileno1 = _driverdata.mobileno1;
                         that.mobileno2 = _driverdata.mobileno2;
                         that.address = _driverdata.address;
                         that.country = _driverdata.country;

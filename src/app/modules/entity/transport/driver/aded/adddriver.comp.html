@@ -30,22 +30,29 @@
     </div>
 
     <div class="body">
-        <div class="hidewhen">
-            <div class="row clearfix">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <label class="control-label">Mobile (Login No) <strong>*</strong></label>
-                            <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="1" (blur)="getDriverByMobile()" />
-                        </div>
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Mobile (Login No) <strong>*</strong></label>
+                        <input type="text" [(ngModel)]="getmobno" class="form-control getmobno" maxlength="10" tabindex="1" (blur)="getDriverDetails()" />
                     </div>
                 </div>
-                <div class="col-md-9 pad-20 text-right">
-                    <input id="isprivate" type="checkbox" [(ngModel)]="isprivate" class="filled-in" />
-                    <label for="isprivate">Is Private</label>
+            </div>
+            <div class="col-md-3 pad-20">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="1" />
+                    </div>
                 </div>
             </div>
+            <div class="col-md-6 pad-20 text-right">
+                <input id="isprivate" type="checkbox" [(ngModel)]="isprivate" class="filled-in" />
+                <label for="isprivate">Is Private</label>
+            </div>
+        </div>
 
+        <div class="hidewhen">
             <div class="row clearfix">
                 <div class="col-md-6 border">
                     <div class="row clearfix">

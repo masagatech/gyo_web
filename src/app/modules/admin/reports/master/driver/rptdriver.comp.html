@@ -1,0 +1,84 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Driver</label>
+                        <input type="text" [(ngModel)]="srcdrvname" class="form-control drivercode" tabindex="1" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-8">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Entity</label>
+                        <select id="enntid" name="enttname" [(ngModel)]="enttid" class="form-control enttname" (ngModelChange)="getDriverDetails()" tabindex="2">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of entityDT" [value]="row.enttid">
+                                {{row.enttname}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-theme" (click)="getDriverDetails()">
+                        <span class="material-icons">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="exportToCSV()"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+                        <li><a role="button" (click)="exportToPDF()"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body no-padding">
+        <div #driver>
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th width="50px">Sr.</th>
+                        <th width="150px">Driver Name</th>
+                        <th width="250px">School</th>
+                        <th width="100px">Mobile</th>
+                        <th width="50px">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let drow of driverDT; let i = index;">
+                        <td>
+                            {{i + 1}}
+                        </td>
+                        <td>
+                            {{drow.drivername}}
+                        </td>
+                        <td>
+                            <div *ngFor="let schrow of drow.schooldt; let i = index;">
+                                <b *ngIf="drow.schooldt.length > 1">{{i + 1}}.</b>
+                                <span [ngClass]="{'bg-green':schrow.schid == enttid}">{{schrow.schname}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
+                        </td>
+                        <td>
+                            {{drow.mode}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

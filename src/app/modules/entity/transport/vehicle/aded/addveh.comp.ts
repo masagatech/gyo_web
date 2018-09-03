@@ -16,14 +16,18 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     devtypeDT: any = [];
     d1strDT: any = [];
 
+    paramsid: number = 0;
     ownenttid: number = 0;
     autoid: number = 0;
     vehid: number = 0;
+    getimei: string = "";
+    getvehregno: string = "";
+    imei: string = "";
+    vehregno: string = "";
+    vehregnoPattern = "^[A-Z]{2}-[0-9]{2}-[A-Z]{1,2}-[0-9]{1,4}$";
     vehtype: string = "";
     vehtypename: string = "";
     vehname: string = "";
-    vehregno: string = "";
-    vehregnoPattern = "^[A-Z]{2}-[0-9]{2}-[A-Z]{1,2}-[0-9]{1,4}$";
     vehmake: string = "";
     vehmodel: string = "";
     capacity: number = 0;
@@ -34,7 +38,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     todt: any = "";
     devtype: string = "";
     devtypename: string = "";
-    imei: string = "";
     simno: string = "";
     speedAllow: number = 0;
     d1str: string = "";
@@ -173,6 +176,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     resetVehicleFields() {
         this.autoid = 0;
         this.vehid = 0;
+        this.imei = "";
+        this.vehregno = "";
         this.vehtype = "";
         this.vehname = "";
         this.vehmake = "";
@@ -209,8 +214,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     refreshVehicles() {
         this.resetVehicleFields();
-        this.imei = "";
-        this.vehregno = "";
+        this.getimei = "";
+        this.getvehregno = "";
     }
 
     // Validation Fields
@@ -469,187 +474,190 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Get Vehicle Data By ID
-
     getVehicleDetails() {
         var that = this;
-        commonfun.loader();
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.vehid = params['id'];
-
-                that._vehservice.getVehicleDetails({
-                    "flag": "edit",
-                    "id": that.vehid,
-                    "enttid": that._enttdetails.enttid,
-                    "wsautoid": that._enttdetails.wsautoid
-                }).subscribe(data => {
-                    try {
-                        if (data.data.length == 0) {
-                            that.refreshVehicles();
-                        }
-                        else {
-                            var _vehdata = data.data[0];
-
-                            that.ownenttid = _vehdata.ownenttid;
-                            that.autoid = _vehdata.autoid;
-                            that.vehid = _vehdata.vehid;
-                            that.vehtype = _vehdata.vehicletype;
-                            that.vehname = _vehdata.vehiclename;
-                            that.vehregno = _vehdata.vehregno;
-                            that.imei = _vehdata.imei;
-                            that.simno = _vehdata.simno;
-                            that.vehmake = _vehdata.vehiclemake;
-                            that.vehmodel = _vehdata.vehiclemodel;
-                            that.capacity = _vehdata.capacity;
-                            that.vehcond = _vehdata.vehiclecondition;
-                            that.vehfclt = _vehdata.vehiclefacility;
-                            that.frmdt = _vehdata.frmdt;
-                            that.todt = _vehdata.todt;
-                            that.devtype = _vehdata.devtype;
-                            that.devtypename = _vehdata.devtypename;
-                            that.speedAllow = _vehdata.vhspeed;
-                            that.d1str = _vehdata.d1str;
-
-                            var trktypedt = data.data[0].trktype;
-
-                            if (trktypedt != null) {
-                                for (var i = 0; i < trktypedt.length; i++) {
-                                    $("#track").find("#" + trktypedt[i]).prop('checked', true);
-                                }
-                            }
-
-                            that.vehurl = _vehdata.url;
-                            that.isprivate = _vehdata.isprivate;
-                            that.isactive = _vehdata.isactive;
-                            that.mode = _vehdata.mode;
-                            that.dtlsmode = _vehdata.dtlsmode;
-
-                            if (that.isdetails) {
-                                that.disabledVehicleFields();
-                                $('.vehname').prop("disabled", "disabled");
-                            }
-                            else {
-                                if (that._enttdetails.enttid == _vehdata.ownenttid) {
-                                    that.enabledVehicleFields();
-                                }
-                                else {
-                                    that.disabledVehicleFields();
-                                }
-
-                                that.vehicleData = that.getVehicleParams(trktypedt);
-                                that.oldVehicleData = that.getAuditData("old", trktypedt);
-
-                                $(".vehname").removeAttr("disabled");
-                            }
-                        }
-                    }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
-                    }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                that.paramsid = params['id'];
+                that.getVehicleByID(that.paramsid);
             }
             else {
-                that.resetVehicleFields();
-                commonfun.loaderhide();
+                that.getVehicleByIMEI(that.getimei, that.getvehregno);
             }
         });
     }
 
-    // Get Vehicle Data By IMEI
+    // Get Vehicle Data By ID
 
-    getVehicleByIMEI() {
+    getVehicleByID(autoid) {
         var that = this;
+        commonfun.loader();
 
-        that.subscribeParameters = that._routeParams.params.subscribe(params => {
-            if (params['id'] == undefined) {
-                commonfun.loader();
+        that._vehservice.getVehicleDetails({
+            "flag": "edit",
+            "id": autoid,
+            "enttid": that._enttdetails.enttid,
+            "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                if (data.data.length == 0) {
+                    that.refreshVehicles();
+                }
+                else {
+                    var _vehdata = data.data[0];
 
-                that._vehservice.getVehicleDetails({
-                    "flag": "byimei",
-                    "imei": that.imei,
-                    "vehregno": that.vehregno,
-                    "enttid": that._enttdetails.enttid
-                }).subscribe(data => {
-                    try {
-                        var _status = data.data[0].status;
-                        var _isexists = data.data[0].isexists;
-                        var _msg = data.data[0].msg;
-                        var _vehdata = data.data[0].vehdata;
+                    that.ownenttid = _vehdata.ownenttid;
+                    that.autoid = _vehdata.autoid;
+                    that.vehid = _vehdata.vehid;
+                    that.getimei = _vehdata.imei;
+                    that.getvehregno = _vehdata.vehregno;
+                    that.imei = _vehdata.imei;
+                    that.vehregno = _vehdata.vehregno;
+                    that.simno = _vehdata.simno;
+                    that.vehtype = _vehdata.vehicletype;
+                    that.vehname = _vehdata.vehiclename;
+                    that.vehmake = _vehdata.vehiclemake;
+                    that.vehmodel = _vehdata.vehiclemodel;
+                    that.capacity = _vehdata.capacity;
+                    that.vehcond = _vehdata.vehiclecondition;
+                    that.vehfclt = _vehdata.vehiclefacility;
+                    that.frmdt = _vehdata.frmdt;
+                    that.todt = _vehdata.todt;
+                    that.devtype = _vehdata.devtype;
+                    that.devtypename = _vehdata.devtypename;
+                    that.speedAllow = _vehdata.vhspeed;
+                    that.d1str = _vehdata.d1str;
 
-                        if (_vehdata == null || _vehdata == undefined) {
-                            that.resetVehicleFields();
+                    var trktypedt = data.data[0].trktype;
+
+                    if (trktypedt != null) {
+                        for (var i = 0; i < trktypedt.length; i++) {
+                            $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                        }
+                    }
+
+                    that.vehurl = _vehdata.url;
+                    that.isprivate = _vehdata.isprivate;
+                    that.isactive = _vehdata.isactive;
+                    that.mode = _vehdata.mode;
+                    that.dtlsmode = _vehdata.dtlsmode;
+
+                    if (that.isdetails) {
+                        that.disabledVehicleFields();
+                        $('.vehname').prop("disabled", "disabled");
+                    }
+                    else {
+                        if (that._enttdetails.enttid == _vehdata.ownenttid) {
+                            that.enabledVehicleFields();
                         }
                         else {
-                            if (_status == false) {
-                                that._msg.Show(messageType.error, "Error", _msg);
-                                that.resetVehicleFields();
+                            that.disabledVehicleFields();
+                        }
 
-                                if (_isexists) {
-                                    that.imei = "";
-                                    that.vehregno = "";
-                                }
-                            }
-                            else {
-                                that.autoid = _vehdata.autoid;
-                                that.vehid = _vehdata.vehid;
-                                that.vehregno = _vehdata.vehregno;
-                                that.imei = _vehdata.imei;
-                                that.simno = _vehdata.simno;
-                                that.vehtype = _vehdata.vehicletype;
-                                that.vehname = _vehdata.vehiclename;
-                                that.vehmake = _vehdata.vehiclemake;
-                                that.vehmodel = _vehdata.vehiclemodel;
-                                that.capacity = _vehdata.capacity;
-                                that.vehcond = _vehdata.vehiclecondition;
-                                that.vehfclt = _vehdata.vehiclefacility;
-                                that.devtype = _vehdata.devtype;
-                                that.speedAllow = _vehdata.vhspeed;
-                                that.d1str = _vehdata.d1str;
+                        that.vehicleData = that.getVehicleParams(trktypedt);
+                        that.oldVehicleData = that.getAuditData("old", trktypedt);
 
-                                var trktypedt = data.data[0].trktype;
+                        $(".vehname").removeAttr("disabled");
+                    }
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
 
-                                if (trktypedt != null) {
-                                    for (var i = 0; i < trktypedt.length; i++) {
-                                        $("#track").find("#" + trktypedt[i]).prop('checked', true);
-                                    }
-                                }
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
 
-                                that.vehurl = _vehdata.url;
-                                that.isactive = _vehdata.isactive;
-                                that.mode = _vehdata.mode;
-                                that.dtlsmode = _vehdata.dtlsmode;
+        })
+    }
 
-                                that.vehicleData = that.getVehicleParams(trktypedt);
-                                that.oldVehicleData = that.getAuditData("old", trktypedt);
+    // Get Vehicle Data By IMEI
 
-                                that.disabledVehicleFields();
-                            }
+    getVehicleByIMEI(imei, vehregno) {
+        var that = this;
+        commonfun.loader();
+
+        that._vehservice.getVehicleDetails({
+            "flag": "byimei",
+            "imei": imei,
+            "vehregno": vehregno,
+            "enttid": that._enttdetails.enttid
+        }).subscribe(data => {
+            try {
+                var _status = data.data[0].status;
+                var _isexists = data.data[0].isexists;
+                var _msg = data.data[0].msg;
+                var _vehdata = data.data[0].vehdata;
+
+                if (_vehdata == null || _vehdata == undefined) {
+                    that.resetVehicleFields();
+                }
+                else {
+                    if (_status == false) {
+                        that._msg.Show(messageType.error, "Error", _msg);
+                        that.resetVehicleFields();
+
+                        if (_isexists) {
+                            that.getimei = "";
+                            that.getvehregno = "";
                         }
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that.disabledVehicleFields();
+
+                        that.autoid = _vehdata.autoid;
+                        that.vehid = _vehdata.vehid;
+                        that.imei = _vehdata.imei;
+                        that.vehregno = _vehdata.vehregno;
+                        that.simno = _vehdata.simno;
+                        that.vehtype = _vehdata.vehicletype;
+                        that.vehname = _vehdata.vehiclename;
+                        that.vehmake = _vehdata.vehiclemake;
+                        that.vehmodel = _vehdata.vehiclemodel;
+                        that.capacity = _vehdata.capacity;
+                        that.vehcond = _vehdata.vehiclecondition;
+                        that.vehfclt = _vehdata.vehiclefacility;
+                        that.devtype = _vehdata.devtype;
+                        that.speedAllow = _vehdata.vhspeed;
+                        that.d1str = _vehdata.d1str;
+
+                        var trktypedt = data.data[0].trktype;
+
+                        if (trktypedt != null) {
+                            for (var i = 0; i < trktypedt.length; i++) {
+                                $("#track").find("#" + trktypedt[i]).prop('checked', true);
+                            }
+                        }
+
+                        that.vehurl = _vehdata.url;
+                        that.isactive = _vehdata.isactive;
+                        that.mode = _vehdata.mode;
+                        that.dtlsmode = _vehdata.dtlsmode;
+
+                        that.vehicleData = that.getVehicleParams(trktypedt);
+                        that.oldVehicleData = that.getAuditData("old", trktypedt);
+
+                        that.disabledVehicleFields();
                     }
-
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
-
-                })
+                }
             }
-        });
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data
