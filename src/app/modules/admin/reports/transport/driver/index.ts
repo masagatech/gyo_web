@@ -14,7 +14,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: DriverReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpttrnsp", "submodule": "rptdrv", "rights": "view", "urlname": "/driver" }
+        data: { "module": "rpttrnsp", "submodule": "rptdrvtrnsp", "rights": "view", "urlname": "/driver" }
       }
     ]
   },
