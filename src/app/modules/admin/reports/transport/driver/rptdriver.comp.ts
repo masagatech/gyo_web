@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
-import { DriverService } from '@services/master';
-import jsPDF from 'jspdf'
+import { LoginUserModel, Globals, Common } from '@models';
+import { ReportsService } from '@services/reports';
 
 @Component({
     templateUrl: 'rptdriver.comp.html'
@@ -18,10 +17,8 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
     enttid: number = 0;
     srcdrvname: string = "";
 
-    @ViewChild('driver') driver: ElementRef;
-
     constructor(private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService,
-        private _driverservice: DriverService) {
+        private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -66,7 +63,7 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    that.getDriverDetails();
+                    that.getDriverReports("html");
                 }
             }
             catch (e) {
@@ -83,47 +80,40 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Driver
+    // Get Driver Reports
 
-    getDriverDetails() {
+    public getDriverReports(format) {
         var that = this;
+
+        var dparams = {
+            "flag": "trnsp_reports", "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "format": format
+        }
+
         commonfun.loader();
 
-        that._driverservice.getDriverDetails({
-            "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.driverDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        if (format == "html") {
+            that._rptservice.getDriverReports(dparams).subscribe(data => {
+                try {
+                    $("#divrptdrvtrnsp").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
+
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getDriverReports", dparams));
             commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
-    }
-
-    // Export
-
-    public exportToCSV() {
-        this._autoservice.exportToCSV(this.driverDT, "Driver Details");
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.driver.nativeElement, 0, 0, options, () => {
-            pdf.save("DriverReports.pdf");
-        });
+        }
     }
 
     public ngOnDestroy() {

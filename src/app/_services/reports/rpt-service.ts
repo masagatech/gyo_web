@@ -7,6 +7,18 @@ import { Globals } from '@globals';
 export class ReportsService {
     constructor(private _dataserver: DataService, private _router: Router) { }
 
+    // Driver
+
+    getDriverReports(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getDriverReports", req)
+    }
+
+    // User
+
+    getUserReports(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getUserReports", req)
+    }
+
     // Attendance
 
     getAttendanceReports(req: any) {

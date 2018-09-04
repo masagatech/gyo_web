@@ -6,9 +6,7 @@
             <div class="col-md-2 col-xs-4">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">User Type
-                            <strong>*</strong>
-                        </label>
+                        <label class="control-label">User Type</label>
                         <select id="utype" [(ngModel)]="srcutype" class="form-control srcutype" tabindex="1">
                             <option [value]="''">All</option>
                             <option *ngFor="let row of utypeDT" [value]="row.key">
@@ -41,7 +39,7 @@
             </div>
             <div class="col-md-1 col-xs-2 pad-20">
                 <div class="form-group">
-                    <button type="button" class="btn btn-theme" (click)="getUserDetails()">
+                    <button type="button" class="btn btn-theme" (click)="getUserReports('html')">
                         <span class="material-icons">arrow_forward</span>
                     </button>
                 </div>
@@ -49,101 +47,19 @@
             <div class="col-md-1 col-xs-2 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Export
-                        <span class="caret"></span>
+                        Export <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a role="button" (click)="exportToCSV()">
-                                <i class="fa fa-file-excel-o"></i> CSV</a>
-                        </li>
-                        <li>
-                            <a role="button" (click)="exportToPDF()">
-                                <i class="fa fa-file-pdf-o"></i> PDF</a>
-                        </li>
+                        <li><a role="button" (click)="getUserReports('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getUserReports('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="body no-padding">
-        <div #users>
-            <table class="table table-bordered table-responsive">
-                <thead>
-                    <tr>
-                        <th width="50px"></th>
-                        <th width="50px"></th>
-                        <th width="200px">User Name</th>
-                        <th width="150px">Mapped Vehicles</th>
-                        <th width="300px">Mapped Entity</th>
-                        <th width="80px">Mobile</th>
-                        <th width="150px">Email</th>
-                        <th width="200px">Address</th>
-                        <th width="50px">Status</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let row of usersDT | groupBy: 'wsname';">
-                    <tr>
-                        <th colspan="9">
-                            <b>Workspace : </b> {{row.key}}
-                        </th>
-                    </tr>
-                    <tr *ngFor="let drow of row.value | filterBy: {'fullname': uname};">
-                        <td>
-                            {{drow.rowid}}
-                        </td>
-                        <td>
-                            <img *ngIf="drow.gndrkey=='M'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-male.png' ;" class="img-sm">
-                            <img *ngIf="drow.gndrkey=='F'" alt="{{drow.fullname}}" src="{{global.uploadurl + drow.uphoto}}" onerror="this.src='assets/img/default-female.png' ;" class="img-sm">
-                        </td>
-                        <td>
-                            {{drow.ucode}} : {{drow.fullname}} <br /> {{drow.utypename}}
-                        </td>
-                        <td>
-                            <div *ngIf="drow.vehicledt.length">
-                                <div id="veh{{drow.rowid}}" class="overflow-135">
-                                    <div *ngFor="let vehrow of drow.vehicledt; let i = index;">
-                                        <b *ngIf="drow.vehicledt.length > 1">{{i + 1}}.</b>
-                                        <span>{{vehrow.vehname}}</span>
-                                    </div>
-                                </div>
-
-                                <a id="moreveh{{drow.rowid}}" role="button" (click)="viewMoreVehicle(drow)">View More....</a>
-                                <a id="hideveh{{drow.rowid}}" role="button" (click)="hideMoreVehicle(drow)" class="hide">Hide</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div *ngIf="drow.schooldt.length">
-                                <div id="sch{{drow.rowid}}" class="overflow-135">
-                                    <div *ngFor="let schrow of drow.schooldt; let i = index;">
-                                        <b *ngIf="drow.schooldt.length > 1">{{i + 1}}.</b>
-                                        <span [ngClass]="{'bg-green':enttid == schrow.schid}">{{schrow.schname}}</span>
-                                    </div>
-                                </div>
-
-                                <a id="moresch{{drow.rowid}}" role="button" (click)="viewMoreSchool(drow)">View More....</a>
-                                <a id="hidesch{{drow.rowid}}" role="button" (click)="hideMoreSchool(drow)" class="hide">Hide</a>
-                            </div>
-                        </td>
-                        <td>
-                            {{drow.mobileno1}}<span *ngIf="drow.mobileno2 !== ''">{{", " + drow.mobileno2}}</span>
-                        </td>
-                        <td>
-                            {{drow.email1}}<span *ngIf="drow.email2 !== ''">{{", " + drow.email2}}</span>
-                        </td>
-                        <td>
-                            <span>{{drow.address}}</span>
-                            <br /> {{drow.area}}
-                            <span *ngIf="drow.city !== ''">{{" " + drow.city}}</span><span *ngIf="drow.state !== ''">{{" " + drow.state}}</span><span *ngIf="drow.country !== ''">{{", " + drow.country}}</span>
-                        </td>
-                        <td>
-                            {{drow.mode}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="body padding-0">
+        <div id="divrptusermst" class="min-body-height"></div>
     </div>
 </div>

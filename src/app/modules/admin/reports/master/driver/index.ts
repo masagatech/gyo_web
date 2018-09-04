@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { DriverMasterReportsComponent } from './rptdriver.comp';
-import { DriverService } from '@services/master';
+import { ReportsService } from '@services/reports';
 
 import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
 
@@ -29,7 +29,7 @@ export const routes = [
     CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule
   ],
 
-  providers: [AuthGuard, CommonService, DriverService]
+  providers: [AuthGuard, CommonService, ReportsService]
 })
 
 export class DriverMasterReportsModule {

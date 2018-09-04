@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { UserReportsComponent } from './rptuser.comp';
-import { UserService } from '@services/master';
 
-import { DataTableModule } from 'primeng/primeng';
+import { ReportsService } from '@services/reports';
+import { UserService } from '@services/master';
 
 export const routes = [
   {
@@ -26,10 +26,10 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
-  providers: [AuthGuard, UserService, CommonService]
+  providers: [AuthGuard, UserService, ReportsService, CommonService]
 })
 
 export class UserReportsModule {

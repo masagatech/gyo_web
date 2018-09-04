@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
+import { LoginUserModel, Globals, Common } from '@models';
 import { UserService } from '@services/master';
-import jsPDF from 'jspdf'
+import { ReportsService } from '@services/reports';
 
 declare var $: any;
 
@@ -26,16 +26,13 @@ export class UserReportsComponent implements OnInit, OnDestroy {
 
     usersDT: any = [];
 
-    @ViewChild('users') users: ElementRef;
-
-    constructor(private _msg: MessageService, private _loginservice: LoginService, private _userservice: UserService,
-        private _autoservice: CommonService) {
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService,
+        private _userservice: UserService, private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillSchoolDropDown();
         this.fillUserTypeDropDown();
-        this.getUserDetails();
+        this.fillSchoolDropDown();
     }
 
     public ngOnInit() {
@@ -46,24 +43,6 @@ export class UserReportsComponent implements OnInit, OnDestroy {
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
-    }
-
-    // Export
-
-    public exportToCSV() {
-        this._autoservice.exportToCSV(this.usersDT, "User Details");
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-
-        let options = {
-            pagesplit: true
-        };
-
-        pdf.addHTML(this.users.nativeElement, 0, 0, options, () => {
-            pdf.save("UserReports.pdf");
-        });
     }
 
     // Fill Dropdown
@@ -114,7 +93,7 @@ export class UserReportsComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    that.getUserDetails();
+                    that.getUserReports("html");
                 }
             }
             catch (e) {
@@ -131,65 +110,40 @@ export class UserReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    getUserDetails() {
+    // Get User Reports
+
+    public getUserReports(format) {
         var that = this;
-        var uparams = {};
 
-        commonfun.loader("#users");
+        var dparams = {
+            "flag": "reports", "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "format": format
+        }
 
-        uparams = {
-            "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin, "srcutype": that.srcutype
-        };
+        commonfun.loader();
 
-        that._userservice.getUserDetails(uparams).subscribe(data => {
-            try {
-                that.usersDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        if (format == "html") {
+            that._rptservice.getUserReports(dparams).subscribe(data => {
+                try {
+                    $("#divrptusermst").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-            commonfun.loaderhide("#users");
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide("#users");
-        }, () => {
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-        })
-    }
-
-    // More Vehicle
-
-    viewMoreVehicle(drow) {
-        $("#veh" + drow.rowid).attr("class", "overflow-135 overflow-auto");
-        $("#moreveh" + drow.rowid).attr("class", "hide");
-        $("#hideveh" + drow.rowid).attr("class", "show");
-        $("#veh" + drow.rowid).focus();
-    }
-
-    hideMoreVehicle(drow) {
-        $("#veh" + drow.rowid).attr("class", "overflow-135");
-        $("#moreveh" + drow.rowid).attr("class", "show");
-        $("#hideveh" + drow.rowid).attr("class", "hide");
-        $("#veh" + drow.rowid).focus();
-    }
-
-    // More School
-
-    viewMoreSchool(drow) {
-        $("#sch" + drow.rowid).attr("class", "overflow-135 overflow-auto");
-        $("#moresch" + drow.rowid).attr("class", "hide");
-        $("#hidesch" + drow.rowid).attr("class", "show");
-        $("#sch" + drow.rowid).focus();
-    }
-
-    hideMoreSchool(drow) {
-        $("#sch" + drow.rowid).attr("class", "overflow-135");
-        $("#moresch" + drow.rowid).attr("class", "show");
-        $("#hidesch" + drow.rowid).attr("class", "hide");
-        $("#sch" + drow.rowid).focus();
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getUserReports", dparams));
+            commonfun.loaderhide();
+        }
     }
 
     public ngOnDestroy() {
