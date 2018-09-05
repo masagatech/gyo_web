@@ -3,7 +3,7 @@
         <h4>Driver</h4>
 
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="driverid !== 0">
+            <li *ngIf="driverid != 0 && iseditdrv == true">
                 <span class="switch">
                     <label class="control-label">
                         <input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()">
@@ -11,12 +11,17 @@
                 </label>
                 </span>
             </li>
+            <li *ngIf="driverid != 0 && isdeletedrv == true">
+                <a role="button" class="btn btn-danger" (click)="deleteDrivers()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
             <li *ngIf="driverid == 0">
                 <a role="button" class="btn btn-theme" (click)="refreshDrivers()">
                     <i class="material-icons">refresh</i>
                 </a>
             </li>
-            <li>
+            <li *ngIf="isadddrv == true && iseditdrv == true">
                 <a role="button" class="btn btn-theme" (click)="saveDriverInfo()">
                     <i class="material-icons">save</i>
                 </a>
@@ -35,14 +40,14 @@
                 <div class="form-group">
                     <div class="form-line">
                         <label class="control-label">Mobile (Login No) <strong>*</strong></label>
-                        <input type="text" [(ngModel)]="getmobno" class="form-control getmobno" maxlength="10" tabindex="1" (blur)="getDriverDetails()" />
+                        <input type="text" [(ngModel)]="getmobno" (OnlyNumber)="true" class="form-control getmobno" maxlength="10" tabindex="1" (blur)="getDriverDetails()" />
                     </div>
                 </div>
             </div>
             <div class="col-md-3 pad-20">
                 <div class="form-group">
                     <div class="form-line">
-                        <input type="text" [(ngModel)]="mobileno1" class="form-control mobileno1" maxlength="10" tabindex="1" />
+                        <input type="text" [(ngModel)]="mobileno1" (OnlyNumber)="true" class="form-control mobileno1" maxlength="10" tabindex="1" />
                     </div>
                 </div>
             </div>
@@ -105,7 +110,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">Aadhar No</label>
-                                    <input type="text" [(ngModel)]="aadharno" class="form-control" maxlength="12" tabindex="6" />
+                                    <input type="text" [(ngModel)]="aadharno" (OnlyNumber)="true" class="form-control" maxlength="12" tabindex="6" />
                                 </div>
                             </div>
                         </div>
@@ -157,7 +162,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">Alternate Mobile</label>
-                                    <input type="text" [(ngModel)]="mobileno2" class="form-control" maxlength="10" tabindex="9" />
+                                    <input type="text" [(ngModel)]="mobileno2" (OnlyNumber)="true" class="form-control" maxlength="10" tabindex="9" />
                                 </div>
                             </div>
                         </div>

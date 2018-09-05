@@ -15,7 +15,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: AddUserVehicleMapComponent, canActivate: [AuthGuard],
-        data: { "module": "set", "submodule": "uvm", "rights": "allowed", "urlname": "/uservehiclemap" }
+        data: { "module": "trnsp", "submodule": "uvm", "rights": "allowed", "urlname": "/uservehiclemap" }
       }
     ]
   },

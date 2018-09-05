@@ -14,10 +14,22 @@ import { DataTableModule, DataGridModule, PanelModule, FileUploadModule } from '
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "view", "urlname": "/driver" } },
-      { path: 'add', component: AddDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddDriverComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "drv", "rights": "edit", "urlname": "/edit" } }
+      {
+        path: '', component: ViewDriverComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "drv", "rights": "view", "urlname": "/driver" }
+      },
+      {
+        path: 'add', component: AddDriverComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "drv", "rights": "add", "urlname": "/add" }
+      },
+      {
+        path: 'details/:id', component: AddDriverComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "drv", "rights": "edit", "urlname": "/edit" }
+      },
+      {
+        path: 'edit/:id', component: AddDriverComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "drv", "rights": "edit", "urlname": "/edit" }
+      }
     ]
   },
 ];

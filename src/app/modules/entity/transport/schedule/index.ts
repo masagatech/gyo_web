@@ -18,19 +18,19 @@ export const routes = [
         path: '', children: [
             {
                 path: '', component: ViewScheduleComponent, canActivate: [AuthGuard],
-                data: { "module": "schd", "submodule": "sch", "rights": "view", "urlname": "/view" }
+                data: { "module": "trnsp", "submodule": "schd", "rights": "view", "urlname": "/view" }
             },
             {
                 path: 'add', component: AddScheduleComponent, canActivate: [AuthGuard],
-                data: { "module": "schd", "submodule": "sch", "rights": "add", "urlname": "/add" }
+                data: { "module": "trnsp", "submodule": "schd", "rights": "add", "urlname": "/add" }
             },
             {
                 path: 'edit', component: EditScheduleComponent, canActivate: [AuthGuard],
-                data: { "module": "schd", "submodule": "sch", "rights": "edit", "urlname": "/edit" }
+                data: { "module": "trnsp", "submodule": "schd", "rights": "edit", "urlname": "/edit" }
             },
             {
                 path: 'edit/:id', component: EditScheduleComponent, canActivate: [AuthGuard],
-                data: { "module": "schd", "submodule": "sch", "rights": "edit", "urlname": "/edit" }
+                data: { "module": "trnsp", "submodule": "schd", "rights": "edit", "urlname": "/edit" }
             }
         ]
     },

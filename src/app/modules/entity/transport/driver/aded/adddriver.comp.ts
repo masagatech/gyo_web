@@ -57,6 +57,10 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     isedit: boolean = false;
     isdetails: boolean = false;
 
+    isadddrv: boolean = false;
+    iseditdrv: boolean = false;
+    isdeletedrv: boolean = false;
+
     driverData: any = [];
     oldDriverData: any = [];
     newDriverData: any = [];
@@ -75,6 +79,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         this.fillCityDropDown();
         this.fillAreaDropDown();
 
+        this.getActionRights();
+
         this.isadd = _router.url.indexOf("/add") > -1;
         this.isedit = _router.url.indexOf("/edit") > -1;
         this.isdetails = _router.url.indexOf("/details") > -1;
@@ -83,6 +89,26 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     public ngOnInit() {
         this.getDriverDetails();
         this.showPassword("password");
+    }
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "drv"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isadddrv = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditdrv = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeletedrv = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     showPassword(type) {
@@ -286,7 +312,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         return bytes;
     }
 
-    // Active / Deactive Data
+    // Active / Deactive Driver
 
     active_deactiveDriverInfo() {
         var that = this;
@@ -319,6 +345,33 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Delete Driver
+
+    public deleteDrivers() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
+            var params = {
+                "autoid": that.driverid,
+                "mode": "delete"
+            }
+
+            that._driverservice.saveDriverInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    that.backViewData();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
+    }
+
     // Clear Fields
 
     resetDriverFields() {
@@ -329,7 +382,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.driverpwd = "";
         that.drivername = "";
         that.aadharno = "";
-        that.mobileno1 = "";
+        that.mobileno1 = that.getmobno;
         that.mobileno2 = "";
         that.email1 = "";
         that.email2 = "";
@@ -696,11 +749,12 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 else {
                     if (_status == false) {
                         that._msg.Show(messageType.error, "Error", _msg);
-                        that.resetDriverFields();
 
                         if (_isexists) {
                             that.getmobno = "";
                         }
+                        
+                        that.resetDriverFields();
                     }
                     else {
                         that.disabledDriverFields();

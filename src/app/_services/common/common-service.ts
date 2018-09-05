@@ -7,7 +7,9 @@ import swal from 'sweetalert2'
 
 @Injectable()
 export class CommonService {
-    constructor(private _dataserver: DataService, private _router: Router) { }
+    constructor(private _dataserver: DataService, private _router: Router) {
+        
+    }
 
     getFilePath(req: any) {
         return this._dataserver.get("getFilePath", req)
@@ -27,6 +29,10 @@ export class CommonService {
 
     getMOM(req: any) {
         return this._dataserver.post("getMOM", req)
+    }
+
+    getMenuDetails(req: any) {
+        return this._dataserver.post("getMenuDetails", req)
     }
 
     saveMOM(req: any) {

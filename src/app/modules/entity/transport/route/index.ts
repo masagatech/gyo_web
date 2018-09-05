@@ -14,10 +14,22 @@ import { LazyLoadEvent, DataTableModule, OrderListModule, AutoCompleteModule, GM
 export const routes = [
   {
     path: '', children: [
-      { path: '', component: ViewRouteComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "rt", "rights": "view", "urlname": "/route" } },
-      { path: 'add', component: AddRouteComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "rt", "rights": "add", "urlname": "/add" } },
-      { path: 'details/:id', component: AddRouteComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "rt", "rights": "edit", "urlname": "/edit" } },
-      { path: 'edit/:id', component: AddRouteComponent, canActivate: [AuthGuard], data: { "module": "pentt", "submodule": "rt", "rights": "edit", "urlname": "/edit" } }
+      {
+        path: '', component: ViewRouteComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "rt", "rights": "view", "urlname": "/route" }
+      },
+      {
+        path: 'add', component: AddRouteComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "rt", "rights": "add", "urlname": "/add" }
+      },
+      {
+        path: 'details/:id', component: AddRouteComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "rt", "rights": "edit", "urlname": "/edit" }
+      },
+      {
+        path: 'edit/:id', component: AddRouteComponent, canActivate: [AuthGuard],
+        data: { "module": "trnsp", "submodule": "rt", "rights": "edit", "urlname": "/edit" }
+      }
     ]
   },
 ];

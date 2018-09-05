@@ -16,19 +16,19 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: ViewVehicleComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "veh", "rights": "view", "urlname": "/vehicle" }
+        data: { "module": "trnsp", "submodule": "veh", "rights": "view", "urlname": "/vehicle" }
       },
       {
         path: 'add', component: AddVehicleComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "veh", "rights": "add", "urlname": "/add" }
+        data: { "module": "trnsp", "submodule": "veh", "rights": "add", "urlname": "/add" }
       },
       {
         path: 'details/:id', component: AddVehicleComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "veh", "rights": "edt", "urlname": "/edit" }
+        data: { "module": "trnsp", "submodule": "veh", "rights": "edt", "urlname": "/edit" }
       },
       {
         path: 'edit/:id', component: AddVehicleComponent, canActivate: [AuthGuard],
-        data: { "module": "pentt", "submodule": "veh", "rights": "edt", "urlname": "/edit" }
+        data: { "module": "trnsp", "submodule": "veh", "rights": "edt", "urlname": "/edit" }
       }
     ]
   },

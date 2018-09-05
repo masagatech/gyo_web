@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanLoad, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, CanLoad, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { MessageService, messageType } from './messages/message-service';
@@ -8,8 +8,20 @@ import { LoginService } from './login/login-service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
-  constructor(private _router: Router, private authser: AuthenticationService, private _loginservice: LoginService, private _msg: MessageService) {
+  previousUrl: string = "";
 
+  constructor(private _router: Router, private authser: AuthenticationService, private _loginservice: LoginService, private _msg: MessageService) {
+    let that = this;
+
+    that._router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        that.previousUrl = event.url;
+      };
+    });
+  }
+
+  public getPreviousUrl() {
+    return this.previousUrl;
   }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -26,9 +38,18 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
 
   private checkFun(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     let that = this;
+    let params = {};
 
     let routeconfig = route.data;
     let checks = that.authser.checkCredentials();
+
+    let prevurl = that.getPreviousUrl();
+
+    if (prevurl == "") {
+      params = {};
+    } else {
+      params = { "url": prevurl };
+    }
 
     return Observable.create((observer: Subject<boolean>) => {
       if (checks.status) {
@@ -37,7 +58,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
             observer.next(true);
           } else {
             that._msg.Show(messageType.error, "Error", "No Access !!!!");
-            that._router.navigate(['/admin/nopage']);
+            that._router.navigate(['/admin/nopage'], { queryParams: params });
             observer.next(true);
           }
         })
@@ -49,7 +70,7 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
                 observer.next(true);
               } else {
                 that._msg.Show(messageType.error, "Error", "No Access !!!!");
-                that._router.navigate(['/admin/nopage']);
+                that._router.navigate(['/admin/nopage'], { queryParams: params });
                 observer.next(true);
               }
             });

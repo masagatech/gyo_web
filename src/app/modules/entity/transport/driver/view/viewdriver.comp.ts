@@ -92,29 +92,4 @@ export class ViewDriverComponent implements OnInit {
     public editDriverForm(row) {
         this._router.navigate(['/transport/driver/edit', row.autoid]);
     }
-
-    public deleteDriver(row) {
-        var that = this;
-
-        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
-            var params = {
-                "autoid": row.autoid,
-                "mode": "delete"
-            }
-    
-            that._driverservice.saveDriverInfo(params).subscribe(data => {
-                try {
-                    var dataResult = data.data;
-                    that.getDriverDetails();
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                console.log(err);
-            }, () => {
-                // console.log("Complete");
-            });
-        });
-    }
 }
