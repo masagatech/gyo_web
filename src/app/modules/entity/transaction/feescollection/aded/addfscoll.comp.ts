@@ -597,11 +597,11 @@ export class AddFeesCollectionComponent implements OnInit {
                     if (msgid != "-1") {
                         if (msgid == "1") {
                             if (that.isadd) {
-                                that._autoservice.messagebox("Fees created Successfully !!!!", "Your Receipt No : " + docno, "success", false);
+                                that._autoservice.showmsgbox("Fees created Successfully !!!!", "Your Receipt No : " + docno, "success");
                             }
                             else {
                                 that.saveAuditLog(that.studid, that.studname, oldval, newval);
-                                that._autoservice.messagebox("Fees updated Successfully !!!!", "", "success", false);
+                                that._autoservice.showmsgbox("Fees updated Successfully !!!!", "", "success");
 
                                 that.backViewData();
                             }

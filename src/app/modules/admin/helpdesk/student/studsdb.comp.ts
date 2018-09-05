@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, CommonService, DashboardService } from '@services';
-import { Globals, Common } from '@models';
+import { MessageService, messageType, LoginService, CommonService, DashboardService } from '@services';
+import { LoginUserModel, Globals, Common } from '@models';
+import { WorkspaceService, EntityService } from '@services/master';
 
 @Component({
     templateUrl: './studsdb.comp.html'
 })
 
 export class StudentDashboardComponent implements OnInit, OnDestroy {
+    loginUser: LoginUserModel;
+
     @Input() data: any;
 
     global = new Globals();
@@ -27,8 +30,10 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
 
     private subscribeParameters: any;
 
-    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService,
-        private _dbservice: DashboardService, private _autoservice: CommonService) {
+    constructor(private _router: Router, private _actrouter: ActivatedRoute, private _msg: MessageService, private _loginservice: LoginService,
+        private _dbservice: DashboardService, private _autoservice: CommonService, private _wsservice: WorkspaceService,
+        private _entityservice: EntityService) {
+        this.loginUser = this._loginservice.getUser();
     }
 
     ngOnInit() {
@@ -67,6 +72,8 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Student Dashboard
+
     viewStudentDashboard() {
         var that = this;
 
@@ -78,6 +85,79 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
             that.getStudentTrips("html");
         });
     }
+
+    // Student Profile
+
+    getWorkspaceDetails(row) {
+        var that = this;
+        commonfun.loader();
+
+        that._wsservice.getWorkspaceDetails({
+            "flag": "userwise", "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": row.wsautoid
+        }).subscribe(data => {
+            try {
+                sessionStorage.setItem("_schwsdetails_", JSON.stringify(data.data[0]));
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    getEntityDetails(row) {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "wsautoid": row.wsautoid, "schoolid": row.schoolid,
+            "enttid": row.enttid, "entttype": row.entttype
+        }
+
+        that._entityservice.getEntityDetails(params).subscribe(data => {
+            try {
+                if (row.isactive) {
+                    sessionStorage.removeItem("_schenttdetails_");
+                    sessionStorage.removeItem("_ayid_");
+
+                    sessionStorage.setItem("_schenttdetails_", JSON.stringify(data.data[0]));
+                    that._router.navigate(['/erp/student/edit', row.enrlmntid]);
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", "This Student is Deactive");
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    viewStudentProfile(row) {
+        var that = this;
+
+        that.getWorkspaceDetails(row);
+        that.getEntityDetails(row);
+    }
+
+    // Driver Dashboard
 
     viewDriverDashboard(row) {
         var drvdata = { "flag": "driver", "id": row.driverid };

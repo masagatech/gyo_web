@@ -176,8 +176,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     resetVehicleFields() {
         this.autoid = 0;
         this.vehid = 0;
-        this.imei = "";
-        this.vehregno = "";
+        this.imei = this.getimei;
+        this.vehregno = this.getvehregno;
         this.vehtype = "";
         this.vehname = "";
         this.vehmake = "";
@@ -549,9 +549,13 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                     }
                     else {
                         if (that._enttdetails.enttid == _vehdata.ownenttid) {
+                            $(".getimei").removeAttr("disabled");
+                            $(".getvehregno").removeAttr("disabled");
                             that.enabledVehicleFields();
                         }
                         else {
+                            $(".getimei").attr("disabled", "disabled");
+                            $(".getvehregno").attr("disabled", "disabled");
                             that.disabledVehicleFields();
                         }
 
@@ -600,12 +604,13 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 else {
                     if (_status == false) {
                         that._msg.Show(messageType.error, "Error", _msg);
-                        that.resetVehicleFields();
 
                         if (_isexists) {
                             that.getimei = "";
                             that.getvehregno = "";
                         }
+
+                        that.resetVehicleFields();
                     }
                     else {
                         that.disabledVehicleFields();

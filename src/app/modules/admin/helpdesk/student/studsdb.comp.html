@@ -28,6 +28,8 @@
                                 <div class="col-md-3">
                                     <img *ngIf="row.gndrkey == 'M'" alt="{{row.studentname}}" src="{{global.uploadurl + row.studentphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px" width="100px">
                                     <img *ngIf="row.gndrkey == 'F'" alt="{{row.studentname}}" src="{{global.uploadurl + row.studentphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px" width="100px">
+
+                                    <a role="button" target="target" (click)="viewStudentProfile(row)" class="btn btn-search">View Profile</a>
                                 </div>
                                 <div class="col-md-9">
                                     <p><b>Name : </b>{{row.studentname}}</p>

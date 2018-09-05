@@ -3,7 +3,7 @@ import { DataService } from '../dataconnect';
 import { Globals } from '@globals';
 import { Router } from '@angular/router';
 
-declare let swal: any;
+import swal from 'sweetalert2'
 
 @Injectable()
 export class CommonService {
@@ -94,13 +94,33 @@ export class CommonService {
         return this._dataserver.post("sendEmail", req)
     }
 
-    messagebox(title, msg, msgtyp, isconfirm) {
+    showmsgbox(title, msg, msgtyp) {
         swal({
             title: title,
             text: msg,
             type: msgtyp,
-            showConfirmButton: isconfirm,
             timer: 3000
+        })
+    }
+
+    confirmmsgbox(msg, confmsg, cancelmsg, callback) {
+        swal({
+            title: "Are you sure?",
+            text: confmsg,
+            type: "warning",
+            showConfirmButton: true,
+            confirmButtonText: "Ok",
+            showCancelButton: true,
+            cancelButtonText: "Cancel",
+            timer: 3000
+        }).then((result) => {
+            if (result.value) {
+                swal('Confirm!', msg, "success");
+                callback(true);
+            } else if (result.dismiss === swal.DismissReason.cancel) {
+                swal('Cancelled', cancelmsg, "error");
+                return;
+            }
         })
     }
 

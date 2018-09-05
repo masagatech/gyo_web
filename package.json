@@ -94,6 +94,7 @@
         "primeng": "^4.1.2",
         "reflect-metadata": "^0.1.10",
         "rxjs": "~5.0.2",
+        "sweetalert2": "^7.26.14",
         "zone.js": "0.8.14"
     },
     "devDependencies": {

@@ -10,6 +10,8 @@ import { StudentDashboardComponent } from './student/studsdb.comp';
 import { UserDashboardComponent } from './users/userdb.comp';
 import { VehicleDashboardComponent } from './vehicle/vehdb.comp';
 
+import { WorkspaceService, EntityService } from '@services/master';
+
 import { AutoCompleteModule, DataGridModule, PanelModule } from 'primeng/primeng';
 
 export const routes = [
@@ -38,7 +40,7 @@ export const routes = [
         VehicleDashboardComponent
     ],
 
-    providers: [AuthGuard, CommonService, DashboardService]
+    providers: [AuthGuard, CommonService, DashboardService, WorkspaceService, EntityService]
 })
 
 export class HelpDeskModule {

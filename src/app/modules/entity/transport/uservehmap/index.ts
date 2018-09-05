@@ -3,13 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard, CommonService } from '@services';
-import {  } from '@services';
 
 import { AddUserVehicleMapComponent } from './adduvm.comp';
 
 import { UserVehicleMapService } from '@services/master';
 import { NgxSortableModule } from 'ngx-sortable';
-import { LazyLoadEvent, DataTableModule, CheckboxModule, AutoCompleteModule } from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -28,8 +27,8 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
-    CheckboxModule, AutoCompleteModule, NgxSortableModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
+    AutoCompleteModule, NgxSortableModule
   ],
 
   providers: [AuthGuard, CommonService, UserVehicleMapService]
