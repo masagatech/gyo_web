@@ -16,6 +16,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     cityDT: any = [];
     areaDT: any = [];
 
+    isotherentt: boolean = false;
+
     paramsid: number = 0;
     driverid: number = 0;
     loginid: number = 0;
@@ -25,6 +27,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     aadharno: string = "";
     licenseno: string = "";
 
+    ownenttid: number = 0;
     getmobno: string = "";
     mobileno1: string = "";
     mobileno2: string = "";
@@ -48,7 +51,10 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     uploadPhotoDT: any = [];
     uploadDocsDT: any = [];
+    schoolDT: any = [];
+
     global = new Globals();
+
     uploadphotoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     uploaddocsconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     choosePhotoLabel: string = "";
@@ -396,6 +402,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.area = that._enttdetails.arid;
         that.pincode = that._enttdetails.pincode;
 
+        that.schoolDT = [];
         that.uploadPhotoDT = [];
         that.uploadDocsDT = [];
         that.choosePhotoLabel = "Upload Photo";
@@ -471,9 +478,22 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     // Get Audit Parameter
 
-    getAuditData(ddltype) {
+    getAuditParams(ddltype) {
         var that = this;
+
+        var _ownenttdt = [];
         var _auditdt = [];
+
+        if (that.isotherentt) {
+            that.schoolDT.push({
+                "schid": that._enttdetails.enttid, "schname": that._enttdetails.enttname,
+                "wsid": that._enttdetails.wsautoid, "wsname": that._enttdetails.wsname
+            })
+        }
+
+        console.log(that.schoolDT);
+
+        _ownenttdt = that.schoolDT.filter(a => a.isowner == true);
 
         _auditdt = [
             { "key": "Driver Code", "val": that.drivercode, "fldname": "drivercode", "fldtype": "text" },
@@ -490,7 +510,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             { "key": "State", "val": ddltype == "old" ? that.statename : $("#state option:selected").text().trim(), "fldname": "state", "fldtype": "ddl" },
             { "key": "City", "val": ddltype == "old" ? that.cityname : $("#city option:selected").text().trim(), "fldname": "city", "fldtype": "ddl" },
             { "key": "Area", "val": ddltype == "old" ? that.areaname : $("#area option:selected").text().trim(), "fldname": "area", "fldtype": "ddl" },
-            { "key": "Pin Code", "val": that.pincode.toString() == "" ? 0 : that.pincode, "fldname": "pincode", "fldtype": "text" }
+            { "key": "Pin Code", "val": that.pincode.toString() == "" ? 0 : that.pincode, "fldname": "pincode", "fldtype": "text" },
+            { "key": "Other Entity", "val": that.schoolDT, "fldname": "othenttids", "fldtype": "table" },
+            { "key": "Owner Entity", "val": _ownenttdt, "fldname": "ownenttids", "fldtype": "table" }
         ]
 
         return _auditdt;
@@ -525,7 +547,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     // Get Save Parameter
 
-    getDriverParams() {
+    getDriverParams(selownerentt) {
         var that = this;
 
         var params = {
@@ -551,6 +573,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             "remark1": that.remark1,
             "cuid": that.loginUser.ucode,
             "othenttids": that.othenttids,
+            "ownenttids": "{" + selownerentt.toString().replace("[", "").replace("]", "") + "}",
             "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid,
             "isactive": that.isactive,
@@ -566,8 +589,13 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     saveDriverInfo() {
         var that = this;
 
-        var params = that.getDriverParams();
-        that.newDriverData = that.getAuditData("new");
+        var _enttdata = that.schoolDT.filter(a => a.isowner == true);
+
+        var selownerentt: string[] = [];
+        selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
+
+        var params = that.getDriverParams(selownerentt);
+        that.newDriverData = that.getAuditParams("new");
 
         var newval = that._autoservice.getDiff2Arrays(that.driverData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.driverData);
@@ -647,6 +675,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             try {
                 var _driverdata = data.data[0]._driverdata;
                 var _attachdocs = data.data[0]._attachdocs;
+                var _enttdata = data.data[0]._enttdata;
 
                 if (_driverdata == null || _driverdata == undefined) {
                     that.refreshDrivers();
@@ -657,6 +686,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                     that.drivercode = _driverdata.drivercode;
                     that.driverpwd = _driverdata.driverpwd;
                     that.drivername = _driverdata.drivername;
+                    that.ownenttid = _driverdata.enttid;
                     that.aadharno = _driverdata.aadharno;
                     that.licenseno = _driverdata.licenseno;
                     that.email1 = _driverdata.email1;
@@ -687,12 +717,34 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that.choosePhotoLabel = "Upload Photo";
                     }
 
-                    if (_attachdocs !== null) {
-                        that.uploadDocsDT = _attachdocs;
+                    that.schoolDT = _enttdata;
+
+                    var _schrow = null;
+                    var _selschrow = null;
+                    var _ownenttids = null;
+
+                    for (var i = 0; i < that.schoolDT.length; i++) {
+                        _schrow = null;
+                        _schrow = that.schoolDT[i];
+
+                        if (_schrow != null) {
+                            _ownenttids = null;
+                            _ownenttids = _driverdata.ownenttids;
+
+                            if (_ownenttids != null) {
+                                for (var j = 0; j < _ownenttids.length; j++) {
+                                    _selschrow = null;
+                                    _selschrow = _ownenttids[j];
+
+                                    if (_schrow.schid == _selschrow) {
+                                        _schrow.isowner = true;
+                                    }
+                                }
+                            }
+                        }
                     }
-                    else {
-                        that.uploadDocsDT = [];
-                    }
+
+                    that.uploadDocsDT = _attachdocs;
 
                     if (that.isdetails) {
                         that.disabledDriverFields();
@@ -705,8 +757,11 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             that.disabledDriverFields();
                         }
 
-                        that.driverData = that.getDriverParams();
-                        that.oldDriverData = that.getAuditData("old");
+                        var selownerentt: string[] = [];
+                        selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
+
+                        that.driverData = that.getDriverParams(selownerentt);
+                        that.oldDriverData = that.getAuditParams("old");
                     }
                 }
             }
@@ -742,6 +797,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 var _isexists = data.data[0].isexists;
                 var _msg = data.data[0].msg;
                 var _driverdata = data.data[0]._driverdata;
+                var _enttdata = data.data[0]._enttdata;
 
                 if (_driverdata == null || _driverdata == undefined) {
                     that.resetDriverFields();
@@ -753,17 +809,20 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         if (_isexists) {
                             that.getmobno = "";
                         }
-                        
+
+                        that.isotherentt = false;
                         that.resetDriverFields();
                     }
                     else {
                         that.disabledDriverFields();
 
+                        that.isotherentt = true;
                         that.driverid = _driverdata.autoid;
                         that.loginid = _driverdata.loginid;
                         that.drivercode = _driverdata.drivercode;
                         that.driverpwd = _driverdata.driverpwd;
                         that.drivername = _driverdata.drivername;
+                        that.ownenttid = _driverdata.enttid;
                         that.aadharno = _driverdata.aadharno;
                         that.licenseno = _driverdata.licenseno;
                         that.email1 = _driverdata.email1;
@@ -783,6 +842,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that.isprivate = _driverdata.isprivate;
                         that.mode = _driverdata.mode;
                         that.othenttids = _driverdata.othenttids;
+                        that.schoolDT = _enttdata;
 
                         if (_driverdata.FilePath !== "") {
                             that.uploadPhotoDT.push({ "athurl": _driverdata.FilePath });

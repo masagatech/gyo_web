@@ -205,7 +205,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         }
     }
 
-    private selectAndDeselectAllCheckboxes() {
+    selectAndDeselectAllCheckboxes() {
         if ($("#selectall").is(':checked')) {
             $(".allcheckboxes input[type=checkbox]").prop('checked', true);
         }
@@ -214,7 +214,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         }
     }
 
-    private selectAndDeselectMenuWiseCheckboxes(row) {
+    selectAndDeselectMenuWiseCheckboxes(row) {
         if ($("#" + row.mid).is(':checked')) {
             $("#M" + row.mid + " input[type=checkbox]").prop('checked', true);
         }
@@ -223,7 +223,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         }
     }
 
-    private clearcheckboxes(): void {
+    clearcheckboxes(): void {
         $(".allcheckboxes input[type=checkbox]").prop('checked', false);
     }
 

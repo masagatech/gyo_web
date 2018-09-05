@@ -2061,12 +2061,12 @@
 
 .bg-white {
     background-color: #ffffff !important;
-    color: #fff;
+    color: #000;
 }
 
 .bg-white .content .text,
 .bg-white .content .number {
-    color: #fff !important;
+    color: #000 !important;
 }
 
 .col-red {
