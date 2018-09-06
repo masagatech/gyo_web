@@ -94,7 +94,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
 
     selectUserData(event, arg) {
         var that = this;
-        
+
         that.uid = event.uid;
         that.uname = event.uname;
         that.utype = event.utype;
@@ -120,7 +120,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
-            that.usersDT = data.data;
+            that.vehicleDT = data.data;
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -243,15 +243,17 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newUserVehicleData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        var dispflds = [{ "key": "User Name", "val": name }];
+        if (_newvaldt.length > 0) {
+            var dispflds = [{ "key": "User Name", "val": name }];
 
-        var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "uservehiclemap", "mdlname": "User Vehicle Map",
-            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
-            "enttid": that.enttid, "wsautoid": that.wsautoid, "createdby": that.loginUser.ucode
-        };
+            var auditparams = {
+                "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "uservehiclemap", "mdlname": "User Vehicle Map",
+                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+                "enttid": that.enttid, "wsautoid": that.wsautoid, "createdby": that.loginUser.ucode
+            };
 
-        that._autoservice.saveAuditLog(auditparams);
+            that._autoservice.saveAuditLog(auditparams);
+        }
     }
 
     // Get Save Parameter

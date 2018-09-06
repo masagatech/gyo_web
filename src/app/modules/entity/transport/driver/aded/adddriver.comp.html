@@ -11,7 +11,7 @@
                 </label>
                 </span>
             </li>
-            <li *ngIf="driverid != 0 && isdeletedrv == true">
+            <li *ngIf="driverid != 0 && isdeletedrv == true && isowner == true">
                 <a role="button" class="btn btn-danger" (click)="deleteDrivers()">
                     <i class="material-icons">delete</i>
                 </a>
@@ -135,19 +135,18 @@
                         </div>
                     </div>
 
-                    <div *ngIf="!isotherentt">
-                        <div class="form-group" *ngIf="schoolDT.length">
-                            <label class="control-label">Make Owner Other Entity</label>
+                    <div class="form-group" *ngIf="schoolDT.length">
+                        <label class="control-label" *ngIf="isowner == true">Make Owner Other Entity</label>
+                        <label class="control-label" *ngIf="isowner == false">Mapped Entity</label>
 
-                            <div *ngFor="let schrow of schoolDT" [ngClass]="schrow.schid == ownenttid ? 'box text-left bg-green' : 'box text-left bg-white'">
-                                <div class="row clearfix">
-                                    <div class="col-md-9">
-                                        {{schrow.schname}}
-                                    </div>
-                                    <div class="col-md-3 text-right" *ngIf="schrow.schid != _enttdetails.enttid && ownenttid == _enttdetails.enttid">
-                                        <input id="{{schrow.schid}}" type="checkbox" [(ngModel)]="schrow.isowner">
-                                        <label for="{{schrow.schid}}"></label>
-                                    </div>
+                        <div *ngFor="let schrow of schoolDT" [ngClass]="schrow.schid == ownenttid ? 'box text-left bg-green' : 'box text-left bg-white'">
+                            <div class="row clearfix">
+                                <div class="col-md-9">
+                                    {{schrow.schname}}
+                                </div>
+                                <div class="col-md-3 text-right" *ngIf="schrow.schid != ownenttid && isowner == true">
+                                    <input id="{{schrow.schid}}" type="checkbox" [(ngModel)]="schrow.isowner">
+                                    <label for="{{schrow.schid}}"></label>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +166,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <label class="control-label">Alternate Email</label>
-                                    <input type="text" [(ngModel)]="email2" class="form-control" tabindex="11" />
+                                    <input type="text" [(ngModel)]="email2" class="form-control email2" tabindex="11" />
                                 </div>
                             </div>
                         </div>

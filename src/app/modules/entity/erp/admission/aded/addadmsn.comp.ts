@@ -1130,15 +1130,17 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newStudentData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        var dispflds = [{ "key": "Student Name", "val": name }];
+        if (_newvaldt.length > 0) {
+            var dispflds = [{ "key": "Student Name", "val": name }];
 
-        var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "student", "mdlname": "Student",
-            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
-        };
+            var auditparams = {
+                "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "student", "mdlname": "Student",
+                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            };
 
-        that._autoservice.saveAuditLog(auditparams);
+            that._autoservice.saveAuditLog(auditparams);
+        }
     }
 
     // Get Save Parameter
@@ -1747,7 +1749,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-        
+
         this.subscribeParameters.unsubscribe();
     }
 }

@@ -1,0 +1,36 @@
+<div class="card card-center">
+    <div class="header">
+        <h4>Third Party Integration</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme" (click)="saveThirdPartyIntegration()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="form-group">
+            <div class="form-line">
+                <label class="control-label">Select Vehicle</label>
+                <p-autoComplete id="vehname" name="vehname" [(ngModel)]="selectedvehicle" [tabindex]="2" (onSelect)="selectVehicleData($event, 1)" [suggestions]="vehicleDT" (completeMethod)="getVehicleData($event)" field="label" [minLength]="1" [size]="30" class="form-controlAutoComplete vehname"></p-autoComplete>
+                <span class="material-icons inputsearchico pad-20">search</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-line">
+                <label class="control-label">Track Type</label><br />
+
+                <div id="track">
+                    <span *ngFor="let ttrow of tracktypeDT; let i = index">
+                        <input type="checkbox" id="{{ttrow.key}}" value="{{ttrow.key}}" name="ttrow{{i + 1}}" data-menuid="ttrow.key" data-right="item" class="actrights filled-in" tabindex="16" />
+                        <label for="{{ttrow.key}}">{{ttrow.val}}</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -529,15 +529,17 @@ export class AddFeesCollectionComponent implements OnInit {
             _newvaldt.push(that.newFeesData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        var dispflds = [{ "key": "Student Name", "val": name }, { "key": "Receipt No", "val": that.receiptno }];
+        if (_newvaldt.length > 0) {
+            var dispflds = [{ "key": "Student Name", "val": name }, { "key": "Receipt No", "val": that.receiptno }];
 
-        var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "studentfees", "mdlname": "Student Fees",
-            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
-            "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
-        };
+            var auditparams = {
+                "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "studentfees", "mdlname": "Student Fees",
+                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
+                "enttid": that.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            };
 
-        that._autoservice.saveAuditLog(auditparams);
+            that._autoservice.saveAuditLog(auditparams);
+        }
     }
 
     // Get Save Parameter

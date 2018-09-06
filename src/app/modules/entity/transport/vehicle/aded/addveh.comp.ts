@@ -16,6 +16,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     devtypeDT: any = [];
     d1strDT: any = [];
 
+    isotherentt: boolean = false;
+
     paramsid: number = 0;
     ownenttid: number = 0;
     autoid: number = 0;
@@ -42,9 +44,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     speedAllow: number = 0;
     d1str: string = "";
     d1strname: string = "";
-    vehurl: string = "";
+    isowner: boolean = false;
 
-    tracktypeDT: any = [];
+    schoolDT: any = [];
 
     mode: string = "";
     isactive: boolean = true;
@@ -56,6 +58,10 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     isadd: boolean = false;
     isedit: boolean = false;
     isdetails: boolean = false;
+
+    isaddveh: boolean = false;
+    iseditveh: boolean = false;
+    isdeleteveh: boolean = false;
 
     vehicleData: any = [];
     oldVehicleData: any = [];
@@ -69,6 +75,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
+        this.getActionRights();
 
         this.isadd = _router.url.indexOf("/add") > -1;
         this.isedit = _router.url.indexOf("/edit") > -1;
@@ -77,6 +84,28 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         this.getVehicleDetails();
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "veh"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddveh = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditveh = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeleteveh = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Set From Date and To Date
@@ -113,7 +142,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 that.vehtypeDT = data.data.filter(a => a.group == "vehicletype");
                 that.devtypeDT = data.data.filter(a => a.group == "devicetype");
                 that.d1strDT = data.data.filter(a => a.group == "d1str");
-                that.tracktypeDT = data.data.filter(a => a.group == "tracktype");
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
@@ -135,7 +163,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         var that = this;
         var params = {};
 
-        if (that.ownenttid == that._enttdetails.enttid) {
+        if (that.isowner) {
             params = {
                 "vehid": that.vehid,
                 "mode": that.mode
@@ -171,6 +199,42 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Delete Vehicle
+
+    public deleteVehicles() {
+        var that = this;
+        var params = {};
+
+        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
+            if (that.isowner) {
+                params = {
+                    "vehid": that.vehid,
+                    "mode": "delete"
+                }
+            }
+            else {
+                params = {
+                    "vemid": that.autoid,
+                    "dtlsmode": "delete"
+                }
+            }
+
+            that._vehservice.saveVehicleInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    that.backViewData();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
+    }
+
     // Clear Fields
 
     resetVehicleFields() {
@@ -189,8 +253,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         this.simno = "";
         this.speedAllow = 0;
         this.d1str = "";
-        this.vehurl = "";
         this.isprivate = false;
+        this.schoolDT = [];
 
         this.setFromDateAndToDate();
         this.enabledVehicleFields();
@@ -282,9 +346,23 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     // Get Audit Parameter
 
-    getAuditData(ddltype, trktype) {
+    getAuditParams(ddltype) {
         var that = this;
+
+        var _ownenttdt = [];
         var _auditdt = [];
+
+        if (that.isotherentt) {
+            that.schoolDT.push({
+                "schid": that._enttdetails.enttid, "schname": that._enttdetails.enttname,
+                "wsid": that._enttdetails.wsautoid, "wsname": that._enttdetails.wsname,
+                "isowner": true
+            })
+
+            that.isotherentt = false;
+        }
+
+        _ownenttdt = that.schoolDT.filter(a => a.isowner == true);
 
         _auditdt = [
             { "key": "Vehicle Name", "val": that.vehname, "fldname": "vehname", "fldtype": "text" },
@@ -302,7 +380,8 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             { "key": "From Date", "val": that.frmdt, "fldname": "frmdt", "fldtype": "date" },
             { "key": "To Date", "val": that.todt, "fldname": "todt", "fldtype": "date" },
             { "key": "D1 Function", "val": that.d1str == "" ? {} : { "d1str": that.d1str }, "fldname": "extra", "fldtype": "table" },
-            { "key": "Track Type", "val": trktype, "fldname": "trktype", "fldtype": "chk" }
+            { "key": "Other Entity", "val": that.schoolDT, "fldname": "othenttids", "fldtype": "table" },
+            { "key": "Owner Entity", "val": _ownenttdt, "fldname": "vementtid", "fldtype": "table" }
         ]
 
         return _auditdt;
@@ -324,20 +403,22 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newVehicleData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        var dispflds = [{ "key": "User Name", "val": name }];
+        if (_newvaldt.length > 0) {
+            var dispflds = [{ "key": "Vehicle Name", "val": name }];
 
-        var auditparams = {
-            "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "vehicle", "mdlname": "Vehicle",
-            "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
-            "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
-        };
+            var auditparams = {
+                "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "vehicle", "mdlname": "Vehicle",
+                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+                "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
+            };
 
-        that._autoservice.saveAuditLog(auditparams);
+            that._autoservice.saveAuditLog(auditparams);
+        }
     }
 
     // Get Save Parameter
 
-    getVehicleParams(trktype) {
+    getVehicleParams(selownerentt) {
         var that = this;
 
         var params = {
@@ -358,12 +439,11 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             "devtype": that.devtype,
             "frmdt": that.frmdt,
             "todt": that.todt,
-            "url": that.vehurl,
-            "trktype": trktype,
             "extra": that.d1str == "" ? {} : { "d1str": that.d1str },
             "mode": "",
             "enttid": that._enttdetails.enttid,
             "ownenttid": that._enttdetails.enttid,
+            "vementtid": selownerentt.toString().replace("[", "").replace("]", ""),
             "wsautoid": that._enttdetails.wsautoid,
             "cuid": that.loginUser.ucode,
             "isactive": that.isactive,
@@ -377,19 +457,14 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     saveVehicleInfo() {
         var that = this;
-        var trktype = "";
-        var pushcl = [];
 
-        $("#track").find("input[type=checkbox]").each(function () {
-            if (this.checked) {
-                pushcl.push($(this).val())
-            }
-        });
+        var _enttdata = that.schoolDT.filter(a => a.isowner == true);
 
-        trktype = JSON.stringify(pushcl).replace("[", "{").replace("]", "}");
+        var selownerentt: string[] = [];
+        selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
 
-        var params = that.getVehicleParams(trktype);
-        that.newVehicleData = that.getAuditData("new", trktype);
+        var params = that.getVehicleParams(selownerentt);
+        that.newVehicleData = that.getAuditParams("new");
 
         var newval = that._autoservice.getDiff2Arrays(that.vehicleData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.vehicleData);
@@ -418,7 +493,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                                 "vhid": params.imei,
                                 "vhname": params.vehregno,
                                 "alwspeed": params.vehspeed,
-                                "pushcl": pushcl,
                                 "vhd": {
                                     "vehregno": that.vehregno,
                                     "vehtype": that.vehtype,
@@ -528,27 +602,48 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                     that.devtypename = _vehdata.devtypename;
                     that.speedAllow = _vehdata.vhspeed;
                     that.d1str = _vehdata.d1str;
-
-                    var trktypedt = data.data[0].trktype;
-
-                    if (trktypedt != null) {
-                        for (var i = 0; i < trktypedt.length; i++) {
-                            $("#track").find("#" + trktypedt[i]).prop('checked', true);
-                        }
-                    }
-
-                    that.vehurl = _vehdata.url;
+                    
                     that.isprivate = _vehdata.isprivate;
                     that.isactive = _vehdata.isactive;
+                    that.isowner = _vehdata.isowner;
                     that.mode = _vehdata.mode;
                     that.dtlsmode = _vehdata.dtlsmode;
+
+                    that.schoolDT = _vehdata.schooldt;
+
+                    var _enttdata = that.schoolDT.filter(a => a.isowner == true);
+
+                    var _schrow = null;
+                    var _selschrow = null;
+                    var _ownenttids = null;
+
+                    for (var i = 0; i < that.schoolDT.length; i++) {
+                        _schrow = null;
+                        _schrow = that.schoolDT[i];
+
+                        if (_schrow != null) {
+                            _ownenttids = null;
+                            _ownenttids = _vehdata.ownenttids;
+
+                            if (_ownenttids != null) {
+                                for (var j = 0; j < _ownenttids.length; j++) {
+                                    _selschrow = null;
+                                    _selschrow = _ownenttids[j];
+
+                                    if (_schrow.schid == _selschrow) {
+                                        _schrow.isowner = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     if (that.isdetails) {
                         that.disabledVehicleFields();
                         $('.vehname').prop("disabled", "disabled");
                     }
                     else {
-                        if (that._enttdetails.enttid == _vehdata.ownenttid) {
+                        if (that.isowner) {
                             $(".getimei").removeAttr("disabled");
                             $(".getvehregno").removeAttr("disabled");
                             that.enabledVehicleFields();
@@ -559,8 +654,11 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             that.disabledVehicleFields();
                         }
 
-                        that.vehicleData = that.getVehicleParams(trktypedt);
-                        that.oldVehicleData = that.getAuditData("old", trktypedt);
+                        var selownerentt: string[] = [];
+                        selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
+
+                        that.vehicleData = that.getVehicleParams(selownerentt);
+                        that.oldVehicleData = that.getAuditParams("old");
 
                         $(".vehname").removeAttr("disabled");
                     }
@@ -597,6 +695,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                 var _isexists = data.data[0].isexists;
                 var _msg = data.data[0].msg;
                 var _vehdata = data.data[0].vehdata;
+                var _enttdata = data.data[0]._enttdata;
 
                 if (_vehdata == null || _vehdata == undefined) {
                     that.resetVehicleFields();
@@ -631,23 +730,54 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         that.speedAllow = _vehdata.vhspeed;
                         that.d1str = _vehdata.d1str;
 
-                        var trktypedt = data.data[0].trktype;
-
-                        if (trktypedt != null) {
-                            for (var i = 0; i < trktypedt.length; i++) {
-                                $("#track").find("#" + trktypedt[i]).prop('checked', true);
-                            }
-                        }
-
-                        that.vehurl = _vehdata.url;
                         that.isactive = _vehdata.isactive;
                         that.mode = _vehdata.mode;
                         that.dtlsmode = _vehdata.dtlsmode;
 
-                        that.vehicleData = that.getVehicleParams(trktypedt);
-                        that.oldVehicleData = that.getAuditData("old", trktypedt);
+                        that.schoolDT = _enttdata;
 
-                        that.disabledVehicleFields();
+                        var _schrow = null;
+                        var _selschrow = null;
+                        var _ownenttids = null;
+
+                        for (var i = 0; i < that.schoolDT.length; i++) {
+                            _schrow = null;
+                            _schrow = that.schoolDT[i];
+
+                            if (_schrow != null) {
+                                _ownenttids = null;
+                                _ownenttids = _vehdata.ownenttids;
+
+                                if (_ownenttids != null) {
+                                    for (var j = 0; j < _ownenttids.length; j++) {
+                                        _selschrow = null;
+                                        _selschrow = _ownenttids[j];
+
+                                        if (_schrow.schid == _selschrow) {
+                                            _schrow.isowner = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (that.isdetails) {
+                            that.disabledVehicleFields();
+                        }
+                        else {
+                            if (that._enttdetails.enttid == _vehdata.enttid) {
+                                that.enabledVehicleFields();
+                            }
+                            else {
+                                that.disabledVehicleFields();
+                            }
+
+                            var selownerentt: string[] = [];
+                            selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
+
+                            that.vehicleData = that.getVehicleParams(selownerentt);
+                            that.oldVehicleData = that.getAuditParams("old");
+                        }
                     }
                 }
             }

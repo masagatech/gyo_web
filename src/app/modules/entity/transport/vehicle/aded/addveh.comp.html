@@ -3,7 +3,7 @@
         <h4>Vehicle</h4>
 
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="autoid !== 0">
+            <li *ngIf="autoid != 0">
                 <span class="switch">
                     <label class="control-label">
                         <input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveVehicleInfo()">
@@ -11,12 +11,17 @@
                 </label>
                 </span>
             </li>
+            <li *ngIf="autoid != 0 && isdeleteveh == true && isowner == true">
+                <a role="button" class="btn btn-danger" (click)="deleteVehicles()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
             <li *ngIf="vehid == 0">
                 <a role="button" class="btn btn-theme" (click)="refreshVehicles()">
                     <i class="material-icons">refresh</i>
                 </a>
             </li>
-            <li>
+            <li *ngIf="isaddveh == true && iseditveh == true">
                 <a role="button" class="btn btn-theme" (click)="saveVehicleInfo()">
                     <i class="material-icons">save</i>
                 </a>
@@ -88,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 pad-20 text-right" *ngIf="ownenttid == _enttdetails.enttid">
+            <div class="col-md-3 pad-20 text-right" *ngIf="isowner">
                 <input id="isprivate" type="checkbox" [(ngModel)]="isprivate" class="actrights filled-in" />
                 <label for="isprivate">Is Private</label>
             </div>
@@ -157,6 +162,23 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group" *ngIf="schoolDT.length">
+                    <label class="control-label" *ngIf="isowner == true">Make Owner Other Entity</label>
+                    <label class="control-label" *ngIf="isowner == false">Mapped Entity</label>
+
+                    <div *ngFor="let schrow of schoolDT" [ngClass]="schrow.schid == ownenttid ? 'box text-left bg-green' : 'box text-left bg-white'">
+                        <div class="row clearfix">
+                            <div class="col-md-9">
+                                {{schrow.schname}}
+                            </div>
+                            <div class="col-md-3 text-right" *ngIf="schrow.schid != ownenttid && isowner == true">
+                                <input id="{{schrow.schid}}" type="checkbox" [(ngModel)]="schrow.isowner">
+                                <label for="{{schrow.schid}}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="row clearfix">
@@ -221,31 +243,6 @@
                                         {{row.val}}
                                     </option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row clearfix">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">Track Type</label><br />
-
-                                <div id="track">
-                                    <span *ngFor="let ttrow of tracktypeDT; let i = index">
-                                        <input type="checkbox" id="{{ttrow.key}}" value="{{ttrow.key}}" name="ttrow{{i + 1}}" data-menuid="ttrow.key" data-right="item" class="actrights filled-in" tabindex="16" />
-                                        <label for="{{ttrow.key}}">{{ttrow.val}}</label>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 hide">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <label class="control-label">URL <strong>*</strong></label>
-                                <input type="text" [(ngModel)]="vehurl" class="form-control vehurl" maxlength="50" tabindex="17" />
                             </div>
                         </div>
                     </div>
