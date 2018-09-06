@@ -3,7 +3,7 @@ export class Globals {
     photoid: number = 29;
     xlsid: number = 24;
 
-    // static weburl: string = "school.goyo.in"; 
+    // static weburl: string = "school.goyo.in";
     // static weburl: string = "track.goyo.in";
 
     static weburl: string = window.location.hostname;
