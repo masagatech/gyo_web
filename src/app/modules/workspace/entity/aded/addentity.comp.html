@@ -1,13 +1,19 @@
 <div class="card">
     <div class="header">
         <h4>Entity</h4>
+
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="schid !== 0">
+            <li *ngIf="paramsid != 0 && iseditentt == true">
                 <span class="switch">
                     <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveEntityInfo()"><span class="lever"></span></label>
                 </span>
             </li>
-            <li>
+            <li *ngIf="paramsid != 0 && isdeleteentt == true">
+                <a role="button" class="btn btn-danger" (click)="deleteEntity()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
+            <li *ngIf="isaddentt == true && iseditentt == true">
                 <a role="button" class="btn btn-theme" (click)="saveEntityInfo()">
                     <i class="material-icons">save</i>
                 </a>
@@ -25,7 +31,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="form-line">
-                        <label class="control-label">Entity Type</label>
+                        <label class="control-label">Entity Type <strong>*</strong></label>
                         <select id="entttype" [(ngModel)]="entttype" class="form-control entttype" (ngModelChange)="getValidEntity()" tabindex="1">
                             <option *ngFor="let row of entttypeDT" [value]="row.key">	
                                 {{row.val}}
@@ -50,7 +56,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">{{entttype}} Name</label>
+                                <label class="control-label">{{entttype}} Name <strong>*</strong></label>
                                 <input type="text" [(ngModel)]="schnm" class="form-control schnm" maxlength="200" tabindex="3" />
                             </div>
                         </div>
@@ -69,7 +75,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <div class="form-line">
-                                <label class="control-label">Operator Vehicles (How Many) <strong>*</strong></label>
+                                <label class="control-label">Operator Vehicles (How Many)</label>
                                 <input type="text" [(ngModel)]="oprvehs" OnlyNumber="true" class="form-control oprvehs text-right" maxlength="5" tabindex="6" />
                             </div>
                         </div>
@@ -215,7 +221,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label class="control-label">Area <strong>*</strong></label>
+                                        <label class="control-label">Area</label>
                                         <select id="area" [(ngModel)]="area" class="form-control area" tabindex="14">
                                             <option [value]="0">Select Area</option>
                                             <option *ngFor="let row of areaDT" [value]="row.key">
@@ -229,10 +235,10 @@
                     </div>
                 </div>
 
-                <div class="header">
+                <div class="header-title">
                     <h4>Primary Contact</h4>
                 </div>
-                <div class="body">
+                <div class="box">
                     <div class="row clearfix">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -261,10 +267,10 @@
                     </div>
                 </div>
 
-                <div class="header">
+                <div class="header-title">
                     <h4>Secondary Contact</h4>
                 </div>
-                <div class="body">
+                <div class="box">
                     <div class="row clearfix">
                         <div class="col-md-5">
                             <div class="form-group">

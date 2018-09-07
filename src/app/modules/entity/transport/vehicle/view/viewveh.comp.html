@@ -22,34 +22,50 @@
     </div>
 
     <div class="body">
-        <div class="row clearfix">
-            <div class="col-md-12">
-                <p-dataTable [value]="vehicleDT | filterBy: {'vehiclename': srcvehname, 'imei': srcvehname}">
-                    <p-column field="vehicletype" header="Vehicle Type" [style]="{'width':'100px', 'text-align':'left'}"></p-column>
-                    <p-column field="vehiclename" header="Vehicle Name" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
-                    <p-column header="Vehicle Registration No" [style]="{'width':'300px','text-align':'left'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            {{row.vehregno}} <br />
-                            <span *ngIf="!row.isowner"><b>Owner : </b>{{row.ownenttname}}</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column field="simno" header="Sim No" [style]="{'width':'120px', 'text-align':'left'}"></p-column>
-                    <p-column field="imei" header="IMEI" [style]="{'width':'150px', 'text-align':'left'}"></p-column>
-                    <p-column field="mode" header="Status" [style]="{'width': '60px', 'text-align': 'left'}"></p-column>
-                    <p-column header="Is Owner" [style]="{'width': '80px', 'align': 'center'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <span class="material-icons" *ngIf="row.isowner">done</span>
-                        </ng-template>
-                    </p-column>
-                    <p-column [style]="{'width': '60px', 'align': 'left'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme" (click)="editVehicleForm(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
-                </p-dataTable>
-            </div>
-        </div>
+        <table class="table table-responsive">
+            <thead>
+                <tr class="grid-header">
+                    <th width="100px">Vehicle Type</th>
+                    <th width="120px">Vehicle Name</th>
+                    <th width="300px">Vehicle Registration No</th>
+                    <th width="120px">Sim No</th>
+                    <th width="150px">IMEI</th>
+                    <th width="60px">Status</th>
+                    <th width="80px">Is Owner</th>
+                    <th width="60px"></th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let row of vehicleDT | filterBy: {'vehiclename': srcvehname, 'imei': srcvehname}">
+                <tr [ngClass]="!row.isowner ? 'grid-body bg-transparent' : 'grid-body'">
+                    <td>
+                        {{row.vehicletype}}
+                    </td>
+                    <td>
+                        {{row.vehiclename}}
+                    </td>
+                    <td>
+                        {{row.vehregno}} <br />
+                        <span *ngIf="!row.isowner"><b>Owner : </b>{{row.ownenttname}}</span>
+                    </td>
+                    <td>
+                        {{row.simno}}
+                    </td>
+                    <td>
+                        {{row.imei}}
+                    </td>
+                    <td>
+                        {{row.mode}}
+                    </td>
+                    <td>
+                        <span class="material-icons" *ngIf="row.isowner">done</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-theme" (click)="editVehicleForm(row)">
+                            <i class="material-icons">edit</i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

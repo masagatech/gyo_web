@@ -249,6 +249,10 @@ export class ViewWorkspaceComponent implements OnInit, OnDestroy {
         this._router.navigate(['/admin/workspace/edit', row.wsautoid]);
     }
 
+    public editSystemWorkspace() {
+        this._router.navigate(['/admin/workspace/edit', this.wsautoid]);
+    }
+
     public openForm() {
         var _wsdetails = {
             "wsautoid": this.wsautoid.toString(),

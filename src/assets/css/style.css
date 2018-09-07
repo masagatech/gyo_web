@@ -2039,6 +2039,16 @@
     color: #fff !important;
 }
 
+.bg-light-grey {
+    background-color: #eeeeee !important;
+    color: #000000;
+}
+
+.bg-light-grey .content .text,
+.bg-light-grey .content .number {
+    color: #000000 !important;
+}
+
 .bg-blue-grey {
     background-color: #607D8B !important;
     color: #fff;
@@ -2057,6 +2067,10 @@
 .bg-black .content .text,
 .bg-black .content .number {
     color: #fff !important;
+}
+
+.bg-transparent {
+    background-color: transparent !important;
 }
 
 .bg-white {
@@ -3443,6 +3457,33 @@ section.content {
 
 .card .no-padding {
     padding: 0;
+}
+
+.grid-header {
+    background: #114ca5;
+    color: #ffffff;
+    padding: 3px 10px;
+    position: relative;
+}
+
+.grid-header th {
+    font-size: 12px!important;
+    border: 1px solid #cccccc!important;
+    padding: 6px 10px!important;
+}
+
+.grid-body {
+    border: 1px solid #114ca5;
+    background-color: #ffffff;
+    padding: 5px 2px;
+}
+
+.grid-body td {
+    font-size: 11px!important;
+    border: 1px solid #cccccc!important;
+    padding: 6px 10px!important;
+    line-height: 1.42857143!important;
+    vertical-align: top!important;
 }
 
 .box-md-4 {

@@ -3,20 +3,17 @@
         <h4>Driver</h4>
 
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="driverid != 0 && iseditdrv == true">
+            <li *ngIf="paramsid != 0 && iseditdrv == true && isdrvowner == true">
                 <span class="switch">
-                    <label class="control-label">
-                        <input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()">
-                        <span class="lever"></span>
-                </label>
+                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()"><span class="lever"></span></label>
                 </span>
             </li>
-            <li *ngIf="driverid != 0 && isdeletedrv == true && isowner == true">
+            <li *ngIf="paramsid != 0 && isdeletedrv == true && isdrvowner == true">
                 <a role="button" class="btn btn-danger" (click)="deleteDrivers()">
                     <i class="material-icons">delete</i>
                 </a>
             </li>
-            <li *ngIf="driverid == 0">
+            <li *ngIf="paramsid == 0">
                 <a role="button" class="btn btn-theme" (click)="refreshDrivers()">
                     <i class="material-icons">refresh</i>
                 </a>
@@ -136,15 +133,15 @@
                     </div>
 
                     <div class="form-group" *ngIf="schoolDT.length">
-                        <label class="control-label" *ngIf="isowner == true">Make Owner Other Entity</label>
-                        <label class="control-label" *ngIf="isowner == false">Mapped Entity</label>
+                        <label class="control-label" *ngIf="isdrvowner == true">Make Owner Other Entity</label>
+                        <label class="control-label" *ngIf="isdrvowner == false">Mapped Entity</label>
 
                         <div *ngFor="let schrow of schoolDT" [ngClass]="schrow.schid == ownenttid ? 'box text-left bg-green' : 'box text-left bg-white'">
                             <div class="row clearfix">
                                 <div class="col-md-9">
                                     {{schrow.schname}}
                                 </div>
-                                <div class="col-md-3 text-right" *ngIf="schrow.schid != ownenttid && isowner == true">
+                                <div class="col-md-3 text-right" *ngIf="schrow.schid != ownenttid && isdrvowner == true">
                                     <input id="{{schrow.schid}}" type="checkbox" [(ngModel)]="schrow.isowner">
                                     <label for="{{schrow.schid}}"></label>
                                 </div>

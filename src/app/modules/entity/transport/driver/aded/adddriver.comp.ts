@@ -48,7 +48,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     mode: string = "";
     isactive: boolean = true;
     isprivate: boolean = true;
-    isowner: boolean = false;
+    isdrvowner: boolean = false;
 
     uploadPhotoDT: any = [];
     uploadDocsDT: any = [];
@@ -327,9 +327,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         var that = this;
 
         var act_deactDriver = {
-            "autoid": that.driverid,
-            "isactive": that.isactive,
-            "mode": that.mode
+            "flag": "owndrv",
+            "mode": that.mode,
+            "autoid": that.paramsid
         }
 
         that._driverservice.saveDriverInfo(act_deactDriver).subscribe(data => {
@@ -361,8 +361,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
         that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
             var params = {
-                "autoid": that.driverid,
-                "mode": "delete"
+                "flag": "owndrv",
+                "mode": "delete",
+                "autoid": that.paramsid
             }
 
             that._driverservice.saveDriverInfo(params).subscribe(data => {
@@ -435,8 +436,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     }
 
     refreshDrivers() {
-        this.resetDriverFields();
         this.getmobno = "";
+        this.resetDriverFields();
     }
 
     // Validation Fields
@@ -469,7 +470,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             $(".address").focus();
             return false;
         }
-        if (that.driverid !== 0) {
+        if (that.paramsid !== 0) {
             if (JSON.stringify(newval) == "{}") {
                 that._msg.Show(messageType.warn, "Warning", "No any Changes");
                 return false;
@@ -681,10 +682,16 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             try {
                 var _driverdata = data.data[0]._driverdata;
                 var _attachdocs = data.data[0]._attachdocs;
-                var _enttdata = data.data[0]._enttdata;
+
+                that.schoolDT = data.data[0]._enttdata;
 
                 if (_driverdata == null || _driverdata == undefined) {
-                    that.refreshDrivers();
+                    if (that.paramsid == 0) {
+                        that.refreshDrivers();
+                    }
+                    else {
+                        that.backViewData();
+                    }
                 }
                 else {
                     that.driverid = _driverdata.autoid;
@@ -711,7 +718,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                     that.remark1 = _driverdata.remark1;
                     that.isprivate = _driverdata.isprivate;
                     that.isactive = _driverdata.isactive;
-                    that.isowner = _driverdata.isowner;
+                    that.isdrvowner = _driverdata.isowner;
                     that.mode = _driverdata.mode;
                     that.othenttids = _driverdata.othenttids;
 
@@ -726,46 +733,18 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
                     that.uploadDocsDT = _attachdocs;
 
-                    that.schoolDT = _enttdata;
-
-                    var _schrow = null;
-                    var _selschrow = null;
-                    var _ownenttids = null;
-
-                    for (var i = 0; i < that.schoolDT.length; i++) {
-                        _schrow = null;
-                        _schrow = that.schoolDT[i];
-
-                        if (_schrow != null) {
-                            _ownenttids = null;
-                            _ownenttids = _driverdata.ownenttids;
-
-                            if (_ownenttids != null) {
-                                for (var j = 0; j < _ownenttids.length; j++) {
-                                    _selschrow = null;
-                                    _selschrow = _ownenttids[j];
-
-                                    if (_schrow.schid == _selschrow) {
-                                        _schrow.isowner = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
                     if (that.isdetails) {
                         that.disabledDriverFields();
                     }
                     else {
-                        if (that.isowner) {
+                        if (that.isdrvowner) {
                             that.enabledDriverFields();
                         }
                         else {
                             that.disabledDriverFields();
                         }
 
-                        var selownerentt: string[] = [];
-                        selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
+                        var selownerentt = _driverdata.ownenttids;
 
                         that.driverData = that.getDriverParams(selownerentt);
                         that.oldDriverData = that.getAuditParams("old");
@@ -804,7 +783,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                 var _isexists = data.data[0].isexists;
                 var _msg = data.data[0].msg;
                 var _driverdata = data.data[0]._driverdata;
-                var _enttdata = data.data[0]._enttdata;
+
+                that.schoolDT = data.data[0]._enttdata;
 
                 if (_driverdata == null || _driverdata == undefined) {
                     that.resetDriverFields();
@@ -859,33 +839,6 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             that.choosePhotoLabel = "Upload Photo";
                         }
 
-                        that.schoolDT = _enttdata;
-
-                        var _schrow = null;
-                        var _selschrow = null;
-                        var _ownenttids = null;
-
-                        for (var i = 0; i < that.schoolDT.length; i++) {
-                            _schrow = null;
-                            _schrow = that.schoolDT[i];
-
-                            if (_schrow != null) {
-                                _ownenttids = null;
-                                _ownenttids = _driverdata.ownenttids;
-
-                                if (_ownenttids != null) {
-                                    for (var j = 0; j < _ownenttids.length; j++) {
-                                        _selschrow = null;
-                                        _selschrow = _ownenttids[j];
-
-                                        if (_schrow.schid == _selschrow) {
-                                            _schrow.isowner = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
                         if (that.isdetails) {
                             that.disabledDriverFields();
                         }
@@ -897,8 +850,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                                 that.disabledDriverFields();
                             }
 
-                            var selownerentt: string[] = [];
-                            selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
+                            var selownerentt = _driverdata.ownenttids;
 
                             that.driverData = that.getDriverParams(selownerentt);
                             that.oldDriverData = that.getAuditParams("old");

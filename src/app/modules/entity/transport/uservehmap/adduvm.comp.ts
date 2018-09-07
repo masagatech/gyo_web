@@ -20,14 +20,16 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
     utype: string = "";
     enttid: number = 0;
     wsautoid: number = 0;
-    selecteudUser: any = [];
+    selectedUser: any = [];
 
-    vehicleDT: any = [];
+    autoVehicleDT: any = [];
     autoid: number = 0;
     vehid: number = 0;
     vehname: string = "";
     vehregno: string = "";
-    selectedvehicle: any = [];
+    selectedVehicle: any = [];
+
+    vehicleDT: any = [];
 
     private clickedVehicle = { "attr": {} };
 
@@ -56,11 +58,11 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         this.utype = "";
         this.enttid = 0;
         this.wsautoid = 0;
-        this.selecteudUser = [];
+        this.selectedUser = [];
         this.autoid = 0;
         this.vehid = 0;
         this.vehregno = "";
-        this.selectedvehicle = [];
+        this.selectedVehicle = [];
         this.vehicleDT = [];
 
         this.clickedVehicle = { "attr": {} };
@@ -120,7 +122,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             "issysadmin": that.loginUser.issysadmin,
             "search": query
         }).subscribe(data => {
-            that.vehicleDT = data.data;
+            that.autoVehicleDT = data.data;
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -172,7 +174,7 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
         that.vehid = 0;
         that.vehname = "";
         that.vehregno = "";
-        that.selectedvehicle = [];
+        that.selectedVehicle = [];
 
         $(".vehname input").focus();
     }

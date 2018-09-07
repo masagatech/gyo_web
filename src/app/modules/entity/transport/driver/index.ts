@@ -9,7 +9,7 @@ import { ViewDriverComponent } from './view/viewdriver.comp';
 
 import { DriverService } from '@services/master';
 
-import { DataTableModule, DataGridModule, PanelModule, FileUploadModule } from 'primeng/primeng';
+import { FileUploadModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -41,8 +41,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule,
-    DataTableModule, DataGridModule, PanelModule, FileUploadModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule, FileUploadModule
   ],
 
   providers: [AuthGuard, CommonService, DriverService]

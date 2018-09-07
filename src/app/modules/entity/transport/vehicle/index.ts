@@ -9,8 +9,6 @@ import { ViewVehicleComponent } from './view/viewveh.comp';
 
 import { VehicleService } from '@services/master';
 
-import { DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
-
 export const routes = [
   {
     path: '', children: [
@@ -41,8 +39,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule,
-    DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, RouterModule.forChild(routes), SharedComponentModule
   ],
 
   providers: [AuthGuard, VehicleService, CommonService]

@@ -39,6 +39,8 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     area: number = 0;
     pincode: number = 0;
     isactive: boolean = false;
+    
+    iseditws: boolean = false;
 
     iscompany: boolean = false;
     cmppsngrrate: any = "0";
@@ -275,7 +277,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
     resetWorkspaceFields() {
         var that = this;
-
+        
         that.wsautoid = 0
         that.wscode = "";
         that.wsname = "";
@@ -611,9 +613,11 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                             else {
                                 if (that.loginUser.utype == "admin" && that.loginUser.wsautoid == that.wsautoid) {
                                     that.enabledWorkspaceFields();
+                                    that.iseditws = true;
                                 }
                                 else {
                                     that.disabledWorkspaceFields();
+                                    that.iseditws = false;
                                 }
                             }
                         }
@@ -640,7 +644,13 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                 })
             }
             else {
-                that.resetWorkspaceFields();
+                if (that.loginUser.issysadmin) {
+                    that.resetWorkspaceFields();
+                }
+                else {
+                    that.backViewData();
+                }
+                
                 commonfun.loaderhide();
             }
         });

@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { EntityService, WorkspaceService } from '@services/master';
-import { GMap } from 'primeng/primeng';
 
 declare var google: any;
 
@@ -15,17 +14,11 @@ export class AddEntityComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _wsdetails: any = [];
 
-    marker: any;
-    @ViewChild("gmap")
-    _gmap: GMap;
-
-    private overlays: any[];
-    private map: any;
-
     stateDT: any = [];
     cityDT: any = [];
     areaDT: any = [];
 
+    paramsid: number = 0;
     schid: number = 0;
     schcd: string = "";
     schnm: string = "";
@@ -67,20 +60,26 @@ export class AddEntityComponent implements OnInit, OnDestroy {
     uploadlogoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseLabel: string = "";
 
+    isaddentt: boolean = false;
+    iseditentt: boolean = false;
+    isdeleteentt: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService, private cdRef: ChangeDetectorRef,
-        private _entityservice: EntityService, private _wsservice: WorkspaceService, private _autoservice: CommonService, private _loginservice: LoginService) {
+        private _loginservice: LoginService, private _enttservice: EntityService, private _wsservice: WorkspaceService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this.getLogoUploadConfig();
 
         this.fillDropDownList();
         this.fillFieldDropDown();
+
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
 
+        this.getActionRights();
         this.getEntityDetails();
     }
 
@@ -88,6 +87,27 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         setTimeout(function () {
             $(".schcd").focus();
         }, 100);
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": "", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "mcode": "entt"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddentt = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditentt = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeleteentt = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     hideWhenEntityFields() {
@@ -127,7 +147,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
+        that._enttservice.getEntityDetails({ "flag": "dropdown", "wscode": that._wsdetails.wscode }).subscribe(data => {
             try {
                 that.entttypeDT = data.data.filter(a => a.group === "workspace");
 
@@ -161,7 +181,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._entityservice.getEntityDetails({ "flag": "ddlfield" }).subscribe(data => {
+        that._enttservice.getEntityDetails({ "flag": "ddlfield" }).subscribe(data => {
             try {
                 that.boardDT = data.data.filter(a => a.group === "board");
             }
@@ -194,7 +214,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
                     "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid
                 }
 
-                that._entityservice.getEntityDetails(dparams).subscribe(data => {
+                that._enttservice.getEntityDetails(dparams).subscribe(data => {
                     try {
                         var enttdata = data.data.filter(a => a.entttype === that.entttype);
 
@@ -332,7 +352,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    private addCPRow() {
+    addCPRow() {
         var that = this;
 
         // Validation
@@ -475,13 +495,13 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         that.clearcheckboxes();
     }
 
-    private clearcheckboxes(): void {
+    clearcheckboxes(): void {
         $("input[type=checkbox]").prop('checked', false);
     }
 
     // Setting Board Checkboxes
 
-    private selectAndDeselectAllBoardCheckboxes() {
+    selectAndDeselectAllBoardCheckboxes() {
         if ($("#selectallboard").is(':checked')) {
             $(".allboardcheckboxes input[type=checkbox]").prop('checked', true);
         }
@@ -496,12 +516,12 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         var that = this;
 
         var act_deactentity = {
-            "autoid": that.schid,
+            "autoid": that.paramsid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        this._entityservice.saveEntityInfo(act_deactentity).subscribe(data => {
+        that._enttservice.saveEntityInfo(act_deactentity).subscribe(data => {
             try {
                 var dataResult = data.data;
                 var msg = dataResult[0].funsave_schoolinfo.msg;
@@ -525,7 +545,34 @@ export class AddEntityComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Save Entity Data
+    // Delete Entity
+
+    public deleteEntity() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
+            var params = {
+                "mode": "delete",
+                "autoid": that.paramsid
+            }
+
+            that._enttservice.saveEntityInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    that.backViewData();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
+    }
+
+    // Validation Entity
 
     isValidationEntity() {
         var that = this;
@@ -573,6 +620,8 @@ export class AddEntityComponent implements OnInit, OnDestroy {
 
         return true;
     }
+
+    // Save Entity Data
 
     saveEntityInfo() {
         var that = this;
@@ -646,7 +695,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
                     "mode": ""
                 }
 
-                that._entityservice.saveEntityInfo(saveentity).subscribe(data => {
+                that._enttservice.saveEntityInfo(saveentity).subscribe(data => {
                     try {
                         var dataResult = data.data[0].funsave_schoolinfo;
                         var msg = dataResult.msg;
@@ -690,11 +739,11 @@ export class AddEntityComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.schid = params['id'];
+                that.paramsid = params['id'];
 
-                that._entityservice.getEntityDetails({
+                that._enttservice.getEntityDetails({
                     "flag": "edit",
-                    "id": that.schid,
+                    "id": that.paramsid,
                     "wsautoid": that._wsdetails.wsautoid
                 }).subscribe(data => {
                     try {
@@ -791,7 +840,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
 
     viewEntityDetails() {
         var that = this;
-        
+
         commonfun.loader();
 
         that._wsservice.getWorkspaceDetails({
@@ -821,7 +870,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        if (this.schid == 0) {
+        if (this.paramsid == 0) {
             this.viewEntityDetails();
         }
         else {
