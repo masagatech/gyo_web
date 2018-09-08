@@ -207,7 +207,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         var that = this;
         var params = {};
 
-        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
             if (that.isvehowner) {
                 params = {
                     "flag": "ownveh",

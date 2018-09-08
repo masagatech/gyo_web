@@ -1054,7 +1054,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             { "key": "Middle Name", "val": that.mname, "fldname": "mname", "fldtype": "text" },
             { "key": "Last Name", "val": that.lname, "fldname": "lname", "fldtype": "text" },
 
-            // Personal Details
+            // General Details
 
             { "key": "Date of Birth", "val": that.dob, "fldname": "dob", "fldtype": "date" },
             { "key": "Birth Place", "val": that.birthplace, "fldname": "birthplace", "fldtype": "text" },
@@ -1175,7 +1175,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             "mname": that.mname,
             "lname": that.lname,
 
-            // Personal Details
+            // General Details
 
             "dob": that.dob,
             "birthplace": that.birthplace,

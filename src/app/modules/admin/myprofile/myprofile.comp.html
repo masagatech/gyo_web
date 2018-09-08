@@ -4,71 +4,68 @@
             <img src="assets/img/coverphoto.png" onerror="this.src='assets/img/moimage.gif';" class="cover-img">
 
             <div class="avatar">
-                <img *ngIf="row.gndrkey == 'M'" alt="{{row.fullname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
-                <img *ngIf="row.gndrkey == 'F'" alt="{{row.fullname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
+                <img *ngIf="row.gndrkey == 'M'" alt="{{row.uname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-male.png';" height="100px">
+                <img *ngIf="row.gndrkey == 'F'" alt="{{row.uname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/default-female.png';" height="100px">
+
+                <img *ngIf="row.gndrkey == ''" alt="{{row.uname}}" src="{{global.uploadurl + row.uphoto}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
 
                 <div class="title">
-                    {{row.fullname}}
+                    {{row.uname}}
                 </div>
             </div>
             <div class="info">
                 <div class="row clearfix">
                     <div class="col-md-4">
-                        <div class="desc">
-                            <b>Role : </b>{{row.utypename}}
-                        </div>
-                        <div class="desc">
-                            <b>Mobile : </b>{{row.mobile}}
-                        </div>
-                        <div class="desc" *ngIf="row.altmobile !== ''">
-                            <b>Alternate Mobile : </b>{{row.altmobile}}
-                        </div>
-                        <div class="desc">
-                            <b>Email : </b>{{row.email}}
-                        </div>
-                        <div class="desc" *ngIf="row.altemail !== ''">
-                            <b>Alternate Email : </b>{{row.altemail}}
-                        </div>
-                        <div class="desc" *ngIf="row.address !== ''">
-                            <b>Address : </b>{{row.address}}
-                        </div>
-                        <div class="desc" *ngIf="row.country !== ''">
-                            <b>Country : </b>{{row.country}}
-                        </div>
-                        <div class="desc" *ngIf="row.state !== ''">
-                            <b>State : </b>{{row.state}}
-                        </div>
-                        <div class="desc" *ngIf="row.city !== ''">
-                            <b>City : </b>{{row.city}}
-                        </div>
-                        <div class="desc" *ngIf="row.area !== ''">
-                            <b>Area : </b>{{row.area}}
+                        <div class="card">
+                            <div class="header-title">
+                                General Details
+                            </div>
+                            <div class="body">
+                                <p><b>Name : </b>{{row.uname}} ({{row.pwd}})</p>
+                                <p><b>Designation : </b>{{row.designame}}</p>
+                                <p><b>Mobile : </b>{{row.mobile}}</p>
+                                <p *ngIf="row.altmobile != ''"><b>Alternate Mobile : </b>{{row.altmobile}}</p>
+                                <p *ngIf="row.email != ''"><b>Email : </b>{{row.email}}</p>
+                                <p *ngIf="row.altemail != ''"><b>Alternate Email : </b>{{row.altemail}}</p>
+                                <p *ngIf="row.licenseno != '0'"><b>License No : </b>{{row.licenseno}}</p>
+                                <p *ngIf="row.aadharno != '0'"><b>Aadhar No : </b>{{row.aadharno}}</p>
+                                <p *ngIf="row.address != ''"><b>Address : </b>{{row.address}}</p>
+                                <p *ngIf="row.country != ''"><b>Country : </b>{{row.country}}</p>
+                                <p *ngIf="row.state != ''"><b>State : </b>{{row.state}}</p>
+                                <p *ngIf="row.city != ''"><b>City : </b>{{row.city}}</p>
+                                <p *ngIf="row.area != ''"><b>Area : </b>{{row.area}}</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="header">
-                            Entity Mapping
-                        </div>
-                        <div *ngIf="entityDT.length">
-                            <div *ngFor="let row of entityDT | groupBy: 'entttype'">
-                                <div class="header">
-                                    <b>{{row.key}}</b>
+                    <div class="col-md-4" *ngIf="row.schooldt.length">
+                        <div class="card">
+                            <div class="header-title">
+                                Mapped School
+                            </div>
+                            <div class="body">
+                                <div *ngFor="let wsrow of row.schooldt | groupBy: 'wsname'">
+                                    <h5>{{wsrow.key}}</h5>
+
+                                    <div *ngFor="let schrow of wsrow.value; let i = index;">
+                                        <b *ngIf="wsrow.value.length > 1">{{i + 1}}.</b> {{schrow.schname}}
+                                    </div>
+
+                                    <hr class="hr" />
                                 </div>
-                                <p-dataGrid [value]="row.value">
-                                    <ng-template let-drow pTemplate="item">
-                                        <div style="padding:3px" class="col-md-3">
-                                            <p-panel [header]="drow.enttname" [style]="{'text-align':'center'}">
-                                                <a role="button" (click)="openMainForm(drow)">
-                                                    <img alt="{{drow.enttname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
-                                                </a>
-                                                <hr class="hr ui-widget-content">
-                                                <button type="button" class="btn btn-theme" (click)="openMainForm(drow)">
-                                                    <i class="material-icons">arrow_forward</i>
-                                                </button> {{drow.mode}}
-                                            </p-panel>
-                                        </div>
-                                    </ng-template>
-                                </p-dataGrid>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="row.vehicledt.length">
+                        <div class="card">
+                            <div class="header-title">
+                                Mapped Vehicle
+                            </div>
+                            <div class="body">
+                                <div *ngFor="let vehrow of row.vehicledt; let i = index;">
+                                    <h5>{{i + 1}}. {{vehrow.vehname}}</h5>
+                                    <p>{{vehrow.vehregno}} - {{vehrow.imei}}</p>
+                                    <p *ngIf="vehrow.attr != '{}'">{{vehrow.attr}}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

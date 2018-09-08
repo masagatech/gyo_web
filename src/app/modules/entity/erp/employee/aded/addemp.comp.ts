@@ -20,6 +20,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     cityDT: any = [];
     areaDT: any = [];
 
+    paramsid: number = 0;
     empid: number = 0;
     loginid: number = 0;
     empcode: string = "";
@@ -112,6 +113,10 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
     uploaddocconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
 
+    isaddemp: boolean = false;
+    iseditemp: boolean = false;
+    isdeleteemp: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _empservice: EmployeeService, private _routeParams: ActivatedRoute, private _router: Router,
@@ -125,6 +130,8 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         this.fillStateDropDown();
         this.fillCityDropDown();
         this.fillAreaDropDown();
+
+        this.getActionRights();
     }
 
     public ngOnInit() {
@@ -148,6 +155,30 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
         that.showPassword("password");
     }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "psngrprof"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddemp = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditemp = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeleteemp = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
+    // Show / Hide Password
 
     showPassword(type) {
         if (type == "text") {
@@ -325,40 +356,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Active / Deactive Data
-
-    active_deactiveEmployeeInfo() {
-        var that = this;
-
-        var act_deactemp = {
-            "empid": that.empid,
-            "isactive": that.isactive,
-            "mode": that.mode
-        }
-
-        this._empservice.saveEmployeeInfo(act_deactemp).subscribe(data => {
-            try {
-                var dataResult = data.data;
-
-                if (dataResult[0].funsave_empinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_empinfo.msg);
-                    that.getEmployeeDetails();
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_empinfo.msg);
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-        }, () => {
-            // console.log("Complete");
-        });
-    }
-
-    // File Upload
+    // Employee Photo Upload
 
     getPhotoUploadConfig() {
         var that = this;
@@ -431,6 +429,65 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
     removePhotoUpload() {
         this.uploadPhotoDT.splice(0, 1);
+    }
+
+    // Active / Deactive Employee
+
+    active_deactiveEmployeeInfo() {
+        var that = this;
+
+        var act_deactemp = {
+            "empid": that.paramsid,
+            "mode": that.mode
+        }
+
+        this._empservice.saveEmployeeInfo(act_deactemp).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_employeeinfo;
+
+                if (dataResult.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult.msg);
+                    that.getEmployeeDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", dataResult.msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
+    // Delete Employee
+
+    public deleteEmployee() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = {
+                "mode": "delete",
+                "empid": that.paramsid
+            }
+
+            that._empservice.saveEmployeeInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data;
+                    that.backViewData();
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
     }
 
     // Valid Add Experience
@@ -890,11 +947,11 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.empid = params['id'];
+                that.paramsid = params['id'];
 
                 that._empservice.getEmployeeDetails({
                     "flag": "edit",
-                    "id": that.empid,
+                    "id": that.paramsid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {
@@ -995,7 +1052,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     // Back For View Data
 
     backViewData() {
-        this._router.navigate(['/erp/' + this.psngrtype]);
+        this._router.navigate(['/erp/' + this.psngrtype + '/profile']);
     }
 
     ngOnDestroy() {

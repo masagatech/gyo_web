@@ -120,6 +120,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         });
     }
 
+    // Show / Hide Password
+
     showPassword(type) {
         if (type == "text") {
             $("#lblshowpwd").removeClass("hide");
@@ -334,14 +336,14 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
         that._driverservice.saveDriverInfo(act_deactDriver).subscribe(data => {
             try {
-                var dataResult = data.data;
+                var dataResult = data.data[0].funsave_driverinfo;
 
-                if (dataResult[0].funsave_driverinfo.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult[0].funsave_driverinfo.msg);
+                if (dataResult.msgid != "-1") {
+                    that._msg.Show(messageType.success, "Success", dataResult.msg);
                     that.getDriverDetails();
                 }
                 else {
-                    that._msg.Show(messageType.error, "Error", dataResult[0].funsave_driverinfo.msg);
+                    that._msg.Show(messageType.error, "Error", dataResult.msg);
                 }
             }
             catch (e) {
@@ -359,7 +361,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     public deleteDrivers() {
         var that = this;
 
-        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
             var params = {
                 "flag": "owndrv",
                 "mode": "delete",

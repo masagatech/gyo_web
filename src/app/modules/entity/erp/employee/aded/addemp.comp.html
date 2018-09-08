@@ -1,14 +1,27 @@
 <div class="card">
     <div class="header">
         <h4>{{psngrtypenm}}</h4>
+
         <ul class="header-dropdown m-r--5">
-            <li>
+            <li *ngIf="paramsid != 0 && iseditemp == true">
+                <span class="switch">
+                    <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveEmployeeInfo()"><span class="lever"></span></label>
+                </span>
+            </li>
+            <li *ngIf="paramsid != 0 && isdeleteemp == true">
+                <a role="button" class="btn btn-danger" (click)="deleteEmployee()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
+            <li *ngIf="isaddemp == true && iseditemp == true">
                 <a role="button" class="btn btn-theme" (click)="saveEmployeeInfo()">
-                    <i class="material-icons">save</i></a>
+                    <i class="material-icons">save</i>
+                </a>
             </li>
             <li>
                 <a role="button" class="btn btn-theme" (click)="backViewData()">
-                    <i class="material-icons">arrow_back</i></a>
+                    <i class="material-icons">arrow_back</i>
+                </a>
             </li>
         </ul>
     </div>

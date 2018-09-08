@@ -42,20 +42,6 @@
                     <p-column field="mobileno1" header="Mobile" [style]="{'width': '120px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="email1" header="Email" [style]="{'width': '200px', 'text-align': 'left', 'vertical-align':'top'}"></p-column>
                     <p-column field="address" header="Address" [style]="{'text-align': 'left', 'vertical-align':'top'}"></p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme" (click)="editWorkspaceForm(row)">
-                                <i class="material-icons">edit</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
-                    <p-column [style]="{'width': '50px', 'align': 'left', 'vertical-align':'top'}">
-                        <ng-template let-row="rowData" pTemplate type="body">
-                            <button type="button" class="btn btn-theme" (click)="openEntityForm(row)">
-                                <i class="material-icons">arrow_forward</i>
-                            </button>
-                        </ng-template>
-                    </p-column>
                 </p-dataTable>
             </div>
         </div>

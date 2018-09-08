@@ -112,20 +112,19 @@ export class CommonService {
     confirmmsgbox(msg, confmsg, cancelmsg, callback) {
         swal({
             title: "Are you sure?",
-            text: confmsg,
+            text: msg,
             type: "warning",
             showConfirmButton: true,
-            confirmButtonText: "Ok",
+            confirmButtonText: "Yes",
             showCancelButton: true,
-            cancelButtonText: "Cancel",
+            cancelButtonText: "No",
             timer: 3000
         }).then((result) => {
             if (result.value) {
-                swal('Confirm!', msg, "success");
+                swal('Confirm!', confmsg, "success");
                 callback(true);
             } else if (result.dismiss === swal.DismissReason.cancel) {
                 swal('Cancelled', cancelmsg, "error");
-                return;
             }
         })
     }

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { WorkspaceService } from '@services/master';
@@ -19,8 +18,7 @@ export class WorkspaceReportsComponent implements OnInit, OnDestroy {
     wsname: string = "";
     workspaceDT: any = [];
 
-    constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _wsservice: WorkspaceService) {
+    constructor(private _msg: MessageService, private _loginservice: LoginService, private _wsservice: WorkspaceService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
 

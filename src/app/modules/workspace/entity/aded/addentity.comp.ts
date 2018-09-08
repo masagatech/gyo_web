@@ -550,7 +550,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
     public deleteEntity() {
         var that = this;
 
-        that._autoservice.confirmmsgbox("Your record has been deleted", "Are you sure, you want to delete ?", "Your record is safe", function (e) {
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
             var params = {
                 "mode": "delete",
                 "autoid": that.paramsid
