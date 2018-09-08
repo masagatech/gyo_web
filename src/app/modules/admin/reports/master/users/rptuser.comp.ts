@@ -11,18 +11,16 @@ declare var $: any;
 })
 
 export class UserReportsComponent implements OnInit, OnDestroy {
-    _enttdetails: any = [];
     loginUser: LoginUserModel;
+    _enttdetails: any = [];
 
     global = new Globals();
 
-    utypeDT: any = [];
-    srcutype: string = "";
-
-    uname: string = "";
-
     entityDT: any = [];
     enttid: number = 0;
+
+    utypeDT: any = [];
+    srcutype: string = "";
 
     usersDT: any = [];
 
@@ -31,36 +29,16 @@ export class UserReportsComponent implements OnInit, OnDestroy {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
-        this.fillUserTypeDropDown();
         this.fillSchoolDropDown();
+        this.fillUserTypeDropDown();
     }
 
     public ngOnInit() {
         setTimeout(function () {
-            commonfun.navistyle();
-
             $.AdminBSB.islocked = true;
             $.AdminBSB.leftSideBar.Close();
             $.AdminBSB.rightSideBar.activate();
         }, 100);
-    }
-
-    // Fill Dropdown
-
-    fillUserTypeDropDown() {
-        var that = this;
-        commonfun.loader();
-
-        that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
-            that.utypeDT = data.data.filter(a => a.group == "usertype");
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
-
-        })
     }
 
     // Fill School Drop Down
@@ -100,6 +78,24 @@ export class UserReportsComponent implements OnInit, OnDestroy {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
+    }
+
+    // Fill User Type Dropdown
+
+    fillUserTypeDropDown() {
+        var that = this;
+        commonfun.loader();
+
+        that._userservice.getUserDetails({ "flag": "dropdown", "utype": that.loginUser.utype }).subscribe(data => {
+            that.utypeDT = data.data.filter(a => a.group == "usertype");
             commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);

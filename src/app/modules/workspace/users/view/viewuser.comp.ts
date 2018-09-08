@@ -16,17 +16,11 @@ export class ViewUserComponent implements OnInit {
     global = new Globals();
 
     entityDT: any = [];
-    enttdata: any = [];
     enttid: number = 0;
-    enttname: string = "";
 
     utypeDT: any = [];
     srcutype: string = "all";
-
-    autoUserDT: any = [];
-
-    autouid: number = 0;
-    autouname: any = [];
+    srcuname: string = "";
 
     usersDT: any = [];
 
@@ -39,8 +33,10 @@ export class ViewUserComponent implements OnInit {
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
 
+        this.fillSchoolDropDown();
         this.fillUserTypeDropDown();
-        this.viewUserDataRights();
+
+        this.getUserDetails();
     }
 
     public ngOnInit() {
@@ -72,38 +68,54 @@ export class ViewUserComponent implements OnInit {
         }, 0);
     }
 
-    // Auto Completed Entity
+    // Fill School Drop Down
 
-    getEntityData(event) {
-        let query = event.query;
+    fillSchoolDropDown() {
+        var that = this;
+        var defschoolDT: any = [];
 
-        this._autoservice.getAutoData({
-            "flag": "entity",
-            "uid": this.loginUser.uid,
-            "ucode": this.loginUser.ucode,
-            "utype": this.loginUser.utype,
-            "issysadmin": this.loginUser.issysadmin,
-            "wsautoid": this._wsdetails.wsautoid,
-            "search": query
-        }).subscribe((data) => {
-            this.entityDT = data.data;
+        commonfun.loader();
+
+        that._autoservice.getDropDownData({
+            "flag": "school", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "ctype": that.loginUser.ctype,
+            "enttid": that._enttdetails.enttid, "wsautoid": that._wsdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
+        }).subscribe(data => {
+            try {
+                that.entityDT = data.data;
+
+                if (that.entityDT.length > 0) {
+                    defschoolDT = that.entityDT.filter(a => a.iscurrent == true);
+
+                    if (defschoolDT.length > 0) {
+                        that.enttid = defschoolDT[0].enttid;
+                    }
+                    else {
+                        if (sessionStorage.getItem("_schenttdetails_") == null && sessionStorage.getItem("_schenttdetails_") == undefined) {
+                            that.enttid = 0;
+                        }
+                        else {
+                            that.enttid = that._enttdetails.enttid;
+                        }
+                    }
+
+                    that.getUserDetails();
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+
+            commonfun.loaderhide();
         }, err => {
-            this._msg.Show(messageType.error, "Error", err);
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
         }, () => {
 
-        });
+        })
     }
 
-    // Selected Owners
-
-    selectEntityData(event) {
-        this.enttid = event.value;
-
-        sessionStorage.setItem("_enttid_", event.value);
-        sessionStorage.setItem("_enttnm_", event.label);
-
-        this.getUserDetails();
-    }
+    // Fill User Type Dropdown
 
     fillUserTypeDropDown() {
         var that = this;
@@ -121,62 +133,6 @@ export class ViewUserComponent implements OnInit {
         })
     }
 
-    // Auto Completed User
-
-    getUserData(event) {
-        var that = this;
-        let query = event.query;
-
-        that._autoservice.getAutoData({
-            "flag": "users",
-            "uid": that.loginUser.uid,
-            "ucode": that.loginUser.ucode,
-            "utype": that.loginUser.utype,
-            "wsautoid": that._wsdetails.wsautoid,
-            "issysadmin": that.loginUser.issysadmin,
-            "srcutype": that.srcutype,
-            "search": query
-        }).subscribe(data => {
-            that.autoUserDT = data.data;
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-        }, () => {
-
-        });
-    }
-
-    // Selected User
-
-    selectUserData(event, arg) {
-        this.autouid = event.uid;
-        this.getUserDetails();
-    }
-
-    public viewUserDataRights() {
-        var that = this;
-
-        if (sessionStorage.getItem('_srcutype_') != null) {
-            that.srcutype = sessionStorage.getItem('_srcutype_');
-        }
-        else {
-            that.srcutype = "all";
-        }
-
-        if (sessionStorage.getItem('_enttnm_') != null) {
-            that.enttid = parseInt(sessionStorage.getItem('_enttid_'));
-            that.enttname = sessionStorage.getItem('_enttnm_');
-        }
-        else {
-            that.enttid = that._enttdetails.enttid;
-            that.enttname = that._enttdetails.enttname;
-        }
-
-        that.enttdata.value = that.enttid;
-        that.enttdata.label = that.enttname;
-
-        that.getUserDetails();
-    }
-
     getUserDetails() {
         var that = this;
         var uparams = {};
@@ -189,7 +145,7 @@ export class ViewUserComponent implements OnInit {
         uparams = {
             "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
             "issysadmin": that.loginUser.issysadmin, "wsautoid": that._wsdetails.wsautoid, "enttid": that.enttid,
-            "srcutype": that.srcutype, "srcuid": that.autouid
+            "srcutype": that.srcutype
         };
 
         that._userservice.getUserDetails(uparams).subscribe(data => {
@@ -211,19 +167,10 @@ export class ViewUserComponent implements OnInit {
     }
 
     resetUserDetails() {
-        sessionStorage.removeItem('_enttid_');
-        sessionStorage.removeItem('_enttnm_');
-        sessionStorage.removeItem('_srcutype_');
-
         this.enttid = 0;
-        this.enttname = "";
-        this.enttdata = [];
         this.srcutype = "all";
         sessionStorage.setItem("_srcutype_", this.srcutype);
         this.srcutype = sessionStorage.getItem('_srcutype_');
-
-        this.autouid = 0;
-        this.autouname = [];
 
         this.getUserDetails();
     }
