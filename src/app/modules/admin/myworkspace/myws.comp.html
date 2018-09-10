@@ -7,10 +7,7 @@
                 <img alt="{{row.wsname}}" src="{{global.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
                 <div class="title">
                     {{row.wsname}}
-                </div>
-
-                <div class="bottom">
-                    <a class="btn btn-primary btn-twitter btn-sm" (click)="openEntityForm(row)">
+                    <a class="btn btn-theme" (click)="openEntityForm(row)">
                         <i class="material-icons">arrow_forward</i>
                     </a>
                 </div>
@@ -75,13 +72,10 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="header">
-                            Entity Mapping
-                        </div>
                         <div *ngIf="entityDT.length">
                             <div *ngFor="let row of entityDT | groupBy: 'entttype'">
-                                <div class="header">
-                                    <b>{{row.key}}</b>
+                                <div class="header-title">
+                                    <h4>{{row.key}}</h4>
                                 </div>
                                 <p-dataGrid [value]="row.value">
                                     <ng-template let-drow pTemplate="item">
@@ -90,15 +84,14 @@
                                                 <a role="button" (click)="openMainForm(drow)">
                                                     <img alt="{{drow.enttname}}" src="{{global.uploadurl + drow.schlogo}}" onerror="this.src='assets/img/nologo.gif';" height="100px">
                                                 </a>
-                                                <hr class="hr ui-widget-content">
-                                                <button type="button" class="btn btn-theme" (click)="openMainForm(drow)">
-                                                    <i class="material-icons">arrow_forward</i>
-                                                </button> {{drow.mode}}
                                             </p-panel>
                                         </div>
                                     </ng-template>
                                 </p-dataGrid>
                             </div>
+                        </div>
+                        <div *ngIf="!entityDT.length">
+                            No Entity Found
                         </div>
                     </div>
                 </div>

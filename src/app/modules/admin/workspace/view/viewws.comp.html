@@ -21,7 +21,7 @@
         </ul>
 
         <div class="row clearfix">
-            <div class="col-md-5 col-xs-6">
+            <div class="col-md-5 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
                         <p-autoComplete id="autowsname" name="autowsname" [(ngModel)]="selectedWorkspace" [tabindex]="1" (onSelect)="selectAutoWorkspaceData($event)" [suggestions]="autoWorkspaceDT" (completeMethod)="getAutoWorkspaceData($event)" field="label" [minLength]="1"
@@ -30,29 +30,27 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-1 col-xs-2">
+            <div class="col-md-1 col-xs-4">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme" (click)="resetWorkspaceDetails()">
                         <span class="material-icons">restore</span>
                     </button>
                 </div>
             </div>
-            <div class="col-md-6 col-xs-4 text-right" *ngIf="loginUser.issysadmin">
-                <div class="form-group">
-                    <h4>{{headertitle}}
-                        <a role="button" class="btn btn-theme" (click)="editSystemWorkspace()">
-                            <i class="material-icons">edit</i>
-                        </a>
-                    </h4>
-                </div>
+            <div class="col-md-6 text-right" *ngIf="loginUser.issysadmin">
+                <h4>{{headertitle}}
+                    <a role="button" class="btn btn-theme" (click)="editSystemWorkspace()">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </h4>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row clearfix" *ngIf="isShowGrid">
+<div class="ui-g row clearfix" *ngIf="isShowGrid">
     <div *ngFor="let row of workspaceDT" class="col-md-3 col-xs-6">
-        <div class="card" style="height: 200px;">
+        <div class="card">
             <div class="header header-title">
                 <h2 class="title">
                     <img class="img-sm float-left" src="{{uploadconfig.uploadurl + row.wslogo}}" onerror="this.src='assets/img/nologo.gif';">

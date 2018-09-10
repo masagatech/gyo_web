@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, messageType, LoginService } from '@services';
 import { LoginUserModel, Globals } from '@models';
-import { WorkspaceService } from '@services/master';
+import { WorkspaceService, EntityService } from '@services/master';
 
 declare var $: any;
 
@@ -22,7 +22,7 @@ export class MyWorkspaceComponent implements OnInit {
     entityDT: any = [];
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _wsservice: WorkspaceService) {
+        private _loginservice: LoginService, private _wsservice: WorkspaceService, private _enttservice: EntityService) {
         this.loginUser = this._loginservice.getUser();
         this._wsdetails = Globals.getWSDetails();
         this._enttdetails = Globals.getEntityDetails();
@@ -32,7 +32,7 @@ export class MyWorkspaceComponent implements OnInit {
     }
 
     public ngOnInit() {
-        var that = this;
+        
     }
 
     getWorkspaceDetails() {
@@ -64,31 +64,33 @@ export class MyWorkspaceComponent implements OnInit {
         })
     }
 
-    // Get User Entity
+    // Get Workspace Wise Entity
 
     getWorkspaceEntity() {
         var that = this;
-        var wsparams = {};
+        var params = {};
 
         commonfun.loader();
 
-        wsparams = {
-            "flag": "wsentity", "wsautoid": that.loginUser.wsautoid
-        };
+        params = {
+            "flag": "all", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
+            "entttype": "", "issysadmin": that.loginUser.issysadmin, "wsautoid": that.loginUser.wsautoid,
+            "schoolid": that.loginUser.schoolid, "enttid": 0
+        }
 
-        that._wsservice.getWorkspaceDetails(wsparams).subscribe(data => {
+        that._enttservice.getEntityDetails(params).subscribe(data => {
             try {
-                that.entityDT = data.data;
+                that.entityDT = data.data.filter(a => a.isactive == true);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
             }
 
-            commonfun.loaderhide("#users");
+            commonfun.loaderhide();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
             console.log(err);
-            commonfun.loaderhide("#users");
+            commonfun.loaderhide();
         }, () => {
 
         })
@@ -108,6 +110,7 @@ export class MyWorkspaceComponent implements OnInit {
 
     public openMainForm(row) {
         sessionStorage.removeItem("_schenttdetails_");
+        sessionStorage.removeItem("_ayid_");
 
         sessionStorage.setItem("_schenttdetails_", JSON.stringify(row));
         this._router.navigate(['/']);
