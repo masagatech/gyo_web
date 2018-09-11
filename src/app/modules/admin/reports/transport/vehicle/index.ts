@@ -5,9 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
 import { VehicleReportsComponent } from './rptveh.comp';
-import { VehicleService } from '@services/master';
-
-import { DataTableModule, AutoCompleteModule } from 'primeng/primeng';
+import { ReportsService } from '@services/reports';
 
 export const routes = [
   {
@@ -26,11 +24,10 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), DataTableModule,
-    AutoCompleteModule
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes)
   ],
 
-  providers: [AuthGuard, VehicleService, CommonService]
+  providers: [AuthGuard, ReportsService, CommonService]
 })
 
 export class VehicleReportsModule {

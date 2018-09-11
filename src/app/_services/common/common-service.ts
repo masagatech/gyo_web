@@ -11,6 +11,26 @@ export class CommonService {
         
     }
 
+    // Ownership Transfer
+
+    saveOwnershipTransfer(req: any) {
+        return this._dataserver.post("saveOwnershipTransfer", req)
+    }
+
+    // Audit Log
+
+    saveAuditLog(auditparams) {
+        var that = this;
+
+        this._dataserver.post(Globals.erproute + "saveAuditLog", auditparams).subscribe(data => {
+            var dataResult = data.data[0].funsave_auditlog;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
     getFilePath(req: any) {
         return this._dataserver.get("getFilePath", req)
     }
@@ -171,20 +191,6 @@ export class CommonService {
         var diff = (this.isArray(a) ? [] : {});
         this.recursiveDiff(a, b, diff);
         return diff;
-    }
-
-    // Audit Log
-
-    saveAuditLog(auditparams) {
-        var that = this;
-
-        this._dataserver.post(Globals.erproute + "saveAuditLog", auditparams).subscribe(data => {
-            var dataResult = data.data[0].funsave_auditlog;
-        }, err => {
-            console.log(err);
-        }, () => {
-            // console.log("Complete");
-        });
     }
 
     // numToWords :: (Number a, String a) => a -> String

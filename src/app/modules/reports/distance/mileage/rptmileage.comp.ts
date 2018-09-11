@@ -68,7 +68,7 @@ export class MileageReportsComponent implements OnInit, OnDestroy {
         let params = {};
 
         params = {
-            "flag": "vehicle", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
+            "flag": "vehicle_dtls", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "enttid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }
 

@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
-import { LoginUserModel, Globals } from '@models';
-import { VehicleService } from '@services/master';
-import jsPDF from 'jspdf'
+import { LoginUserModel, Globals, Common } from '@models';
+import { ReportsService } from '@services/reports';
 
 @Component({
     templateUrl: 'rptveh.comp.html'
@@ -22,7 +21,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
     @ViewChild('vehicle') vehicle: ElementRef;
 
     constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
-        private _vehservice: VehicleService, private _autoservice: CommonService) {
+        private _autoservice: CommonService, private _rptservice: ReportsService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
@@ -67,7 +66,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    that.getVehicleDetails();
+                    that.getVehicleReports("html");
                 }
             }
             catch (e) {
@@ -84,52 +83,45 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
         })
     }
 
-    // Get Driver
+    // Get Vehicle Reports
 
-    getVehicleDetails() {
+    public getVehicleReports(format) {
         var that = this;
+
+        var dparams = {
+            "flag": "reports", "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
+            "issysadmin": that.loginUser.issysadmin, "format": format
+        }
+
         commonfun.loader();
 
-        that._vehservice.getVehicleDetails({
-            "flag": "reports", "uid": that.loginUser.uid, "ucode": that.loginUser.ucode, "utype": that.loginUser.utype,
-            "enttid": that.enttid, "wsautoid": 0, "issysadmin": that.loginUser.issysadmin
-        }).subscribe(data => {
-            try {
-                that.vehicleDT = data.data;
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
+        if (format == "html") {
+            that._rptservice.getVehicleReports(dparams).subscribe(data => {
+                try {
+                    $("#divrptvehicle").html(data._body);
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
 
-            commonfun.loaderhide();
-        }, err => {
-            that._msg.Show(messageType.error, "Error", err);
-            console.log(err);
-            commonfun.loaderhide();
-        }, () => {
+                commonfun.loaderhide();
+            }, err => {
+                that._msg.Show(messageType.error, "Error", err);
+                console.log(err);
+                commonfun.loaderhide();
+            }, () => {
 
-        })
+            })
+        }
+        else {
+            window.open(Common.getReportUrl("getVehicleReports", dparams));
+            commonfun.loaderhide();
+        }
     }
 
     public openTripTrackDB(row) {
         this._router.navigate(['/admin/triptrackingv1'], {
             queryParams: { "enttid": row.enttid, "vehid": row.autoid, "vehname": row.vehiclename, "imei": row.imei }
-        });
-    }
-
-    // Export
-
-    public exportToCSV() {
-        this._autoservice.exportToCSV(this.vehicleDT, "Vehicle Details");
-    }
-
-    public exportToPDF() {
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        let options = {
-            pagesplit: true
-        };
-        pdf.addHTML(this.vehicle.nativeElement, 0, 0, options, () => {
-            pdf.save("VehicleReports.pdf");
         });
     }
 

@@ -13,6 +13,12 @@ export class ReportsService {
         return this._dataserver.rawget(Globals.reporturl + "getDriverReports", req)
     }
 
+    // Vehicle
+
+    getVehicleReports(req: any) {
+        return this._dataserver.rawget(Globals.reporturl + "getVehicleReports", req)
+    }
+
     // User
 
     getUserReports(req: any) {

@@ -23,6 +23,7 @@ export const routes = [
                     { path: 'batch', loadChildren: './batch#BatchModule' },
                     { path: 'student', loadChildren: './student#StudentVehicleModule' },
                     { path: 'uservehiclemap', loadChildren: './uservehmap#UserVehicleMapModule' },
+                    { path: 'ownershiptransfer', loadChildren: './ownershiptransfer#OwnerShipTranferModule' }
                 ]
             }
         ]
