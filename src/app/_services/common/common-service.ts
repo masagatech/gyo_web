@@ -8,7 +8,49 @@ import swal from 'sweetalert2'
 @Injectable()
 export class CommonService {
     constructor(private _dataserver: DataService, private _router: Router) {
-        
+
+    }
+
+    isArray(obj) {
+        return (Object.prototype.toString.call(obj) === '[object Array]');
+    }
+
+    recursiveDiff(a, b, node) {
+        for (var prop in a) {
+            if (typeof b[prop] == 'undefined') {
+                this.addNode(prop, '[[removed]]', node);
+            }
+            else if (JSON.stringify(a[prop]) != JSON.stringify(b[prop])) {
+                // if value
+                if (typeof b[prop] != 'object' || b[prop] == null) {
+                    this.addNode(prop, b[prop], node);
+                }
+                else {
+                    // if array
+                    if (this.isArray(b[prop])) {
+                        this.addNode(prop, [], node);
+                        this.recursiveDiff(a[prop], b[prop], node[prop]);
+                    }
+                    // if object
+                    else {
+                        this.addNode(prop, {}, node);
+                        this.recursiveDiff(a[prop], b[prop], node[prop]);
+                    }
+                }
+            }
+        }
+    }
+
+    getDiff2Arrays(a, b) {
+        var diff = (this.isArray(a) ? [] : {});
+        this.recursiveDiff(a, b, diff);
+        return diff;
+    }
+
+    // Replace JSON Unneccesary WOrd
+
+    replaceJSON(jsval) {
+        return JSON.stringify(jsval).replace("[[{", "[{").replace("}]]", "}]").replace("}],[{", "},{").replace("[],[", "[").replace(",[]]", "").replace("[[],", "").replace(",[]", "");
     }
 
     // Ownership Transfer
@@ -153,44 +195,6 @@ export class CommonService {
 
     addNode(prop, value, parent) {
         parent[prop] = value;
-    }
-
-    recursiveDiff(a, b, node) {
-        var checked = [];
-
-        for (var prop in a) {
-            if (typeof b[prop] == 'undefined') {
-                this.addNode(prop, '[[removed]]', node);
-            }
-            else if (JSON.stringify(a[prop]) != JSON.stringify(b[prop])) {
-                // if value
-                if (typeof b[prop] != 'object' || b[prop] == null) {
-                    this.addNode(prop, b[prop], node);
-                }
-                else {
-                    // if array
-                    if (this.isArray(b[prop])) {
-                        this.addNode(prop, [], node);
-                        this.recursiveDiff(a[prop], b[prop], node[prop]);
-                    }
-                    // if object
-                    else {
-                        this.addNode(prop, {}, node);
-                        this.recursiveDiff(a[prop], b[prop], node[prop]);
-                    }
-                }
-            }
-        }
-    }
-
-    isArray(obj) {
-        return (Object.prototype.toString.call(obj) === '[object Array]');
-    }
-
-    getDiff2Arrays(a, b) {
-        var diff = (this.isArray(a) ? [] : {});
-        this.recursiveDiff(a, b, diff);
-        return diff;
     }
 
     // numToWords :: (Number a, String a) => a -> String

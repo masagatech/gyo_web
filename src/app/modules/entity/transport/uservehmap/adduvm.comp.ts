@@ -245,12 +245,15 @@ export class AddUserVehicleMapComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newUserVehicleData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        if (_newvaldt.length > 0) {
+        var _oldval = that._autoservice.replaceJSON(_oldvaldt);
+        var _newval = that._autoservice.replaceJSON(_newvaldt);
+
+        if (_newval != "") {
             var dispflds = [{ "key": "User Name", "val": name }];
 
             var auditparams = {
                 "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "uservehiclemap", "mdlname": "User Vehicle Map",
-                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+                "id": id, "dispflds": dispflds, "oldval": _oldval, "newval": _newval, "ayid": that._enttdetails.ayid,
                 "enttid": that.enttid, "wsautoid": that.wsautoid, "createdby": that.loginUser.ucode
             };
 

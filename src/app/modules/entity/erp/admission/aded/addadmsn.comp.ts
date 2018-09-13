@@ -1130,12 +1130,15 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newStudentData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        if (_newvaldt.length > 0) {
+        var _oldval = that._autoservice.replaceJSON(_oldvaldt);
+        var _newval = that._autoservice.replaceJSON(_newvaldt);
+
+        if (_newval != "") {
             var dispflds = [{ "key": "Student Name", "val": name }];
 
             var auditparams = {
                 "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "student", "mdlname": "Student",
-                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that.ayid,
+                "id": id, "dispflds": dispflds, "oldval": _oldval, "newval": _newval, "ayid": that.ayid,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
             };
 

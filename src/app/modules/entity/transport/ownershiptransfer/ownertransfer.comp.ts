@@ -72,6 +72,9 @@ export class OwnerShipTranferComponent implements OnInit, OnDestroy {
         }).subscribe(data => {
             that.entityDT = data.data[0].schooldt;
             that.enttid = data.data[0].enttid;
+
+            that.moduleData = that.getModuleParams();
+            that.oldModuleData = that.getAuditParams();
         }, err => {
             that._msg.Show(messageType.error, "Error", err);
         }, () => {
@@ -87,14 +90,14 @@ export class OwnerShipTranferComponent implements OnInit, OnDestroy {
 
         if (that.mdltype == "driver") {
             _auditdt = [
-                { "key": "Driver Name", "val": $("#mdlname option:selected").text().trim(), "fldname": "drivername", "fldtype": "text" },
-                { "key": "Entity Name", "val": $("#enttname option:selected").text().trim(), "fldname": "enttid", "fldtype": "ddl" }
+                { "key": "Driver Name", "val": $("#mdlid option:selected").text().trim(), "fldname": "drivername", "fldtype": "text" },
+                { "key": "Entity Name", "val": $("#enttid option:selected").text().trim(), "fldname": "enttid", "fldtype": "ddl" }
             ]
         }
         else {
             _auditdt = [
-                { "key": "Vehicle Name", "val": $("#mdlname option:selected").text().trim(), "fldname": "vehregno", "fldtype": "text" },
-                { "key": "Entity Name", "val": $("#enttname option:selected").text().trim(), "fldname": "enttid", "fldtype": "ddl" }
+                { "key": "Vehicle Name", "val": $("#mdlid option:selected").text().trim(), "fldname": "vehregno", "fldtype": "text" },
+                { "key": "Entity Name", "val": $("#enttid option:selected").text().trim(), "fldname": "enttid", "fldtype": "ddl" }
             ]
         }
 
@@ -118,7 +121,10 @@ export class OwnerShipTranferComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newModuleData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        if (_newvaldt.length > 0) {
+        var _oldval = that._autoservice.replaceJSON(_oldvaldt);
+        var _newval = that._autoservice.replaceJSON(_newvaldt);
+
+        if (_newval != "") {
             if (that.mdltype == "driver") {
                 _dispflds = [{ "key": "Driver Name", "val": name }];
             }
@@ -128,7 +134,7 @@ export class OwnerShipTranferComponent implements OnInit, OnDestroy {
 
             var auditparams = {
                 "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": that.mdltype, "mdlname": $("#mdltype option:selected").text().trim(),
-                "id": id, "dispflds": _dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+                "id": id, "dispflds": _dispflds, "oldval": _oldval, "newval": _newval, "ayid": that._enttdetails.ayid,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
             };
 
@@ -201,7 +207,7 @@ export class OwnerShipTranferComponent implements OnInit, OnDestroy {
 
                     if (msgid != "-1") {
                         that._msg.Show(messageType.success, "Success", msg);
-                        that.saveAuditLog(autoid, $("#mdlname option:selected").text().trim(), oldval, newval);
+                        that.saveAuditLog(autoid, $("#mdlid option:selected").text().trim(), oldval, newval);
                         that.resetOwnershipTransfer();
                     }
                     else {

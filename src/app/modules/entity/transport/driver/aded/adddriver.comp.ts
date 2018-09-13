@@ -45,10 +45,11 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     remark1: string = "";
     othenttids: any;
 
-    mode: string = "";
-    isactive: boolean = true;
     isprivate: boolean = true;
     isdrvowner: boolean = false;
+
+    mode: string = "";
+    isactive: boolean = true;
 
     uploadPhotoDT: any = [];
     uploadDocsDT: any = [];
@@ -67,6 +68,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     isadddrv: boolean = false;
     iseditdrv: boolean = false;
     isdeletedrv: boolean = false;
+
+    act_deactDriverData: any = [];
+    deleteDriverData: any = [];
 
     driverData: any = [];
     oldDriverData: any = [];
@@ -323,67 +327,6 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         return bytes;
     }
 
-    // Active / Deactive Driver
-
-    active_deactiveDriverInfo() {
-        var that = this;
-
-        var act_deactDriver = {
-            "flag": "owndrv",
-            "mode": that.mode,
-            "autoid": that.paramsid
-        }
-
-        that._driverservice.saveDriverInfo(act_deactDriver).subscribe(data => {
-            try {
-                var dataResult = data.data[0].funsave_driverinfo;
-
-                if (dataResult.msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", dataResult.msg);
-                    that.getDriverDetails();
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", dataResult.msg);
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-        }, () => {
-            // console.log("Complete");
-        });
-    }
-
-    // Delete Driver
-
-    public deleteDrivers() {
-        var that = this;
-
-        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
-            var params = {
-                "flag": "owndrv",
-                "mode": "delete",
-                "autoid": that.paramsid
-            }
-
-            that._driverservice.saveDriverInfo(params).subscribe(data => {
-                try {
-                    var dataResult = data.data;
-                    that.backViewData();
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                console.log(err);
-            }, () => {
-                // console.log("Complete");
-            });
-        });
-    }
-
     // Clear Fields
 
     resetDriverFields() {
@@ -484,7 +427,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
 
     // Get Audit Parameter
 
-    getAuditParams(ddltype) {
+    getAuditParams(ddltype, isdelete) {
         var that = this;
 
         var _ownenttdt = [];
@@ -519,7 +462,10 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             { "key": "Area", "val": ddltype == "old" ? that.areaname : $("#area option:selected").text().trim(), "fldname": "area", "fldtype": "ddl" },
             { "key": "Pin Code", "val": that.pincode.toString() == "" ? 0 : that.pincode, "fldname": "pincode", "fldtype": "text" },
             { "key": "Other Entity", "val": that.schoolDT, "fldname": "othenttids", "fldtype": "table" },
-            { "key": "Owner Entity", "val": _ownenttdt, "fldname": "ownenttids", "fldtype": "table" }
+            { "key": "Owner Entity", "val": _ownenttdt, "fldname": "ownenttids", "fldtype": "table" },
+            { "key": "Mode", "val": that.mode, "fldname": "mode", "fldtype": "text" },
+            { "key": "Is Active", "val": that.isactive, "fldname": "isactive", "fldtype": "boolean" },
+            { "key": "Is Delete", "val": isdelete, "fldname": "isdelete", "fldtype": "boolean" }
         ]
 
         return _auditdt;
@@ -541,17 +487,123 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newDriverData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        if (_newvaldt.length > 0) {
-            var dispflds = [{ "key": "User Name", "val": name }];
+        var _oldval = that._autoservice.replaceJSON(_oldvaldt);
+        var _newval = that._autoservice.replaceJSON(_newvaldt);
+
+        if (_newval != "" && _newval != "[]") {
+            var dispflds = [{ "key": "Driver Name", "val": name }];
 
             var auditparams = {
                 "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "driver", "mdlname": "Driver",
-                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+                "id": id, "dispflds": dispflds, "oldval": _oldval, "newval": _newval, "ayid": that._enttdetails.ayid,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
             };
 
             that._autoservice.saveAuditLog(auditparams);
         }
+    }
+
+    // Active / Deactive Driver
+
+    getActiveDeactiveParams() {
+        var that = this;
+
+        var params = {
+            "flag": "owndrv",
+            "autoid": that.driverid,
+            "mode": that.mode,
+            "isactive": that.isactive
+        }
+
+        return params;
+    }
+
+    active_deactiveDriverInfo() {
+        var that = this;
+        var params = that.getActiveDeactiveParams();
+
+        that.newDriverData = that.getAuditParams("new", false);
+
+        var newval = that._autoservice.getDiff2Arrays(that.act_deactDriverData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.act_deactDriverData);
+
+        that._driverservice.saveDriverInfo(params).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_driverinfo;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
+                var autoid = dataResult.drvid;
+
+                if (msgid != "-1") {
+                    that.saveAuditLog(autoid, that.drivername, oldval, newval);
+                    that._msg.Show(messageType.success, "Success", msg);
+                    that.getDriverDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
+    // Delete Driver
+
+    getDeleteParams() {
+        var that = this;
+
+        var params = {
+            "flag": "owndrv",
+            "autoid": that.driverid,
+            "mode": "delete",
+            "isdelete": true
+        }
+
+        return params;
+    }
+
+    public deleteDrivers() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = that.getDeleteParams();
+
+            that.mode = "delete";
+            that.newDriverData = that.getAuditParams("new", true);
+
+            var newval = that._autoservice.getDiff2Arrays(that.deleteDriverData, params);
+            var oldval = that._autoservice.getDiff2Arrays(params, that.deleteDriverData);
+
+            that._driverservice.saveDriverInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_driverinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var autoid = dataResult.drvid;
+
+                    if (msgid != "-1") {
+                        that.saveAuditLog(autoid, that.drivername, oldval, newval);
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
     }
 
     // Get Save Parameter
@@ -604,7 +656,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
 
         var params = that.getDriverParams(selownerentt);
-        that.newDriverData = that.getAuditParams("new");
+
+        that.mode = "";
+        that.newDriverData = that.getAuditParams("new", false);
 
         var newval = that._autoservice.getDiff2Arrays(that.driverData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.driverData);
@@ -719,8 +773,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                     that.pincode = _driverdata.pincode;
                     that.remark1 = _driverdata.remark1;
                     that.isprivate = _driverdata.isprivate;
-                    that.isactive = _driverdata.isactive;
                     that.isdrvowner = _driverdata.isowner;
+                    that.isactive = _driverdata.isactive;
                     that.mode = _driverdata.mode;
                     that.othenttids = _driverdata.othenttids;
 
@@ -749,7 +803,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         var selownerentt = _driverdata.ownenttids;
 
                         that.driverData = that.getDriverParams(selownerentt);
-                        that.oldDriverData = that.getAuditParams("old");
+                        that.act_deactDriverData = that.getActiveDeactiveParams();
+                        that.deleteDriverData = that.getDeleteParams();
+                        that.oldDriverData = that.getAuditParams("old", false);
                     }
                 }
             }
@@ -827,8 +883,8 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that.area = _driverdata.area;
                         that.pincode = _driverdata.pincode;
                         that.remark1 = _driverdata.remark1;
-                        that.isactive = _driverdata.isactive;
                         that.isprivate = _driverdata.isprivate;
+                        that.isactive = _driverdata.isactive;
                         that.mode = _driverdata.mode;
                         that.othenttids = _driverdata.othenttids;
 
@@ -855,7 +911,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                             var selownerentt = _driverdata.ownenttids;
 
                             that.driverData = that.getDriverParams(selownerentt);
-                            that.oldDriverData = that.getAuditParams("old");
+                            that.act_deactDriverData = that.getActiveDeactiveParams();
+                            that.deleteDriverData = that.getDeleteParams();
+                            that.oldDriverData = that.getAuditParams("old", false);
                         }
                     }
                 }

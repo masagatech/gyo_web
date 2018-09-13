@@ -63,6 +63,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
     iseditveh: boolean = false;
     isdeleteveh: boolean = false;
 
+    act_deactVehicleData: any = [];
+    deleteVehicleData: any = [];
+
     vehicleData: any = [];
     oldVehicleData: any = [];
     newVehicleData: any = [];
@@ -155,88 +158,6 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         }, () => {
 
         })
-    }
-
-    // Active / Deactive Data
-
-    active_deactiveVehicleInfo() {
-        var that = this;
-        var params = {};
-
-        if (that.isvehowner) {
-            params = {
-                "flag": "ownveh",
-                "mode": that.mode,
-                "vehid": that.vehid
-            }
-        }
-        else {
-            params = {
-                "flag": "othveh",
-                "mode": that.dtlsmode,
-                "vemid": that.paramsid
-            }
-        }
-
-        that._vehservice.saveVehicleInfo(params).subscribe(data => {
-            try {
-                var dataResult = data.data[0].funsave_vehicleinfo;
-                var msg = dataResult.msg;
-                var msgid = dataResult.msgid;
-
-                if (msgid != "-1") {
-                    that._msg.Show(messageType.success, "Success", msg);
-                    that.getVehicleDetails();
-                }
-                else {
-                    that._msg.Show(messageType.error, "Error", msg);
-                }
-            }
-            catch (e) {
-                that._msg.Show(messageType.error, "Error", e);
-            }
-        }, err => {
-            console.log(err);
-        }, () => {
-        });
-    }
-
-    // Delete Vehicle
-
-    public deleteVehicles() {
-        var that = this;
-        var params = {};
-
-        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
-            if (that.isvehowner) {
-                params = {
-                    "flag": "ownveh",
-                    "mode": "delete",
-                    "vehid": that.vehid
-                }
-            }
-            else {
-                params = {
-                    "flag": "othveh",
-                    "mode": "delete",
-                    "vemid": that.paramsid
-                }
-            }
-
-            that._vehservice.saveVehicleInfo(params).subscribe(data => {
-                try {
-                    var dataResult = data.data;
-                    that.backViewData();
-                }
-                catch (e) {
-                    that._msg.Show(messageType.error, "Error", e);
-                }
-            }, err => {
-                console.log(err);
-            }, () => {
-                // console.log("Complete");
-            });
-        });
     }
 
     // Clear Fields
@@ -363,7 +284,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     // Get Audit Parameter
 
-    getAuditParams(ddltype) {
+    getAuditParams(ddltype, isdelete) {
         var that = this;
 
         var _ownenttdt = [];
@@ -397,7 +318,10 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             { "key": "To Date", "val": that.todt, "fldname": "todt", "fldtype": "date" },
             { "key": "D1 Function", "val": that.d1str == "" ? {} : { "d1str": that.d1str }, "fldname": "extra", "fldtype": "table" },
             { "key": "Other Entity", "val": that.schoolDT, "fldname": "othenttids", "fldtype": "table" },
-            { "key": "Owner Entity", "val": _ownenttdt, "fldname": "vementtid", "fldtype": "table" }
+            { "key": "Owner Entity", "val": _ownenttdt, "fldname": "vementtid", "fldtype": "table" },
+            { "key": "Mode", "val": that.mode, "fldname": "mode", "fldtype": "text" },
+            { "key": "Is Active", "val": that.isactive, "fldname": "isactive", "fldtype": "boolean" },
+            { "key": "Is Delete", "val": isdelete, "fldname": "isdelete", "fldtype": "boolean" }
         ]
 
         return _auditdt;
@@ -419,12 +343,15 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             _newvaldt.push(that.newVehicleData.filter(a => a.fldname == Object.keys(newval)[i]));
         }
 
-        if (_newvaldt.length > 0) {
+        var _oldval = that._autoservice.replaceJSON(_oldvaldt);
+        var _newval = that._autoservice.replaceJSON(_newvaldt);
+
+        if (_newval != "" && _newval != "[]") {
             var dispflds = [{ "key": "Vehicle Name", "val": name }];
 
             var auditparams = {
                 "loginsessionid": that.loginUser.sessiondetails.sessionid, "mdlcode": "vehicle", "mdlname": "Vehicle",
-                "id": id, "dispflds": dispflds, "oldval": _oldvaldt, "newval": _newvaldt, "ayid": that._enttdetails.ayid,
+                "id": id, "dispflds": dispflds, "oldval": _oldval, "newval": _newval, "ayid": that._enttdetails.ayid,
                 "enttid": that._enttdetails.enttid, "wsautoid": that._enttdetails.wsautoid, "createdby": that.loginUser.ucode
             };
 
@@ -469,6 +396,130 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         return params;
     }
 
+    // Active / Deactive Data
+
+    getActiveDeactiveParams() {
+        var that = this;
+        var params = {};
+
+        if (that.isvehowner) {
+            params = {
+                "flag": "ownveh",
+                "mode": that.mode,
+                "isactive": that.isactive,
+                "vehid": that.vehid
+            }
+        }
+        else {
+            params = {
+                "flag": "othveh",
+                "mode": that.dtlsmode,
+                "isactive": that.isactive,
+                "vemid": that.paramsid
+            }
+        }
+
+        return params;
+    }
+
+    active_deactiveVehicleInfo() {
+        var that = this;
+        var params = that.getActiveDeactiveParams();
+
+        that.newVehicleData = that.getAuditParams("new", false);
+
+        var newval = that._autoservice.getDiff2Arrays(that.act_deactVehicleData, params);
+        var oldval = that._autoservice.getDiff2Arrays(params, that.act_deactVehicleData);
+
+        that._vehservice.saveVehicleInfo(params).subscribe(data => {
+            try {
+                var dataResult = data.data[0].funsave_vehicleinfo;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
+                var autoid = dataResult.autoid;
+
+                if (msgid != "-1") {
+                    that.saveAuditLog(autoid, that.vehname, oldval, newval);
+                    that._msg.Show(messageType.success, "Success", msg);
+                    that.getVehicleDetails();
+                }
+                else {
+                    that._msg.Show(messageType.error, "Error", msg);
+                }
+            }
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
+            }
+        }, err => {
+            console.log(err);
+        }, () => {
+        });
+    }
+
+    // Delete Vehicle
+
+    getDeleteParams() {
+        var that = this;
+        var params = {};
+
+        if (that.isvehowner) {
+            params = {
+                "flag": "ownveh",
+                "mode": "delete",
+                "isdelete": true,
+                "vehid": that.vehid
+            }
+        }
+        else {
+            params = {
+                "flag": "othveh",
+                "mode": "delete",
+                "isdelete": true,
+                "vemid": that.paramsid
+            }
+        }
+
+        return params;
+    }
+
+    public deleteVehicles() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = that.getDeleteParams();
+
+            that.mode = "delete";
+            that.newVehicleData = that.getAuditParams("new", true);
+
+            var newval = that._autoservice.getDiff2Arrays(that.deleteVehicleData, params);
+            var oldval = that._autoservice.getDiff2Arrays(params, that.deleteVehicleData);
+
+            that._vehservice.saveVehicleInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_vehicleinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var autoid = dataResult.autoid;
+
+                    if (msgid != "-1") {
+                        that.saveAuditLog(autoid, that.vehname, oldval, newval);
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
+    }
+
     // Save Vehicle
 
     saveVehicleInfo() {
@@ -480,7 +531,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         selownerentt = Object.keys(_enttdata).map(function (k) { return _enttdata[k].schid });
 
         var params = that.getVehicleParams(selownerentt);
-        that.newVehicleData = that.getAuditParams("new");
+        that.newVehicleData = that.getAuditParams("new", false);
 
         var newval = that._autoservice.getDiff2Arrays(that.vehicleData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.vehicleData);
@@ -649,7 +700,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                         var selownerentt = _vehdata.ownenttids;
 
                         that.vehicleData = that.getVehicleParams(selownerentt);
-                        that.oldVehicleData = that.getAuditParams("old");
+                        that.act_deactVehicleData = that.getActiveDeactiveParams();
+                        that.deleteVehicleData = that.getDeleteParams();
+                        that.oldVehicleData = that.getAuditParams("old", false);
 
                         $(".vehname").removeAttr("disabled");
                     }
@@ -744,7 +797,9 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
                             var selownerentt = _vehdata.ownenttids;
 
                             that.vehicleData = that.getVehicleParams(selownerentt);
-                            that.oldVehicleData = that.getAuditParams("old");
+                            that.act_deactVehicleData = that.getActiveDeactiveParams();
+                            that.deleteVehicleData = that.getDeleteParams();
+                            that.oldVehicleData = that.getAuditParams("old", false);
                         }
                     }
                 }
