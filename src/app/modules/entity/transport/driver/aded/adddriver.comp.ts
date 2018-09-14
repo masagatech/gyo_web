@@ -509,7 +509,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
-            "flag": "owndrv",
+            "flag": "othdrv",
             "autoid": that.driverid,
             "mode": that.mode,
             "isactive": that.isactive
@@ -559,8 +559,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
-            "flag": "owndrv",
+            "flag": "othdrv",
             "autoid": that.driverid,
+            "enttid": that._enttdetails.enttid,
             "mode": "delete",
             "isdelete": true
         }

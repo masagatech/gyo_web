@@ -19,6 +19,7 @@ export class ParentsReportsComponent implements OnInit, OnDestroy {
     enttid: number = 0;
 
     prnttype: string = "";
+    with91: boolean = false;
 
     constructor(private _msg: MessageService, private _loginservice: LoginService,
         private _autoservice: CommonService, private _psngrrptservice: PassengerReportsService) {
@@ -94,9 +95,8 @@ export class ParentsReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": "parents", "type": that.prnttype, "enttid": that.enttid, "wsautoid": 0,
-            "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "format": format
+            "flag": "parents", "type": that.prnttype, "with91": that.with91, "enttid": that.enttid, "wsautoid": 0,
+            "uid": that.loginUser.uid, "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
         commonfun.loader();

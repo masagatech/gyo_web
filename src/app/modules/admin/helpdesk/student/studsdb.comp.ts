@@ -130,7 +130,13 @@ export class StudentDashboardComponent implements OnInit, OnDestroy {
                     sessionStorage.removeItem("_ayid_");
 
                     sessionStorage.setItem("_schenttdetails_", JSON.stringify(data.data[0]));
-                    that._router.navigate(['/erp/student/edit', row.enrlmntid]);
+
+                    if (row.entttype == "School") {
+                        that._router.navigate(['/erp/student/edit', row.enrlmntid]);
+                    }
+                    else {
+                        that._router.navigate(['/master/passenger/edit', row.enrlmntid]);
+                    }
                 }
                 else {
                     that._msg.Show(messageType.error, "Error", "This Student is Deactive");

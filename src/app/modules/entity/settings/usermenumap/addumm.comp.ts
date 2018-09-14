@@ -20,12 +20,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
     utype: string = "";
     isempuser: boolean = false;
 
-    refuserdata: any = [];
-    refuid: number = 0;
-    refuname: string = "";
-    refutype: string = "";
-    isemprefuser: boolean = false;
-
     menudetails: any = [];
     selectedMenus: string[] = [];
 
@@ -47,10 +41,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         this.uid = 0;
         this.uname = "";
         this.userdata = [];
-
-        this.refuid = 0;
-        this.refuname = "";
-        this.refuserdata = [];
     }
 
     // Auto Completed User
@@ -87,28 +77,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         that.utype = event.utype;
         that.isempuser = event.isemp;
 
-        that.refuid = event.uid;
-        that.refuname = event.uname;
-        that.refutype = event.utype;
-        that.isemprefuser = event.isemp;
-
-        that.refuserdata = that.userdata;
-
         that.getMenuDetails();
-    }
-
-    // Selected Reference User
-
-    selectRefUserData(event, arg) {
-        var that = this;
-
-        that.refuid = event.uid;
-        that.refuname = event.uname;
-        that.refutype = event.utype;
-        that.isemprefuser = event.isemp;
-
-        that.getMenuDetails();
-        // that.getUserRightsById(that.refuid, that.refutype);
     }
 
     getMenuDetails() {
@@ -116,7 +85,7 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
         $("#menus").prop('checked', false);
 
         that._menuservice.getMenuDetails({
-            "flag": "all", "entttype": that._enttdetails.entttype, "psngrtype": that._enttdetails.psngrtype, "isemp": that.isemprefuser
+            "flag": "all", "entttype": that._enttdetails.entttype, "psngrtype": that._enttdetails.psngrtype, "isemp": that.isempuser
         }).subscribe(data => {
             that.menudetails = data.data;
             that.getUserRightsById();
@@ -161,10 +130,6 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
             that._msg.Show(messageType.error, "Error", "Enter User");
             $(".uname input").focus();
         }
-        else if (that.refuid == 0) {
-            that._msg.Show(messageType.error, "Error", "Enter Reference User");
-            $(".refuname input").focus();
-        }
         else {
             var _giverights = that.getUserRights();
 
@@ -173,8 +138,8 @@ export class AddUserMenuMapComponent implements OnInit, OnDestroy {
             }
             else {
                 var saveUR = {
-                    "uid": that.refuid,
-                    "utype": that.refutype,
+                    "uid": that.uid,
+                    "utype": that.utype,
                     "giverights": _giverights,
                     "forrights": "menumap",
                     "enttid": that._enttdetails.enttid,

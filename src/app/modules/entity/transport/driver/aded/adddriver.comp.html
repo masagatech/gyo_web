@@ -8,7 +8,7 @@
                     <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveDriverInfo()"><span class="lever"></span></label>
                 </span>
             </li>
-            <li *ngIf="paramsid != 0 && isdeletedrv == true && isdrvowner == true">
+            <li *ngIf="paramsid != 0 && isdeletedrv == true">
                 <a role="button" class="btn btn-danger" (click)="deleteDrivers()">
                     <i class="material-icons">delete</i>
                 </a>

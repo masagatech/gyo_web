@@ -26,6 +26,7 @@ export class ViewAdmissionComponent implements OnInit, OnDestroy {
     genderDT: any = [];
     castCategoryDT: any = [];
 
+    studname: string = "";
     ayid: number = 0;
     prspctid: number = 0;
     boardid: number = 0;

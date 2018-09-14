@@ -34,6 +34,9 @@
             </div>
             <div class="col-md-2 col-xs-3 pad-20 text-right">
                 <div class="btn-group" role="group">
+                    <input id="with91" type="checkbox" [(ngModel)]="with91" class="filled-in" (ngModelChange)="getParentReports('html')">
+                    <label for="with91">With 91</label>
+
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export
                         <span class="caret"></span>

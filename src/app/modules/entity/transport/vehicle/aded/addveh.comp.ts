@@ -396,27 +396,17 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         return params;
     }
 
-    // Active / Deactive Data
+    // Active / Deactive Vehicle
 
     getActiveDeactiveParams() {
         var that = this;
         var params = {};
 
-        if (that.isvehowner) {
-            params = {
-                "flag": "ownveh",
-                "mode": that.mode,
-                "isactive": that.isactive,
-                "vehid": that.vehid
-            }
-        }
-        else {
-            params = {
-                "flag": "othveh",
-                "mode": that.dtlsmode,
-                "isactive": that.isactive,
-                "vemid": that.paramsid
-            }
+        params = {
+            "flag": "othveh",
+            "mode": that.dtlsmode,
+            "isactive": that.isactive,
+            "vemid": that.paramsid
         }
 
         return params;
@@ -460,23 +450,12 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
 
     getDeleteParams() {
         var that = this;
-        var params = {};
 
-        if (that.isvehowner) {
-            params = {
-                "flag": "ownveh",
-                "mode": "delete",
-                "isdelete": true,
-                "vehid": that.vehid
-            }
-        }
-        else {
-            params = {
-                "flag": "othveh",
-                "mode": "delete",
-                "isdelete": true,
-                "vemid": that.paramsid
-            }
+        var params = {
+            "flag": "othveh",
+            "mode": "delete",
+            "isdelete": true,
+            "vemid": that.paramsid
         }
 
         return params;

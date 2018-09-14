@@ -197,6 +197,11 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
     isedit: boolean = false;
     isdetails: boolean = false;
 
+    isaddstuds: boolean = false;
+    iseditstuds: boolean = false;
+    isdeletestuds: boolean = false;
+
+    deleteStudentData: any = [];
     studentData: any = {};
     oldStudentData: any = [];
     newStudentData: any = [];
@@ -213,6 +218,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         this.fillCityDropDown();
         this.fillQualificationDropDown();
         this.getUploadConfig();
+
+        this.getActionRights();
 
         this.isadd = _router.url.indexOf("/add") > -1;
         this.isedit = _router.url.indexOf("/edit") > -1;
@@ -242,6 +249,28 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         }, 1000);
 
         this.getAdmissionDetails();
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "psngrprof"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddstuds = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditstuds = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeletestuds = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Selected Calendar Date
@@ -1028,7 +1057,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
     // Get Audit Parameter
 
-    getAuditData(ddltype) {
+    getAuditParams(ddltype, isdelete) {
         var that = this;
         var _auditdt = [];
 
@@ -1108,7 +1137,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
             { "key": "Mother Occupation", "val": ddltype == "old" ? that.mthrocptnname : $("#mthrocptn option:selected").text().trim(), "fldname": "mthrocptn", "fldtype": "ddl" },
             { "key": "Mother Salary", "val": that.mthrsalary, "fldname": "mthrsalary", "fldtype": "text" },
 
-            { "key": "Sibling", "val": that.saveSiblingDT, "fldname": "studentsibling", "fldtype": "table" }
+            { "key": "Sibling", "val": that.saveSiblingDT, "fldname": "studentsibling", "fldtype": "table" },
+            { "key": "Is Delete", "val": isdelete, "fldname": "isdelete", "fldtype": "boolean" }
         ]
 
         return _auditdt;
@@ -1144,6 +1174,59 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
 
             that._autoservice.saveAuditLog(auditparams);
         }
+    }
+
+    // Delete Driver
+
+    getDeleteParams() {
+        var that = this;
+
+        var params = {
+            "enrlmntid": that.enrlmntid,
+            "mode": "delete",
+            "isdelete": true
+        }
+
+        return params;
+    }
+
+    public deleteStudents() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = that.getDeleteParams();
+
+            that.mode = "delete";
+            that.newStudentData = that.getAuditParams("new", true);
+
+            var newval = that._autoservice.getDiff2Arrays(that.deleteStudentData, params);
+            var oldval = that._autoservice.getDiff2Arrays(params, that.deleteStudentData);
+
+            that._admsnservice.saveAdmissionInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_admissioninfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+                    var enrlmntid = dataResult.enrlmntid;
+
+                    if (msgid != "-1") {
+                        var _mname = that.mname == "" ? "" : " " + that.mname;
+                        that.saveAuditLog(enrlmntid, that.fname + _mname + " " + that.lname, oldval, newval);
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
     }
 
     // Get Save Parameter
@@ -1259,7 +1342,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
         that.saveSiblingDT = JSON.stringify(that.siblingDT);
 
         var params = that.getStudentParams();
-        that.newStudentData = that.getAuditData("new");
+        that.newStudentData = that.getAuditParams("new", false);
 
         var newval = that._autoservice.getDiff2Arrays(that.studentData, params);
         var oldval = that._autoservice.getDiff2Arrays(params, that.studentData);
@@ -1673,7 +1756,12 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                     }
                 }
                 else {
-                    that.resetStudentFields();
+                    if (that.paramsid == 0) {
+                        that.resetStudentFields();
+                    }
+                    else {
+                        that.backViewData();
+                    }
                 }
 
                 if (that.parentDT.length != 0) {
@@ -1727,7 +1815,8 @@ export class AddAdmissionComponent implements OnInit, OnDestroy {
                 }
 
                 that.studentData = that.getStudentParams();
-                that.oldStudentData = that.getAuditData("old");
+                that.deleteStudentData = that.getDeleteParams();
+                that.oldStudentData = that.getAuditParams("old", false);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);
