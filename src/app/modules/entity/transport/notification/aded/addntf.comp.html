@@ -1,0 +1,101 @@
+<div class="card">
+    <div class="header">
+        <h4>Send Notification</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme" (click)="saveNotification()">
+                    <i class="material-icons">save</i>
+                </a>
+            </li>
+            <li>
+                <a role="button" class="btn btn-theme" (click)="backViewData()">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-6 border">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Which Notification <strong>*</strong></label>
+                        <select id="ntftype" name="ntftype" [(ngModel)]="ntftype" class="form-control ntftype" tabindex="1" (ngModelChange)="getWhichNotification()">
+                            <option [value]="'student'">Student Wise Parents</option>
+                            <option [value]="'driver'">Driver Wise Parents</option>
+                            <option [value]="'vehicle'">Vehicle Wise Parents</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Title <strong>*</strong> (250 Character Limit)</label>
+                        <input [(ngModel)]="title" class="form-control ntf-title" tabindex="2" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Message <strong>*</strong></label>
+                        <textarea [(ngModel)]="msg" rows="5" class="form-control no-resize auto-growth msg" maxlength="250" tabindex="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="row clearfix" *ngIf="isvaildsendsms">
+                    <div class="col-md-12">
+                        <input id="issendsms" name="issendsms" [(ngModel)]="issendsms" type="checkbox" class="filled-in">
+                        <label for="issendsms">Send SMS</label>
+                    </div>
+                </div>
+
+                {{smshead}}
+
+                <div class="row clearfix" *ngIf="isvaildsendsms">
+                    <div class="col-md-12">
+                        <span>Total SMS Pack : </span> {{smspack}}<br />
+                        <span>Used SMS : </span> {{usedsms}}<br />
+                        <span>Pending SMS : </span> {{pendingsms}}<br />
+                    </div>
+                </div>
+
+                <hr class="hr" />
+
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <input id="issendemail" name="issendemail" [(ngModel)]="issendemail" type="checkbox" class="filled-in">
+                        <label for="issendemail">Send Email</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <div class="row clearfix" *ngIf="ntfTypeDT.length">
+                            <div id="divselectall" class="header-title m-b-10">
+                                <input id="selectall" name="selectall" type="checkbox" (change)="selectAndDeselectAllCheckboxes()" class="filled-in">
+                                <label for="selectall" class="upper">Select All {{ntftype}}</label>
+                            </div>
+                            <div id="divtorights" class="col-md-12">
+                                <div class="allcheckboxes">
+                                    <div class="row clearfix">
+                                        <div class="col-md-6" *ngFor="let row of ntfTypeDT; let i = index">
+                                            <span id="toids{{row.id}}">
+                                                <input id="t{{row.id}}" name="toids{{i + 1}}" type="checkbox" value="{{row.id}}" class="filled-in" />
+                                                <label for="t{{row.id}}" class="title" title="{{row.name}}">{{row.name}}</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="!ntfTypeDT.length">
+                            No any {{ntftype}} on this school !!!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

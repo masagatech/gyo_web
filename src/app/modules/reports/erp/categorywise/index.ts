@@ -14,7 +14,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: CategoryWiseReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rptpsngr", "submodule": "rptcatstud", "rights": "view", "urlname": "/categorywise" }
+        data: { "module": "rptadm", "submodule": "rptcatstud", "rights": "view", "urlname": "/categorywise" }
       }
     ]
   },

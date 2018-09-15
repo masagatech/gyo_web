@@ -1,0 +1,68 @@
+<div class="card">
+    <div class="header">
+        <h4>View Notification</h4>
+
+        <ul class="header-dropdown m-r--5">
+            <li>
+                <a role="button" class="btn btn-theme" (click)="addNotification()">
+                    <i class="material-icons">add</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="body">
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="250px">Date</th>
+                            <th>Title</th>
+                            <th width="200px">Group</th>
+                            <th width="200px">For Send</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="!notificationDT.length">
+                        <tr>
+                            <td colspan="4">
+                                <h5>No Data Found....</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngFor="let ntfrow of notificationDT">
+                        <tr class="tr-table">
+                            <th>
+                                {{ntfrow.createddate}}
+                            </th>
+                            <th>
+                                {{ntfrow.title}}
+                            </th>
+                            <th>
+                                {{ntfrow.grpname}}
+                            </th>
+                            <th>
+                                {{ntfrow.sendtype}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div *ngIf="ntfrow.standard != ''">
+                                    <label class="control-label">Standard :</label> {{ntfrow.standard}}
+                                    <hr class="m-05 no-line" />
+                                </div>
+
+                                <div *ngIf="ntfrow.teacher != ''">
+                                    <label class="control-label">Teacher :</label> {{ntfrow.teacher}}
+                                    <hr class="m-05 no-line" />
+                                </div>
+
+                                <label class="control-label">Message :</label> {{ntfrow.msg}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

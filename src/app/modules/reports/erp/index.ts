@@ -20,6 +20,7 @@ export const routes = [
                     { path: 'classtimetable', loadChildren: './classtimetable#ClassTimeTableReportsModule' },
                     
                     { path: 'erp/student/generalregister', loadChildren: './generalregister#GeneralRegisterReportsModule' },
+                    { path: 'erp/student/prospectuswise', loadChildren: './prospectuswise#ProspectusWiseReportsModule' },
                     { path: 'erp/student/categorywise', loadChildren: './categorywise#CategoryWiseReportsModule' },
                     { path: 'erp/student/agewise', loadChildren: './agewise#AgeWiseReportsModule' },
                     

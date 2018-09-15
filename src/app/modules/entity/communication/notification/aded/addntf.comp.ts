@@ -195,7 +195,7 @@ export class AddNotificationComponent implements OnInit, OnDestroy {
 
     // Send Type Checkboxes
 
-    private selectTeacherSendTypeCheckboxes() {
+    selectTeacherSendTypeCheckboxes() {
         if (this.issendteacher) {
             $("#divselectteacher").prop('class', "show");
             $("#selectallteacher").prop('checked', true);
@@ -211,7 +211,7 @@ export class AddNotificationComponent implements OnInit, OnDestroy {
 
     // Teacher Checkboxes
 
-    private selectAndDeselectAllTeacherCheckboxes() {
+    selectAndDeselectAllTeacherCheckboxes() {
         if ($("#selectallteacher").is(':checked')) {
             $(".allteachercheckboxes input[type=checkbox]").prop('checked', true);
             $("#divteacher").prop('class', "hide");
@@ -222,13 +222,13 @@ export class AddNotificationComponent implements OnInit, OnDestroy {
         }
     }
 
-    private clearTeacherCheckboxes() {
+    clearTeacherCheckboxes() {
         $(".allteachercheckboxes input[type=checkbox]").prop('checked', false);
     }
 
     // Standard Checkboxes
 
-    private selectAndDeselectAllStandardCheckboxes() {
+    selectAndDeselectAllStandardCheckboxes() {
         if ($("#selectallstandard").is(':checked')) {
             $(".allstandardcheckboxes input[type=checkbox]").prop('checked', true);
         }
@@ -237,7 +237,7 @@ export class AddNotificationComponent implements OnInit, OnDestroy {
         }
     }
 
-    private clearStandardCheckboxes() {
+    clearStandardCheckboxes() {
         $(".allstandardcheckboxes input[type=checkbox]").prop('checked', false);
     }
 

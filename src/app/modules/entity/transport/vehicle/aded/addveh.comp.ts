@@ -389,6 +389,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
             "vementtid": selownerentt.toString().replace("[", "").replace("]", ""),
             "wsautoid": that._enttdetails.wsautoid,
             "cuid": that.loginUser.ucode,
+            "isowner": that.vehid == 0 ? true : false,
             "isactive": that.isactive,
             "isprivate": that.isprivate
         }

@@ -14,4 +14,8 @@ export class NotificationService {
     saveNotification(req: any) {
         return this._dataserver.post(Globals.erproute + "saveNotification", req)
     }
+
+    saveTransportNotification(req: any) {
+        return this._dataserver.post("saveNotification", req)
+    }
 }

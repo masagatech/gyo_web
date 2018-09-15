@@ -9,8 +9,6 @@ import { ViewNotificationComponent } from './view/viewntf.comp';
 
 import { NotificationService } from '@services/erp';
 
-import { LazyLoadEvent, DataTableModule, AutoCompleteModule, FileUploadModule } from 'primeng/primeng';
-
 export const routes = [
   {
     path: '', children: [
@@ -33,7 +31,7 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, RouterModule.forChild(routes), DataTableModule, AutoCompleteModule, FileUploadModule
+    CommonModule, FormsModule, RouterModule.forChild(routes)
   ],
 
   providers: [AuthGuard, NotificationService]

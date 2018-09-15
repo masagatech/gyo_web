@@ -1,0 +1,72 @@
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Academic Year <strong>*</strong></label>
+                        <select id="ayid" name="ayname" [(ngModel)]="ayid" class="form-control ayname" tabindex="1">
+                            <option [value]="0">None</option>
+                            <option *ngFor="let row of ayDT" [value]="row.key">	
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Class</label>
+                        <select id="classid" name="classid" [(ngModel)]="classid" class="form-control" tabindex="2">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of classDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-xs-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Prospectus</label>
+                        <select id="prspctid" name="prspctname" [(ngModel)]="prspctid" class="form-control prspctname" tabindex="3">
+                            <option [value]="0">All</option>
+                            <option *ngFor="let row of prospectusDT" [value]="row.key">
+                                {{row.val}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-xs-3 pad-20">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-xs waves-effect" (click)="getProspectusWiseStudent('html')">
+                        <i class="material-icons">arrow_forward</i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-xs-3 pad-20 text-right">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" (click)="getProspectusWiseStudent('xls')"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                        <li><a role="button" (click)="getProspectusWiseStudent('pdf')"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div id="divrptprspctstud"></div>
+    </div>
+</div>

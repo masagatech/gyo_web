@@ -14,7 +14,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: GeneralRegisterReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rptpsngr", "submodule": "rptgrstud", "rights": "view", "urlname": "/generalregister" }
+        data: { "module": "rptadm", "submodule": "rptgrstud", "rights": "view", "urlname": "/generalregister" }
       }
     ]
   },

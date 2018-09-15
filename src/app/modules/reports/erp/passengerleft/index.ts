@@ -14,7 +14,7 @@ export const routes = [
     path: '', children: [
       {
         path: '', component: PassengerLeftReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rptpsngr", "submodule": "rptpsngrleft", "rights": "view", "urlname": "/left" }
+        data: { "module": "rptadm", "submodule": "rptpsngrleft", "rights": "view", "urlname": "/left" }
       }
     ]
   },

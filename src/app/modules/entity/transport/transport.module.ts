@@ -16,6 +16,7 @@ export const routes = [
                 path: '',
                 children: [
                     { path: 'schedule', loadChildren: './schedule#VehicleScheduleModule' },
+                    { path: 'notification', loadChildren: './notification#TransportNotificationModule' },
                     { path: 'driver', loadChildren: './driver#DriverModule' },
                     { path: 'vehicle', loadChildren: './vehicle#VehicleModule' },
                     { path: 'thirdpartyintegration', loadChildren: './thirdpartyintegration#ThirdPartyIntegrationModule' },
