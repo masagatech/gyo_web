@@ -13,11 +13,11 @@ export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: ViewTransportNotificationComponent, canActivate: [AuthGuard],
+        path: 'view', component: ViewTransportNotificationComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "trnspntf", "rights": "view", "urlname": "/notification" }
       },
       {
-        path: 'add', component: AddTransportNotificationComponent, canActivate: [AuthGuard],
+        path: '', component: AddTransportNotificationComponent, canActivate: [AuthGuard],
         data: { "module": "erp", "submodule": "trnspntf", "rights": "add", "urlname": "/add" }
       }
     ]
