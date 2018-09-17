@@ -72,7 +72,7 @@ export class NotificationReportsComponent implements OnInit, OnDestroy {
 
         that._ntfservice.getNotification(params).subscribe(data => {
             try {
-                that.groupDT = JSON.parse(data._body).data;
+                that.groupDT = JSON.parse(data._body).data.filter(a => a.id != 0);
             }
             catch (e) {
                 that._msg.Show(messageType.error, "Error", e);

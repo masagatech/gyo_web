@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from '@services';
+import { AuthGuard, CommonService } from '@services';
 
 import { AddNotificationComponent } from './aded/addntf.comp';
 import { ViewNotificationComponent } from './view/viewntf.comp';
@@ -34,7 +34,7 @@ export const routes = [
     CommonModule, FormsModule, RouterModule.forChild(routes)
   ],
 
-  providers: [AuthGuard, NotificationService]
+  providers: [AuthGuard, CommonService, NotificationService]
 })
 
 export class NotificationModule {

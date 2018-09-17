@@ -4,11 +4,8 @@ import { MessageService, messageType, LoginService, CommonService } from '@servi
 import { LoginUserModel, Globals } from '@models';
 import { NotificationService } from '@services/erp';
 
-declare var google: any;
-
 @Component({
-    templateUrl: 'addntf.comp.html',
-    providers: [CommonService]
+    templateUrl: 'addntf.comp.html'
 })
 
 export class AddNotificationComponent implements OnInit, OnDestroy {
@@ -89,7 +86,7 @@ export class AddNotificationComponent implements OnInit, OnDestroy {
             "wsautoid": that._enttdetails.wsautoid, "issysadmin": that.loginUser.issysadmin
         }).subscribe(data => {
             try {
-                that.groupDT = data.data.filter(a => a.group == "ntfgrp");
+                that.groupDT = data.data.filter(a => a.group == "ntfgrp").filter(a => a.autoid != 0);
                 that.standardDT = data.data.filter(a => a.group == "standard");
 
                 that.teacherDT = data.data.filter(a => a.group == "teacher");

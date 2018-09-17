@@ -312,6 +312,8 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
         that.uploadLogoDT = [];
         that.chooseLabel = "Upload Logo";
+
+        that.enabledWorkspaceFields();
     }
 
     // Active / Deactive Data
@@ -659,6 +661,8 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     // Show / Hide Controls
 
     enabledWorkspaceFields() {
+        this.iseditws = true;
+        
         $(".hidewhen input").removeAttr("disabled");
         $(".hidewhen select").removeAttr("disabled");
         $(".hidewhen textarea").removeAttr("disabled");
@@ -668,6 +672,8 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     }
 
     disabledWorkspaceFields() {
+        this.iseditws = false;
+        
         $(".hidewhen input").attr("disabled", "disabled");
         $(".hidewhen select").attr("disabled", "disabled");
         $(".hidewhen textarea").attr("disabled", "disabled");
