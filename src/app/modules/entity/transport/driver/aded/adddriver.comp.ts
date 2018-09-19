@@ -569,7 +569,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         return params;
     }
 
-    public deleteDrivers() {
+    deleteDrivers() {
         var that = this;
 
         that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
@@ -613,6 +613,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
+            "paramsid": that.paramsid,
             "autoid": that.driverid,
             "loginid": that.loginid,
             "drivercode": that.drivercode,

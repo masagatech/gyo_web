@@ -3,12 +3,17 @@
         <h4>User</h4>
 
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="uid !== 0">
+            <li *ngIf="paramsid != 0 && iseditusr == true">
                 <span class="switch">
                     <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveUserInfo()"><span class="lever"></span></label>
                 </span>
             </li>
-            <li>
+            <li *ngIf="paramsid != 0 && isdeleteusr == true">
+                <a role="button" class="btn btn-danger" (click)="deleteUsers()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
+            <li *ngIf="isaddusr == true && iseditusr == true">
                 <a role="button" class="btn btn-theme" (click)="saveUserInfo()">
                     <i class="material-icons">save</i>
                 </a>

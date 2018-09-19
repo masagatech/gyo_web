@@ -365,6 +365,7 @@ export class AddVehicleComponent implements OnInit, OnDestroy {
         var that = this;
 
         var params = {
+            "paramsid": that.paramsid,
             "vemid": that.autoid,
             "vehid": that.vehid,
             "vehtype": that.vehtype,

@@ -21,6 +21,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     cityDT: any = [];
     areaDT: any = [];
 
+    paramsid: number = 0;
     uid: number = 0;
     loginid: number = 0;
     ucode: string = "";
@@ -60,6 +61,10 @@ export class AddUserComponent implements OnInit, OnDestroy {
     isedit: boolean = false;
     isdetails: boolean = false;
 
+    isaddusr: boolean = false;
+    iseditusr: boolean = false;
+    isdeleteusr: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _userservice: UserService, private _loginservice: LoginService, private _autoservice: CommonService,
@@ -73,6 +78,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
         this.fillCityDropDown();
         this.fillAreaDropDown();
 
+        this.getActionRights();
+
         this.isadd = _router.url.indexOf("/add") > -1;
         this.isedit = _router.url.indexOf("/edit") > -1;
         this.isdetails = _router.url.indexOf("/details") > -1;
@@ -85,6 +92,27 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         this.getUserDetails();
         this.showPassword("password");
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": "", "uid": that.loginUser.uid, "utype": that.loginUser.utype, "mcode": "usr"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddusr = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditusr = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeleteusr = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     showPassword(type) {
@@ -271,8 +299,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
         for (var i = 0; i < that.entityList.length; i++) {
             var field = that.entityList[i];
 
-            if (field.schid == this.enttid) {
-                this._msg.Show(messageType.error, "Error", "Duplicate Entity not Allowed");
+            if (field.schid == that.enttid) {
+                that._msg.Show(messageType.error, "Error", "Duplicate Entity not Allowed");
                 return true;
             }
         }
@@ -351,15 +379,15 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         this._userservice.saveUserInfo(act_deactuser).subscribe(data => {
             try {
-                var dataResult = data.data;
+                var dataResult = data.data[0].funsave_userinfo;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
 
-                if (dataResult[0].funsave_userinfo.msgid != "-1") {
-                    var msg = dataResult[0].funsave_userinfo.msg;
+                if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
                     that.getUserDetails();
                 }
                 else {
-                    var msg = dataResult[0].funsave_userinfo.msg;
                     that._msg.Show(messageType.error, "Error", msg);
                 }
             }
@@ -371,6 +399,42 @@ export class AddUserComponent implements OnInit, OnDestroy {
             console.log(err);
         }, () => {
             // console.log("Complete");
+        });
+    }
+
+    // Delete Users
+
+    deleteUsers() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = {
+                "mode": "delete",
+                "uid": that.uid,
+                "utype": that.utype,
+            }
+
+            that._userservice.saveUserInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_userinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
         });
     }
 
@@ -426,52 +490,60 @@ export class AddUserComponent implements OnInit, OnDestroy {
         $("#divPhotoUpload").prop("class", "hide");
     }
 
-    // Save Data
+    // User Validation
 
-    saveUserInfo() {
+    isValidationUsers() {
         var that = this;
 
         if (that.ucode == "") {
             that._msg.Show(messageType.error, "Error", "Enter User Code");
             $(".ucode").focus();
         }
-        else if (that.upwd == "") {
+        if (that.upwd == "") {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".upwd").focus();
         }
-        else if (that.fname == "") {
+        if (that.fname == "") {
             that._msg.Show(messageType.error, "Error", "Enter First Name");
             $(".fname").focus();
         }
-        else if (that.lname == "") {
+        if (that.lname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Last Name");
             $(".lname").focus();
         }
-        else if (that.gender == "") {
+        if (that.gender == "") {
             that._msg.Show(messageType.error, "Error", "Select Gender");
             $(".gender").focus();
         }
-        else if (that.dob == "") {
+        if (that.dob == "") {
             that._msg.Show(messageType.error, "Error", "Enter Birth Date");
             $(".dob").focus();
         }
-        else if (that.utype == "") {
+        if (that.utype == "") {
             that._msg.Show(messageType.error, "Error", "Select User Type");
             $(".utype").focus();
         }
-        else if (that.mobileno1 == "") {
+        if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
         }
-        else if (that.email1 == "") {
+        if (that.email1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Email");
             $(".email1").focus();
         }
-        else if (that.address == "") {
+        if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
         }
-        else {
+    }
+
+    // Save Data
+
+    saveUserInfo() {
+        var that = this;
+        var isvalid = that.isValidationUsers();
+
+        if (isvalid) {
             commonfun.loader();
 
             var _ownenttdt: any = [];
@@ -504,11 +576,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
                 _othenttlist = Object.keys(_othenttdt).map(function (k) { return _othenttdt[k].schid });
             }
 
-            console.log("{" + _ownenttlist.toString().replace("[", "").replace("]", "") + "}");
-            console.log("{" + _othwslist.toString().replace("[", "").replace("]", "") + "}");
-            console.log("{" + _othenttlist.toString().replace("[", "").replace("]", "") + "}");
-
-            var saveuser = {
+            var params = {
                 "uid": that.uid,
                 "loginid": that.loginid,
                 "ucode": that.ucode,
@@ -539,7 +607,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
                 "mode": ""
             }
 
-            that._userservice.saveUserInfo(saveuser).subscribe(data => {
+            that._userservice.saveUserInfo(params).subscribe(data => {
                 try {
                     var dataResult = data.data[0].funsave_userinfo;
                     var msg = dataResult.msg;
@@ -587,59 +655,70 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.uid = params['id'];
+                that.paramsid = params['id'];
 
-                that._userservice.getUserDetails({ "flag": "edit", "id": that.uid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
+                that._userservice.getUserDetails({ "flag": "edit", "id": that.paramsid, "wsautoid": that._wsdetails.wsautoid }).subscribe(data => {
                     try {
-                        var _userdata = data.data[0];
-
-                        that.uid = _userdata.uid;
-                        that.loginid = _userdata.loginid;
-                        that.ucode = _userdata.ucode;
-                        that.upwd = _userdata.upwd;
-                        that.fname = _userdata.fname;
-                        that.lname = _userdata.lname;
-                        that.gender = _userdata.gndrkey;
-                        that.dob = _userdata.dob;
-                        that.utype = _userdata.utype;
-                        that.isAllEnttRights = _userdata.isallenttrights;
-                        that.entityList = _userdata.schooldt !== null ? _userdata.schooldt : [];
-
-                        that.email1 = _userdata.email1;
-                        that.email2 = _userdata.email2;
-                        that.mobileno1 = _userdata.mobileno1;
-                        that.mobileno2 = _userdata.mobileno2;
-                        that.address = _userdata.address;
-                        that.country = _userdata.country;
-                        that.state = _userdata.state;
-                        that.fillCityDropDown();
-                        that.city = _userdata.city;
-                        that.fillAreaDropDown();
-                        that.area = _userdata.area;
-                        that.pincode = _userdata.pincode;
-                        that.remark1 = _userdata.remark1;
-                        that.ownwsid = _userdata.ownwsid;
-                        that.isactive = _userdata.isactive;
-                        that.mode = _userdata.mode;
-
-                        if (_userdata.FilePath !== "") {
-                            that.uploadPhotoDT.push({ "athurl": _userdata.FilePath });
-                            that.chooseLabel = "Change Photo";
-                        }
-                        else {
-                            that.uploadPhotoDT = [];
-                            that.chooseLabel = "Upload Photo";
-                        }
-
-                        if (that.isdetails) {
-                            that.disabledUserFields();
-                        }
-                        else {
-                            if (_userdata.isedit) {
-                                that.enabledUserFields();
+                        if (data.data.length == 0) {
+                            if (that.paramsid == 0) {
+                                that.dob = that.formatDate(_currdate);
+                                that.resetUserFields();
                             }
                             else {
+                                that.backViewData();
+                            }
+                        }
+                        else {
+                            var _userdata = data.data[0];
+
+                            that.uid = _userdata.uid;
+                            that.loginid = _userdata.loginid;
+                            that.ucode = _userdata.ucode;
+                            that.upwd = _userdata.upwd;
+                            that.fname = _userdata.fname;
+                            that.lname = _userdata.lname;
+                            that.gender = _userdata.gndrkey;
+                            that.dob = _userdata.dob;
+                            that.utype = _userdata.utype;
+                            that.isAllEnttRights = _userdata.isallenttrights;
+                            that.entityList = _userdata.schooldt !== null ? _userdata.schooldt : [];
+
+                            that.email1 = _userdata.email1;
+                            that.email2 = _userdata.email2;
+                            that.mobileno1 = _userdata.mobileno1;
+                            that.mobileno2 = _userdata.mobileno2;
+                            that.address = _userdata.address;
+                            that.country = _userdata.country;
+                            that.state = _userdata.state;
+                            that.fillCityDropDown();
+                            that.city = _userdata.city;
+                            that.fillAreaDropDown();
+                            that.area = _userdata.area;
+                            that.pincode = _userdata.pincode;
+                            that.remark1 = _userdata.remark1;
+                            that.ownwsid = _userdata.ownwsid;
+                            that.isactive = _userdata.isactive;
+                            that.mode = _userdata.mode;
+
+                            if (_userdata.FilePath !== "") {
+                                that.uploadPhotoDT.push({ "athurl": _userdata.FilePath });
+                                that.chooseLabel = "Change Photo";
+                            }
+                            else {
+                                that.uploadPhotoDT = [];
+                                that.chooseLabel = "Upload Photo";
+                            }
+
+                            if (that.isdetails) {
                                 that.disabledUserFields();
+                            }
+                            else {
+                                if (_userdata.isedit) {
+                                    that.enabledUserFields();
+                                }
+                                else {
+                                    that.disabledUserFields();
+                                }
                             }
                         }
                     }
@@ -658,8 +737,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
             }
             else {
                 that.dob = that.formatDate(_currdate);
-
                 that.resetUserFields();
+
                 commonfun.loaderhide();
             }
         });

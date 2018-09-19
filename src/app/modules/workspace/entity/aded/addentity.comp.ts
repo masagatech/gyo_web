@@ -515,17 +515,17 @@ export class AddEntityComponent implements OnInit, OnDestroy {
     active_deactiveEntityInfo() {
         var that = this;
 
-        var act_deactentity = {
+        var params = {
             "autoid": that.paramsid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        that._enttservice.saveEntityInfo(act_deactentity).subscribe(data => {
+        that._enttservice.saveEntityInfo(params).subscribe(data => {
             try {
-                var dataResult = data.data;
-                var msg = dataResult[0].funsave_schoolinfo.msg;
-                var msgid = dataResult[0].funsave_schoolinfo.msgid;
+                var dataResult = data.data[0].funsave_schoolinfo;
+                var msg = dataResult.msg;
+                var msgid = dataResult.msgid;
 
                 if (msgid != "-1") {
                     that._msg.Show(messageType.success, "Success", msg);
@@ -547,7 +547,7 @@ export class AddEntityComponent implements OnInit, OnDestroy {
 
     // Delete Entity
 
-    public deleteEntity() {
+    deleteEntity() {
         var that = this;
 
         that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
@@ -558,8 +558,16 @@ export class AddEntityComponent implements OnInit, OnDestroy {
 
             that._enttservice.saveEntityInfo(params).subscribe(data => {
                 try {
-                    var dataResult = data.data;
-                    that.backViewData();
+                    var dataResult = data.data[0].funsave_schoolinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);
@@ -747,7 +755,15 @@ export class AddEntityComponent implements OnInit, OnDestroy {
                     "wsautoid": that._wsdetails.wsautoid
                 }).subscribe(data => {
                     try {
-                        if (data.data.length > 0) {
+                        if (data.data.length == 0) {
+                            if (that.paramsid == 0) {
+                                that.resetEntityFields();
+                            }
+                            else {
+                                that.backViewData();
+                            }
+                        }
+                        else {
                             that.schid = data.data[0].autoid;
                             that.entttype = data.data[0].entttype;
                             that.schcd = data.data[0].schoolcode;
@@ -817,9 +833,6 @@ export class AddEntityComponent implements OnInit, OnDestroy {
                             that.remark1 = data.data[0].remark1;
                             that.isactive = data.data[0].isactive;
                             that.mode = data.data[0].mode;
-                        }
-                        else {
-                            that.resetEntityFields();
                         }
                     }
                     catch (e) {

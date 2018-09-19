@@ -19,6 +19,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     cityDT: any = [];
     areaDT: any = [];
 
+    paramsid: number = 0;
     wsautoid: number = 0;
     wscode: string = "";
     wsname: string = "";
@@ -39,8 +40,6 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     area: number = 0;
     pincode: number = 0;
     isactive: boolean = false;
-    
-    iseditws: boolean = false;
 
     iscompany: boolean = false;
     cmppsngrrate: any = "0";
@@ -57,6 +56,10 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     global = new Globals();
     uploadlogoconfig = { server: "", serverpath: "", uploadurl: "", filepath: "", method: "post", maxFilesize: "", acceptedFiles: "" };
     chooseLabel: string = "";
+
+    isaddws: boolean = false;
+    iseditws: boolean = false;
+    isdeletews: boolean = false;
 
     private subscribeParameters: any;
 
@@ -80,6 +83,28 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
         this.getWorkspaceDetails();
         this.showPassword("password");
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": "", "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "ws"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddws = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditws = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeletews = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     showPassword(type) {
@@ -277,7 +302,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
     resetWorkspaceFields() {
         var that = this;
-        
+
         that.wsautoid = 0
         that.wscode = "";
         that.wsname = "";
@@ -314,6 +339,41 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
         that.chooseLabel = "Upload Logo";
 
         that.enabledWorkspaceFields();
+    }
+
+    // Delete Driver
+
+    deleteWorkspace() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = {
+                "mode": "delete",
+                "wsautoid": that.wsautoid
+            }
+
+            that._wsservice.saveWorkspaceInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_workspaceinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
     }
 
     // Active / Deactive Data
@@ -557,14 +617,27 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.wsautoid = params['id'];
+                that.paramsid = params['id'];
                 that.disablecode = true;
 
                 that._wsservice.getWorkspaceDetails({
-                    "flag": "edit", "id": that.wsautoid, "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin
+                    "flag": "edit", "id": that.paramsid, "ucode": that.loginUser.ucode, "issysadmin": that.loginUser.issysadmin
                 }).subscribe(data => {
                     try {
-                        if (data.data.length > 0) {
+                        if (data.data.length == 0) {
+                            if (that.loginUser.issysadmin) {
+                                if (that.paramsid == 0) {
+                                    that.resetWorkspaceFields();
+                                }
+                                else {
+                                    that.backViewData();
+                                }
+                            }
+                            else {
+                                that.backViewData();
+                            }
+                        }
+                        else {
                             that.wsautoid = data.data[0].wsautoid;
                             that.wscode = data.data[0].wscode;
                             that.wsname = data.data[0].wsname;
@@ -615,20 +688,10 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                             else {
                                 if (that.loginUser.utype == "admin" && that.loginUser.wsautoid == that.wsautoid) {
                                     that.enabledWorkspaceFields();
-                                    that.iseditws = true;
                                 }
                                 else {
                                     that.disabledWorkspaceFields();
-                                    that.iseditws = false;
                                 }
-                            }
-                        }
-                        else {
-                            if (that.loginUser.issysadmin) {
-                                that.resetWorkspaceFields();
-                            }
-                            else {
-                                that.backViewData();
                             }
                         }
                     }
@@ -652,7 +715,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                 else {
                     that.backViewData();
                 }
-                
+
                 commonfun.loaderhide();
             }
         });
@@ -662,7 +725,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
     enabledWorkspaceFields() {
         this.iseditws = true;
-        
+
         $(".hidewhen input").removeAttr("disabled");
         $(".hidewhen select").removeAttr("disabled");
         $(".hidewhen textarea").removeAttr("disabled");
@@ -673,7 +736,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
 
     disabledWorkspaceFields() {
         this.iseditws = false;
-        
+
         $(".hidewhen input").attr("disabled", "disabled");
         $(".hidewhen select").attr("disabled", "disabled");
         $(".hidewhen textarea").attr("disabled", "disabled");

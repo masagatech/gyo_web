@@ -6,10 +6,15 @@
             <h4>Workspace</h4>
 
             <ul class="header-dropdown m-r--5">
-                <li *ngIf="wsautoid !== 0 && iseditws == true">
+                <li *ngIf="paramsid !== 0 && iseditws == true">
                     <span class="switch">
                         <label><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveWorkspaceInfo()"><span class="lever"></span></label>
                     </span>
+                </li>
+                <li *ngIf="paramsid != 0 && iseditws == true">
+                    <a role="button" class="btn btn-danger" (click)="deleteWorkspace()">
+                        <i class="material-icons">delete</i>
+                    </a>
                 </li>
                 <li *ngIf="iseditws == true">
                     <a role="button" class="btn btn-theme" (click)="saveWorkspaceInfo()">
