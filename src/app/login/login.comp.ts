@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService, messageType, AuthenticationService, LoginService } from '@services';
 import { UserReq, LoginUserModel, Globals } from '@models';
 import { Router } from '@angular/router';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
     templateUrl: 'login.comp.html',
