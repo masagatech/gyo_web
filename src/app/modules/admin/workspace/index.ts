@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard, CommonService } from '@services';
-import { } from '@services';
 
 import { AddWorkspaceComponent } from './aded/addws.comp';
 import { ViewWorkspaceComponent } from './view/viewws.comp';
