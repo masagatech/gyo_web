@@ -498,43 +498,65 @@ export class AddUserComponent implements OnInit, OnDestroy {
         if (that.ucode == "") {
             that._msg.Show(messageType.error, "Error", "Enter User Code");
             $(".ucode").focus();
+
+            return false;
         }
         if (that.upwd == "") {
             that._msg.Show(messageType.error, "Error", "Enter Password");
             $(".upwd").focus();
+            
+            return false;
         }
         if (that.fname == "") {
             that._msg.Show(messageType.error, "Error", "Enter First Name");
             $(".fname").focus();
+            
+            return false;
         }
         if (that.lname == "") {
             that._msg.Show(messageType.error, "Error", "Enter Last Name");
             $(".lname").focus();
+            
+            return false;
         }
         if (that.gender == "") {
             that._msg.Show(messageType.error, "Error", "Select Gender");
             $(".gender").focus();
+            
+            return false;
         }
         if (that.dob == "") {
             that._msg.Show(messageType.error, "Error", "Enter Birth Date");
             $(".dob").focus();
+            
+            return false;
         }
         if (that.utype == "") {
             that._msg.Show(messageType.error, "Error", "Select User Type");
             $(".utype").focus();
+            
+            return false;
         }
         if (that.mobileno1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Mobile No");
             $(".mobileno1").focus();
+            
+            return false;
         }
         if (that.email1 == "") {
             that._msg.Show(messageType.error, "Error", "Enter Email");
             $(".email1").focus();
+            
+            return false;
         }
         if (that.address == "") {
             that._msg.Show(messageType.error, "Error", "Enter Address");
             $(".address").focus();
+            
+            return false;
         }
+            
+        return true;
     }
 
     // Save Data
