@@ -26,6 +26,7 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
     pickstopsDT: any = [];
     dropstopsDT: any = [];
 
+    paramsid: number = 0;
     enrlmntid: number = 0;
     svhautoid: number = 0;
     fname: string = "";
@@ -97,6 +98,10 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
     isedit: boolean = false;
     isdetails: boolean = false;
 
+    isaddpsngr: boolean = false;
+    iseditpsngr: boolean = false;
+    isdeletepsngr: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
@@ -113,6 +118,8 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
         this.fillRoutesDDL();
         this.fillPickStopsDDL();
         this.fillDropStopsDDL();
+
+        this.getActionRights();
 
         this.isadd = _router.url.indexOf("/add") > -1;
         this.isedit = _router.url.indexOf("/edit") > -1;
@@ -131,7 +138,29 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
             $('.profile-photo').prop("class", "show");
         }
 
-        this.getPassengerDetails();
+        this.getAdmissionDetails();
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "psngrprof"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddpsngr = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditpsngr = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeletepsngr = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     // Selected Calendar Date
@@ -636,6 +665,39 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
         this.uploadPhotoDT.splice(0, 1);
     }
 
+    public deletePassenger() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = {
+                "enrlmntid": that.enrlmntid,
+                "mode": "delete"
+            }
+
+            that._admsnservice.saveAdmissionInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_admissioninfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
+    }
+
     // Save Data
 
     isValidPassenger() {
@@ -808,6 +870,26 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
         }
     }
 
+    // Get Admission Data
+
+    getAdmissionDetails() {
+        var that = this;
+
+        that.subscribeParameters = this._routeParams.params.subscribe(params => {
+            if (params['id'] !== undefined) {
+                that.paramsid = params['id'];
+                that.getPassengerDetails();
+                $('#prspctid').prop("disabled", true);
+                $('#prspctno').prop("disabled", true);
+            }
+            else {
+                that.resetPassengerFields();
+                $('#prspctid').prop("disabled", false);
+                $('#prspctno').prop("disabled", false);
+            }
+        });
+    }
+
     // Get Passenger Data
 
     getPassengerDetails() {
@@ -818,119 +900,109 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
 
         commonfun.loader();
 
-        that.subscribeParameters = this._routeParams.params.subscribe(params => {
-            if (params['id'] !== undefined) {
-                that.enrlmntid = params['id'];
+        that._admsnservice.viewStudentDetails({
+            "flag": "editpsngr",
+            "id": that.paramsid,
+            "wsautoid": that._enttdetails.wsautoid
+        }).subscribe(data => {
+            try {
+                psngrDT = data.data[0];
+                vehmapDT = data.data[1];
 
-                that._admsnservice.viewStudentDetails({
-                    "flag": "editpsngr",
-                    "id": that.enrlmntid,
-                    "wsautoid": that._enttdetails.wsautoid
-                }).subscribe(data => {
-                    try {
-                        psngrDT = data.data[0];
-                        vehmapDT = data.data[1];
+                if (psngrDT.length > 0) {
+                    that.enrlmntid = psngrDT[0].enrlmntid;
+                    that.fname = psngrDT[0].fname;
+                    that.mname = psngrDT[0].mname;
+                    that.lname = psngrDT[0].lname;
+                    that.aadharno = psngrDT[0].aadharno;
+                    that.dob = psngrDT[0].dob;
+                    that.birthplace = psngrDT[0].birthplace;
+                    that.formatDateToWord(that.dob);
+                    that.gender = psngrDT[0].gender;
+                    that.status = psngrDT[0].status;
+                    that.statusnm = psngrDT[0].statusnm;
+                    that.leftdate = psngrDT[0].leftdate;
+                    that.leftreason = psngrDT[0].leftreason;
 
-                        if (psngrDT.length > 0) {
-                            that.enrlmntid = psngrDT[0].enrlmntid;
-                            that.fname = psngrDT[0].fname;
-                            that.mname = psngrDT[0].mname;
-                            that.lname = psngrDT[0].lname;
-                            that.aadharno = psngrDT[0].aadharno;
-                            that.dob = psngrDT[0].dob;
-                            that.birthplace = psngrDT[0].birthplace;
-                            that.formatDateToWord(that.dob);
-                            that.gender = psngrDT[0].gender;
-                            that.status = psngrDT[0].status;
-                            that.statusnm = psngrDT[0].statusnm;
-                            that.leftdate = psngrDT[0].leftdate;
-                            that.leftreason = psngrDT[0].leftreason;
+                    that.fthrname = psngrDT[0].fthrname;
+                    that.fthrmobile = psngrDT[0].mobileno1;
+                    that.fthremail = psngrDT[0].email1;
+                    that.mthrname = psngrDT[0].mthrname;
+                    that.mthrmobile = psngrDT[0].mobileno2;
+                    that.mthremail = psngrDT[0].email2;
 
-                            that.fthrname = psngrDT[0].fthrname;
-                            that.fthrmobile = psngrDT[0].mobileno1;
-                            that.fthremail = psngrDT[0].email1;
-                            that.mthrname = psngrDT[0].mthrname;
-                            that.mthrmobile = psngrDT[0].mobileno2;
-                            that.mthremail = psngrDT[0].email2;
+                    // Contact Information
 
-                            // Contact Information
+                    that.resiaddr = psngrDT[0].address;
+                    that.country = psngrDT[0].country;
+                    that.state = psngrDT[0].state;
+                    that.stname = psngrDT[0].stname;
+                    that.fillCityDropDown();
+                    that.city = psngrDT[0].city;
+                    that.ctname = psngrDT[0].ctname;
+                    that.fillAreaDropDown();
+                    that.area = psngrDT[0].area;
+                    that.arname = psngrDT[0].arname;
+                    that.pincode = psngrDT[0].pincode;
 
-                            that.resiaddr = psngrDT[0].address;
-                            that.country = psngrDT[0].country;
-                            that.state = psngrDT[0].state;
-                            that.stname = psngrDT[0].stname;
-                            that.fillCityDropDown();
-                            that.city = psngrDT[0].city;
-                            that.ctname = psngrDT[0].ctname;
-                            that.fillAreaDropDown();
-                            that.area = psngrDT[0].area;
-                            that.arname = psngrDT[0].arname;
-                            that.pincode = psngrDT[0].pincode;
-
-                            if (psngrDT[0].FilePath !== "") {
-                                that.uploadPhotoDT.push({ "athurl": psngrDT[0].FilePath });
-                                that.chooseLabel = "Change Photo";
-                            }
-                            else {
-                                that.uploadPhotoDT = [];
-                                that.chooseLabel = "Upload Photo";
-                            }
-                        }
-                        else {
-                            that.resetPassengerFields();
-                        }
-
-                        if (vehmapDT.length > 0) {
-                            that.svhautoid = vehmapDT[0].svhautoid;
-                            that.alert = vehmapDT[0].alert;
-                            that.resilet = vehmapDT[0].resilat;
-                            that.resilong = vehmapDT[0].resilon;
-
-                            that.fillRoutesDDL();
-                            that.pickrtid = vehmapDT[0].pickrtid;
-                            that.fillPickStopsDDL();
-                            that.pickstpid = vehmapDT[0].pickstpid;
-                            that.droprtid = vehmapDT[0].droprtid;
-                            that.fillDropStopsDDL();
-                            that.dropstpid = vehmapDT[0].dropstpid;
-
-                            that.getPickAddressLatLon();
-                            that.getDropAddressLatLon();
-
-                            that.picklet = vehmapDT[0].picklat;
-                            that.picklong = vehmapDT[0].picklon;
-                            that.droplet = vehmapDT[0].droplat;
-                            that.droplong = vehmapDT[0].droplon;
-                            that.remark1 = vehmapDT[0].remark1;
-                            that.isactive = vehmapDT[0].isactive;
-                            that.mode = vehmapDT[0].mode;
-
-                            that.pickaddr = vehmapDT[0].pickaddr;
-                            that.dropaddr = vehmapDT[0].dropaddr;
-                            that.otherinfo = vehmapDT[0].otherinfo;
-                        }
-                        else {
-                            that.resetVehicleMapFields();
-                        }
+                    if (psngrDT[0].FilePath !== "") {
+                        that.uploadPhotoDT.push({ "athurl": psngrDT[0].FilePath });
+                        that.chooseLabel = "Change Photo";
                     }
-                    catch (e) {
-                        that._msg.Show(messageType.error, "Error", e);
+                    else {
+                        that.uploadPhotoDT = [];
+                        that.chooseLabel = "Upload Photo";
                     }
+                }
+                else {
+                    that.resetPassengerFields();
+                }
 
-                    commonfun.loaderhide();
-                }, err => {
-                    that._msg.Show(messageType.error, "Error", err);
-                    console.log(err);
-                    commonfun.loaderhide();
-                }, () => {
+                if (vehmapDT.length > 0) {
+                    that.svhautoid = vehmapDT[0].svhautoid;
+                    that.alert = vehmapDT[0].alert;
+                    that.resilet = vehmapDT[0].resilat;
+                    that.resilong = vehmapDT[0].resilon;
 
-                })
+                    that.fillRoutesDDL();
+                    that.pickrtid = vehmapDT[0].pickrtid;
+                    that.fillPickStopsDDL();
+                    that.pickstpid = vehmapDT[0].pickstpid;
+                    that.droprtid = vehmapDT[0].droprtid;
+                    that.fillDropStopsDDL();
+                    that.dropstpid = vehmapDT[0].dropstpid;
+
+                    that.getPickAddressLatLon();
+                    that.getDropAddressLatLon();
+
+                    that.picklet = vehmapDT[0].picklat;
+                    that.picklong = vehmapDT[0].picklon;
+                    that.droplet = vehmapDT[0].droplat;
+                    that.droplong = vehmapDT[0].droplon;
+                    that.remark1 = vehmapDT[0].remark1;
+                    that.isactive = vehmapDT[0].isactive;
+                    that.mode = vehmapDT[0].mode;
+
+                    that.pickaddr = vehmapDT[0].pickaddr;
+                    that.dropaddr = vehmapDT[0].dropaddr;
+                    that.otherinfo = vehmapDT[0].otherinfo;
+                }
+                else {
+                    that.resetVehicleMapFields();
+                }
             }
-            else {
-                that.resetPassengerFields();
-                that.resetVehicleMapFields();
+            catch (e) {
+                that._msg.Show(messageType.error, "Error", e);
             }
-        });
+
+            commonfun.loaderhide();
+        }, err => {
+            that._msg.Show(messageType.error, "Error", err);
+            console.log(err);
+            commonfun.loaderhide();
+        }, () => {
+
+        })
     }
 
     // Back For View Data

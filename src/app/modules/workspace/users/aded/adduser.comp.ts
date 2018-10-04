@@ -603,7 +603,6 @@ export class AddUserComponent implements OnInit, OnDestroy {
             var params = {
                 "uid": that.uid,
                 "loginid": that.loginid,
-                "loginuid": that.loginUser.loginid,
                 "ucode": that.ucode,
                 "oldpwd": that.oldpwd,
                 "upwd": that.upwd,

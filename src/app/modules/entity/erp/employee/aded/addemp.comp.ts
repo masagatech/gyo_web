@@ -849,7 +849,6 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
                 "empid": that.empid,
                 "loginid": that.loginid,
-                "loginuid": that.loginUser.loginid,
                 "empcode": that.empcode,
                 "emppwd": that.emppwd,
                 "oldpwd": that.oldpwd,

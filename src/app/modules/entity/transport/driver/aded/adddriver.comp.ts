@@ -618,7 +618,6 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             "paramsid": that.paramsid,
             "autoid": that.driverid,
             "loginid": that.loginid,
-            "loginuid": that.loginUser.loginid,
             "drivercode": that.drivercode,
             "oldpwd": that.oldpwd,
             "driverpwd": that.driverpwd,

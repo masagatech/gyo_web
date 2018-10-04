@@ -546,7 +546,6 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                 "wsautoid": that.wsautoid,
                 "wscode": that.wscode,
                 "loginid": that.loginid,
-                "loginuid": that.loginUser.loginid,
                 "wsname": that.wsname,
                 "wsdesc": that.wsdesc,
                 "wslogo": that.uploadLogoDT.length > 0 ? that.uploadLogoDT[0].athurl : "",

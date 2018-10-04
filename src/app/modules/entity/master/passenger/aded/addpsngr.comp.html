@@ -3,7 +3,12 @@
         <h4>{{_enttdetails.psngrtype}}</h4>
 
         <ul class="header-dropdown m-r--5">
-            <li>
+            <li *ngIf="paramsid != 0 && isdeletepsngr == true">
+                <a role="button" class="btn btn-danger" (click)="deletePassenger()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
+            <li *ngIf="isaddpsngr == true && iseditpsngr == true">
                 <a role="button" class="btn btn-theme" (click)="savePassengerInfo()">
                     <i class="material-icons">save</i>
                 </a>
