@@ -33,6 +33,33 @@ export class AuthenticationService {
     });
   }
 
+  // Force Log Out
+
+  forcelogout(callback?: any, error?: any) {
+    var usr: LoginUserModel = this._loginservice.getUser();
+
+    this._dataserver.post("getLogout", {
+      "mode": "logoff",
+      "loginuid": usr.loginid
+    }).subscribe(r => {
+      this._loginservice.setUsers(null);
+
+      if (callback) {
+        callback(r);
+      }
+
+      this._router.navigate(['login']);
+    }, err => {
+      if (error) {
+        error(err);
+      }
+    }, () => {
+      if (callback) {
+        callback('done');
+      }
+    });
+  }
+
   login(user: UserReq) {
     var otherdetails = this.getClientInfo();
 

@@ -26,6 +26,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
     wsdesc: string = "";
     loginid: number = 0;
     lgcode: string = "";
+    oldpwd: string = "";
     lgpwd: string = "";
     cpname: string = "";
     mobileno1: string = "";
@@ -308,6 +309,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
         that.wsname = "";
         that.wsdesc = "";
         that.lgcode = "";
+        that.oldpwd = "";
         that.lgpwd = "";
         that.remark = "";
         that.cpname = "";
@@ -544,6 +546,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                 "wsautoid": that.wsautoid,
                 "wscode": that.wscode,
                 "loginid": that.loginid,
+                "loginuid": that.loginUser.loginid,
                 "wsname": that.wsname,
                 "wsdesc": that.wsdesc,
                 "wslogo": that.uploadLogoDT.length > 0 ? that.uploadLogoDT[0].athurl : "",
@@ -553,6 +556,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                 "schpsngrrate": that.schpsngrrate,
                 "schenttmaxno": that.schenttmaxno,
                 "lgcode": that.lgcode,
+                "oldpwd": that.oldpwd,
                 "lgpwd": that.lgpwd,
                 "cpname": that.cpname,
                 "mobileno1": that.mobileno1,
@@ -653,6 +657,7 @@ export class AddWorkspaceComponent implements OnInit, OnDestroy {
                             that.wsdesc = data.data[0].wsdesc;
                             that.loginid = data.data[0].loginid;
                             that.lgcode = data.data[0].lgcode;
+                            that.oldpwd = data.data[0].lgpwd;
                             that.lgpwd = data.data[0].lgpwd;
 
                             that.cpname = data.data[0].name;

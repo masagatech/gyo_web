@@ -25,6 +25,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     uid: number = 0;
     loginid: number = 0;
     ucode: string = "";
+    oldpwd: string = "";
     upwd: string = "";
     fname: string = "";
     lname: string = "";
@@ -447,6 +448,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
         that.loginid = 0;
         that.ucode = "";
         that.upwd = "";
+        that.oldpwd = "";
         that.fname = "";
         that.lname = "";
         that.utype = "";
@@ -601,7 +603,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
             var params = {
                 "uid": that.uid,
                 "loginid": that.loginid,
+                "loginuid": that.loginUser.loginid,
                 "ucode": that.ucode,
+                "oldpwd": that.oldpwd,
                 "upwd": that.upwd,
                 "fname": that.fname,
                 "lname": that.lname,
@@ -696,6 +700,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
                             that.uid = _userdata.uid;
                             that.loginid = _userdata.loginid;
                             that.ucode = _userdata.ucode;
+                            that.oldpwd = _userdata.upwd;
                             that.upwd = _userdata.upwd;
                             that.fname = _userdata.fname;
                             that.lname = _userdata.lname;

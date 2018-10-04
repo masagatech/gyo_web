@@ -221,6 +221,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this._authservice.logout();
   }
 
+  forcelogout() {
+    this._authservice.forcelogout();
+  }
+
   ngOnDestroy() {
 
   }

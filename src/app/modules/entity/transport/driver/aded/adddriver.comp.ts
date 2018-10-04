@@ -22,6 +22,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
     driverid: number = 0;
     loginid: number = 0;
     drivercode: string = "";
+    oldpwd: string = "";
     driverpwd: string = "";
     drivername: string = "";
     aadharno: string = "";
@@ -335,6 +336,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
         that.driverid = 0;
         that.drivercode = "";
         that.driverpwd = "";
+        that.oldpwd = "";
         that.drivername = "";
         that.aadharno = "";
         that.mobileno1 = that.getmobno;
@@ -616,7 +618,9 @@ export class AddDriverComponent implements OnInit, OnDestroy {
             "paramsid": that.paramsid,
             "autoid": that.driverid,
             "loginid": that.loginid,
+            "loginuid": that.loginUser.loginid,
             "drivercode": that.drivercode,
+            "oldpwd": that.oldpwd,
             "driverpwd": that.driverpwd,
             "drivername": that.drivername,
             "aadharno": that.aadharno,
@@ -755,6 +759,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                     that.driverid = _driverdata.autoid;
                     that.loginid = _driverdata.loginid;
                     that.drivercode = _driverdata.drivercode;
+                    that.oldpwd = _driverdata.driverpwd;
                     that.driverpwd = _driverdata.driverpwd;
                     that.drivername = _driverdata.drivername;
                     that.ownenttid = _driverdata.enttid;
@@ -868,6 +873,7 @@ export class AddDriverComponent implements OnInit, OnDestroy {
                         that.loginid = _driverdata.loginid;
                         that.drivercode = _driverdata.drivercode;
                         that.driverpwd = _driverdata.driverpwd;
+                        that.oldpwd = _driverdata.driverpwd;
                         that.drivername = _driverdata.drivername;
                         that.ownenttid = _driverdata.enttid;
                         that.aadharno = _driverdata.aadharno;

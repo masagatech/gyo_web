@@ -30,6 +30,10 @@ export class LoginService {
         return this._dataserver.post("savePassword", req);
     }
 
+    getLogOut(req: any) {
+        return this._dataserver.post("getLogout", req);
+    }
+
     setUsers(userDetails): LoginUserModel {
         this.loginUser = userDetails;
 

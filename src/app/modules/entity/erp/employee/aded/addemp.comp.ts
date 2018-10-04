@@ -25,6 +25,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
     loginid: number = 0;
     empcode: string = "";
     emppwd: string = "";
+    oldpwd: string = "";
     empname: string = "";
 
     psngrtype: string = "";
@@ -707,6 +708,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
         that.empid = 0;
         that.empcode = "";
         that.emppwd = "";
+        that.oldpwd = "";
         that.empname = "";
 
         that.uploadPhotoDT = [];
@@ -847,8 +849,10 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 
                 "empid": that.empid,
                 "loginid": that.loginid,
+                "loginuid": that.loginUser.loginid,
                 "empcode": that.empcode,
                 "emppwd": that.emppwd,
+                "oldpwd": that.oldpwd,
                 "empname": that.empname,
                 "gender": that.gender,
                 "birthplace": that.birthplace,
@@ -962,6 +966,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
                         that.empid = _empdata[0].empid;
                         that.loginid = _empdata[0].loginid;
                         that.empcode = _empdata[0].empcode;
+                        that.oldpwd = _empdata[0].emppwd;
                         that.emppwd = _empdata[0].emppwd;
                         that.empname = _empdata[0].empname;
 

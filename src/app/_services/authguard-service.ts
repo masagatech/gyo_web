@@ -75,11 +75,13 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
               }
             });
           } else {
+            sessionStorage.clear();
             that._router.navigate(['login']);
             observer.next(true);
           }
         }, checks);
       } else {
+        sessionStorage.clear();
         that._router.navigate(['login']);
         observer.next(true);
       }
@@ -95,34 +97,39 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
       var rights = maindata["rights"];
       var submodule = maindata["submodule"];
 
-      var params = {
-        "loginid": userdetails.loginid,
-        "uid": userdetails.uid,
-        "ucode": userdetails.ucode,
-        "utype": userdetails.utype,
-        "ptype": "p",
-        "mcode": submodule,
-        "actcd": rights,
-        "sessionid": userdetails.sessiondetails.sessionid,
-        "enttid": userdetails.enttid,
-        "wsautoid": userdetails.wsautoid,
-        "issysadmin": userdetails.issysadmin,
-        "url": segments
-      };
-
-      this.authser.checkmenuaccess(params).subscribe(d => {
-        if (d.data) {
-          if (d.data[0].access) {
-            callback(true);
-          } else {
-            callback(false);
-          }
-        }
-      }, error => {
+      if (userdetails == null) {
         callback(false);
-      }, () => {
+      }
+      else {
+        var params = {
+          "loginid": userdetails.loginid,
+          "uid": userdetails.uid,
+          "ucode": userdetails.ucode,
+          "utype": userdetails.utype,
+          "ptype": "p",
+          "mcode": submodule,
+          "actcd": rights,
+          "sessionid": userdetails.sessiondetails.sessionid,
+          "enttid": userdetails.enttid,
+          "wsautoid": userdetails.wsautoid,
+          "issysadmin": userdetails.issysadmin,
+          "url": segments
+        };
 
-      });
+        this.authser.checkmenuaccess(params).subscribe(d => {
+          if (d.data) {
+            if (d.data[0].access) {
+              callback(true);
+            } else {
+              callback(false);
+            }
+          }
+        }, error => {
+          callback(false);
+        }, () => {
+
+        });
+      }
     } else {
       callback(true);
       return;
