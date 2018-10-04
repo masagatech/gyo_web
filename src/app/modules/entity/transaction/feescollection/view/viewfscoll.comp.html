@@ -81,12 +81,14 @@
                 <table class="table table-bordered table-responsive reports">
                     <thead>
                         <tr>
-                            <th width="100px" *ngIf="entttype == 'School'">GR No</th>
-                            <th width="100px" *ngIf="entttype == 'School'">Class Name</th>
-                            <th width="100px" *ngIf="entttype == 'School'">Roll No</th>
+                            <th width="60px" *ngIf="entttype == 'School'">GR No</th>
+                            <th width="90px" *ngIf="entttype == 'School'">Class Name</th>
+                            <th width="70px" *ngIf="entttype == 'School'">Roll No</th>
                             <th>Student Name</th>
+                            <th width="90px">Mobile No 1</th>
+                            <th width="90px">Mobile No 2</th>
                             <th width="100px">Fees Collect</th>
-                            <th width="80px"></th>
+                            <th width="70px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,6 +104,12 @@
                             </td>
                             <td>
                                 {{row.studname}}
+                            </td>
+                            <td>
+                                {{row.mobileno1}}
+                            </td>
+                            <td>
+                                {{row.mobileno2}}
                             </td>
                             <td align="right">
                                 {{row.feescoll | _currency:loginUser.globsettings[0]}}
