@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { RouteService } from '@services/master';
 import { LoginUserModel, Globals } from '@models';
 import { GMap } from 'primeng/primeng';
@@ -26,6 +26,8 @@ export class AddRouteComponent implements OnInit, OnDestroy {
     private overlays: any[];
     private map: any;
 
+    paramsid: number = 0;
+
     routesDT: any = [];
     rtid: number = 0;
     rtname: string = "";
@@ -49,14 +51,20 @@ export class AddRouteComponent implements OnInit, OnDestroy {
 
     markers: any = [];
     circles: any = [];
+
+    isaddrt: boolean = false;
+    iseditrt: boolean = false;
+    isdeletert: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _rtservice: RouteService, private _routeParams: ActivatedRoute, private _router: Router,
-        private _loginservice: LoginService, private _msg: MessageService, private cdRef: ChangeDetectorRef) {
+        private _loginservice: LoginService, private _autoservice: CommonService, private _msg: MessageService, private cdRef: ChangeDetectorRef) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
 
         this.fillDropDownList();
+        this.getActionRights();
     }
 
     public ngOnInit() {
@@ -93,6 +101,28 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         })
     }
 
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "rt"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddrt = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditrt = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeletert = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
+    }
+
     public ngAfterViewInit() {
         let that = this;
 
@@ -114,16 +144,16 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         };
     }
 
-    private ovrldrag(e) {
+    ovrldrag(e) {
         this.lat = this.marker.position.lat();
         this.lon = this.marker.position.lng();
     }
 
-    private meterinkm() {
+    meterinkm() {
         this.inkm = (this.radius / 1000).toFixed(2) + " KM";
     }
 
-    private radiousChanged() {
+    radiousChanged() {
         this.circle.setRadius(Number(this.radius));
         this.meterinkm()
     }
@@ -184,7 +214,42 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         $(".rtname").focus();
     }
 
-    // Save Stops Data
+    // Delete Route Data
+
+    public deleteRoutes() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = {
+                "rtid": that.paramsid,
+                "mode": "delete"
+            }
+
+            that._rtservice.saveRoutesInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_routesinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
+        });
+    }
+
+    // Save Route and Stops Data
 
     saveRoutesInfo() {
         var that = this;
@@ -291,9 +356,10 @@ export class AddRouteComponent implements OnInit, OnDestroy {
 
         that.subscribeParameters = that._routeParams.params.subscribe(params => {
             if (params['id'] !== undefined) {
-                that.rtid = params['id'];
+                that.paramsid = params['id'];
+                that.rtid = that.paramsid;
 
-                that._rtservice.getStopsDetails({ "flag": "editroute", "rtid": that.rtid }).subscribe(data => {
+                that._rtservice.getStopsDetails({ "flag": "editroute", "rtid": that.paramsid }).subscribe(data => {
                     try {
                         var _routedata = data.data;
 
@@ -331,7 +397,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         var that = this;
         commonfun.loader();
 
-        that._rtservice.getStopsDetails({ "flag": "byroute", "rtid": that.rtid }).subscribe(data => {
+        that._rtservice.getStopsDetails({ "flag": "byroute", "rtid": that.paramsid }).subscribe(data => {
             try {
                 var _stpdata = data.data;
 
@@ -537,7 +603,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         var that = this;
 
         var act_deactstp = {
-            "rtid": that.rtid,
+            "rtid": that.paramsid,
             "isactive": that.isactive,
             "mode": that.mode
         }

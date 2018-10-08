@@ -665,6 +665,8 @@ export class AddPassengerComponent implements OnInit, OnDestroy {
         this.uploadPhotoDT.splice(0, 1);
     }
 
+    // Delete Data
+
     public deletePassenger() {
         var that = this;
 

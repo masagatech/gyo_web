@@ -2,14 +2,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard, SharedComponentModule } from '@services';
+import { AuthGuard, SharedComponentModule, CommonService } from '@services';
 
 import { AddRouteComponent } from './aded/addrt.comp';
 import { ViewRouteComponent } from './view/viewrt.comp';
 
 import { RouteService } from '@services/master';
 
-import { LazyLoadEvent, DataTableModule, OrderListModule, AutoCompleteModule, GMapModule } from 'primeng/primeng';
+import { GMapModule } from 'primeng/primeng';
 
 export const routes = [
   {
@@ -41,10 +41,10 @@ export const routes = [
   ],
 
   imports: [
-    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes),
-    DataTableModule, OrderListModule, AutoCompleteModule, GMapModule],
+    CommonModule, FormsModule, SharedComponentModule, RouterModule.forChild(routes), GMapModule
+  ],
 
-  providers: [AuthGuard, RouteService]
+  providers: [AuthGuard, RouteService, CommonService]
 })
 
 export class RouteModule {
