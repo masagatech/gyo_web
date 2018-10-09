@@ -16,6 +16,7 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
 
     enttid: number = 0;
     srcdrvname: string = "";
+    countrt: number = -1;
 
     constructor(private _msg: MessageService, private _loginservice: LoginService, private _autoservice: CommonService,
         private _rptservice: ReportsService) {
@@ -86,8 +87,8 @@ export class DriverReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": "trnsp_reports", "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "format": format
+            "flag": "trnsp_reports", "countrt": that.countrt, "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
         commonfun.loader();

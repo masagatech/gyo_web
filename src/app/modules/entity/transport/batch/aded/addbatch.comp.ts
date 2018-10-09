@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, messageType, LoginService } from '@services';
+import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals } from '@models';
 import { BatchService } from '@services/master';
 
@@ -15,6 +15,8 @@ export class AddBatchComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
+    paramsid: number = 0;
+
     batchid: number = 0;
     batchcode: string = "";
     batchname: string = "";
@@ -26,16 +28,44 @@ export class AddBatchComponent implements OnInit, OnDestroy {
     mode: string = "";
     isactive: boolean = true;
 
+    isaddbatch: boolean = false;
+    iseditbatch: boolean = false;
+    isdeletebatch: boolean = false;
+
     private subscribeParameters: any;
 
     constructor(private _routeParams: ActivatedRoute, private _router: Router, private _msg: MessageService,
-        private _loginservice: LoginService, private _batchservice: BatchService) {
+        private _loginservice: LoginService, private _batchservice: BatchService, private _autoservice: CommonService) {
         this.loginUser = this._loginservice.getUser();
         this._enttdetails = Globals.getEntityDetails();
+        
+        this.getActionRights();
     }
 
     public ngOnInit() {
         this.getBatchDetails();
+    }
+
+    // Get Action Rights
+
+    getActionRights() {
+        var that = this;
+        commonfun.loader();
+
+        var params = {
+            "flag": "menurights", "entttype": that._enttdetails.entttype, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "mcode": "rt"
+        };
+
+        that._autoservice.getMenuDetails(params).subscribe(data => {
+            that.isaddbatch = data.data.filter(a => a.maction == "add")[0].isrights;
+            that.iseditbatch = data.data.filter(a => a.maction == "edit")[0].isrights;
+            that.isdeletebatch = data.data.filter(a => a.maction == "delete")[0].isrights;
+        }, err => {
+            console.log(err);
+        }, () => {
+            // console.log("Complete");
+        });
     }
 
     getWorkingDay() {
@@ -43,7 +73,7 @@ export class AddBatchComponent implements OnInit, OnDestroy {
 
         this._batchservice.getBatchDetails({
             "flag": "wkday",
-            "batchid": that.batchid,
+            "batchid": that.paramsid,
             "schid": that._enttdetails.enttid,
             "wsautoid": that._enttdetails.wsautoid
         }).subscribe(data => {
@@ -106,13 +136,13 @@ export class AddBatchComponent implements OnInit, OnDestroy {
     active_deactiveBatchInfo() {
         var that = this;
 
-        var act_deactbatch = {
+        var params = {
             "autoid": that.batchid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        this._batchservice.saveBatchInfo(act_deactbatch).subscribe(data => {
+        this._batchservice.saveBatchInfo(params).subscribe(data => {
             try {
                 var dataResult = data.data;
 
@@ -131,6 +161,41 @@ export class AddBatchComponent implements OnInit, OnDestroy {
             console.log(err);
         }, () => {
 
+        });
+    }
+
+    // Delete Batch Data
+
+    public deleteBatchInfo() {
+        var that = this;
+
+        that._autoservice.confirmmsgbox("Are you sure, you want to delete ?", "Your record has been deleted", "Your record is safe", function (e) {
+            var params = {
+                "autoid": that.paramsid,
+                "mode": "delete"
+            }
+
+            that._batchservice.saveBatchInfo(params).subscribe(data => {
+                try {
+                    var dataResult = data.data[0].funsave_batchinfo;
+                    var msg = dataResult.msg;
+                    var msgid = dataResult.msgid;
+
+                    if (msgid != "-1") {
+                        that.backViewData();
+                    }
+                    else {
+                        that._msg.Show(messageType.error, "Error", msg);
+                    }
+                }
+                catch (e) {
+                    that._msg.Show(messageType.error, "Error", e);
+                }
+            }, err => {
+                console.log(err);
+            }, () => {
+                // console.log("Complete");
+            });
         });
     }
 
@@ -267,12 +332,12 @@ export class AddBatchComponent implements OnInit, OnDestroy {
             if (params['id'] !== undefined) {
                 commonfun.loader();
 
-                that.batchid = params['id'];
+                that.paramsid = params['id'];
                 that.getWorkingDay();
 
                 that._batchservice.getBatchDetails({
                     "flag": "edit",
-                    "id": that.batchid,
+                    "id": that.paramsid,
                     "wsautoid": that._enttdetails.wsautoid
                 }).subscribe(data => {
                     try {

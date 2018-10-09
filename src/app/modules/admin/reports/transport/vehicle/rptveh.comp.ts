@@ -17,6 +17,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
 
     enttid: number = 0;
     srcvehname: string = "";
+    countrt: number = -1;
 
     @ViewChild('vehicle') vehicle: ElementRef;
 
@@ -89,8 +90,8 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": "reports", "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid, "utype": that.loginUser.utype,
-            "issysadmin": that.loginUser.issysadmin, "format": format
+            "flag": "reports", "countrt": that.countrt, "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid,
+            "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
         commonfun.loader();

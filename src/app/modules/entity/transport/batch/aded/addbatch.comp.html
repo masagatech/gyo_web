@@ -2,12 +2,17 @@
     <div class="header">
         <h4>Batch</h4>
         <ul class="header-dropdown m-r--5">
-            <li *ngIf="batchid !== 0">
+            <li *ngIf="paramsid != 0 && isdeletebatch == true">
+                <a role="button" class="btn btn-danger" (click)="deleteBatchInfo()">
+                    <i class="material-icons">delete</i>
+                </a>
+            </li>
+            <li *ngIf="paramsid !== 0">
                 <span class="switch">
                     <label class="control-label"><input type="checkbox" [(ngModel)]="isactive" (ngModelChange)="active_deactiveBatchInfo()"><span class="lever"></span></label>
                 </span>
             </li>
-            <li>
+            <li *ngIf="isaddbatch == true && iseditbatch == true">
                 <a role="button" class="btn btn-theme" (click)="saveBatchInfo()">
                     <i class="material-icons">save</i>
                 </a>

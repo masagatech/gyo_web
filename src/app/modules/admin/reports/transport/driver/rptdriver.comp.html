@@ -22,14 +22,29 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-2 pad-20">
+            <div class="col-md-2 col-xs-2">
+                <div class="form-group">
+                    <div class="form-line">
+                        <label class="control-label">Route</label>
+                        <select id="countrt" name="countrt" [(ngModel)]="countrt" class="form-control countrt" (ngModelChange)="getDriverReports('html')" tabindex="2">
+                            <option [value]="-1">All</option>
+                            <option [value]="0">No Route</option>
+                            <option [value]="1">1 Route</option>
+                            <option [value]="2">2 Route</option>
+                            <option [value]="3">3 Route</option>
+                            <option [value]="4">Above 3</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-2 pad-20">
                 <div class="form-group">
                     <button type="button" class="btn btn-theme" (click)="getDriverReports('html')">
                         <span class="material-icons">arrow_forward</span>
                     </button>
                 </div>
             </div>
-            <div class="col-md-2 col-xs-2 pad-20 text-right">
+            <div class="col-md-1 col-xs-2 pad-20 text-right">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Export <span class="caret"></span>

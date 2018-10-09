@@ -602,13 +602,13 @@ export class AddRouteComponent implements OnInit, OnDestroy {
     active_deactiveStopsInfo() {
         var that = this;
 
-        var act_deactstp = {
+        var params = {
             "rtid": that.paramsid,
             "isactive": that.isactive,
             "mode": that.mode
         }
 
-        this._rtservice.saveStopsInfo(act_deactstp).subscribe(data => {
+        this._rtservice.saveStopsInfo(params).subscribe(data => {
             try {
                 var dataResult = data.data;
 
@@ -718,7 +718,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         }
     }
 
-    private addmarker(stps) {
+    addmarker(stps) {
         let that = this;
 
         var populationOptions = {
@@ -789,7 +789,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         }
     }
 
-    private removemarker(rowid) {
+    removemarker(rowid) {
         let mrkr = this.markers[rowid];
 
         if (mrkr != null) {
@@ -798,7 +798,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
         }
     }
 
-    private boundtomap() {
+    boundtomap() {
         var bounds = new google.maps.LatLngBounds();
         var that = this;
 
@@ -819,7 +819,7 @@ export class AddRouteComponent implements OnInit, OnDestroy {
     public ngOnDestroy() {
         $.AdminBSB.islocked = false;
         $.AdminBSB.leftSideBar.Open();
-        
+
         this.subscribeParameters.unsubscribe();
     }
 }
