@@ -45,12 +45,20 @@
                             <div class="header-title">
                                 Mapped School
                             </div>
-                            <div class="body">
+                            <div class="body overflow-panel">
                                 <div *ngFor="let wsrow of row.schooldt | groupBy: 'wsname'">
                                     <h5>{{wsrow.key}}</h5>
 
-                                    <div *ngFor="let schrow of wsrow.value; let i = index;" [ngClass]="schrow.isowner == true ? 'bg-green' : ''">
-                                        <b *ngIf="wsrow.value.length > 1">{{i + 1}}.</b> {{schrow.schname}}
+                                    <div *ngIf="flag !== 'user'">
+                                        <div *ngFor="let schrow of wsrow.value; let i = index;" [ngClass]="schrow.schid == row.enttid ? 'bg-green' : ''">
+                                            <b *ngIf="wsrow.value.length > 1">{{i + 1}}.</b> {{schrow.schname}}
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="flag === 'user'">
+                                        <div *ngFor="let schrow of wsrow.value; let i = index;" [ngClass]="schrow.wsid == row.wsautoid ? 'bg-green' : ''">
+                                            <b *ngIf="wsrow.value.length > 1">{{i + 1}}.</b> {{schrow.schname}}
+                                        </div>
                                     </div>
 
                                     <hr class="hr" />
