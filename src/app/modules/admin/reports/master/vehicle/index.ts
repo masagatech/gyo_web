@@ -4,15 +4,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedComponentModule, AuthGuard, CommonService } from '@services';
 
-import { VehicleReportsComponent } from './rptveh.comp';
+import { VehicleMasterReportsComponent } from './rptveh.comp';
 import { ReportsService } from '@services/reports';
 
 export const routes = [
   {
     path: '', children: [
       {
-        path: '', component: VehicleReportsComponent, canActivate: [AuthGuard],
-        data: { "module": "rpttrnsp", "submodule": "rptvehtrnsp", "rights": "view", "urlname": "/vehicle" }
+        path: '', component: VehicleMasterReportsComponent, canActivate: [AuthGuard],
+        data: { "module": "rpttrnsp", "submodule": "rptvehmst", "rights": "view", "urlname": "/vehicle" }
       }
     ]
   },
@@ -20,7 +20,7 @@ export const routes = [
 
 @NgModule({
   declarations: [
-    VehicleReportsComponent
+    VehicleMasterReportsComponent
   ],
 
   imports: [
@@ -30,6 +30,6 @@ export const routes = [
   providers: [AuthGuard, ReportsService, CommonService]
 })
 
-export class VehicleReportsModule {
+export class VehicleMasterReportsModule {
   public static routes = routes;
 }

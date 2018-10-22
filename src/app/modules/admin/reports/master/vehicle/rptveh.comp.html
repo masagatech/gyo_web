@@ -1,14 +1,6 @@
 <div class="card">
     <div class="header">
         <div class="row clearfix">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Vehicle</label>
-                        <input type="text" [(ngModel)]="srcvehname" class="form-control drivercode" tabindex="1" />
-                    </div>
-                </div>
-            </div>
             <div class="col-md-4 col-xs-8">
                 <div class="form-group">
                     <div class="form-line">
@@ -18,21 +10,6 @@
                             <option *ngFor="let row of entityDT" [value]="row.enttid">
                                 {{row.enttname}}
                             </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2 col-xs-2">
-                <div class="form-group">
-                    <div class="form-line">
-                        <label class="control-label">Route</label>
-                        <select id="countrt" name="countrt" [(ngModel)]="countrt" class="form-control countrt" (ngModelChange)="getDriverReports('html')" tabindex="2">
-                            <option [value]="-1">All</option>
-                            <option [value]="0">No Route</option>
-                            <option [value]="1">1 Route</option>
-                            <option [value]="2">2 Route</option>
-                            <option [value]="3">3 Route</option>
-                            <option [value]="4">Above 3</option>
                         </select>
                     </div>
                 </div>
@@ -60,6 +37,6 @@
     </div>
 
     <div class="body padding-0">
-        <div id="divrptvehtrnsp" class="min-body-height"></div>
+        <div id="divrptvehmst" class="min-body-height"></div>
     </div>
 </div>

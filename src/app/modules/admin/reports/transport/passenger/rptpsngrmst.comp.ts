@@ -16,8 +16,6 @@ export class PassengerReportsComponent implements OnInit, OnDestroy {
     global = new Globals();
 
     entityDT: any = [];
-    passengerDT: any = [];
-
     enttid: number = 0;
 
     autoPassengerDT: any = [];

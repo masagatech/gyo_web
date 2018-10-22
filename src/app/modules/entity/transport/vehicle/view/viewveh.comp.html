@@ -35,7 +35,7 @@
                     <th width="60px"></th>
                 </tr>
             </thead>
-            <tbody *ngFor="let row of vehicleDT | filterBy: {'vehiclename': srcvehname, 'imei': srcvehname}">
+            <tbody *ngFor="let row of vehicleDT | filterBy: {'vehiclename': srcvehname}">
                 <tr [ngClass]="!row.isowner ? 'grid-body bg-transparent' : 'grid-body'">
                     <td>
                         {{row.vehicletype}}

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, messageType, LoginService, CommonService } from '@services';
 import { LoginUserModel, Globals, Common } from '@models';
@@ -8,7 +8,7 @@ import { ReportsService } from '@services/reports';
     templateUrl: 'rptveh.comp.html'
 })
 
-export class VehicleReportsComponent implements OnInit, OnDestroy {
+export class VehicleMasterReportsComponent implements OnInit, OnDestroy {
     loginUser: LoginUserModel;
     _enttdetails: any = [];
 
@@ -16,10 +16,6 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
     vehicleDT: any = [];
 
     enttid: number = 0;
-    srcvehname: string = "";
-    countrt: number = -1;
-
-    @ViewChild('vehicle') vehicle: ElementRef;
 
     constructor(private _router: Router, private _msg: MessageService, private _loginservice: LoginService,
         private _autoservice: CommonService, private _rptservice: ReportsService) {
@@ -90,7 +86,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
         var that = this;
 
         var dparams = {
-            "flag": "trnsp_reports", "countrt": that.countrt, "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid,
+            "flag": "mst_reports", "enttid": that.enttid, "wsautoid": 0, "uid": that.loginUser.uid,
             "utype": that.loginUser.utype, "issysadmin": that.loginUser.issysadmin, "format": format
         }
 
@@ -99,7 +95,7 @@ export class VehicleReportsComponent implements OnInit, OnDestroy {
         if (format == "html") {
             that._rptservice.getVehicleReports(dparams).subscribe(data => {
                 try {
-                    $("#divrptvehtrnsp").html(data._body);
+                    $("#divrptvehmst").html(data._body);
                 }
                 catch (e) {
                     that._msg.Show(messageType.error, "Error", e);

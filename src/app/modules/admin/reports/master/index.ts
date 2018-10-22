@@ -17,6 +17,7 @@ export const routes = [
                     { path: 'entity', loadChildren: './entity#EntityReportsModule' },
                     { path: 'users', loadChildren: './users#UserReportsModule' },
                     { path: 'driver', loadChildren: './driver#DriverMasterReportsModule' },
+                    { path: 'vehicle', loadChildren: './vehicle#VehicleMasterReportsModule' },
                     { path: 'parents', loadChildren: './parents#ParentsReportsModule' }
                 ]
             }
